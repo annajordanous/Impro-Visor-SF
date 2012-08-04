@@ -25452,36 +25452,148 @@ public void reset()
     numCycles = getCurrentMelodyPart().size() / improInterval;
     nextGenerateCycle = 0;
     nextPlayCycle = 0;
+    //firstTime = ivFirst == 0;
   }
 
-//public boolean improviseNow(int slotInPlayback, int size)
-//  {
-//  int currentCycle = slotInPlayback/improInterval;
-//
-//  if( currentCycle != nextGenerateCycle )
-//    {
-//      return false;
-//    }
-//
-//  melodyStartsAtSlot = ivFirst == 0 ? improInterval*currentCycle
-//                                    : improInterval*currentCycle + halfInterval;
-//
-//  playAtSlot = melodyStartsAtSlot - 120;
-//
-//  generateAtSlot = melodyStartsAtSlot - 480; //generationLeadSlots;
-//  
-//  boolean result = !generated && slotInPlayback >= generateAtSlot;
-//
-//  if( result )
-//    {
-////        System.out.println("slot = " + slotInPlayback
-////                   + ": currentCycle = " + currentCycle
-////                   + ", melodyStart = " + melodyStartsAtSlot
-////                   + ", generate at " + generateAtSlot);
-//    }
-//
-//  return result;
-//  }
+
+
+public MelodyPart maybeCreateMelody(int slotInPlayback, MelodyPart currentMelodyPart)
+  {
+  int currentCycle = slotInPlayback/improInterval;
+
+    // This prevents multiple generations within one cycle.
+    // Trying to hinge on generated does not work.
+    // Neither does hinging on slotInPlayback < generateAtSlot
+  
+   if( currentCycle != nextGenerateCycle )
+    {
+      return null;
+    }
+
+  melodyStartsAtSlot = ivFirst == 0 ? improInterval*currentCycle
+                                    : improInterval*currentCycle + halfInterval;
+
+  playAtSlot = melodyStartsAtSlot - playLeadSlots;
+
+  generateAtSlot = melodyStartsAtSlot - generationLeadSlots;
+  
+  boolean result = !generated && slotInPlayback >= generateAtSlot;
+
+  if( result )
+   {
+    improLick = generate(lickgen, melodyStartsAtSlot, melodyStartsAtSlot + halfInterval - 1);
+
+    generated = improLick != null && improLick.size() > 0;
+
+    if( generated )
+      {
+       System.out.println("\nat " + generateAtSlot +
+                       " generate melody to play at " + playAtSlot +
+                       " and sound at " + melodyStartsAtSlot);
+                     //+ ": " + improLick);
+
+      nextGenerateCycle = (nextGenerateCycle + 1) % numCycles;
+
+      played = false;
+        Score improScore = new Score();
+        improScore.setTempo(score.getTempo());
+
+        improLick.setInstrument(auxInst.getValue());
+        improLick.setSwing(currentMelodyPart.getSwing());
+
+        improScore.addPart(improLick);
+
+         // Create command now, for execution on a subsequent slot
+        Style style = chordProg.getStyle();
+
+        setImproCommand(
+                new PlayScoreCommand(improScore,
+                                     0, // startTime
+                                     true, // swing
+                                     midiSynth2,
+                                     null, // play listener
+                                     0, // loopCount,
+                                     score.getTransposition(), // transposition
+                                     false, // use drums
+                                     -1));       // end
+      }
+    return improLick;
+    }
+  return null;
+  }
+
+
+public MelodyPart maybePlay(int slotInPlayback, MelodyPart currentMelodyPart)
+  {
+    boolean paste = true;
+
+//    int currentCycle = slotInPlayback / improInterval;
+
+//    if( currentCycle != nextPlayCycle )
+//      {
+//        return null;
+//      }
+
+    boolean timeOk = slotInPlayback >= playAtSlot;
+    boolean commandOk = improCommand != null;
+    boolean result = generated && commandOk && timeOk;  //!played 
+
+    if( result )
+      {
+        System.out.println("at " + slotInPlayback
+                         + " >= " + playAtSlot
+                         + " playing");
+
+        nextPlayCycle = (nextPlayCycle + 1) % numCycles;
+
+        played = true;
+        generated = false;
+
+        improCommand.execute();
+
+        if( paste )
+          {
+            if( firstTime )
+              {
+                firstTime = false;
+                currentMelodyPart.pasteOver(improLick, 0);
+              }
+            else
+              {
+                currentMelodyPart.pasteOver(improLick, melodyStartsAtSlot);
+              }
+          }
+
+        setImproCommand(null); // Don't play twice
+        //System.out.println("playing at " + melodyStartsAtSlot);
+
+        //System.out.println("playCreatedMelody at " + playAtSlot + " improLick = " + improLick);
+        return improLick;
+      }
+
+    return null;
+  }
+
+
+/**
+ * This creates the first melody at slot 0 when Impro-Visor is to being
+ * trading.
+ * @param currentMelodyPart
+ */
+
+public void createInitialMelody(MelodyPart currentMelodyPart)
+  {
+    createMelody(currentMelodyPart);
+
+    if( improLick != null && improLick.size() > 0 )
+      {
+       melodyStartsAtSlot = 0;
+       playAtSlot = 0;
+       firstTime = true;
+       generated = true;
+       played = false;
+      }
+  }
 
 public MelodyPart createMelody(MelodyPart currentMelodyPart)
   {
@@ -25543,146 +25655,6 @@ public MelodyPart createMelody(MelodyPart currentMelodyPart)
   }
 
 
-public MelodyPart maybeCreateMelody(int slotInPlayback, MelodyPart currentMelodyPart)
-  {
-  int currentCycle = slotInPlayback/improInterval;
-
-  if( currentCycle != nextGenerateCycle )
-    {
-      return null;
-    }
-
-  melodyStartsAtSlot = ivFirst == 0 ? improInterval*currentCycle
-                                    : improInterval*currentCycle + halfInterval;
-
-  playAtSlot = melodyStartsAtSlot - playLeadSlots;
-
-  generateAtSlot = melodyStartsAtSlot - generationLeadSlots;
-  
-  boolean result = !generated && slotInPlayback >= generateAtSlot;
-
-  if( result )
-   {
-    improLick = generate(lickgen, melodyStartsAtSlot, melodyStartsAtSlot + halfInterval - 1);
-
-    generated = improLick != null && improLick.size() > 0;
-
-    if( generated )
-      {
-       System.out.println("\nat " + generateAtSlot +
-                       " generate melody to play at " + playAtSlot +
-                       " and sound at " + melodyStartsAtSlot);
-                     //+ ": " + improLick);
-
-      nextGenerateCycle = (nextGenerateCycle + 1) % numCycles;
-
-      played = false;
-        Score improScore = new Score();
-        improScore.setTempo(score.getTempo());
-
-        improLick.setInstrument(auxInst.getValue());
-        improLick.setSwing(currentMelodyPart.getSwing());
-
-        improScore.addPart(improLick);
-
-         // Create command now, for execution on a subsequent slot
-        Style style = chordProg.getStyle();
-
-        setImproCommand(
-                new PlayScoreCommand(improScore,
-                                     0, // startTime
-                                     true, // swing
-                                     midiSynth2,
-                                     null, // play listener
-                                     0, // loopCount,
-                                     score.getTransposition(), // transposition
-                                     false, // use drums
-                                     -1));       // end
-      }
-    return improLick;
-    }
-  return null;
-  }
-
-
-/**
- * This creates the first melody at slot 0 when Impro-Visor is to being
- * trading.
- * @param currentMelodyPart
- */
-
-public void createInitialMelody(MelodyPart currentMelodyPart)
-  {
-    createMelody(currentMelodyPart);
-
-    if( improLick != null && improLick.size() > 0 )
-      {
-       Note firstNote = improLick.getFirstNote();
-       if( firstNote == null )
-         {
-           return; // FIX: What to do?
-         }
-       melodyStartsAtSlot = 0;
-       firstTime = true;
-       generated = true;
-       played = false;
-      }
-  }
-
-
-
-public MelodyPart maybePlay(int slotInPlayback, MelodyPart currentMelodyPart)
-  {
-    boolean paste = true;
-
-//    int currentCycle = slotInPlayback / improInterval;
-
-//    if( currentCycle != nextPlayCycle )
-//      {
-//        return null;
-//      }
-
-   boolean timeOk = slotInPlayback >= playAtSlot;
-   boolean result = generated && timeOk;  //!played 
- 
-    if( result )
-      {
-        System.out.println("at " + slotInPlayback
-                         + " >= " + playAtSlot 
-                          + " playing");
-
-       nextPlayCycle = (nextPlayCycle + 1) % numCycles;
-
-        played = true;
-        generated = false;
-
-        if( improCommand != null )
-          {
-            improCommand.execute();
-
-            if( paste )
-              {
-                if( firstTime )
-                  {
-                    firstTime = false;
-                    currentMelodyPart.pasteOver(improLick, 0);
-                  }
-                else
-                  {
-                    currentMelodyPart.pasteOver(improLick, melodyStartsAtSlot);
-                  }
-              }
-
-            setImproCommand(null); // Don't play twice
-            //System.out.println("playing at " + melodyStartsAtSlot);
-
-          }
-        //System.out.println("playCreatedMelody at " + playAtSlot + " improLick = " + improLick);
-        return improLick;
-      }
-
-    return null;
-  }
 
 public int getGenerationLeadSlots()
   {
