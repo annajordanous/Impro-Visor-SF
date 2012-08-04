@@ -2560,7 +2560,10 @@ public void setDelta(boolean delta) {
 public String toSymbols(String chordName)
 {
     String result = chordName;
-    
+    if(!(useDelta+"").equals(notate.getDeltaStatus()+""))
+        setDelta(notate.getDeltaStatus());
+    if(!(usePhi+"").equals(notate.getPhiStatus()+""))
+        setPhi(notate.getPhiStatus());
     if(useDelta)
         result = toDelta(result);
     if(usePhi)
