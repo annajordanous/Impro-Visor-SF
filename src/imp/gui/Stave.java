@@ -843,6 +843,10 @@ public Stave(MelodyPart part, StaveType type, Notate notate,
     setSelection(0);
     
     this.add(noteCursorLabel);
+    noteCursorLabel.setForeground(Color.RED);
+    Font font = noteCursorLabel.getFont();
+    noteCursorLabel.setFont(new Font(font.getName(), font.getStyle(), 15));
+    noteCursorLabel.setSize(18, 18);
     
   }
 
@@ -2382,11 +2386,10 @@ protected void paintComponent(Graphics g)
 
 public void setNoteCursorLabel(String str, int x, int y)
 {
-    noteCursorLabel.setForeground(Color.RED);
-    noteCursorLabel.setLocation(x + 17,  y - 3);
+    
+    noteCursorLabel.setLocation(0, y - 50);
     noteCursorLabel.setText(str);
-    noteCursorLabel.setOpaque(false);
-    noteCursorLabel.setSize(18, 15);
+
 }
 
 public void clearNoteCursorLabel()
@@ -4642,12 +4645,21 @@ private void drawTupletBracket(int n,
       }
   }
 
-public void updateLegerLines(int pitch, int x, int staveLine, Graphics g)
+/**
+ *  Updates the the temporary leger lines associated with the note cursor
+ * @param pitch         pitch associated with the cursor
+ * @param x             where the pitch is
+ * @param staveLine     the line we're on
+ * @param g             the graphics we're writing to
+ */
+public void updateTempLegerLines(int pitch, int x, int staveLine, Graphics g)
 {
-    if (Math.abs(getActionHandler().oldx - x) > 2)
+    StaveActionHandler handler = getActionHandler();
+    int oldx = handler.oldx;
+    if (Math.abs(oldx - x) > 2)
     {
         repaint();
-        getActionHandler().oldx = x;
+        handler.oldx = x;
     }
     drawLegerLine(pitch, getActionHandler().oldx, staveLine, g);
 }

@@ -17445,7 +17445,7 @@ void timeWarpMelody(int num, int denom)
 
       getCurrentStave().setPrinting(false);
 
-      setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+      getCurrentStave().setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }//GEN-LAST:event_printMIActionPerformed
 
 

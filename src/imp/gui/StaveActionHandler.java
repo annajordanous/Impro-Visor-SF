@@ -556,7 +556,9 @@ private void chooseAndSetNoteCursor(MouseEvent e)
                             curLine);
     
     // MAGIC VALUE
-    if (oldNote != null && Math.abs(oldNote.getPitch() - pitch) <= 2 && stave.getSelectionStart() == searchForCstrLine(x, y))
+    if (oldNote != null &&
+        Math.abs(oldNote.getPitch() - pitch) <= 2
+        && stave.getSelectionStart() == searchForCstrLine(x, y))
             {
                 setCursor(defaultCursor);
                 return;
@@ -589,7 +591,7 @@ private void chooseAndSetNoteCursor(MouseEvent e)
         // pitch is invalid
         if( pitch < stave.getMinPitch() ||pitch > stave.getMaxPitch() )
         {
-            stave.repaint();
+            //stave.repaint();
             noteCursor = makeCursor(blueNoteCursorImg, "Note", true);
             setCursor(noteCursor);
             stave.clearNoteCursorLabel();
@@ -622,17 +624,10 @@ private void chooseAndSetNoteCursor(MouseEvent e)
                 noteCursor = makeCursor(redNoteCursorImg, "Note", true); 
         }
         
-        
-        Graphics g = stave.getGraphics();
-        //stave.repaint();
-        //g.setColor(Color.red);
-        stave.updateLegerLines(pitch, x,  curLine, stave.getGraphics());
+        stave.updateTempLegerLines(pitch, x,  curLine, stave.getGraphics());      
         stave.setNoteCursorLabel(noteNameFromMidi(pitch, curLine), x, y);
+        setCursor(noteCursor);
     }
-
-    
-
-    setCursor(noteCursor);
 }
 
 /**
@@ -2882,13 +2877,13 @@ private int yPosToRectifiedPitch(int yPos, Chord chord, int staveLine, boolean s
     int unRectPitch = yPosToPitch(yPos, staveLine);
 
     // If there is no chord, we can't rectify the pitch
-    if( chord == null || chord.getName().equals("NC") )
+    if( chord == null || chord.getName().equals(NOCHORD) )
         return unRectPitch;
 
     ChordPart prog = stave.getChordProg();
 
-    drawScaleTones = stave.notate.getScaleTonesSelected();
-    drawChordTones = stave.notate.getChordTonesSelected();
+    drawScaleTones = notate.getScaleTonesSelected();
+    drawChordTones = notate.getChordTonesSelected();
     //drawColorTones = stave.notate.getColorTonesSelected();
 
     // Are approaches user-enabled?
@@ -3016,7 +3011,6 @@ public void setCursor()
      {
         setCursor(defaultCursor);
      }
-    stave.clearNoteCursorLabel();
 }
 
 public void setCursor(Cursor cursor)
