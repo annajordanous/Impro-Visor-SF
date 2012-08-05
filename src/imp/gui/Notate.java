@@ -17677,16 +17677,29 @@ private void setCurrentStaveType(StaveType t)
 
  public void playScore()
   {
-    autoImprovisation.reset();
-
     MelodyPart currentMelodyPart = getCurrentMelodyPart();
+    MelodyPart improLick = null;
+    
+    autoImprovisation.reset(currentMelodyPart);
+    
     if( autoImprovisation.improviseAtStart() )
       {
-       autoImprovisation.createInitialMelody(currentMelodyPart);
+       // This creates and starts the initial improvisation, if Impro-Visor
+       // goes first,
+       // but pasting the improLick is deferred to after the main Score
+       // starts, so that the latter does not try to play improLick also.
+        
+       improLick = autoImprovisation.createAndPlayInitialLick();
       }
-
+     
      establishCountIn();
      playScoreBody(0);
+     
+     if( improLick != null )
+       {
+       // Now paste, after the main Score is started.
+       currentMelodyPart.pasteOver(improLick, 0);
+       }
   }
 
 
@@ -25380,6 +25393,7 @@ class AutoImprovisation
 {
 boolean selected = true;  // current default
 
+boolean traceAutoImprov = false;
 /**
  * ivFirst is 0 if Impro-Visor is to go first, 1 if not
  */
@@ -25417,7 +25431,7 @@ int generationLeadSlots = 240;
  * Ultimately this should be made to depend on tempo, etc.
  */
 
-int playLeadSlots = 90;
+int playLeadSlots = 30;
 
 int generateAtSlot = 0;
 
@@ -25441,8 +25455,11 @@ int nextPlayCycle = 0;
 
 int numCycles;
 
-public void reset()
+MelodyPart currentMelodyPart;
+
+public void reset(MelodyPart currentMelodyPart)
   {
+    this.currentMelodyPart = currentMelodyPart;
     generateAtSlot = 0;
     melodyStartsAtSlot = 0;
     improLick = null;
@@ -25457,7 +25474,7 @@ public void reset()
 
 
 
-public MelodyPart maybeCreateMelody(int slotInPlayback, MelodyPart currentMelodyPart)
+public MelodyPart maybeCreateLick(int slotInPlayback)
   {
   int currentCycle = (slotInPlayback + generationLeadSlots)/improInterval;
 
@@ -25473,7 +25490,7 @@ public MelodyPart maybeCreateMelody(int slotInPlayback, MelodyPart currentMelody
   melodyStartsAtSlot = ivFirst == 0 ? improInterval*currentCycle
                                     : improInterval*currentCycle + halfInterval;
 
-  playAtSlot = melodyStartsAtSlot - playLeadSlots;
+  playAtSlot = melodyStartsAtSlot - (firstTime ? 0 : playLeadSlots);
 
   generateAtSlot = melodyStartsAtSlot - generationLeadSlots;
   
@@ -25487,10 +25504,13 @@ public MelodyPart maybeCreateMelody(int slotInPlayback, MelodyPart currentMelody
 
     if( generated )
       {
-       System.out.println("\nat " + generateAtSlot +
-                       " generate melody to play at " + playAtSlot +
-                       " and sound at " + melodyStartsAtSlot);
-                     //+ ": " + improLick);
+       if( traceAutoImprov )
+         {
+         System.out.println("\nat " + generateAtSlot +
+                            " generate melody to play at " + playAtSlot +
+                            " and sound at " + melodyStartsAtSlot);
+                        //+ ": " + improLick);
+         }
 
       nextGenerateCycle = (nextGenerateCycle + 1) % numCycles;
 
@@ -25503,19 +25523,19 @@ public MelodyPart maybeCreateMelody(int slotInPlayback, MelodyPart currentMelody
 
         improScore.addPart(improLick);
 
-         // Create command now, for execution on a subsequent slot
+        // Create command now, for execution on a subsequent slot
         Style style = chordProg.getStyle();
 
         setImproCommand(
                 new PlayScoreFastCommand(improScore,
-                                     0, // startTime
-                                     true, // swing
-                                     midiSynth2,
-                                     null, // play listener
-                                     0, // loopCount,
-                                     score.getTransposition(), // transposition
-                                     false, // use drums
-                                     -1));       // end
+                                        0, // startTime
+                                        true, // swing
+                                        midiSynth2,
+                                        null, // play listener
+                                        0, // loopCount,
+                                        score.getTransposition(), // transposition
+                                        false, // use drums
+                                        -1));       // end
       }
     return improLick;
     }
@@ -25523,7 +25543,7 @@ public MelodyPart maybeCreateMelody(int slotInPlayback, MelodyPart currentMelody
   }
 
 
-public MelodyPart maybePlay(int slotInPlayback, MelodyPart currentMelodyPart)
+public MelodyPart maybePlayLick(int slotInPlayback)
   {
     boolean paste = true;
 
@@ -25535,9 +25555,12 @@ public MelodyPart maybePlay(int slotInPlayback, MelodyPart currentMelodyPart)
       {
         improCommand.execute();
 
-        System.out.println("at " + slotInPlayback
-                         + " >= " + playAtSlot
-                         + " playing");
+        if( traceAutoImprov )
+          {
+          System.out.println("at " + slotInPlayback
+                           + " >= " + playAtSlot
+                           + " playing");
+          }
 
         nextPlayCycle = (nextPlayCycle + 1) % numCycles;
 
@@ -25549,7 +25572,7 @@ public MelodyPart maybePlay(int slotInPlayback, MelodyPart currentMelodyPart)
             if( firstTime )
               {
                 firstTime = false;
-                currentMelodyPart.pasteOver(improLick, 0);
+                // firstTime pasteOver is handled outside
               }
             else
               {
@@ -25567,23 +25590,27 @@ public MelodyPart maybePlay(int slotInPlayback, MelodyPart currentMelodyPart)
 
 
 /**
- * This creates the first melody at slot 0 when Impro-Visor is to being
+ * This creates the first melody at slot 0 when Impro-Visor is to begin
  * trading.
  * @param currentMelodyPart
  */
 
-public void createInitialMelody(MelodyPart currentMelodyPart)
+public MelodyPart createAndPlayInitialLick()
   {
-    maybeCreateMelody(0, currentMelodyPart);
+    maybeCreateLick(0);
     
     if( improLick != null && improLick.size() > 0 )
       {
         melodyStartsAtSlot = 0;
         playAtSlot = 0;
         firstTime = true;
-        generated = true;
+        //generated = true;
         played = false;
+        
+        //maybePlayLick(playAtSlot, currentMelodyPart);
       }
+    
+    return improLick;
   }
 
 
@@ -25783,27 +25810,13 @@ private void handleAutoImprov(int slotInPlayback)
             MelodyPart currentMelodyPart = getCurrentMelodyPart();
 
             int size = currentMelodyPart.size();
-
-            // Create a lick if it is now time
-
-//            if( autoImprovisation.improviseNow(slotInPlayback, size) )
-//              {
-//                autoImprovisation.createMelody(currentMelodyPart);
-//              }
-
-            // Maybe create a melody, to be played in a future cycle, not this one.
             
-            autoImprovisation.maybeCreateMelody(slotInPlayback, currentMelodyPart);
+            autoImprovisation.maybeCreateLick(slotInPlayback);
             
             // Play the lick previously generated, and paste into the
             // current melody part.
 
-            autoImprovisation.maybePlay(slotInPlayback, currentMelodyPart);
-
-//            if( autoImprovisation.playNow(slotInPlayback, size) )
-//              {
-//                autoImprovisation.playCreatedMelody(currentMelodyPart, true);
-//              }
+            autoImprovisation.maybePlayLick(slotInPlayback);
           }
       }
   } // handleAutoImprov
