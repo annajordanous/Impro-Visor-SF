@@ -21337,7 +21337,7 @@ private void formFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_for
 }//GEN-LAST:event_formFocusLost
 
 private void formMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseEntered
-    requestFocusInWindow();
+    //requestFocusInWindow();
 }//GEN-LAST:event_formMouseEntered
 
 private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
