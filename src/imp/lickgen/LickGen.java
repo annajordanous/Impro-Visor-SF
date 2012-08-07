@@ -1173,6 +1173,8 @@ public static boolean isPolylistStartingWith(String keyword, Object ob)
 
 public static final int ROOT_STORAGE_NUMBER = 6; // number of roots remembered to not repeat
 
+public boolean useSame = true;
+
 public boolean useExpectancyChooser = true;
 
 public Note[] recentRoots = new Note[ROOT_STORAGE_NUMBER]; // this is for keeping track of recently used roots
@@ -1212,6 +1214,7 @@ public Note getBase (Note noteIn) {
     int randNum = rand(0,19);
     Note noteOut = noteIn.copy();
     
+    do {
     if (randNum <= 8) {
         if (noteIn.getPitch()-1 >= minTriadicPitch) {
             noteOut.setPitch(noteIn.getPitch()-1);
@@ -1224,7 +1227,7 @@ public Note getBase (Note noteIn) {
         } else {
             noteOut.setPitch(noteIn.getPitch()-1);
         }        
-    }
+    } } while (!useSame && noteOut.getPitch() == noteIn.getPitch());
     
     return noteOut;    
 }
@@ -2078,6 +2081,7 @@ public boolean fillMelody(MelodyPart lick,
 //                     } else if (noteIn.getPitch() < mMinPitch) {
 //                         noteIn.setPitch(mMinPitch + (12 - ((mMinPitch - noteIn.getPitch()) % 12)));
 //                     }
+                     useSame = true; // change this to never repeat a note in a triadic pattern
                      Note base = getBase(noteIn);
                      int abort = 0; // to avoid really messy improvisation with faulty inputs
                      int lengthInEighths = lengthInSlots / 60;
