@@ -1058,7 +1058,7 @@ public class Notate
 
     replaceWithPhi.setState(false);
     replaceWithDelta.setState(false);
-    
+
     lickgenFrame = new LickgenFrame(this, lickgen, cm);
 
     populateNotateGrammarMenu();
@@ -9327,7 +9327,7 @@ public void playCurrentSelection(boolean playToEndOfChorus, int loopCount, boole
       getCurrentStave().setPhi(phi);
       getCurrentStave().setDelta(delta);
   }
-  
+
   public void reCaptureCurrentStyle()
   {
     score.getChordProg().getSectionInfo().reloadStyles();
@@ -10488,7 +10488,10 @@ public void stopRecording()
                   System.out.println("Error stopping audio capture: \n" + e);
               }
           }
-      }
+      } else
+    {
+        System.out.println("Stopped. Mode = " + mode);
+    }
 
     playBtn.setEnabled(true);
 
@@ -10524,12 +10527,13 @@ private void startRecording()
 
     if (useAudioInputMI.isSelected())
       {
-          if (extractor == null)
+//          if (extractor == null)
           {
               extractor = new PitchExtractor(this,
                                              score,
                                              midiSynth,
                                              audioSettings,
+                                             0,
                                              captureInterval);
           }
           //extractor.openTargetLine();
@@ -18449,7 +18453,7 @@ public void openLeadsheet(boolean openCorpus)
       }
     //markermarkermarker
     updatePhiAndDelta(phi, delta);
-    
+
     setNormalStatus();
     staveRequestFocus();
     }
@@ -18512,7 +18516,7 @@ public boolean setupLeadsheet(File file, boolean openCorpus)
   {
     boolean phi = getCurrentStave().getPhi();
     boolean delta = getCurrentStave().getDelta();
-    
+
     Score newScore = new Score();
 
     //cm.execute(new OpenLeadsheetCommand(file, newScore));
@@ -18536,7 +18540,7 @@ public boolean setupLeadsheet(File file, boolean openCorpus)
       }
     //markermarkermarker
     updatePhiAndDelta(phi, delta);
-    
+
     staveRequestFocus();
     return true;
   }
@@ -18923,7 +18927,7 @@ public ArrayList<String> getMelodyData(int chorusNumber)
                        getNewYlocation());
 
     newNotate.updatePhiAndDelta(this.getPhiStatus(), this.getDeltaStatus());
-    
+
     newNotate.makeVisible(this);
 
     // set the menu and button states
@@ -22539,7 +22543,7 @@ public void setDeltaStatus(boolean delta)
 {
     replaceWithDelta.setState(delta);
 }
-    
+
 public void setRMSThreshold(double value)
 {
     int intValue = (int) (10 * value);
