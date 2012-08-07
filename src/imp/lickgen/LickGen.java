@@ -1226,7 +1226,8 @@ public Note getBase (Note noteIn) {
             noteOut.setPitch(noteIn.getPitch()+1);
         } else {
             noteOut.setPitch(noteIn.getPitch()-1);
-        }        
+        }
+    randNum = rand(0,17); // prevents the infinite loop; in fact, ensures the loop will only repeat once at most
     } } while (!useSame && noteOut.getPitch() == noteIn.getPitch());
     
     return noteOut;    
