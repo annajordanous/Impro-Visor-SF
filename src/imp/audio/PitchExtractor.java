@@ -37,10 +37,10 @@ public class PitchExtractor
     Score score;
     Notate notate;
     MidiSynth midiSynth;
-    private long startTime;
-    private int additionalSamples;
+//    private long startTime;
+//    private int additionalSamples;
     private boolean processingStarted;
-    private double swingVal;
+    //private double swingVal;
     private int captureInterval;
     private int lastSlotNumber = 1;
     private int startingPosition;
@@ -82,6 +82,7 @@ public class PitchExtractor
                           Score score,
                           MidiSynth midiSynth,
                           AudioSettings settings,
+                          int startingIndex,
                           int captureInterval)
     {
         this.notate = notate;
@@ -89,6 +90,8 @@ public class PitchExtractor
         this.midiSynth = midiSynth;
         //swingVal = score.getChordProg().getStyle().getSwing();
         this.captureInterval = captureInterval;
+        startingPosition = startingIndex;
+        melodyPart = notate.getCurrentMelodyPart();
 
         this.settings = settings;
         RMS_THRESHOLD = settings.getRMS_THRESHOLD();
@@ -135,12 +138,12 @@ public class PitchExtractor
         stopCapture = false;
         stopAnalysis = false;
         processingStarted = false;
-        startingPosition = 0;
-        if (analysesCompleted > 0)
-        {
-            clearNotes(0); //erase old data if overwriting
+//        startingPosition = 0;
+//        if (analysesCompleted > 0)
+//        {
+            clearNotes(startingPosition); //erase old data if overwriting
             analysesCompleted = 0;
-        }
+//        }
         openTargetLine();
         slotsFilled = 1;
         lastPitch = 0; //initialize most recent pitch to a rest
@@ -228,12 +231,13 @@ public class PitchExtractor
 
     private void clearNotes(int startingIndex)
     {
-        int start;
-            for (int i = 0; i < analysesCompleted; i++)
-            {
-                start = startingIndex + i * captureInterval;
-                melodyPart.delUnits(start, start + captureInterval);
-            }
+//        int start;
+//            for (int i = 0; i < analysesCompleted; i++)
+//            {
+//                start = startingIndex + i * captureInterval;
+//                melodyPart.delUnits(start, start + captureInterval);
+//            }
+            melodyPart.delUnits(startingIndex, notate.getTradeLength());
     }
 
     public int getCaptureInterval()
@@ -248,7 +252,6 @@ public class PitchExtractor
      */
     private void parseNotes(byte[] streamInput)
     {
-        melodyPart = notate.getCurrentMelodyPart();
         //where the first note is to be inserted in the melody
         //startingPosition = analysesCompleted * captureInterval;
         int index;
@@ -417,9 +420,13 @@ public class PitchExtractor
                                 melodyPart);
                         incrementStartingPosition(duration);
                         System.out.println("Trade length = " + notate.getTradeLength());
-                        if (analysesCompleted == (notate.getTradeLength() / captureInterval) - 1
+
+                        //if this is the last capture or stop btn has been
+                        //pressed, go ahead and set the note.
+                        if (analysesCompleted ==
+                                (notate.getTradeLength() / captureInterval) - 1
                                 || notate.getMode() != Mode.RECORDING)
-                        { //if this is the last capture, go ahead and set the note.
+                        {
                             duration = slotConversion;
                             setNote(pitch,
                                     startingPosition,
@@ -1126,6 +1133,11 @@ public class PitchExtractor
                 } else
                 {
                     System.out.println("Queue is empty.");
+                }
+                if(stopCapture && processingQueue.isEmpty())
+                {
+                    stopAnalysis = true;
+                    System.out.println("AnalyzeThread will now die.");
                 }
             }
             System.out.println("Analysis stopped.");
