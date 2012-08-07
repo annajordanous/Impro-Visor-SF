@@ -2063,9 +2063,16 @@ public boolean fillMelody(MelodyPart lick,
                      MelodyPart melodyPart = notate.getCurrentMelodyPart();
                      int lengthInSlots = Duration.getDuration(inner.second().toString());
                      Note noteIn = prevNote;
-                     if (noteIn == null || noteIn.isRest()) {
+                     if (noteIn == null || noteIn.isRest() || noteIn.getPitch() > mMaxPitch || noteIn.getPitch() < mMinPitch) {
                          noteIn = new Note((mMinPitch + (mMaxPitch - mMinPitch)/2),60);
                      } 
+                     // the following code is to ensure recentRoots and recentTypes from older triadic sections don't get in the way of this section
+                     for (int j = 0; j < ROOT_STORAGE_NUMBER; j++)
+                     {
+                         recentRoots[j] = null;
+                         recentTypes[j] = 0;
+                     }
+                     recentTypes[ROOT_STORAGE_NUMBER] = 0;
 //                     if (noteIn.getPitch() > mMaxPitch) {
 //                         noteIn.setPitch(mMaxPitch - (12 - ((noteIn.getPitch() - mMaxPitch) % 12)));
 //                     } else if (noteIn.getPitch() < mMinPitch) {
