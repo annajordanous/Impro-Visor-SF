@@ -512,7 +512,7 @@ public void mouseMoved(MouseEvent e)
         if( withinNoteArea && notate.getUseNoteCursor())
             chooseAndSetNoteCursor(e);
         else
-            setCursor();   
+            setCursor();
      }
    }
 
@@ -520,7 +520,44 @@ public void mouseMoved(MouseEvent e)
    {
     stave.repaint();
    }
+  
+  if (!notate.getUseNoteCursor())
+  {
+    updateNoteCursorLabel(e);
+  }
  }
+
+private void updateNoteCursorLabel(MouseEvent e)
+{
+    int x = e.getX();
+    int y = e.getY();
+    
+    int pitch;
+    Note note;
+    
+    int curLine = getCurrentLine(y);
+    ChordPart prog = stave.getChordProg();
+    Chord currentChord = prog.getPrevChord(stave.getNextCstrLine(searchForCstrLine(x, y)));
+
+    if (notate.getSmartEntry())
+    {
+        note =  yPosToRectifiedPitch(y - (notate.getParallax() + parallaxBias),
+                            currentChord, curLine, e.isShiftDown());
+        pitch = note.getPitch();
+    }                 
+    else
+    {
+        pitch = yPosToPitch(y - (notate.getParallax() + parallaxBias),
+                            curLine);
+        note = new Note(pitch);
+    }
+    
+    stave.setNoteCursorLabel(noteNameFromMidi(note), x, y);
+    
+    if (currentChord != null && !currentChord.getName().equals(NOCHORD))
+        stave.updateTempLegerLines(pitch, x,  curLine, stave.getGraphics());
+}
+
 
 /**
  * Chooses the appropriate note cursor to use based on the given event.
@@ -528,7 +565,7 @@ public void mouseMoved(MouseEvent e)
  */
 private void chooseAndSetNoteCursor(MouseEvent e)
 {
-    stave.clearNoteCursorLabel();;
+    stave.clearNoteCursorLabel();
     
     int x = e.getX();
     int y = e.getY();
@@ -537,24 +574,29 @@ private void chooseAndSetNoteCursor(MouseEvent e)
     Chord currentChord = prog.getPrevChord(stave.getNextCstrLine(searchForCstrLine(x, y)));
 
     int pitch;
+    Note note;
     
     MelodyPart melody = stave.getMelodyPart();
     
-    //System.out.println(searchForCstrLine(x, y));
     Note oldNote = melody.getNote(searchForCstrLine(x, y));
     
     int curLine = getCurrentLine(y);
-   
+
     // Get the pitch that would be input if the mouse was clicked here. If
     // smart entry is turned on, the pitch will be rectified, so the cursor
     // will be colored based on a different note than it would be otherwise
     if (notate.getSmartEntry())
-        pitch = yPosToRectifiedPitch(y - (notate.getParallax() + parallaxBias),
+    {
+        note =  yPosToRectifiedPitch(y - (notate.getParallax() + parallaxBias),
                             currentChord, curLine, e.isShiftDown());
+        pitch = note.getPitch();
+    }                 
     else
+    {
         pitch = yPosToPitch(y - (notate.getParallax() + parallaxBias),
                             curLine);
-    
+        note = new Note(pitch);
+    }
     // MAGIC VALUE
     if (oldNote != null &&
         Math.abs(oldNote.getPitch() - pitch) <= 2
@@ -578,14 +620,14 @@ private void chooseAndSetNoteCursor(MouseEvent e)
         // Put all the pitches in the same octave so we can compare them
         for(int i = 0; i < chordMIDIs.size(); i++)
         {
-            int note = chordMIDIs.get(i);
-            chordMIDIs.set(i, note%OCTAVE);
+            int chordNote = chordMIDIs.get(i);
+            chordMIDIs.set(i, chordNote%OCTAVE);
         }
 
         for(int i = 0; i < colorMIDIs.size(); i++)
         {
-            int note = colorMIDIs.get(i);
-            colorMIDIs.set(i, note%OCTAVE);
+            int colorNote = colorMIDIs.get(i);
+            colorMIDIs.set(i, colorNote%OCTAVE);
         }
 
         // pitch is invalid
@@ -625,7 +667,7 @@ private void chooseAndSetNoteCursor(MouseEvent e)
         }
         
         stave.updateTempLegerLines(pitch, x,  curLine, stave.getGraphics());      
-        stave.setNoteCursorLabel(noteNameFromMidi(pitch, curLine), x, y);
+        stave.setNoteCursorLabel(noteNameFromMidi(note), x, y);
         setCursor(noteCursor);
     }
 }
@@ -653,12 +695,9 @@ private boolean noteOnLegerLine(int midi, int curLine)
             norm == 16 || norm == 19 || norm == 23 );
 }
 
-private String noteNameFromMidi(int midi, int curLine)
+private String noteNameFromMidi(Note note)
 {
-    int norm = midi%OCTAVE;
-    
-    Note note = new Note(norm);
-    note.setEnharmonic(notate.getScore().getCurrentEnharmonics(curLine));
+    int norm = note.getPitch()%OCTAVE;
 
     if (note.getAccidental().equals(Accidental.FLAT))
         norm++;
@@ -2872,13 +2911,12 @@ private int yPosToAnyPitch(int yPos, int currentLine)
  * @param shiftDown
  * @return 
  */
-private int yPosToRectifiedPitch(int yPos, Chord chord, int staveLine, boolean shiftDown)
+private Note yPosToRectifiedPitch(int yPos, Chord chord, int staveLine, boolean shiftDown)
 {
-    int unRectPitch = yPosToPitch(yPos, staveLine);
 
     // If there is no chord, we can't rectify the pitch
     if( chord == null || chord.getName().equals(NOCHORD) )
-        return unRectPitch;
+        return new Note(yPosToPitch(yPos, staveLine));
 
     ChordPart prog = stave.getChordProg();
 
@@ -2908,7 +2946,7 @@ private int yPosToRectifiedPitch(int yPos, Chord chord, int staveLine, boolean s
     int pitch =
         (lastToneApproach && !apprch) ? 
             lastApproachPitch 
-        : yPosToAnyPitch(yPos - (notate.getParallax() + parallaxBias), staveLine);
+        : yPosToAnyPitch(yPos, staveLine);
 
     // adjust pitch to respect chord!
 
@@ -2964,9 +3002,7 @@ private int yPosToRectifiedPitch(int yPos, Chord chord, int staveLine, boolean s
 
     Note note = Note.getClosestMatch(pitch, m);
 
-    pitch = note.getPitch();
-
-    return pitch;
+    return note;
 }
 
 /**
