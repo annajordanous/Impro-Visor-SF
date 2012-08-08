@@ -1173,9 +1173,9 @@ public static boolean isPolylistStartingWith(String keyword, Object ob)
 
 public static final int ROOT_STORAGE_NUMBER = 6; // number of roots remembered to not repeat
 
-public boolean useSame = true;
+public boolean useSame = true; // whether or not you should be able to begin a triad with 
 
-public boolean useExpectancyChooser = true;
+public boolean useExpectancyChooser = true; // whether or not to use the expectancy algorithm in choosing which octave in which to play inversions
 
 public Note[] recentRoots = new Note[ROOT_STORAGE_NUMBER]; // this is for keeping track of recently used roots
 
@@ -2082,7 +2082,6 @@ public boolean fillMelody(MelodyPart lick,
 //                     } else if (noteIn.getPitch() < mMinPitch) {
 //                         noteIn.setPitch(mMinPitch + (12 - ((mMinPitch - noteIn.getPitch()) % 12)));
 //                     }
-                     useSame = true; // change this to never repeat a note in a triadic pattern
                      Note base = getBase(noteIn);
                      int abort = 0; // to avoid really messy improvisation with faulty inputs
                      int lengthInEighths = lengthInSlots / 60;
@@ -2098,7 +2097,6 @@ public boolean fillMelody(MelodyPart lick,
                      lastInversion = rand(0,4);
 //                    Note[] newTriad = new Note[3];
                      String whatLength = inner.third().toString();
-                     useExpectancyChooser = true; // change this to use or not use expectancyChooser
                      
                      if (whatLength.equals("16") && (lengthInSlots % 30 == 0)) {
                          lengthToUse = lengthInSixteenthTriples;
