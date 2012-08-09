@@ -521,9 +521,13 @@ public void mouseMoved(MouseEvent e)
     stave.repaint();
    }
   
-  if (!notate.getUseNoteCursor())
+  if (!notate.getUseNoteCursor() && withinNoteArea)
   {
     updateNoteCursorLabel(e);
+  }
+  else
+  {
+    stave.clearNoteCursorLabel();
   }
  }
 
@@ -557,7 +561,7 @@ private void updateNoteCursorLabel(MouseEvent e)
     if (currentChord != null && !currentChord.getName().equals(NOCHORD))
         stave.updateTempLegerLines(pitch, x,  curLine, stave.getGraphics());
 }
-
+  
 
 /**
  * Chooses the appropriate note cursor to use based on the given event.
