@@ -1324,7 +1324,7 @@ public class Notate
     adviceFrame.setSize(400, 500);
 
     adviceFrame.setLocationRelativeTo(this);
-
+    
     /*
      * configure the playback manager with the components that it should manage
      */
@@ -13704,7 +13704,8 @@ static private void invalidInteger(String text)
 public Stave getCurrentStave()
   {
     //System.out.println("staveScrollPane = " + staveScrollPane + ", currTabIndex = " + currTabIndex);
-    return staveScrollPane[currTabIndex].getStave();
+    StaveScrollPane pane = staveScrollPane[currTabIndex];
+    return pane != null ? pane.getStave() : null;
   }
 
 /**
@@ -13846,7 +13847,16 @@ public MelodyPart getMelodyPart(Stave stave)
 
 public MelodyPart getCurrentMelodyPart()
   {
-    return getCurrentStave().getMelodyPart();
+    StaveScrollPane pane = staveScrollPane[currTabIndex];
+    if( pane != null )
+      {
+        Stave stave = pane.getStave();
+        if( stave != null )
+          {
+            return stave.getMelodyPart();
+          }
+      }
+    return null;
   }
 
 
@@ -17696,7 +17706,8 @@ int slotDelay;
     MelodyPart improLick = null;
     
     autoImprovisation.reset(currentMelodyPart);
-    
+    playActionListener.setMelodySize();
+
     if( autoImprovisation.improviseAtStart() )
       {
        // This creates and starts the initial improvisation, if Impro-Visor
@@ -25909,7 +25920,7 @@ private int previousSynthSlot = 0;
  * This was formerly embedded inside executable code.
  */
 
-class PlayActionListener implements ActionListener
+public class PlayActionListener implements ActionListener
 {
 private int size;
 
@@ -25919,8 +25930,16 @@ private int chorusSize;
 
 public void setMelodySize()
   {
-    size = getCurrentMelodyPart().size();
     chorusSize = getScore().getLength();
+
+    if( getCurrentMelodyPart() != null )
+      {
+      size = getCurrentMelodyPart().size();
+      }
+    else
+      {
+      size = chorusSize;
+      }
   }
 
 /**
@@ -25972,15 +25991,6 @@ public void actionPerformed(ActionEvent evt)
     
     handleAutoImprov(slotInPlayback);
 
-    // The following variant was originally added to stop playback at the end of a selection
-    // However, it also truncates the drum patterns etc. so that needs to be fixed.
-
-    if( midiSynth.finishedPlaying() )
-      {
-        stopPlaying("midiSynth finished playing");
-        return;
-      }
-
     // Stop playback when a specified slot is reached.
 
     if( slotInPlayback > stopPlaybackAtSlot )
@@ -25991,7 +26001,10 @@ public void actionPerformed(ActionEvent evt)
         return;
       }
 
-    int slotInChorus = slotInPlayback % chorusSize;
+
+    // The following should be FIXed so as to not require a conditional:
+    
+    int slotInChorus = chorusSize == 0 ? slotInPlayback : slotInPlayback % chorusSize;
 
     Chord currentChord = chordProg.getCurrentChord(slotInChorus);
 
