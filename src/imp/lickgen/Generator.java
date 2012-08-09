@@ -310,7 +310,6 @@ public class Generator {
     public static int[] generateSyncopation(int measures, int mySynco, int[] rArray) 
     {
         int[] rhythm = rArray;
-        System.out.println(Arrays.toString(generateString(rhythm, "E")));
         int synco = Tension.getSyncopation(rhythm, measures);
         //If desired syncopation is lower than the current syncopation value,...
         while (synco > mySynco && synco > 2)
@@ -351,7 +350,7 @@ public class Generator {
                 }
             }
         }
-        //Same as above but reversed in order to decrease syncopation
+        //Same as above but reversed in order to increase syncopation
         while (synco < mySynco) {
             int i = (int) (Math.random() * NUM_SLOTS * measures);
             if (i < NUM_SLOTS * measures - 1) 
@@ -426,7 +425,6 @@ public class Generator {
                     weight = 2;
             }
             double random = Math.random();
-            System.out.println("random: " + random);
             if (random <= (weight * HIGHTEST_NOTE_PROBABILITY)) 
             {
                 rhythm[i] = 1;
@@ -435,7 +433,6 @@ public class Generator {
                 rhythm[i] = 0;
             }
         }
-        System.out.println("Rhythm: " + Arrays.toString(generateString(rhythm, "E")));
         return rhythm;
     }
     
