@@ -17677,6 +17677,7 @@ int slotDelay;
 
  public void playScore()
   {
+    // I think slotDelay turns out to be 0 and thus not really used.
     slotDelay =
         (int) (midiSynth.getTotalSlots() * (1e6 * trackerDelay / midiSynth.getTotalMicroseconds()));
     
@@ -17695,10 +17696,10 @@ int slotDelay;
       {
        // This creates and starts the initial improvisation, if Impro-Visor
        // goes first,
-       // but pasting the improLick is deferred to after the main Score
+       // But pasting the improLick is deferred to after the main Score
        // starts, so that the latter does not try to play improLick also.
         
-       improLick = autoImprovisation.createAndPlayInitialLick();
+       improLick = autoImprovisation.createInitialLick(0);
       }
      
      establishCountIn();
@@ -25549,10 +25550,21 @@ int numCycles;
 
 MelodyPart currentMelodyPart;
 
+/**
+ * A count of consecutive failures to generate a lick.
+ * Used for debugging.
+ */
+
+int failCounter;
+
+/**
+ * @param currentMelodyPart 
+ */
 public void reset(MelodyPart currentMelodyPart)
   {
     this.currentMelodyPart = currentMelodyPart;
     size = currentMelodyPart.size();
+    numCycles = size / improInterval;
     generateAtSlot = 0;
     melodyStartsAtSlot = 0;
     melodyStart = 0;
@@ -25560,9 +25572,7 @@ public void reset(MelodyPart currentMelodyPart)
     improCommand = null;
     generated = false;
     played = false;
-    numCycles = size / improInterval;
     nextGenerateCycle = 0;
-    //firstTime = ivFirst == 0;
     setGenerationLeadSlots(480);
     setPlayLeadSlots(30);
   }
@@ -25580,8 +25590,6 @@ public String bar(long slot)
             + " (" + slot + ")";
   }
 
-int failCounter;
-
 /**
  * Create lick at indicated slot, for playback in a subsequent slot.
  * @param slotInPlayback
@@ -25590,49 +25598,75 @@ int failCounter;
 
 public MelodyPart maybeCreateLick(int slotInPlayback)
   {
-    long biasedCyclesElapsed = (totalSlotsElapsed + generationLeadSlots) / improInterval;
-    //System.out.println("biasedCyclesElapsed = " + biasedCyclesElapsed + " nextGenerateCycle = " + nextGenerateCycle);
+    // One cycle means a trade between Impro-Visor and the user.
 
-    // This prevents multiple generations within one cycle.
-    // Trying to hinge on generated does not work.
-    // Neither does hinging on slotInPlayback < generateAtSlot
+    // biased means that we add in generationLeadSlots before computing
+    // the cycle.
+    long biasedCyclesElapsed = (totalSlotsElapsed + generationLeadSlots) / improInterval;
+
+    // The next statement prevents multiple generations within one cycle.
 
     if( biasedCyclesElapsed < nextGenerateCycle )
       {
         return null;
       }
 
-    melodyStart = ivFirst ? improInterval * biasedCyclesElapsed
-                          : improInterval * biasedCyclesElapsed + halfInterval;
+    // Compute the long-term start of next melody, which depends
+    // on whether Impro-Visor goes first or not.
+    // If the branches seem reversed from what you expect, it is because
+    // biasedCyclesElapsed indicates one cycle ahead of the one we are in now.
 
-    playAtSlot = melodyStart - (firstTime ? 0 : playLeadSlots);
+    if( ivFirst )
+      {
+        melodyStart = improInterval * biasedCyclesElapsed;
+      }
+    else
+      {
+        melodyStart = improInterval * biasedCyclesElapsed + halfInterval;
+      }
+
+    // Determine when the melody will be generated, which needs to be ahead
+    // of when it is actually needed.
 
     generateAtSlot = melodyStart - generationLeadSlots;
 
-    boolean result = !generated && totalSlotsElapsed >= generateAtSlot;
+    // The next part is the actual generation, only done if a melody is not 
+    // already generated and it is past the time start generating.
 
-    if( result )
+    if( !generated && totalSlotsElapsed >= generateAtSlot )
       {
+        playAtSlot = melodyStart - (firstTime ? 0 : playLeadSlots);
+
         // We are generating for the NEXT cycle, due to using the bias in triggering
 
-        int tradingCycle = ivFirst ? (1 + (slotInPlayback / improInterval)) % numCycles
-                                   : slotInPlayback / improInterval;
+        if( ivFirst )
+          {
+            int tradingCycle = (1 + (slotInPlayback / improInterval)) % numCycles;
+            melodyStartsAtSlot = improInterval * tradingCycle;
+          }
+        else
+          {
+            int tradingCycle = slotInPlayback / improInterval;
+            melodyStartsAtSlot = improInterval * tradingCycle + halfInterval;
+          }
 
-        melodyStartsAtSlot = ivFirst ? improInterval * tradingCycle
-                                     : improInterval * tradingCycle + halfInterval;
+        // Generate the lick, relative to the chord sequence at melodyStartsAtSlot.
 
         improLick = generate(lickgen, melodyStartsAtSlot, melodyStartsAtSlot + halfInterval - 1);
+
+        // Set the indicator that tells whether generation succeeded.
 
         generated = improLick != null && improLick.size() > 0;
 
         if( generated )
           {
+            // Determine when the next generation will occur.
+
             nextGenerateCycle = biasedCyclesElapsed + 1;
 
             if( traceAutoImprov )
               {
                 System.out.println("\n" + bar(totalSlotsElapsed)
-                        + ": result: " + result
                         + ", generate: " + bar(generateAtSlot)
                         + ", play: " + bar(playAtSlot)
                         + ", paste: " + bar(melodyStartsAtSlot)
@@ -25648,7 +25682,14 @@ public MelodyPart maybeCreateLick(int slotInPlayback)
                     System.out.println(" generation succeeded first time.");
                   }
               }
+
+            // Indicate that the generated lick is not yet played.
+
             played = false;
+
+            // Create a Score in which to place the generated lick.
+            // Then set relevant parameters.
+
             Score improScore = new Score();
             improScore.setTempo(score.getTempo());
 
@@ -25657,8 +25698,9 @@ public MelodyPart maybeCreateLick(int slotInPlayback)
 
             improScore.addPart(improLick);
 
+            //Style style = chordProg.getStyle();
+
             // Create command now, for execution on a subsequent slot
-            Style style = chordProg.getStyle();
 
             setImproCommand(
                     new PlayScoreFastCommand(improScore,
@@ -25674,6 +25716,7 @@ public MelodyPart maybeCreateLick(int slotInPlayback)
           }
         else
           {
+            // Lick generation failed. Try again on the next call.
             ++failCounter;
             //System.out.println(" *** generation failed " + failCounter + " time consecutively.");
           }
@@ -25682,25 +25725,40 @@ public MelodyPart maybeCreateLick(int slotInPlayback)
   }
 
 
-public MelodyPart maybePlayLick(int slotInPlayback)
+/**
+ * Possibly play the lick that was previously generated.
+ * @param slotInPlayback
+ */
+
+public void maybePlayLick(int slotInPlayback)
   {
+    // At present, always paste the lick into the melody part.
+
     boolean paste = true;
 
-    boolean timeOk = totalSlotsElapsed >= playAtSlot;
-    boolean commandOk = improCommand != null;
-    boolean result = !played && generated && commandOk && timeOk;
+    // Determine whether it is time to play
 
-    if( result )
+    boolean timeOk = totalSlotsElapsed >= playAtSlot;
+
+    // There has to already be a command that was constructed
+    // which will play the lick.
+
+    boolean commandOk = improCommand != null;
+
+    if( !played && generated && commandOk && timeOk )
       {
+        // Execute the command that will play the lick.
+
         improCommand.execute();
 
         if( traceAutoImprov )
           {
-          System.out.println(bar(totalSlotsElapsed)
-                           + " >= " + bar(playAtSlot)
-                           + " playing");
+            System.out.println(bar(totalSlotsElapsed)
+                    + " >= " + bar(playAtSlot)
+                    + " playing");
           }
 
+        // Indicate the lick has been played, and none is generated.
         played = true;
         generated = false;
 
@@ -25708,8 +25766,8 @@ public MelodyPart maybePlayLick(int slotInPlayback)
           {
             if( firstTime )
               {
-                firstTime = false;
                 // firstTime pasteOver is handled outside
+                firstTime = false;
               }
             else
               {
@@ -25717,83 +25775,93 @@ public MelodyPart maybePlayLick(int slotInPlayback)
               }
           }
 
-        setImproCommand(null); // Don't play twice
+        // Don't play the lick again.
 
-        return improLick;
+        setImproCommand(null);
       }
-
-    return null;
   }
 
 
 /**
- * This creates the first melody at slot 0 when Impro-Visor is to begin
- * trading.
- * @param currentMelodyPart
+ * This creates the first melody at slot 0 in the case Impro-Visor is to begin
+ * trading. The lick is played within maybePlayLick. Pasting takes place
+ * after the accompaniment is started.
  */
 
-public MelodyPart createAndPlayInitialLick()
+public MelodyPart createInitialLick(int startSlot)
   {
-    maybeCreateLick(0);
+    improLick = null;
+
+    // Leave only when a lick has been generated successfully
     
-    if( improLick != null && improLick.size() > 0 )
+    while( improLick == null || improLick.size() == 0 )
       {
-        melodyStartsAtSlot = 0;
-        melodyStart = 0;
-        playAtSlot = 0;
-        firstTime = true;
-        //generated = true;
-        played = false;
-        
-        //maybePlayLick(playAtSlot, currentMelodyPart);
+        maybeCreateLick(startSlot);
       }
-    
+
+    melodyStartsAtSlot = startSlot;
+    melodyStart = startSlot;
+    playAtSlot = startSlot;
+    firstTime = true;
+    generated = true;
+    played = false;
+
     return improLick;
   }
 
 
-public int getGenerationLeadSlots()
-  {
-    return generationLeadSlots;
-  }
+/**
+ * Set the number of slots by which the generation leads the melody 
+ */
 
 public void setGenerationLeadSlots(int generationLeadSlots)
   {
     this.generationLeadSlots = generationLeadSlots;
   }
 
-public Command getImproCommand()
-  {
-    return improCommand;
-  }
-
-public void setImproCommand(Command improCommand)
-  {
-    this.improCommand = improCommand;
-  }
-
-public int getImproInterval()
-  {
-    return improInterval;
-  }
-
-public void setImproInterval(int improInterval)
-  {
-    this.improInterval = improInterval;
-    halfInterval = improInterval/2;
-  //System.out.println("improInterval = " + improInterval + ", halfInterval = " + halfInterval);
-  }
-
-public int getPlayLeadSlots()
-  {
-    return playLeadSlots;
-  }
+/**
+ * Set the number of slots by which the play start leads the melody 
+ */
 
 public void setPlayLeadSlots(int playLeadSlots)
   {
     this.playLeadSlots = playLeadSlots;
   }
 
+/**
+ * Set the improvisation command to be executed 
+ */
+
+public void setImproCommand(Command improCommand)
+  {
+    this.improCommand = improCommand;
+  }
+
+/**
+ * Set the interval at which trading occurs
+ */
+
+ public void setImproInterval(int improInterval)
+  {
+    this.improInterval = improInterval;
+    halfInterval = improInterval/2;
+  //System.out.println("improInterval = " + improInterval + ", halfInterval = " + halfInterval);
+  }
+
+/**
+ * Get the interval at which trading occurs
+ */
+
+public int getImproInterval()
+   {
+     return improInterval;
+   }
+ 
+ /**
+  * Set whether auto-improvisation is to be used.
+  * @param selected 
+  */
+ 
 public void setSelected(boolean selected)
   {
     this.selected = selected;
@@ -25804,6 +25872,10 @@ public boolean isSelected()
     return selected;
   }
 
+/**
+ * Set whether Impro-Visor goes first.
+ * @param value 
+ */
 public void setIVfirst(boolean value)
   {
     ivFirst = value;
