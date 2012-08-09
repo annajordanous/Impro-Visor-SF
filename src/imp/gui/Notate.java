@@ -17679,8 +17679,19 @@ private void setCurrentStaveType(StaveType t)
  score.noCountIn();
  }
 
+int slotDelay;
+
  public void playScore()
   {
+    slotDelay =
+        (int) (midiSynth.getTotalSlots() * (1e6 * trackerDelay / midiSynth.getTotalMicroseconds()));
+    
+    totalSlots = midiSynth.getTotalSlots();
+
+    //System.out.println("slotDelay = " + slotDelay + ", totalSlots = " + totalSlots);
+    
+    totalSlotsElapsed = 0;
+    previousSynthSlot = 0;
     MelodyPart currentMelodyPart = getCurrentMelodyPart();
     MelodyPart improLick = null;
     
@@ -25388,6 +25399,19 @@ public int getRecordSnapValue()
     return Integer.parseInt(midiRecordSnapSpinner.getValue().toString());
   }
 
+/**
+ * return slot in the form chorus/bar/beat
+ * @param slot
+ * @return 
+ */
+public String bar(long slot)
+  {
+    int size = getCurrentMelodyPart().size();
+    return (slot/size) + "/" + (1 + (slot%size)/480) 
+            + "/" + Math.round(100*((slot%size)%480)/120.)/100. 
+            + " (" + slot + ")";
+  }
+
 
 /**
  * New inner class for autoimprovisation
@@ -25437,7 +25461,7 @@ int generationLeadSlots = 240;
 
 int playLeadSlots = 30;
 
-int generateAtSlot = 0;
+long generateAtSlot = 0;
 
 MelodyPart improLick = null;
 
@@ -25451,99 +25475,148 @@ int leadAllowance = 120;
 
 int melodyStartsAtSlot = 0;
 
-int playAtSlot = 0;
+long playAtSlot = 0;
 
-int nextGenerateCycle = 0;
-
-int nextPlayCycle = 0;
+long nextGenerateCycle = 0;
 
 int numCycles;
 
 MelodyPart currentMelodyPart;
 
+long melodyStart;
+
+int size;
+
 public void reset(MelodyPart currentMelodyPart)
   {
     this.currentMelodyPart = currentMelodyPart;
+    size = currentMelodyPart.size();
     generateAtSlot = 0;
     melodyStartsAtSlot = 0;
+    melodyStart = 0;
     improLick = null;
     improCommand = null;
     generated = false;
     played = false;
-    numCycles = getCurrentMelodyPart().size() / improInterval;
+    numCycles = size / improInterval;
     nextGenerateCycle = 0;
-    nextPlayCycle = 0;
     //firstTime = ivFirst == 0;
+    setGenerationLeadSlots(480);
+    setPlayLeadSlots(30);
   }
 
+/**
+ * return slot in the form chorus/bar/beat
+ * @param slot
+ * @return 
+ */
 
+public String bar(long slot)
+  {
+    return (slot/size) + "/" + (1 + (slot%size)/480) 
+            + "/" + Math.round(100*((slot%size)%480)/120.)/100. 
+            + " (" + slot + ")";
+  }
+
+int failCounter;
+
+/**
+ * Create lick at indicated slot, for playback in a subsequent slot.
+ * @param slotInPlayback
+ * @return 
+ */
 
 public MelodyPart maybeCreateLick(int slotInPlayback)
   {
-  int currentCycle = (slotInPlayback + generationLeadSlots)/improInterval;
+    long biasedCyclesElapsed = (totalSlotsElapsed + generationLeadSlots) / improInterval;
+    //System.out.println("biasedCyclesElapsed = " + biasedCyclesElapsed + " nextGenerateCycle = " + nextGenerateCycle);
 
     // This prevents multiple generations within one cycle.
     // Trying to hinge on generated does not work.
     // Neither does hinging on slotInPlayback < generateAtSlot
-  
-   if( currentCycle != nextGenerateCycle )
-    {
-      return null;
-    }
 
-  melodyStartsAtSlot = ivFirst == 0 ? improInterval*currentCycle
-                                    : improInterval*currentCycle + halfInterval;
-
-  playAtSlot = melodyStartsAtSlot - (firstTime ? 0 : playLeadSlots);
-
-  generateAtSlot = melodyStartsAtSlot - generationLeadSlots;
-  
-  boolean result = !generated && slotInPlayback >= generateAtSlot;
-
-  if( result )
-   {
-    improLick = generate(lickgen, melodyStartsAtSlot, melodyStartsAtSlot + halfInterval - 1);
-
-    generated = improLick != null && improLick.size() > 0;
-
-    if( generated )
+    if( biasedCyclesElapsed < nextGenerateCycle )
       {
-       if( traceAutoImprov )
-         {
-         System.out.println("\nat " + generateAtSlot +
-                            " generate melody to play at " + playAtSlot +
-                            " and sound at " + melodyStartsAtSlot);
-                        //+ ": " + improLick);
-         }
-
-      nextGenerateCycle = (nextGenerateCycle + 1) % numCycles;
-
-      played = false;
-        Score improScore = new Score();
-        improScore.setTempo(score.getTempo());
-
-        improLick.setInstrument(auxInst.getValue());
-        improLick.setSwing(currentMelodyPart.getSwing());
-
-        improScore.addPart(improLick);
-
-        // Create command now, for execution on a subsequent slot
-        Style style = chordProg.getStyle();
-
-        setImproCommand(
-                new PlayScoreFastCommand(improScore,
-                                        0, // startTime
-                                        true, // swing
-                                        midiSynth2,
-                                        null, // play listener
-                                        0, // loopCount,
-                                        score.getTransposition(), // transposition
-                                        false, // use drums
-                                        -1));       // end
+        return null;
       }
-    return improLick;
-    }
-  return null;
+
+    melodyStart = ivFirst == 0 ? improInterval * biasedCyclesElapsed
+                               : improInterval * biasedCyclesElapsed + halfInterval;
+
+    playAtSlot = melodyStart - (firstTime ? 0 : playLeadSlots);
+
+    generateAtSlot = melodyStart - generationLeadSlots;
+
+    boolean result = !generated && totalSlotsElapsed >= generateAtSlot;
+
+    if( result )
+      {
+        // We are generating for the NEXT cycle, due to using the bias in triggering
+
+        int tradingCycle = ivFirst == 0 ? (1 + (slotInPlayback / improInterval)) % numCycles
+                                        : slotInPlayback / improInterval;
+
+        melodyStartsAtSlot = ivFirst == 0 ? improInterval * tradingCycle
+                                          : improInterval * tradingCycle + halfInterval;
+
+        improLick = generate(lickgen, melodyStartsAtSlot, melodyStartsAtSlot + halfInterval - 1);
+
+        generated = improLick != null && improLick.size() > 0;
+
+        if( generated )
+          {
+            nextGenerateCycle = biasedCyclesElapsed + 1;
+
+            if( traceAutoImprov )
+              {
+                System.out.println("\n" + bar(totalSlotsElapsed)
+                        + ": result: " + result
+                        + ", generate: " + bar(generateAtSlot)
+                        + ", play: " + bar(playAtSlot)
+                        + ", paste: " + bar(melodyStartsAtSlot)
+                        + ", hear: " + bar(melodyStart));
+
+                if( failCounter > 0 )
+                  {
+                    System.out.println(" generation succeeded after " + failCounter + " failures.");
+                    failCounter = 0;
+                  }
+                else
+                  {
+                    System.out.println(" generation succeeded first time.");
+                  }
+              }
+            played = false;
+            Score improScore = new Score();
+            improScore.setTempo(score.getTempo());
+
+            improLick.setInstrument(auxInst.getValue());
+            improLick.setSwing(currentMelodyPart.getSwing());
+
+            improScore.addPart(improLick);
+
+            // Create command now, for execution on a subsequent slot
+            Style style = chordProg.getStyle();
+
+            setImproCommand(
+                    new PlayScoreFastCommand(improScore,
+                                             0, // startTime
+                                             true, // swing
+                                             midiSynth2,
+                                             null, // play listener
+                                             0, // loopCount,
+                                             score.getTransposition(), // transposition
+                                             false, // use drums
+                                             -1));       // end
+            return improLick;
+          }
+        else
+          {
+            ++failCounter;
+            //System.out.println(" *** generation failed " + failCounter + " time consecutively.");
+          }
+      }
+    return null;
   }
 
 
@@ -25551,7 +25624,7 @@ public MelodyPart maybePlayLick(int slotInPlayback)
   {
     boolean paste = true;
 
-    boolean timeOk = slotInPlayback >= playAtSlot;
+    boolean timeOk = totalSlotsElapsed >= playAtSlot;
     boolean commandOk = improCommand != null;
     boolean result = !played && generated && commandOk && timeOk;
 
@@ -25561,12 +25634,10 @@ public MelodyPart maybePlayLick(int slotInPlayback)
 
         if( traceAutoImprov )
           {
-          System.out.println("at " + slotInPlayback
-                           + " >= " + playAtSlot
+          System.out.println(bar(totalSlotsElapsed)
+                           + " >= " + bar(playAtSlot)
                            + " playing");
           }
-
-        nextPlayCycle = (nextPlayCycle + 1) % numCycles;
 
         played = true;
         generated = false;
@@ -25606,6 +25677,7 @@ public MelodyPart createAndPlayInitialLick()
     if( improLick != null && improLick.size() > 0 )
       {
         melodyStartsAtSlot = 0;
+        melodyStart = 0;
         playAtSlot = 0;
         firstTime = true;
         //generated = true;
@@ -25694,6 +25766,9 @@ private boolean originalGeneration = true;
 
 private AutoImprovisation autoImprovisation = null;
 
+private long totalSlotsElapsed = 0;
+private int previousSynthSlot = 0;
+
 /*
  * This was formerly embedded inside executable code.
  */
@@ -25721,7 +25796,26 @@ public void actionPerformed(ActionEvent evt)
 
     int slotInPlayback = midiSynth.getSlot() - slotDelay;
     int slot = slotInPlayback;
-    int totalSlots = midiSynth.getTotalSlots();
+
+    int synthSlot = midiSynth.getSlot();
+    
+    if( previousSynthSlot > synthSlot )
+      {
+        // wrap-around has occurred
+        int slotsSkipped = getCurrentMelodyPart().size() - 1 - previousSynthSlot;
+        long newSlotsElapsed = totalSlotsElapsed + synthSlot + slotsSkipped;
+        
+        //System.out.println("\ntotalSlotsElapsed " + bar(totalSlotsElapsed) + " -> " + bar(newSlotsElapsed));
+
+        totalSlotsElapsed = newSlotsElapsed;
+      }
+    else
+      {
+        // accumulate the difference
+        totalSlotsElapsed += (synthSlot - previousSynthSlot);
+      }
+    previousSynthSlot = synthSlot;
+    
 
     handleAudioInput(slotInPlayback);
 
