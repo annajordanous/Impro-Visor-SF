@@ -718,7 +718,11 @@ public class Notate
    */
   PlaybackSliderManager playbackManager;
 
-  ActionListener repainter;
+  /**
+   * Handles triggering from MidiSynth
+   */
+  
+  PlayActionListener playActionListener;
 
   int recurrentIteration = 1;
 
@@ -1028,7 +1032,7 @@ public class Notate
     defBassInst = new InstrumentChooser();
 
 
-    repainter = new PlayActionListener();
+    playActionListener = new PlayActionListener();
 
 
     lickgen = new LickGen(ImproVisor.getGrammarFile().getAbsolutePath(), this); //orig
@@ -1041,6 +1045,7 @@ public class Notate
     sectionTable.setModel(sectionTableModel);
     sectionTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     sectionTable.addMouseListener(new MouseAdapter() {
+        @Override
         public void mouseClicked(MouseEvent e) {
             if(e.getClickCount() >= 1) {
                 JTable target = (JTable)e.getSource();
@@ -1328,7 +1333,7 @@ public class Notate
                                                 playbackTime,
                                                 playbackTotalTime,
                                                 playbackSlider,
-                                                repainter);
+                                                playActionListener);
     }
 
   public Advisor getAdvisor()
@@ -17722,6 +17727,8 @@ int slotDelay;
 
 public void playScoreBody(int startAt)
     {
+      playActionListener.setMelodySize();
+      
       if( playingPaused() )
       {
       Trace.log(2, "Notate: playScore() - unpausing");
@@ -25904,6 +25911,17 @@ private int previousSynthSlot = 0;
 
 class PlayActionListener implements ActionListener
 {
+private int size;
+
+private int chorusSize;
+
+
+
+public void setMelodySize()
+  {
+    size = getCurrentMelodyPart().size();
+    chorusSize = getScore().getLength();
+  }
 
 /**
  * This is called repeatedly as play of the leadsheet progresses.
@@ -25920,19 +25938,17 @@ public void actionPerformed(ActionEvent evt)
           }
       }
 
-    int slotDelay =
-        (int) (midiSynth.getTotalSlots() * (1e6 * trackerDelay / midiSynth.getTotalMicroseconds()));
-
-    int slotInPlayback = midiSynth.getSlot() - slotDelay;
-    int slot = slotInPlayback;
-
-    int synthSlot = midiSynth.getSlot();
+    int slotInPlayback = midiSynth.getSlot();
     
-    if( previousSynthSlot > synthSlot )
+    // Handle updating of long-term slot in playback
+
+    if( previousSynthSlot > slotInPlayback )
       {
         // wrap-around has occurred
-        int slotsSkipped = getCurrentMelodyPart().size() - 1 - previousSynthSlot;
-        long newSlotsElapsed = totalSlotsElapsed + synthSlot + slotsSkipped;
+        
+        int slotsSkipped = size - 1 - previousSynthSlot;
+        
+        long newSlotsElapsed = totalSlotsElapsed + slotInPlayback + slotsSkipped;
         
         //System.out.println("\ntotalSlotsElapsed " + bar(totalSlotsElapsed) + " -> " + bar(newSlotsElapsed));
 
@@ -25940,15 +25956,21 @@ public void actionPerformed(ActionEvent evt)
       }
     else
       {
-        // accumulate the difference
-        totalSlotsElapsed += (synthSlot - previousSynthSlot);
+        // No wrap around: accumulate the difference
+        totalSlotsElapsed += (slotInPlayback - previousSynthSlot);
       }
-    previousSynthSlot = synthSlot;
     
-
+    previousSynthSlot = slotInPlayback;
+    
+    // End of handling update of long-term slot in playback
+    
+    // Handle audio input, if any
+    
     handleAudioInput(slotInPlayback);
 
-    handleAutoImprov(midiSynth.getSlot());
+    // Handle auto improvisation, if any
+    
+    handleAutoImprov(slotInPlayback);
 
     // The following variant was originally added to stop playback at the end of a selection
     // However, it also truncates the drum patterns etc. so that needs to be fixed.
@@ -25969,8 +25991,6 @@ public void actionPerformed(ActionEvent evt)
         return;
       }
 
-    int chorusSize = getScore().getLength();
-
     int slotInChorus = slotInPlayback % chorusSize;
 
     Chord currentChord = chordProg.getCurrentChord(slotInChorus);
@@ -25983,14 +26003,14 @@ public void actionPerformed(ActionEvent evt)
 
     if( keyboard != null && keyboard.isVisible() && keyboard.isPlaying() )
       {
-        keyboardPlayback(currentChord, tab, slotInChorus, slot, totalSlots);
+        keyboardPlayback(currentChord, tab, slotInChorus, slotInPlayback, totalSlots);
       }
 
     handlePlayline(slotInChorus);
 
     if( stepKeyboard != null )
       {
-        stepKeyboard.resetAdvice(slot);
+        stepKeyboard.resetAdvice(slotInPlayback);
       }
   } // actionPerformed
 
