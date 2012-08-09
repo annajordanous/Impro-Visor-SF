@@ -102,6 +102,8 @@ public class ChordExtract implements Constants{
         System.out.println("Chord resolution: " + chordResolution);
         * 
         */
+
+        
     }
     
     /**
@@ -501,6 +503,8 @@ public class ChordExtract implements Constants{
     private ChordPart getChordPart(int[] bass, boolean[][] comp, int size)
     {
         ChordPart chordpart = new ChordPart(size);
+
+        boolean[] prevComp = null;
         for(int i = 0; i < size; i = i + chordResolution)
         {
             int chordCount = i/slotResolution;
@@ -508,10 +512,16 @@ public class ChordExtract implements Constants{
             if(bass[chordCount]!=-1)
             {
                 boolean[] bitChord = comp[chordCount];
+                if(Arrays.equals(prevComp, bitChord))
+                {
+                }
+                else{
+                prevComp = comp[chordCount];
                 bitChord[root] = true;
                 boolean shiftedBitChord[] = shiftBitsLeft(bitChord, root);
                 Chord chord = matchChords(shiftedBitChord, root);
                 chordpart.setChord(i, chord);
+                }
             }
         }
         return chordpart;

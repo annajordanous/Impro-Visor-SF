@@ -136,8 +136,8 @@ public ExtractionEditor(java.awt.Frame parent,
     
     useLeadsheet.setSelected(MIDIBeast.useLeadsheet);
     
-    int bassChannel = MIDIBeast.getBassChannel()+1;
-    int chordChannel = MIDIBeast.getChordChannel()+1;
+    int bassChannel = MIDIBeast.getBassChannel();
+    int chordChannel = MIDIBeast.getChordChannel();
     for (int j = 0; j < channelInfo.length; j++)
     {
         if( channelInfo[j].getChannelNum() == bassChannel )
@@ -2267,13 +2267,13 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt)//GEN-FIRST:
 
     private void chordChannelNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chordChannelNameActionPerformed
         ChannelInfo chordInfo = (ChannelInfo) chordChannelName.getSelectedItem();
-        MIDIBeast.changeBassChannel(chordInfo.getChannelNum()-1);
+        MIDIBeast.setChordChannel(chordInfo.getChannelNum()-1);
         chordChannelName.setSelectedIndex(chordChannelName.getSelectedIndex());
     }//GEN-LAST:event_chordChannelNameActionPerformed
 
     private void bassChannelNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bassChannelNameActionPerformed
         ChannelInfo bassInfo = (ChannelInfo) bassChannelName.getSelectedItem();
-        MIDIBeast.changeBassChannel(bassInfo.getChannelNum()-1);
+        MIDIBeast.setBassChannel(bassInfo.getChannelNum()-1);
         bassChannelName.setSelectedIndex(bassChannelName.getSelectedIndex());
     }//GEN-LAST:event_bassChannelNameActionPerformed
 

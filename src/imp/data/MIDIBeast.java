@@ -21,6 +21,7 @@
 package imp.data;
 
 import imp.Constants;
+import imp.data.MidiChannelInfo.ChannelInfo;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -350,10 +351,13 @@ public static void initialize(String midiFile, String chordFile)
       jm.music.data.Part[] temp = score.getPartArray();
 
       //use chord extraction, check if leadsheet is available
-      if (chordFileName.isEmpty()) {
-       ChordExtract chordextract = new ChordExtract(midiFileName, MIDIBeast.chordResolution,
-       MIDIBeast.getBassChannel(), MIDIBeast.getChordChannel());
-       extractedChordPart = chordextract.extract();
+      if (chordFileName.isEmpty()||!useLeadsheet) {
+          MidiChannelInfo midiChannelInfo = new MidiChannelInfo(midiFileName);
+          bassChannel = midiChannelInfo.getBassChannel() + 1;
+          chordChannel = midiChannelInfo.getChordChannel() + 1;
+          ChordExtract chordextract = new ChordExtract(midiFileName, MIDIBeast.chordResolution,
+                  bassChannel, chordChannel);
+          extractedChordPart = chordextract.extract();
       }
     //end
     
@@ -393,19 +397,19 @@ public static void invoke()
         //add error stuff if chord part or bass part can't be found
 
         //use midi import to extract melody parts from midi file
-        if (chordFileName.isEmpty()) {
+        if (chordFileName.isEmpty()||!MIDIBeast.useLeadsheet) {
             ChordExtract chordextract = new ChordExtract(midiFileName, chordResolution,
                     bassChannel, chordChannel);
             extractedChordPart = chordextract.extract();
         }
     }
 
-public static void changeChordChannel(int num)
+public static void setChordChannel(int num)
 {
     chordChannel = num;
 }
 
-public static void changeBassChannel(int num)
+public static void setBassChannel(int num)
 {
     bassChannel = num;
 }
