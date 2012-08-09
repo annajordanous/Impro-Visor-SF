@@ -27,15 +27,14 @@ import imp.Constants.StaveType;
 import imp.Directories;
 import imp.ImproVisor;
 import imp.RecentFiles;
-import imp.audio.CaptureTimerTask;
 import imp.audio.AudioSettings;
+import imp.audio.CaptureTimerTask;
 import imp.audio.PitchExtractor;
 import imp.cluster.CreateGrammar;
 import imp.com.*;
 import imp.data.*;
 import imp.data.musicXML.ChordDescription;
 import imp.lickgen.LickGen;
-import imp.util.NonExistentParameterException;
 import imp.roadmap.RoadMapFrame;
 import imp.util.*;
 import java.awt.*;
@@ -169,8 +168,6 @@ public class Notate
   private static int aboutDialogHeight = 750;
 
   private static int million = 1000000;
-
-  private int loopsRemaining;
 
   /**
    * Tell whether advice is initially open or not.
@@ -9751,121 +9748,118 @@ private void setStepInputBtn(boolean selected)
     }//GEN-LAST:event_playVoicingButtonActionPerformed
 
 public void playCurrentVoicing()
-{
+  {
+    String v = voicingEntryTF.getText();
 
-      String v = voicingEntryTF.getText();
+    String e = extEntryTF.getText();
 
-      String e = extEntryTF.getText();
-
-      if( v.equals("") )
-        {
-        //ErrorLog.log(ErrorLog.WARNING, "No voicing entered.");
+    if( v.equals("") )
+      {
+        //ErrorLog.log(ErrorLog.WARNING, "No currentVoicing entered.");
 
         return;
-        }
+      }
 
-      StringReader voicingReader = new StringReader(v);
+    StringReader voicingReader = new StringReader(v);
 
-      Tokenizer in = new Tokenizer(voicingReader);
+    Tokenizer in = new Tokenizer(voicingReader);
 
-      Object o = in.nextSexp();
+    Object o = in.nextSexp();
 
-      if( o instanceof Polylist )
-        {
+    if( o instanceof Polylist )
+      {
+        Polylist currentVoicing = (Polylist) o;
 
-        Polylist voicing = (Polylist)o;
-
-        if( voicing.length() == 0 )
+        if( currentVoicing.length() == 0 )
           {
-          //ErrorLog.log(ErrorLog.WARNING, "Empty voicing entered.");
+            //ErrorLog.log(ErrorLog.WARNING, "Empty currentVoicing entered.");
 
-          return;
+            return;
           }
 
-
-        Polylist invalid = Key.invalidNotes(voicing);
+        Polylist invalid = Key.invalidNotes(currentVoicing);
 
         if( invalid.nonEmpty() )
           {
-          ErrorLog.log(ErrorLog.WARNING, "Invalid notes in voicing: " + invalid);
+            ErrorLog.log(ErrorLog.WARNING, "Invalid notes in voicing: " + invalid);
 
-          return;
+            return;
           }
 
-        voicing = NoteSymbol.makeNoteSymbolList(voicing);
+        currentVoicing = NoteSymbol.makeNoteSymbolList(currentVoicing);
 
         Polylist extension;
 
         if( e.equals("") )
           {
-          extension = Polylist.nil;
+            extension = Polylist.nil;
           }
         else
           {
-          StringReader extReader = new StringReader(e);
+            StringReader extReader = new StringReader(e);
 
-          in = new Tokenizer(extReader);
+            in = new Tokenizer(extReader);
 
-          o = in.nextSexp();
+            o = in.nextSexp();
 
-          if( o instanceof Polylist )
-            {
-            extension = (Polylist)o;
-
-            invalid = Key.invalidNotes(extension);
-
-            if( invalid.nonEmpty() )
+            if( o instanceof Polylist )
               {
+                extension = (Polylist) o;
 
-              ErrorLog.log(ErrorLog.WARNING,
-                      "Invalid notes in extension: " + invalid);
-              return;
-             }
+                invalid = Key.invalidNotes(extension);
 
-            extension = NoteSymbol.makeNoteSymbolList(extension);
-            }
-          else
-            {
-            ErrorLog.log(ErrorLog.WARNING, "Malformed extension: " + e);
+                if( invalid.nonEmpty() )
+                  {
 
-            return;
-            }
+                    ErrorLog.log(ErrorLog.WARNING,
+                                 "Invalid notes in extension: " + invalid);
+                    return;
+                  }
+
+                extension = NoteSymbol.makeNoteSymbolList(extension);
+              }
+            else
+              {
+                ErrorLog.log(ErrorLog.WARNING, "Malformed extension: " + e);
+
+                return;
+              }
           }
-
 
         int row = voicingTable.getSelectedRow();
 
         if( row == -1 )
           {
-          ErrorLog.log(ErrorLog.WARNING, "Chord must be selected.");
-          return;
+            ErrorLog.log(ErrorLog.WARNING, "Chord must be selected.");
+            return;
           }
 
         ChordSymbol c =
-                ChordSymbol.makeChordSymbol(voicingTableModel.getValueAt(row, VoicingTableChordColumn).toString());
+            ChordSymbol.makeChordSymbol(voicingTableModel.getValueAt(row, VoicingTableChordColumn).toString());
 
         String s = voicingTableModel.getValueAt(row, VoicingTableChordColumn).toString();
 
-        c.setVoicing(voicing);
+        c.setVoicing(currentVoicing);
 
         c.setExtension(extension);
 
         playVoicing(c);
-        }
-      else
-        {
+      }
+    else
+      {
         ErrorLog.log(ErrorLog.WARNING, "Malformed voicing: " + v);
-        }
-}
+      }
+  }
 
 
 /**
- * Determine whether the chord name in the indicated row of the voicing table
+ * Determine whether the chord name in the indicated row of the currentVoicing table
  * is a synonym for another name (e.g. by specifiying (uses ...)). If so,
  * return that name. Otherwise return null.
  @param row
  @return
  */
+
 private String getChordRedirectName(int row)
   {
   if( row == -1 )
@@ -19342,7 +19336,7 @@ private void newVoicingCancelButtonActionPerformed(java.awt.event.ActionEvent ev
 
 private void newVoicingSaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newVoicingSaveButtonActionPerformed
 
-    // To save a new voicing to the vocabulary
+    // To save a new currentVoicing to the vocabulary
 
     String name = newVoicingNameTF.getText();
     String chord = newVoicingChordTF.getText();
@@ -19355,7 +19349,7 @@ private void newVoicingSaveButtonActionPerformed(java.awt.event.ActionEvent evt)
         return;
 
     }
-    // making the voicing and extensions Polylists and checking possible errors
+    // making the currentVoicing and extensions Polylists and checking possible errors
     StringReader voicingReader = new StringReader(voice);
     Tokenizer in = new Tokenizer(voicingReader);
     Object o = in.nextSexp();
@@ -19364,7 +19358,7 @@ private void newVoicingSaveButtonActionPerformed(java.awt.event.ActionEvent evt)
     {
         if( v.length() == 0 )
         {
-            //ErrorLog.log(ErrorLog.WARNING, "Empty voicing entered.");
+            //ErrorLog.log(ErrorLog.WARNING, "Empty currentVoicing entered.");
             return;
         }
     }
@@ -19372,7 +19366,7 @@ private void newVoicingSaveButtonActionPerformed(java.awt.event.ActionEvent evt)
     Polylist invalid = Key.invalidNotes(v);
     if( invalid.nonEmpty() )
     {
-        //ErrorLog.log(ErrorLog.WARNING, "Invalid notes in voicing: " + invalid);
+        //ErrorLog.log(ErrorLog.WARNING, "Invalid notes in currentVoicing: " + invalid);
         return;
     }
     Polylist extension;
@@ -19551,7 +19545,7 @@ private void deleteVoicingOKButtonActionPerformed(java.awt.event.ActionEvent evt
 
     String chordName = voicingTable.getValueAt(rowIndex, VoicingTableChordColumn).toString();
 
-    // Find out the index of this voicing for the chord, counting from 0 for the first.
+    // Find out the index of this currentVoicing for the chord, counting from 0 for the first.
 
     int position = 0;
 
@@ -19566,7 +19560,7 @@ private void deleteVoicingOKButtonActionPerformed(java.awt.event.ActionEvent evt
 
     if( position == 0 )
     {
-      return; // can't remove generated voicing; not in the form
+      return; // can't remove generated currentVoicing; not in the form
     }
 
     getAdvisor().removeNthVoicing(chordName, position-1);
@@ -19596,7 +19590,7 @@ public void pauseToKeyboard()
 }
 
 /**
- * Gets the text from the voicing entry text field.
+ * Gets the text from the currentVoicing entry text field.
  * @return a string
  */
 public String voicingEntryTFText()
@@ -19615,7 +19609,7 @@ public void setExtEntryTFText(String text)
 }
 
 /**
- * Adds text to the voicing entry text field
+ * Adds text to the currentVoicing entry text field
  * @param text
  */
 public void addVoicingEntryTFText(String text)
@@ -19644,7 +19638,7 @@ public void addExtEntryTFText(String text)
 }
 
 /**
- * clears any text in the voicing and extension entry text fields.
+ * clears any text in the currentVoicing and extension entry text fields.
  */
 public void clearVoicingEntryTF()
 {
@@ -19705,7 +19699,7 @@ public void populateChordSelMenu()
             chordToInsert = evt.getActionCommand();
                //System.out.println("You selected " + chordToInsert);
 
-            // Insert the voicing into the leadsheet
+            // Insert the currentVoicing into the leadsheet
             Style currentStyle =
                 ImproVisor.getCurrentWindow().score.getChordProg().getStyle();
             String v = voicingEntryTF.getText();
@@ -19867,7 +19861,7 @@ public void keyboardPlayback(Chord currentChord, int tab, int slotInPlayback, in
             setFutureChordDisplay(future);
         }
 
-        // If the current chord voicing and keyboard voicing are different
+        // If the current chord currentVoicing and keyboard currentVoicing are different
         // (if the chord has changed)
         else if (!keyboard.voicingsAreEqual(v1,v2) || !currentChordName.equals(presentChord))
         {
@@ -19930,7 +19924,7 @@ public void keyboardPlayback(Chord currentChord, int tab, int slotInPlayback, in
 }
 
 /**
- * Finds the row number of the first occurrence of currentChord in the voicing
+ * Finds the row number of the first occurrence of currentChord in the currentVoicing
  * table
  *
  * @param currentChord
@@ -19959,10 +19953,10 @@ public int findChordinTable(String currentChord)
 }
 
 /**
- * Finds the row number of a certain voicing in the voicing table.
+ * Finds the row number of a certain currentVoicing in the currentVoicing table.
  *
  * @param chordRow
- * @param voicing
+ * @param currentVoicing
  * @param currentChord
  * @return
  */
@@ -20031,7 +20025,7 @@ public int findVoicinginTable(int chordRow, String voicing, String currentChord)
 
 
 /**
- * Selects a given row number in the voicing table.
+ * Selects a given row number in the currentVoicing table.
  *
  * @param v
  * @param currentChord
@@ -20176,9 +20170,9 @@ public void clearStepKeyboard()
 }
 
 /**
- * Turns the current voicing into a polylist.
+ * Turns the current currentVoicing into a polylist.
  *
- * @return polylist representing the current voicing and extension
+ * @return polylist representing the current currentVoicing and extension
  */
 public Polylist voicingToList(String v)
 {
@@ -20266,7 +20260,7 @@ public void addVoicingToSeq(String v)
 }
 
 /**
- * Adds a voicing to the voicing render list.
+ * Adds a currentVoicing to the currentVoicing render list.
  */
 public void addToVoicingSequence()
 {
@@ -20280,7 +20274,7 @@ private void voicingSequenceAddButtonActionPerformed(java.awt.event.ActionEvent 
 }//GEN-LAST:event_voicingSequenceAddButtonActionPerformed
 
 /**
- * Removes the selected voicing from the voicing render list.
+ * Removes the selected currentVoicing from the currentVoicing render list.
  *
  * @param evt
  */
@@ -20309,7 +20303,7 @@ private void voicingSequenceRemoveButtonActionPerformed(java.awt.event.ActionEve
 }//GEN-LAST:event_voicingSequenceRemoveButtonActionPerformed
 
 /**
- * Swaps the selected voicing with the one above it in the voicing render.
+ * Swaps the selected currentVoicing with the one above it in the currentVoicing render.
  *
  * @param evt
  */
@@ -20338,7 +20332,7 @@ private void voicingSequenceUpArrowMouseClicked(java.awt.event.MouseEvent evt) {
 }
 
 /**
- * Swaps the selected voicing with the one below it in the voicing render.
+ * Swaps the selected currentVoicing with the one below it in the currentVoicing render.
  *
  * @param evt
  */
@@ -20381,7 +20375,7 @@ public void setChordRootTFText(String root)
 }
 
 /**
- * Uses the range text fields on the voicing window to find the MIDI value
+ * Uses the range text fields on the currentVoicing window to find the MIDI value
  * of the lowest note in the range.
  *
  * @return an integer, MIDI value
@@ -20395,7 +20389,7 @@ public int getLowerBound()
 }
 
 /**
- * Uses the range text fields on the voicing window to find the MIDI value
+ * Uses the range text fields on the currentVoicing window to find the MIDI value
  * of the highest note in the range.
  *
  * @return an integer, MIDI value
@@ -20453,7 +20447,7 @@ private void voicingSequencePlayButtonActionPerformed(java.awt.event.ActionEvent
 }
 
 /**
- * Displays the current voicing if the selection index in the render list changes.
+ * Displays the current currentVoicing if the selection index in the render list changes.
  */
 private void displayVoicingfromList()
 {
@@ -20500,8 +20494,8 @@ private void displayVoicingfromList()
 }
 
 /**
- * If the selection index of the voicing render list changes, the new voicing
- * is displayed in the voicing entry text field and on the keyboard.
+ * If the selection index of the currentVoicing render list changes, the new currentVoicing
+ * is displayed in the currentVoicing entry text field and on the keyboard.
  *
  * @param evt
  */
@@ -25414,23 +25408,36 @@ public String bar(long slot)
 
 
 /**
- * New inner class for autoimprovisation
+ * AutoImprovisation is an inner class used to control trading.
  */
 
 class AutoImprovisation
 {
-boolean selected = true;  // current default
-
-boolean traceAutoImprov = false;
 /**
- * ivFirst is 0 if Impro-Visor is to go first, 1 if not
+ * Whether auto improvisation is to be done
  */
 
-int ivFirst = 0;
+boolean selected = false;
+
+/**
+ * Tracing for auto improvisation
+ */
+
+boolean traceAutoImprov = false;
+
+/**
+ * whether Impro-Visor is to go first in trading, or not
+ */
+
+boolean ivFirst = true;
+
+/**
+ * The command that is executed to generate an improvised lick
+ */
 
 Command improCommand = null;
 
-/**
+/*
  * Parameters for trading
  */
 
@@ -25440,11 +25447,16 @@ Command improCommand = null;
  */
 
 int improInterval = 3840;
+
+/**
+ * One half of improInterval
+ */
+
 int halfInterval = 1920;
 
 
 /**
- * The number of slots by which generation will lead use
+ * The number of slots by which generation will lead use.
  *
  * Ultimately this should be made to depend on tempo, etc.
  */
@@ -25455,37 +25467,87 @@ int generationLeadSlots = 240;
 /**
  * The number of slots by which the midiSynth should be
  * started before playing is required
- *
- * Ultimately this should be made to depend on tempo, etc.
  */
 
 int playLeadSlots = 30;
 
-long generateAtSlot = 0;
+
+/**
+ * The lick that is generated, played, and inserted into the current
+ * melody part
+ */
 
 MelodyPart improLick = null;
 
+
+/**
+ * The size of MelodyPart in slots
+ */
+int size;
+
+
+/**
+ * An indication of whether this generation is the very first, with 
+ * Impro-Visor starting
+ */
+
 boolean firstTime = false;
 
+/**
+ * Whether there is a lick generated, but not played
+ */
 boolean played = false;
+
+/**
+ * Whether there is a lick generated
+ */
 
 boolean generated = false;
 
-int leadAllowance = 120;
 
-int melodyStartsAtSlot = 0;
+/**
+ * The long-term slot at which the next lick will be generated
+ */
+
+long generateAtSlot = 0;
+
+/**
+ * The long-term slot at which the next generation is to be played
+ */
 
 long playAtSlot = 0;
 
+/**
+ * The next long-term cycle at which generation will occur
+ */
+
 long nextGenerateCycle = 0;
 
-int numCycles;
 
-MelodyPart currentMelodyPart;
+/** The long-term view of when the next improvised melody will start
+ * 
+ */
 
 long melodyStart;
 
-int size;
+
+/**
+ * The slot within the current chorus at which the improvised melody starts
+ */
+
+int melodyStartsAtSlot = 0;
+
+/**
+ * The number of cycles of trading within a chorus
+ */
+
+int numCycles;
+
+/**
+ * The melody part into which the improvised lick will be inserted
+ */
+
+MelodyPart currentMelodyPart;
 
 public void reset(MelodyPart currentMelodyPart)
   {
@@ -25540,8 +25602,8 @@ public MelodyPart maybeCreateLick(int slotInPlayback)
         return null;
       }
 
-    melodyStart = ivFirst == 0 ? improInterval * biasedCyclesElapsed
-                               : improInterval * biasedCyclesElapsed + halfInterval;
+    melodyStart = ivFirst ? improInterval * biasedCyclesElapsed
+                          : improInterval * biasedCyclesElapsed + halfInterval;
 
     playAtSlot = melodyStart - (firstTime ? 0 : playLeadSlots);
 
@@ -25553,11 +25615,11 @@ public MelodyPart maybeCreateLick(int slotInPlayback)
       {
         // We are generating for the NEXT cycle, due to using the bias in triggering
 
-        int tradingCycle = ivFirst == 0 ? (1 + (slotInPlayback / improInterval)) % numCycles
-                                        : slotInPlayback / improInterval;
+        int tradingCycle = ivFirst ? (1 + (slotInPlayback / improInterval)) % numCycles
+                                   : slotInPlayback / improInterval;
 
-        melodyStartsAtSlot = ivFirst == 0 ? improInterval * tradingCycle
-                                          : improInterval * tradingCycle + halfInterval;
+        melodyStartsAtSlot = ivFirst ? improInterval * tradingCycle
+                                     : improInterval * tradingCycle + halfInterval;
 
         improLick = generate(lickgen, melodyStartsAtSlot, melodyStartsAtSlot + halfInterval - 1);
 
@@ -25744,17 +25806,12 @@ public boolean isSelected()
 
 public void setIVfirst(boolean value)
   {
-    ivFirst = value? 0 : 1;
-  }
-
-public int getIVFirst()
-  {
-    return ivFirst;
+    ivFirst = value;
   }
 
 public boolean improviseAtStart()
   {
-    return selected && ivFirst == 0;
+    return selected && ivFirst;
   }
 
  }
