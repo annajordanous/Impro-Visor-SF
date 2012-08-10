@@ -104,7 +104,8 @@ public class Notate
   MidiImport midiImport;
 
   PitchExtractor extractor;
-  private final int captureInterval = 480;//# of slots per audio capture interval
+  //# of slots per audio capture interval
+  private int captureInterval;
   java.util.Timer captureTimer;
   CaptureTimerTask task;
 
@@ -7409,7 +7410,7 @@ public class Notate
         playToolBar.add(stopBtn);
 
         recordBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/record.gif"))); // NOI18N
-        recordBtn.setToolTipText("Record from MIDI source. Caution: This is UNDER CONSTRUCTION.\nYour patience is appreciated.");
+        recordBtn.setToolTipText("Record from audio or MIDI source. Caution: This is UNDER CONSTRUCTION. Your patience is appreciated.");
         recordBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         recordBtn.setMaximumSize(new java.awt.Dimension(30, 30));
         recordBtn.setMinimumSize(new java.awt.Dimension(30, 30));
@@ -7945,12 +7946,12 @@ public class Notate
 
         openRecentLeadsheetMenu.setText("Open Recent Leadsheet (same window)");
         openRecentLeadsheetMenu.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 populateRecentFileMenu(evt);
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
-            }
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -7966,12 +7967,12 @@ public class Notate
 
         openRecentLeadsheetNewWindowMenu.setText("Open Recent Leadsheet (new window)");
         openRecentLeadsheetNewWindowMenu.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 populateRecentLeadsheetNewWindow(evt);
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
-            }
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -8957,12 +8958,12 @@ public class Notate
         windowMenu.setMnemonic('W');
         windowMenu.setText("Window");
         windowMenu.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 windowMenuMenuSelected(evt);
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
-            }
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -8995,12 +8996,12 @@ public class Notate
             }
         });
         notateGrammarMenu.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 notateGrammarMenuMenuSelected(evt);
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
-            }
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
         notateGrammarMenu.addActionListener(new java.awt.event.ActionListener() {
@@ -10457,6 +10458,20 @@ public Mode getMode()
    return this.mode;
   }
 
+public void stopAudioCapture()
+    {
+        try
+        {
+            extractor.stopCapture();
+            extractor.closeTargetLine();
+            captureTimer.cancel();
+            task.cancel();
+        } catch (Exception e)
+        {
+            System.out.println("Error stopping audio capture: \n" + e);
+        }
+    }
+
 
 /**
  *
@@ -10466,26 +10481,22 @@ public Mode getMode()
 
 public void stopRecording()
   {
-    if( mode == Mode.RECORDING )
-      {
-        setMode(previousMode);
-          if (useAudioInputMI.isSelected())
-          {
-              try
-              {
-                  extractor.stopCapture();
-                  extractor.closeTargetLine();
-                  captureTimer.cancel();
-                  task.cancel();
-              } catch (Exception e)
-              {
-                  System.out.println("Error stopping audio capture: \n" + e);
-              }
-          }
-      } else
-    {
-        System.out.println("Stopped. Mode = " + mode);
-    }
+//    if( mode == Mode.RECORDING )
+//      {
+//        setMode(previousMode);
+//          if (useAudioInputMI.isSelected())
+//          {
+//              stopAudioCapture();
+//          }
+//      } else
+//    {
+//        System.out.println("Stopped. Mode = " + mode);
+//    }
+
+    if (useAudioInputMI.isSelected())
+        {
+            stopAudioCapture();
+        }
 
     playBtn.setEnabled(true);
 
@@ -10508,6 +10519,32 @@ public void stopRecording()
     stopPlaying("stop Recording");
   }
 
+private void startAudioCapture()
+    {
+        //          if (extractor == null)
+//          {
+        captureInterval = score.getMetre()[0] * BEAT;
+        int startingPosition = (int) (Math.round(midiSynth.getSlot()
+                / getTradeLength())) * getTradeLength();
+        System.out.println("Starting position " + startingPosition
+                + " passed to PitchExtractor.");
+        extractor = new PitchExtractor(this,
+                                        score,
+                                        midiSynth,
+                                        audioSettings,
+                                        startingPosition,
+                                        captureInterval,
+                                        true);
+//          }
+//          extractor.openTargetLine();
+        extractor.captureAudio();
+//    extractor.setThisMeasure(true);
+//    synchronized (extractor.captureStart)
+//    {
+//        System.out.println("Audio capture initialized.");
+//        extractor.captureStart.notify();
+    }
+
 
 /**
  *
@@ -10521,22 +10558,7 @@ private void startRecording()
 
     if (useAudioInputMI.isSelected())
       {
-//          if (extractor == null)
-          {
-              extractor = new PitchExtractor(this,
-                                             score,
-                                             midiSynth,
-                                             audioSettings,
-                                             0,
-                                             captureInterval);
-          }
-          //extractor.openTargetLine();
-          extractor.captureAudio();
-//    extractor.setThisMeasure(true);
-//    synchronized (extractor.captureStart)
-//    {
-//        System.out.println("Audio capture initialized.");
-//        extractor.captureStart.notify();
+          startAudioCapture();
       }
 
     else if( midiManager.getInDevice() == null )
@@ -17679,31 +17701,31 @@ int slotDelay;
   {
     slotDelay =
         (int) (midiSynth.getTotalSlots() * (1e6 * trackerDelay / midiSynth.getTotalMicroseconds()));
-    
+
     totalSlots = midiSynth.getTotalSlots();
 
     //System.out.println("slotDelay = " + slotDelay + ", totalSlots = " + totalSlots);
-    
+
     totalSlotsElapsed = 0;
     previousSynthSlot = 0;
     MelodyPart currentMelodyPart = getCurrentMelodyPart();
     MelodyPart improLick = null;
-    
+
     autoImprovisation.reset(currentMelodyPart);
-    
+
     if( autoImprovisation.improviseAtStart() )
       {
        // This creates and starts the initial improvisation, if Impro-Visor
        // goes first,
        // but pasting the improLick is deferred to after the main Score
        // starts, so that the latter does not try to play improLick also.
-        
+
        improLick = autoImprovisation.createAndPlayInitialLick();
       }
-     
+
      establishCountIn();
      playScoreBody(0);
-     
+
      if( improLick != null )
        {
        // Now paste, after the main Score is started.
@@ -25396,13 +25418,13 @@ public int getRecordSnapValue()
 /**
  * return slot in the form chorus/bar/beat
  * @param slot
- * @return 
+ * @return
  */
 public String bar(long slot)
   {
     int size = getCurrentMelodyPart().size();
-    return (slot/size) + "/" + (1 + (slot%size)/480) 
-            + "/" + Math.round(100*((slot%size)%480)/120.)/100. 
+    return (slot/size) + "/" + (1 + (slot%size)/480)
+            + "/" + Math.round(100*((slot%size)%480)/120.)/100.
             + " (" + slot + ")";
   }
 
@@ -25487,7 +25509,7 @@ int size;
 
 
 /**
- * An indication of whether this generation is the very first, with 
+ * An indication of whether this generation is the very first, with
  * Impro-Visor starting
  */
 
@@ -25525,7 +25547,7 @@ long nextGenerateCycle = 0;
 
 
 /** The long-term view of when the next improvised melody will start
- * 
+ *
  */
 
 long melodyStart;
@@ -25570,13 +25592,13 @@ public void reset(MelodyPart currentMelodyPart)
 /**
  * return slot in the form chorus/bar/beat
  * @param slot
- * @return 
+ * @return
  */
 
 public String bar(long slot)
   {
-    return (slot/size) + "/" + (1 + (slot%size)/480) 
-            + "/" + Math.round(100*((slot%size)%480)/120.)/100. 
+    return (slot/size) + "/" + (1 + (slot%size)/480)
+            + "/" + Math.round(100*((slot%size)%480)/120.)/100.
             + " (" + slot + ")";
   }
 
@@ -25585,7 +25607,7 @@ int failCounter;
 /**
  * Create lick at indicated slot, for playback in a subsequent slot.
  * @param slotInPlayback
- * @return 
+ * @return
  */
 
 public MelodyPart maybeCreateLick(int slotInPlayback)
@@ -25596,6 +25618,11 @@ public MelodyPart maybeCreateLick(int slotInPlayback)
     // This prevents multiple generations within one cycle.
     // Trying to hinge on generated does not work.
     // Neither does hinging on slotInPlayback < generateAtSlot
+
+//   if( currentCycle != nextGenerateCycle )
+//    {
+//      return null;
+//    }
 
     if( biasedCyclesElapsed < nextGenerateCycle )
       {
@@ -25713,7 +25740,7 @@ public MelodyPart maybePlayLick(int slotInPlayback)
               }
             else
               {
-                currentMelodyPart.pasteOver(improLick, melodyStartsAtSlot);
+                //currentMelodyPart.pasteOver(improLick, melodyStartsAtSlot);
               }
           }
 
@@ -25735,7 +25762,7 @@ public MelodyPart maybePlayLick(int slotInPlayback)
 public MelodyPart createAndPlayInitialLick()
   {
     maybeCreateLick(0);
-    
+
     if( improLick != null && improLick.size() > 0 )
       {
         melodyStartsAtSlot = 0;
@@ -25744,10 +25771,10 @@ public MelodyPart createAndPlayInitialLick()
         firstTime = true;
         //generated = true;
         played = false;
-        
+
         //maybePlayLick(playAtSlot, currentMelodyPart);
       }
-    
+
     return improLick;
   }
 
@@ -25855,13 +25882,13 @@ public void actionPerformed(ActionEvent evt)
     int slot = slotInPlayback;
 
     int synthSlot = midiSynth.getSlot();
-    
+
     if( previousSynthSlot > synthSlot )
       {
         // wrap-around has occurred
         int slotsSkipped = getCurrentMelodyPart().size() - 1 - previousSynthSlot;
         long newSlotsElapsed = totalSlotsElapsed + synthSlot + slotsSkipped;
-        
+
         //System.out.println("\ntotalSlotsElapsed " + bar(totalSlotsElapsed) + " -> " + bar(newSlotsElapsed));
 
         totalSlotsElapsed = newSlotsElapsed;
@@ -25872,7 +25899,7 @@ public void actionPerformed(ActionEvent evt)
         totalSlotsElapsed += (synthSlot - previousSynthSlot);
       }
     previousSynthSlot = synthSlot;
-    
+
 
     handleAudioInput(slotInPlayback);
 
@@ -25965,9 +25992,9 @@ private void handleAutoImprov(int slotInPlayback)
             MelodyPart currentMelodyPart = getCurrentMelodyPart();
 
             int size = currentMelodyPart.size();
-            
+
             autoImprovisation.maybeCreateLick(slotInPlayback);
-            
+
             // Play the lick previously generated, and paste into the
             // current melody part.
 
