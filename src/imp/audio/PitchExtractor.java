@@ -1,5 +1,6 @@
 package imp.audio;
 
+import imp.Constants;
 import imp.data.MelodyPart;
 import imp.data.MidiSynth;
 import imp.data.Rest;
@@ -23,7 +24,7 @@ import javax.sound.sampled.*;
  * @author Brian Howell
  * @version 22 June, 2012
  */
-public class PitchExtractor
+public class PitchExtractor implements Constants
 {
 
     public volatile boolean isCapturing;
@@ -39,11 +40,13 @@ public class PitchExtractor
     MidiSynth midiSynth;
 //    private long startTime;
 //    private int additionalSamples;
-    private boolean processingStarted;
+    private boolean processingStarted = false;
+    private long delay;
     //private double swingVal;
     private int captureInterval;
-    private int lastSlotNumber = 1;
+    private int lastSlotNumber;
     private int startingPosition;
+    private int currentIndex;
     int positionOffset;
     //timeDifference keeps track of time offset between captures
     double timeDifference = 0;
@@ -78,19 +81,27 @@ public class PitchExtractor
 
     Mixer mainMixer;
 
+    private boolean trading;
+    private int tradeLength;
+
     public PitchExtractor(Notate notate,
                           Score score,
                           MidiSynth midiSynth,
                           AudioSettings settings,
                           int startingIndex,
-                          int captureInterval)
+                          int captureInterval,
+                          boolean trading)
     {
         this.notate = notate;
         this.score = score;
         this.midiSynth = midiSynth;
         //swingVal = score.getChordProg().getStyle().getSwing();
         this.captureInterval = captureInterval;
+        tradeLength = notate.getTradeLength();
+        System.out.println("Trade length = " + tradeLength);
+        this.trading = trading;
         startingPosition = startingIndex;
+        currentIndex = startingIndex;
         melodyPart = notate.getCurrentMelodyPart();
 
         this.settings = settings;
@@ -101,7 +112,7 @@ public class PitchExtractor
         K_CONSTANT = settings.getK_CONSTANT();
         POLL_RATE = settings.getPOLL_RATE();
         FRAME_SIZE = settings.getFRAME_SIZE();
-        slotConversion = 480 / RESOLUTION;
+        slotConversion = (score.getMetre()[0] * BEAT) / RESOLUTION;
         interval = (POLL_RATE / 1000.0) * SAMPLE_RATE * 2.0;
 
         format = getAudioFormat();
@@ -137,15 +148,16 @@ public class PitchExtractor
     {
         stopCapture = false;
         stopAnalysis = false;
-        processingStarted = false;
-//        startingPosition = 0;
+        //processingStarted = false;
+//        currentIndex = 0;
 //        if (analysesCompleted > 0)
 //        {
-            clearNotes(startingPosition); //erase old data if overwriting
+            clearNotes(currentIndex); //erase old data if overwriting
             analysesCompleted = 0;
 //        }
         openTargetLine();
         slotsFilled = 1;
+        lastSlotNumber = 1;
         lastPitch = 0; //initialize most recent pitch to a rest
         minPitch = settings.getMIN_PITCH();
         maxPitch = settings.getMAX_PITCH();
@@ -237,7 +249,7 @@ public class PitchExtractor
 //                start = startingIndex + i * captureInterval;
 //                melodyPart.delUnits(start, start + captureInterval);
 //            }
-            melodyPart.delUnits(startingIndex, notate.getTradeLength());
+            melodyPart.delUnits(startingIndex, tradeLength);
     }
 
     public int getCaptureInterval()
@@ -253,7 +265,7 @@ public class PitchExtractor
     private void parseNotes(byte[] streamInput)
     {
         //where the first note is to be inserted in the melody
-        //startingPosition = analysesCompleted * captureInterval;
+        //currentIndex = analysesCompleted * captureInterval;
         int index;
 //        if (analysesCompleted == 0)
 //        {
@@ -273,7 +285,7 @@ public class PitchExtractor
         { //adjust # of subdivisions if triplets are allowed
             slotSize *= 3;
         }
-        System.out.println("Triplets = " + allowTriplets + ", Resolution = " + slotSize);
+        //System.out.println("Triplets = " + allowTriplets + ", Resolution = " + slotSize);
         boolean firstSlot = true;
 
         int currentSlotNumber;
@@ -345,10 +357,10 @@ public class PitchExtractor
                     {
                         duration = slotsFilled * slotConversion;
                         setNote(lastPitch,
-                                startingPosition,
+                                currentIndex,
                                 duration,
                                 melodyPart);
-                        incrementStartingPosition(duration);
+                        incrementCurrentIndex(duration);
                         slotsFilled = 1; //reset slotsFilled when pitch changes
                     } //if this pitch is the same as that of the last slot,
                     //continue building duration until pitch changes
@@ -372,29 +384,36 @@ public class PitchExtractor
                 oneSlot.clear(); //get rid of old list
                 oneSlot.add(slotPitch);
 
-                //handle the last slot in this capture interval
+            //special cases to handle the last slot in this capture interval
             } else if (index + FRAME_SIZE + interval >= streamInput.length)
             {
                 oneSlot.add(slotPitch);
+
                 //Determine whether the first slot in the next capture is part
                 //of the slot for which windows are currently being collected
+                System.out.println("time elapsed = " + timeElapsed);
                 double nextTime = timeElapsed
                         + ((interval + tenMSOffset) / interval * POLL_RATE);
                 int nextSlot = resolveSlot(nextTime, tempo / slotSize, slotSize) + 1;
-                if (analysesCompleted == 0 && currentSlotNumber == nextSlot)
+                System.out.println("Next time = " + nextTime + ", next slot = "
+                        + nextSlot + ", current slot = " + currentSlotNumber);
+                if (analysesCompleted == 0 && currentSlotNumber == nextSlot
+                        && tradeLength / captureInterval > 1) //this is irrelevant if there is only one capture in this trade
                 {
+                    System.out.println("Time difference of " + timeElapsed + " calculated.");
                     timeDifference = timeElapsed;
                     lastSlotNumber = currentSlotNumber;
                 } else
                 {
                     int pitch = calculatePitch(oneSlot);
+                    //if the last pitch in the capture interval is a continuation
+                    //of the previous pitch...
                     if (pitch == lastPitch)
-                    { //if the last pitch in the capture interval is a continuation
-                        //of the previous pitch...
-                        System.out.println("Trade length = " + notate.getTradeLength());
-                        if (analysesCompleted < (notate.getTradeLength() / captureInterval) - 1
-                                && notate.getMode() == Mode.RECORDING
-                                && (startingPosition + duration) % captureInterval != 0)
+                    {
+                        if (tradeLength == score.getMetre()[0] * BEAT
+                                || analysesCompleted < (tradeLength / captureInterval) - 1)
+//                                && notate.getMode() == Mode.RECORDING
+//                                && (currentIndex + duration) % captureInterval != 0)
                         {
                             slotsFilled++;
                             System.out.println("Note " + pitch + " *possibly* "
@@ -402,39 +421,40 @@ public class PitchExtractor
                                     + "Mode = " + notate.getMode());
                         } else
                         {
+                            System.out.println("Reached end.");
                             duration = slotsFilled * slotConversion;
                             setNote(lastPitch,
-                                    startingPosition,
+                                    currentIndex,
                                     duration + ((analysesCompleted * captureInterval
-                                    - (startingPosition + duration)) % captureInterval),
+                                    - (currentIndex + duration)) % captureInterval),
                                     melodyPart);
-                            incrementStartingPosition(duration);
+                            incrementCurrentIndex(duration);
                         }
                     } else
                     { //otherwise, handle previous pitch and last pitch in slot
                         //separately
                         duration = slotsFilled * slotConversion;
                         setNote(lastPitch,
-                                startingPosition,
+                                currentIndex,
                                 duration,
                                 melodyPart);
-                        incrementStartingPosition(duration);
-                        System.out.println("Trade length = " + notate.getTradeLength());
+                        incrementCurrentIndex(duration);
+                        //System.out.println("Trade length = " + tradeLength);
 
                         //if this is the last capture or stop btn has been
                         //pressed, go ahead and set the note.
                         if (analysesCompleted ==
-                                (notate.getTradeLength() / captureInterval) - 1
-                                || notate.getMode() != Mode.RECORDING)
+                                (tradeLength / captureInterval) - 1)
+//                                || notate.getMode() != Mode.RECORDING)
                         {
+                            System.out.println("Reached end. Mode = " + notate.getMode());
                             duration = slotConversion;
                             setNote(pitch,
-                                    startingPosition,
+                                    currentIndex,
                                     duration + ((analysesCompleted * captureInterval
-                                    - (startingPosition + duration)) % captureInterval),
+                                    - (currentIndex + duration)) % captureInterval),
                                     melodyPart);
-                            incrementStartingPosition(duration);
-                            System.out.println("Mode = " + notate.getMode());
+                            incrementCurrentIndex(duration);
                             oneSlot.clear();
                         } else
                         { //otherwise, remember this pitch and reset slots filled.
@@ -445,7 +465,11 @@ public class PitchExtractor
                         }
                     }
                 }
-                //if the slot hasn't changed, count this window as part of the slot
+//                System.out.println("At end of capture, last slot = " + lastSlotNumber
+//                        + ", current slot = " + currentSlotNumber);
+//                lastSlotNumber = currentSlotNumber;
+
+            //if the slot hasn't changed, count this window as part of the slot
             } else if (currentSlotNumber == lastSlotNumber)
             {
                 oneSlot.add(slotPitch); //if so, continue collecting data
@@ -457,32 +481,32 @@ public class PitchExtractor
         System.out.println("Finished analyzing capture " + analysesCompleted + ".");
     }
 
-    private void incrementStartingPosition(int duration)
+    private void incrementCurrentIndex(int duration)
     {
-        startingPosition += duration;
+        currentIndex += duration;
     }
 
     private void setNote(int pitch,
-                         int startingPosition,
+                         int currentIndex,
                          int duration,
                          MelodyPart melodyPart)
     {
         if (pitch < 25) //count as a rest if pitch is out of range
         {
             imp.data.Note newRest = new Rest(duration);
-            melodyPart.setNoteFromCapture(startingPosition, newRest);
+            melodyPart.setNoteFromCapture(currentIndex, newRest);
             System.out.println("______________________________\n"
                     + "rest, duration = " + duration + " slots.\nposition = "
-                    + startingPosition + "\n______________________________");
+                    + currentIndex + "\n______________________________");
         } else
         {
             imp.data.Note newNote = new imp.data.Note(pitch, duration);
-            melodyPart.setNoteFromCapture(startingPosition, newNote);
+            melodyPart.setNoteFromCapture(currentIndex, newNote);
             System.out.println("______________________________\n"
                     + newNote.getPitchClassName()
                     + (newNote.getPitch() / 12 - 1) + "(" + newNote.getPitch() + ")"
                     + "\nduration = " + duration + " slots\nposition = "
-                    + startingPosition + ".\n" + "______________________________");
+                    + currentIndex + ".\n" + "______________________________");
         }
         System.out.println("Note off = " + noteOff);
     }
@@ -649,6 +673,8 @@ public class PitchExtractor
     {
         int slot = (int) (Math.floor((timeElapsed + timeDifference)
                 / msPerSlot)) % slotSize;
+
+        //I thought about accounting for swing. This hasn't been tested.
         //        if(swingVal > 0.5 && RESOLUTION >= 8)
         //        {
         //            if(slot % (2 ^ (RESOLUTION / 8)) == (2 ^ (RESOLUTION / 8 - 1)) + 1) {
@@ -657,14 +683,18 @@ public class PitchExtractor
         //                }
         //            }
         //        }
-        if (allowTriplets && (slot % (RESOLUTION / 2) == RESOLUTION / 2 - 1
-                || slot % (RESOLUTION / 2) == 1))
+
+        //if triplets are allowed, we must ignore invalid slots (lump them
+        //in with the preceding slot).
+        if (allowTriplets)
         {
-            return slot - 1;
-        } else
-        {
-            return slot;
+            int tripCheck = RESOLUTION / 2;
+            if (slot % tripCheck == tripCheck - 1 || slot % tripCheck == 1)
+            {
+                return slot - 1;
+            }
         }
+        return slot;
     }
 
     /**
@@ -939,16 +969,22 @@ public class PitchExtractor
         {
             //number of bytes to capture before putting data in the queue
             int bytesToCapture = (int) (((SAMPLE_RATE * 2.) / (score.getTempo()
-                    / score.getMetre()[0] / 60.)) * (captureInterval / 480.));
+                    / score.getMetre()[0] / 60.)) * (captureInterval /
+                    (score.getMetre()[0] * BEAT)));
             System.out.println(bytesToCapture + " bytes will be captured.");
             byte tempBuffer[] = new byte[target.getBufferSize() / 5];
             int limit = bytesToCapture / tempBuffer.length;
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream(bytesToCapture);
             int bytesRead;
+            int captureLimit = tradeLength / captureInterval;
+            //when trading, this is the amount of time to sleep while generating
+            int sleepTimeMillis = (int) (tradeLength
+                        * (60000. / (score.getTempo() * BEAT)));
 
             try
-            {//Loop until stopCapture is set.
-                while (!stopCapture)
+            {//Loop until stopCapture is set or trade length is reached.
+                while (!stopCapture && analysesCompleted + processingQueue.size()
+                       < captureLimit)
                 {
                     //wait for notification from Notate/Timer
                     synchronized (thisCapture)
@@ -990,8 +1026,6 @@ public class PitchExtractor
                     }
                     long usPos = sequencer.getMicrosecondPosition();
 
-                    System.out.println("Sequencer time = " + (usPos - countInMicroseconds));
-                    long delay = 0;
                     if (!processingStarted)
                     {
                         delay = System.nanoTime();
@@ -1010,20 +1044,21 @@ public class PitchExtractor
 //                                    + "Sequencer time = " + (usPos
 //                                    - countInMicroseconds) + " microseconds.");
                         }
-                        delay = System.nanoTime() - delay;
-                        System.out.println("Capture latency = " + delay + " nanoseconds.");
+                        //Round delay time to nearest millisecond.
+                        delay = (System.nanoTime() - delay) / 1000000;
+                        System.out.println("Capture latency = " + delay + " ms.");
                     } else
                     {
                         try
                         {
-                            Thread.sleep(0, (int) delay);
+                            CaptureThread.sleep(delay);
                         } catch (Exception e)
                         {
                             System.out.println("Sleep error:\n" + e);
                         }
                     }
                     //System.out.println("Capture ACTUALLY started at time " + System.nanoTime());
-                    System.out.println("Capture started at time " + System.nanoTime() + " nanoseconds.");
+                    System.out.println("Capture started at time " + System.currentTimeMillis() + " ms.");
                     //collect 1 captureInterval's worth of data
                     for (int n = 0; n < limit; n++)
                     {
@@ -1091,7 +1126,24 @@ public class PitchExtractor
                         //CaptureThread.sleep(0, 10);
                     }
                 }//end while
-                System.out.println("Capture stopped. stopCapture = " + stopCapture);
+
+                System.out.println("Capture stopped.");
+                if(trading)
+                {
+                    //analysesCompleted = 0;
+                    //notate.stopAudioCapture();
+                    stopCapture();
+                    closeTargetLine();
+//                    System.out.println("Trade length = " + tradeLength
+//                            + "\nCaptureThread will now sleep for "
+//                            + sleepTimeMillis + " ms.");
+                    CaptureThread.sleep(sleepTimeMillis - 100);
+                    startingPosition += tradeLength * 2;
+                    currentIndex = startingPosition;
+                    clearNotes(startingPosition);
+                    System.out.println("CaptureThread expired...");
+                    captureAudio();
+                }
             } catch (Exception e)
             {
                 System.out.println("Capture thread error:\n" + e);
@@ -1134,11 +1186,11 @@ public class PitchExtractor
                 {
                     System.out.println("Queue is empty.");
                 }
-                if(stopCapture && processingQueue.isEmpty())
-                {
-                    stopAnalysis = true;
-                    System.out.println("AnalyzeThread will now die.");
-                }
+//                if(stopCapture && processingQueue.isEmpty())
+//                {
+//                    stopAnalysis = true;
+//                    System.out.println("AnalyzeThread will now die.");
+//                }
             }
             System.out.println("Analysis stopped.");
         }//end run

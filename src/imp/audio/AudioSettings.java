@@ -45,8 +45,8 @@ public class AudioSettings
 
     private static int     DEFAULT_FRAME_SIZE = 2048; //# of BYTES examined per poll
     private static int     DEFAULT_POLL_RATE = 20; //in milliseconds
-    private static int     DEFAULT_RESOLUTION = 12; //smallest subdivision allowed
-    private static boolean DEFAULT_TRIPLETS = false;
+    private static int     DEFAULT_RESOLUTION = 8; //smallest subdivision allowed
+    private static boolean DEFAULT_TRIPLETS = true;
     private static double  DEFAULT_RMS_THRESHOLD = 4.75;
     private static double  DEFAULT_CONFIDENCE_THRESHOLD = 0.45;
     private static double  DEFAULT_K_CONSTANT = 0.875;

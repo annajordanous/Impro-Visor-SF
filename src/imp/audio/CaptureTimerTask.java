@@ -32,7 +32,7 @@ public class CaptureTimerTask extends TimerTask
                 System.out.println("Sleep error:\n" + e);
             }
         }
-        long time = System.nanoTime();
+        long time = System.currentTimeMillis();
         synchronized (extractor.thisCapture)
         {
             extractor.thisCapture.notifyAll();
