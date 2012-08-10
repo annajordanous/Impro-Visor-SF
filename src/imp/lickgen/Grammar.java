@@ -312,18 +312,45 @@ public static boolean isScaleDegree(Object ob)
     return true;
   }
 
-
+/**
+ * Get the duration of various terminals.
+ * This is used in calculating chordSlot, for example.
+ * @param ob
+ * @return 
+ */
 public int getDuration(Object ob)
   {
+    //System.out.print("duration of " + ob + " = ");
+    int result = 0;
+    
     if( ob instanceof String )
       {
-        return Duration.getDuration(((String)ob).substring(1));
+        result = Duration.getDuration(((String)ob).substring(1));
       }
-    if( isScaleDegree(ob) )
+    else if( isScaleDegree(ob) )
       {
-        return Duration.getDuration(((Polylist) ob).third().toString());
+        result = Duration.getDuration(((Polylist) ob).third().toString());
       }
-    return 0;
+    else if( isSlope(ob) )
+      {
+        // Get the tail from the fourth element on
+        Polylist body = ((Polylist)ob).rest().rest().rest();
+        int sum = 0;
+        while( body.nonEmpty() )
+          {
+            sum += getDuration(body.first());
+            body = body.rest();
+          }
+        result = sum;
+      }
+    else if( isTriadic(ob) )
+      {
+        result = Duration.getDuration(((Polylist)ob).second().toString());
+      }
+    
+    //System.out.println(result);
+    
+    return result;
   }
 
 
