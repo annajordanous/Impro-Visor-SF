@@ -25619,11 +25619,6 @@ public MelodyPart maybeCreateLick(int slotInPlayback)
     // Trying to hinge on generated does not work.
     // Neither does hinging on slotInPlayback < generateAtSlot
 
-//   if( currentCycle != nextGenerateCycle )
-//    {
-//      return null;
-//    }
-
     if( biasedCyclesElapsed < nextGenerateCycle )
       {
         return null;
@@ -25740,7 +25735,7 @@ public MelodyPart maybePlayLick(int slotInPlayback)
               }
             else
               {
-                //currentMelodyPart.pasteOver(improLick, melodyStartsAtSlot);
+                currentMelodyPart.pasteOver(improLick, melodyStartsAtSlot);
               }
           }
 
