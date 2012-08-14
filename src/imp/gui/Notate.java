@@ -10516,7 +10516,10 @@ public void stopRecording()
       midiSynth.registerReceiver(midiStepInput);
       }
 
+    if (!useAudioInputMI.isSelected())
+        {
     stopPlaying("stop Recording");
+        }
   }
 
 private void startAudioCapture()
@@ -10647,7 +10650,7 @@ void stopPlaying(String reason)
   {
     midiSynth.stop("stop in Notate: " + reason);
     improvisationOff();
-    if( mode == Mode.RECORDING )
+    if( mode == Mode.RECORDING)
       {
         stopRecording();
       }
