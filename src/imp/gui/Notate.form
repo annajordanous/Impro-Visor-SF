@@ -337,7 +337,7 @@
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[200, 130]"/>
                     </Property>
-                    <Property name="name" type="java.lang.String" value=""/>
+                    <Property name="name" type="java.lang.String" value="" noResource="true"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[200, 130]"/>
                     </Property>
@@ -537,7 +537,7 @@
                         <Property name="gridColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="99" green="99" red="99" type="rgb"/>
                         </Property>
-                        <Property name="name" type="java.lang.String" value=""/>
+                        <Property name="name" type="java.lang.String" value="" noResource="true"/>
                         <Property name="rowSelectionAllowed" type="boolean" value="false"/>
                         <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
                           <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
@@ -3340,7 +3340,7 @@
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[84, 50]"/>
                     </Property>
-                    <Property name="name" type="java.lang.String" value="Minimum MIDI Pitch"/>
+                    <Property name="name" type="java.lang.String" value="Minimum MIDI Pitch" noResource="true"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[84, 50]"/>
                     </Property>
@@ -3368,7 +3368,7 @@
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[84, 50]"/>
                     </Property>
-                    <Property name="name" type="java.lang.String" value="Maximum MIDI Pitch"/>
+                    <Property name="name" type="java.lang.String" value="Maximum MIDI Pitch" noResource="true"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[84, 50]"/>
                     </Property>
@@ -3405,7 +3405,7 @@
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[140, 50]"/>
                     </Property>
-                    <Property name="name" type="java.lang.String" value="rangePresetComboBox"/>
+                    <Property name="name" type="java.lang.String" value="rangePresetComboBox" noResource="true"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[140, 50]"/>
                     </Property>
