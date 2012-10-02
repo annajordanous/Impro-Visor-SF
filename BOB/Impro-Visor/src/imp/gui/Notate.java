@@ -624,7 +624,7 @@ public class Notate
 
   private imp.gui.VoicingKeyboard keyboard = null;
 
-  private imp.gui.StepEntryKeyboard stepKeyboard = null;
+  private imp.gui.AdvisingKeyboard stepKeyboard = null;
 
   private static DefaultTableCellRenderer voicingRenderer = new DefaultTableCellRenderer()
     {
@@ -20156,7 +20156,7 @@ public void openKeyboard()
 public void openStepKeyboard()
 {
     if (stepKeyboard == null)
-        stepKeyboard = new StepEntryKeyboard(this, getNewXlocation(), getNewYlocation());
+        stepKeyboard = new AdvisingKeyboard(this, getNewXlocation(), getNewYlocation());
 
     stepKeyboard.setVisible(true);
     if (stepInputActive == false)
@@ -20174,7 +20174,7 @@ public VoicingKeyboard getCurrentVoicingKeyboard()
     return keyboard;
 }
 
-public StepEntryKeyboard getCurrentStepKeyboard()
+public AdvisingKeyboard getCurrentStepKeyboard()
 {
     return stepKeyboard;
 }
@@ -22441,13 +22441,11 @@ private void rmsThresholdSliderStateChanged(javax.swing.event.ChangeEvent evt)//
 
     private void noteCursorBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_noteCursorBtnActionPerformed
 
-        StaveActionHandler handler = getCurrentStave().getActionHandler();
-
         if (useNoteCursor)
         {
             setUseNoteCursor(false);
             noteCursorBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource(
-                    "graphics/Cursors/blueNoteLineCursor.png")));
+                    "graphics/cursors/blueNoteLineCursor.png")));
         }
         else
         {
@@ -25389,7 +25387,9 @@ public boolean getUseNoteCursor()
 public void setUseNoteCursor(boolean on)
 {
     useNoteCursor = on;
-    getCurrentStaveActionHandler().setCursor(getCurrentStaveActionHandler().getNoteCursor());
+    Cursor noteCursor = getCurrentStaveActionHandler().getNoteCursor();
+    System.out.println(noteCursor);
+    getCurrentStaveActionHandler().setCursor(noteCursor);
 }
 
 public String getDefaultGrammarName()

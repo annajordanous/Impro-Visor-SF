@@ -38,7 +38,7 @@ import javax.swing.JLabel;
  *
  * @author Audrey Musselman-Brown, 2012 Modified from the VoicingKeyboard class
  */
-public class StepEntryKeyboard extends javax.swing.JFrame {
+public class AdvisingKeyboard extends javax.swing.JFrame {
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -53,6 +53,7 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
         keyboardHelpDialog = new javax.swing.JDialog();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
+        jTextField1 = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
         keyboardLP = new javax.swing.JLayeredPane();
         keyA0 = new javax.swing.JLabel();
@@ -143,7 +144,6 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
         keyFsharp7 = new javax.swing.JLabel();
         keyGsharp7 = new javax.swing.JLabel();
         keyBb7 = new javax.swing.JLabel();
-        pointerC4 = new javax.swing.JLabel();
         A0Label = new javax.swing.JLabel();
         B0Label = new javax.swing.JLabel();
         C1Label = new javax.swing.JLabel();
@@ -232,6 +232,7 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
         Fsharp7Label = new javax.swing.JLabel();
         Gsharp7Label = new javax.swing.JLabel();
         Bb7Label = new javax.swing.JLabel();
+        pointerC5 = new javax.swing.JLabel();
         inputRestBtn = new javax.swing.JButton();
         chordNameDisplay = new javax.swing.JLabel();
         adviceNumSpinner = new javax.swing.JSpinner();
@@ -267,10 +268,9 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
         keyboardHelpDialog.setTitle("Advising Keyboard Help");
         keyboardHelpDialog.setAlwaysOnTop(true);
         keyboardHelpDialog.setMinimumSize(new java.awt.Dimension(500, 500));
-        keyboardHelpDialog.setSize(new java.awt.Dimension(0, 0));
 
         jScrollPane3.setMinimumSize(new java.awt.Dimension(100, 100));
-        jScrollPane3.setName("Keyboard Help");
+        jScrollPane3.setName("Keyboard Help"); // NOI18N
 
         jTextArea1.setRows(5);
         jTextArea1.setTabSize(4);
@@ -279,6 +279,8 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
         jTextArea1.setEditable(false);
 
         keyboardHelpDialog.getContentPane().add(jScrollPane3, java.awt.BorderLayout.CENTER);
+
+        jTextField1.setText("jTextField1");
 
         setTitle("Advice Keyboard");
         setAlwaysOnTop(true);
@@ -658,10 +660,6 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
         keyBb7.setBounds(993, 0, 14, 80);
         keyboardLP.add(keyBb7, javax.swing.JLayeredPane.PALETTE_LAYER);
 
-        pointerC4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/pointer.png"))); // NOI18N
-        pointerC4.setBounds(460, 120, 19, 30);
-        keyboardLP.add(pointerC4, javax.swing.JLayeredPane.DEFAULT_LAYER);
-
         A0Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         A0Label.setLabelFor(keyA0);
         A0Label.setText("  ");
@@ -932,14 +930,14 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
         C8Label.setBounds(1021, 100, 17, 16);
         keyboardLP.add(C8Label, javax.swing.JLayeredPane.PALETTE_LAYER);
 
-        Bb0Label.setFont(new java.awt.Font("Lucida Grande", 1, 12)); // NOI18N
+        Bb0Label.setFont(new java.awt.Font("Lucida Grande", 1, 12));
         Bb0Label.setForeground(new java.awt.Color(255, 255, 255));
         Bb0Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Bb0Label.setText("  ");
         Bb0Label.setBounds(12, 62, 17, 15);
         keyboardLP.add(Bb0Label, javax.swing.JLayeredPane.POPUP_LAYER);
 
-        Csharp1Label.setFont(new java.awt.Font("Lucida Grande", 1, 12)); // NOI18N
+        Csharp1Label.setFont(new java.awt.Font("Lucida Grande", 1, 12));
         Csharp1Label.setForeground(new java.awt.Color(255, 255, 255));
         Csharp1Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Csharp1Label.setLabelFor(keyA0);
@@ -947,7 +945,7 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
         Csharp1Label.setBounds(52, 62, 17, 15);
         keyboardLP.add(Csharp1Label, javax.swing.JLayeredPane.POPUP_LAYER);
 
-        Eb1Label.setFont(new java.awt.Font("Lucida Grande", 1, 12)); // NOI18N
+        Eb1Label.setFont(new java.awt.Font("Lucida Grande", 1, 12));
         Eb1Label.setForeground(new java.awt.Color(255, 255, 255));
         Eb1Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Eb1Label.setText("  ");
@@ -961,28 +959,28 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
         Fsharp1Label.setBounds(112, 62, 17, 15);
         keyboardLP.add(Fsharp1Label, javax.swing.JLayeredPane.POPUP_LAYER);
 
-        Gsharp1Label.setFont(new java.awt.Font("Lucida Grande", 1, 12)); // NOI18N
+        Gsharp1Label.setFont(new java.awt.Font("Lucida Grande", 1, 12));
         Gsharp1Label.setForeground(new java.awt.Color(255, 255, 255));
         Gsharp1Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Gsharp1Label.setText("  ");
         Gsharp1Label.setBounds(132, 62, 17, 15);
         keyboardLP.add(Gsharp1Label, javax.swing.JLayeredPane.POPUP_LAYER);
 
-        Bb1Label.setFont(new java.awt.Font("Lucida Grande", 1, 12)); // NOI18N
+        Bb1Label.setFont(new java.awt.Font("Lucida Grande", 1, 12));
         Bb1Label.setForeground(new java.awt.Color(255, 255, 255));
         Bb1Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Bb1Label.setText("  ");
         Bb1Label.setBounds(152, 62, 17, 15);
         keyboardLP.add(Bb1Label, javax.swing.JLayeredPane.POPUP_LAYER);
 
-        Csharp2Label.setFont(new java.awt.Font("Lucida Grande", 1, 12)); // NOI18N
+        Csharp2Label.setFont(new java.awt.Font("Lucida Grande", 1, 12));
         Csharp2Label.setForeground(new java.awt.Color(255, 255, 255));
         Csharp2Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Csharp2Label.setText("  ");
         Csharp2Label.setBounds(192, 62, 17, 15);
         keyboardLP.add(Csharp2Label, javax.swing.JLayeredPane.POPUP_LAYER);
 
-        Eb2Label.setFont(new java.awt.Font("Lucida Grande", 1, 12)); // NOI18N
+        Eb2Label.setFont(new java.awt.Font("Lucida Grande", 1, 12));
         Eb2Label.setForeground(new java.awt.Color(255, 255, 255));
         Eb2Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Eb2Label.setLabelFor(keyA0);
@@ -990,42 +988,42 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
         Eb2Label.setBounds(212, 62, 17, 15);
         keyboardLP.add(Eb2Label, javax.swing.JLayeredPane.POPUP_LAYER);
 
-        Fsharp2Label.setFont(new java.awt.Font("Lucida Grande", 1, 12)); // NOI18N
+        Fsharp2Label.setFont(new java.awt.Font("Lucida Grande", 1, 12));
         Fsharp2Label.setForeground(new java.awt.Color(255, 255, 255));
         Fsharp2Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Fsharp2Label.setText("  ");
         Fsharp2Label.setBounds(252, 62, 17, 15);
         keyboardLP.add(Fsharp2Label, javax.swing.JLayeredPane.POPUP_LAYER);
 
-        Gsharp2Label.setFont(new java.awt.Font("Lucida Grande", 1, 12)); // NOI18N
+        Gsharp2Label.setFont(new java.awt.Font("Lucida Grande", 1, 12));
         Gsharp2Label.setForeground(new java.awt.Color(255, 255, 255));
         Gsharp2Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Gsharp2Label.setText("  ");
         Gsharp2Label.setBounds(272, 62, 17, 15);
         keyboardLP.add(Gsharp2Label, javax.swing.JLayeredPane.POPUP_LAYER);
 
-        Bb2Label.setFont(new java.awt.Font("Lucida Grande", 1, 12)); // NOI18N
+        Bb2Label.setFont(new java.awt.Font("Lucida Grande", 1, 12));
         Bb2Label.setForeground(new java.awt.Color(255, 255, 255));
         Bb2Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Bb2Label.setText("  ");
         Bb2Label.setBounds(292, 62, 17, 15);
         keyboardLP.add(Bb2Label, javax.swing.JLayeredPane.POPUP_LAYER);
 
-        Csharp3Label.setFont(new java.awt.Font("Lucida Grande", 1, 12)); // NOI18N
+        Csharp3Label.setFont(new java.awt.Font("Lucida Grande", 1, 12));
         Csharp3Label.setForeground(new java.awt.Color(255, 255, 255));
         Csharp3Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Csharp3Label.setText("  ");
         Csharp3Label.setBounds(332, 62, 17, 15);
         keyboardLP.add(Csharp3Label, javax.swing.JLayeredPane.POPUP_LAYER);
 
-        Eb3Label.setFont(new java.awt.Font("Lucida Grande", 1, 12)); // NOI18N
+        Eb3Label.setFont(new java.awt.Font("Lucida Grande", 1, 12));
         Eb3Label.setForeground(new java.awt.Color(255, 255, 255));
         Eb3Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Eb3Label.setText("  ");
         Eb3Label.setBounds(352, 62, 17, 15);
         keyboardLP.add(Eb3Label, javax.swing.JLayeredPane.POPUP_LAYER);
 
-        Fsharp3Label.setFont(new java.awt.Font("Lucida Grande", 1, 12)); // NOI18N
+        Fsharp3Label.setFont(new java.awt.Font("Lucida Grande", 1, 12));
         Fsharp3Label.setForeground(new java.awt.Color(255, 255, 255));
         Fsharp3Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Fsharp3Label.setLabelFor(keyA0);
@@ -1033,42 +1031,42 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
         Fsharp3Label.setBounds(392, 62, 17, 15);
         keyboardLP.add(Fsharp3Label, javax.swing.JLayeredPane.POPUP_LAYER);
 
-        Gsharp3Label.setFont(new java.awt.Font("Lucida Grande", 1, 12)); // NOI18N
+        Gsharp3Label.setFont(new java.awt.Font("Lucida Grande", 1, 12));
         Gsharp3Label.setForeground(new java.awt.Color(255, 255, 255));
         Gsharp3Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Gsharp3Label.setText("  ");
         Gsharp3Label.setBounds(412, 62, 17, 15);
         keyboardLP.add(Gsharp3Label, javax.swing.JLayeredPane.POPUP_LAYER);
 
-        Bb3Label.setFont(new java.awt.Font("Lucida Grande", 1, 12)); // NOI18N
+        Bb3Label.setFont(new java.awt.Font("Lucida Grande", 1, 12));
         Bb3Label.setForeground(new java.awt.Color(255, 255, 255));
         Bb3Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Bb3Label.setText("  ");
         Bb3Label.setBounds(432, 62, 17, 15);
         keyboardLP.add(Bb3Label, javax.swing.JLayeredPane.POPUP_LAYER);
 
-        Csharp4Label.setFont(new java.awt.Font("Lucida Grande", 1, 12)); // NOI18N
+        Csharp4Label.setFont(new java.awt.Font("Lucida Grande", 1, 12));
         Csharp4Label.setForeground(new java.awt.Color(255, 255, 255));
         Csharp4Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Csharp4Label.setText("  ");
         Csharp4Label.setBounds(472, 62, 17, 15);
         keyboardLP.add(Csharp4Label, javax.swing.JLayeredPane.POPUP_LAYER);
 
-        Eb4Label.setFont(new java.awt.Font("Lucida Grande", 1, 12)); // NOI18N
+        Eb4Label.setFont(new java.awt.Font("Lucida Grande", 1, 12));
         Eb4Label.setForeground(new java.awt.Color(255, 255, 255));
         Eb4Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Eb4Label.setText("  ");
         Eb4Label.setBounds(492, 62, 17, 15);
         keyboardLP.add(Eb4Label, javax.swing.JLayeredPane.POPUP_LAYER);
 
-        Fsharp4Label.setFont(new java.awt.Font("Lucida Grande", 1, 12)); // NOI18N
+        Fsharp4Label.setFont(new java.awt.Font("Lucida Grande", 1, 12));
         Fsharp4Label.setForeground(new java.awt.Color(255, 255, 255));
         Fsharp4Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Fsharp4Label.setText("  ");
         Fsharp4Label.setBounds(532, 62, 17, 15);
         keyboardLP.add(Fsharp4Label, javax.swing.JLayeredPane.POPUP_LAYER);
 
-        Gsharp4Label.setFont(new java.awt.Font("Lucida Grande", 1, 12)); // NOI18N
+        Gsharp4Label.setFont(new java.awt.Font("Lucida Grande", 1, 12));
         Gsharp4Label.setForeground(new java.awt.Color(255, 255, 255));
         Gsharp4Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Gsharp4Label.setLabelFor(keyA0);
@@ -1076,42 +1074,42 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
         Gsharp4Label.setBounds(552, 62, 17, 15);
         keyboardLP.add(Gsharp4Label, javax.swing.JLayeredPane.POPUP_LAYER);
 
-        Bb4Label.setFont(new java.awt.Font("Lucida Grande", 1, 12)); // NOI18N
+        Bb4Label.setFont(new java.awt.Font("Lucida Grande", 1, 12));
         Bb4Label.setForeground(new java.awt.Color(255, 255, 255));
         Bb4Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Bb4Label.setText("  ");
         Bb4Label.setBounds(572, 62, 17, 15);
         keyboardLP.add(Bb4Label, javax.swing.JLayeredPane.POPUP_LAYER);
 
-        Csharp5Label.setFont(new java.awt.Font("Lucida Grande", 1, 12)); // NOI18N
+        Csharp5Label.setFont(new java.awt.Font("Lucida Grande", 1, 12));
         Csharp5Label.setForeground(new java.awt.Color(255, 255, 255));
         Csharp5Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Csharp5Label.setText("  ");
         Csharp5Label.setBounds(612, 62, 17, 15);
         keyboardLP.add(Csharp5Label, javax.swing.JLayeredPane.POPUP_LAYER);
 
-        Eb5Label.setFont(new java.awt.Font("Lucida Grande", 1, 12)); // NOI18N
+        Eb5Label.setFont(new java.awt.Font("Lucida Grande", 1, 12));
         Eb5Label.setForeground(new java.awt.Color(255, 255, 255));
         Eb5Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Eb5Label.setText("  ");
         Eb5Label.setBounds(632, 62, 17, 15);
         keyboardLP.add(Eb5Label, javax.swing.JLayeredPane.POPUP_LAYER);
 
-        Fsharp5Label.setFont(new java.awt.Font("Lucida Grande", 1, 12)); // NOI18N
+        Fsharp5Label.setFont(new java.awt.Font("Lucida Grande", 1, 12));
         Fsharp5Label.setForeground(new java.awt.Color(255, 255, 255));
         Fsharp5Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Fsharp5Label.setText("  ");
         Fsharp5Label.setBounds(672, 62, 17, 15);
         keyboardLP.add(Fsharp5Label, javax.swing.JLayeredPane.POPUP_LAYER);
 
-        Gsharp5Label.setFont(new java.awt.Font("Lucida Grande", 1, 12)); // NOI18N
+        Gsharp5Label.setFont(new java.awt.Font("Lucida Grande", 1, 12));
         Gsharp5Label.setForeground(new java.awt.Color(255, 255, 255));
         Gsharp5Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Gsharp5Label.setText("  ");
         Gsharp5Label.setBounds(692, 62, 17, 15);
         keyboardLP.add(Gsharp5Label, javax.swing.JLayeredPane.POPUP_LAYER);
 
-        Bb5Label.setFont(new java.awt.Font("Lucida Grande", 1, 12)); // NOI18N
+        Bb5Label.setFont(new java.awt.Font("Lucida Grande", 1, 12));
         Bb5Label.setForeground(new java.awt.Color(255, 255, 255));
         Bb5Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Bb5Label.setLabelFor(keyA0);
@@ -1119,42 +1117,42 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
         Bb5Label.setBounds(712, 62, 17, 15);
         keyboardLP.add(Bb5Label, javax.swing.JLayeredPane.POPUP_LAYER);
 
-        Csharp6Label.setFont(new java.awt.Font("Lucida Grande", 1, 12)); // NOI18N
+        Csharp6Label.setFont(new java.awt.Font("Lucida Grande", 1, 12));
         Csharp6Label.setForeground(new java.awt.Color(255, 255, 255));
         Csharp6Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Csharp6Label.setText("  ");
         Csharp6Label.setBounds(752, 62, 17, 15);
         keyboardLP.add(Csharp6Label, javax.swing.JLayeredPane.POPUP_LAYER);
 
-        Eb6Label.setFont(new java.awt.Font("Lucida Grande", 1, 12)); // NOI18N
+        Eb6Label.setFont(new java.awt.Font("Lucida Grande", 1, 12));
         Eb6Label.setForeground(new java.awt.Color(255, 255, 255));
         Eb6Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Eb6Label.setText("  ");
         Eb6Label.setBounds(772, 62, 17, 15);
         keyboardLP.add(Eb6Label, javax.swing.JLayeredPane.POPUP_LAYER);
 
-        Fsharp6Label.setFont(new java.awt.Font("Lucida Grande", 1, 12)); // NOI18N
+        Fsharp6Label.setFont(new java.awt.Font("Lucida Grande", 1, 12));
         Fsharp6Label.setForeground(new java.awt.Color(255, 255, 255));
         Fsharp6Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Fsharp6Label.setText("  ");
         Fsharp6Label.setBounds(812, 62, 17, 15);
         keyboardLP.add(Fsharp6Label, javax.swing.JLayeredPane.POPUP_LAYER);
 
-        Gsharp6Label.setFont(new java.awt.Font("Lucida Grande", 1, 12)); // NOI18N
+        Gsharp6Label.setFont(new java.awt.Font("Lucida Grande", 1, 12));
         Gsharp6Label.setForeground(new java.awt.Color(255, 255, 255));
         Gsharp6Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Gsharp6Label.setText("  ");
         Gsharp6Label.setBounds(832, 62, 17, 15);
         keyboardLP.add(Gsharp6Label, javax.swing.JLayeredPane.POPUP_LAYER);
 
-        Bb6Label.setFont(new java.awt.Font("Lucida Grande", 1, 12)); // NOI18N
+        Bb6Label.setFont(new java.awt.Font("Lucida Grande", 1, 12));
         Bb6Label.setForeground(new java.awt.Color(255, 255, 255));
         Bb6Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Bb6Label.setText("  ");
         Bb6Label.setBounds(852, 62, 17, 15);
         keyboardLP.add(Bb6Label, javax.swing.JLayeredPane.POPUP_LAYER);
 
-        Csharp7Label.setFont(new java.awt.Font("Lucida Grande", 1, 12)); // NOI18N
+        Csharp7Label.setFont(new java.awt.Font("Lucida Grande", 1, 12));
         Csharp7Label.setForeground(new java.awt.Color(255, 255, 255));
         Csharp7Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Csharp7Label.setLabelFor(keyA0);
@@ -1162,33 +1160,37 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
         Csharp7Label.setBounds(892, 62, 17, 15);
         keyboardLP.add(Csharp7Label, javax.swing.JLayeredPane.POPUP_LAYER);
 
-        Eb7Label.setFont(new java.awt.Font("Lucida Grande", 1, 12)); // NOI18N
+        Eb7Label.setFont(new java.awt.Font("Lucida Grande", 1, 12));
         Eb7Label.setForeground(new java.awt.Color(255, 255, 255));
         Eb7Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Eb7Label.setText("  ");
         Eb7Label.setBounds(912, 62, 17, 15);
         keyboardLP.add(Eb7Label, javax.swing.JLayeredPane.POPUP_LAYER);
 
-        Fsharp7Label.setFont(new java.awt.Font("Lucida Grande", 1, 12)); // NOI18N
+        Fsharp7Label.setFont(new java.awt.Font("Lucida Grande", 1, 12));
         Fsharp7Label.setForeground(new java.awt.Color(255, 255, 255));
         Fsharp7Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Fsharp7Label.setText("  ");
         Fsharp7Label.setBounds(952, 62, 17, 15);
         keyboardLP.add(Fsharp7Label, javax.swing.JLayeredPane.POPUP_LAYER);
 
-        Gsharp7Label.setFont(new java.awt.Font("Lucida Grande", 1, 12)); // NOI18N
+        Gsharp7Label.setFont(new java.awt.Font("Lucida Grande", 1, 12));
         Gsharp7Label.setForeground(new java.awt.Color(255, 255, 255));
         Gsharp7Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Gsharp7Label.setText("  ");
         Gsharp7Label.setBounds(972, 62, 17, 15);
         keyboardLP.add(Gsharp7Label, javax.swing.JLayeredPane.POPUP_LAYER);
 
-        Bb7Label.setFont(new java.awt.Font("Lucida Grande", 1, 12)); // NOI18N
+        Bb7Label.setFont(new java.awt.Font("Lucida Grande", 1, 12));
         Bb7Label.setForeground(new java.awt.Color(255, 255, 255));
         Bb7Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Bb7Label.setText("  ");
         Bb7Label.setBounds(992, 62, 17, 15);
         keyboardLP.add(Bb7Label, javax.swing.JLayeredPane.POPUP_LAYER);
+
+        pointerC5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/pointer.png"))); // NOI18N
+        pointerC5.setBounds(460, 120, 19, 30);
+        keyboardLP.add(pointerC5, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -1217,7 +1219,7 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(0, 850, 0, 0);
         getContentPane().add(inputRestBtn, gridBagConstraints);
 
-        chordNameDisplay.setFont(new java.awt.Font("Lucida Grande", 1, 18)); // NOI18N
+        chordNameDisplay.setFont(new java.awt.Font("Lucida Grande", 1, 18));
         chordNameDisplay.setText("                             ");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -1483,7 +1485,7 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
     /**
      * the array of StepPianoKeys for this Keyboard
      */
-    public StepPianoKey[] pkeys;
+    public AdvisingPianoKey[] pkeys;
     
     /**
      * Getting the piano key images.
@@ -1564,7 +1566,7 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
     /**
      * Creates new form StepEntryKeyboard
      */
-    public StepEntryKeyboard(Notate notate, int x, int y)
+    public AdvisingKeyboard(Notate notate, int x, int y)
     {
         initComponents();
         initKeys();
@@ -1667,7 +1669,7 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
 
                 // Get a midi value for the bass note
                 Integer bassMidi = findBass(root);
-                StepPianoKey bass = pianoKeys()[bassMidi - A];
+                AdvisingPianoKey bass = pianoKeys()[bassMidi - A];
                 
                 // We only want to use blue advice if (a) blue advice is turned
                 // on (b) the reference note we're using is actually adjacent to
@@ -1697,7 +1699,7 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
 
         if (displayNote)
         {
-            StepPianoKey key = pianoKeys()[midiValue - A];
+            AdvisingPianoKey key = pianoKeys()[midiValue - A];
             key.setPressed(true);
             pressKey(key, key.getPressedIcon());
         }
@@ -1781,7 +1783,7 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
         for(int i = 0; i < midiArray.size(); i++)
         {
             int midi = midiArray.get(i);
-            StepPianoKey pk = pianoKeys()[midi - A];
+            AdvisingPianoKey pk = pianoKeys()[midi - A];
             JLabel label = pk.getNumLabel();
             int value = (int)Math.floor(10*expectancies.get(i)/maxExpect);
             
@@ -1807,7 +1809,7 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
     {
 
         
-        StepPianoKey nextDown = pianoKeys()[midiValue - HALF_STEP - A];
+        AdvisingPianoKey nextDown = pianoKeys()[midiValue - HALF_STEP - A];
         
         if (chordMIDIs.contains(midiValue - HALF_STEP))
         {
@@ -1827,7 +1829,7 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
             pressKey(nextDown, nextDown.getOffIcon());
         }
         
-        StepPianoKey nextUp = pianoKeys()[midiValue + HALF_STEP - A];
+        AdvisingPianoKey nextUp = pianoKeys()[midiValue + HALF_STEP - A];
         
         if (chordMIDIs.contains(midiValue + HALF_STEP))
         {
@@ -1857,7 +1859,7 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
      */
     private void clearUnusedNotes(int midiValue, int bassMidi)
     {
-        for (StepPianoKey pk : pianoKeys())
+        for (AdvisingPianoKey pk : pianoKeys())
         {
             pk.getNumLabel().setText("");
             int curMidi = pk.getMIDI();
@@ -2163,7 +2165,7 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
      *
      * @param keyPlayed
      */
-    public void pressKey(StepPianoKey keyPlayed, Icon icon)
+    public void pressKey(AdvisingPianoKey keyPlayed, Icon icon)
     {
         JLabel label = keyPlayed.getLabel();
         
@@ -2187,7 +2189,7 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
                                 String chordName,
                                 int pressedMidi, int bassMidi)
     {   
-        for (StepPianoKey currentKey : pianoKeys())
+        for (AdvisingPianoKey currentKey : pianoKeys())
         {
             
             int midi = currentKey.getMIDI();
@@ -2229,7 +2231,7 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
      */
     public void clearKeyboard()
     {
-        for (StepPianoKey pk : pianoKeys())
+        for (AdvisingPianoKey pk : pianoKeys())
         {
             pk.getNumLabel().setText("");
             if (pk.isPressed())
@@ -2247,7 +2249,7 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
     
     public void clearKeyColors(int midi)
     {
-        for (StepPianoKey pk : pianoKeys())
+        for (AdvisingPianoKey pk : pianoKeys())
             if (pk.isPressed() && pk.getMIDI() != midi)
             {
                 pk.setPressed(false);
@@ -2261,7 +2263,7 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
      */
     public void clearKeyLabels()
     {
-        for (StepPianoKey pk : pianoKeys())
+        for (AdvisingPianoKey pk : pianoKeys())
             pk.getNumLabel().setText("");
 
     }
@@ -2303,7 +2305,8 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
     public void setSubDivComboBox()
     {
         Stave stave = notate.getCurrentStave();
-        int subDivs = stave.getSubDivs(stave.getSelectionStart()/SLOTS_PER_BEAT);
+        int subDivs = stave.getSubDivs(stave.getSelectionStart()
+                                       /SLOTS_PER_BEAT);
         setSubDivComboBox(subDivs);
     }
     
@@ -2321,203 +2324,203 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
      */
     private void initKeys()
     {
-        pkeys = new StepPianoKey[88];
+        pkeys = new AdvisingPianoKey[88];
         // 0th octave keys
-        pkeys[0] = new StepPianoKey(21, whiteKeyChord, whiteKeyColor,
+        pkeys[0] = new AdvisingPianoKey(21, whiteKeyChord, whiteKeyColor,
             whiteKeyPressed, whiteKey, bassKey, keyA0, A0Label);
-        pkeys[1] = new StepPianoKey(22, blackKeyChord, blackKeyColor,
+        pkeys[1] = new AdvisingPianoKey(22, blackKeyChord, blackKeyColor,
             blackKeyPressed, blackKey, blackBassKey, keyBb0, Bb0Label);
-        pkeys[2] = new StepPianoKey(23, whiteKeyChord, whiteKeyColor,
+        pkeys[2] = new AdvisingPianoKey(23, whiteKeyChord, whiteKeyColor,
             whiteKeyPressed, whiteKey, bassKey, keyB0, B0Label);
 
         // 1st octave keys
-        pkeys[3] = new StepPianoKey(24, whiteKeyChord, whiteKeyColor,
+        pkeys[3] = new AdvisingPianoKey(24, whiteKeyChord, whiteKeyColor,
             whiteKeyPressed, whiteKey, bassKey, keyC1, C1Label);
-        pkeys[4] = new StepPianoKey(25, blackKeyChord, blackKeyColor,
+        pkeys[4] = new AdvisingPianoKey(25, blackKeyChord, blackKeyColor,
             blackKeyPressed, blackKey, blackBassKey, keyCsharp1, Csharp1Label);
-        pkeys[5] = new StepPianoKey(26, whiteKeyChord, whiteKeyColor,
+        pkeys[5] = new AdvisingPianoKey(26, whiteKeyChord, whiteKeyColor,
             whiteKeyPressed, whiteKey, bassKey, keyD1, D1Label);
-        pkeys[6] = new StepPianoKey(27, blackKeyChord, blackKeyColor,
+        pkeys[6] = new AdvisingPianoKey(27, blackKeyChord, blackKeyColor,
             blackKeyPressed, blackKey, blackBassKey, keyEb1, Eb1Label);
-        pkeys[7] = new StepPianoKey(28, whiteKeyChord, whiteKeyColor,
+        pkeys[7] = new AdvisingPianoKey(28, whiteKeyChord, whiteKeyColor,
             whiteKeyPressed, whiteKey, bassKey, keyE1, E1Label);
-        pkeys[8] = new StepPianoKey(29, whiteKeyChord, whiteKeyColor,
+        pkeys[8] = new AdvisingPianoKey(29, whiteKeyChord, whiteKeyColor,
             whiteKeyPressed, whiteKey, bassKey, keyF1, F1Label);
-        pkeys[9] = new StepPianoKey(30, blackKeyChord, blackKeyColor,
+        pkeys[9] = new AdvisingPianoKey(30, blackKeyChord, blackKeyColor,
             blackKeyPressed, blackKey, blackBassKey, keyFsharp1, Fsharp1Label);
-        pkeys[10] = new StepPianoKey(31, whiteKeyChord, whiteKeyColor,
+        pkeys[10] = new AdvisingPianoKey(31, whiteKeyChord, whiteKeyColor,
             whiteKeyPressed, whiteKey, bassKey, keyG1, G1Label);
-        pkeys[11] = new StepPianoKey(32, blackKeyChord, blackKeyColor, 
+        pkeys[11] = new AdvisingPianoKey(32, blackKeyChord, blackKeyColor,
             blackKeyPressed, blackKey, blackBassKey, keyGsharp1, Gsharp1Label);
-        pkeys[12] = new StepPianoKey(33, whiteKeyChord, whiteKeyColor, 
+        pkeys[12] = new AdvisingPianoKey(33, whiteKeyChord, whiteKeyColor,
             whiteKeyPressed, whiteKey, bassKey, keyA1, A1Label);
-        pkeys[13] = new StepPianoKey(34, blackKeyChord, blackKeyColor,
+        pkeys[13] = new AdvisingPianoKey(34, blackKeyChord, blackKeyColor,
             blackKeyPressed, blackKey, blackBassKey, keyBb1, Bb1Label);
-        pkeys[14] = new StepPianoKey(35, whiteKeyChord, whiteKeyColor,
+        pkeys[14] = new AdvisingPianoKey(35, whiteKeyChord, whiteKeyColor,
             whiteKeyPressed, whiteKey, bassKey, keyB1, B1Label);
 
         // 2nd octave keys
-        pkeys[15] = new StepPianoKey(36, whiteKeyChord, whiteKeyColor,
+        pkeys[15] = new AdvisingPianoKey(36, whiteKeyChord, whiteKeyColor,
             whiteKeyPressed, whiteKey, bassKey, keyC2, C2Label);
-        pkeys[16] = new StepPianoKey(37, blackKeyChord, blackKeyColor,
+        pkeys[16] = new AdvisingPianoKey(37, blackKeyChord, blackKeyColor,
             blackKeyPressed, blackKey, blackBassKey, keyCsharp2, Csharp2Label);
-        pkeys[17] = new StepPianoKey(38, whiteKeyChord, whiteKeyColor,
+        pkeys[17] = new AdvisingPianoKey(38, whiteKeyChord, whiteKeyColor,
             whiteKeyPressed, whiteKey, bassKey, keyD2, D2Label);
-        pkeys[18] = new StepPianoKey(39, blackKeyChord, blackKeyColor,
+        pkeys[18] = new AdvisingPianoKey(39, blackKeyChord, blackKeyColor,
             blackKeyPressed, blackKey, blackBassKey, keyEb2, Eb2Label);
-        pkeys[19] = new StepPianoKey(40, whiteKeyChord, whiteKeyColor,
+        pkeys[19] = new AdvisingPianoKey(40, whiteKeyChord, whiteKeyColor,
             whiteKeyPressed, whiteKey, bassKey, keyE2, E2Label);
-        pkeys[20] = new StepPianoKey(41, whiteKeyChord, whiteKeyColor,
+        pkeys[20] = new AdvisingPianoKey(41, whiteKeyChord, whiteKeyColor,
             whiteKeyPressed, whiteKey, bassKey, keyF2, F2Label);
-        pkeys[21] = new StepPianoKey(42, blackKeyChord, blackKeyColor,
+        pkeys[21] = new AdvisingPianoKey(42, blackKeyChord, blackKeyColor,
             blackKeyPressed, blackKey, blackBassKey, keyFsharp2, Fsharp2Label);
-        pkeys[22] = new StepPianoKey(43, whiteKeyChord, whiteKeyColor,
+        pkeys[22] = new AdvisingPianoKey(43, whiteKeyChord, whiteKeyColor,
             whiteKeyPressed, whiteKey, bassKey, keyG2, G2Label);
-        pkeys[23] = new StepPianoKey(44, blackKeyChord, blackKeyColor,
+        pkeys[23] = new AdvisingPianoKey(44, blackKeyChord, blackKeyColor,
             blackKeyPressed, blackKey, blackBassKey, keyGsharp2, Gsharp2Label);
-        pkeys[24] = new StepPianoKey(45, whiteKeyChord, whiteKeyColor,
+        pkeys[24] = new AdvisingPianoKey(45, whiteKeyChord, whiteKeyColor,
             whiteKeyPressed, whiteKey, bassKey, keyA2, A2Label);
-        pkeys[25] = new StepPianoKey(46, blackKeyChord, blackKeyColor,
+        pkeys[25] = new AdvisingPianoKey(46, blackKeyChord, blackKeyColor,
             blackKeyPressed, blackKey, blackBassKey, keyBb2, Bb2Label);
-        pkeys[26] = new StepPianoKey(47, whiteKeyChord, whiteKeyColor,
+        pkeys[26] = new AdvisingPianoKey(47, whiteKeyChord, whiteKeyColor,
             whiteKeyPressed, whiteKey, bassKey, keyB2, B2Label);
 
         // 3rd octave keys
-        pkeys[27] = new StepPianoKey(48, whiteKeyChord, whiteKeyColor,
+        pkeys[27] = new AdvisingPianoKey(48, whiteKeyChord, whiteKeyColor,
             whiteKeyPressed, whiteKey, bassKey, keyC3, C3Label);
-        pkeys[28] = new StepPianoKey(49, blackKeyChord, blackKeyColor,
+        pkeys[28] = new AdvisingPianoKey(49, blackKeyChord, blackKeyColor,
             blackKeyPressed, blackKey, blackBassKey, keyCsharp3, Csharp3Label);
-        pkeys[29] = new StepPianoKey(50, whiteKeyChord, whiteKeyColor,
+        pkeys[29] = new AdvisingPianoKey(50, whiteKeyChord, whiteKeyColor,
             whiteKeyPressed, whiteKey, bassKey, keyD3, D3Label);
-        pkeys[30] = new StepPianoKey(51, blackKeyChord, blackKeyColor,
+        pkeys[30] = new AdvisingPianoKey(51, blackKeyChord, blackKeyColor,
             blackKeyPressed, blackKey, blackBassKey, keyEb3, Eb3Label);
-        pkeys[31] = new StepPianoKey(52, whiteKeyChord, whiteKeyColor,
+        pkeys[31] = new AdvisingPianoKey(52, whiteKeyChord, whiteKeyColor,
             whiteKeyPressed, whiteKey, bassKey, keyE3, E3Label);
-        pkeys[32] = new StepPianoKey(53, whiteKeyChord, whiteKeyColor, 
+        pkeys[32] = new AdvisingPianoKey(53, whiteKeyChord, whiteKeyColor,
             whiteKeyPressed, whiteKey, bassKey, keyF3, F3Label);
-        pkeys[33] = new StepPianoKey(54, blackKeyChord, blackKeyColor,
+        pkeys[33] = new AdvisingPianoKey(54, blackKeyChord, blackKeyColor,
             blackKeyPressed, blackKey, blackBassKey, keyFsharp3, Fsharp3Label);
-        pkeys[34] = new StepPianoKey(55, whiteKeyChord, whiteKeyColor,
+        pkeys[34] = new AdvisingPianoKey(55, whiteKeyChord, whiteKeyColor,
             whiteKeyPressed, whiteKey, bassKey, keyG3, G3Label);
-        pkeys[35] = new StepPianoKey(56, blackKeyChord, blackKeyColor,
+        pkeys[35] = new AdvisingPianoKey(56, blackKeyChord, blackKeyColor,
             blackKeyPressed, blackKey, blackBassKey, keyGsharp3, Gsharp3Label);
-        pkeys[36] = new StepPianoKey(57, whiteKeyChord, whiteKeyColor,
+        pkeys[36] = new AdvisingPianoKey(57, whiteKeyChord, whiteKeyColor,
             whiteKeyPressed, whiteKey, bassKey, keyA3, A3Label);
-        pkeys[37] = new StepPianoKey(58, blackKeyChord, blackKeyColor,
+        pkeys[37] = new AdvisingPianoKey(58, blackKeyChord, blackKeyColor,
             blackKeyPressed, blackKey, blackBassKey, keyBb3, Bb3Label);
-        pkeys[38] = new StepPianoKey(59, whiteKeyChord, whiteKeyColor,
+        pkeys[38] = new AdvisingPianoKey(59, whiteKeyChord, whiteKeyColor,
             whiteKeyPressed, whiteKey, bassKey, keyB3, B3Label);
 
         // 4th octave keys
-        pkeys[39] = new StepPianoKey(60, whiteKeyChord, whiteKeyColor,
+        pkeys[39] = new AdvisingPianoKey(60, whiteKeyChord, whiteKeyColor,
             whiteKeyPressed, whiteKey, bassKey, keyC4, C4Label);
-        pkeys[40] = new StepPianoKey(61, blackKeyChord, blackKeyColor,
+        pkeys[40] = new AdvisingPianoKey(61, blackKeyChord, blackKeyColor,
             blackKeyPressed, blackKey, blackBassKey, keyCsharp4, Csharp4Label);
-        pkeys[41] = new StepPianoKey(62, whiteKeyChord, whiteKeyColor,
+        pkeys[41] = new AdvisingPianoKey(62, whiteKeyChord, whiteKeyColor,
             whiteKeyPressed, whiteKey, bassKey, keyD4, D4Label);
-        pkeys[42] = new StepPianoKey(63, blackKeyChord, blackKeyColor,
+        pkeys[42] = new AdvisingPianoKey(63, blackKeyChord, blackKeyColor,
             blackKeyPressed, blackKey, blackBassKey, keyEb4, Eb4Label);
-        pkeys[43] = new StepPianoKey(64, whiteKeyChord, whiteKeyColor,
+        pkeys[43] = new AdvisingPianoKey(64, whiteKeyChord, whiteKeyColor,
             whiteKeyPressed, whiteKey, bassKey, keyE4, E4Label);
-        pkeys[44] = new StepPianoKey(65, whiteKeyChord, whiteKeyColor,
+        pkeys[44] = new AdvisingPianoKey(65, whiteKeyChord, whiteKeyColor,
             whiteKeyPressed, whiteKey, bassKey, keyF4, F4Label);
-        pkeys[45] = new StepPianoKey(66, blackKeyChord, blackKeyColor,
+        pkeys[45] = new AdvisingPianoKey(66, blackKeyChord, blackKeyColor,
             blackKeyPressed, blackKey, blackBassKey, keyFsharp4, Fsharp4Label);
-        pkeys[46] = new StepPianoKey(67, whiteKeyChord, whiteKeyColor,
+        pkeys[46] = new AdvisingPianoKey(67, whiteKeyChord, whiteKeyColor,
             whiteKeyPressed, whiteKey, bassKey, keyG4, G4Label);
-        pkeys[47] = new StepPianoKey(68, blackKeyChord, blackKeyColor,
+        pkeys[47] = new AdvisingPianoKey(68, blackKeyChord, blackKeyColor,
             blackKeyPressed, blackKey, blackBassKey, keyGsharp4, Gsharp4Label);
-        pkeys[48] = new StepPianoKey(69, whiteKeyChord, whiteKeyColor,
+        pkeys[48] = new AdvisingPianoKey(69, whiteKeyChord, whiteKeyColor,
             whiteKeyPressed, whiteKey, bassKey, keyA4, A4Label);
-        pkeys[49] = new StepPianoKey(70, blackKeyChord, blackKeyColor,
+        pkeys[49] = new AdvisingPianoKey(70, blackKeyChord, blackKeyColor,
             blackKeyPressed, blackKey, blackBassKey, keyBb4, Bb4Label);
-        pkeys[50] = new StepPianoKey(71, whiteKeyChord, whiteKeyColor,
+        pkeys[50] = new AdvisingPianoKey(71, whiteKeyChord, whiteKeyColor,
             whiteKeyPressed, whiteKey, bassKey, keyB4, B4Label);
 
         // 5th octave keys
-        pkeys[51] = new StepPianoKey(72, whiteKeyChord, whiteKeyColor,
+        pkeys[51] = new AdvisingPianoKey(72, whiteKeyChord, whiteKeyColor,
             whiteKeyPressed, whiteKey, bassKey, keyC5, C5Label);
-        pkeys[52] = new StepPianoKey(73, blackKeyChord, blackKeyColor,
+        pkeys[52] = new AdvisingPianoKey(73, blackKeyChord, blackKeyColor,
             blackKeyPressed, blackKey, blackBassKey, keyCsharp5, Csharp5Label);
-        pkeys[53] = new StepPianoKey(74, whiteKeyChord, whiteKeyColor,
+        pkeys[53] = new AdvisingPianoKey(74, whiteKeyChord, whiteKeyColor,
             whiteKeyPressed, whiteKey, bassKey, keyD5, D5Label);
-        pkeys[54] = new StepPianoKey(75, blackKeyChord, blackKeyColor,
+        pkeys[54] = new AdvisingPianoKey(75, blackKeyChord, blackKeyColor,
             blackKeyPressed, blackKey, blackBassKey, keyEb5, Eb5Label);
-        pkeys[55] = new StepPianoKey(76, whiteKeyChord, whiteKeyColor,
+        pkeys[55] = new AdvisingPianoKey(76, whiteKeyChord, whiteKeyColor,
             whiteKeyPressed, whiteKey, bassKey, keyE5, E5Label);
-        pkeys[56] = new StepPianoKey(77, whiteKeyChord, whiteKeyColor,
+        pkeys[56] = new AdvisingPianoKey(77, whiteKeyChord, whiteKeyColor,
             whiteKeyPressed, whiteKey, bassKey, keyF5, F5Label);
-        pkeys[57] = new StepPianoKey(78, blackKeyChord, blackKeyColor,
+        pkeys[57] = new AdvisingPianoKey(78, blackKeyChord, blackKeyColor,
             blackKeyPressed, blackKey, blackBassKey, keyFsharp5, Fsharp5Label);
-        pkeys[58] = new StepPianoKey(79, whiteKeyChord, whiteKeyColor,
+        pkeys[58] = new AdvisingPianoKey(79, whiteKeyChord, whiteKeyColor,
             whiteKeyPressed, whiteKey, bassKey, keyG5, G5Label);
-        pkeys[59] = new StepPianoKey(80, blackKeyChord, blackKeyColor,
+        pkeys[59] = new AdvisingPianoKey(80, blackKeyChord, blackKeyColor,
             blackKeyPressed, blackKey, blackBassKey, keyGsharp5, Gsharp5Label);
-        pkeys[60] = new StepPianoKey(81, whiteKeyChord, whiteKeyColor,
+        pkeys[60] = new AdvisingPianoKey(81, whiteKeyChord, whiteKeyColor,
             whiteKeyPressed, whiteKey, bassKey, keyA5, A5Label);
-        pkeys[61] = new StepPianoKey(82, blackKeyChord, blackKeyColor,
+        pkeys[61] = new AdvisingPianoKey(82, blackKeyChord, blackKeyColor,
             blackKeyPressed, blackKey, blackBassKey, keyBb5, Bb5Label);
-        pkeys[62] = new StepPianoKey(83, whiteKeyChord, whiteKeyColor,
+        pkeys[62] = new AdvisingPianoKey(83, whiteKeyChord, whiteKeyColor,
             whiteKeyPressed, whiteKey, bassKey, keyB5, B5Label);
 
         // 6th octave keys
-        pkeys[63] = new StepPianoKey(84, whiteKeyChord, whiteKeyColor,
+        pkeys[63] = new AdvisingPianoKey(84, whiteKeyChord, whiteKeyColor,
             whiteKeyPressed, whiteKey, bassKey, keyC6, C6Label);
-        pkeys[64] = new StepPianoKey(85, blackKeyChord, blackKeyColor,
+        pkeys[64] = new AdvisingPianoKey(85, blackKeyChord, blackKeyColor,
             blackKeyPressed, blackKey, blackBassKey, keyCsharp6, Csharp5Label);
-        pkeys[65] = new StepPianoKey(86, whiteKeyChord, whiteKeyColor,
+        pkeys[65] = new AdvisingPianoKey(86, whiteKeyChord, whiteKeyColor,
             whiteKeyPressed, whiteKey, bassKey, keyD6, D6Label);
-        pkeys[66] = new StepPianoKey(87, blackKeyChord, blackKeyColor,
+        pkeys[66] = new AdvisingPianoKey(87, blackKeyChord, blackKeyColor,
             blackKeyPressed, blackKey, blackBassKey, keyEb6, Eb6Label);
-        pkeys[67] = new StepPianoKey(88, whiteKeyChord, whiteKeyColor,
+        pkeys[67] = new AdvisingPianoKey(88, whiteKeyChord, whiteKeyColor,
             whiteKeyPressed, whiteKey, bassKey, keyE6, E6Label);
-        pkeys[68] = new StepPianoKey(89, whiteKeyChord, whiteKeyColor,
+        pkeys[68] = new AdvisingPianoKey(89, whiteKeyChord, whiteKeyColor,
             whiteKeyPressed, whiteKey, bassKey, keyF6, F6Label);
-        pkeys[69] = new StepPianoKey(90, blackKeyChord, blackKeyColor,
+        pkeys[69] = new AdvisingPianoKey(90, blackKeyChord, blackKeyColor,
             blackKeyPressed, blackKey, blackBassKey, keyFsharp6, Fsharp6Label);
-        pkeys[70] = new StepPianoKey(91, whiteKeyChord, whiteKeyColor,
+        pkeys[70] = new AdvisingPianoKey(91, whiteKeyChord, whiteKeyColor,
             whiteKeyPressed, whiteKey, bassKey, keyG6, G6Label);
-        pkeys[71] = new StepPianoKey(92, blackKeyChord, blackKeyColor,
+        pkeys[71] = new AdvisingPianoKey(92, blackKeyChord, blackKeyColor,
             blackKeyPressed, blackKey, blackBassKey, keyGsharp6, Gsharp6Label);
-        pkeys[72] = new StepPianoKey(93, whiteKeyChord, whiteKeyColor,
+        pkeys[72] = new AdvisingPianoKey(93, whiteKeyChord, whiteKeyColor,
             whiteKeyPressed, whiteKey, bassKey, keyA6, A6Label);
-        pkeys[73] = new StepPianoKey(94, blackKeyChord, blackKeyColor,
+        pkeys[73] = new AdvisingPianoKey(94, blackKeyChord, blackKeyColor,
             blackKeyPressed, blackKey, blackBassKey, keyBb6, Bb6Label);
-        pkeys[74] = new StepPianoKey(95, whiteKeyChord, whiteKeyColor,
+        pkeys[74] = new AdvisingPianoKey(95, whiteKeyChord, whiteKeyColor,
             whiteKeyPressed, whiteKey, bassKey, keyB6, B6Label);
 
         // 7th octave keys
-        pkeys[75] = new StepPianoKey(96, whiteKeyChord, whiteKeyColor,
+        pkeys[75] = new AdvisingPianoKey(96, whiteKeyChord, whiteKeyColor,
             whiteKeyPressed, whiteKey, bassKey, keyC7, C7Label);
-        pkeys[76] = new StepPianoKey(97, blackKeyChord, blackKeyColor,
+        pkeys[76] = new AdvisingPianoKey(97, blackKeyChord, blackKeyColor,
             blackKeyPressed, blackKey, blackBassKey, keyCsharp7, Csharp7Label);
-        pkeys[77] = new StepPianoKey(98, whiteKeyChord, whiteKeyColor,
+        pkeys[77] = new AdvisingPianoKey(98, whiteKeyChord, whiteKeyColor,
             whiteKeyPressed, whiteKey, bassKey, keyD7, D7Label);
-        pkeys[78] = new StepPianoKey(99, blackKeyChord, blackKeyColor,
+        pkeys[78] = new AdvisingPianoKey(99, blackKeyChord, blackKeyColor,
             blackKeyPressed, blackKey, blackBassKey, keyEb7, Eb7Label);
-        pkeys[79] = new StepPianoKey(100, whiteKeyChord, whiteKeyColor,
+        pkeys[79] = new AdvisingPianoKey(100, whiteKeyChord, whiteKeyColor,
             whiteKeyPressed, whiteKey, bassKey, keyE7, E7Label);
-        pkeys[80] = new StepPianoKey(101, whiteKeyChord, whiteKeyColor,
+        pkeys[80] = new AdvisingPianoKey(101, whiteKeyChord, whiteKeyColor,
             whiteKeyPressed, whiteKey, bassKey, keyF7, F7Label);
-        pkeys[81] = new StepPianoKey(102, blackKeyChord, blackKeyColor,
+        pkeys[81] = new AdvisingPianoKey(102, blackKeyChord, blackKeyColor,
             blackKeyPressed, blackKey, blackBassKey, keyFsharp7, Fsharp7Label);
-        pkeys[82] = new StepPianoKey(103, whiteKeyChord, whiteKeyColor,
+        pkeys[82] = new AdvisingPianoKey(103, whiteKeyChord, whiteKeyColor,
             whiteKeyPressed, whiteKey, bassKey, keyG7, G7Label);
-        pkeys[83] = new StepPianoKey(104, blackKeyChord, blackKeyColor,
+        pkeys[83] = new AdvisingPianoKey(104, blackKeyChord, blackKeyColor,
             blackKeyPressed, blackKey, blackBassKey, keyGsharp7, Gsharp7Label);
-        pkeys[84] = new StepPianoKey(105, whiteKeyChord, whiteKeyColor,
+        pkeys[84] = new AdvisingPianoKey(105, whiteKeyChord, whiteKeyColor,
             whiteKeyPressed, whiteKey, bassKey, keyA7, A7Label);
-        pkeys[85] = new StepPianoKey(106, blackKeyChord, blackKeyColor,
+        pkeys[85] = new AdvisingPianoKey(106, blackKeyChord, blackKeyColor,
             blackKeyPressed, blackKey, blackBassKey, keyBb7, Bb7Label);
-        pkeys[86] = new StepPianoKey(107, whiteKeyChord, whiteKeyColor,
+        pkeys[86] = new AdvisingPianoKey(107, whiteKeyChord, whiteKeyColor,
             whiteKeyPressed, whiteKey, bassKey, keyB7, B7Label);
 
         // 8th octave keys
-        pkeys[87] = new StepPianoKey(108, whiteKeyChord, whiteKeyColor,
+        pkeys[87] = new AdvisingPianoKey(108, whiteKeyChord, whiteKeyColor,
             whiteKeyPressed, whiteKey, bassKey, keyC8, C8Label);
     }
 
-    public StepPianoKey[] pianoKeys()
+    public AdvisingPianoKey[] pianoKeys()
     {
         return pkeys;
     }
@@ -3000,6 +3003,7 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRS
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel keyA0;
     private javax.swing.JLabel keyA1;
     private javax.swing.JLabel keyA2;
@@ -3093,7 +3097,7 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRS
     private javax.swing.JMenu optionsMenu;
     private javax.swing.JMenuItem pausePlayMI;
     private javax.swing.JMenu playbackMenu;
-    private javax.swing.JLabel pointerC4;
+    private javax.swing.JLabel pointerC5;
     private javax.swing.JButton refreshAdviceBtn;
     private javax.swing.JMenuItem startPlayMI;
     private javax.swing.JMenuItem startSelPlayMI;
