@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.5" maxVersion="1.8" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+<Form version="1.5" maxVersion="1.7" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <NonVisualComponents>
     <Container class="javax.swing.JDialog" name="preferencesDialog">
       <Properties>
@@ -9623,7 +9623,6 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;center&gt;Step&lt;br&gt;Input&lt;/center&gt;&lt;/html&gt;"/>
                 <Property name="toolTipText" type="java.lang.String" value="Step record from MIDI source. Each step uses the current slot showing and advances to the next. Use f and a keys to move forward and backward among slots, if desired, for making corrections."/>
-                <Property name="actionCommand" type="java.lang.String" value=""/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                     <BevelBorder/>

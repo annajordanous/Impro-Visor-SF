@@ -33,7 +33,7 @@ import javax.swing.*;
  * @author Audrey Musselman-Brown
  * Modified from the PianoKey class
  */
-public class StepPianoKey {
+public class AdvisingPianoKey {
     
     static final int NOTE_VELOCITY = 63;
     static final int NOTE_DURATION = 4;
@@ -101,7 +101,7 @@ public class StepPianoKey {
      * @param midiValue, onIcon, offIcon, label
      */
     
-    public StepPianoKey(int midiValue, Icon chordIcon, Icon colorIcon, Icon pressedIcon,
+    public AdvisingPianoKey(int midiValue, Icon chordIcon, Icon colorIcon, Icon pressedIcon,
                         Icon offIcon, Icon bassIcon, JLabel label, JLabel numLabel)
     {
         this.midiValue = midiValue;
@@ -123,9 +123,9 @@ public class StepPianoKey {
         this.name = s.substring(0,len);
     }
     
-    public StepPianoKey()
+    public AdvisingPianoKey()
     {
-        new StepPianoKey(
+        new AdvisingPianoKey(
                 defaultMIDI, defaultChordIcon, defaultColorIcon, defaultPressedIcon,
                 defaultOffIcon, defaultBassIcon, defaultLabel, defaultNumLabel);
     }
