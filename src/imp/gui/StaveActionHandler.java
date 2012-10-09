@@ -359,14 +359,14 @@ private Point cursorLocation = new Point(-1, -1);
  */
 private boolean overHandles = false;
 
-private String blueNoteCursorImg = "graphics/cursors/blueNoteCursor.png";
-private String blackNoteCursorImg = "graphics/cursors/blackNoteCursor.png";
-private String greenNoteCursorImg = "graphics/cursors/greenNoteCursor.png";
-private String redNoteCursorImg = "graphics/cursors/redNoteCursor.png";
-private String blueNoteLineCursorImg = "graphics/cursor/blueNoteLineCursor.png";
-private String blackNoteLineCursorImg = "graphics/cursors/blackNoteLineCursor.png";
-private String greenNoteLineCursorImg = "graphics/cursors/greenNoteLineCursor.png";
-private String redNoteLineCursorImg = "graphics/cursors/redNoteLineCursor.png";
+private String blueNoteCursorImg = "graphics/cursors/blueNoteCursor.gif";
+private String blackNoteCursorImg = "graphics/cursors/blackNoteCursor.gif";
+private String greenNoteCursorImg = "graphics/cursors/greenNoteCursor.gif";
+private String redNoteCursorImg = "graphics/cursors/redNoteCursor.gif";
+private String blueNoteLineCursorImg = "graphics/cursors/blueNoteLineCursor.gif";
+private String blackNoteLineCursorImg = "graphics/cursors/blackNoteLineCursor.gif";
+private String greenNoteLineCursorImg = "graphics/cursors/greenNoteLineCursor.gif";
+private String redNoteLineCursorImg = "graphics/cursors/redNoteLineCursor.gif";
 
 private Cursor makeCursor(String filename, String cursorName, boolean offset)
  {
@@ -541,7 +541,8 @@ private void updateNoteCursorLabel(MouseEvent e)
     
     int curLine = getCurrentLine(y);
     ChordPart prog = stave.getChordProg();
-    Chord currentChord = prog.getPrevChord(stave.getNextCstrLine(searchForCstrLine(x, y)));
+    int cstrLine = stave.getNextCstrLine(searchForCstrLine(x, y));
+    Chord currentChord = prog.getPrevChord(cstrLine);
 
     if (notate.getSmartEntry())
     {
@@ -575,7 +576,8 @@ private void chooseAndSetNoteCursor(MouseEvent e)
     int y = e.getY();
     
     ChordPart prog = stave.getChordProg();
-    Chord currentChord = prog.getPrevChord(stave.getNextCstrLine(searchForCstrLine(x, y)));
+    int cstrLine = stave.getNextCstrLine(searchForCstrLine(x, y));
+    Chord currentChord = prog.getPrevChord(cstrLine);
 
     int pitch;
     Note note;
@@ -601,17 +603,21 @@ private void chooseAndSetNoteCursor(MouseEvent e)
                             curLine);
         note = new Note(pitch);
     }
+
+    // What are we doing here?
+    //
     // MAGIC VALUE
     if (oldNote != null &&
-        Math.abs(oldNote.getPitch() - pitch) <= 2
-        && stave.getSelectionStart() == searchForCstrLine(x, y))
+        Math.abs(oldNote.getPitch() - pitch) <= 2 &&
+        stave.getSelectionStart() == searchForCstrLine(x, y))
             {
                 setCursor(defaultCursor);
                 return;
             }
 
     boolean noteOnLegerLine = noteOnLegerLine(pitch, curLine);
-    
+
+    // if we have a real chord
     if (currentChord != null && !currentChord.getName().equals(NOCHORD))
     {
 
@@ -620,7 +626,7 @@ private void chooseAndSetNoteCursor(MouseEvent e)
 
         ArrayList<Integer> chordMIDIs = curChordForm.getSpellMIDIarray(root);
         ArrayList<Integer> colorMIDIs = curChordForm.getColorMIDIarray(root);
-
+        System.out.println(chordMIDIs);
         // Put all the pitches in the same octave so we can compare them
         for(int i = 0; i < chordMIDIs.size(); i++)
         {
@@ -635,10 +641,10 @@ private void chooseAndSetNoteCursor(MouseEvent e)
         }
 
         // pitch is invalid
-        if( pitch < stave.getMinPitch() ||pitch > stave.getMaxPitch() )
+        if( pitch < stave.getMinPitch() || pitch > stave.getMaxPitch() )
         {
-            //stave.repaint();
             noteCursor = makeCursor(blueNoteCursorImg, "Note", true);
+
             setCursor(noteCursor);
             stave.clearNoteCursorLabel();
             return;
@@ -669,11 +675,20 @@ private void chooseAndSetNoteCursor(MouseEvent e)
             else
                 noteCursor = makeCursor(redNoteCursorImg, "Note", true); 
         }
-        
-        stave.updateTempLegerLines(pitch, x,  curLine, stave.getGraphics());      
-        stave.setNoteCursorLabel(noteNameFromMidi(note), x, y);
-        setCursor(noteCursor);
+
     }
+
+    else
+    {
+        if (noteOnLegerLine)
+            noteCursor = makeCursor(blackNoteLineCursorImg, "Note", true);
+        else
+            noteCursor = makeCursor(blackNoteCursorImg, "Note", true);
+    }
+
+    stave.updateTempLegerLines(pitch, x,  curLine, stave.getGraphics());
+    stave.setNoteCursorLabel(noteNameFromMidi(note), x, y);
+    setCursor(noteCursor);
 }
 
 /**

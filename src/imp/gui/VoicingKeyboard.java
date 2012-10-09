@@ -225,6 +225,11 @@ public class VoicingKeyboard extends javax.swing.JFrame {
 
         setTitle("Keyboard");
         setAlwaysOnTop(true);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         jPanel1.setMaximumSize(new java.awt.Dimension(1045, 150));
@@ -630,7 +635,7 @@ public class VoicingKeyboard extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         getContentPane().add(ctrlClicktoChangeRootLabel, gridBagConstraints);
 
-        futureChordDisplay.setFont(new java.awt.Font("Arial", 1, 14));
+        futureChordDisplay.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         futureChordDisplay.setForeground(new java.awt.Color(51, 153, 255));
         futureChordDisplay.setMaximumSize(new java.awt.Dimension(485, 20));
         futureChordDisplay.setMinimumSize(new java.awt.Dimension(485, 20));
@@ -641,7 +646,7 @@ public class VoicingKeyboard extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         getContentPane().add(futureChordDisplay, gridBagConstraints);
 
-        pastChordDisplay.setFont(new java.awt.Font("Arial", 1, 14));
+        pastChordDisplay.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         pastChordDisplay.setForeground(new java.awt.Color(153, 153, 153));
         pastChordDisplay.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         pastChordDisplay.setMaximumSize(new java.awt.Dimension(375, 20));
@@ -653,7 +658,7 @@ public class VoicingKeyboard extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         getContentPane().add(pastChordDisplay, gridBagConstraints);
 
-        presentChordDisplay.setFont(new java.awt.Font("Arial", 1, 18));
+        presentChordDisplay.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         presentChordDisplay.setForeground(new java.awt.Color(0, 153, 0));
         presentChordDisplay.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         presentChordDisplay.setMaximumSize(new java.awt.Dimension(175, 20));
@@ -2102,6 +2107,10 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRS
     
     windowMenu.repaint();
 }//GEN-LAST:event_windowMenuMenuSelected
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        closeWindow();
+    }//GEN-LAST:event_formWindowClosing
 
 private void playChordButtonKeyTyped(java.awt.event.KeyEvent evt) {                                         
 }                                  

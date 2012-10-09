@@ -22441,13 +22441,11 @@ private void rmsThresholdSliderStateChanged(javax.swing.event.ChangeEvent evt)//
 
     private void noteCursorBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_noteCursorBtnActionPerformed
 
-        StaveActionHandler handler = getCurrentStave().getActionHandler();
-
         if (useNoteCursor)
         {
             setUseNoteCursor(false);
             noteCursorBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource(
-                    "graphics/Cursors/blueNoteLineCursor.png")));
+                    "graphics/cursors/blueNoteLineCursor.png")));
         }
         else
         {
@@ -25389,7 +25387,8 @@ public boolean getUseNoteCursor()
 public void setUseNoteCursor(boolean on)
 {
     useNoteCursor = on;
-    getCurrentStaveActionHandler().setCursor(getCurrentStaveActionHandler().getNoteCursor());
+    Cursor noteCursor = getCurrentStaveActionHandler().getNoteCursor();
+    getCurrentStaveActionHandler().setCursor(noteCursor);
 }
 
 public String getDefaultGrammarName()
