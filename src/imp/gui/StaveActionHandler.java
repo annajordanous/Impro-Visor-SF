@@ -626,7 +626,7 @@ private void chooseAndSetNoteCursor(MouseEvent e)
 
         ArrayList<Integer> chordMIDIs = curChordForm.getSpellMIDIarray(root);
         ArrayList<Integer> colorMIDIs = curChordForm.getColorMIDIarray(root);
-        System.out.println(chordMIDIs);
+        
         // Put all the pitches in the same octave so we can compare them
         for(int i = 0; i < chordMIDIs.size(); i++)
         {
@@ -1470,7 +1470,6 @@ public void mouseDragged(MouseEvent e)
     return;
    }
 
-
   // if you're selecting a group of notes
   if( selectingGroup && !timeSelected && !keySelected // with selectingGroup out, does not help dragging single notes
     && !draggingPitch && !draggingNote && !draggingGroup && !shiftClicking && !drawing )
@@ -1719,9 +1718,9 @@ public void mouseDragged(MouseEvent e)
   // This is for repair of sub-divisions once dragging stops
   if( draggingNote )
    {
+
     int start = stave.getSelectionStart();
     int end = stave.getSelectionEnd();
-
     if( start < dragMin )
      {
       dragMin = start;
@@ -1826,6 +1825,7 @@ public void mouseDragged(MouseEvent e)
   // dragging the note's position
   else if( startingIndex != OUT_OF_BOUNDS && draggingNote )
    {
+
     Trace.log(2, "point E");
     if( nearestLine != OUT_OF_BOUNDS )
      {
@@ -1851,7 +1851,10 @@ public void mouseDragged(MouseEvent e)
    }
   else if( nearestLine != OUT_OF_BOUNDS && selectedIndex != OUT_OF_BOUNDS && draggingGroup )
    {
-    // dragging a group of note's position
+        //stave.setSelectionStart(stave.getNonRestSelectionStart());
+        
+        //stave.setSelectionEnd(stave.getNonRestSelectionEnd());
+    // dragging a group of notes' position
     Trace.log(2, "point F");
 
     int pasteIndex = nearestLine - draggingGroupOffset;
@@ -1860,26 +1863,29 @@ public void mouseDragged(MouseEvent e)
      {
       pasteIndex = 0;
      }
-
+    
     // move the group of notes to the new section and select it
     if( pasteIndex < stave.getMelodyPart().size() )
      {
-
+         // This replaces the last dragging command with the current one
+         // so that when the user decides to undo the drag, it undoes it
+         // all the way to the beginning of the drag, not just the last step.
       if( firstDrag == false )
        {
         firstDrag = true;
+        draggingGroupOrigSelectionStart = stave.getNonRestSelectionStart();
+        draggingGroupOrigSelectionEnd = stave.getSelectionEnd();
        }
       else
        {
         Trace.log(2, "undo command in StaveActionHandler");
         notate.cm.undo();
        }
-
-      notate.cm.execute(new DragSetCommand(stave.getMelodyPart(),
+      DragSetCommand DSC = new DragSetCommand(stave.getMelodyPart(),
                                            draggingGroupOrigSelectionStart,
                                            draggingGroupOrigSelectionEnd,
-                                           pasteIndex));
-
+                                           pasteIndex);
+      notate.cm.execute(DSC);
       stave.setSelection(pasteIndex,
                          pasteIndex + stave.getSelectionLength());
 
