@@ -1657,10 +1657,11 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
         // If we STILL don't have a reference note, give up and use middle C.
         if (midiValue == NO_NOTE) midiValue = MIDDLE_C;
         
-        clearKeyLabels();   
-        /* if (useExpectancies)
+        clearKeyLabels();
+        
+        if (useExpectancies)
             findAndDisplayExpectancies(selectedSlot);
-        */
+        
         if (useAdvice)
         {              
             ChordPart chordProg = currentStave.getChordProg();
@@ -2855,7 +2856,7 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRS
             useAdvice = true;
         else
             useAdvice = false;
-        
+
         resetAdvice();
         requestFocus();
     }//GEN-LAST:event_useAdviceMIActionPerformed
@@ -2864,7 +2865,7 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRS
         
         if (useExpectanciesMI.isSelected()) useExpectancies = true;
         else useExpectancies = false;
-        
+      
         resetAdvice();
         requestFocus();
     }//GEN-LAST:event_useExpectanciesMIActionPerformed
