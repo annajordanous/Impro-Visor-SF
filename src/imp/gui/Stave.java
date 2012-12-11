@@ -1488,7 +1488,7 @@ public void setSelectionToEnd()
   }
 
 /**
- * Gets the first non-reset index after the start of the selection
+ * Gets the first non-rest index after the start of the selection
  * up to the end selection.
  * @return int          the index to start selection
  */

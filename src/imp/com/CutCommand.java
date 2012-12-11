@@ -115,7 +115,7 @@ public class CutCommand implements Command {
         while(i.hasNext())
             dest.addUnit(i.next());
         */
-
+        
         Command copyCommand = new CopyCommand(source, dest, startSlot, endSlot);
         copyCommand.execute();
 

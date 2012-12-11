@@ -130,7 +130,6 @@ public class PasteCommand implements Command, Constants {
      * undoing and redoing purposes.
      */
     public void execute() {
-      Trace.log(2, "executing PasteCommand");
       if( source != null && dest != null && source.size() > 0 )
         {
         Trace.log(1, "pasting notes starting at " + startSlot 
@@ -144,7 +143,7 @@ public class PasteCommand implements Command, Constants {
             source.setSize(oldSection.size());
 
         dest.pasteOver(source, startSlot);
-        
+       
         // if we're inserting a Note, then we want to make sure it stops
         // auto-expanding after two measures (and remember that we did that)
         int lastIndex = dest.getPrevIndex(startSlot + source.size());
@@ -169,7 +168,7 @@ public class PasteCommand implements Command, Constants {
           }        
         }
       }
-
+      
     if( chordSource != null && chordDest != null )
       {
         Trace.log(1, "pasting chords starting at " + startSlot 
@@ -181,7 +180,6 @@ public class PasteCommand implements Command, Constants {
 
       chordDest.pasteOver(chordSource, startSlot);
       }
-
    // if( play && source instanceof MelodyPart && ImproVisor.getPlay() )
      // {
         // This interferes with pasting advice. We'll leave it out for now.
