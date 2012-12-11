@@ -85,7 +85,7 @@ public class DragSetCommand implements Command {
      */
     public DragSetCommand(Part part, int startSlot, int endSlot, int pasteSlot) 
     {
-      Trace.log(2, "DragSetCommand: " + startSlot + " to " + endSlot + " paste to " + pasteSlot);
+        Trace.log(2, "DragSetCommand: " + startSlot + " to " + endSlot + " paste to " + pasteSlot);
         this.part = part;
         this.startSlot = startSlot;
         this.endSlot = endSlot;
@@ -99,8 +99,8 @@ public class DragSetCommand implements Command {
     public void execute() {
         Trace.log(2, "executing DragSetCommand");
         cutCommand = new CutCommand(part, dragClip, startSlot, endSlot);
-        pasteCommand = new PasteCommand(dragClip, part, pasteSlot, false);
         cutCommand.execute();
+        pasteCommand = new PasteCommand(dragClip, part, pasteSlot, false);
         pasteCommand.execute();
     }
 

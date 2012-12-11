@@ -843,7 +843,7 @@ private static int MAX_NOTE_ENTRY_LENGTH = BEAT / 2;
 
 public static int getEntryDuration(Note note)
  {
-  return Math.max(0, Math.min(note.getRhythmValue(), MAX_NOTE_ENTRY_LENGTH) - 1);
+   return Math.max(0, Math.min(note.getRhythmValue(), MAX_NOTE_ENTRY_LENGTH) - 1);
  }
 
 /**
@@ -877,7 +877,6 @@ private int addNote(int x, int y, boolean play)
   //Accidental accidental = Accidental.NATURAL;
   Note note = new Note(pitch);
   note.setEnharmonic(notate.getScore().getCurrentEnharmonics(selectedIndex));
-  // System.out.println("added note: " + pitch + " " + accidental + " " + selectedIndex);
 
   // set the note in the original part
   notate.cm.execute(

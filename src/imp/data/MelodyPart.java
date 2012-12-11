@@ -76,7 +76,12 @@ public class MelodyPart
           {0, 10, 12, 15, 20, 24, 30, 40, 60, 80, 120, 160, 240, 480};
 
   private boolean fudgeEnding = false;
-
+  
+  private int noteLength = 60;
+  private boolean autoFill = true;
+  
+  //private int defaultNoteLength = 60;
+  
   /* Move to Constants.java
   // 48 is a 5-tuple eigth note...
   private static int[] knownNoteValue =
@@ -187,8 +192,12 @@ public void addNote(Note note)
     if( note != null && note.nonRest() )
       {
       int currentMeasure = slotIndex / measureLength;
-
-      int stopIndex = measureLength * (currentMeasure + 2);
+      
+      int stopIndex;
+      if (autoFill)  
+        stopIndex = measureLength * (currentMeasure + 2);
+      else
+        stopIndex = slotIndex + noteLength;
 
       if( stopIndex < size && getNextIndex(slotIndex) > stopIndex )
         {
@@ -1707,4 +1716,24 @@ public int[] getSyncVector(int slotSpacing, int maxSize)
       }
     return result;
   }
+
+public int getNoteLength()
+{
+    return noteLength;
+}
+
+public void setNoteLength(int len)
+{
+    noteLength = len;
+}
+
+public boolean getAutoFill()
+{
+    return autoFill;
+}
+
+public void setAutoFill(boolean fill)
+{
+    autoFill = fill;
+}
 }

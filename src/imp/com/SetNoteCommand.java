@@ -97,12 +97,16 @@ public class SetNoteCommand
     //Trace.log(0, "executing SetNoteCommand, slotIndex = " + slotIndex);
 
     int[] metre = melodyPart.getMetre();
-    int beatValue = (WHOLE / metre[1]);
+    int beatValue = (WHOLE / metre[1]); // metre[1] is the type
+                                        // of note that gets the beat
     int measureLength = metre[0] * beatValue;
 
     if( note != null && note.nonRest() )
       {
-      stopIndex = (slotIndex / measureLength + 2) * measureLength;
+        if (melodyPart.getAutoFill())  
+            stopIndex = (slotIndex / measureLength + 2) * measureLength;
+        else
+            stopIndex = slotIndex + melodyPart.getNoteLength();
       }
     oldNote = melodyPart.getNote(slotIndex);
     melodyPart.setNote(slotIndex, note);

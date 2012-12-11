@@ -149,6 +149,8 @@ public class Notate
 
   private boolean noteColoration = true;
 
+  // Determines whether or not notes are rectified
+  // based on the current chord
   private boolean smartEntry = true;
 
   private int parallax = 0;
@@ -1706,6 +1708,13 @@ public class Notate
                 adviceMIActionPerformed(evt);
             }
         });
+        jSeparator11 = new javax.swing.JPopupMenu.Separator();
+        autoFillMI = new javax.swing.JCheckBoxMenuItem();
+        noteLen16MI = new javax.swing.JMenuItem();
+        noteLen8MI = new javax.swing.JMenuItem();
+        noteLen4MI = new javax.swing.JMenuItem();
+        noteLen2MI = new javax.swing.JMenuItem();
+        noteLen1MI = new javax.swing.JMenuItem();
         adviceFrame = new javax.swing.JFrame();
         adviceTabbedPane = new javax.swing.JTabbedPane();
         scrollNotes = new javax.swing.JScrollPane();
@@ -2378,7 +2387,7 @@ public class Notate
         currentStyleTab.add(selectAStyleLabel, gridBagConstraints);
 
         styleListScrollPane.setMinimumSize(new java.awt.Dimension(200, 130));
-        styleListScrollPane.setName("");
+        styleListScrollPane.setName(""); // NOI18N
         styleListScrollPane.setPreferredSize(new java.awt.Dimension(200, 130));
 
         styleList.setModel(styleListModel);
@@ -2510,7 +2519,7 @@ public class Notate
         });
         sectionTable.setAlignmentY(1.0F);
         sectionTable.setGridColor(new java.awt.Color(153, 153, 153));
-        sectionTable.setName("");
+        sectionTable.setName(""); // NOI18N
         sectionTable.setRowSelectionAllowed(false);
         SectionTableScrollPane.setViewportView(sectionTable);
 
@@ -4330,7 +4339,7 @@ public class Notate
         minPitchSpinner.setToolTipText("Sets the minimum MIDI pitch value recognized when capturing audio. Pitches outside this range will be counted as rests.");
         minPitchSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder("Min. Pitch"));
         minPitchSpinner.setMinimumSize(new java.awt.Dimension(84, 50));
-        minPitchSpinner.setName("Minimum MIDI Pitch");
+        minPitchSpinner.setName("Minimum MIDI Pitch"); // NOI18N
         minPitchSpinner.setPreferredSize(new java.awt.Dimension(84, 50));
         minPitchSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -4348,7 +4357,7 @@ public class Notate
         maxPitchSpinner.setToolTipText("Sets the maximum MIDI pitch value recognized when capturing audio. Pitches outside this range will be counted as rests.");
         maxPitchSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder("Max. Pitch"));
         maxPitchSpinner.setMinimumSize(new java.awt.Dimension(84, 50));
-        maxPitchSpinner.setName("Maximum MIDI Pitch");
+        maxPitchSpinner.setName("Maximum MIDI Pitch"); // NOI18N
         maxPitchSpinner.setPreferredSize(new java.awt.Dimension(84, 50));
         maxPitchSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -4365,7 +4374,7 @@ public class Notate
         pitchRangePresetComboBox.setToolTipText("Presets that specify the minimum and maximum MIDI pitch to be detected when capturing audio.");
         pitchRangePresetComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder("Pitch Range Presets"));
         pitchRangePresetComboBox.setMinimumSize(new java.awt.Dimension(140, 50));
-        pitchRangePresetComboBox.setName("rangePresetComboBox");
+        pitchRangePresetComboBox.setName("rangePresetComboBox"); // NOI18N
         pitchRangePresetComboBox.setPreferredSize(new java.awt.Dimension(140, 50));
         pitchRangePresetComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -4440,6 +4449,57 @@ public class Notate
         advicePMI.setText("Advice");
         advicePMI.setEnabled(false);
         popupMenu.add(advicePMI);
+        popupMenu.add(jSeparator11);
+
+        autoFillMI.setSelected(true);
+        autoFillMI.setText("Auto Fill Notes");
+        autoFillMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                autoFillMIActionPerformed(evt);
+            }
+        });
+        popupMenu.add(autoFillMI);
+
+        noteLen16MI.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/blacknotes/semiquaverUp.png"))); // NOI18N
+        noteLen16MI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                noteLen16MIActionPerformed(evt);
+            }
+        });
+        popupMenu.add(noteLen16MI);
+
+        noteLen8MI.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/blacknotes/quaverUp.png"))); // NOI18N
+        noteLen8MI.setToolTipText("");
+        noteLen8MI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                noteLen8MIActionPerformed(evt);
+            }
+        });
+        popupMenu.add(noteLen8MI);
+
+        noteLen4MI.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/blacknotes/crotchetUp.png"))); // NOI18N
+        noteLen4MI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                noteLen4MIActionPerformed(evt);
+            }
+        });
+        popupMenu.add(noteLen4MI);
+
+        noteLen2MI.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/blacknotes/minimUp.png"))); // NOI18N
+        noteLen2MI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                noteLen2MIActionPerformed(evt);
+            }
+        });
+        popupMenu.add(noteLen2MI);
+
+        noteLen1MI.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/blacknotes/semibreve.png"))); // NOI18N
+        noteLen1MI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                noteLen1MIActionPerformed(evt);
+            }
+        });
+        popupMenu.add(noteLen1MI);
 
         adviceFrame.setTitle("Advice Directory");
         adviceFrame.setAlwaysOnTop(true);
@@ -7880,11 +7940,11 @@ public class Notate
         scoreTab.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         scoreTab.setOpaque(true);
         scoreTab.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                mouseEnteredTabPanel(evt);
-            }
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 scoreTabMousePressedHandler(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                mouseEnteredTabPanel(evt);
             }
         });
         scoreTab.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -7946,12 +8006,12 @@ public class Notate
 
         openRecentLeadsheetMenu.setText("Open Recent Leadsheet (same window)");
         openRecentLeadsheetMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
-            }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 populateRecentFileMenu(evt);
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -7967,12 +8027,12 @@ public class Notate
 
         openRecentLeadsheetNewWindowMenu.setText("Open Recent Leadsheet (new window)");
         openRecentLeadsheetNewWindowMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
-            }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 populateRecentLeadsheetNewWindow(evt);
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -8958,12 +9018,12 @@ public class Notate
         windowMenu.setMnemonic('W');
         windowMenu.setText("Window");
         windowMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
-            }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 windowMenuMenuSelected(evt);
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -8996,12 +9056,12 @@ public class Notate
             }
         });
         notateGrammarMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
-            }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 notateGrammarMenuMenuSelected(evt);
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
         notateGrammarMenu.addActionListener(new java.awt.event.ActionListener() {
@@ -22555,6 +22615,38 @@ private void rmsThresholdSliderStateChanged(javax.swing.event.ChangeEvent evt)//
         updatePhiAndDelta(replaceWithPhiCheckBox.isSelected(), checked);
     }//GEN-LAST:event_replaceWithDeltaCheckBoxActionPerformed
 
+    private void noteLen8MIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_noteLen8MIActionPerformed
+        setNoteLength(60);
+    }//GEN-LAST:event_noteLen8MIActionPerformed
+
+    private void noteLen16MIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_noteLen16MIActionPerformed
+        setNoteLength(30);
+    }//GEN-LAST:event_noteLen16MIActionPerformed
+
+    private void noteLen4MIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_noteLen4MIActionPerformed
+        setNoteLength(120);
+    }//GEN-LAST:event_noteLen4MIActionPerformed
+
+    private void noteLen2MIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_noteLen2MIActionPerformed
+        setNoteLength(240);
+    }//GEN-LAST:event_noteLen2MIActionPerformed
+
+    private void noteLen1MIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_noteLen1MIActionPerformed
+        setNoteLength(480);
+    }//GEN-LAST:event_noteLen1MIActionPerformed
+
+    private void autoFillMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_autoFillMIActionPerformed
+        autoFillMI.setSelected(!autoFillMI.isSelected());
+        System.out.println(autoFillMI.isSelected());
+        MelodyPart melody = getCurrentStave().getMelodyPart();
+        melody.setAutoFill(autoFillMI.isSelected());
+    }//GEN-LAST:event_autoFillMIActionPerformed
+
+public void setNoteLength(int len)
+{
+    getCurrentStave().getMelodyPart().setNoteLength(len);
+}
+    
 public boolean getPhiStatus()
 {
     return replaceWithPhi.getState();
@@ -24157,6 +24249,7 @@ public void showNewVoicingDialog()
     private javax.swing.JPanel audioPreferences;
     private javax.swing.JButton audioPreferencesBtn;
     private javax.swing.JCheckBoxMenuItem autoAdjustMI;
+    private javax.swing.JCheckBoxMenuItem autoFillMI;
     private javax.swing.JRadioButton autoStave;
     private javax.swing.JRadioButton autoStaveBtn;
     private javax.swing.JLabel auxInstLabel;
@@ -24443,6 +24536,7 @@ public void showNewVoicingDialog()
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator10;
+    private javax.swing.JPopupMenu.Separator jSeparator11;
     private javax.swing.JSeparator jSeparator13;
     private javax.swing.JSeparator jSeparator14;
     private javax.swing.JSeparator jSeparator16;
@@ -24555,6 +24649,11 @@ public void showNewVoicingDialog()
     private javax.swing.JMenu notateGrammarMenu;
     private javax.swing.JLabel noteColoringLabel;
     private javax.swing.JButton noteCursorBtn;
+    private javax.swing.JMenuItem noteLen16MI;
+    private javax.swing.JMenuItem noteLen1MI;
+    private javax.swing.JMenuItem noteLen2MI;
+    private javax.swing.JMenuItem noteLen4MI;
+    private javax.swing.JMenuItem noteLen8MI;
     private javax.swing.JTextField numStavesPerPage;
     private javax.swing.JButton okMeasBtn;
     private javax.swing.JButton okSaveButton;
