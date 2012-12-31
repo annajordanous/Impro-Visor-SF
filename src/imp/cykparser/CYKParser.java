@@ -608,12 +608,14 @@ public class CYKParser
                 ch.clear();
             }
         }
-        
+                
         if (!ch.isEmpty()) {
             newChords(ch);
             fillTable();
             solution.addAll(findSolution(lib));
         }
+//System.out.println("Parse Table:");
+//System.out.println(printTable());
         solution = PostProcessor.findLaunchers(solution);
         return solution;
     }
