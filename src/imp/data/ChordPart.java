@@ -148,7 +148,10 @@ public class ChordPart extends Part implements Serializable{
     public Chord getChord(int slotIndex) {
         if( slotIndex < 0 || slotIndex >= size )
           return null;
-        return (Chord)getUnit(slotIndex);
+        if (getUnit(slotIndex) instanceof Chord){
+            return (Chord)getUnit(slotIndex);
+        }
+        return null;
     }
 
     /**
