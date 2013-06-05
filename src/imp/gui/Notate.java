@@ -10562,7 +10562,7 @@ public void stopRecording()
 
     recordBtn.setIcon(recordImageIcon);
 
-    recordBtn.setBackground(null);
+//    recordBtn.setBackground(null);
 
     if( midiRecorder != null )
       {
@@ -10578,7 +10578,7 @@ public void stopRecording()
 
     if (!useAudioInputMI.isSelected())
         {
-    stopPlaying("stop Recording");
+//    stopPlaying("stop Recording"); // Having this in causes stack overflow when stopping
         }
   }
 
