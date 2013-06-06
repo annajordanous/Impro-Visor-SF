@@ -105,4 +105,8 @@ public int getNumLines()
     return stave.getNumLines();
   }
 
+public void setKeySignature(int key)
+  {
+    stave.setKeySignatureNonRecursively(key);
+  }
 }

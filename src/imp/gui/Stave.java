@@ -1223,7 +1223,18 @@ public int getMajorKey()
 public void setKeySignature(int key)
   {
     this.keySignature = key;
-    notate.score.setKeySignature(key);
+    notate.setKeySignature(key);
+  }
+
+/**
+ * Sets the current key signature for this Stave instance
+ * This effects the displayed key signature. 1 = F# etc.
+ * 0 is no key signature, + numbers for sharps, - numbers for flats
+ * @param key           the key to set the key signature to
+ */
+public void setKeySignatureNonRecursively(int key)
+  {
+    this.keySignature = key;
     origPart.setKeySignature(key);
   }
 
