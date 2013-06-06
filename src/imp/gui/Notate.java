@@ -10587,7 +10587,7 @@ private void startAudioCapture()
         //          if (extractor == null)
 //          {
         captureInterval = score.getMetre()[0] * BEAT;
-        int startingPosition = (int) (Math.round(midiSynth.getSlot()
+        int startingPosition = (Math.round(midiSynth.getSlot()
                 / getTradeLength())) * getTradeLength();
         System.out.println("Starting position " + startingPosition
                 + " passed to PitchExtractor.");
@@ -15624,7 +15624,7 @@ private boolean saveGlobalPreferences()
 
     // set the key
 
-    score.setKeySignature(keyNumberFromText(keySignatureTF.getText(), 0));
+    setKeySignature(keyNumberFromText(keySignatureTF.getText(), 0));
 
 
     // set the new breakpoint
@@ -15704,6 +15704,18 @@ private boolean saveGlobalPreferences()
     // System.out.println("chord symbols: " + chordPart.getChordSymbols());
     // System.out.println("chord durations: " + chordPart.getChordDurations());
  }
+  
+  public void setKeySignature(int key)
+    {
+      for( StaveScrollPane s:staveScrollPane )
+        {
+          if( s != null )
+            {
+              s.setKeySignature(key);
+            }
+        }
+      score.setKeySignature(key);
+    }
 
   /**
    *
@@ -19829,12 +19841,10 @@ public void populateChordSelMenu()
             else if( o instanceof Polylist )
             {
                 ErrorLog.log(ErrorLog.WARNING, "No slot selected for insertion.");
-                return;
             }
             else
             {
                 ErrorLog.log(ErrorLog.WARNING, "Malformed voicing: " + v);
-                return;
             }
           }
         });
@@ -21105,6 +21115,7 @@ public void originalGenerate(LickGen lickgen, int improviseStartSlot, int improv
 
 public MelodyPart generate(LickGen lickgen, int improviseStartSlot, int improviseEndSlot)
 {
+  System.out.println("generate from " + improviseStartSlot/480 + " to " + improviseEndSlot/480);
     MelodyPart lick = null;
 
     saveConstructionLineState = showConstructionLinesMI.isSelected();
@@ -23302,7 +23313,7 @@ public void showNewVoicingDialog()
 
       stave.setPart(partList.get(i));
 
-      stave.setKeySignature(partList.get(i).getKeySignature());
+      stave.setKeySignature(score.getKeySignature());
 
       stave.setMetre(score.getMetre()[0], score.getMetre()[1]);
 
@@ -25698,8 +25709,9 @@ public void reset(MelodyPart currentMelodyPart)
 
 public String bar(long slot)
   {
-    return (slot/size) + "/" + (1 + (slot%size)/480)
-            + "/" + Math.round(100*((slot%size)%480)/120.)/100.
+    long residual = slot % size;
+    return (slot/size) + "/" + (1 + residual/480)
+            + "/" + Math.round(100*(residual%480)/120.)/100.
             + " (" + slot + ")";
   }
 
@@ -25743,7 +25755,9 @@ public MelodyPart maybeCreateLick(int slotInPlayback)
 
         melodyStartsAtSlot = ivFirst ? improInterval * tradingCycle
                                      : improInterval * tradingCycle + halfInterval;
-
+        
+        System.out.println("melodyStartsAtSlot = " + melodyStartsAtSlot);
+        
         improLick = generate(lickgen, melodyStartsAtSlot, melodyStartsAtSlot + halfInterval - 1);
 
         generated = improLick != null && improLick.size() > 0;
