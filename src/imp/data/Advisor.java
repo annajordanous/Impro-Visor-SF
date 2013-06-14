@@ -97,6 +97,8 @@ static final int PLAIN_LICK = 0;
 
 static final int QUOTE_LICK = 1;
 
+static final int BRICK_LICK = 2;
+
 /**
  * contains "cells" of notes
  */
@@ -105,7 +107,8 @@ private static Polylist cells[] = new Polylist[2]; // indexed by cell flavor
 /**
  * contains licks
  */
-private static Polylist licks[] = new Polylist[2]; // indexed by lick flavor
+private static Polylist licks[] = new Polylist[3]; // indexed by lick flavor
+
 
 /**
  * the table listing, for each chord, the chords it extends
@@ -132,6 +135,8 @@ static ArrayList<Boolean> markArray;
 static final String ADVICE = "advice";
 
 static final String APPROACH = "approach";
+
+static final String BRICK = "brick";
 
 static final String CELL = "cell";
 
@@ -190,7 +195,7 @@ static final Polylist licksIgnore = Polylist.list(BAR, SLASH);
 // Figure out which components of advice to show;
 static final int NONE = 0;
 
-static final int ALL = 1023;
+static final int ALL = 2047;
 
 static final int CHORDTREE = 1;
 
@@ -211,6 +216,8 @@ static final int IDIOMTREE = 128;
 static final int LICKTREE = 256;
 
 static final int QUOTETREE = 512;
+
+static final int BRICKTREE = 1024;
 
 private static boolean styleProcessed = false;
 
@@ -272,6 +279,7 @@ public void setRules(Polylist rules)
 
   licks[PLAIN_LICK] = Polylist.nil;
   licks[QUOTE_LICK] = Polylist.nil;
+  licks[BRICK_LICK] = Polylist.nil;
 
   extensionsTable = Polylist.nil;
 
@@ -286,6 +294,7 @@ public void setRules(Polylist rules)
 
   licks[PLAIN_LICK] = licks[PLAIN_LICK].reverse();
   licks[QUOTE_LICK] = licks[QUOTE_LICK].reverse();
+  licks[BRICK_LICK] = licks[BRICK_LICK].reverse();
 
 
   if( Trace.atLevel(2) )
@@ -329,6 +338,13 @@ public void setRules(Polylist rules)
 
     System.out.println("\nquotes:");
     it = licks[QUOTE_LICK].elements();
+    while( it.hasMoreElements() )
+      {
+      LickForm form = (LickForm)it.nextElement();
+      form.showForm(System.out);
+      }
+    System.out.println("\nbricks:");
+    it = licks[BRICK_LICK].elements();
     while( it.hasMoreElements() )
       {
       LickForm form = (LickForm)it.nextElement();
@@ -578,6 +594,11 @@ public static boolean addOneRule(Object ob, int serial, boolean marked,
     else if( dispatch.equals(QUOTE) )
       {
       return addLick(QUOTE_LICK, first, serial, grade, marked,
+              marked || allowDuplicates, PLAIN_LICK);
+      }
+    else if( dispatch.equals(BRICK) )
+      {
+      return addLick(BRICK_LICK, first, serial, grade, marked,
               marked || allowDuplicates, PLAIN_LICK);
       }
     else if( dispatch.equals(MARKED) )
@@ -1226,9 +1247,27 @@ public Polylist getAdviceTree(ChordSymbol chordSymbol,
         {
         advice = advice.cons(quotesTree.cons(" quotes"));
         }
+      
+      // add bricks to tree
+
+      Polylist bricksTree = getLickTree(BRICK_LICK,
+              chordSymbol,
+              nextChordSymbol,
+              interChordHalfBeats,
+              note,
+              extensions,
+              subExtensions,
+              key);
+
+      if( bricksTree.nonEmpty() || (BRICKTREE & mask) != 0 )
+        {
+        advice = advice.cons(bricksTree.cons(" bricks"));
+        
+        }
       }
     }
 
+  
   return removeStubs(advice.reverse());
   }
 
@@ -2844,7 +2883,7 @@ public Polylist getLickTree(int flavor,
   PolylistEnum e;
 
   e = licks[flavor].elements();		// Get the list of all licks from the rules
-
+  
   int rise1 = PitchClass.findRise(chord1root);
 
   while( e.hasMoreElements() )
@@ -2861,6 +2900,7 @@ public Polylist getLickTree(int flavor,
       }
 
     // Currently only the first 1 or 2 chords of the lick are examined.
+    // This may be changed.
 
     String lickChord1 = lickForm.getChord(0, chord1root, key);
     String lickChord2 = lickForm.getChord(1, chord1root, key);
@@ -2889,16 +2929,29 @@ public Polylist getLickTree(int flavor,
                 ? ""
                 : (" -> " + lickChord2)) + "] " + lickForm.getName() + " " + notes.toString();
 
-        AdviceForMelody advice = flavor == PLAIN_LICK  // plain lick vs. quote; should refactor
-                ? new AdviceForLick(transposedLickName,
-                serial,
-                notes,
-                chord1root,
-                key,
-                metre,
-                firstNote,
-                lickForm.getProfileNumber())
-                : new AdviceForQuote(transposedLickName,
+        
+        //AdviceForMelody advice = flavor == PLAIN_LICK  // plain lick vs. quote; should refactor
+//                ? new AdviceForLick(transposedLickName,
+//                serial,
+//                notes,
+//                chord1root,
+//                key,
+//                metre,
+//                firstNote,
+//                lickForm.getProfileNumber())
+//                : new AdviceForQuote(transposedLickName,
+//                serial,
+//                notes,
+//                chord1root,
+//                key,
+//                metre,
+//                firstNote,
+//                lickForm.getProfileNumber());
+        
+        AdviceForMelody advice = null;
+        
+        switch (flavor) {
+            case PLAIN_LICK: advice = new AdviceForLick(transposedLickName,
                 serial,
                 notes,
                 chord1root,
@@ -2906,14 +2959,38 @@ public Polylist getLickTree(int flavor,
                 metre,
                 firstNote,
                 lickForm.getProfileNumber());
+                break;
+                
+            case QUOTE_LICK: advice = new AdviceForQuote(transposedLickName,
+                serial,
+                notes,
+                chord1root,
+                key,
+                metre,
+                firstNote,
+                lickForm.getProfileNumber());
+                break;
+                
+            case BRICK_LICK: advice = new AdviceForBrick(transposedLickName,
+                serial,
+                notes,
+                chord1root,
+                key,
+                metre,
+                firstNote,
+                lickForm.getProfileNumber());
+                break;
+                
+            default: ErrorLog.log(ErrorLog.WARNING, "Inappropriate lick flavor: " + flavor);
+        }
 
-        // Include if first note unspeicified or matches the lick's first note
-
+        //advice Include if first note unspeicified or matches the lick's first note
         if( (firstNote == null) || advice.startsWith(firstNote) )
           {
           lickTreeId[index] = lickTreeId[index].cons(advice);
           }
         }
+      
       else if( inFamily(family1, lickChord1) || extensions.member(lickChord1inC) )
         {
 
@@ -3037,6 +3114,7 @@ public static Polylist removeStubs(Polylist tree)
       }
     tree = tree.rest();
     }
+ 
   return newTree.reverse();
   }
 

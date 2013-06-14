@@ -37,7 +37,8 @@ public class LickForm implements Constants
     static final String SEQUENCE   = "sequence";
     static final String NOTES      = "notes";
 
-    static final String typeName[] = {"lick", "quote", "graded-lick"};
+    // Added "brick" to typeName to test
+    static final String typeName[] = {"lick", "quote", "graded-lick", "brick"};
 
 public static enum ExistentLickStatus {NEW, DIFFERENT_SEQUENCE, SAME_SEQUENCE};
 

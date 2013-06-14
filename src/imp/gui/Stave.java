@@ -21,6 +21,7 @@
 package imp.gui;
 
 import imp.Constants;
+import static imp.Constants.ExtractMode.QUOTE;
 import imp.brickdictionary.Block;
 import imp.com.PlayScoreCommand;
 import imp.com.RectifyPitchesCommand;
@@ -5510,6 +5511,10 @@ public String extract(String title, ExtractMode mode, int grade,
             case QUOTE:
                 out.write("quote (notes ");
                 break;
+                
+            case BRICK:
+                out.write("brick (notes ");
+                break;
           }
 
         // get notes
@@ -5521,6 +5526,7 @@ public String extract(String title, ExtractMode mode, int grade,
             case LICK:
             case QUOTE:
             case MELODY:
+            case BRICK:
             case BOTH:
 
                 int prevIndex = startIndex;
@@ -5585,6 +5591,7 @@ public String extract(String title, ExtractMode mode, int grade,
 
             case LICK:
             case QUOTE:
+            case BRICK:
                 out.write(")(sequence ");
                 break;
           }
@@ -5613,6 +5620,7 @@ public String extract(String title, ExtractMode mode, int grade,
             case LICK:
             case QUOTE:
             case CHORDS:
+            case BRICK:
             case BOTH:
               {
                 boolean done = false;
@@ -5638,6 +5646,7 @@ public String extract(String title, ExtractMode mode, int grade,
 
                             case LICK:
                             case QUOTE:
+                            case BRICK:
                                 if( chordCount > 1 )
                                   {
                                     done = true;
@@ -5674,6 +5683,7 @@ public String extract(String title, ExtractMode mode, int grade,
 
             case LICK:
             case QUOTE:
+            case BRICK:
                 prevChord.setRhythmValue(roundToMultiple(index - prevIndex, 2 * BEAT));
                 prevChord.saveLeadsheet(out, metre, false);
                 Chord.flushChordBuffer(out, metre, false, false);

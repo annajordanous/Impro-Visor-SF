@@ -348,7 +348,7 @@ public interface Constants {
      * Modes of extracting stuff for transfer
      */
 
-    public static enum ExtractMode {CELL, IDIOM, LICK, QUOTE, CHORDS, MELODY, BOTH};
+    public static enum ExtractMode {CELL, IDIOM, LICK, QUOTE, BRICK, CHORDS, MELODY, BOTH};
 
 
     /**
