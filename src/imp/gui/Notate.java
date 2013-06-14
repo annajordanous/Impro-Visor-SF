@@ -276,6 +276,8 @@ public class Notate
   ArrayList<Object> adviceMenuItemsLicks;
 
   ArrayList<Object> adviceMenuItemsQuotes;
+  
+  ArrayList<Object> adviceMenuItemsBricks;
 
   /**
    * The array of JScrollPanes that hold scoreBG panels, which hold Staves.
@@ -1729,6 +1731,8 @@ public class Notate
         adviceScrollListLicks = new javax.swing.JList();
         scrollQuotes = new javax.swing.JScrollPane();
         adviceScrollListQuotes = new javax.swing.JList();
+        scrollBricks = new javax.swing.JScrollPane();
+        adviceScrollListBricks = new javax.swing.JList();
         keySigBtnGroup = new javax.swing.ButtonGroup();
         saveLickFrame = new javax.swing.JFrame();
         enterLickTitle = new javax.swing.JTextField();
@@ -1740,6 +1744,7 @@ public class Notate
         idiomRadioButton = new javax.swing.JRadioButton();
         lickRadioButton = new javax.swing.JRadioButton();
         quoteRadioButton = new javax.swing.JRadioButton();
+        brickRadioButton = new javax.swing.JRadioButton();
         defLoadStaveBtnGroup = new javax.swing.ButtonGroup();
         duplicateLickDialog = new javax.swing.JDialog();
         ignoreDuplicate = new javax.swing.JButton();
@@ -4522,9 +4527,14 @@ public class Notate
         });
         adviceFrame.getContentPane().setLayout(new java.awt.GridBagLayout());
 
-        adviceTabbedPane.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                adviceTabbedPaneKeyPressed(evt);
+        adviceTabbedPane.setMinimumSize(new java.awt.Dimension(500, 400));
+        adviceTabbedPane.setPreferredSize(new java.awt.Dimension(500, 400));
+        adviceTabbedPane.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                adviceTabbedPaneMouseClicked(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                adviceTabbedPaneMouseReleased(evt);
             }
         });
 
@@ -4648,11 +4658,11 @@ public class Notate
             }
         });
         adviceScrollListLicks.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                adviceScrollListLicksKeyPressed(evt);
-            }
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 adviceScrollListLicksKeyReleased(evt);
+            }
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                adviceScrollListLicksKeyPressed(evt);
             }
         });
         scrollLicks.setViewportView(adviceScrollListLicks);
@@ -4684,6 +4694,31 @@ public class Notate
 
         adviceTabbedPane.addTab("Quotes", scrollQuotes);
 
+        scrollBricks.setMinimumSize(new java.awt.Dimension(100, 100));
+        scrollBricks.setPreferredSize(new java.awt.Dimension(300, 200));
+
+        adviceScrollListBricks.setModel(new javax.swing.AbstractListModel() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public Object getElementAt(int i) { return strings[i]; }
+        });
+        adviceScrollListBricks.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                adviceScrollListBricksMouseClicked(evt);
+            }
+        });
+        adviceScrollListBricks.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                adviceScrollListBricksKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                adviceScrollListBricksKeyReleased(evt);
+            }
+        });
+        scrollBricks.setViewportView(adviceScrollListBricks);
+
+        adviceTabbedPane.addTab("Bricks", scrollBricks);
+
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
@@ -4695,6 +4730,11 @@ public class Notate
 
         enterLickTitle.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         enterLickTitle.setToolTipText("The name to be given to the selection (need not be unique)");
+        enterLickTitle.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                enterLickTitleActionPerformed(evt);
+            }
+        });
         enterLickTitle.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 enterLickTitleGetsFocus(evt);
@@ -4703,10 +4743,11 @@ public class Notate
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.gridwidth = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 4);
         saveLickFrame.getContentPane().add(enterLickTitle, gridBagConstraints);
 
         lineLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -4726,7 +4767,7 @@ public class Notate
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 4;
+        gridBagConstraints.gridwidth = 6;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.ipadx = 50;
         gridBagConstraints.ipady = 50;
@@ -4748,6 +4789,7 @@ public class Notate
         gridBagConstraints.gridy = 3;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         saveLickFrame.getContentPane().add(cancelLickTitle, gridBagConstraints);
@@ -4765,9 +4807,11 @@ public class Notate
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 3;
-        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
         saveLickFrame.getContentPane().add(okSaveButton, gridBagConstraints);
 
         saveTypeButtonGroup.add(cellRadioButton);
@@ -4816,6 +4860,7 @@ public class Notate
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         saveLickFrame.getContentPane().add(lickRadioButton, gridBagConstraints);
@@ -4836,6 +4881,19 @@ public class Notate
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         saveLickFrame.getContentPane().add(quoteRadioButton, gridBagConstraints);
+
+        saveTypeButtonGroup.add(brickRadioButton);
+        brickRadioButton.setText("Brick");
+        brickRadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                brickRadioButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        saveLickFrame.getContentPane().add(brickRadioButton, gridBagConstraints);
 
         duplicateLickDialog.setAlwaysOnTop(true);
         duplicateLickDialog.setModal(true);
@@ -6840,19 +6898,19 @@ public class Notate
             }
         });
         addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosing(java.awt.event.WindowEvent evt) {
-                formWindowClosing(evt);
-            }
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 notateWIndowClosed(evt);
             }
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
         });
         addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                formFocusGained(evt);
-            }
             public void focusLost(java.awt.event.FocusEvent evt) {
                 formFocusLost(evt);
+            }
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                formFocusGained(evt);
             }
         });
         addKeyListener(new java.awt.event.KeyAdapter() {
@@ -8009,9 +8067,9 @@ public class Notate
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 populateRecentFileMenu(evt);
             }
-            public void menuDeselected(javax.swing.event.MenuEvent evt) {
-            }
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -8030,9 +8088,9 @@ public class Notate
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 populateRecentLeadsheetNewWindow(evt);
             }
-            public void menuDeselected(javax.swing.event.MenuEvent evt) {
-            }
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -9021,9 +9079,9 @@ public class Notate
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 windowMenuMenuSelected(evt);
             }
-            public void menuDeselected(javax.swing.event.MenuEvent evt) {
-            }
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -9059,9 +9117,9 @@ public class Notate
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 notateGrammarMenuMenuSelected(evt);
             }
-            public void menuDeselected(javax.swing.event.MenuEvent evt) {
-            }
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
         });
         notateGrammarMenu.addActionListener(new java.awt.event.ActionListener() {
@@ -12714,6 +12772,7 @@ private void updateTempoFromTextField()
         lickTitle = enterLickTitle.getText();
 
         String saveSelection = getCurrentStave().getSaveSelection(lickTitle, saveSelectionMode, 0);
+        System.out.println("saveSelection = ");
 
         saveLick(saveSelection);
     }//GEN-LAST:event_okSaveButtonActionPerformed
@@ -12840,7 +12899,9 @@ private void saveLick(String saveSelection)
 
     if( saveSelection != null )
       {
-        Polylist selectionAsList = parseListFromString(saveSelection);
+//
+          Polylist selectionAsList = parseListFromString(saveSelection);
+//          System.out.println(selectionAsList);
 
         if( Advisor.addUserRule(selectionAsList) )
           {
@@ -16954,7 +17015,7 @@ public void setAdviceUsed()
 
       setItemStates();
     }//GEN-LAST:event_adviceTreeMousePressed
-
+    
   void adviceSelected(Object object)
     {
     if( object instanceof Advice && getCurrentSelectionStart() != OUT_OF_BOUNDS )
@@ -16974,7 +17035,7 @@ public void setAdviceUsed()
 //causes double hits: rectifySelection(getCurrentStave(), getCurrentSelectionStart(), getCurrentSelectionEnd());
       if( ImproVisor.getPlay() )
         {
-        ImproVisor.playCurrentSelection(false, 0, PlayScoreCommand.NODRUMS);
+        ImproVisor.playCurrentSelection(false, 0, PlayScoreCommand.USEDRUMS);
         }
       getCurrentStave().repaint();
       }
@@ -21409,10 +21470,6 @@ private void notateGrammarMenuMenuSelected(javax.swing.event.MenuEvent evt) {//G
 
 }//GEN-LAST:event_notateGrammarMenuMenuSelected
 
-private void adviceTabbedPaneKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_adviceTabbedPaneKeyPressed
-    // TODO add your handling code here:
-}//GEN-LAST:event_adviceTabbedPaneKeyPressed
-
 private void transposeSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_transposeSpinnerStateChanged
 setPlayTransposed();
 }//GEN-LAST:event_transposeSpinnerStateChanged
@@ -22653,6 +22710,46 @@ private void rmsThresholdSliderStateChanged(javax.swing.event.ChangeEvent evt)//
         melody.setAutoFill(autoFillMI.isSelected());
     }//GEN-LAST:event_autoFillMIActionPerformed
 
+    private void adviceScrollListBricksMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_adviceScrollListBricksMouseClicked
+        adviceSelected(adviceScrollListBricks.getSelectedValue());
+    }//GEN-LAST:event_adviceScrollListBricksMouseClicked
+
+    private void adviceScrollListBricksKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_adviceScrollListBricksKeyPressed
+
+    }//GEN-LAST:event_adviceScrollListBricksKeyPressed
+
+    private void adviceScrollListBricksKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_adviceScrollListBricksKeyReleased
+        switch( evt.getKeyCode() )
+        {
+        case java.awt.event.KeyEvent.VK_UP:
+        case java.awt.event.KeyEvent.VK_DOWN:
+          adviceSelected(adviceScrollListBricks.getSelectedValue());
+          break;
+
+        default:
+          // Delegate to main window
+          adviceKeyPressed(evt);
+          break;
+        }
+    }//GEN-LAST:event_adviceScrollListBricksKeyReleased
+
+    private void brickRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_brickRadioButtonActionPerformed
+        saveSelectionMode = ExtractMode.BRICK;
+        System.out.println("selectionMode = " + saveSelectionMode);
+    }//GEN-LAST:event_brickRadioButtonActionPerformed
+
+    private void enterLickTitleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enterLickTitleActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_enterLickTitleActionPerformed
+
+    private void adviceTabbedPaneMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_adviceTabbedPaneMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_adviceTabbedPaneMouseClicked
+
+    private void adviceTabbedPaneMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_adviceTabbedPaneMouseReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_adviceTabbedPaneMouseReleased
+
 public void setNoteLength(int len)
 {
     getCurrentStave().getMelodyPart().setNoteLength(len);
@@ -23435,6 +23532,8 @@ public void showNewVoicingDialog()
     while( !item.isEmpty() )
       {
       Object node = item.first();
+//      if (node instanceof AdviceForBrick)
+//          System.out.println("The brick node is " + node);
 
       if( node instanceof Polylist )
         {
@@ -23462,15 +23561,20 @@ public void showNewVoicingDialog()
           {
           adviceMenuItemsQuotes.add(node);
           }
+        else if( node instanceof AdviceForBrick )
+          {
+          adviceMenuItemsBricks.add(node);
+          }
         else
           {
+              //System.out.println("unidentified advice node: " + node);
           }
         }
       item = item.rest();
 
       }
-
-
+  
+       
     final Object[] menuContentsScales = adviceMenuItemsScales.toArray();
 
 
@@ -23552,6 +23656,23 @@ public void showNewVoicingDialog()
         }
 
       });
+    
+    final Object[] menuContentsBricks = adviceMenuItemsBricks.toArray();
+
+  
+    adviceScrollListBricks.setModel(new javax.swing.AbstractListModel()
+      {
+      public int getSize()
+        {
+        return menuContentsBricks.length;
+        }
+
+      public Object getElementAt(int i)
+        {
+        return menuContentsBricks[i];
+        }
+
+      });
 
     }
 
@@ -23559,7 +23680,7 @@ public void showNewVoicingDialog()
    * major sub-trees to be excluded from Notes advice tree
    */
   static Polylist excludeFromTree = Polylist.list(" scale tones", " cells",
-          " idioms", " licks", " quotes");
+          " idioms", " licks", " quotes", " bricks"); // TODO: Should " bricks" be in this?
 
   /**
    * Display the advice tree for the chords around the given index
@@ -23613,7 +23734,10 @@ public void showNewVoicingDialog()
       adviceMenuItemsIdioms = new ArrayList<Object>();
       adviceMenuItemsLicks  = new ArrayList<Object>();
       adviceMenuItemsQuotes = new ArrayList<Object>();
+      adviceMenuItemsBricks = new ArrayList<Object>();
 
+      // Where polylistToMenus is called
+      
       polylistToMenus(adviceList);
 
       adviceFrame.setTitle((String)adviceList.first());
@@ -24234,6 +24358,7 @@ public void showNewVoicingDialog()
     private javax.swing.JButton addTabBtn;
     protected javax.swing.JFrame adviceFrame;
     private javax.swing.JMenuItem advicePMI;
+    private javax.swing.JList adviceScrollListBricks;
     private javax.swing.JList adviceScrollListCells;
     private javax.swing.JList adviceScrollListIdioms;
     private javax.swing.JList adviceScrollListLicks;
@@ -24290,6 +24415,7 @@ public void showNewVoicingDialog()
     private javax.swing.JRadioButton blueOtherBtn;
     private javax.swing.JLabel breakpointLabel;
     private javax.swing.JTextField breakpointTF;
+    private javax.swing.JRadioButton brickRadioButton;
     private javax.swing.JButton buildTableButton;
     private javax.swing.JPanel buttonPanel;
     private javax.swing.JPanel cachePanel;
@@ -24780,6 +24906,7 @@ public void showNewVoicingDialog()
     private javax.swing.JCheckBox scaleTones;
     private javax.swing.JTabbedPane scoreTab;
     private javax.swing.JTextField scoreTitleTF;
+    private javax.swing.JScrollPane scrollBricks;
     private javax.swing.JScrollPane scrollCells;
     private javax.swing.JScrollPane scrollIdioms;
     private javax.swing.JScrollPane scrollLicks;
