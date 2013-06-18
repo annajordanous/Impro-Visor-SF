@@ -27,7 +27,8 @@ import imp.com.SetChordsCommand;
 import imp.data.*;
 import imp.util.Preferences;
 import java.io.*;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.table.AbstractTableModel;
@@ -388,8 +389,376 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
     private void saveAsFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAsFileActionPerformed
         saveAs();
     }//GEN-LAST:event_saveAsFileActionPerformed
-
+    
+    /**
+     * Saves a lick for the critic, later to be used as input for a neural network.
+     * Major changes include a smaller bit vector and a new method 
+     * for representing the data.
+     * Needs at least one chord from the leadsheet, assumes at most two chords at the moment.
+     * @param out
+     * @param row
+     * @throws IOException 
+     */
     private void saveRow(BufferedWriter out, int row) throws IOException {
+        Polylist r = dataModel.getRow(row);
+        Polylist name = Polylist.list("name", r.first());
+        Polylist notes = (Polylist) r.second();
+        Polylist chords = (Polylist) r.third();
+        int grade = (int) (Integer) r.fourth();
+        Polylist lick = Polylist.list("lick", notes.cons("notes"), chords.cons("sequence"), name, Polylist.list("grade", grade));       
+
+        // Used as a "pass-by-reference" value.
+        AtomicBoolean error = new AtomicBoolean(false);
+        ArrayList<Note> noteList = new ArrayList<Note>();
+        ArrayList<Chord> chordList = new ArrayList<Chord>();
+        StringBuilder output = new StringBuilder();
+        int beatPosition = 0;
+        int chordLengthAccum = 0;
+        
+        output.append(String.valueOf(grade / 10.0));
+        output.append(' ');
+        
+        while(!chords.isEmpty()) {
+            while(!chords.isEmpty() && chords.first() == null) {
+                chords = chords.rest();
+            }
+            
+            if(!chords.isEmpty()) {
+                String chord = (String) chords.first();
+                
+                Chord c = new Chord(chord, 480); //FIX, need to get chord lengths
+                //Checks for non-chords
+                if ( !(ChordSymbol.makeChordSymbol(chord) == null) )
+                {
+                    chordList.add(c);
+                }
+                
+                printChord(output, ChordSymbol.makeChordSymbol(chord));
+                chords = chords.rest();
+            }
+        }
+        
+        while(!notes.isEmpty()) {
+            while(!notes.isEmpty() && notes.first() == null) {
+                notes = notes.rest();
+            }
+            
+            if(!notes.isEmpty()) {
+                noteList.add(NoteSymbol.toNote(notes.first().toString()));
+                notes = notes.rest();
+            }
+        }
+        
+        // Prints all notes within one lick.
+        for (int index = 0; index < noteList.size(); index++)
+        {
+            int indexPrev = index - 1;
+            int indexNext = index + 1;
+            Chord chordCurr = null;
+            Chord chordNext= null;
+            
+            if (!chordList.isEmpty())
+            {
+                chordCurr = chordList.get(0);
+                if(chordList.size() > 1)
+                {
+                    chordNext = chordList.get(1);
+                }
+            }
+            
+            if (indexPrev < 0)
+            {
+                beatPosition = printNoteData(output, null, noteList.get(index), 
+                        noteList.get(indexNext),
+                        chordCurr, chordNext, beatPosition, error);
+            }
+            else if (indexNext >= noteList.size())
+            {
+                beatPosition = printNoteData(output, noteList.get(indexPrev), 
+                        noteList.get(index), null,
+                        chordCurr, chordNext, beatPosition, error);
+            }
+            else
+            {
+                beatPosition = printNoteData(output, noteList.get(indexPrev), 
+                        noteList.get(index), noteList.get(indexNext),
+                        chordCurr, chordNext, beatPosition, error);
+            }
+            
+            // Updates the current chord based on the current slot.
+            if(!chordList.isEmpty() && chordCurr != null 
+                    && chordCurr.getRhythmValue() + chordLengthAccum <= beatPosition)
+            {
+                chordLengthAccum += chordCurr.getRhythmValue();
+                chordList.remove(0);
+            }
+        }
+        
+        output.append(lick.toString());
+        
+        if (!error.get())
+        {
+            out.write(output.toString());
+        }
+        else
+        {
+            System.out.println("Error from parsing data: Will not save this lick.");
+        }
+    }
+
+    // FIX: Split lots into seperate sequences
+    /**
+     * Saves note data as an 18-bit vector.
+     * Bit 1      - Rest/Not rest
+     * Bit 2      - Sonorous/Dissonant
+     * Bit 3      - Chord/Color or Approach/Foreign Tone
+     * Bit 4-7    - Distance from previous note, capped at 15
+     * Bit 8-12   - Thermometer encoding for beat placement
+     * Beat 13-18 - Represents type of note in the following way:
+     *              WHOLE-HALF-QUARTER-EIGHTH-SIXTEENTH-TRIPLET
+     * @param out
+     * @param notePrev Used for note distance
+     * @param noteCurr
+     * @param noteNext Used for note classification
+     * @param chordCurr Used for note classification
+     * @param chordNext Used for note classification
+     * @param beatPos
+     * @param error Keeps track of any potential note parsing errors
+     * @return beatPos, to keep track of the current slot
+     * @throws IOException 
+     */
+    private int printNoteData(StringBuilder out, Note notePrev, Note noteCurr, Note noteNext, 
+                              Chord chordCurr, Chord chordNext, int beatPos, AtomicBoolean error) throws IOException {
+        
+        char[] bits = {'0', ' ', '0', ' ', '0', ' ',
+                       '0', ' ', '0', ' ', '0', ' ', '0', ' ', 
+                       '0', ' ', '0', ' ', '0', ' ', '0', ' ', '0', ' ', 
+                       '0', ' ', '0', ' ', '0', ' ', '0', ' ', '0', ' ', '0', ' '};
+        int currPos = 0;
+
+        // The first three bits are for note classification   
+        if (noteCurr.isRest())
+        {
+            bits[currPos] = '1';
+            currPos += 6;
+        }
+        
+        else
+        {
+            currPos += 2;
+            
+            // FIX: Assumes two chords at this point
+            int classification = chordCurr.classify(noteCurr, noteNext, chordNext);
+
+            if (classification == CHORD_TONE)
+            {
+                bits[currPos] = '1';
+                currPos += 2;
+                bits[currPos] = '1';
+                currPos += 2;
+            }
+            else if (classification == COLOR_TONE)
+            {
+                bits[currPos] = '1';
+                currPos += 2;
+                bits[currPos] = '0';
+                currPos += 2;
+            }
+            else if (classification == APPROACH_TONE)
+            {
+                bits[currPos] = '0';
+                currPos += 2;
+                bits[currPos] = '1';
+                currPos += 2;
+            }
+            else if (classification == FOREIGN_TONE)
+            {
+                bits[currPos] = '0';
+                currPos += 2;
+                bits[currPos] = '0';
+                currPos += 2;
+            }
+        }
+        
+        // The next 4 bits dictate the distance of the note from a preceding note
+        int distance = 0;
+        if(notePrev != null)
+             if(!noteCurr.isRest() && !notePrev.isRest())
+        {
+            distance = Math.abs(noteCurr.getPitch() - notePrev.getPitch());
+        }
+        // In case the note distance is too large
+        if (distance > 15)
+        {
+            distance = 15;
+        }
+
+        char[] binaryInts = {'0', '0', '0', '0'};
+        char[] intToBinary = Integer.toBinaryString(distance).toCharArray();
+        
+        int difference = binaryInts.length - intToBinary.length;
+        System.arraycopy(intToBinary, 0, binaryInts, difference, intToBinary.length);
+        for (char b : binaryInts)
+        {
+            bits[currPos] = b;
+            currPos += 2;
+        }
+        
+        // Determine a 5-bit thermometer encoding for the placement of the note on the beat
+        // FIX: For quarter triplets, what am I encoding them as?
+        String encoding;
+        if (beatPos % WHOLE == 0) //Beat 1
+        {
+            encoding = "11111";
+        }
+        else if (beatPos % WHOLE == HALF) //Beat 3
+        {
+            encoding = "11110";
+        }
+        else if (beatPos % WHOLE == QUARTER 
+                 || beatPos % 480 == QUARTER + HALF) //Beat 2 or 4
+        {
+            encoding = "11100";
+        }
+        else if (beatPos % WHOLE == EIGHTH 
+                 || beatPos % WHOLE == EIGHTH + QUARTER
+                 || beatPos % WHOLE == EIGHTH + HALF
+                 || beatPos % WHOLE == EIGHTH + QUARTER + HALF) //Eighth note beats
+        {
+            encoding = "11000";
+        }
+        else
+        {
+            encoding = "10000";
+        }
+        char[] encodingBits = encoding.toCharArray();
+        for (char b : encodingBits)
+        {
+            bits[currPos] = b;
+            currPos += 2;
+        }
+        
+        // Determine 6-bit beat durations and encode them as such:
+        // WHOLE HALF QUARTER EIGHTH SIXTEENTH TRIPLET
+        char[] durationEncoding = {'0', '0',  '0', '0', '0', '0'};
+        
+        StringBuilder buffer = new StringBuilder();
+        int duration = noteCurr.getRhythmValue();
+        int value = Note.getDurationString(buffer, duration);
+
+        if (value != 0)
+        {
+            System.out.println("Extra residual unaccounted for.");
+        }
+        
+        String noteValues;
+        if(buffer.toString().matches("\\+.*"))
+        {
+            noteValues = buffer.toString().substring(1); //Trims leading "+"
+        }
+        else
+        {
+            noteValues = buffer.toString();
+        }
+        String[] values = noteValues.split("\\+");
+        
+        for (String note : values)
+        {
+            // FIX: Split into separate method for clarity
+            if (note.equals("1"))
+                durationEncoding[0] = '1'; //WHOLE note
+            else if (note.equals("2"))
+                durationEncoding[1] = '1'; //HALF note
+            else if (note.equals("4")) 
+                durationEncoding[2] = '1'; //QUARTER note
+            else if (note.equals("8")) 
+                durationEncoding[3] = '1'; //EIGHTH note
+            else if (note.equals("16")) 
+                durationEncoding[4] = '1'; //SIXTEENTH note
+            else if (note.equals("2/3"))
+            {
+                durationEncoding[1] = '1'; //HALF_TRIPLET
+                durationEncoding[5] = '1';
+            }
+            else if (note.equals("4/3"))
+            {
+                durationEncoding[2] = '1'; //QUARTER_TRIPLET
+                durationEncoding[5] = '1';
+            }
+            else if (note.equals("8/3"))
+            {
+                durationEncoding[3] = '1'; //EIGHTH_TRIPLET
+                durationEncoding[5] = '1';
+            }
+            else if (note.equals("16/3"))
+            {
+                durationEncoding[4] = '1'; //SIXTEENTH_TRIPLET
+                durationEncoding[5] = '1';
+            }
+                
+            else
+            {
+                System.out.println("Note resolution is currently unsupported.");
+                error.set(true);
+            }
+        }
+        for (char b : durationEncoding)
+        {
+            bits[currPos] = b;
+            currPos += 2;
+        }
+        
+        // Used for debugging
+        /*
+        for (char b : bits)
+            System.out.print(b);
+        System.out.println();
+        */
+        
+        // Write the data
+        out.append(bits);
+        
+        // Move the beat position up by the current duration.
+        beatPos += duration;
+        return beatPos;
+    }
+    
+    /**
+     * Saves chord in a bit vector representation.
+     * 12 bits long, unique for every chord.
+     * @param out
+     * @param chord
+     * @throws IOException 
+     */
+    private void printChord(StringBuilder out, ChordSymbol chord) throws IOException {
+        if(chord == null)
+            return;
+        
+        Polylist spelling = chord.getChordForm().getSpell(chord.getRootString());
+        
+        // 12 bits for a chord
+        char[] bitSpelling = {'0', ' ', '0', ' ', '0', ' ', '0', ' ', 
+                              '0', ' ', '0', ' ', '0', ' ', '0', ' ', 
+                              '0', ' ', '0', ' ', '0', ' ', '0', ' '};
+        
+        while(spelling.nonEmpty()) {
+            NoteSymbol n = (NoteSymbol) spelling.first();
+            bitSpelling[2 * (n.getMIDI() % 12)] = '1';
+            spelling = spelling.rest();
+        }
+        
+        out.append(bitSpelling);
+    }
+    
+    /**
+     * Previous way to save data for the critic. 
+     * Uses longer bit vectors comprised of chords and individual notes.
+     * Changed to accommodate the use of new printing methods.
+     * @param out
+     * @param row
+     * @throws IOException 
+     */
+    private void saveRowOld(BufferedWriter out, int row) throws IOException {
         Polylist r = dataModel.getRow(row);
         Polylist name = Polylist.list("name", r.first());
         Polylist notes = (Polylist) r.second();
@@ -406,7 +775,7 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
             }
             
             if(!chords.isEmpty()) {
-                printChord(out, ChordSymbol.makeChordSymbol((String) chords.first()));
+                printChordOld(out, ChordSymbol.makeChordSymbol((String) chords.first()));
                 chords = chords.rest();
             }
         }
@@ -420,12 +789,22 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
         
         out.write(lick.toString());
     }
-
     
+    /** Variables for printing a note symbol at a particular resolution. */
     private final int BOTTOMNOTE = 60;
     private final int TOPNOTE = 83;
-    private final int MINDURATION = EIGHTH;
+    //Changed from EIGHTH to THIRTYSECOND_TRIPLET in order to obtain a finer note resolution.
+    private final int MINDURATION = THIRTYSECOND_TRIPLET;
     
+    /**
+     * Previous way of saving note data, as a bit vector.
+     * Resulted in very large inputs for the neural network, 
+     * making it hard to train. 
+     * Changed to a new bit vector input method.
+     * @param out
+     * @param note
+     * @throws IOException 
+     */
     private void printNoteSymbol(BufferedWriter out, NoteSymbol note) throws IOException {
         int pitch = note.getMIDI();
 
@@ -463,7 +842,14 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
         }
     }
     
-    private void printChord(BufferedWriter out, ChordSymbol chord) throws IOException {
+    /**
+     * Previous way of printing a chord.
+     * Changed to accommodate use of StringBuilder.
+     * @param out
+     * @param chord
+     * @throws IOException 
+     */
+    private void printChordOld(BufferedWriter out, ChordSymbol chord) throws IOException {
         if(chord == null)
             return;
         
@@ -486,7 +872,7 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
     private class CriticTableModel extends AbstractTableModel {
         private ImageIcon playIcon = new ImageIcon(getClass().getResource("/imp/gui/graphics/icons/play.png"));
 
-        private Vector<Polylist> data = new Vector<Polylist>();
+        private ArrayList<Polylist> data = new ArrayList<Polylist>(); //Changed from Vector
 
         public CriticTableModel() {
             

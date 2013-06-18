@@ -5573,13 +5573,17 @@ public String extract(String title, ExtractMode mode, int grade,
                             duration += cstrLines[k].getSlotsPerDivision();
                           }
                       }
-                    prevNote.setRhythmValue(duration);
+                    // Fix for final rest durations being too long.
+                    prevNote.setRhythmValue(duration - BEAT/2);
                   }
 
-                // Save the last note, whether it is a rest or not.
-                prevNote.saveLeadsheet(out, metre, false); // no linebreaks
-                out.write(" "); // in case following melody with chords, e.g. in control-J from notate
-          }
+                // Save the last note, whether it is a rest or not. Check that the note exists.
+                if ( prevNote.getRhythmValue() != 0 )
+                {
+                    prevNote.saveLeadsheet(out, metre, false); // no linebreaks
+                    out.write(" "); // in case following melody with chords, e.g. in control-J from notate
+                }
+            }
 
         // Get chord or render
         switch( mode )

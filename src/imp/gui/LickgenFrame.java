@@ -3941,7 +3941,7 @@ private void triageAndGenerate(int number)
                         }//GEN-LAST:event_grade3BtnActionPerformed
 
                         private void grade4BtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_grade4BtnActionPerformed
-                            triageAndGenerate(3);
+                            triageAndGenerate(4);
 }//GEN-LAST:event_grade4BtnActionPerformed
 
                         private void grade5BtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_grade5BtnActionPerformed
