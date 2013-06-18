@@ -1,10 +1,10 @@
 /**
  * This Java Class is part of the Impro-Visor Application.
  *
- * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2013 Robert Keller and Harvey Mudd College
  * XML export code is also Copyright (C) 2009-2011 Nicolas Froment (aka Lasconic).
  *
- * Impro-Visor is free software; you can redistribute it and/or modifyc
+ * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
@@ -10840,17 +10840,12 @@ private void recordFromMidi()
 
 private void chordToneWeightFieldFocusLost(java.awt.event.FocusEvent evt)
     {
-        verifyTriageFields();
-
-        if (autoFill)
-
-            FillProbsButtonActionPerformed(null);
-
+        verifyAndFill();
     }
 
     void FillProbsButtonActionPerformed(java.awt.event.ActionEvent evt)
     {
-
+        verifyAndFill();
     }
 
     private void openGeneratorButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_openGeneratorButtonActionPerformed
@@ -12772,7 +12767,7 @@ private void updateTempoFromTextField()
         lickTitle = enterLickTitle.getText();
 
         String saveSelection = getCurrentStave().getSaveSelection(lickTitle, saveSelectionMode, 0);
-        System.out.println("saveSelection = ");
+        //System.out.println("saveSelection = ");
 
         saveLick(saveSelection);
     }//GEN-LAST:event_okSaveButtonActionPerformed
@@ -12888,6 +12883,14 @@ private void verifyTriageFields()
     getCurrentStave().repaint();
   }
 
+private void verifyAndFill()
+  {
+    //System.out.println("verifyAndFill()");
+    lickgenFrame.verifyAndFill();
+    lickgenFrame.setTotalBeats(totalBeats);
+    redrawTriage();
+    getCurrentStave().repaint();
+  }
 
 /**
  * Save the lick in the vocabulary.
@@ -12940,7 +12943,7 @@ boolean isPowerOf2(int x)
 
 private MelodyPart makeLick(Polylist rhythm, int start, int stop)
   {
-    verifyTriageFields();
+    verifyAndFill();
 
     if( rhythm == null || rhythm.isEmpty() )
       {
@@ -12971,7 +12974,7 @@ private MelodyPart makeLick(Polylist rhythm, int start, int stop)
 
 private MelodyPart makeLick(Polylist rhythm)
   {
-    verifyTriageFields();
+    verifyAndFill();
 
     if( rhythm == null || rhythm.isEmpty() )
       {
@@ -13057,22 +13060,6 @@ public boolean putLick(MelodyPart lick)
       {
         rectifySelection(stave, start, stop);
       }
-
-    // Wait for playing to stop
-
-//    System.out.println("slotInPlayback = " + getSlotInPlayback() + ", stopPlaybackAtSlot = " + stopPlaybackAtSlot);
-//    while( !midiSynth.finishedPlaying() )
-//      {
-//        try
-//          {
-//        Thread.sleep(1);
-//          }
-//        catch(Exception e)
-//          {
-//
-//          }
-//      }
-//    System.out.println("Stopped spinning\n");
 
     playCurrentSelection(false, 0, PlayScoreCommand.USEDRUMS, "putLick " + start + " - " + stop);
     ImproVisor.setPlayEntrySounds(true);
@@ -21176,7 +21163,6 @@ public void originalGenerate(LickGen lickgen, int improviseStartSlot, int improv
 
 public MelodyPart generate(LickGen lickgen, int improviseStartSlot, int improviseEndSlot)
 {
-  System.out.println("generate from " + improviseStartSlot/480 + " to " + improviseEndSlot/480);
     MelodyPart lick = null;
 
     saveConstructionLineState = showConstructionLinesMI.isSelected();
@@ -21197,7 +21183,7 @@ public MelodyPart generate(LickGen lickgen, int improviseStartSlot, int improvis
 
     //System.out.println("\ngenerate: " + improviseStartSlot + " to " + improviseEndSlot + ", requesting " + beatsRequested + " beats");
 
-    verifyTriageFields();
+    //verifyTriageFields();
 
     Polylist rhythm = null;
 
@@ -25654,19 +25640,6 @@ public int getRecordSnapValue()
     return Integer.parseInt(midiRecordSnapSpinner.getValue().toString());
   }
 
-/**
- * return slot in the form chorus/bar/beat
- * @param slot
- * @return
- */
-public String bar(long slot)
-  {
-    int size = getCurrentMelodyPart().size();
-    return (slot/size) + "/" + (1 + (slot%size)/480)
-            + "/" + Math.round(100*((slot%size)%480)/120.)/100.
-            + " (" + slot + ")";
-  }
-
 
 /**
  * AutoImprovisation is an inner class used to control trading.
@@ -25828,19 +25801,18 @@ public void reset(MelodyPart currentMelodyPart)
     setPlayLeadSlots(30);
   }
 
+
 /**
- * return slot in the form chorus/bar/beat
+ * return slot and bar as string (assuming 4/4 time)
  * @param slot
  * @return
  */
 
 public String bar(long slot)
   {
-    long residual = slot % size;
-    return (slot/size) + "/" + (1 + residual/480)
-            + "/" + Math.round(100*(residual%480)/120.)/100.
-            + " (" + slot + ")";
+    return "slot " + slot + " (bar " + (slot%size)/480 + ")";
   }
+
 
 int failCounter;
 
@@ -25867,7 +25839,7 @@ public MelodyPart maybeCreateLick(int slotInPlayback)
     melodyStart = ivFirst ? improInterval * biasedCyclesElapsed
                           : improInterval * biasedCyclesElapsed + halfInterval;
 
-    playAtSlot = melodyStart - (firstTime ? 0 : playLeadSlots);
+    playAtSlot = Math.max(0, melodyStart - playLeadSlots);
 
     generateAtSlot = melodyStart - generationLeadSlots;
 
@@ -25875,17 +25847,28 @@ public MelodyPart maybeCreateLick(int slotInPlayback)
 
     if( result )
       {
-        // We are generating for the NEXT cycle, due to using the bias in triggering
-
-        int tradingCycle = ivFirst ? (1 + (slotInPlayback / improInterval)) % numCycles
-                                   : slotInPlayback / improInterval;
-
-        melodyStartsAtSlot = ivFirst ? improInterval * tradingCycle
-                                     : improInterval * tradingCycle + halfInterval;
+       // We are generating for the NEXT cycle, due to using the bias in triggering
+      
+        melodyStartsAtSlot = (int)melodyStart;
         
-        System.out.println("melodyStartsAtSlot = " + melodyStartsAtSlot);
+        //System.out.println("melody starts at " + bar(melodyStartsAtSlot) );
         
-        improLick = generate(lickgen, melodyStartsAtSlot, melodyStartsAtSlot + halfInterval - 1);
+        //improLick = generate(lickgen, melodyStartsAtSlot, melodyStartsAtSlot + halfInterval - 1);
+        
+        int partsize = getCurrentMelodyPart().size();
+
+        int chordStartSlot = melodyStartsAtSlot % partsize; // TEMP
+        int chordStopSlot = (melodyStartsAtSlot + halfInterval - 1)% partsize; // TEMP
+        
+        if( traceAutoImprov )
+          {
+          System.out.println("\ncreate lick for next cycle at " + bar(slotInPlayback) 
+                           + ", melodyStart " + bar(melodyStart)
+                           + " to play at " + bar(playAtSlot)
+                           + ", chords from " + bar(chordStartSlot) + " to " + bar(chordStopSlot));
+          }
+        
+        improLick = generate(lickgen, chordStartSlot, chordStopSlot);
 
         generated = improLick != null && improLick.size() > 0;
 
@@ -25895,12 +25878,12 @@ public MelodyPart maybeCreateLick(int slotInPlayback)
 
             if( traceAutoImprov )
               {
-                System.out.println("\n" + bar(totalSlotsElapsed)
-                        + ": result: " + result
+                System.out.println("\n"  + bar(totalSlotsElapsed)
+                        + ": result: "   + result
                         + ", generate: " + bar(generateAtSlot)
-                        + ", play: " + bar(playAtSlot)
-                        + ", paste: " + bar(melodyStartsAtSlot)
-                        + ", hear: " + bar(melodyStart));
+                        + ", play: "     + bar(playAtSlot)
+                        + ", paste: "    + bar(melodyStartsAtSlot)
+                        + ", hear: "     + bar(melodyStart));
 
                 if( failCounter > 0 )
                   {
@@ -25912,6 +25895,7 @@ public MelodyPart maybeCreateLick(int slotInPlayback)
                     System.out.println(" generation succeeded first time.");
                   }
               }
+            
             played = false;
             Score improScore = new Score();
             improScore.setTempo(score.getTempo());
@@ -25926,14 +25910,14 @@ public MelodyPart maybeCreateLick(int slotInPlayback)
 
             setImproCommand(
                     new PlayScoreFastCommand(improScore,
-                                             0, // startTime
-                                             true, // swing
+                                             0,         // startTime
+                                             true,      // swing
                                              midiSynth2,
-                                             null, // play listener
-                                             0, // loopCount,
+                                             null,      // play listener
+                                             0,         // loopCount,
                                              score.getTransposition(), // transposition
-                                             false, // use drums
-                                             -1));       // end
+                                             false,     // use drums
+                                             -1));      // end
             return improLick;
           }
         else

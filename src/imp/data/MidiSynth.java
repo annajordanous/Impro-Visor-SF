@@ -464,8 +464,8 @@ public void origPlay(Score score,
 
         setSlot(startIndex);
 
-        System.runFinalization();
-        System.gc();
+        //System.runFinalization();
+        //System.gc();
 
         if( loopCount != 0 )
         {
