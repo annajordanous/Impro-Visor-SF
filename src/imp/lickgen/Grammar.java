@@ -131,8 +131,8 @@ private void accumulateTerminals()
       {
         return; // nothing to accumulate
       }
-    ChordPart chords = notate.getChordProg();
-    Chord currentChord = chords.getCurrentChord(chordSlot);
+    //ChordPart chords = notate.getChordProg();
+    //Chord currentChord = chords.getCurrentChord(chordSlot);
     //System.out.println("\nat slot " + chordSlot + " " + currentChord + " accumulating " + accumulator);
     
     terminalString = terminalString.append(accumulator);
@@ -640,7 +640,6 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
           for( Polylist L = rule; L.nonEmpty(); L = L.rest() )
             {
             Object ob = L.first();
-            Polylist s = new Polylist();
             
             if( ob instanceof Polylist )
               {
@@ -658,7 +657,6 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
         offset += weightArray.get(i) / total;
         }
       
-
     return gen; // throw new RuleApplicationException("applyRules, no such rule for " + gen);
   }
 

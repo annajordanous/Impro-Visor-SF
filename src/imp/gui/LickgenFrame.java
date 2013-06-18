@@ -3840,7 +3840,7 @@ public void saveTriageParameters()
     lickgen.setParameter(LickGen.EXPECTANCY_CONSTANT, lickgen.getExpectancyConstant());
   }
 
-private void verifyAndFill()
+public void verifyAndFill()
   {
   verifyTriageFields();
 
