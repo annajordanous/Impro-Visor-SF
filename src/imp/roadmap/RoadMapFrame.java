@@ -2398,17 +2398,17 @@ private void adjustForTreeChange()
     private void fileStepBackBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileStepBackBtnActionPerformed
         notate.fileStepBackward();
         if(notate.getAutoCreateRoadMap())
-            ;//notate.roadMapThisAnalyze();
+            ;
         else
-            notate.roadMapThis();
+            notate.roadMapThisAnalyze();
 }//GEN-LAST:event_fileStepBackBtnActionPerformed
 
     private void fileStepForwardBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileStepForwardBtnActionPerformed
         notate.fileStepForward();
         if(notate.getAutoCreateRoadMap())
-            ;//notate.roadMapThisAnalyze();
+            ;
         else
-            notate.roadMapThis();
+            notate.roadMapThisAnalyze();
 }//GEN-LAST:event_fileStepForwardBtnActionPerformed
 
     private void dialogKeyComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dialogKeyComboBoxActionPerformed
@@ -3764,7 +3764,8 @@ public void setParent(Notate notate)
         // Don't show joins until analysis is done.
         boolean showJoinsOnCompletion = settings.showJoins;
         
-        setVisible(true);
+        //setVisible(true); 
+        // Instead, it will be visible through "Roadmap this Leadsheet" under Roadmap tab
         if( brickLibraryMenuItem.isSelected() )
           {
           brickDictionaryFrame.setVisible(true);

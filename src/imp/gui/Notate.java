@@ -2180,7 +2180,6 @@ public class Notate
         voicingTestMI = new javax.swing.JMenuItem();
         roadmapMenu = new javax.swing.JMenu();
         emptyRoadMapMI = new javax.swing.JMenuItem();
-        roadMapThisMI = new javax.swing.JMenuItem();
         roadMapThisAnalyze = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         createRoadMapCheckBox = new javax.swing.JCheckBoxMenuItem();
@@ -4658,11 +4657,11 @@ public class Notate
             }
         });
         adviceScrollListLicks.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                adviceScrollListLicksKeyReleased(evt);
-            }
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 adviceScrollListLicksKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                adviceScrollListLicksKeyReleased(evt);
             }
         });
         scrollLicks.setViewportView(adviceScrollListLicks);
@@ -6890,11 +6889,11 @@ public class Notate
             }
         });
         addWindowFocusListener(new java.awt.event.WindowFocusListener() {
-            public void windowGainedFocus(java.awt.event.WindowEvent evt) {
-                formWindowGainedFocus(evt);
-            }
             public void windowLostFocus(java.awt.event.WindowEvent evt) {
                 formWindowLostFocus(evt);
+            }
+            public void windowGainedFocus(java.awt.event.WindowEvent evt) {
+                formWindowGainedFocus(evt);
             }
         });
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -8064,12 +8063,12 @@ public class Notate
 
         openRecentLeadsheetMenu.setText("Open Recent Leadsheet (same window)");
         openRecentLeadsheetMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                populateRecentFileMenu(evt);
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
-            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                populateRecentFileMenu(evt);
             }
         });
 
@@ -8085,12 +8084,12 @@ public class Notate
 
         openRecentLeadsheetNewWindowMenu.setText("Open Recent Leadsheet (new window)");
         openRecentLeadsheetNewWindowMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                populateRecentLeadsheetNewWindow(evt);
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
-            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                populateRecentLeadsheetNewWindow(evt);
             }
         });
 
@@ -9042,16 +9041,7 @@ public class Notate
         });
         roadmapMenu.add(emptyRoadMapMI);
 
-        roadMapThisMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_SEMICOLON, 0));
-        roadMapThisMI.setText("Roadmap this");
-        roadMapThisMI.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                roadMapThisMIaction(evt);
-            }
-        });
-        roadmapMenu.add(roadMapThisMI);
-
-        roadMapThisAnalyze.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_SEMICOLON, java.awt.event.InputEvent.SHIFT_MASK));
+        roadMapThisAnalyze.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_SEMICOLON, 0));
         roadMapThisAnalyze.setText("Roadmap this & Analyze");
         roadMapThisAnalyze.setToolTipText("Open road map and analyze entire chorus.\n");
         roadMapThisAnalyze.addActionListener(new java.awt.event.ActionListener() {
@@ -9076,12 +9066,12 @@ public class Notate
         windowMenu.setMnemonic('W');
         windowMenu.setText("Window");
         windowMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                windowMenuMenuSelected(evt);
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
-            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                windowMenuMenuSelected(evt);
             }
         });
 
@@ -9114,12 +9104,12 @@ public class Notate
             }
         });
         notateGrammarMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                notateGrammarMenuMenuSelected(evt);
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
-            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                notateGrammarMenuMenuSelected(evt);
             }
         });
         notateGrammarMenu.addActionListener(new java.awt.event.ActionListener() {
@@ -21947,12 +21937,12 @@ private void EmptyRoadMapAction(java.awt.event.ActionEvent evt) {//GEN-FIRST:eve
     openEmptyRoadmap();
 }//GEN-LAST:event_EmptyRoadMapAction
 
-private void roadMapThisMIaction(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_roadMapThisMIaction
-    roadMapThis();
-}//GEN-LAST:event_roadMapThisMIaction
-
 private void roadMapThisAnalyzeAction(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_roadMapThisAnalyzeAction
-    roadMapThisAnalyze();
+    if(roadmapFrame == null)
+    {
+        roadMapThisAnalyze();
+    }
+    roadmapFrame.setVisible(true);
 }//GEN-LAST:event_roadMapThisAnalyzeAction
 
 private void printAllMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printAllMIActionPerformed
@@ -23026,7 +23016,7 @@ public void fileStepBackward()
           }
         nextFile = lsFiles[currPos-1];
         setupLeadsheet(nextFile, false);
-        if( createRoadMapCheckBox.isSelected() )
+        if( getAutoCreateRoadMap() )
         {
             roadMapThisAnalyze();
         }
@@ -24871,7 +24861,6 @@ public void showNewVoicingDialog()
     private javax.swing.JMenuItem revertToSavedMI;
     private javax.swing.JSlider rmsThresholdSlider;
     private javax.swing.JMenuItem roadMapThisAnalyze;
-    private javax.swing.JMenuItem roadMapThisMI;
     private javax.swing.JMenu roadmapMenu;
     private javax.swing.JCheckBox rootEqualBassCheckbox;
     private javax.swing.JLabel rootEqualBassLabel;
