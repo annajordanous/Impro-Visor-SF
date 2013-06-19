@@ -413,45 +413,48 @@ public class GraphicBrick {
             int endX = xOffset + settings.getLength(endWrap[0]);
             int lines = (int)(endWrap[1] - wrap[1]);
             
-            if(lines > 0) {
-                if(selected == ind) {
-                    g2d.setColor(settings.selectedColor);
-                    g2d.fillRect(currentX+1, currentY,
-                            cutoff-currentX-1, blockHeight-1);
-                    g2d.fillRect(xOffset, currentY+lines*settings.getLineOffset(),
-                            endX-xOffset-1, blockHeight-1);
-                    
-                    for(int line = 1; line < lines; line++) {
-                        g2d.fillRect(xOffset, currentY + line*settings.getLineOffset(),
-                                cutoff-xOffset, blockHeight-1);
+            if (g2d != null) {
+
+                if (lines > 0) {
+                    if (selected == ind) {
+                        g2d.setColor(settings.selectedColor);
+                        g2d.fillRect(currentX + 1, currentY,
+                                cutoff - currentX - 1, blockHeight - 1);
+                        g2d.fillRect(xOffset, currentY + lines * settings.getLineOffset(),
+                                endX - xOffset - 1, blockHeight - 1);
+
+                        for (int line = 1; line < lines; line++) {
+                            g2d.fillRect(xOffset, currentY + line * settings.getLineOffset(),
+                                    cutoff - xOffset, blockHeight - 1);
+                        }
                     }
-                }
-                g2d.setColor(settings.lineColor);
-                g2d.drawLine(currentX, currentY, cutoff, currentY);
-                g2d.drawLine(xOffset, currentY + lines*settings.getLineOffset(),
-                        endX, currentY + lines*settings.getLineOffset());
-                
-                for(int line = 1; line < lines; line++) {
-                    g2d.drawLine(xOffset, currentY + line*settings.getLineOffset(),
-                            cutoff, currentY + line*settings.getLineOffset());
-                }
-            } else {
-                if(selected == ind) {
-                    g2d.setColor(settings.selectedColor);
-                    g2d.fillRect(currentX+1, currentY+1, endX-currentX-1, blockHeight-2);
                     g2d.setColor(settings.lineColor);
+                    g2d.drawLine(currentX, currentY, cutoff, currentY);
+                    g2d.drawLine(xOffset, currentY + lines * settings.getLineOffset(),
+                            endX, currentY + lines * settings.getLineOffset());
+
+                    for (int line = 1; line < lines; line++) {
+                        g2d.drawLine(xOffset, currentY + line * settings.getLineOffset(),
+                                cutoff, currentY + line * settings.getLineOffset());
+                    }
+                } else {
+                    if (selected == ind) {
+                        g2d.setColor(settings.selectedColor);
+                        g2d.fillRect(currentX + 1, currentY + 1, endX - currentX - 1, blockHeight - 2);
+                        g2d.setColor(settings.lineColor);
+                    }
+                    g2d.drawRect(currentX, currentY, endX - currentX, blockHeight);
                 }
-                g2d.drawRect(currentX, currentY, endX-currentX, blockHeight);
+
+                g2d.setColor(settings.textColor);
+                String name = RoadMapSettings.trimString(chord.getName(),
+                        settings.getBlockLength(chord), metrics);
+                name = RoadMapSettings.trimString(name, cutoff - currentX, metrics);
+                g2d.drawString(margin + name, currentX + 2, currentY + fontOffset);
+
+                currentBeats += chord.getDuration();
+                ind++;
             }
-            
-            g2d.setColor(settings.textColor);
-            String name = RoadMapSettings.trimString(chord.getName(),
-                    settings.getBlockLength(chord), metrics);
-            name = RoadMapSettings.trimString(name, cutoff-currentX, metrics);
-            g2d.drawString(margin + name, currentX+2, currentY + fontOffset);
-            
-            currentBeats += chord.getDuration();
-            ind++;
         }
         
         if(block.isBrick() && settings.showBrickNames) {

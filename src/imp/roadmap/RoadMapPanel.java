@@ -832,7 +832,7 @@ public class RoadMapPanel extends JPanel {
     /** Draws the grid */
     private void drawGrid()
     {
-        //Graphics g = buffer.getGraphics();
+        Graphics g = buffer.getGraphics();
 
         for(int i = 0; i < numLines; i++) {
             g.setColor(settings.gridBGColor);

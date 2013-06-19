@@ -8327,21 +8327,10 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="EmptyRoadMapAction"/>
               </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="roadMapThisMI">
-              <Properties>
-                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="SEMICOLON"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="Roadmap this"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="roadMapThisMIaction"/>
-              </Events>
-            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="roadMapThisAnalyze">
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="Shift+SEMICOLON"/>
+                  <KeyStroke key="SEMICOLON"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Roadmap this &amp; Analyze"/>
                 <Property name="toolTipText" type="java.lang.String" value="Open road map and analyze entire chorus.&#xa;"/>
@@ -8554,6 +8543,7 @@
   <SyntheticProperties>
     <SyntheticProperty name="menuBar" type="java.lang.String" value="menuBar"/>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
+    <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
   </SyntheticProperties>
   <Events>
     <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="formMouseClicked"/>
