@@ -671,14 +671,18 @@ public Part copy()
 public String toString()
   {
     StringBuilder partData = new StringBuilder();
+    partData.append("\nPart with unitCount = ");
+    partData.append(unitCount);
+    partData.append(": ");
     PartIterator i = iterator();
     while( i.hasNext() )
       {
+        int index = i.nextIndex();
         partData.append("Beat ");
-        partData.append(i.nextIndex() / beatValue);
-        partData.append(" Slot ");
-        partData.append(i.nextIndex() % beatValue);
-        partData.append(": ");
+        partData.append(index / beatValue);
+        partData.append(" + ");
+        partData.append(index % beatValue);
+        partData.append(" slots :");
         partData.append(i.next().toString());
         partData.append('\n');
       }
@@ -757,6 +761,8 @@ public void addUnit(Unit unit)
     
 public void setUnit(int unitIndex, Unit unit)
   {
+  if( unit != null )
+  //System.out.println("setUnit " + unitIndex + " to " + unit);
     if( unitIndex >= size || unitIndex < 0 )
       {
         return; // shouldn't happen, but can.
@@ -805,6 +811,176 @@ public void setUnit(int unitIndex, Unit unit)
     //Trace.log(3, "in setUnit - B, setting rhythmValue");
     unit.setRhythmValue(rv);
     slots.set(unitIndex, unit);
+  }
+
+
+/**
+ * Sets the slot at the specified unitIndex to the specified Unit.
+ *
+ * @param unitIndex the index of the slot to put the Unit in
+ * @param unit the Unit to set
+ */
+
+public void newSetUnit(int unitIndex, Unit unit)
+  {
+    if( unit != null )
+      {
+      //System.out.println("\nnewSetUnit " + unitIndex + " to " + unit);
+      }
+    //checkConsistency("start of newSetUnit");
+    if( unitIndex >= size || unitIndex < 0 )
+      {
+        return; // shouldn't happen, but can?
+      }
+
+    if( unit == null )
+      {
+        delUnit(unitIndex);
+        return;
+      }
+    else
+      {
+      }
+
+    // Pre-conditioning: If unit is too long for part, truncate it first:
+
+    int unitDuration = unit.getRhythmValue();
+    
+    int nextUnitStart = unitIndex + unitDuration;
+
+    if( nextUnitStart >= size )
+      {
+        unit = unit.copy();
+        unit.setRhythmValue(size - unitIndex);
+      }
+
+    // If this unit overlays one or more units, set them to null.
+    // Let makeConsistent fix things up.
+    
+    for( int index = unitIndex; index < nextUnitStart; index++ )
+      {
+        slots.set(index, null);
+      }
+    
+    // If the new unit overlays part of another unit, replace the latter
+    // with a rest.
+    if( nextUnitStart < size && slots.get(nextUnitStart) == null )
+      {
+        int nextUnitEnd = getNextIndex(nextUnitStart);
+        slots.set(nextUnitStart, new Rest(nextUnitEnd - nextUnitStart));
+      }
+
+    // Place the new unit
+    setSlot(unitIndex, unit, "leaving newSetUnit");
+    
+    // Re-eneable this!! checkConsistency("end of newSetUnit");
+  }
+
+private void setSlot(int index, Unit unit, String message)
+  {
+    //System.out.println("\nsetting slot at " + message + " index " + index + " to " + unit);
+    if( unit == null )
+      {
+        return;
+      }
+
+    slots.set(index, unit);
+    
+    // need to account for implicitly deleted last unit
+
+    makeConsistent();
+    //System.out.println("part after setting slot:  " + this);
+  }
+
+static public boolean isRest(Unit unit)
+  {
+    return unit != null && unit instanceof Note && ((Note)unit).isRest();
+  }
+
+/**
+ * Check whether or not the part is consistent.
+ */
+
+public boolean checkConsistency(String message)
+  {
+    int sum = 0;
+    int count = 0;
+    for( int i = 0; i < size; i++ )
+      {
+        Unit unit = slots.get(i);
+        if( unit != null )
+          {
+            //System.out.println("non-null unit " + unit);
+            count++;
+            sum += unit.getRhythmValue();
+          }
+      }
+    if( sum != size || count != unitCount )
+      {
+        System.out.println("*** In " + message + " consistency check failed: size = " + size + " vs. duration sum = " + sum + " unitCount = " + unitCount + " vs " + count + " " + this);
+        assert false;
+        return false;
+      }
+    //System.out.println("In " + message + " integrity check succeeded: size = " + size + " unitCount = " + unitCount);
+    return true;
+  }
+
+/**
+ * Force the part to be consistent.
+ */
+
+public void makeConsistent()
+  {
+    if( size == 0 )
+      {
+        unitCount = 0;
+        return;
+      }
+    //checkConsistency("start makeConsistent");
+    int prevIndex = 0;
+
+    Unit prevUnit = slots.get(prevIndex);
+    Unit thisUnit;
+
+    if( prevUnit == null )
+      {
+        prevUnit = new Rest(60);
+        slots.set(prevIndex, prevUnit);
+      }
+
+    int count = 1;
+    
+    int index = 1;
+    for( ; index < size ; index++ )
+      {
+        thisUnit = slots.get(index);
+        if( thisUnit != null )
+          {
+            // Found another unit
+            count++;
+            int diff = index - prevIndex;
+            if( isRest(thisUnit) && isRest(prevUnit) )
+              {
+                // merge adjacent rests
+                count--;
+                prevUnit.setRhythmValue(prevUnit.getRhythmValue() + thisUnit.getRhythmValue());
+                slots.set(index, null);
+              }
+            else if( diff != prevUnit.getRhythmValue() )
+              {
+                // Adjust prevUnit to fill gap
+                prevUnit.setRhythmValue(diff);
+              }
+          prevUnit = thisUnit;
+          prevIndex = index;
+          }
+      }
+
+    prevUnit.setRhythmValue(index - prevIndex);
+
+    unitCount = count;
+    //System.out.println("makeConsistent result " + this);
+    // re-enable this checkConsistency("end makeConsistent");
   }
 
 
@@ -1364,6 +1540,36 @@ public int getUnitRhythmValue(int unitIndex)
             else
               {
               setUnit(j, null);
+              }
+        }
+    }
+    
+     /**
+     * A rewritten version of pastOver
+     * 
+     * @param part      the Part to paste into this
+     * @param index     the slot at which to start pasting over
+     */
+    public void newPasteOver(Part part, int index) {
+        //Trace.log(3, "pasteOver " + part + " onto " + index);
+        int limit = size();
+        int incoming = part.size();
+//        if( index + incoming < limit )
+//          {
+//          limit = index + incoming;
+//          }
+
+        int i = 0;
+        int j = index;
+        for( ; i < incoming && j < limit; i++, j++) {
+            Unit unit = part.getUnit(i);
+            if( unit == null )
+              {
+              newSetUnit(j, null);
+              }
+            else
+              {
+              newSetUnit(j, unit.copy());
               }
         }
     }

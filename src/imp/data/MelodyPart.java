@@ -108,6 +108,7 @@ public class MelodyPart
     super();
 
     this.volume = ImproVisor.getEntryVolume();
+    makeConsistent();
     }
 
   /**
@@ -123,6 +124,7 @@ public class MelodyPart
     // sample of code will will override this volume setting from the
     // playback slider, but for instant sounds we want the entry volume.
     this.volume = ImproVisor.getEntryVolume();
+    makeConsistent();
     }
 
   /**
@@ -138,6 +140,7 @@ public class MelodyPart
       {
       addNote(NoteSymbol.makeNoteSymbol(noteList[i]).toNote());
       }
+    makeConsistent();
     }
 
 /**
@@ -238,7 +241,7 @@ public void addNote(Note note)
         highestPitch = note.getPitch();
         }
       }
-    setUnit(slotIndex, note);
+    newSetUnit(slotIndex, note);
     }
 
   /**
@@ -1660,6 +1663,12 @@ public int getInitialBeatsRest()
   StringBuilder buffer = new StringBuilder();
 
   int n = slots.size();
+  
+  buffer.append("MelodyPart with ");
+  buffer.append(n);
+  buffer.append(" slots, ");
+  buffer.append(unitCount);
+  buffer.append(" notes and rests: ");
 
   int currentVolume = 127;
 

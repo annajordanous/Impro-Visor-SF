@@ -769,6 +769,11 @@ public Note copy()
 @Override
 public String toString()
   {
+  if( pitch == REST )
+    {
+      return "REST: [RhythmValue = " + rhythmValue + "]";
+    }
+  
   return "NOTE: [" + getPitchClassName() + ", Pitch = " + pitch +
           ", " + drawnPitch + "][Accidental = " + accidental +
           "][RhythmValue = " + rhythmValue + "][volume = " + volume + "]";
