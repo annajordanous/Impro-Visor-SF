@@ -12933,7 +12933,7 @@ boolean isPowerOf2(int x)
 
 private MelodyPart makeLick(Polylist rhythm, int start, int stop)
   {
-    verifyAndFill();
+    //verifyAndFill();
 
     if( rhythm == null || rhythm.isEmpty() )
       {
@@ -12964,7 +12964,7 @@ private MelodyPart makeLick(Polylist rhythm, int start, int stop)
 
 private MelodyPart makeLick(Polylist rhythm)
   {
-    verifyAndFill();
+    //verifyAndFill();
 
     if( rhythm == null || rhythm.isEmpty() )
       {
@@ -13044,12 +13044,12 @@ public boolean putLick(MelodyPart lick)
     // Formerly used SafePasteCommand, then DynamicPasteCommand, both of which
     // carry unnecessary baggage.
 
-    getMelodyPart(stave).pasteOver(lick, getCurrentSelectionStart(stave));
-
-    if( lickgenFrame.rectifySelected() )
-      {
+    getMelodyPart(stave).newPasteOver(lick, getCurrentSelectionStart(stave));
+ 
+//    if( lickgenFrame.rectifySelected() )
+//      {
         rectifySelection(stave, start, stop);
-      }
+//      }
 
     playCurrentSelection(false, 0, PlayScoreCommand.USEDRUMS, "putLick " + start + " - " + stop);
     ImproVisor.setPlayEntrySounds(true);
@@ -17841,8 +17841,9 @@ int slotDelay;
 
      if( improLick != null )
        {
-       // Now paste, after the main Score is started.
-       currentMelodyPart.pasteOver(improLick, 0);
+       // Paste, after the main Score is started.
+         
+       currentMelodyPart.newPasteOver(improLick, 0);
        }
   }
 
@@ -21233,17 +21234,8 @@ public MelodyPart generate(LickGen lickgen, int improviseStartSlot, int improvis
         // Critical point for recurrent generation
         if( lick != null )
           {
-          //getCurrentMelodyPart().pasteOver(lick, improviseStartSlot);
+          // duplicates other functionality getCurrentMelodyPart().pasteOver(lick, improviseStartSlot);
           repaint();
-
-          int beatsGenerated = lick.size()/BEAT;
-
-          if( beatsGenerated != beatsRequested )
-              {
-              //debug System.out.println("generated " + beatsGenerated
-              //              + " beats, but " + beatsRequested + " requested");
-              }
-            //putLick(improLick);
           }
         else
           {
@@ -22396,8 +22388,8 @@ public void setAutoImprovisation(boolean value)
     autoImprovisation.setSelected(value);
     if( value )
       {
-      openLickGenerator();  //FIX.
-      lickgenFrame.toBack();
+      //openLickGenerator();  //FIX.
+      //lickgenFrame.toBack();
       }
   }
 
@@ -25950,7 +25942,9 @@ public MelodyPart maybePlayLick(int slotInPlayback)
               }
             else
               {
-                currentMelodyPart.pasteOver(improLick, melodyStartsAtSlot);
+                currentMelodyPart.newPasteOver(improLick, melodyStartsAtSlot);
+                
+                // using newPasteOver here messes up chords below
               }
           }
 
