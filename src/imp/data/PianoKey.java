@@ -44,7 +44,7 @@ public class PianoKey {
         new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/whitekeypressed.jpg"));
     
     public javax.swing.ImageIcon bassKey = 
-        new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/rootkey.JPG"));
+        new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/rootkey.jpg"));
     
     public javax.swing.ImageIcon bassKeyPressed = 
         new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/rootkeypressed.jpg"));
