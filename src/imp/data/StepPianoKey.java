@@ -51,7 +51,7 @@ public class StepPianoKey {
         new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/whitekeypurple.jpg"));
     
     public javax.swing.ImageIcon bassKey = 
-        new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/rootkey.JPG"));
+        new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/rootkey.jpg"));
     
     /**
      *  Data members: MIDI value of the note, its name, and whether it has been pressed.

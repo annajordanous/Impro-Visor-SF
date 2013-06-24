@@ -1533,7 +1533,7 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
             "/imp/gui/graphics/blackkeypressed.jpg"));
     public javax.swing.ImageIcon bassKey =
         new javax.swing.ImageIcon(getClass().getResource(
-            "/imp/gui/graphics/rootkey.JPG"));
+            "/imp/gui/graphics/rootkey.jpg"));
     public javax.swing.ImageIcon blackBassKey =
         new javax.swing.ImageIcon(getClass().getResource(
             "/imp/gui/graphics/blackrootkey.jpg"));
