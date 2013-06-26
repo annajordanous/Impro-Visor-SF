@@ -3563,7 +3563,7 @@ public void saveToNewNotate()
       }
 
     Score score = new Score(chordPart);
-
+    score.getPart(0).setUnit(0, new Rest(score.getChordProg().size()));
     score.setMetre(getMetre());
     score.setTempo(getTempo());
     score.setTitle(roadMapTitle);
@@ -3571,7 +3571,7 @@ public void saveToNewNotate()
     score.setDefaultLayout();
     score.setRoadmapLayout(settings.barsPerLine);
 
-    // System.out.println("new score, style: " +  score.getStyle() + ", " + score.getChordProg());
+    //System.out.println("new score: " +  score);
 
 
     if( auxNotate == null )
@@ -3581,6 +3581,7 @@ public void saveToNewNotate()
         //System.out.println("auxNotate = " + auxNotate);
         auxNotate.forceNotateFrameHeight();
         auxNotate.setAutoCreateRoadMap(false);
+        //auxNotate.setupScore(score);
         auxNotate.setVisible(true);
         auxNotate.saveAsLeadsheet();
       }
