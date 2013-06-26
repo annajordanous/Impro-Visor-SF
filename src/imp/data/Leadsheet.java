@@ -43,7 +43,7 @@ public class Leadsheet
            "stave", "treble", "bass", "grand", "auto", "none", "layout",
            "bass-volume", "drum-volume", "chord-volume", "style", "section",
            "bass-instrument", "playback-transpose", "show", "year",
-           "chord-font-size", "phrase", "roadmap-layout"
+           "chord-font-size", "phrase", "roadmap-layout", "roadmap"
   };
 
   static final int TITLE = 0;
@@ -116,7 +116,9 @@ public class Leadsheet
 
   static final int ROADMAP_LAYOUT = 34;
 
-  static final int UNKNOWN = -1;
+ static final int ROADMAP = 35;
+
+static final int UNKNOWN = -1;
 
   /**
    * Save a Score as a Leadsheet.
@@ -414,8 +416,8 @@ public class Leadsheet
                   key = Key.getKey(sharps);
                   }
                 break;
-
-              // Read in the meter from the leadesheet.  To support older versions
+                  
+               // Read in the meter from the leadesheet.  To support older versions
               // that didn't recognize different time signatures, we look at the first
               // value, and if there isn't a second value, we just assume that it's a
               // four.
@@ -585,7 +587,14 @@ public class Leadsheet
                                 }
                               break; // case KEY
 
-                            case METER:
+                         case ROADMAP:
+                              Polylist roadmapPoly = ((Polylist)item.first()).rest();
+                              ((ChordPart)partReferenced).setRoadmapPoly(roadmapPoly);
+                              //System.out.println("roadmap read as " + roadmapPoly);
+                              handled = true;
+                              break;
+
+                         case METER:
                               handled = true;
                               /* Ignoring meter in parts right now
                               if( subitem.rest().nonEmpty() )

@@ -375,9 +375,12 @@ public class RoadMap {
           {
             innerBuffer.append(k.toPolylist());
           }
+        System.out.println("innerBuffer is: ");
+        System.out.println(innerBuffer);
         
         buffer.append(innerBuffer.toPolylist().cons("keymap"));
-        
+        System.out.println("buffer is: ");
+        System.out.println(buffer);
         return buffer.toPolylist();
       }
    
