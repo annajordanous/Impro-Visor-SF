@@ -556,7 +556,6 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
         }
         else
         {
-            System.out.println(output.toString());
             System.out.println("Error from parsing data: Will not save this lick.");
         }
     }
@@ -752,7 +751,6 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
                 
             else
             {
-                System.out.println("Note resolution of " + note + " is currently unsupported.");
                 error.set(true);
             }
         }
