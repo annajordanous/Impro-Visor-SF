@@ -5649,9 +5649,15 @@ public String extract(String title, ExtractMode mode, int grade,
                                 break;
 
                             case LICK:
+                                // Changed to 7 in order to recognize longer 
+                                // chord progressions for lick critic.
+                                if ( chordCount > 7 )
+                                {
+                                    done = true;
+                                }
                             case QUOTE:
                             case BRICK:
-                                if( chordCount > 1 )
+                                if( chordCount > 1 && mode != ExtractMode.LICK)
                                   {
                                     done = true;
                                   }

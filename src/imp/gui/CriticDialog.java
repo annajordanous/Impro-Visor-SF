@@ -28,6 +28,7 @@ import imp.data.*;
 import imp.util.Preferences;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicBoolean;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -258,14 +259,14 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
             Polylist dataRow = dataModel.getRow(row);
             ChordPart chords = new ChordPart(BEAT*8);
             MelodyPart melody = new MelodyPart(BEAT*8);
-
+            
             Polylist combined = ((Polylist) (dataRow.nth(TCol.CHORDS.ordinal()))).append(
                                 (Polylist) (dataRow.nth(TCol.NOTES.ordinal()))
                                 );
             (new SetChordsCommand(0, combined, chords, melody)).execute();
 
             chords.setStyle(Preferences.getPreference(Preferences.DEFAULT_STYLE));
-
+            
             Score score = new Score();
             score.setChordProg(chords);
             score.addPart(melody);
@@ -296,6 +297,7 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
 
     File currentFile = null;
     
+    // HB- FIX: Null pointer when clicking "save" after opening a file
     public void addFromFile(boolean overwrite) {
         openDialog.setDialogType(JFileChooser.OPEN_DIALOG);
 
@@ -360,7 +362,6 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
         for(int i = 0; i < dataModel.getRowCount(); i++) {
             try {
                 saveRow(out, i);
-                out.newLine();
             } catch (IOException e) {
                 errorLabel.setText("File IO Error: " + e.getMessage());
                 return;
@@ -374,6 +375,58 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
             return;
         }
         
+        // FIX: Split into separate helper method
+        Scanner in;
+        BufferedWriter outTemp;
+        BufferedWriter outWeight;
+        try {
+            in = new Scanner(f);
+            File fileTemp = new File(f.getAbsolutePath() + "_temp");
+            outTemp = new BufferedWriter(new FileWriter(fileTemp));
+            File fileWeight = new File(f.getAbsolutePath() + "_for_weights");
+            outWeight = new BufferedWriter(new FileWriter(fileWeight));
+           
+            int maxSize = 0;
+            while (in.hasNextLine()) {
+                String line = in.nextLine();
+                int index = line.indexOf("(lick");
+                line = line.substring(0, index);
+                if (line.length() > maxSize)
+                    maxSize = line.length();
+                outTemp.write(line);
+                outTemp.newLine();
+            }
+            outTemp.flush();
+            in.close();
+
+            // Write beginning info
+            outWeight.write("1 ");
+            int numInputs = (maxSize - 4) / 2;
+            outWeight.write("" + numInputs);
+            outWeight.newLine();
+            
+            in = new Scanner(fileTemp);
+            while (in.hasNextLine()) {
+                String data = in.nextLine();
+                while (data.length() < maxSize)
+                {
+                    // Add a whole note rest landing on beat 1 
+                    data += "1 0 0 0 0 0 0 1 1 1 1 1 1 0 0 0 0 0 ";
+                }
+                
+                outWeight.write(data);
+                outWeight.newLine();
+            }
+            outWeight.flush();
+            in.close();
+            fileTemp.delete();
+            
+            
+        } catch(IOException e) {
+            errorLabel.setText("File IO Error: " + e.getMessage());
+            return;
+        }
+   
         errorLabel.setText(null);
     }
     
@@ -395,6 +448,7 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
      * Major changes include a smaller bit vector and a new method 
      * for representing the data.
      * Needs at least one chord from the leadsheet, assumes at most two chords at the moment.
+     * Also needs only a two measure selection. 
      * @param out
      * @param row
      * @throws IOException 
@@ -405,39 +459,38 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
         Polylist notes = (Polylist) r.second();
         Polylist chords = (Polylist) r.third();
         int grade = (int) (Integer) r.fourth();
-        Polylist lick = Polylist.list("lick", notes.cons("notes"), chords.cons("sequence"), name, Polylist.list("grade", grade));       
+        Polylist lick = Polylist.list("lick", notes.cons("notes"), chords.cons("sequence"), name, Polylist.list("grade", grade));
 
-        // Used as a "pass-by-reference" value.
+        // Boolean used atomically to track potential errors
         AtomicBoolean error = new AtomicBoolean(false);
         ArrayList<Note> noteList = new ArrayList<Note>();
         ArrayList<Chord> chordList = new ArrayList<Chord>();
         StringBuilder output = new StringBuilder();
         int beatPosition = 0;
         int chordLengthAccum = 0;
-        
+
         output.append(String.valueOf(grade / 10.0));
         output.append(' ');
         
-        while(!chords.isEmpty()) {
-            while(!chords.isEmpty() && chords.first() == null) {
-                chords = chords.rest();
-            }
-            
-            if(!chords.isEmpty()) {
-                String chord = (String) chords.first();
-                
-                Chord c = new Chord(chord, 480); //FIX, need to get chord lengths
-                //Checks for non-chords
-                if ( !(ChordSymbol.makeChordSymbol(chord) == null) )
-                {
-                    chordList.add(c);
-                }
-                
-                printChord(output, ChordSymbol.makeChordSymbol(chord));
-                chords = chords.rest();
-            }
+        // Prepare a score so that Chord lengths can be determined
+        ChordPart chordsList = new ChordPart(BEAT*8);
+        MelodyPart melody = new MelodyPart(BEAT*8);
+        Polylist combined = chords.append(notes);
+        (new SetChordsCommand(0, combined, chordsList, melody)).execute();
+        chordsList.setStyle(Preferences.getPreference(Preferences.DEFAULT_STYLE));
+        Score score = new Score();
+        score.setChordProg(chordsList);
+        score.addPart(melody);
+        ArrayList<ChordSymbol> symbols = score.getChordProg().getChordSymbols();
+        ArrayList<Integer> durations = score.getChordProg().getChordDurations();
+        
+        // Add all chords to the chord list
+        for (int i = 0; i < symbols.size(); i++)
+        {
+            chordList.add(new Chord(symbols.get(i), durations.get(i)));
         }
         
+        // Add all notes to the note list
         while(!notes.isEmpty()) {
             while(!notes.isEmpty() && notes.first() == null) {
                 notes = notes.rest();
@@ -449,7 +502,7 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
             }
         }
         
-        // Prints all notes within one lick.
+        // Print all note data for all notes within one lick
         for (int index = 0; index < noteList.size(); index++)
         {
             int indexPrev = index - 1;
@@ -499,9 +552,11 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
         if (!error.get())
         {
             out.write(output.toString());
+            out.newLine();
         }
         else
         {
+            System.out.println(output.toString());
             System.out.println("Error from parsing data: Will not save this lick.");
         }
     }
@@ -527,8 +582,8 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
      * @return beatPos, to keep track of the current slot
      * @throws IOException 
      */
-    private int printNoteData(StringBuilder out, Note notePrev, Note noteCurr, Note noteNext, 
-                              Chord chordCurr, Chord chordNext, int beatPos, AtomicBoolean error) throws IOException {
+    public static int printNoteData(StringBuilder out, Note notePrev, Note noteCurr, Note noteNext, 
+                              Chord chordCurr, Chord chordNext, int beatPos, AtomicBoolean error) {
         
         char[] bits = {'0', ' ', '0', ' ', '0', ' ',
                        '0', ' ', '0', ' ', '0', ' ', '0', ' ', 
@@ -547,7 +602,6 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
         {
             currPos += 2;
             
-            // FIX: Assumes two chords at this point
             int classification = chordCurr.classify(noteCurr, noteNext, chordNext);
 
             if (classification == CHORD_TONE)
@@ -698,7 +752,7 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
                 
             else
             {
-                System.out.println("Note resolution is currently unsupported.");
+                System.out.println("Note resolution of " + note + " is currently unsupported.");
                 error.set(true);
             }
         }
@@ -721,33 +775,6 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
         // Move the beat position up by the current duration.
         beatPos += duration;
         return beatPos;
-    }
-    
-    /**
-     * Saves chord in a bit vector representation.
-     * 12 bits long, unique for every chord.
-     * @param out
-     * @param chord
-     * @throws IOException 
-     */
-    private void printChord(StringBuilder out, ChordSymbol chord) throws IOException {
-        if(chord == null)
-            return;
-        
-        Polylist spelling = chord.getChordForm().getSpell(chord.getRootString());
-        
-        // 12 bits for a chord
-        char[] bitSpelling = {'0', ' ', '0', ' ', '0', ' ', '0', ' ', 
-                              '0', ' ', '0', ' ', '0', ' ', '0', ' ', 
-                              '0', ' ', '0', ' ', '0', ' ', '0', ' '};
-        
-        while(spelling.nonEmpty()) {
-            NoteSymbol n = (NoteSymbol) spelling.first();
-            bitSpelling[2 * (n.getMIDI() % 12)] = '1';
-            spelling = spelling.rest();
-        }
-        
-        out.append(bitSpelling);
     }
     
     /**
@@ -775,7 +802,7 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
             }
             
             if(!chords.isEmpty()) {
-                printChordOld(out, ChordSymbol.makeChordSymbol((String) chords.first()));
+                printChord(out, ChordSymbol.makeChordSymbol((String) chords.first()));
                 chords = chords.rest();
             }
         }
@@ -843,13 +870,13 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
     }
     
     /**
-     * Previous way of printing a chord.
-     * Changed to accommodate use of StringBuilder.
+     * Saves chord in a bit vector representation.
+     * 12 bits long, unique for every chord.
      * @param out
      * @param chord
      * @throws IOException 
      */
-    private void printChordOld(BufferedWriter out, ChordSymbol chord) throws IOException {
+    private void printChord(BufferedWriter out, ChordSymbol chord) throws IOException {
         if(chord == null)
             return;
         
