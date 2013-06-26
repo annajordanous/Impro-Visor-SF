@@ -144,7 +144,7 @@ abstract public class Block {
      * ChordBlock.
      * @return a List of Blocks
      */
-    public List<Block> getSubBlocks() {
+    public ArrayList<Block> getSubBlocks() {
         return null;
     }
     

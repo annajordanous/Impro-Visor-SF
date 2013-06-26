@@ -4055,6 +4055,8 @@ public void analyze(boolean showJoinsOnCompletion)
       {
         analyzeSelection(showJoinsOnCompletion);
       }
+    
+  notate.getScore().getChordProg().setRoadmapPoly(roadMapPanel.getRoadmapPoly());
   }
 
 
@@ -4210,5 +4212,18 @@ public void setStyle(Style style)
     styleComboBox.setSelectedItem(style);
     //System.out.println("setting Style to " + style.toString());
   }
-}
 
+public RoadMap getRoadMap()
+  {
+    
+    return roadMapPanel.getRoadMap();
+  }
+
+@Override
+public String toString()
+    {
+        return roadMapPanel.toString();
+    }
+
+
+}

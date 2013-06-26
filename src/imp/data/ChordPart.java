@@ -43,6 +43,8 @@ import polya.Polylist;
  * @author      Stephen Jones
 */
 public class ChordPart extends Part implements Serializable{
+    
+    Polylist roadmapPoly = Polylist.list("This", "is", "a", "test");
 
     private SectionInfo sectionInfo = new SectionInfo(this);
 
@@ -549,5 +551,25 @@ public void addFromRoadMapFrame(RoadMapFrame roadmap)
             prevChord = chordpart.getCurrentChord(i);
         }
     }
+
+    public void setRoadmapPoly(Polylist roadmapPoly)
+    {
+        this.roadmapPoly = roadmapPoly;
+//        System.out.println("roadmapPoly is " + roadmapPoly);
+//        Polylist L = roadmapPoly;
+//        int number = 1;
+//        while( L.nonEmpty() )
+//        {
+//            System.out.println("item " + number + ": " + L.first());
+//            L = L.rest();
+//            number++;
+//        }
+    }
+    
+    public Polylist getRoadmapPoly()
+    {
+        return roadmapPoly;
+    }
+    
 
 }

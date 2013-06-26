@@ -30,6 +30,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.ListIterator;
+import polya.Formatting;
 
 /**
  * The Part class is representative of an arbitrarily long melody or chord part, 
@@ -1687,12 +1688,17 @@ public void saveLeadsheet(BufferedWriter out, String type) throws IOException
     out.newLine();
     out.write("    (key " + keySig + ")");
     out.newLine();
-
+    
     if( this instanceof MelodyPart )
       {
         out.write("    (stave " + staveType.toString().toLowerCase() + ")");
         out.newLine();
       }
+    else
+    {
+        out.write("    (roadmap " + Formatting.prettyFormat(((ChordPart)this).getRoadmapPoly()) + ")");
+        out.newLine();
+    }
 
     out.write(")");
     out.newLine();

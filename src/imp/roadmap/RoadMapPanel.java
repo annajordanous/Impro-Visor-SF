@@ -25,7 +25,7 @@ import imp.util.ErrorLog;
 import java.awt.*;
 import java.util.ArrayList;
 import javax.swing.JPanel;
-
+import polya.*;
 
 /** The panel where this roadmap is drawn. This class deals mostly with modifying
  * and drawing the roadmap.
@@ -78,6 +78,12 @@ public class RoadMapPanel extends JPanel {
     
     /** Section breaks list. Only used for keymapping. Possibly unideal. */
     private ArrayList<Long> sectionBreaks = new ArrayList();
+    
+    /** Things needed to store StringBuilder version Roadmap.
+    *  Used with recurSubBlocks */
+
+    public ArrayList<Block> allBlocks = new ArrayList();
+    public ArrayList<Block> temp = new ArrayList();
     
     /** Keeps track of graphical settings for the roadmap */
     RoadMapSettings settings;
@@ -526,6 +532,7 @@ public class RoadMapPanel extends JPanel {
     protected void breakSelection()
     {
         if(selectionStart != -1 && selectionEnd != -1) {
+            allBlocks = getBlocks(0, roadMap.size());
             ArrayList<Block> blocks = getSelection();
             ArrayList<Block> newBlocks = new ArrayList();
             
@@ -534,6 +541,46 @@ public class RoadMapPanel extends JPanel {
             
             replaceSelection(newBlocks);
         }       
+    }
+    
+    public void recurSubBlocks(ArrayList<Block> allBlocks, StringBuilder newBlocks) {
+         
+        if (allBlocks != null) {
+            for (Block block : allBlocks) {
+                if (block.isChord()) {
+                    newBlocks.append("(Chord ");
+                    if (block != null) {
+                        newBlocks.append(block);
+                    }
+                    newBlocks.append(")");
+
+                } else {
+                    newBlocks.append("(Brick ");
+                    newBlocks.append(block.getName());
+                    newBlocks.append(" ");
+                    temp = block.getSubBlocks();
+                    recurSubBlocks(temp, newBlocks);
+                    newBlocks.append(")");
+                }
+            }
+        }
+    }
+    
+    @Override
+    public String toString()
+    {
+              StringBuilder newBlocks = new StringBuilder();
+              recurSubBlocks(getBlocks(0, roadMap.size()), newBlocks);
+
+              return Formatting.prettyFormat(Polylist.PolylistFromString(newBlocks.toString()));
+    }
+    
+    public Polylist getRoadmapPoly()
+    {
+              StringBuilder newBlocks = new StringBuilder();
+              recurSubBlocks(getBlocks(0, roadMap.size()), newBlocks);
+ 
+              return Polylist.PolylistFromString(newBlocks.toString());
     }
     
     /** Flattens the selected bricks to individual chords */
