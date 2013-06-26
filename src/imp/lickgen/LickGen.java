@@ -1556,38 +1556,51 @@ public MelodyPart fillMelody(int minPitch,
       }
     
     //System.out.println("newRhythmString = " + newRhythmString);
-
-    try  // I have seen this fail once, hence the try/catch. RK
-      // However, someone needs to follow up on what happens if this
-      // return null.
-      {
-        for( Polylist L = newRhythmString; L.nonEmpty(); L = L.rest() )
-          {
-            Polylist first = (Polylist) L.first();
-            //System.out.println("Abstract Melody: " + L);
-            MelodyPart p = fillPartOfMelody(minPitch, 
-                                            maxPitch, 
-                                            minInterval,
-                                            maxInterval,
-                                            beatValue, 
-                                            leapProb,
-                                            first, 
-                                            chordProg,
-                                            start, 
-                                            avoidRepeats);
-            ArrayList<Unit> units = p.getUnitList();
-            for( int i = 0; i < units.size(); i++ )
-              {
-                melPart.addNote((Note) units.get(i));
-              }
-            start = position;
-          }
-      }
-    catch( NullPointerException e )
-      {
-        notate.setLickGenStatus("Fill melody failed");
-      }
-
+    
+    // 6/25/13 - Hayden Blauzvern
+    // In response to potential null notes, possibly generated from
+    // fillPartOfMelody(), we simply repeat the fill until we create
+    // a melody with no null notes.
+    boolean repeatFill = true;
+    while (repeatFill)
+    {
+        try  // I have seen this fail once, hence the try/catch. RK
+        // However, someone needs to follow up on what happens if this
+        // return null.
+        // 6/25/13 HB - If an exception is thrown, the melody part will
+        // be incomplete and not generate or paint correctly.
+        {
+          for( Polylist L = newRhythmString; L.nonEmpty(); L = L.rest() )
+            {
+              Polylist first = (Polylist) L.first();
+              //System.out.println("Abstract Melody: " + L);
+              MelodyPart p = fillPartOfMelody(minPitch, 
+                                              maxPitch, 
+                                              minInterval,
+                                              maxInterval,
+                                              beatValue, 
+                                              leapProb,
+                                              first, 
+                                              chordProg,
+                                              start, 
+                                              avoidRepeats);
+              ArrayList<Unit> units = p.getUnitList();
+              for( int i = 0; i < units.size(); i++ )
+                {
+                    Note n = (Note) units.get(i);
+                    melPart.addNote(n);
+                }
+              start = position;
+            }
+          
+          repeatFill = false;
+        }
+        catch( NullPointerException e )
+        {
+            notate.setLickGenStatus("Fill melody failed");
+            continue;
+        }
+    }
     return melPart;
   }
     

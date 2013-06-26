@@ -35,15 +35,19 @@ import imp.com.*;
 import imp.data.*;
 import imp.data.musicXML.ChordDescription;
 import imp.lickgen.LickGen;
+import imp.neuralnet.*;
 import imp.roadmap.RoadMapFrame;
 import imp.util.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.util.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Timer;
+import java.util.concurrent.atomic.AtomicBoolean;
 import javax.sound.midi.MidiDevice;
 import javax.sound.midi.Sequencer;
 import javax.swing.*;
@@ -21059,6 +21063,10 @@ public void originalGenerate(LickGen lickgen, int improviseStartSlot, int improv
     Polylist rhythm = null;
 
     boolean useOutlines = lickgenFrame.useSoloistSelected();
+    
+    boolean useCritic = lickgenFrame.useCritic();
+    
+    double criticGrade = lickgenFrame.getCriticGrade() / 10.0;
 
     if( useOutlines )
       {
@@ -21085,12 +21093,117 @@ public void originalGenerate(LickGen lickgen, int improviseStartSlot, int improv
             putLick(solo);
           }
       }
+    
+    
+    // If we should use the critic...
+    else if ( useCritic )
+    {
+        // Keep track of the number of lick generations
+        int count = 0;
+        
+        // ...continually generate licks until a lick passes through the filter.
+        while ( useCritic )
+        {
+            rhythm = lickgen.generateRhythmFromGrammar(improviseStartSlot, totalSlots);
+
+            MelodyPart lick = generateLick(rhythm, improviseStartSlot, improviseEndSlot);
+
+            if (lick != null)
+            {
+                StringBuilder output = new StringBuilder();
+                int beatPosition = 0;
+                int chordLengthAccum = 0;
+                AtomicBoolean error = new AtomicBoolean(false);
+                ArrayList<Unit> units = lick.getUnitList();
+                ArrayList<ChordSymbol> symbols = stave.getChordProg().getChordSymbols();
+                ArrayList<Integer> durations = stave.getChordProg().getChordDurations();
+
+                ArrayList<Note> noteList = new ArrayList<Note>();
+                ArrayList<Chord> chordList = new ArrayList<Chord>();
+
+                // Add all notes and chords to the lists
+                for (Unit u : units)
+                    noteList.add((Note) u);
+                for (int i = 0; i < symbols.size(); i++)
+                    chordList.add(new Chord(symbols.get(i), durations.get(i)));
+
+                // Print all note data for all notes within one lick
+                for (int index = 0; index < noteList.size(); index++)
+                {
+                    int indexPrev = index - 1;
+                    int indexNext = index + 1;
+                    Chord chordCurr = null;
+                    Chord chordNext= null;
+
+                    if (!chordList.isEmpty())
+                    {
+                        chordCurr = chordList.get(0);
+                        if(chordList.size() > 1)
+                        {
+                            chordNext = chordList.get(1);
+                        }
+                    }
+
+                    if (indexPrev < 0)
+                    {
+                        beatPosition = CriticDialog.printNoteData(output, null, noteList.get(index), 
+                                noteList.get(indexNext),
+                                chordCurr, chordNext, beatPosition, error);
+                    }
+                    else if (indexNext >= noteList.size())
+                    {
+                        beatPosition = CriticDialog.printNoteData(output, noteList.get(indexPrev), 
+                                noteList.get(index), null,
+                                chordCurr, chordNext, beatPosition, error);
+                    }
+                    else
+                    {
+                        beatPosition = CriticDialog.printNoteData(output, noteList.get(indexPrev), 
+                                noteList.get(index), noteList.get(indexNext),
+                                chordCurr, chordNext, beatPosition, error);
+                    }
+
+                    // Updates the current chord based on the current slot.
+                    if(!chordList.isEmpty() && chordCurr != null 
+                            && chordCurr.getRhythmValue() + chordLengthAccum <= beatPosition)
+                    {
+                        chordLengthAccum += chordCurr.getRhythmValue();
+                        chordList.remove(0);
+                    }
+                }
+
+                // Add a fake grade so the input is correct for the critic
+                output.insert(0, "0.1 ");
+
+                double gradeFromFilter = Critic.filter(output.toString(), Critic.network);
+
+                // If the critic grade is high enough, pass the lick through
+                if (gradeFromFilter >= criticGrade)
+                {
+                    useCritic = false;
+                    count++;
+                    lickgenFrame.setCounterForCriticTextField(count);
+                    putLick(lick);
+                    lickgenFrame.setLickFromStaveGradeTextField(gradeFromFilter);
+                }
+            }
+            else
+            {
+                //debug System.out.println("panic: generated null lick");
+                setMode(Mode.GENERATION_FAILED);
+                return;
+            }
+            
+            // Increment the counter
+            count++;
+        }
+    }
 
     // If the outline is unable to generate a solo, which might
     // happen if there are no outlines of the correct length or the soloist
     // file was not correctly loaded, use the grammar.
 
-    if( rhythm == null || !useOutlines )
+    else if( rhythm == null || !useOutlines  )
       {
 
         if( lickgenFrame.getUseGrammar() )
@@ -23148,6 +23261,15 @@ private void populateNotateGrammarMenu()
     if( directory.isDirectory() )
       {
         String fileName[] = directory.list();
+        
+        // 6-25-13 Hayden Blauzvern
+        // Fix for Linux, where the file list is not in alphabetic order
+        Arrays.sort(fileName,  new Comparator<String>() {
+                public int compare(String s1, String s2) {
+                    return s1.toUpperCase().compareTo(s2.toUpperCase());
+            } 
+        });
+        
         for( int i = 0; i < fileName.length; i++ )
           {
             String name = fileName[i];
