@@ -67,7 +67,7 @@ public static void prettyFormatList(int indent, Polylist L, StringBuffer buffer)
       }
     else
       {
-      spaces(indent, buffer);
+      //spaces(indent, buffer);
       buffer.append(element);
       continueLine = true;
       }
