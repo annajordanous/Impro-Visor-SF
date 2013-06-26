@@ -73,7 +73,6 @@ public class Critic {
         
         parseData(data, s);
         network.use(s);
-        network.showOutput();
         return network.getSingleOutput();
     }
 
@@ -88,7 +87,6 @@ public class Critic {
             Network networks = new Network(numberLayers, layerSize, layerType, inputDimension);
             BufferedReader in = new BufferedReader(new FileReader(weightFile));
             networks.fixWeights(in);
-            networks.showWeights("Final");
             in.close();
             return networks;
         }

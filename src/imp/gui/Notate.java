@@ -21174,17 +21174,20 @@ public void originalGenerate(LickGen lickgen, int improviseStartSlot, int improv
 
                 // Add a fake grade so the input is correct for the critic
                 output.insert(0, "0.1 ");
-
-                double gradeFromFilter = Critic.filter(output.toString(), Critic.network);
-
-                // If the critic grade is high enough, pass the lick through
-                if (gradeFromFilter >= criticGrade)
+                
+                if (!error.get())
                 {
-                    useCritic = false;
-                    count++;
-                    lickgenFrame.setCounterForCriticTextField(count);
-                    putLick(lick);
-                    lickgenFrame.setLickFromStaveGradeTextField(gradeFromFilter);
+                    double gradeFromFilter = Critic.filter(output.toString(), Critic.network);
+
+                    // If the critic grade is high enough, pass the lick through
+                    if (gradeFromFilter >= criticGrade)
+                    {
+                        useCritic = false;
+                        count++;
+                        lickgenFrame.setCounterForCriticTextField(count);
+                        putLick(lick);
+                        lickgenFrame.setLickFromStaveGradeTextField(gradeFromFilter);
+                    }
                 }
             }
             else

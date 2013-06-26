@@ -4487,11 +4487,18 @@ private void useSoloistCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//
                 chordList.remove(0);
             }
         }
-
-        // Grade the lick, passing it through the critic filter
-        String gradeFromFilter = String.format("%.3f",
+        
+        if (!error.get())
+        {
+            // Grade the lick, passing it through the critic filter
+            String gradeFromFilter = String.format("%.3f",
                            Critic.filter(output.toString(), Critic.network));
-        lickFromStaveGradeTextField.setText(gradeFromFilter);
+            lickFromStaveGradeTextField.setText(gradeFromFilter);
+        }
+        else
+        {
+            lickFromStaveGradeTextField.setText("Error");
+        }
         
         notate.getCurrentStave().unlockSelectionWidth();
     }//GEN-LAST:event_gradeLickFromStaveActionPerformed
