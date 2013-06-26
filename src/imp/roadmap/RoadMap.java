@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2011-2012 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2011-2013 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -13,7 +13,6 @@
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
  *
-
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -32,24 +31,25 @@ import polya.Polylist;
 import polya.PolylistBuffer;
 
 /**
- * This class contains the musical data of a roadmap IE: a sequence of blocks,
+ * This class contains the musical data of a roadmap, i.e. a sequence of blocks,
  * keys and joins.
  * @author August Toman-Yih
  */
+
 public class RoadMap {
     /** List of blocks contained in the roadmap */
     private ArrayList<Block> blocks;
     /** Key map in the form of key, duration pairs */
-    private ArrayList<KeySpan> keyMap = new ArrayList();
+    private ArrayList<KeySpan> keyMap = new ArrayList<KeySpan>();
     /** List of joins between each brick */
-    private ArrayList<String> joins = new ArrayList();
+    private ArrayList<String> joins = new ArrayList<String>();
     
     /**
      * Argumentless constructor that creates an empty roadmap.
      */
     public RoadMap()
     {
-        blocks = new ArrayList();
+        blocks = new ArrayList<Block>();
     }
     
     /**
@@ -140,7 +140,7 @@ public class RoadMap {
      */
     public ArrayList<Block> getBlocks(int start, int end)
     {
-        return new ArrayList(blocks.subList(start, end));
+        return new ArrayList<Block>(blocks.subList(start, end));
     }
     
     /**
@@ -175,7 +175,7 @@ public class RoadMap {
      */
     public ArrayList<Block> removeBlocks()
     {
-        ArrayList bricks = new ArrayList(blocks);
+        ArrayList<Block> bricks = new ArrayList<Block>(blocks);
         blocks.clear();
         keyMap.clear();
         joins.clear();
@@ -193,7 +193,7 @@ public class RoadMap {
      */
     public ArrayList<Block> removeBlocks(int start, int end)
     {
-        ArrayList bricks = new ArrayList(blocks.subList(start, end));
+        ArrayList<Block> bricks = new ArrayList<Block>(blocks.subList(start, end));
         blocks.subList(start, end).clear();
         process();
         return bricks;
@@ -232,9 +232,11 @@ public class RoadMap {
      */
     public static ArrayList<ChordBlock> getChords(List<Block> blocks)
     {
-        ArrayList<ChordBlock> chords = new ArrayList();
+        ArrayList<ChordBlock> chords = new ArrayList<ChordBlock>();
         for( Block block : blocks )
+          {
             chords.addAll(block.flattenBlock());
+          }
         return chords;
     }
     
@@ -245,12 +247,16 @@ public class RoadMap {
      */
     public static ArrayList<Block> cloneBlocks(ArrayList<Block> blocks)
     {
-        ArrayList<Block> clones = new ArrayList();
+        ArrayList<Block> clones = new ArrayList<Block>();
         for( Block block : blocks ) {
             if( block instanceof Brick ) 
+              {
                 clones.add(new Brick((Brick)block));
+              }
             if( block instanceof ChordBlock )
+              {
                 clones.add(new ChordBlock((ChordBlock)block));
+              }
         }
         return clones;
     }
