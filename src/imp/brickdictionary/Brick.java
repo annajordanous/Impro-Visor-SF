@@ -408,7 +408,7 @@ public Brick(String brickName,
      */
     @Override
     public boolean isOverlap() {
-        if (this.getDuration() == 0)
+        if (this.overlap)
             return true;
         return subBlocks.get(subBlocks.size() - 1).isOverlap();
     }
@@ -450,9 +450,10 @@ public Brick(String brickName,
                     pList = pList.rest();
                     Object durObj = pList.first();
                     pList = pList.rest();
-                    if(durObj instanceof Long)
+                    boolean starFlag = isStar(durObj);
+                    if(durObj instanceof Long || starFlag)
                     {
-                        int dur = Arith.long2int((Long)durObj);
+                        int dur = starFlag ? 0 : Arith.long2int((Long)durObj);
                         long brickKeyNum = 
                                 BrickLibrary.keyNameToNum(brickKeyString);
                         Brick subBrick;
@@ -480,9 +481,10 @@ public Brick(String brickName,
                     pList = pList.rest();
                     Object durObj = pList.first();
                     pList = pList.rest();
-                    if(durObj instanceof Long)
+                    boolean starFlag = isStar(durObj);
+                    if(durObj instanceof Long || starFlag)
                     {
-                        int dur = Arith.long2int((Long)durObj);
+                        int dur = starFlag ? 0 : Arith.long2int((Long)durObj);
                         ChordBlock subBlockChord = new ChordBlock(chordName, dur);
                         subBlockList.add(subBlockChord);
                     }
@@ -558,9 +560,10 @@ public Brick(String brickName,
                     
                     // when all data members are initialized, find the correct 
                     // brick scaled appropriately
-                    if(durObj instanceof Long)
+                    boolean starFlag = isStar(durObj);
+                    if(durObj instanceof Long || starFlag)
                     {
-                        int dur = Arith.long2int((Long)durObj);
+                        int dur = starFlag ? 0 : Arith.long2int((Long)durObj);
                         long subBrickKeyNum = 
                                 BrickLibrary.keyNameToNum(subBrickKeyString);
                         Brick subBrick = null;
@@ -658,12 +661,13 @@ public Brick(String brickName,
                     pList = pList.rest();
                     Object durObj = pList.first();
                     pList = pList.rest();
-                    if(durObj instanceof Long)
+                    boolean starFlag = isStar(durObj);
+                    if(durObj instanceof Long || starFlag)
                     {
-                        int dur = Arith.long2int((Long)durObj);
+                        int dur = starFlag ? 0 : Arith.long2int((Long)durObj);
                         ChordBlock subBlockChord = new ChordBlock(chordName, dur);
                         subBlockList.add(subBlockChord);
-                    }
+                    } 
                     else
                     {
                         ErrorLog.log(ErrorLog.FATAL, chordName + ": " +
@@ -681,7 +685,15 @@ public Brick(String brickName,
         
         subBlocks.addAll(subBlockList);
     }
-    
+    /** isStar
+     * @param durObj, an object possibly representing a wild-card duration
+     * @return a Boolean, returning true if durObj is a wild-card
+     */
+    private boolean isStar(Object durObj) {
+        if (durObj instanceof String && durObj.equals("*")) return true;
+        return false;
+    }
+
     /** getType
      * Return the type of Brick this is (e.g. "Cadence")
      * @return a String
@@ -801,7 +813,7 @@ public Brick(String brickName,
     @Override
     public void setDuration(int newDuration) {
         float newDurFloat = newDuration;
-        float ratio = (newDurFloat / this.getDuration());
+    	float ratio = (newDurFloat / this.getDuration());
 
         List<Block> currentSubBlocks = this.getSubBlocks();
         Iterator<Block> subBlockIter = currentSubBlocks.iterator();
@@ -833,7 +845,8 @@ public Brick(String brickName,
      */
     @Override
     public String toString() {
-        return name + " " + BrickLibrary.keyNumToName(key) + " " + duration 
+        String strDur = (this.duration == 0) ? "*" : Integer.toString(this.duration);
+        return name + " " + BrickLibrary.keyNumToName(key) + " " + strDur 
                 + " (type " + type + ") "
                 + endValueString();
     }

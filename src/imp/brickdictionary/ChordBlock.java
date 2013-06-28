@@ -296,7 +296,7 @@ public class ChordBlock extends Block {
      */
     @Override
     public boolean isOverlap() {
-        return (duration == 0);
+        return overlap;
     }
     
     /** getSubBlocks
@@ -307,7 +307,7 @@ public class ChordBlock extends Block {
     @Override
     public ArrayList<Block> getSubBlocks() {
         ArrayList<Block> subBlocks = new ArrayList<Block>();
-        if (this.duration != 0)
+        if (!this.isOverlap())
             subBlocks.add(this);
         return subBlocks;
     }
@@ -320,7 +320,7 @@ public class ChordBlock extends Block {
     @Override
     public ArrayList<ChordBlock> flattenBlock() {
         ArrayList<ChordBlock> chordList = new ArrayList<ChordBlock>();
-        if (this.duration != 0)
+        if (!this.isOverlap())
             chordList.add(this);
         
         return chordList;
@@ -356,7 +356,8 @@ public class ChordBlock extends Block {
      */
     @Override
     public String toString() {
-        return name + " " + duration;
+	String strDur = (this.duration == 0) ? "*" : Integer.toString(this.duration);
+        return name + " " + strDur;
     }
     
     /** matches
