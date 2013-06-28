@@ -53,6 +53,9 @@ public class BinaryProduction extends AbstractProduction {
     private String name1;       // the first symbol itself, a quality or brick
     private String name2;       // the second symbol itself, a quality or brick
     private long cost;          // how much the header brick costs
+    private long duration;      // duration of the header brick
+    private long dur1;          // duration of the first composing symbol
+    private long dur2;          // duration of the second composing symbol
     private String mode = "";   // the mode of the brick in the production
     private boolean toPrint;    // whether the brick is a user-side viewable one
     
@@ -80,13 +83,14 @@ public class BinaryProduction extends AbstractProduction {
         
         key1 = modKeys(b1.getKey() - k);
         name1 = b1.getSymbol();
-        
+        dur1 = b1.getDuration(); 
         key2 = modKeys(b2.getKey() - k);
         name2 = b2.getSymbol();
-        
+        dur2 = b2.getDuration();
         toPrint = p;
         mode = m;
         cost = bricks.getCost(type);
+        duration = dur1 + dur2;
     }
     
     /** Higher-level constructor
@@ -110,13 +114,14 @@ public class BinaryProduction extends AbstractProduction {
         type = t;
         key1 = 0;
         name1 = pStart.getHead();
-        
+        dur1 = pStart.getDuration();
         key2 = modKeys(b.getKey() - k);
         name2 = b.getSymbol();
-        
+        dur2 = b.getDuration();
         toPrint = p;
         mode = m;
         cost = bricks.getCost(type);
+        duration = dur1 + dur2;
     }
     
     // Getters for a BinaryProduction //
@@ -161,7 +166,14 @@ public class BinaryProduction extends AbstractProduction {
     public String getMode() {
         return mode;
     }
-    
+
+     /** getDuration
+     * Gets the duration of the Brick formed (reminder: not in absolute units)
+     * @return a long of the Brick's duration
+     */
+    public long getDuration() {
+	    return duration;
+    } 
     
     /** checkProduction
      * Tests whether a production fits with a given ordered pair of TreeNodes. 
@@ -170,10 +182,11 @@ public class BinaryProduction extends AbstractProduction {
      * 
      * @param a, the first TreeNode
      * @param b, the second TreeNode
-     * @return a long representing the difference between the two chords (-1 if
-     * failed, otherwise 0 through 11)
+     * @return a MatchValue with a long representing the difference between the 
+     * two chords (-1 if failed, otherwise 0 through 11), and the scaled duration 
+     * of the production.
      */
-    public long checkProduction(TreeNode a, TreeNode b) 
+    public MatchValue checkProduction(TreeNode a, TreeNode b) 
     {
         // Conditions:
         // - TreeNodes a and b must have a key
@@ -182,14 +195,23 @@ public class BinaryProduction extends AbstractProduction {
         //   and the two halves of the production
         // - a and b must have names corresponding to the two composing symbols
         //   of the production
+        // - a and b must have durations that match, or can be scaled to match,
+        //   the durations of the right-hand rules of the production
         if (a.getKey() != NC && b.getKey() != NC &&
                 modKeys(key2 - key1) == modKeys(b.getKey() - a.getKey()) &&
                 (a.getSymbol().equals(name1) || a.getTrimmedSymbol().equals(name1)) && 
-                (b.getSymbol().equals(name2)))
-            return modKeys(b.getKey() - key2);
-        
+                (b.getSymbol().equals(name2))) {
+            // check if composing bricks can be scaled to match right-hand rules	
+            if (a.getDuration() == 0 ||  b.getDuration() == 0) {
+                	return new MatchValue(modKeys(b.getKey() - key2), duration);
+            }
+
+            if (a.getDuration() * dur2 == b.getDuration() * dur1) {
+                	return new MatchValue(modKeys(b.getKey() - key2), duration);
+            }
+        } 
         // In the event that the production is incorrect (most of the time)
-        return -1;
+        return new MatchValue();
     }
     
     /** modKeys

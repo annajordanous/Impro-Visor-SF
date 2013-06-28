@@ -37,4 +37,19 @@ public abstract class AbstractProduction {
     abstract public long getCost();
     abstract public String getType();
     abstract public String getMode();
+
+    // Composite class for production checking
+    public class MatchValue {
+        public long chordDiff; // interval difference between production and chord 
+        public long duration;  // duration of production being compared 
+        // constructors
+        public MatchValue() {
+            chordDiff = -1;
+            duration = -1;
+        }
+        public MatchValue(long c, long d) {
+            chordDiff = c;
+            duration = d;
+        }
+    }
 }

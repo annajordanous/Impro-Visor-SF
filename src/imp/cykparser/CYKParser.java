@@ -455,13 +455,14 @@ public class CYKParser
         for (TreeNode t : cykTable[index][index])
             for (UnaryProduction rule : terminalRules)
             {
-                long newKey = rule.checkProduction(t, edict, sdict);
-                if (!(newKey < 0))
+                AbstractProduction.MatchValue match;
+                match = rule.checkProduction(t, edict, sdict);
+                if (!(match.chordDiff < 0))
                 {
                     long cost = rule.getCost() + SUB_COST;
                     TreeNode newNode = new TreeNode(rule.getHead(),
                                     rule.getType(), rule.getMode(), 
-                                    t, cost, newKey);
+                                    t, cost, match.chordDiff);
                     unaries.add(newNode);
                 }
             }
@@ -518,11 +519,11 @@ public class CYKParser
                             // checkProduction returns a long describing the key
                             // of the resulting brick if rule applies to symbol1
                             // and symbol2, or -1 if no such brick can be made.
-                            long newKey = rule.checkProduction(symbol1, 
-                                                               symbol2);
+                            AbstractProduction.MatchValue match;
+                            match = rule.checkProduction(symbol1, symbol2);
                             // If newKey comes up with an appropriate key distance,
                             // make a new TreeNode for the current two TreeNodes.
-                            if (!(newKey < 0)) {
+                            if (!(match.chordDiff < 0)) {
 
                                 // The cost becomes larger for the final TreeNode if
                                 // either the first or second TreeNode uses a chord
@@ -537,7 +538,7 @@ public class CYKParser
 
                                 TreeNode newNode = new TreeNode(rule.getHead(),
                                         rule.getType(), rule.getMode(), 
-                                        symbol1, symbol2, cost, newKey);
+                                        symbol1, symbol2, cost, match.chordDiff);
                                 // Have gotten NullPointerException here. RK
                                 if( cykTable[row][col] != null )
                                   {
@@ -571,13 +572,14 @@ public class CYKParser
         for (TreeNode t : cykTable[row][col])
             for (UnaryProduction rule : terminalRules)
             {
-                long newKey = rule.checkProduction(t, edict, sdict);
-                if (!(newKey < 0))
+                AbstractProduction.MatchValue match;
+                match = rule.checkProduction(t, edict, sdict);
+                if (!(match.chordDiff < 0))
                 {
                     long cost = rule.getCost();
                     TreeNode newNode = new TreeNode(rule.getHead(),
                                     rule.getType(), rule.getMode(), 
-                                    t, cost, newKey);
+                                    t, cost, match.chordDiff);
                     unaries.add(newNode);
                 }
             }

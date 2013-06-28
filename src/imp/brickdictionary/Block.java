@@ -36,16 +36,16 @@ abstract public class Block {
     
     private static final String OVERLAP_STRING = " + . . .";
     // Data members //
-    protected String name;           // block's name
-    protected int duration;          // how long block lasts (not in absolute 
-                                     // units)
-    protected long key;              // key is pitch-class relative to C, e.g.  
-                                     // C=0, D=2, B=11, etc.
-    protected String mode = null;    // Broad quality of block (e.g. Major, 
-                                     // Minor, or Dominant)
-    protected int endValue = NO_END; // a descriptor of what kind of end the
-                                     // block might be, if any
-    
+    protected String name;             // block's name
+    protected int duration;            // how long block lasts (not in absolute 
+                                       // units)
+    protected long key;                // key is pitch-class relative to C, e.g.  
+                                       // C=0, D=2, B=11, etc.
+    protected String mode = null;      // Broad quality of block (e.g. Major, 
+                                       // Minor, or Dominant)
+    protected int endValue = NO_END;   // a descriptor of what kind of end the
+                                       // block might be, if any
+    protected boolean overlap = false; // whether or not a block is an overlap
     // Constants //
     public final static int NO_END = 0;      // int to set a block as not an end
     public final static int SECTION_END = 1; // int to set a block as a section
@@ -135,9 +135,16 @@ abstract public class Block {
      * @return a boolean
      */
     public boolean isOverlap() {
-        return (this.getDuration() == 0);
+        return this.overlap;
     }
-    
+
+    /** setOverlap
+     * Sets the overlap flag.
+     * @param overlap, whether a block is an overlap.
+     */
+    public void setOverlap(boolean overlap) {
+        this.overlap = overlap;
+    }
     
     /** getSubBlocks
      * Returns the subblocks comprising a Block. Overridden in Brick and

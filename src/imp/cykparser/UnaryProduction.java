@@ -36,10 +36,11 @@ public class UnaryProduction extends AbstractProduction {
     // The block is assumed to be in the key of C, represented as the long 0.
     private String head;        // the header symbol of the rule
     private String type;        // the type of brick the rule describes
-    private long key;          // the symbol's key in a C-based block
+    private long key;           // the symbol's key in a C-based block
     private long termKey;
-    private String name;       // the symbol itself, a quality or brick
-    private long cost;           // how much the header brick costs
+    private String name;        // the symbol itself, a quality or brick
+    private long cost;          // how much the header brick costs
+    private long duration;	    // duration of header brick (left-hand side)
     private String mode = "";   // the mode of the brick in the production
     private boolean toPrint;    // whether the brick is a user-side viewable one
     
@@ -64,6 +65,7 @@ public class UnaryProduction extends AbstractProduction {
         toPrint = p;
         mode = m;
         cost = bricks.getCost(type);
+        duration = b.getDuration();
     }
  
     public String getHead() {
@@ -101,7 +103,14 @@ public class UnaryProduction extends AbstractProduction {
     public String getMode() {
         return mode;
     }
-    
+
+    /** getDuration
+     * Gets the duration of the Brick formed (reminder: not in absolute units)
+     * @return a long of the Brick's duration
+     */
+    public long getDuration() {
+	    return duration;
+    }
     
     /** checkProduction
      * Tests whether a production fits with a given ordered pair of TreeNodes. 
@@ -110,16 +119,16 @@ public class UnaryProduction extends AbstractProduction {
      * 
      * @param t, a TreeNode
      * @return an long representing the difference between the two chords (-1 if
-     * failed, otherwise 0 through 11)
+     * failed, otherwise 0 through 11), and the scaled production duration (which is 
+     * always equivalent to the TreeNode duration for the unary case.
      */
-    public long checkProduction(TreeNode t, 
+    public MatchValue checkProduction(TreeNode t, 
             EquivalenceDictionary e, SubstitutionDictionary s) 
     {
-        
-        if (t.getSymbol().equals(name) && t.getDuration() != 0)   
-                return modKeys(t.getKey() - termKey - key);
+        if (t.getSymbol().equals(name) && t.getDuration() != 0)
+                return new MatchValue(modKeys(t.getKey() - termKey - key), t.getDuration());
         // in the event that the production is incorrect (most of the time)
-        return -1;
+        return new MatchValue();
     }
     
     /** modKeys
@@ -130,6 +139,6 @@ public class UnaryProduction extends AbstractProduction {
     private long modKeys(long i) {
         return (i + TOTAL_SEMITONES)%TOTAL_SEMITONES;
     }
-    
+      
     // end of UnaryProduction class
 }
