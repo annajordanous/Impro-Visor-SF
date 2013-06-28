@@ -366,6 +366,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         showKeysCheckBoxMI = new javax.swing.JCheckBoxMenuItem();
         showBrickNamesCheckBoxMI = new javax.swing.JCheckBoxMenuItem();
         showJoinsCheckBoxMI = new javax.swing.JCheckBoxMenuItem();
+        replaceWithPhiCheckBoxMI = new javax.swing.JCheckBoxMenuItem();
+        replaceWithDeltaCheckBoxMI = new javax.swing.JCheckBoxMenuItem();
         windowMenu = new javax.swing.JMenu();
         closeWindowMI = new javax.swing.JMenuItem();
         cascadeMI = new javax.swing.JMenuItem();
@@ -509,7 +511,6 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         chordChangeDialog.setModal(true);
         chordChangeDialog.setName("chordChangeDialog"); // NOI18N
         chordChangeDialog.setResizable(false);
-        chordChangeDialog.setSize(new java.awt.Dimension(100, 100));
         chordChangeDialog.getContentPane().setLayout(new java.awt.GridBagLayout());
 
         chordDialogNameField.setText("CM7"); // NOI18N
@@ -691,11 +692,11 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
             }
         });
         libraryTree.addTreeExpansionListener(new javax.swing.event.TreeExpansionListener() {
-            public void treeExpanded(javax.swing.event.TreeExpansionEvent evt) {
-                libraryTreeTreeExpanded(evt);
-            }
             public void treeCollapsed(javax.swing.event.TreeExpansionEvent evt) {
                 libraryTreeTreeCollapsed(evt);
+            }
+            public void treeExpanded(javax.swing.event.TreeExpansionEvent evt) {
+                libraryTreeTreeExpanded(evt);
             }
         });
         libraryTree.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener() {
@@ -1288,7 +1289,6 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
 
         roadMapScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         roadMapScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        roadMapScrollPane.setIgnoreRepaint(true);
         roadMapScrollPane.setMinimumSize(new java.awt.Dimension(800, 400));
         roadMapScrollPane.setName("roadMapScrollPane"); // NOI18N
         roadMapScrollPane.setPreferredSize(new java.awt.Dimension(2500, 900));
@@ -1362,7 +1362,6 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         clearButton.setMaximumSize(new java.awt.Dimension(46, 30));
         clearButton.setMinimumSize(new java.awt.Dimension(46, 30));
         clearButton.setName("clearButton"); // NOI18N
-        clearButton.setOpaque(true);
         clearButton.setPreferredSize(new java.awt.Dimension(46, 30));
         clearButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1384,7 +1383,6 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         insertBrickButton.setMaximumSize(new java.awt.Dimension(46, 38));
         insertBrickButton.setMinimumSize(new java.awt.Dimension(46, 38));
         insertBrickButton.setName("insertBrickButton"); // NOI18N
-        insertBrickButton.setOpaque(true);
         insertBrickButton.setPreferredSize(new java.awt.Dimension(46, 38));
         insertBrickButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1648,12 +1646,12 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         dictionaryMenu.setText("Dictionary"); // NOI18N
         dictionaryMenu.setName("dictionaryMenu"); // NOI18N
         dictionaryMenu.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 dictionaryMenuMenuSelected(evt);
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
-            }
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -1700,12 +1698,12 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         preferencesMenu.setToolTipText("Set preferences for this roadmap."); // NOI18N
         preferencesMenu.setName("preferencesMenu"); // NOI18N
         preferencesMenu.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 preferencesMenuMenuSelected(evt);
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
-            }
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -1887,18 +1885,38 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         });
         preferencesMenu.add(showJoinsCheckBoxMI);
 
+        replaceWithPhiCheckBoxMI.setSelected(true);
+        replaceWithPhiCheckBoxMI.setText("Use \u03D5 for m7b5");
+        replaceWithPhiCheckBoxMI.setName("replaceWithPhiCheckBoxMI"); // NOI18N
+        replaceWithPhiCheckBoxMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                replaceWithPhiCheckBoxMIActionPerformed(evt);
+            }
+        });
+        preferencesMenu.add(replaceWithPhiCheckBoxMI);
+
+        replaceWithDeltaCheckBoxMI.setSelected(true);
+        replaceWithDeltaCheckBoxMI.setText("Use \u0394 for M7");
+        replaceWithDeltaCheckBoxMI.setName("replaceWithDeltaCheckBoxMI"); // NOI18N
+        replaceWithDeltaCheckBoxMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                replaceWithDeltaCheckBoxMIActionPerformed(evt);
+            }
+        });
+        preferencesMenu.add(replaceWithDeltaCheckBoxMI);
+
         roadmapMenuBar.add(preferencesMenu);
 
         windowMenu.setMnemonic('W');
         windowMenu.setText("Window"); // NOI18N
         windowMenu.setName("windowMenu"); // NOI18N
         windowMenu.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 windowMenuMenuSelected(evt);
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
-            }
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -2690,6 +2708,16 @@ private void playOnClickToggleButtonPressed(java.awt.event.ActionEvent evt)//GEN
             playOnClickToggleButton.setBackground(Color.GREEN);
           }
   }//GEN-LAST:event_playOnClickToggleButtonPressed
+
+    private void replaceWithPhiCheckBoxMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_replaceWithPhiCheckBoxMIActionPerformed
+        boolean checked = replaceWithPhiCheckBoxMI.getState();
+        updatePhiAndDelta(checked,replaceWithDeltaCheckBoxMI.getState());
+    }//GEN-LAST:event_replaceWithPhiCheckBoxMIActionPerformed
+
+    private void replaceWithDeltaCheckBoxMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_replaceWithDeltaCheckBoxMIActionPerformed
+        boolean checked = replaceWithDeltaCheckBoxMI.getState();
+        updatePhiAndDelta(replaceWithPhiCheckBoxMI.getState(),checked);
+    }//GEN-LAST:event_replaceWithDeltaCheckBoxMIActionPerformed
 
 
 private Notate.StyleComboBoxModel getStyleMenuModel()
@@ -3503,6 +3531,8 @@ public void setVolumeSlider(int volume)
     private javax.swing.JRadioButtonMenuItem relativeToFbutton;
     private javax.swing.JRadioButtonMenuItem relativeToGbutton;
     private javax.swing.JButton reloadButton;
+    private javax.swing.JCheckBoxMenuItem replaceWithDeltaCheckBoxMI;
+    private javax.swing.JCheckBoxMenuItem replaceWithPhiCheckBoxMI;
     private javax.swing.JScrollPane roadMapScrollPane;
     private javax.swing.JTextField roadMapStatus;
     private javax.swing.JTextField roadMapTextEntry;
@@ -4225,6 +4255,24 @@ public String toString()
     {
         return roadMapPanel.toString();
     }
-
+public void updatePhiAndDelta(boolean phi, boolean delta){
+    setPhiStatus(phi);
+    setDeltaStatus(delta);
+    settings.setPhi(phi);
+    settings.setDelta(delta);
+    
+}
+public void setPhiStatus(boolean phi){
+    replaceWithPhiCheckBoxMI.setState(phi);
+}
+public void setDeltaStatus(boolean delta){
+    replaceWithDeltaCheckBoxMI.setState(delta);
+}
+public boolean getPhiStatus(){
+    return replaceWithPhiCheckBoxMI.getState();
+}
+public boolean getDeltaStatus(){
+    return replaceWithDeltaCheckBoxMI.getState();
+}
 
 }

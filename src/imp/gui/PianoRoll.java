@@ -1409,7 +1409,6 @@ public void paint(Graphics g)
         playBassButton.setText("Bass\n");
         playBassButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         playBassButton.setMargin(new java.awt.Insets(2, 2, 2, 2));
-        playBassButton.setOpaque(true);
         playBassButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 playBassButtonActionPerformed(evt);
@@ -1424,7 +1423,6 @@ public void paint(Graphics g)
         playChordButton.setText("Chord\n");
         playChordButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         playChordButton.setMargin(new java.awt.Insets(2, 2, 2, 2));
-        playChordButton.setOpaque(true);
         playChordButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 playChordButtonActionPerformed(evt);
@@ -1441,7 +1439,6 @@ public void paint(Graphics g)
         playPercussionButton.setText("Percussion");
         playPercussionButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         playPercussionButton.setMargin(new java.awt.Insets(2, 2, 2, 2));
-        playPercussionButton.setOpaque(true);
         playPercussionButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 playPercussionButtonActionPerformed(evt);
@@ -1506,12 +1503,12 @@ public void paint(Graphics g)
         windowMenu.setMnemonic('W');
         windowMenu.setText("Window");
         windowMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                windowMenuMenuSelected(evt);
-            }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                windowMenuMenuSelected(evt);
             }
         });
 
@@ -1847,8 +1844,8 @@ styleEditor.playBassColumn(styleEditorColumn);
 }//GEN-LAST:event_playBassButtonActionPerformed
 
 private void closePianoRollWindow(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closePianoRollWindow
-    setLooping(false);
-    styleEditor.unusePianoRoll();
+    
+    closeWindow();
 }//GEN-LAST:event_closePianoRollWindow
 
 private void exportToColumnTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportToColumnTFActionPerformed
@@ -1954,8 +1951,7 @@ private void barEditorFrameadviceFocusGained(java.awt.event.FocusEvent evt) {//G
 }//GEN-LAST:event_barEditorFrameadviceFocusGained
 
 private void barEditorFrameadviceWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_barEditorFrameadviceWindowClosing
-
-    // TODO add your handling code here:
+    
 }//GEN-LAST:event_barEditorFrameadviceWindowClosing
 
 private void cancelEditButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelEditButtonActionPerformed
@@ -2398,11 +2394,11 @@ PianoRollPanel getPanel()
     private javax.swing.JSeparator windowMenuSeparator;
     // End of variables declaration//GEN-END:variables
 
-public void closeWindow()
-  {
-  setVisible(false);
-
-  WindowRegistry.unregisterWindow(this);
-  }
+public void closeWindow() {
+        setLooping(false);
+        styleEditor.unusePianoRoll();
+        setVisible(false);
+        WindowRegistry.unregisterWindow(this);
+    }
 
 }

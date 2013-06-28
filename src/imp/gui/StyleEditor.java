@@ -6120,7 +6120,7 @@ else
   {
     unusePianoRoll();
     trackWithPianoRoll.setSelected(false);
-    pianoRoll.setVisible(false);
+    pianoRoll.closeWindow();
   }
 }//GEN-LAST:event_pianoRollCheckBoxActionPerformed
 
@@ -6233,6 +6233,7 @@ private void usePianoRoll(int selectedColumns[])
 
 public void unusePianoRoll()
 {
+    pianoRoll = null;
   pianoRollCheckBox.setSelected(false);
   trackWithPianoRoll.setSelected(false);
 }
@@ -6529,5 +6530,6 @@ public static String stripOuterParens(String arg)
   {
     return arg.substring(1, arg.length()-1);
   }
+
 }
 

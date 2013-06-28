@@ -447,7 +447,7 @@ public class GraphicBrick {
                 }
 
                 g2d.setColor(settings.textColor);
-                String name = RoadMapSettings.trimString(chord.getName(),
+                String name = RoadMapSettings.trimString(toSymbols(chord.getName()),
                         settings.getBlockLength(chord), metrics);
                 name = RoadMapSettings.trimString(name, cutoff - currentX, metrics);
                 g2d.drawString(margin + name, currentX + 2, currentY + fontOffset);
@@ -541,7 +541,7 @@ public class GraphicBrick {
             g2d.drawRect(x+xOffset, y+2*blockHeight, length, blockHeight);
             
             g2d.setColor(settings.textColor);
-            String chordName = chord.getName();
+            String chordName = toSymbols(chord.getName());
             g2d.drawString(margin + chordName, x+xOffset+5, y+5*blockHeight/2+5);
 
             totalSlots += chord.getDuration();
@@ -549,5 +549,64 @@ public class GraphicBrick {
         
         g2d.setStroke(settings.brickOutline);
         g2d.drawRect(x, y, totalLength, 3*blockHeight);
+    }
+    
+    
+    
+    public String toSymbols(String chordName) {
+        String result = chordName;
+        if (settings.getDelta()) {
+            result = toDelta(result);
+        }
+        if (settings.getPhi()) {
+            result = toPhi(result);
+        }
+
+        if (result.length() == 0) {
+            result = chordName;
+        }
+
+        return result;
+    }
+
+    public String toPhi(String chordName) {
+        if (!contains(chordName, "m7b5")) {
+            return chordName;
+        } else {
+            if (chordName.substring(0, 4).equals("m7b5")) {
+                return "\u03D5" + toPhi(chordName.substring(4));
+            } else if (chordName.substring(1, 5).equals("m7b5")) {
+                return chordName.substring(0, 1) + "\u03D5" + toPhi(chordName.substring(5));
+            } else if (chordName.substring(2, 6).equals("m7b5")) {
+                return chordName.substring(0, 2) + "\u03D5" + toPhi(chordName.substring(6));
+            } else if (chordName.substring(3, 7).equals("m7b5")) {
+                return chordName.substring(0, 3) + "\u03D5" + toPhi(chordName.substring(7));
+            } else {
+                return chordName.substring(0, 4) + toPhi(chordName.substring(4));
+            }
+        }
+    }
+
+    public String toDelta(String chordName) {
+        if (!contains(chordName, "M7")) {
+            return chordName;
+        } else {
+            if (chordName.substring(0, 2).equals("M7")) {
+                return "\u0394" + toDelta(chordName.substring(2));
+            } else if (chordName.substring(1, 3).equals("M7")) {
+                return chordName.substring(0, 1) + "\u0394" + toDelta(chordName.substring(3));
+            } else {
+                return chordName.substring(0, 2) + toDelta(chordName.substring(2));
+            }
+        }
+    }
+
+    public boolean contains(String chordName, String target) {
+        for (int j = 0; j <= chordName.length() - target.length(); j++) {
+            if (chordName.substring(j, j + target.length()).equals(target)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
