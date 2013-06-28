@@ -223,6 +223,7 @@ public class VoicingKeyboard extends javax.swing.JFrame {
         cascadeMI = new javax.swing.JMenuItem();
         windowMenuSeparator = new javax.swing.JSeparator();
 
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Keyboard");
         setAlwaysOnTop(true);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -857,12 +858,12 @@ public class VoicingKeyboard extends javax.swing.JFrame {
         windowMenu.setMnemonic('W');
         windowMenu.setText("Window");
         windowMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                windowMenuMenuSelected(evt);
-            }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                windowMenuMenuSelected(evt);
             }
         });
 
@@ -2654,7 +2655,7 @@ public PianoKey[] pianoKeys() {
 public void closeWindow()
   {
   setVisible(false);
-
+notate.closeKeyboard();
   WindowRegistry.unregisterWindow(this);
   }    
 }

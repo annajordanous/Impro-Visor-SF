@@ -364,4 +364,22 @@ public class RoadMapSettings {
             barsPerLine = bars;
           }
       }
+    private boolean usePhi = false;
+    private boolean useDelta = false;
+
+    public boolean getPhi() {
+        return usePhi;
+    }
+
+    public boolean getDelta() {
+        return useDelta;
+    }
+
+    public void setPhi(boolean phi) {
+        usePhi = phi;
+    }
+
+    public void setDelta(boolean delta) {
+        useDelta = delta;
+    }
 }

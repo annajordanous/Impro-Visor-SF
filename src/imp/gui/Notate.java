@@ -6879,7 +6879,7 @@ public class Notate
 
         jCheckBox1.setText("jCheckBox1");
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setIconImage((new ImageIcon(getClass().getResource("/imp/gui/graphics/icons/trumpetsmall.png"))).getImage());
         setMinimumSize(new java.awt.Dimension(800, 600));
@@ -6893,11 +6893,11 @@ public class Notate
             }
         });
         addWindowFocusListener(new java.awt.event.WindowFocusListener() {
-            public void windowLostFocus(java.awt.event.WindowEvent evt) {
-                formWindowLostFocus(evt);
-            }
             public void windowGainedFocus(java.awt.event.WindowEvent evt) {
                 formWindowGainedFocus(evt);
+            }
+            public void windowLostFocus(java.awt.event.WindowEvent evt) {
+                formWindowLostFocus(evt);
             }
         });
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -8001,11 +8001,11 @@ public class Notate
         scoreTab.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         scoreTab.setOpaque(true);
         scoreTab.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                scoreTabMousePressedHandler(evt);
-            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 mouseEnteredTabPanel(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                scoreTabMousePressedHandler(evt);
             }
         });
         scoreTab.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -9306,7 +9306,7 @@ public class Notate
 
   private void mouseEnteredTabPanel(java.awt.event.MouseEvent evt)//GEN-FIRST:event_mouseEnteredTabPanel
   {//GEN-HEADEREND:event_mouseEnteredTabPanel
-    requestFocusInWindow();
+    
   }//GEN-LAST:event_mouseEnteredTabPanel
 
   private void loopSetMousePressed(java.awt.event.MouseEvent evt)//GEN-FIRST:event_loopSetMousePressed
@@ -14191,7 +14191,7 @@ public void closeWindow()
           break;
 
         case CANCEL:
-
+            
           return;
         }
       }
@@ -20266,6 +20266,10 @@ public void openKeyboard()
 
 }
 
+public void closeKeyboard(){
+    keyboard = null;
+}
+
 public void openStepKeyboard()
 {
     if (stepKeyboard == null)
@@ -20280,6 +20284,10 @@ public void openStepKeyboard()
     }
 
     stepKeyboard.resetAdvice();
+}
+
+public void closeStepKeyboard(){
+    stepKeyboard = null;
 }
 
 public VoicingKeyboard getCurrentVoicingKeyboard()
@@ -22203,7 +22211,7 @@ private void generationLeadSpinnerChanged(javax.swing.event.ChangeEvent evt)//GE
 
 private void scoreTabMousePressedHandler(java.awt.event.MouseEvent evt)//GEN-FIRST:event_scoreTabMousePressedHandler
   {//GEN-HEADEREND:event_scoreTabMousePressedHandler
-
+      requestFocusInWindow();
   }//GEN-LAST:event_scoreTabMousePressedHandler
 
 private void sendSetBankCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_sendSetBankCheckBoxActionPerformed
@@ -25591,6 +25599,7 @@ public void roadMapThisAnalyze()
     establishRoadMapFrame();
     score.toRoadMapFrame(roadmapFrame);
     roadmapFrame.setRoadMapTitle(getTitle());
+     roadmapFrame.updatePhiAndDelta(getPhiStatus(),getDeltaStatus());
     roadmapFrame.makeVisible(true);
     setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     staveRequestFocus();
@@ -25606,6 +25615,7 @@ public void openEmptyRoadmap()
     setMode(Mode.ROADMAP);
     establishRoadMapFrame();
     roadmapFrame.setRoadMapTitle("Untitled");
+    roadmapFrame.updatePhiAndDelta(getPhiStatus(),getDeltaStatus());
     roadmapFrame.makeVisible(false);
   }
 
