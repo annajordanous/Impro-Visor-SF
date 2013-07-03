@@ -814,6 +814,7 @@ boolean mouseOverRHandle()
  */
 public void mouseClicked(MouseEvent e)
  {
+     notate.staveRequestFocus();
   // update the clicked position
   clickedPosX = e.getX();
   clickedPosY = e.getY();

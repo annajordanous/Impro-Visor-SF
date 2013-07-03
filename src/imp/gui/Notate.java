@@ -7995,6 +7995,9 @@ public class Notate
         scoreTab.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         scoreTab.setOpaque(true);
         scoreTab.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                fds(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 mouseEnteredTabPanel(evt);
             }
@@ -8061,12 +8064,12 @@ public class Notate
 
         openRecentLeadsheetMenu.setText("Open Recent Leadsheet (same window)");
         openRecentLeadsheetMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuDeselected(javax.swing.event.MenuEvent evt) {
-            }
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 populateRecentFileMenu(evt);
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -8082,12 +8085,12 @@ public class Notate
 
         openRecentLeadsheetNewWindowMenu.setText("Open Recent Leadsheet (new window)");
         openRecentLeadsheetNewWindowMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuDeselected(javax.swing.event.MenuEvent evt) {
-            }
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 populateRecentLeadsheetNewWindow(evt);
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -9064,12 +9067,12 @@ public class Notate
         windowMenu.setMnemonic('W');
         windowMenu.setText("Window");
         windowMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuDeselected(javax.swing.event.MenuEvent evt) {
-            }
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 windowMenuMenuSelected(evt);
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -9102,12 +9105,12 @@ public class Notate
             }
         });
         notateGrammarMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuDeselected(javax.swing.event.MenuEvent evt) {
-            }
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 notateGrammarMenuMenuSelected(evt);
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
         });
         notateGrammarMenu.addActionListener(new java.awt.event.ActionListener() {
@@ -13296,15 +13299,12 @@ public String getLickTitle()
 
 
     private void textEntryLosesFocus(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_textEntryLosesFocus
-
-        textEntryLabel.setForeground(Color.red);
+       staveRequestFocus();
     }//GEN-LAST:event_textEntryLosesFocus
 
 
     private void textEntryGainsFocus(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_textEntryGainsFocus
-
-       textEntryLabel.setForeground(Color.black);
-
+       textRequestFocus();
        setNormalStatus();
     }//GEN-LAST:event_textEntryGainsFocus
 
@@ -13602,8 +13602,6 @@ private void openAdviceFrame()
                 partList.get(currTabIndex) ));
         }
 
-        textEntry.setEnabled(false);
-
         staveRequestFocus();
 
         redoAdvice();
@@ -13849,16 +13847,16 @@ public void refreshCurrentStaveScrollPane()
 /**
  * Give focus to the current Stave.
  */
-public void staveRequestFocus()
-  {
-    // Show that textEntry no longer has focus if it had.
+    public void staveRequestFocus() {
+        // Show that textEntry no longer has focus if it had.
 
-    textEntryLabel.setForeground(Color.red);
+        textEntryLabel.setForeground(Color.red);
+        textEntry.setEnabled(false);
+        
+        getCurrentStave().requestFocusInWindow();
 
-    getCurrentStave().requestFocusInWindow();
-
-    setItemStates();
-  }
+        setItemStates();
+    }
 
 /**
  * This override is intended to fix requestFocusInWindow, which only worked
@@ -22884,6 +22882,10 @@ private void rmsThresholdSliderStateChanged(javax.swing.event.ChangeEvent evt)//
         // TODO add your handling code here:
     }//GEN-LAST:event_adviceTabbedPaneMouseReleased
 
+    private void fds(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fds
+        // TODO add your handling code here:
+    }//GEN-LAST:event_fds
+
 public void setNoteLength(int len)
 {
     getCurrentStave().getMelodyPart().setNoteLength(len);
@@ -22926,6 +22928,7 @@ public void textRequestFocus()
 {
     String text = textEntry.getText();
 
+    textEntryLabel.setForeground(Color.black);
     textEntry.requestFocusInWindow();
     textEntry.setEnabled(true);
     int length = text.length();
@@ -23439,8 +23442,6 @@ public void showNewVoicingDialog()
         }
 
     }
-
-
 
   /**
    * Set the indexed preference with a value from the corresponding CheckBox.
@@ -24107,7 +24108,8 @@ public void showNewVoicingDialog()
     playAllMI.setEnabled(true);
 
     stopPlayMI.setEnabled(true);
-
+    pausePlayMI.setEnabled(true);
+preferencesAcceleratorMI.setEnabled(true);
 
 
     // check to see if undo & redo can be enabled
@@ -24274,6 +24276,10 @@ public void showNewVoicingDialog()
       reverseMelody.setEnabled(true);
 
       invertMelody.setEnabled(true);
+    expandMelodyBy2.setEnabled(true);
+    expandMelodyBy3.setEnabled(true);
+    contractMelodyBy2.setEnabled(true);
+    contractMelodyBy3.setEnabled(true);
       }
     else
       {
@@ -24342,6 +24348,10 @@ public void showNewVoicingDialog()
       reverseMelody.setEnabled(false);
 
       invertMelody.setEnabled(false);
+    expandMelodyBy2.setEnabled(true);
+    expandMelodyBy3.setEnabled(true);
+    contractMelodyBy2.setEnabled(true);
+    contractMelodyBy3.setEnabled(true);
       }
 
     // checks if "delete tab" should be enabled
@@ -24389,81 +24399,55 @@ public void showNewVoicingDialog()
     {
     addRestMI.setEnabled(false);
 
-
     playAllMI.setEnabled(false);
-
     stopPlayMI.setEnabled(false);
-
+    pausePlayMI.setEnabled(false);
 
     undoMI.setEnabled(false);
-
     redoMI.setEnabled(false);
 
-
     cutMelodyMI.setEnabled(false);
-
     cutChordsMI.setEnabled(false);
-
     cutBothMI.setEnabled(false);
 
-
     copyMelodyMI.setEnabled(false);
-
     copyChordsMI.setEnabled(false);
-
     copyBothMI.setEnabled(false);
 
-
     pasteMelodyMI.setEnabled(false);
-
     pasteChordsMI.setEnabled(false);
-
     pasteBothMI.setEnabled(false);
 
-
     enterMelodyMI.setEnabled(false);
-
     enterChordsMI.setEnabled(false);
-
     enterBothMI.setEnabled(false);
 
-
     transposeBothDownSemitone.setEnabled(false);
-
     transposeBothUpSemitone.setEnabled(false);
-
     transposeChordsUpSemitone.setEnabled(false);
-
     transposeChordsDownSemitone.setEnabled(false);
-
     transposeMelodyDownOctave.setEnabled(false);
-
     transposeMelodyDownSemitone.setEnabled(false);
-
     transposeMelodyUpOctave.setEnabled(false);
-
     transposeMelodyUpSemitone.setEnabled(false);
-
     transposeMelodyUpHarmonically.setEnabled(false);
-
     transposeMelodyDownHarmonically.setEnabled(false);
-
-
+    
     copyMelodySelectionToTextWindow.setEnabled(false);
-
     copyChordSelectionToTextWindow.setEnabled(false);
-
     copyBothSelectionToTextWindow.setEnabled(false);
 
-
     reverseMelody.setEnabled(false);
-
     invertMelody.setEnabled(false);
-
+    expandMelodyBy2.setEnabled(false);
+    expandMelodyBy3.setEnabled(false);
+    contractMelodyBy2.setEnabled(false);
+    contractMelodyBy3.setEnabled(false);
     resolvePitches.setEnabled(false);
 
-
     saveSelectionAsLick.setEnabled(false);
+    
+    preferencesAcceleratorMI.setEnabled(false);
 
     // REVISIT generateLickButton.setEnabled(false);
     }
