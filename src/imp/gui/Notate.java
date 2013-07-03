@@ -42,10 +42,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.util.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.Timer;
 import java.util.concurrent.atomic.AtomicBoolean;
 import javax.sound.midi.MidiDevice;
@@ -93,11 +89,9 @@ public class Notate
 
   public static final int HELP_DIALOG_WIDTH = 980;
   public static final int HELP_DIALOG_HEIGHT = 600;
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
   private int DEFAULT_SLIDER_VOLUME = 80;
-
-  private static boolean firstTime = true;
 
   RoadMapFrame roadmapFrame = null;
 
@@ -916,7 +910,7 @@ public class Notate
 
     midiSynth3 = new MidiSynth(midiManager);
 
-    autoImprovisation = new AutoImprovisation();
+    autoImprovisation = new AutoImprovisation(this);
 
     midiStepInput = new MidiStepEntryActionHandler(this);
 
@@ -10760,6 +10754,7 @@ void stopPlaying()
 
 void stopPlaying(String reason)
   {
+    //System.out.println("stopPlaying called in Notate for reason: " + reason);
     midiSynth.stop("stop in Notate: " + reason);
     improvisationOff();
     if( mode == Mode.RECORDING)
@@ -12300,7 +12295,7 @@ private void updateTempoFromTextField()
     }
 
 
- private void repaintAndStaveRequestFocus()
+ public void repaintAndStaveRequestFocus()
  {
    repaint();
    staveRequestFocus();
@@ -13823,11 +13818,33 @@ static private void invalidInteger(String text)
 /**
  * Get the current Stave.
  */
+
 public Stave getCurrentStave()
   {
     //System.out.println("staveScrollPane = " + staveScrollPane + ", currTabIndex = " + currTabIndex);
     return staveScrollPane[currTabIndex].getStave();
   }
+
+/**
+ * Refresh the current Stave.
+ */
+
+public void refreshCurrentStave()
+  {
+   //System.out.println("staveScrollPane = " + staveScrollPane + ", currTabIndex = " + currTabIndex);
+   staveScrollPane[currTabIndex].getStave().repaint();
+  }
+
+/**
+ * Refresh the current StaveScrollpane. ? Doesn't work?
+ */
+
+public void refreshCurrentStaveScrollPane()
+  {
+   //System.out.println("repainting staveScrollPane " + currTabIndex);
+   staveScrollPane[currTabIndex].repaint();
+  }
+
 
 /**
  * Give focus to the current Stave.
@@ -13971,6 +13988,22 @@ public MelodyPart getCurrentMelodyPart()
     return getCurrentStave().getMelodyPart();
   }
 
+int improvMelodyIndex = 0;
+
+public MelodyPart getImprovMelodyPart()
+  {
+    if( improvMelodyIndex >= staveScrollPane.length )
+      {
+        return null;
+      }
+    return staveScrollPane[improvMelodyIndex].getStave().getMelodyPart();
+  }
+
+public void incrementMelodyPartIndex()
+  {
+    improvMelodyIndex++;
+    //System.out.println("incrementMelodyPartIndex to " + improvMelodyIndex);
+  }
 
   /**
    * Select all construction lines on the current Stave.
@@ -17825,10 +17858,11 @@ int slotDelay;
 
     totalSlotsElapsed = 0;
     previousSynthSlot = 0;
-    MelodyPart currentMelodyPart = getCurrentMelodyPart();
     MelodyPart improLick = null;
 
-    autoImprovisation.reset(currentMelodyPart);
+    improvMelodyIndex = 0;
+    
+    autoImprovisation.reset();
 
     if( autoImprovisation.improviseAtStart() )
       {
@@ -17837,7 +17871,8 @@ int slotDelay;
        // but pasting the improLick is deferred to after the main Score
        // starts, so that the latter does not try to play improLick also.
 
-       improLick = autoImprovisation.createAndPlayInitialLick();
+        
+       improLick = autoImprovisation.createAndPlayInitialLick(getImprovMelodyPart());
       }
 
      establishCountIn();
@@ -17847,7 +17882,7 @@ int slotDelay;
        {
        // Paste, after the main Score is started.
          
-       currentMelodyPart.newPasteOver(improLick, 0);
+       getImprovMelodyPart().newPasteOver(improLick, 0);
        }
   }
 
@@ -18268,12 +18303,15 @@ public ChordPart makeCountIn()
     return midiSynth;
     }
 
+public MidiSynth getMidiSynth2()
+    {
+    return midiSynth2;
+    }
 
   public Sequencer getSequencer()
     {
     return midiSynth.getSequencer();
     }
-
 
   /**
    *
@@ -21267,6 +21305,10 @@ public void originalGenerate(LickGen lickgen, int improviseStartSlot, int improv
     enableRecording(); // TRIAL
   }
 
+public MelodyPart generate(int improviseStartSlot, int improviseEndSlot)
+  {
+    return generate(lickgen, improviseStartSlot, improviseEndSlot);
+  }
 
 /**
  * New version of generate
@@ -25417,6 +25459,21 @@ public void showNewVoicingDialog()
       return totalSlots;
   }
 
+  public long getTotalSlotsElapsed()
+  {
+      return totalSlotsElapsed;
+  }
+
+  public double getTempo()
+    {
+      return score.getTempo();
+    }
+  
+  public InstrumentChooser getAuxInstrument()
+    {
+      return auxInst;
+    }
+
   public int getSelectedIndex()
   {
       return scoreTab.getSelectedIndex();
@@ -25758,167 +25815,6 @@ public int getRecordSnapValue()
 
 
 /**
- * AutoImprovisation is an inner class used to control trading.
- */
-
-class AutoImprovisation
-{
-/**
- * Whether auto improvisation is to be done
- */
-
-boolean selected = false;
-
-/**
- * Tracing for auto improvisation
- */
-
-boolean traceAutoImprov = false;
-
-/**
- * whether Impro-Visor is to go first in trading, or not
- */
-
-boolean ivFirst = true;
-
-/**
- * The command that is executed to generate an improvised lick
- */
-
-Command improCommand = null;
-
-/*
- * Parameters for trading
- */
-
-/**
- * The number of slots in one full cycle of trading.
- * This will be set by setImproInterval.
- */
-
-int improInterval = 3840;
-
-/**
- * One half of improInterval
- */
-
-int halfInterval = 1920;
-
-
-/**
- * The number of slots by which generation will lead use.
- *
- * Ultimately this should be made to depend on tempo, etc.
- */
-
-int generationLeadSlots = 240;
-
-
-/**
- * The number of slots by which the midiSynth should be
- * started before playing is required
- */
-
-int playLeadSlots = 30;
-
-
-/**
- * The lick that is generated, played, and inserted into the current
- * melody part
- */
-
-MelodyPart improLick = null;
-
-
-/**
- * The size of MelodyPart in slots
- */
-int size;
-
-
-/**
- * An indication of whether this generation is the very first, with
- * Impro-Visor starting
- */
-
-boolean firstTime = false;
-
-/**
- * Whether there is a lick generated, but not played
- */
-boolean played = false;
-
-/**
- * Whether there is a lick generated
- */
-
-boolean generated = false;
-
-
-/**
- * The long-term slot at which the next lick will be generated
- */
-
-long generateAtSlot = 0;
-
-/**
- * The long-term slot at which the next generation is to be played
- */
-
-long playAtSlot = 0;
-
-/**
- * The next long-term cycle at which generation will occur
- */
-
-long nextGenerateCycle = 0;
-
-
-/** The long-term view of when the next improvised melody will start
- *
- */
-
-long melodyStart;
-
-
-/**
- * The slot within the current chorus at which the improvised melody starts
- */
-
-int melodyStartsAtSlot = 0;
-
-/**
- * The number of cycles of trading within a chorus
- */
-
-int numCycles;
-
-/**
- * The melody part into which the improvised lick will be inserted
- */
-
-MelodyPart currentMelodyPart;
-
-public void reset(MelodyPart currentMelodyPart)
-  {
-    this.currentMelodyPart = currentMelodyPart;
-    size = currentMelodyPart.size();
-    generateAtSlot = 0;
-    melodyStartsAtSlot = 0;
-    melodyStart = 0;
-    improLick = null;
-    improCommand = null;
-    generated = false;
-    played = false;
-    numCycles = size / improInterval;
-    nextGenerateCycle = 0;
-    //firstTime = ivFirst == 0;
-    setGenerationLeadSlots(480);
-    setPlayLeadSlots(30);
-  }
-
-
-/**
  * return slot and bar as string (assuming 4/4 time)
  * @param slot
  * @return
@@ -25926,261 +25822,10 @@ public void reset(MelodyPart currentMelodyPart)
 
 public String bar(long slot)
   {
-    return "slot " + slot + " (bar " + (slot%size)/480 + ")";
+    return "slot " + slot + " (bar " + (slot%getCurrentMelodyPart().size())/480 + ")";
   }
 
 
-int failCounter;
-
-/**
- * Create lick at indicated slot, for playback in a subsequent slot.
- * @param slotInPlayback
- * @return
- */
-
-public MelodyPart maybeCreateLick(int slotInPlayback)
-  {
-    long biasedCyclesElapsed = (totalSlotsElapsed + generationLeadSlots) / improInterval;
-    //System.out.println("biasedCyclesElapsed = " + biasedCyclesElapsed + " nextGenerateCycle = " + nextGenerateCycle);
-
-    // This prevents multiple generations within one cycle.
-    // Trying to hinge on generated does not work.
-    // Neither does hinging on slotInPlayback < generateAtSlot
-
-    if( biasedCyclesElapsed < nextGenerateCycle )
-      {
-        return null;
-      }
-
-    melodyStart = ivFirst ? improInterval * biasedCyclesElapsed
-                          : improInterval * biasedCyclesElapsed + halfInterval;
-
-    playAtSlot = Math.max(0, melodyStart - playLeadSlots);
-
-    generateAtSlot = melodyStart - generationLeadSlots;
-
-    boolean result = !generated && totalSlotsElapsed >= generateAtSlot;
-
-    if( result )
-      {
-       // We are generating for the NEXT cycle, due to using the bias in triggering
-      
-        melodyStartsAtSlot = (int)melodyStart;
-        
-        //System.out.println("melody starts at " + bar(melodyStartsAtSlot) );
-        
-        //improLick = generate(lickgen, melodyStartsAtSlot, melodyStartsAtSlot + halfInterval - 1);
-        
-        int partsize = getCurrentMelodyPart().size();
-
-        int chordStartSlot = melodyStartsAtSlot % partsize; // TEMP
-        int chordStopSlot = (melodyStartsAtSlot + halfInterval - 1)% partsize; // TEMP
-        
-        if( traceAutoImprov )
-          {
-          System.out.println("\ncreate lick for next cycle at " + bar(slotInPlayback) 
-                           + ", melodyStart " + bar(melodyStart)
-                           + " to play at " + bar(playAtSlot)
-                           + ", chords from " + bar(chordStartSlot) + " to " + bar(chordStopSlot));
-          }
-        
-        improLick = generate(lickgen, chordStartSlot, chordStopSlot);
-
-        generated = improLick != null && improLick.size() > 0;
-
-        if( generated )
-          {
-            nextGenerateCycle = biasedCyclesElapsed + 1;
-
-            if( traceAutoImprov )
-              {
-                System.out.println("\n"  + bar(totalSlotsElapsed)
-                        + ": result: "   + result
-                        + ", generate: " + bar(generateAtSlot)
-                        + ", play: "     + bar(playAtSlot)
-                        + ", paste: "    + bar(melodyStartsAtSlot)
-                        + ", hear: "     + bar(melodyStart));
-
-                if( failCounter > 0 )
-                  {
-                    System.out.println(" generation succeeded after " + failCounter + " failures.");
-                    failCounter = 0;
-                  }
-                else
-                  {
-                    System.out.println(" generation succeeded first time.");
-                  }
-              }
-            
-            played = false;
-            Score improScore = new Score();
-            improScore.setTempo(score.getTempo());
-
-            improLick.setInstrument(auxInst.getValue());
-            improLick.setSwing(currentMelodyPart.getSwing());
-
-            improScore.addPart(improLick);
-
-            // Create command now, for execution on a subsequent slot
-            Style style = chordProg.getStyle();
-
-            setImproCommand(
-                    new PlayScoreFastCommand(improScore,
-                                             0,         // startTime
-                                             true,      // swing
-                                             midiSynth2,
-                                             null,      // play listener
-                                             0,         // loopCount,
-                                             score.getTransposition(), // transposition
-                                             false,     // use drums
-                                             -1));      // end
-            return improLick;
-          }
-        else
-          {
-            ++failCounter;
-            //System.out.println(" *** generation failed " + failCounter + " time consecutively.");
-          }
-      }
-    return null;
-  }
-
-
-public MelodyPart maybePlayLick(int slotInPlayback)
-  {
-    boolean paste = true;
-
-    boolean timeOk = totalSlotsElapsed >= playAtSlot;
-    boolean commandOk = improCommand != null;
-    boolean result = !played && generated && commandOk && timeOk;
-
-    if( result )
-      {
-        improCommand.execute();
-
-        if( traceAutoImprov )
-          {
-          System.out.println(bar(totalSlotsElapsed)
-                           + " >= " + bar(playAtSlot)
-                           + " playing");
-          }
-
-        played = true;
-        generated = false;
-
-        if( paste )
-          {
-            if( firstTime )
-              {
-                firstTime = false;
-                // firstTime pasteOver is handled outside
-              }
-            else
-              {
-                currentMelodyPart.newPasteOver(improLick, melodyStartsAtSlot);
-                
-                // using newPasteOver here messes up chords below
-              }
-          }
-
-        setImproCommand(null); // Don't play twice
-
-        return improLick;
-      }
-
-    return null;
-  }
-
-
-/**
- * This creates the first melody at slot 0 when Impro-Visor is to begin
- * trading.
- * @param currentMelodyPart
- */
-
-public MelodyPart createAndPlayInitialLick()
-  {
-    maybeCreateLick(0);
-
-    if( improLick != null && improLick.size() > 0 )
-      {
-        melodyStartsAtSlot = 0;
-        melodyStart = 0;
-        playAtSlot = 0;
-        firstTime = true;
-        //generated = true;
-        played = false;
-
-        //maybePlayLick(playAtSlot, currentMelodyPart);
-      }
-
-    return improLick;
-  }
-
-
-public int getGenerationLeadSlots()
-  {
-    return generationLeadSlots;
-  }
-
-public void setGenerationLeadSlots(int generationLeadSlots)
-  {
-    this.generationLeadSlots = generationLeadSlots;
-  }
-
-public Command getImproCommand()
-  {
-    return improCommand;
-  }
-
-public void setImproCommand(Command improCommand)
-  {
-    this.improCommand = improCommand;
-  }
-
-public int getImproInterval()
-  {
-    return improInterval;
-  }
-
-public void setImproInterval(int improInterval)
-  {
-    this.improInterval = improInterval;
-    halfInterval = improInterval/2;
-  //System.out.println("improInterval = " + improInterval + ", halfInterval = " + halfInterval);
-  }
-
-public int getPlayLeadSlots()
-  {
-    return playLeadSlots;
-  }
-
-public void setPlayLeadSlots(int playLeadSlots)
-  {
-    this.playLeadSlots = playLeadSlots;
-  }
-
-public void setSelected(boolean selected)
-  {
-    this.selected = selected;
-  }
-
-public boolean isSelected()
-  {
-    return selected;
-  }
-
-public void setIVfirst(boolean value)
-  {
-    ivFirst = value;
-  }
-
-public boolean improviseAtStart()
-  {
-    return selected && ivFirst;
-  }
-
- }
 
 /**
  * Select which improvisation type to use.
@@ -26269,7 +25914,7 @@ public void actionPerformed(ActionEvent evt)
 
     Chord currentChord = chordProg.getCurrentChord(slotInChorus);
 
-    currentChord.getChordForm();
+    //currentChord.getChordForm(); // value not used?
 
     currentPlaybackTab = slotInPlayback / chorusSize;
 
@@ -26325,19 +25970,11 @@ private void handleAutoImprov(int slotInPlayback)
         // New form of improvisation
         // Caution: LickGenerator control should be opened first
         // so that parameters are set.
-
-        if( autoImprovisation.isSelected() )
+        if( autoImprovisation.isSelected() && (slotInPlayback < stopPlaybackAtSlot) )
           {
-            MelodyPart currentMelodyPart = getCurrentMelodyPart();
-
-            int size = currentMelodyPart.size();
-
-            autoImprovisation.maybeCreateLick(slotInPlayback);
-
-            // Play the lick previously generated, and paste into the
-            // current melody part.
-
-            autoImprovisation.maybePlayLick(slotInPlayback);
+//System.out.println("slotInPlayback = " + bar(slotInPlayback) + ", stopPlaybackAtSlot = " + bar(stopPlaybackAtSlot));
+            
+          autoImprovisation.autoImprovCycle(slotInPlayback);
           }
       }
   } // handleAutoImprov
