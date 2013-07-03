@@ -1405,7 +1405,7 @@ public Dimension getPreferredSize()
  */
 public void setSelectionStart(int index)
   {
-    //debug System.out.println("setSelectStart " + index);
+    //debug System.out.pritln("setSelectStart " + index);
     this.selectionStart = index;
 
     if( lockSelectionSize != -1 )
@@ -2994,7 +2994,6 @@ private boolean drawPart(MelodyPart part, Graphics g)
                 // These are used to determined whether a note stands alone or has a beam.
                 // A note having a beam will not also have a flag.
 
-
                 boolean beamed = beamingNotes // beaming desired
                         && sameBeat(i, inext) // in same beat interval
                         && note.getRhythmValue() < 80 // less than quarternote
@@ -3723,31 +3722,26 @@ boolean sameBeat(int i, int j)
  * Returns an array of color values to use in drawing the notes.
  * @return int[]  color values of notes
  */
-public int[] collectNoteColors(MelodyPart part, Graphics g)
-  {
-    int number = part.size();
+public int[] collectNoteColors(MelodyPart part, Graphics g) {
+        int number = part.size();
 
-    int[] color = new int[number];
-
-    for( int i = 0; i < number; i++ )
-      {
-        Note curNote = part.getNote(i);
-        if( curNote != null )
-          {
-            Note origNote = this.getMelodyPart().getNote(i);
-
-            color[i] = determineColor(curNote, origNote,
-                                      i, g, false, color);
-
-            if( curNote.isTied() && !curNote.firstTied()
-                    && part.getPrevIndex(i) >= 0 )
-              {
-                color[i] = color[part.getPrevIndex(i)];
-              }
-          }
-      }
-    return color;
-  }
+        int[] color = new int[number];
+        for (int i = 0; i < number; i++) {
+            Note curNote = part.getNote(i);
+            if (curNote != null) {
+                Note origNote = this.getMelodyPart().getNote(i);
+                color[i] = determineColor(curNote, origNote,
+                        i, g, false, color);
+            }
+        }
+        for(int i = 0; i < number; i++) {
+            Note curNote = part.getNote(i);
+            if (curNote != null && curNote.isTied() && !curNote.firstTied() && part.getPrevIndex(i) >= 0) {
+                color[i] = color[part.getPrevIndex(i)];                
+            }
+        }
+        return color;
+    }
 
 /**
  * Determines the color of a given note.  Takes in the note you're coloring,
@@ -5881,8 +5875,8 @@ public void setHeight(int height)
   }
 
 public void mouseClicked(MouseEvent e)
-  {
-
+  { 
+  
   }
 
 public void mousePressed(MouseEvent e)
