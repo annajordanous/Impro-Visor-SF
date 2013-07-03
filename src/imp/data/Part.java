@@ -1552,7 +1552,7 @@ public int getUnitRhythmValue(int unitIndex)
      * @param index     the slot at which to start pasting over
      */
     public void newPasteOver(Part part, int index) {
-        //Trace.log(3, "pasteOver " + part + " onto " + index);
+        Trace.log(3, "pasteOver " + part + " onto " + index + " " + this.hashCode());
         int limit = size();
         int incoming = part.size();
 //        if( index + incoming < limit )
