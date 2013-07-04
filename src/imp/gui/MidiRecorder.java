@@ -238,6 +238,12 @@ void handleNoteOn(int note, int velocity, int channel)
     notePlaying = true;
   }
  
+/**
+ * The index could be anywhere within the tune now, so taking mod relative
+ * to part size is needed.
+ * @param index
+ * @param noteToAdd 
+ */
 private void setNote(int index, Note noteToAdd)
   {
     this.melodyPart = notate.getCurrentMelodyPart();
@@ -250,7 +256,7 @@ private void setNote(int index, Note noteToAdd)
       // the first place after the generator has played notes.
       // FIX: Revisit this issue after more refactoring.
       
-      melodyPart.setNote(index, noteToAdd);
+      melodyPart.setNote(index % melodyPart.size(), noteToAdd);
    }
 
  void handleNoteOff(int note, int velocity, int channel)
