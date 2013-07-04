@@ -89,6 +89,20 @@ public class MelodyPart
            240, 360, 480
   };
 */
+  
+  private static int melodyPartNumber = 0;
+  
+  private String id;
+  
+  public String getMelodyPartId()
+    {
+      return id;
+    }
+  
+  public void setMelodyPartId(String id)
+    {
+      this.id = id;
+    }
 
   /**
    * Volume to be explicitly given for one-time melodies, for
@@ -106,6 +120,7 @@ public class MelodyPart
   public MelodyPart()
     {
     super();
+    setMelodyPartId("Melody Part # " + melodyPartNumber++);
 
     this.volume = ImproVisor.getEntryVolume();
     makeConsistent();
@@ -118,6 +133,7 @@ public class MelodyPart
   public MelodyPart(int size)
     {
     super(size);
+    setMelodyPartId("Melody Part # " + melodyPartNumber++);
     Trace.log(3, "creating new melody part of size " + size);
 
     // Use the entry volume as the default.  Any non-entered/pasted/generated
@@ -134,6 +150,7 @@ public class MelodyPart
   public MelodyPart(String notes)
     {
     super();
+    setMelodyPartId("Melody Part # " + melodyPartNumber++);
     this.volume = ImproVisor.getEntryVolume();
     String[] noteList = notes.split(" ");
     for( int i = 0; i < Array.getLength(noteList); ++i )
@@ -507,76 +524,6 @@ public Note getFirstNote()
   return copy(startingIndex, size-1);
 }
 
-
-//      int newSize = size - startingIndex;
-//
-//      if( newSize <= 0 )
-//        {
-//          return new MelodyPart(0);
-//        }
-//
-//      int newUnitCount = 0;
-//
-//      try
-//      {
-//      MelodyPart newPart = new MelodyPart(newSize);
-//
-//       int i = startingIndex;
-//
-//       if( slots.get(startingIndex) == null )
-//         {
-//           // Find first non-null slot, and place a rest at
-//           // startingIndex.
-//
-//           int j = startingIndex + 1;
-//
-//           for( ; j < size; j++ )
-//             {
-//               if( slots.get(j) != null )
-//                 {
-//                   break;
-//                 }
-//             }
-//
-//           newPart.slots.set(0, new Rest(j - startingIndex));
-//
-//           unitCount = 1;
-//           i = j;
-//         }
-//
-//       for( ; i < size; i++ )
-//        {
-//          Unit unit = slots.get(i);
-//          if( unit != null )
-//            {
-//            unit = unit.copy();
-//            newUnitCount++;
-//            }
-//          newPart.slots.set(i - startingIndex, unit);
-//        }
-//
-//    newPart.unitCount = newUnitCount;
-//    newPart.title = title;
-//    newPart.volume = volume;
-//    newPart.keySig = keySig;
-//    newPart.metre[0] = metre[0];
-//    newPart.metre[1] = metre[1];
-//    newPart.beatValue = beatValue;
-//    newPart.measureLength = measureLength;
-//    newPart.swing = swing;
-//    newPart.instrument = instrument;
-//    return newPart;
-//      }
-//    catch( Error e )
-//      {
-//        ErrorLog.log(ErrorLog.FATAL,
-//                     "Not enough memory to copy part of size " + newSize + ".");
-//        return null;
-//      }
-//    }
-//
-//
-//
   /**
    * Returns an exact copy of this Part from startingIndex to endingIndex
    * @return
@@ -596,6 +543,7 @@ public MelodyPart copy(int startingIndex, int endingIndex)
       try
       {
       MelodyPart newPart = new MelodyPart(newSize);
+      newPart.setMelodyPartId(newPart.getMelodyPartId() + " (copied from " + getMelodyPartId() + ")");
       //System.out.println("melodyPart with size " + newPart.getSize() + " start = " + startingIndex + ", end = " + endingIndex);
        int i = startingIndex;
 
