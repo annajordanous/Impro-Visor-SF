@@ -21434,7 +21434,7 @@ public MelodyPart generate(LickGen lickgen, int improviseStartSlot, int improvis
  @param selectionEnd
  */
 
-private void rectifySelection(Stave stave, int selectionStart, int selectionEnd)
+public void rectifySelection(Stave stave, int selectionStart, int selectionEnd)
 {
     ///System.out.println("rectifying from  " + selectionStart + " to " + selectionEnd);
     stave.rectifySelection(selectionStart, selectionEnd, false, false);
@@ -23543,10 +23543,12 @@ public void showNewVoicingDialog()
 
       // Setup the Stave component in the pane
 
-      partList.add(score.getPart(i));
+      MelodyPart melodyPart = score.getPart(i);
 
-      Stave stave = new Stave(partList.get(i).getStaveType(), this,
-              score.getTitle());
+      partList.add(melodyPart);
+
+      Stave stave = new Stave(melodyPart, melodyPart.getStaveType(), this, score.getTitle());
+      //Stave stave = new Stave(melodyPart.getStaveType(), this, score.getTitle());
 
       pane.setStave(stave);
 
@@ -25869,9 +25871,9 @@ public void actionPerformed(ActionEvent evt)
     previousSynthSlot = synthSlot;
 
 
-    handleAudioInput(slotInPlayback);
+    //handleAudioInput(slotInPlayback);
 
-    handleAutoImprov(midiSynth.getSlot());
+    handleAutoImprov(synthSlot); //midiSynth.getSlot());
 
     // The following variant was originally added to stop playback at the end of a selection
     // However, it also truncates the drum patterns etc. so that needs to be fixed.
@@ -25964,37 +25966,37 @@ private void handleAutoImprov(int slotInPlayback)
   } // handleAutoImprov
 
 
-/**
- * Handle input from an audio line
- * @param slot
- */
-
-private void handleAudioInput(int slot)
-  {
-    //Poll for audio input every (captureInterval) slots
-//    if (useAudioInputMI.isSelected() && !firstCapture)
-//      {
-//          if (slot % captureInterval == 0 && !extractor.isCapturing)
-//          {
-//              extractor.setThisMeasure(true);
-//              extractor.isCapturing = true;
-//              System.out.println("Notate initialized audio capture at time "
-//                      + System.currentTimeMillis());
-//              synchronized (extractor.captureStart)
-//              {
-//                  extractor.captureStart.notify();
-//              }
-//              captureStopped = false;
-//          } else if (slot % captureInterval >= 478 && !captureStopped)
-//          {
-//              captureStopTime = System.currentTimeMillis();
-//              System.out.println("Notate stopped audio capture at time "
-//                          + captureStopTime);
-//              extractor.setThisMeasure(false);
-//              captureStopped = true;
-//          }
-//      }
-  } // handleAudioInput
+///**
+// * Handle input from an audio line
+// * @param slot
+// */
+//
+//private void handleAudioInput(int slot)
+//  {
+//    //Poll for audio input every (captureInterval) slots
+////    if (useAudioInputMI.isSelected() && !firstCapture)
+////      {
+////          if (slot % captureInterval == 0 && !extractor.isCapturing)
+////          {
+////              extractor.setThisMeasure(true);
+////              extractor.isCapturing = true;
+////              System.out.println("Notate initialized audio capture at time "
+////                      + System.currentTimeMillis());
+////              synchronized (extractor.captureStart)
+////              {
+////                  extractor.captureStart.notify();
+////              }
+////              captureStopped = false;
+////          } else if (slot % captureInterval >= 478 && !captureStopped)
+////          {
+////              captureStopTime = System.currentTimeMillis();
+////              System.out.println("Notate stopped audio capture at time "
+////                          + captureStopTime);
+////              extractor.setThisMeasure(false);
+////              captureStopped = true;
+////          }
+////      }
+//  } // handleAudioInput
 
 
 /**
