@@ -30,6 +30,8 @@ import imp.RecentFiles;
 import imp.audio.AudioSettings;
 import imp.audio.CaptureTimerTask;
 import imp.audio.PitchExtractor;
+import imp.audio.SCDelayOffsetter;
+import imp.audio.SCHandler;
 import imp.cluster.CreateGrammar;
 import imp.com.*;
 import imp.data.*;
@@ -11544,6 +11546,10 @@ private void startAudioCapture()
 //        extractor.captureStart.notify();
     }
 
+/*Used by the SCDelayOffsetter*/
+public AudioSettings getAudioSettings(){
+    return audioSettings;
+}
 
 /**
  *
@@ -11553,19 +11559,35 @@ private void startAudioCapture()
 
 private void startRecording()
   {
+    boolean isAudioInput = false;//If doing real audio input
+    
     turnStepInputOff();
 
-    if (useAudioInputMI.isSelected())
-      {
+    if(useAudioInputMI.isSelected())
+        {//@TODO phase this out
           startAudioCapture();
       }
-
     else if( midiManager.getInDevice() == null )
       {
         ErrorLog.log(ErrorLog.COMMENT, "No valid MIDI in devices found.  \n\nPlease check your device connection and the MIDI Preferences. It is possible another program is currently using this device.");
 
         return;
       }
+    else if(midiManager.getInDevice().getDeviceInfo().getName().equals("Bus 1"))
+        {//@TODO Bus 1 not necessarily correct, only for Mac                                                                                    
+        isAudioInput = true;
+        SCHandler handler = new SCHandler();
+        handler.openSC();
+
+        //Wait until handler's dialog box oks continuing
+        //@TODO tie into preference box button
+        try{
+          Thread.sleep(2000);
+            //handler.wait();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        }
 
     playBtn.setEnabled(false);
 
@@ -11577,6 +11599,14 @@ private void startRecording()
       {
         midiRecorder = new MidiRecorder(this, score);
       }
+
+    //Deal with latency
+    if(isAudioInput){
+        SCDelayOffsetter offsetter = new SCDelayOffsetter(this);
+        double latency = offsetter.determineOffsetSlots();
+        //System.out.println("Latency is: " + latency + "ms");
+        midiRecorder.setLatency(latency);
+    }
 
     midiSynth.registerReceiver(midiRecorder);
 
