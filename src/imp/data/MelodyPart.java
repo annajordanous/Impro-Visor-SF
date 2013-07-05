@@ -1061,8 +1061,10 @@ public MelodyPart copy(int startingIndex, int endingIndex)
     // both here and in Style.java
 
     // set program change. Do we need this for every call?
+    // We need this for trading, as long as more than one instrument
+    // is playing on the same track.
 
-    //track.add(MidiSynth.createProgramChangeEvent(ch, instrument, time));
+    track.add(MidiSynth.createProgramChangeEvent(ch, instrument, time));
 
     if( sendBankSelect )
       {
