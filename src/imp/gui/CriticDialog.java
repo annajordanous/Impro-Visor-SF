@@ -297,7 +297,6 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
 
     File currentFile = null;
     
-    // HB- FIX: Null pointer when clicking "save" after opening a file
     public void addFromFile(boolean overwrite) {
         openDialog.setDialogType(JFileChooser.OPEN_DIALOG);
 
@@ -353,7 +352,7 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
     public void save(File f) {
         BufferedWriter out;
         try {
-            out = new BufferedWriter(new FileWriter(saveDialog.getSelectedFile()));
+            out = new BufferedWriter(new FileWriter(f));
         } catch(IOException e) {
             errorLabel.setText("File IO Error: " + e.getMessage());
             return;
@@ -397,6 +396,7 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
                 outTemp.newLine();
             }
             outTemp.flush();
+            outTemp.close();
             in.close();
 
             // Write beginning info

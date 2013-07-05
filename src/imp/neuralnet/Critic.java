@@ -21,9 +21,16 @@
 package imp.neuralnet;
 
 import imp.ImproVisor;
+import imp.util.Trace;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Scanner;
+import java.util.concurrent.atomic.*;
 
 /**
  * Created in June 2013  
@@ -32,18 +39,425 @@ import java.io.FileReader;
  */
 public class Critic {
     
-    // Set values based on how the network was trained
-    private static final int numberLayers = 2;
-    private static final int[] layerSize = {64, 1};
-    private static final ActivationFunction[] layerType = {new Logsig(), new Logsig()};
-    private static final int inputDimension = 342;
-    private static final int outputDimension = 1;
-    private static final String WEIGHTS_FILE = "licks.weights.save";
-   
-    // FIX: Might need to make more global
-    public static Network network = prepareNetwork(WEIGHTS_FILE);   
+    // output should always be 1
+    private final int outputDimension = 1;
+    private int lickLength = 0;
+    
+    public static final int ONLINE = 0;
+    public static final int BATCH = 1;
+    public static final int RPROP = 2;
+    
+    public enum MODE
+    {
+        ONLINE, BATCH, RPROP    
+    }
+    
+    String modeName[] = {"on-line", "batch", "rprop"};
+    
+    public static final int NONE = 0;
+    public static final int GOAL_REACHED = 1;
+    public static final int LIMIT_EXCEEDED = 2;
+    public static final int LACK_OF_PROGRESS = 3;
+    public static final int WEIGHTS_ALREADY_SET = 4;
+    
+    public enum TERMINATION_REASON 
+    {
+        NONE, GOAL_REACHED, LIMIT_EXCEEDED, LACK_OF_PROGRESS, WEIGHTS_ALREADY_SET
+    }
+    
+    String reasonName[] = {"", "goal reached", "limit exceeded", 
+                           "lack of progress", "testing with set weights"};
+    
+    public final MODE defaultMode = MODE.ONLINE;
+    public final double defaultGoal = 0.01;
+    public final double defaultLearningRate = 0.01;
+    public final int defaultEpochLimit = 20000;
+    public final int defaultTrace = 1;
+    public final int minimumParameters = 9;
+    
+    // If we have weights already, set this to true
+    private boolean fixWeights = false;
+
+    
+    ActivationFunction hardlim  = new Hardlim();
+    ActivationFunction hardlims = new Hardlims();
+    ActivationFunction logsig   = new Logsig();
+    ActivationFunction purelin  = new Purelin();
+    ActivationFunction satlin   = new Satlin();
+    ActivationFunction satlins  = new Satlins();
+    ActivationFunction tansig   = new Tansig();
+    
+    private Network network;
+    
+    public Critic()
+    {
+        network = null;
+    }
+
+    private ActivationFunction getLayerType(String name)
+    {
+        name = name.toLowerCase();
+        if( "hardlim".equals(name) )  return hardlim;
+        if( "hardlims".equals(name) ) return hardlims;
+        if( "logsig".equals(name) )   return logsig;
+        if( "purelin".equals(name) )  return purelin;
+        if( "satlin".equals(name) )   return satlin;
+        if( "satlins".equals(name) )  return satlins;
+        if( "tansig".equals(name) )   return tansig;
+
+        System.out.println("error, unrecognized function: " + name);
+        return null;
+    }
+
+    public void getSamples(String inputFile, AtomicInteger outputDimension, 
+            AtomicInteger inputDimension, ArrayList<Sample> listOfSamples) throws Exception
+    {
+        File f = new File(inputFile);
+        
+        if (!f.exists())
+        {
+            //do something
+        }
+        
+        Scanner in = new Scanner(f);
+        
+        // Save input and output dimensions
+        outputDimension.set(in.nextInt());
+        inputDimension.set(in.nextInt());
+        in.nextLine();
+        
+        while (in.hasNextLine())
+        {
+            String line = in.nextLine();
+            Scanner reader = new Scanner(line);
+            Sample thisSample = new Sample(outputDimension.get(), inputDimension.get());
+            
+            for (int i = 0; i < outputDimension.get(); i++)
+                thisSample.setOutput(i, reader.nextDouble());
+            for (int j = 0; j < inputDimension.get(); j++)
+                thisSample.setInput(j, reader.nextDouble());
+            
+            listOfSamples.add(thisSample);
+        }
+    }
+    
+    public void showAndCountSamples(String title, 
+            ArrayList<Sample> samples, AtomicInteger nSamples)
+    {
+        if (Trace.atLevel(4))
+            System.out.println("\n" + title + " samples are:\n");
+
+        for (Sample s : samples)
+        {
+            nSamples.getAndIncrement();
+
+            if (Trace.atLevel(4))
+                System.out.println(nSamples.get() + ": " + s.toString());
+
+        }
+        
+        System.out.println("\n" + nSamples.get() + " " + title 
+                + " samples");
+    }
+    
+    //training
+    private String trainingFile;
+    
+    //epoch
+    private int epochLimit;
+    
+    //rate
+    private double rate;
+    
+    //goal
+    private double goal;
+    
+    //mode
+    private int modeInt;
+    private MODE mode;
+    
+    //weights
+    private String weightFile;
+    
+    //layers
+    private int numberLayers;
+    private int[] layerSize;
+    private ActivationFunction[] layerType;
+    
+    public void trainNetwork(Object ... args)
+    {
+        //Asumed
+        trainingFile = (String) args[0];
+        
+        if (args[1] != null)
+            epochLimit = Integer.parseInt( (String) args[1]);
+        else
+            epochLimit = defaultEpochLimit;
+        
+        if (args[2] != null)
+            rate = Double.parseDouble( (String) args[2]);
+        else
+            rate = defaultLearningRate;
+        
+        if (args[3] != null)
+            goal = Double.parseDouble( (String) args[3]);
+        else
+            goal = defaultGoal;
+        
+        if (args[4] != null)
+        {
+            int modeTemp = Integer.parseInt( (String) args[4]);
+            mode = MODE.values()[modeTemp];
+        }
+        else
+            mode = defaultMode;
+        
+        if (args[5] != null)
+            weightFile = (String) args[5];
+        else
+            weightFile = trainingFile + ".weights.save";
+        
+        numberLayers = (Integer) args[6];
+        LinkedHashMap<Integer, String> layerData = (LinkedHashMap<Integer, String>) args[7];
+        layerSize = new int[numberLayers];
+        layerType = new ActivationFunction[numberLayers];
+        
+        int j = 0;
+        for (Integer i : layerData.keySet())
+        {
+            layerSize[j] = i;
+            layerType[j] = getLayerType(layerData.get(i));
+            j++;
+        }
+        
+        // Check if we're using a file with already-set weights
+        File f = new File(weightFile);
+        if (f.length() != 0)
+            fixWeights = true;
+        
+        if (Trace.atLevel(1))
+        {
+            System.out.println(numberLayers +
+                    " layers structured (from input to output) as: ");
+
+            for( int i = 0; i < numberLayers; i++ )
+            {
+                System.out.println("    " + layerType[i].getName() 
+                    + " (" + layerSize[i] + " " + "neurons" + ")");
+            }
+
+            System.out.println();
+
+            System.out.println("epoch limit = " + epochLimit);
+
+            System.out.println("specified rate = " + rate);
+
+            System.out.println("goal = " + goal);
+
+            System.out.println("mode = " + modeName[mode.ordinal()]);
+            
+        }
+                    
+        
+        AtomicInteger inputD = new AtomicInteger();
+        AtomicInteger outputD = new AtomicInteger();
+        ArrayList<Sample> trainingSamples = new ArrayList<Sample>();
+        
+        try 
+        {
+            getSamples(trainingFile, outputD, inputD, trainingSamples);
+        }
+        catch (Exception e)
+        {
+            
+        }
+        
+        AtomicInteger nTrainingSamples = new AtomicInteger();
+        showAndCountSamples("training", trainingSamples, nTrainingSamples);
+        
+        Network thisNetwork = new Network(numberLayers, layerSize, layerType, inputD.get());
+     
+        if (fixWeights)
+        {
+            try 
+            {
+                BufferedReader in = new BufferedReader(new FileReader(
+                        new File(ImproVisor.getVocabDirectory(), weightFile)));
+                thisNetwork.fixWeights(in);
+                in.close();
+            }
+            catch (Exception e) 
+            {
+                
+            }    
+        }
+        
+        if (Trace.atLevel(4))
+        {
+            System.out.println("\nInitial Weights:");
+            thisNetwork.showWeights("initial");
+        }
+        
+        if (Trace.atLevel(1))
+        {
+            System.out.println("\nTraining begins with epoch 1.");
+        }
+        
+        int epoch = 1;
+        double sse;
+        double mse = 1 + goal;
+        double oldmse = 2 + goal;
+        double etaPlus = 1.2; //for rprop
+        double etaMinus = 0.5;
+        
+        TERMINATION_REASON reason = TERMINATION_REASON.NONE;
+        
+        if (fixWeights)
+        {
+            reason = TERMINATION_REASON.WEIGHTS_ALREADY_SET;
+        }
+        
+        // The total number of output values across all samples and network outputs
+        
+        int interval = 1;
+        
+        // Training loop
+        while ( reason == TERMINATION_REASON.NONE)
+        {
+            sse = 0;
+            switch (mode)
+            {
+                case RPROP:
+                case BATCH:
+                    thisNetwork.clearAccumulation();;
+                case ONLINE:
+            }
+            
+            for (Sample sample : trainingSamples)
+            {
+                // Forward propagation
+                thisNetwork.fire(sample);
+                double sampleSSE = thisNetwork.computeError(sample);
+                sse += sampleSSE;
+                
+                if (Trace.atLevel(4))
+                {
+                    System.out.print("\nforward output: ");
+                    thisNetwork.showOutput();
+                    System.out.print(sample);
+                    System.out.printf(", sample sse: % 6.3f\n", sampleSSE);
+                }
+                
+                // backpropagation
+                thisNetwork.setSensitivity(sample);
+                
+                switch (mode)
+                {
+                    case RPROP:
+                        thisNetwork.accumulateGradient(sample);
+                    case BATCH:
+                        thisNetwork.accumulateWeights(sample, rate);
+                    case ONLINE:
+                        thisNetwork.adjustWeights(sample, rate);
+                }
+                
+                if (Trace.atLevel(4))
+                {
+                    thisNetwork.showWeights("current");
+                }
+            }
+            
+            switch (mode)
+            {
+                case RPROP:
+                    thisNetwork.adjustByRprop(etaPlus, etaMinus);
+                case BATCH:
+                    thisNetwork.installAccumulation();
+                case ONLINE:
+            }
+
+            mse = sse / nTrainingSamples.get();
+
+            double usageError = 0;
+
+            // Evaluate with use
+            for (Sample sample : trainingSamples)
+            {
+                thisNetwork.use(sample);
+                usageError += (thisNetwork.computeUsageError(sample) != 0) ? 1 : 0;
+            }
+            
+            if (Trace.atLevel(3) || (Trace.atLevel(2) && epoch%interval == 0) )
+            {
+                System.out.printf("\nend epoch %d, mse: %10.8f %s, usage error: %d/%d (%5.2f%%)\n",
+                                epoch, 
+                                mse, 
+                                mse < oldmse ? "decreasing" : "increasing",
+                                (int)usageError,
+                                nTrainingSamples.get(),
+                                100 * usageError / nTrainingSamples.get());
+            }
+
+            epoch++;
+
+            if (mse <= goal)
+            {
+                reason = TERMINATION_REASON.GOAL_REACHED;
+            }
+            else if (epoch > epochLimit)
+            {
+                reason = TERMINATION_REASON.LIMIT_EXCEEDED;
+            }
+
+            oldmse = mse;
+        }
+        
+        if (Trace.atLevel(1))
+        {
+            System.out.println("\nTraining ends at epoch " + epoch + ", "
+                  + reasonName[reason.ordinal()] + ".");
+        }
+        
+        System.out.println("\nFinal weights:");
+        
+        thisNetwork.showWeights("Final");
+        
+        try 
+        {
+            PrintWriter out = new PrintWriter(new File(ImproVisor.getVocabDirectory(), weightFile));
+            out.print(inputD.get() + " " + numberLayers);
+            for (int i = 0; i < numberLayers; i++)
+                out.print(" " + layerSize[i] + " " + layerType[i].getName());            
+            out.println();
+            thisNetwork.printWeights("final", out);
+            out.close();
+        } 
+        catch (Exception e) 
+        {
+            
+        }
+    }
+    
+    
+    // Different steps/usages
+    // -From input file, generate weight file
+    // -From input file, generate weight file and network?
+    // -From weight file, generate appropriate network
+    // -From single Sample, use network and grade
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
  
-    private static Sample parseData (String data, Sample s)
+ 
+ 
+    private Sample parseData (String data, Sample s)
     {
         String[] inputs = data.split(" ");
         for (int i = 0; i < inputs.length; i++)
@@ -60,15 +474,28 @@ public class Critic {
             else
             {
                 double dataInput = Double.parseDouble(inputs[i]);
-                s.setInput(i - 1, dataInput); //Had one time issue with out of
-                                              //range Sample input (int = 342)
+                
+                try 
+                {
+                     s.setInput(i - 1, dataInput); //Had one time issue with out of
+                                                   //range Sample input (int = 342)
+                                                   //Happens if the data input is too large
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                    break;
+                }
             }
         }
         return s;
     }
     
-    public static double filter(String data, Network network)
+    public double filter(String data)
     {
+        //Get sample inputDimension
+        int inputDimension = (data.length() - 4) / 2;
+        
         Sample s = new Sample(outputDimension, inputDimension);
         
         parseData(data, s);
@@ -76,25 +503,47 @@ public class Critic {
         return network.getSingleOutput();
     }
 
-    /**
-     * @param args the command line arguments
-     */
-    public static Network prepareNetwork(String weights)
+    public int getLickLength()
+    {
+        return lickLength;
+    }
+    
+    public Network getNetwork()
+    {
+        return network;
+    }
+    
+    public void prepareNetwork(String weights) throws Exception
     {
         try 
         {
-            File weightFile = new File(ImproVisor.getVocabDirectory(), weights);
-            Network networks = new Network(numberLayers, layerSize, layerType, inputDimension);
-            BufferedReader in = new BufferedReader(new FileReader(weightFile));
-            networks.fixWeights(in);
+            File file = new File(ImproVisor.getVocabDirectory(), weights);
+            BufferedReader in = new BufferedReader(new FileReader(file));
+            
+            // Parse first line, containing network stats
+            String[] networkInfo = in.readLine().split(" ");
+            int currPos = 0;
+            int thisInputDimension = Integer.parseInt(networkInfo[currPos++]);
+            lickLength = (thisInputDimension * 2) + 4;
+            int thisNumLayers = Integer.parseInt(networkInfo[currPos++]);
+            int[] thisLayerSize = new int[thisNumLayers];
+            ActivationFunction[] thisLayerType = new ActivationFunction[thisNumLayers];
+            
+            int j = 0;
+            int layers = currPos + 2 * thisNumLayers; 
+            for (int i = 2; i < layers; i+=2, j++)
+            {
+                thisLayerSize[j] = Integer.parseInt(networkInfo[currPos++]);
+                thisLayerType[j] = getLayerType(networkInfo[currPos++]);
+            }
+
+            network = new Network(thisNumLayers, thisLayerSize, thisLayerType, thisInputDimension);
+            network.fixWeights(in);
             in.close();
-            return networks;
         }
         catch (Exception e) 
         {
-            System.out.println("Missing the weight file, "
-                    + "need to train the network offline first.");
-            return null;
+            throw new Exception(e);
         }
     }
 }

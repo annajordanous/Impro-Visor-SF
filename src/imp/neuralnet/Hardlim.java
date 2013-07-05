@@ -21,29 +21,29 @@
 package imp.neuralnet;
 
 /**
- * Created in June 2013  
+ * Created in July 2013  
  * @author Hayden Blauzvern
  */
-public class Tansig implements ActivationFunction {
+public class Hardlim implements ActivationFunction {
 
-    public double act(double arg)
+    public double act(double arg) 
     {
-        return Math.tanh(arg);
+        return 1.0 / (1 + Math.exp(-arg));
     }
-    
+
     public double use(double arg) 
     {
-        return Math.tanh(arg);
+        return arg > 0 ? 1 : 0;
     }
-    
-    public double deriv(double arg, double out)
+
+    public double deriv(double arg, double out) 
     {
-        return 1 - (out * out);
+        return out * (1 - out);
     }
 
     public String getName() 
     {
-        return "tansig";
+        return "hardlim";
     }
     
 }

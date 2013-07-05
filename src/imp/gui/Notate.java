@@ -734,6 +734,9 @@ public class Notate
 
 
   private String improvMenuSelection;
+  
+  // Initializes a network, specific to one leadsheet.
+  private Critic critic;
 
 
   /**
@@ -1059,6 +1062,7 @@ public class Notate
     replaceWithPhi.setState(false);
     replaceWithDelta.setState(false);
 
+    critic = new Critic();
     lickgenFrame = new LickgenFrame(this, lickgen, cm);
 
     populateNotateGrammarMenu();
@@ -1199,7 +1203,7 @@ public class Notate
     setTradingByIndex(index);
 
     audioSettings = new AudioSettings(this);
-
+    
     } // end of Notate constructor
 
 
@@ -1432,6 +1436,11 @@ public class Notate
   public boolean stepInputSelected()
   {
       return stepInputBtn.isSelected();
+  }
+  
+  public Critic getCritic()
+  {
+      return critic;
   }
 
   /**
@@ -10407,6 +10416,8 @@ private void setSectionParameters()
   {
       if( lickgenFrame.toCriticSelected() )
         {
+        lickgenFrame.showCriticGrades();
+            
         getCurrentStave().lockSelectionWidth(16 * EIGHTH);
 
         getCurrentStave().repaint();
@@ -10414,6 +10425,8 @@ private void setSectionParameters()
       else
         {
         getCurrentStave().unlockSelectionWidth();
+        
+        lickgenFrame.showAllGrades();
         }
     }
 
@@ -21985,6 +21998,10 @@ public void originalGenerate(LickGen lickgen, int improviseStartSlot, int improv
     boolean useCritic = lickgenFrame.useCritic();
     
     double criticGrade = lickgenFrame.getCriticGrade() / 10.0;
+    
+    // To prevent lag from too many interations, we limit the number of times
+    // the critic can test licks.
+    final int criticLimit = 999;
 
     if( useOutlines )
       {
@@ -22092,14 +22109,35 @@ public void originalGenerate(LickGen lickgen, int improviseStartSlot, int improv
 
                 // Add a fake grade so the input is correct for the critic
                 output.insert(0, "0.1 ");
-                
+
                 if (!error.get())
-                {
-                    double gradeFromFilter = Critic.filter(output.toString(), Critic.network);
+                {     
+                    // Fix the length if the lick is too short or too long
+                    if (output.length() > critic.getLickLength())
+                    {
+                        output.delete(critic.getLickLength(), output.length());
+                    }
+
+                    while (output.length() < critic.getLickLength())
+                    {
+                        output.append("1 0 0 0 0 0 0 1 1 1 1 1 1 0 0 0 0 0 ");
+                    }
+
+                    double gradeFromFilter = 
+                            lickgenFrame.getCritic().filter(output.toString());
 
                     // If the critic grade is high enough, pass the lick through
-                    if (gradeFromFilter >= criticGrade)
+                    if (gradeFromFilter >= criticGrade || count == criticLimit)
                     {
+                        // Stop the generation if we've gone too many times
+                        if (count == criticLimit)
+                        {
+                            JOptionPane.showMessageDialog(null, 
+                                 new JLabel("<html><div style=\"text-align: center;\">"
+                                   + "Too many generation attempts, <br/>"
+                                   + "cannot generate lick with desired grade."), 
+                                   "Alert", JOptionPane.PLAIN_MESSAGE);
+                        }
                         useCritic = false;
                         count++;
                         lickgenFrame.setCounterForCriticTextField(count);

@@ -24,15 +24,23 @@ package imp.neuralnet;
  * Created in June 2013  
  * @author Hayden Blauzvern
  */
-public class Logsig implements ActivationFunction{
+public class Logsig implements ActivationFunction {
 
-    @Override
+    public double act(double arg) 
+    {
+        return 1.0 / (1 + Math.exp(-arg));
+    }
+    
     public double use(double arg) 
     {
         return 1.0 / (1 + Math.exp(-arg));
     }
 
-    @Override
+    public double deriv(double arg, double out) 
+    {
+        return out * (1 - out);
+    }
+    
     public String getName() 
     {
         return "logsig";
