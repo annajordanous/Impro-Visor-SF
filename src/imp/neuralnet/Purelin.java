@@ -21,29 +21,29 @@
 package imp.neuralnet;
 
 /**
- * Created in June 2013  
+ * Created in July 2013  
  * @author Hayden Blauzvern
  */
-public class Tansig implements ActivationFunction {
+public class Purelin implements ActivationFunction {
 
-    public double act(double arg)
+    public double act(double arg) 
     {
-        return Math.tanh(arg);
+        return arg;
     }
-    
+
     public double use(double arg) 
     {
-        return Math.tanh(arg);
+        return arg;
     }
-    
-    public double deriv(double arg, double out)
+
+    public double deriv(double arg, double value) 
     {
-        return 1 - (out * out);
+        return 1;
     }
 
     public String getName() 
     {
-        return "tansig";
+        return "purelin";
     }
     
 }

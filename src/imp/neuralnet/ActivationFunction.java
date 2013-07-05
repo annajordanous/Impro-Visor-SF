@@ -26,7 +26,11 @@ package imp.neuralnet;
  */
 public interface ActivationFunction {
 
+    public double act(double arg);
+    
     public double use(double arg);
     
+    public double deriv(double arg, double out);
+     
     public String getName();
 }
