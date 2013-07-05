@@ -24,6 +24,7 @@ package imp.roadmap;
 import javax.swing.JPanel;
 import java.awt.*;
 import imp.brickdictionary.*;
+import java.util.ArrayList;
 
 /**
  * A panel containing a modifiable preview of a single brick
@@ -110,17 +111,46 @@ public class PreviewPanel extends JPanel
     {
         RoadMapSettings settings = view.getSettings();
               
-        if (brick instanceof Brick)
+        if (brick instanceof Brick) {
             protoBrick = new Brick((Brick)brick);
-        else if (brick instanceof ChordBlock)
+        }
+        else if (brick instanceof ChordBlock) {
             protoBrick = new ChordBlock((ChordBlock)brick);
-        
+        }
+        brick = normalizeBlock(brick);
         brick.scaleDuration(currentDuration);
         brick.transpose(currentKey);
             
         currentBrick = new GraphicBrick(brick, settings);
     }
-
+    
+    /**
+     * Normalizes arbitrary-length blocks so they are displayed with
+     * a length of 1 instead
+     * @param block with possible arbitrary duration
+     * @return a normalized block
+     */
+    private Block normalizeBlock(Block block) 
+    {
+        if (block instanceof ChordBlock) {
+            if (block.getDuration() == 0) {
+                block.setDuration(1);
+            }
+        }
+        if (block instanceof Brick) {
+            ArrayList<Block> subBlocks = block.getSubBlocks();
+            for (Block b : subBlocks) {
+                if (b instanceof Brick) {
+                    b = normalizeBlock(b);
+                }
+                if (b.getDuration() == 0) {
+                    b.setDuration(1);
+                }
+            }
+        }
+        return block;
+    }
+    
     /**
      * Returns GraphicBrick containing the modified brick
      * @return
