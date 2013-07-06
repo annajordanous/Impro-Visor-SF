@@ -868,7 +868,14 @@ public void newSetUnit(int unitIndex, Unit unit)
     if( nextUnitStart < size && slots.get(nextUnitStart) == null )
       {
         int nextUnitEnd = getNextIndex(nextUnitStart);
-        slots.set(nextUnitStart, new Rest(nextUnitEnd - nextUnitStart));
+        if( this instanceof MelodyPart )
+          {
+          slots.set(nextUnitStart, new Rest(nextUnitEnd - nextUnitStart));
+          }
+        else
+          {
+          slots.set(nextUnitStart, new Chord(nextUnitEnd - nextUnitStart));            
+          }
       }
 
     // Place the new unit
