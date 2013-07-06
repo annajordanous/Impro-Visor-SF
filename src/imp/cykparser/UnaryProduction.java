@@ -125,7 +125,7 @@ public class UnaryProduction extends AbstractProduction {
     public MatchValue checkProduction(TreeNode t, 
             EquivalenceDictionary e, SubstitutionDictionary s) 
     {
-        if (t.getSymbol().equals(name) && t.getDuration() != 0)
+        if (t.getSymbol().equals(name))
                 return new MatchValue(modKeys(t.getKey() - termKey - key), t.getDuration());
         // in the event that the production is incorrect (most of the time)
         return new MatchValue();
