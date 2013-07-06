@@ -302,7 +302,7 @@ public class ChordBlock extends Block {
     /** getSubBlocks
      * Returns the ChordBlock as part of a list of subblocks
      * @return an ArrayList of Blocks, either empty or containing the ChordBlock
-     *         depending on if the ChordBlock is of zero duration or not
+     *         depending on if the ChordBlock is an overlap or not
      */
     @Override
     public ArrayList<Block> getSubBlocks() {

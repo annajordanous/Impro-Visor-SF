@@ -21,6 +21,7 @@
 
 package imp.cykparser;
 import imp.brickdictionary.*;
+import java.util.ArrayList;
 
 /** BinaryProduction
  * A class used to describe production rules for a brick music grammar with 
@@ -58,6 +59,8 @@ public class BinaryProduction extends AbstractProduction {
     private long dur2;          // duration of the second composing symbol
     private String mode = "";   // the mode of the brick in the production
     private boolean toPrint;    // whether the brick is a user-side viewable one
+    private boolean arbitrary = false; // whether the brick contains a block of
+                                       // arbitrary duration
     
     
     // BinaryProduction Constructors // 
@@ -91,6 +94,8 @@ public class BinaryProduction extends AbstractProduction {
         mode = m;
         cost = bricks.getCost(type);
         duration = dur1 + dur2;
+        checkArbitrary(b1);
+        checkArbitrary(b2);
     }
     
     /** Higher-level constructor
@@ -122,6 +127,8 @@ public class BinaryProduction extends AbstractProduction {
         mode = m;
         cost = bricks.getCost(type);
         duration = dur1 + dur2;
+        if (pStart.isArbitrary()) setArbitrary(true);
+        checkArbitrary(b);
     }
     
     // Getters for a BinaryProduction //
@@ -201,11 +208,12 @@ public class BinaryProduction extends AbstractProduction {
                 modKeys(key2 - key1) == modKeys(b.getKey() - a.getKey()) &&
                 (a.getSymbol().equals(name1) || a.getTrimmedSymbol().equals(name1)) && 
                 (b.getSymbol().equals(name2))) {
-            // check if composing bricks can be scaled to match right-hand rules	
-            if (a.getDuration() == 0 ||  b.getDuration() == 0) {
-                	return new MatchValue(modKeys(b.getKey() - key2), duration);
-            }
 
+            // if production rule contains an arbitrary-length brick
+            if (isArbitrary()) {
+                return new MatchValue(modKeys(b.getKey() - key2), duration);
+            }
+            // check if composing bricks can be scaled to match right-hand rules	
             if (a.getDuration() * dur2 == b.getDuration() * dur1) {
                 	return new MatchValue(modKeys(b.getKey() - key2), duration);
             }
@@ -223,5 +231,34 @@ public class BinaryProduction extends AbstractProduction {
         return (i + TOTAL_SEMITONES)%TOTAL_SEMITONES;
     }
     
+    /** checkArbitrary
+     * Takes in a block and determines whether it is/contains a block of
+     * arbitrary duration, setting a flag in the production rule if so.
+     * @param block 
+     */
+    private void checkArbitrary(Block block) {
+        if (block.getDuration() == 0) setArbitrary(true);
+        ArrayList<Block> subBlocks = block.getSubBlocks();
+        for (Block b : subBlocks) {
+            if (b.getDuration() == 0) setArbitrary(true);
+            if (b instanceof Brick) checkArbitrary(b);
+        }
+    }
+    
+    /** isArbitrary
+     * Whether production rule contains a brick of arbitrary duration
+     * @return 
+     */
+    public boolean isArbitrary() {
+        return this.arbitrary;
+    }
+    
+    /** set Arbitrary
+     * Set the arbitrary flag for the production rule
+     * @param arbitrary 
+     */
+    public void setArbitrary(boolean arbitrary) {
+        this.arbitrary = arbitrary;
+    }
     // end of BinaryProduction class
 }
