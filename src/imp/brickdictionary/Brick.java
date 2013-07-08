@@ -46,8 +46,9 @@ public class Brick extends Block {
     private String variant = "";        // The variant of a Brick name, if it
                                         // shares a name with another Brick
     
-    public static String BRICK_KEYWORD = "brick";
-    public static String CHORD_KEYWORD = "chord";
+    public static String BLOCKS_KEYWORD = "blocks";
+    public static String BRICK_KEYWORD  = "brick";
+    public static String CHORD_KEYWORD  = "chord";
     
     public static String APPROACH_KEYWORD = "Approach";
     public static String LAUNCHER_KEYWORD = "Launcher";
@@ -1029,10 +1030,27 @@ public Brick(String brickName,
     @Override
     public Polylist toPolylist()
     {
-        return Polylist.list(BRICK_KEYWORD, dashed(name), 
-                             BrickLibrary.keyNumToName(key), duration);
+      PolylistBuffer buffer = new PolylistBuffer();
+      buffer.append(BRICK_KEYWORD);
+      buffer.append(dashed(name));
+      buffer.append(BrickLibrary.keyNumToName(key));
+      buffer.append(duration);
+      buffer.append(subBlocksAsPolylist());
+      return buffer.toPolylist();
     }
 
+    public Polylist subBlocksAsPolylist()
+      {
+      PolylistBuffer buffer = new PolylistBuffer();
+      buffer.append(BLOCKS_KEYWORD);
+      for( Block subBlock: subBlocks )
+        {
+          buffer.append(subBlock.toPolylist());
+        }
+      return buffer.toPolylist();
+      }
+    
+        
     /** toBrickDefinition
      * Returns a Polylist formatted specifically to replicate the Brick's 
      * original definition format
