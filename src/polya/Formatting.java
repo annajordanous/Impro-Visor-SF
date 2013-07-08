@@ -33,6 +33,12 @@ public static String prettyFormat(Object Ob)
   return buffer.toString();
   }
 
+public static String prettyFormat(int indent, Object Ob)
+  {
+  StringBuffer buffer = new StringBuffer();
+  prettyFormat(indent, Ob, buffer);
+  return buffer.toString();
+  }
 
 public static void prettyFormat(int indent, Object Ob, StringBuffer buffer)
   {

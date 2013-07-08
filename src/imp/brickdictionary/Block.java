@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2011 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2011-2013 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,6 @@ package imp.brickdictionary;
 
 import imp.data.PitchClass;
 import java.util.ArrayList;
-import java.util.List;
 
 import polya.Polylist;
 

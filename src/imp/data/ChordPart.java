@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2013 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -555,15 +555,6 @@ public void addFromRoadMapFrame(RoadMapFrame roadmap)
     public void setRoadmapPoly(Polylist roadmapPoly)
     {
         this.roadmapPoly = roadmapPoly;
-//        System.out.println("roadmapPoly is " + roadmapPoly);
-//        Polylist L = roadmapPoly;
-//        int number = 1;
-//        while( L.nonEmpty() )
-//        {
-//            System.out.println("item " + number + ": " + L.first());
-//            L = L.rest();
-//            number++;
-//        }
     }
     
     public Polylist getRoadmapPoly()

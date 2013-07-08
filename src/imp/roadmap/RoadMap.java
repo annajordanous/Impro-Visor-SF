@@ -320,16 +320,6 @@ public class RoadMap {
         this.setKeyMap(newMap.getKeyMap());
     }
     
-/* Old version    
-    @Override
-    public String toString()
-    {
-        String output = "Roadmap ";
-        for(Block block : blocks)
-            output += block + " ";
-        return output;
-    }
- */  
     
     /**
      * The String representation of a RoadMap is String version of
@@ -381,12 +371,9 @@ public class RoadMap {
           {
             innerBuffer.append(k.toPolylist());
           }
-        System.out.println("innerBuffer is: ");
-        System.out.println(innerBuffer);
         
         buffer.append(innerBuffer.toPolylist().cons("keymap"));
-        System.out.println("buffer is: ");
-        System.out.println(buffer);
+  
         return buffer.toPolylist();
       }
    

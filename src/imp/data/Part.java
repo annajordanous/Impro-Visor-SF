@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2013 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.ListIterator;
 import polya.Formatting;
+import polya.Polylist;
 
 /**
  * The Part class is representative of an arbitrarily long melody or chord part, 
@@ -1703,7 +1704,7 @@ public void saveLeadsheet(BufferedWriter out, String type) throws IOException
       }
     else
     {
-        out.write("    (roadmap " + Formatting.prettyFormat(((ChordPart)this).getRoadmapPoly()) + ")");
+        out.write(Formatting.prettyFormat(4, Polylist.list("roadmap", (((ChordPart)this).getRoadmapPoly()).cons("blocks"))));
         out.newLine();
     }
 

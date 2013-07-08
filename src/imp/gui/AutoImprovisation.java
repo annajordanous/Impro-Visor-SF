@@ -25,12 +25,12 @@ import imp.com.Command;
 import imp.com.PlayScoreFastCommand;
 import imp.data.MelodyPart;
 import imp.data.Score;
-import imp.data.Style;
 
 /**
- *
+ * Class for controlling improvisation in conjunection with playback
  * @author Robert Keller
  */
+
 public class AutoImprovisation
 {
 Notate notate;

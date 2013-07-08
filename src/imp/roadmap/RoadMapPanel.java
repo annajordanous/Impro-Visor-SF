@@ -576,19 +576,19 @@ protected void addBlocks(ArrayList<Block> blocks, Boolean selectBlocks)
         if (allBlocks != null) {
             for (Block block : allBlocks) {
                 if (block.isChord()) {
-                    newBlocks.append("(Chord ");
+                    newBlocks.append("(chord ");
                     if (block != null) {
                         newBlocks.append(block);
                     }
                     newBlocks.append(")");
 
                 } else {
-                    newBlocks.append("(Brick ");
-                    newBlocks.append(block.getName());
-                    newBlocks.append(" ");
+                    newBlocks.append("(brick ");
+                    newBlocks.append(BrickLibrary.dashed(block.getName()));
+                    newBlocks.append(" (blocks ");
                     temp = block.getSubBlocks();
                     recurSubBlocks(temp, newBlocks);
-                    newBlocks.append(")");
+                    newBlocks.append("))");
                 }
             }
         }
