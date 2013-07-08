@@ -571,36 +571,10 @@ protected void addBlocks(ArrayList<Block> blocks, Boolean selectBlocks)
         }       
     }
     
-    public void recurSubBlocks(ArrayList<Block> allBlocks, StringBuilder newBlocks) {
-         
-        if (allBlocks != null) {
-            for (Block block : allBlocks) {
-                if (block.isChord()) {
-                    newBlocks.append("(chord ");
-                    if (block != null) {
-                        newBlocks.append(block);
-                    }
-                    newBlocks.append(")");
-
-                } else {
-                    newBlocks.append("(brick ");
-                    newBlocks.append(BrickLibrary.dashed(block.getName()));
-                    newBlocks.append(" (blocks ");
-                    temp = block.getSubBlocks();
-                    recurSubBlocks(temp, newBlocks);
-                    newBlocks.append("))");
-                }
-            }
-        }
-    }
-    
     @Override
     public String toString()
     {
-              StringBuilder newBlocks = new StringBuilder();
-              recurSubBlocks(getBlocks(0, roadMap.size()), newBlocks);
-
-              return Formatting.prettyFormat(Polylist.PolylistFromString(newBlocks.toString()));
+              return Formatting.prettyFormat(roadMap.toPolylist());
     }
     
     /**
@@ -610,10 +584,7 @@ protected void addBlocks(ArrayList<Block> blocks, Boolean selectBlocks)
     
     public Polylist getRoadmapPoly()
     {
-              StringBuilder newBlocks = new StringBuilder();
-              recurSubBlocks(getBlocks(0, roadMap.size()), newBlocks);
- 
-              return Polylist.PolylistFromString(newBlocks.toString());
+              return roadMap.toPolylist();
     }
     
     /** Flattens the selected bricks to individual chords */

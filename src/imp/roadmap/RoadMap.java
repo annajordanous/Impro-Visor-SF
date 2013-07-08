@@ -37,6 +37,11 @@ import polya.PolylistBuffer;
  */
 
 public class RoadMap {
+    public static String ROADMAP_KEYWORD = "roadmap";
+    public static String BLOCKS_KEYWORD  = "blocks";
+    public static String JOINS_KEYWORD   = "joins";
+    public static String KEYMAP_KEYWORD  = "keymap";
+    
     /** List of blocks contained in the roadmap */
     private ArrayList<Block> blocks;
     /** Key map in the form of key, duration pairs */
@@ -340,12 +345,11 @@ public class RoadMap {
      * @return 
      */
     
-    
     public Polylist toPolylist()
       {
         PolylistBuffer buffer = new PolylistBuffer();
         
-        buffer.append("roadmap");
+        buffer.append(ROADMAP_KEYWORD);
         
         PolylistBuffer innerBuffer = new PolylistBuffer();
         
@@ -354,16 +358,16 @@ public class RoadMap {
             innerBuffer.append(b.toPolylist());
           }
         
-        buffer.append(innerBuffer.toPolylist().cons("blocks"));
+        buffer.append(innerBuffer.toPolylist().cons(BLOCKS_KEYWORD));
         
         innerBuffer = new PolylistBuffer();
         
         for( String s: joins )
           {
-            innerBuffer.append(s);
+            innerBuffer.append(Brick.dashed(s));
           }
         
-        buffer.append(innerBuffer.toPolylist().cons("joins"));
+        buffer.append(innerBuffer.toPolylist().cons(JOINS_KEYWORD));
         
         innerBuffer = new PolylistBuffer();
         
@@ -372,7 +376,7 @@ public class RoadMap {
             innerBuffer.append(k.toPolylist());
           }
         
-        buffer.append(innerBuffer.toPolylist().cons("keymap"));
+        buffer.append(innerBuffer.toPolylist().cons(KEYMAP_KEYWORD));
   
         return buffer.toPolylist();
       }

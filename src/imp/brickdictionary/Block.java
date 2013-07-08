@@ -304,10 +304,7 @@ abstract public class Block {
      * @return 
      */
 
-    public Polylist toPolylist()
-      {
-        return Polylist.list("block");
-      }
+    public abstract Polylist toPolylist();
     
     /** Returns the chord at the specified index within the brick.
      * @param index
