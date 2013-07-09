@@ -13988,6 +13988,67 @@ public boolean putLick(MelodyPart lick)
     return true;
   }
 
+// HB - 7-8-13
+// Simple fix, worried that if I uncomment rectifySelected() above,
+// it might break code elsewhere
+public boolean putLickWithoutRectify(MelodyPart lick)
+  {
+    //System.out.println("putLick " + lick);
+    if( lick == null )
+      {
+        // redundant ErrorLog.log(ErrorLog.WARNING, "No lick was generated.");
+        return true;
+      }
+    // Figure out which enharmonics to use based on
+    // the current chord and key signature.
+    setLickEnharmonics(lick);
+
+    // Paste the melody into the stave and play the selection.
+    // We turn play off temporarily, or we get an erroneous sound
+    // as ImproVisor plays the inserted note at the same time
+    // it plays the selection.
+    ImproVisor.setPlayEntrySounds(false);
+
+
+    int start = getCurrentSelectionStart();
+
+    int stop = getCurrentSelectionEnd();
+
+    int chorusSize = getChordProg().getSize();
+
+    if( start >= chorusSize || stop >= chorusSize )
+      {
+        //debug System.out.println("chorus size " + chorusSize + " exceeded, start = " + start + ", stop = " + stop + ", resetting");
+        start %= chorusSize;
+        stop %= chorusSize;
+      }
+
+    // FIX:
+    // stop < start does happen. It seems to be due to some kind of data race.
+    // Without the return, improvisation will grind to a halt.
+
+    if( stop < start )
+      {
+        System.out.println("stop, start inverted: start = " + start + ", stop = " + stop + ", resetting");
+        start = 0;
+        stop = chorusSize - 1;
+      }
+
+    Stave stave = getCurrentStave();
+
+    // Ideally, would wait here
+
+    // Formerly used SafePasteCommand, then DynamicPasteCommand, both of which
+    // carry unnecessary baggage.
+
+    getMelodyPart(stave).newPasteOver(lick, getCurrentSelectionStart(stave));
+
+    playCurrentSelection(false, 0, PlayScoreCommand.USEDRUMS, "putLick " + start + " - " + stop);
+    ImproVisor.setPlayEntrySounds(true);
+    return true;
+  }
+
+
 public int getSlotInPlayback()
   {
    int slotDelay = 0;

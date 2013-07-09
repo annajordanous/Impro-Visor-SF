@@ -248,14 +248,14 @@ public class Neuron {
     /*
      * Show the sensivtivity and weights of this neuron
      */
-    public void showWeights(String title) 
+    public void showWeights(String title, StringBuilder output) 
     {
-        System.out.printf("Layer %d Neuron %d %s Weights: ", layerIndex, neuronIndex, title);
+        output.append(String.format("Layer %d Neuron %d %s Weights: ", layerIndex, neuronIndex, title));
         
         for(double d : weight)
-            System.out.printf("%9.4f", d);
+            output.append(String.format("%9.4f", d));
         
-        System.out.printf(" (Bias) Sensitivity: % 7.4f \n", sensitivity);
+        output.append(String.format(" (Bias) Sensitivity: % 7.4f \n", sensitivity));
     }
 
     /*

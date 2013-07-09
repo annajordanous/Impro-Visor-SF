@@ -31,12 +31,14 @@ public class Layer implements Source{
     
     private int layerIndex;
     private int numberInLayer;
+    private ActivationFunction type;
     private Neuron[] neuron;
     
     public Layer(int layerIndex, int numberInLayer, ActivationFunction type, int numberOfInputs)
     {
         this.layerIndex = layerIndex;
         this.numberInLayer = numberInLayer;
+        this.type = type;
         
         neuron = new Neuron[numberInLayer];
        
@@ -60,6 +62,14 @@ public class Layer implements Source{
     public int getSize()
     {
         return numberInLayer;
+    }
+    
+    /*
+     * Return the ActivationFunction type
+     */
+    public ActivationFunction getFunctionType()
+    {
+        return type;
     }
     
     /*
@@ -211,10 +221,10 @@ public class Layer implements Source{
     /*
      * Show the weights on each neuron to the System.out stream
      */
-    public void showWeights(String message)
+    public void showWeights(String message, StringBuilder output)
     {
         for (Neuron n : neuron)
-            n.showWeights(message);
+            n.showWeights(message, output);
     }
     
     /*
