@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2011 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2011-2013 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -13,12 +13,10 @@
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
  *
-
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 
 package imp.brickdictionary;
 
@@ -28,8 +26,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.ListIterator;
 import polya.*;
 
@@ -208,9 +206,13 @@ public Brick(String brickName,
         for (Block b : contents)
         {
             if (b.getName().contains(LAUNCHER_KEYWORD))
+              {
                 subBlocks.addAll(b.flattenBlock());
+              }
             else
+              {
                 subBlocks.add(b);
+              }
         }
         type = brickType;
         this.updateDuration();
@@ -276,9 +278,9 @@ public Brick(String brickName,
         subBlocks = new ArrayList<Block>();
         
         
-        ListIterator blockIter = brickList.listIterator();
+        ListIterator<Block> blockIter = brickList.listIterator();
         while (blockIter.hasNext()) {
-            Block block = (Block)blockIter.next();
+            Block block = blockIter.next();
             Block newBlock;
             if (block instanceof Brick) {
                 newBlock = new Brick((Brick) block);
@@ -286,7 +288,10 @@ public Brick(String brickName,
             else {
                 newBlock = new ChordBlock((ChordBlock) block);
             }
-            duration += block.getDuration();
+            if( !block.isOverlap() )
+              {
+              duration += block.getDuration();
+              }
             subBlocks.add(newBlock); 
         }
         endValue = getSectionEnd();
@@ -314,7 +319,7 @@ public Brick(String brickName,
      * Creates a specific launcher from a single chord
      * 
      * @param c : a ChordBlock
-     * @param name : indetifies the type of launcher (a String)
+     * @param name : indentifies the type of launcher (a String)
      * @param m : the new brick's mode 
      */
     public Brick(ChordBlock c, String name, String m) {
@@ -339,9 +344,13 @@ public Brick(String brickName,
     {
         int ind = brickList.lastIndexOf(key);
         if( ind != -1)
+          {
             return brickList.get(ind).getMode();
+          }
         else
+          {
             return brickList.get(brickList.size()-1).getMode();
+          }
     }
        
     /** transpose / 1
@@ -353,9 +362,9 @@ public Brick(String brickName,
     @Override
     public void transpose(long diff) {
         key = (key + diff + 12)%12;
-        ListIterator iter = subBlocks.listIterator();
+        ListIterator<Block> iter = subBlocks.listIterator();
         while (iter.hasNext()){
-            Block block = (Block)iter.next();
+            Block block = iter.next();
             block.transpose(diff);
         }
     }
@@ -364,6 +373,7 @@ public Brick(String brickName,
      * Set name of a brick
      * @param s : String with which to replace brick's current name
      */
+    @Override
     public void setName(String s) {
         this.name = s;
     }
@@ -387,7 +397,7 @@ public Brick(String brickName,
           {
             return null;
           }
-        if( subBlocks.size() == 0 )
+        if( subBlocks.isEmpty() )
           {
             return null;
           }
@@ -398,7 +408,9 @@ public Brick(String brickName,
             return null;
           }
         if(lastChord.isChord() && lastChord.isOverlap())
-            return new ArrayList(subBlocks.subList(0, subBlocks.size() - 1));
+          {
+            return new ArrayList<Block>(subBlocks.subList(0, subBlocks.size() - 1));
+          }
                                 // Danger: this makes a copy
         return this.subBlocks;  // Doesn't
     }
@@ -410,7 +422,9 @@ public Brick(String brickName,
     @Override
     public boolean isOverlap() {
         if (this.overlap)
+          {
             return true;
+          }
         return subBlocks.get(subBlocks.size() - 1).isOverlap();
     }
     
@@ -450,7 +464,6 @@ public Brick(String brickName,
                     String brickKeyString = pList.first().toString();
                     pList = pList.rest();
                     Object durObj = pList.first();
-                    pList = pList.rest();
                     boolean starFlag = isStar(durObj);
                     if(durObj instanceof Long || starFlag)
                     {
@@ -481,7 +494,6 @@ public Brick(String brickName,
                     String chordName = pList.first().toString();
                     pList = pList.rest();
                     Object durObj = pList.first();
-                    pList = pList.rest();
                     boolean starFlag = isStar(durObj);
                     if(durObj instanceof Long || starFlag)
                     {
@@ -556,7 +568,6 @@ public Brick(String brickName,
                     else
                       {
                       durObj = pList.first();
-                      pList = pList.rest();
                       }
                     
                     // when all data members are initialized, find the correct 
@@ -572,13 +583,17 @@ public Brick(String brickName,
                         // if the subbrick already exists in the dictionary
                         if (bricks.hasBrick(subBrickName)) {
                             if (!subBrickVariant.equals(""))
+                              {
                                 subBrick = bricks.getBrick(subBrickName, 
                                                            subBrickVariant,
                                                            subBrickKeyNum, dur);
+                              }
                             
                             else
+                              {
                                 subBrick = bricks.getBrick(subBrickName, 
                                                            subBrickKeyNum, dur);
+                              }
                         }
                         
                                 
@@ -661,7 +676,6 @@ public Brick(String brickName,
                     String chordName = pList.first().toString();
                     pList = pList.rest();
                     Object durObj = pList.first();
-                    pList = pList.rest();
                     boolean starFlag = isStar(durObj);
                     if(durObj instanceof Long || starFlag)
                     {
@@ -691,7 +705,10 @@ public Brick(String brickName,
      * @return a Boolean, returning true if durObj is a wild-card
      */
     private boolean isStar(Object durObj) {
-        if (durObj instanceof String && durObj.equals("*")) return true;
+        if (durObj instanceof String && durObj.equals("*"))
+          {
+            return true;
+          }
         return false;
     }
 
@@ -718,7 +735,6 @@ public Brick(String brickName,
      */
     private void updateDuration() {
         int dur = 0;
-        ArrayList<Block> subBlocks = this.getSubBlocks();
 
         if( subBlocks == null )
           {
@@ -727,7 +743,7 @@ public Brick(String brickName,
 
         for(Block b : subBlocks)
         {
-          if( b != null )
+          if( b != null && !b.isOverlap())
             {
             dur += b.getDuration();
             }
@@ -779,7 +795,9 @@ public Brick(String brickName,
         }
         
         if (chordList.size() > 0)
+          {
             chordList.get(chordList.size() - 1).setSectionEnd(endValue);
+          }
         
         return chordList;
     }
@@ -859,7 +877,9 @@ public Brick(String brickName,
     public void printBrick() {
         String brickName = this.getName();
         if (!this.getVariant().isEmpty())
+          {
             brickName += "(" + this.getVariant() + ")";
+          }
         String brickKey = BrickLibrary.keyNumToName(this.getKey());
         long brickDur = this.getDuration();
         String brickType = this.getType();
@@ -934,7 +954,9 @@ public Brick(String brickName,
         int r = a%b;
         
         if ( r == 0)
+          {
             return b;
+          }
                     
         return gcd(b, r);
     }
@@ -951,7 +973,9 @@ public Brick(String brickName,
             subBlocks.get(subBlocks.size() - 2).setSectionEnd(value);
         }
         else
+          {
             subBlocks.get(subBlocks.size() - 1).setSectionEnd(value);
+          }
     }
     
     /** setSectionEnd
@@ -961,14 +985,20 @@ public Brick(String brickName,
     @Override
     public void setSectionEnd(boolean value) {
         if(value)
+          {
             endValue = Block.SECTION_END;
+          }
         else
+          {
             endValue = Block.NO_END;
+          }
         if(this.isOverlap() && subBlocks.size() > 1) {
             subBlocks.get(subBlocks.size() - 2).setSectionEnd(value);
         }
         else
+          {
             subBlocks.get(subBlocks.size() - 1).setSectionEnd(value);
+          }
     }
     
     /** isSectionEnd
@@ -979,7 +1009,9 @@ public Brick(String brickName,
     public boolean isSectionEnd()
     {
         if(this.isOverlap() && subBlocks.size() > 1)
+          {
             return subBlocks.get(subBlocks.size() - 2).isSectionEnd();
+          }
         return subBlocks.get(subBlocks.size() - 1).isSectionEnd();
     }
     
@@ -998,7 +1030,9 @@ public Brick(String brickName,
         }
       
         if(this.isOverlap() && size > 1)
+          {
             return subBlocks.get(size - 2).getSectionEnd();
+          }
         return subBlocks.get(size - 1).getSectionEnd();
     }
 
@@ -1051,19 +1085,23 @@ public Brick(String brickName,
         
         ArrayList<Block> blocks = new ArrayList<Block>();
         Polylist polyBlocks = ((Polylist)blockPolylist.sixth()).rest();
+        Block block = null;
         while( polyBlocks.nonEmpty() )
           {
             Polylist polyBlock = (Polylist)polyBlocks.first();
-            Block block = Block.fromPolylist(polyBlock);
+            block = Block.fromPolylist(polyBlock);
             blocks.add(block);
             polyBlocks = polyBlocks.rest();
           }
         
-        // Note that fifth() is duration, not currently used.
         Brick brick = new Brick((String)blockPolylist.second(), // name
                                 BrickLibrary.keyNameToNum((String)blockPolylist.third()), // key
                                 (String)blockPolylist.fourth(), // type
                                 blocks); // blocks
+        
+        // Duration is not needed currently
+        // int duration = ((Number)blockPolylist.fifth()).intValue();
+        
         return brick;
       }
 // Above, we are targeting this constructor:
@@ -1078,7 +1116,7 @@ public Brick(String brickName,
       {
       PolylistBuffer buffer = new PolylistBuffer();
       buffer.append(BLOCKS_KEYWORD);
-      for( Block subBlock: subBlocks )
+      for( Block subBlock: getSubBlocks() )
         {
           buffer.append(subBlock.toPolylist());
         }
@@ -1099,13 +1137,16 @@ public Brick(String brickName,
         {
             buffer.append(b.toPolylist());
         }
-        if (variant != "") {
+        if (!variant.equals("")) {
             return Polylist.list(BrickLibrary.DEF_BRICK, dashed(name)+"("+variant+")", 
                     mode, dashed(type), BrickLibrary.keyNumToName(key)
                     ).append(buffer.toPolylist());
         }
-        else return Polylist.list(BrickLibrary.DEF_BRICK, dashed(name), mode, dashed(type),
-                    BrickLibrary.keyNumToName(key)).append(buffer.toPolylist());
+        else
+          {
+            return Polylist.list(BrickLibrary.DEF_BRICK, dashed(name), mode, dashed(type),
+                   BrickLibrary.keyNumToName(key)).append(buffer.toPolylist());
+          }
     }
     
     public static String dashed(String s) {

@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2011 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2011-2013 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +18,11 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-
 package imp.brickdictionary;
 
-import java.util.ArrayList;
-
 import imp.data.Chord;
+import java.util.ArrayList;
 import polya.Arith;
-
 import polya.Polylist;
 
 /**
@@ -56,14 +53,19 @@ public class ChordBlock extends Block {
     public ChordBlock (String chordName, int dur) {
         super(chordName);
         this.duration = dur;
+        //setOverlap(this.duration == 0);
         chord = new Chord(chordName, this.duration);
         // In case the named chord does not exist, don't generate a backtrace.
         try
           {
         if (chordName.contains(BACKSLASH))
-            key = fixRoot(chord.getChordSymbol().getPolybase().getRootString());
+                {
+                  key = fixRoot(chord.getChordSymbol().getPolybase().getRootString());
+                }
         else
-            key = fixRoot(chord.getRoot());
+                {
+                  key = fixRoot(chord.getRoot());
+                }
           }
         catch( Exception e )
           {
@@ -71,6 +73,7 @@ public class ChordBlock extends Block {
           }
         endValue = Block.NO_END;
         mode = this.findModeFromQuality();
+            
     }
     
     /** ChordBlock / 3
@@ -85,9 +88,13 @@ public class ChordBlock extends Block {
         this.duration = dur;
         chord = new Chord(chordName, this.duration);
         if (chordName.contains(BACKSLASH))
+          {
             key = fixRoot(chord.getChordSymbol().getPolybase().getRootString());
+          }
         else
+          {
             key = fixRoot(chord.getRoot());
+          }
         this.endValue = endValue;
         mode = findModeFromQuality();
     }
@@ -101,9 +108,13 @@ public class ChordBlock extends Block {
         this.duration = ch.getDuration();
         chord = new Chord(ch.name, this.duration);
         if (ch.name.contains(BACKSLASH))
+          {
             key = fixRoot(chord.getChordSymbol().getPolybase().getRootString());
+          }
         else
+          {
             key = fixRoot(chord.getRoot());
+          }
         endValue = ch.getSectionEnd();
         mode = findModeFromQuality();
     }
@@ -117,9 +128,13 @@ public class ChordBlock extends Block {
         duration = ch.getRhythmValue();
         chord = ch.copy();
         if (ch.getName().contains(BACKSLASH))
+          {
             key = fixRoot(chord.getChordSymbol().getPolybase().getRootString());
+          }
         else
+          {
             key = fixRoot(chord.getRoot());
+          }
         mode = findModeFromQuality();
     }
     
@@ -167,9 +182,13 @@ public class ChordBlock extends Block {
     @Override
     public void scaleDuration(int scale) {
         if(scale > 0)
+          {
             duration = duration * scale;
+          }
         else
+          {
             duration = duration / -scale;
+          }
         chord.setRhythmValue(duration);
     }
     
@@ -188,7 +207,9 @@ public class ChordBlock extends Block {
      */
     public String getQuality() {
         if (name.equals(Chord.NOCHORD))
+          {
             return name;
+          }
         return chord.getQuality(); // doesn't work as well: parseChordName();
     }
     
@@ -200,7 +221,9 @@ public class ChordBlock extends Block {
     @Override
     public String getSymbol() {
         if (name.equals(Chord.NOCHORD))
+          {
             return name;
+          }
         return chord.getQuality();
     }
     
@@ -308,7 +331,9 @@ public class ChordBlock extends Block {
     public ArrayList<Block> getSubBlocks() {
         ArrayList<Block> subBlocks = new ArrayList<Block>();
         if (!this.isOverlap())
+          {
             subBlocks.add(this);
+          }
         return subBlocks;
     }
     
@@ -321,7 +346,9 @@ public class ChordBlock extends Block {
     public ArrayList<ChordBlock> flattenBlock() {
         ArrayList<ChordBlock> chordList = new ArrayList<ChordBlock>();
         if (!this.isOverlap())
+          {
             chordList.add(this);
+          }
         
         return chordList;
     }
@@ -368,7 +395,9 @@ public class ChordBlock extends Block {
      */
     public long matches(ChordBlock c) {
         if (c.getSymbol().equals(this.getSymbol()))
+          {
             return moduloSteps(c.getKey() - key );
+          }
         return NC;
     }
     
@@ -389,7 +418,9 @@ public class ChordBlock extends Block {
                 quality = chordName.substring(2);
             }
             else
+              {
                 quality = "";
+              }
         }
         else
         {
@@ -399,7 +430,9 @@ public class ChordBlock extends Block {
                 quality = chordName.substring(1);
             }
             else
+              {
                 quality = "";
+              }
         }
         
         return quality;
@@ -451,8 +484,9 @@ public class ChordBlock extends Block {
      */
     public static Block fromPolylist(Polylist blockPolylist)
       {
-        return new ChordBlock((String)blockPolylist.second(), 
-                              ((Number)blockPolylist.third()).intValue());
+        int duration = ((Number)blockPolylist.third()).intValue();
+        ChordBlock block = new ChordBlock((String)blockPolylist.second(), duration);
+        return  block;
       }
 
     /** findModeFromQuality
@@ -465,12 +499,18 @@ public class ChordBlock extends Block {
         String q = this.getSymbol();
         
         if(q.startsWith("M") || q.equals("") || q.startsWith("6"))
+          {
             m = "Major";
+          }
         else if(q.startsWith("7") || q.startsWith("9") || q.startsWith("11") || 
                 q.startsWith("13"))
+          {
             m = "Dominant";
+          }
         else
+          {
             m = "Minor";
+          }
         
         return m;
     }

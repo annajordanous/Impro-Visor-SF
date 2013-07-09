@@ -48,6 +48,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
+import polya.Formatting;
 import polya.Tokenizer;
 
 
@@ -4507,4 +4508,8 @@ public boolean getDeltaStatus(){
     return replaceWithDeltaCheckBoxMI.getState();
 }
 
+public void setRoadMap(RoadMap roadmap)
+  {
+    roadMapPanel.setRoadMap(roadmap);
+  }
 }

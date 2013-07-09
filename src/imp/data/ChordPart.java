@@ -557,8 +557,6 @@ public void addFromRoadMapFrame(RoadMapFrame roadmap)
     {
         this.roadmapPoly = roadmapPoly;
         //System.out.println("The original roadmap poly is " + Formatting.prettyFormat(roadmapPoly));
-        roadmap = new RoadMap(roadmapPoly);
-        //System.out.println("The reconstructed roadmap is " + Formatting.prettyFormat(roadmap.toPolylist()));
     }
     
     public Polylist getRoadmapPoly()
@@ -566,5 +564,10 @@ public void addFromRoadMapFrame(RoadMapFrame roadmap)
         return roadmapPoly;
     }
     
-
+    public RoadMap getRoadMap()
+      {
+        roadmap = new RoadMap(roadmapPoly);
+        //System.out.println("The reconstructed roadmap is " + Formatting.prettyFormat(roadmap.toPolylist()));
+        return roadmap;
+      }
 }
