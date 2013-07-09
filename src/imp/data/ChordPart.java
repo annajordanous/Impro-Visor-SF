@@ -21,17 +21,16 @@
 package imp.data;
 
 import imp.brickdictionary.ChordBlock;
+import imp.roadmap.RoadMap;
 import imp.roadmap.RoadMapFrame;
 import imp.util.ErrorLog;
-import imp.util.Preferences;
 import imp.util.Trace;
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.Track;
+import polya.Formatting;
 import polya.Polylist;
 
 /**
@@ -44,7 +43,9 @@ import polya.Polylist;
 */
 public class ChordPart extends Part implements Serializable{
     
-    Polylist roadmapPoly = Polylist.list("This", "is", "a", "test");
+    Polylist roadmapPoly = Polylist.nil;
+    
+    RoadMap roadmap = null;
 
     private SectionInfo sectionInfo = new SectionInfo(this);
 
@@ -555,6 +556,9 @@ public void addFromRoadMapFrame(RoadMapFrame roadmap)
     public void setRoadmapPoly(Polylist roadmapPoly)
     {
         this.roadmapPoly = roadmapPoly;
+        //System.out.println("The original roadmap poly is " + Formatting.prettyFormat(roadmapPoly));
+        roadmap = new RoadMap(roadmapPoly);
+        //System.out.println("The reconstructed roadmap is " + Formatting.prettyFormat(roadmap.toPolylist()));
     }
     
     public Polylist getRoadmapPoly()
