@@ -1034,10 +1034,45 @@ public Brick(String brickName,
       buffer.append(BRICK_KEYWORD);
       buffer.append(dashed(name));
       buffer.append(BrickLibrary.keyNumToName(key));
+      buffer.append(type);
       buffer.append(duration);
       buffer.append(subBlocksAsPolylist());
       return buffer.toPolylist();
     }
+
+    /**
+     * Make a Brick from a Polylist
+     * @param blockPolylist
+     * @return 
+     */
+    public static Block fromPolylist(Polylist blockPolylist)
+      {
+        // Need to populate sub-blocks before calling constructor!
+        
+        ArrayList<Block> blocks = new ArrayList<Block>();
+        Polylist polyBlocks = ((Polylist)blockPolylist.sixth()).rest();
+        while( polyBlocks.nonEmpty() )
+          {
+            Polylist polyBlock = (Polylist)polyBlocks.first();
+            Block block = Block.fromPolylist(polyBlock);
+            blocks.add(block);
+            polyBlocks = polyBlocks.rest();
+          }
+        
+        // Note that fifth() is duration, not currently used.
+        Brick brick = new Brick((String)blockPolylist.second(), // name
+                                BrickLibrary.keyNameToNum((String)blockPolylist.third()), // key
+                                (String)blockPolylist.fourth(), // type
+                                blocks); // blocks
+        return brick;
+      }
+// Above, we are targeting this constructor:
+//
+//   public Brick(String brickName, 
+//                 long brickKey, 
+//                 String type, 
+//                 List<Block> brickList)
+
 
     public Polylist subBlocksAsPolylist()
       {

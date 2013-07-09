@@ -444,6 +444,17 @@ public class ChordBlock extends Block {
         return Polylist.list(Brick.CHORD_KEYWORD, name, duration);
     }
 
+    /**
+     * Make a ChordBlock from a Polylist
+     * @param blockPolylist
+     * @return 
+     */
+    public static Block fromPolylist(Polylist blockPolylist)
+      {
+        return new ChordBlock((String)blockPolylist.second(), 
+                              ((Number)blockPolylist.third()).intValue());
+      }
+
     /** findModeFromQuality
      * Find mode of a block using quality of a chord
      * @param quality : String used to find mode

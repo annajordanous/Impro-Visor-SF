@@ -306,6 +306,23 @@ abstract public class Block {
 
     public abstract Polylist toPolylist();
     
+    /**
+     * Make a Block from a Polylist
+     * @param blockPolylist
+     * @return 
+     */
+    public static Block fromPolylist(Polylist blockPolylist)
+    {
+      if( blockPolylist.first().equals("brick") )
+        {
+          return Brick.fromPolylist(blockPolylist);
+        }
+      else
+        {
+          return ChordBlock.fromPolylist(blockPolylist);
+        }
+    }
+    
     /** Returns the chord at the specified index within the brick.
      * @param index
      * @return 

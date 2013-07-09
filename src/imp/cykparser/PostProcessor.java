@@ -880,6 +880,7 @@ public static boolean checkJoinability(Block first, Brick second)
          
         //System.out.println("rules = " + equivalenceRules);
         
+        if( equivalenceRules != null )
         for(Polylist p : equivalenceRules)
         {
           // Don't barf if chord does not exist in vocabulary
@@ -912,7 +913,7 @@ public static boolean checkJoinability(Block first, Brick second)
         // block
         
         //System.out.println("tcSym = " + tcSym + " diatonicRules = " + diatonicRules);
-        
+        if( diatonicRules != null )
         for(Polylist p : diatonicRules)
         {
             String modeTag = p.first().toString();

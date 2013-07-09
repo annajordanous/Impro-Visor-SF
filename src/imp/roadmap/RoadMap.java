@@ -77,6 +77,27 @@ public class RoadMap {
     }
     
     /**
+     * Construct RoadMap from Polylist representation
+     * @param polylist 
+     */
+    public RoadMap(Polylist polylist)
+      {
+        //System.out.println("constructing RoadMap from Polylist " + polylist);
+        // Get the list of blocks
+        Polylist blockList = polylist.assoc(BLOCKS_KEYWORD).rest();
+        blocks = new ArrayList<Block>();
+        //System.out.println("blockList = " + blockList);
+        while( blockList.nonEmpty() )
+          {
+            Polylist blockPolylist = (Polylist)blockList.first();
+            // Here we need to make a Block from blockPoly.
+            Block block = Block.fromPolylist(blockPolylist);
+            add(block);
+            blockList = blockList.rest();
+          }
+      }
+    
+    /**
      * Returns the number of blocks in the roadmap
      * @return the number of blocks in the roadmap
      */
