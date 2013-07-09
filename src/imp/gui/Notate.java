@@ -2229,6 +2229,7 @@ public class Notate
         roadmapMenu = new javax.swing.JMenu();
         emptyRoadMapMI = new javax.swing.JMenuItem();
         roadMapThisAnalyze = new javax.swing.JMenuItem();
+        reAnalyzeMI = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         createRoadMapCheckBox = new javax.swing.JCheckBoxMenuItem();
         windowMenu = new javax.swing.JMenu();
@@ -9894,6 +9895,18 @@ public class Notate
             }
         });
         roadmapMenu.add(roadMapThisAnalyze);
+
+        reAnalyzeMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_SEMICOLON, 0));
+        reAnalyzeMI.setText("Re-Analyze");
+        reAnalyzeMI.setToolTipText("Open road map and analyze entire chorus.\n");
+        reAnalyzeMI.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                reAnalyzeMIAction(evt);
+            }
+        });
+        roadmapMenu.add(reAnalyzeMI);
         roadmapMenu.add(jSeparator1);
 
         createRoadMapCheckBox.setText("Generate Roadmap on Opening Leadsheet");
@@ -23743,6 +23756,11 @@ public void setKconstantSlider(double value)
         // TODO add your handling code here:
     }//GEN-LAST:event_superColliderReadyButtonActionPerformed
 
+    private void reAnalyzeMIAction(java.awt.event.ActionEvent evt)//GEN-FIRST:event_reAnalyzeMIAction
+    {//GEN-HEADEREND:event_reAnalyzeMIAction
+        reAnalyze();
+    }//GEN-LAST:event_reAnalyzeMIAction
+
 public void setNoteLength(int len)
 {
     getCurrentStave().getMelodyPart().setNoteLength(len);
@@ -25850,6 +25868,7 @@ preferencesAcceleratorMI.setEnabled(true);
     private javax.swing.JCheckBox quotes;
     private javax.swing.JLabel rangeToLabel;
     private javax.swing.JLabel rangeToLabel2;
+    private javax.swing.JMenuItem reAnalyzeMI;
     private javax.swing.JLabel recentStyleLabel;
     private javax.swing.JList recentStyleList;
     private javax.swing.JScrollPane recentStyleListScrollPane;
@@ -26505,12 +26524,20 @@ public void roadMapThisAnalyze()
     establishRoadMapFrame();
     score.toRoadMapFrame(roadmapFrame);
     roadmapFrame.setRoadMapTitle(getTitle());
-     roadmapFrame.updatePhiAndDelta(getPhiStatus(),getDeltaStatus());
+    roadmapFrame.updatePhiAndDelta(getPhiStatus(),getDeltaStatus());
     roadmapFrame.makeVisible(true);
     setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     staveRequestFocus();
   }
 
+public void reAnalyze()
+  {
+    if( roadmapFrame != null && chordProg.getRoadMap() != null )
+      {
+      roadmapFrame.setRoadMap(chordProg.getRoadMap());
+      }
+    
+  }
 
 /**
  * Create an empty road map tied to the current Notate frame.

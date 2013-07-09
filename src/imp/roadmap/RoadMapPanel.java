@@ -113,9 +113,10 @@ public class RoadMapPanel extends JPanel {
         return roadMap;
     }
     
-    /** Sets the roadmap */
+    /** Sets the roadmap and reanalyzes */
     protected void setRoadMap(RoadMap roadMap)
     {
+        //System.out.println("setting RoadMap and reanalyzing " + Formatting.prettyFormat(roadMap.toPolylist()));
         this.roadMap = roadMap;
         graphicMap = makeBricks(roadMap.getBlocks());
         roadMap.process();

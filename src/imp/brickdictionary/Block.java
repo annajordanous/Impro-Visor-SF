@@ -18,12 +18,10 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-
 package imp.brickdictionary;
 
 import imp.data.PitchClass;
 import java.util.ArrayList;
-
 import polya.Polylist;
 
 /** Block
@@ -116,7 +114,9 @@ abstract public class Block {
         fullName += name;
         // in the case of an overlap, we want an indication in the name
         if (this.isOverlap())
-                fullName += OVERLAP_STRING;
+          {
+            fullName += OVERLAP_STRING;
+          }
         return fullName;
     }
     
