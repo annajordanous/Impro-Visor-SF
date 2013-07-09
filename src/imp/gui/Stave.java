@@ -21,6 +21,7 @@
 package imp.gui;
 
 import imp.Constants;
+import static imp.Constants.ExtractMode.BRICK;
 import static imp.Constants.ExtractMode.QUOTE;
 import imp.brickdictionary.Block;
 import imp.com.PlayScoreCommand;
@@ -62,6 +63,8 @@ public class Stave
         extends JPanel
         implements Constants, FocusListener
 {
+static int MAX_LICK_CHORDS = 15;
+    
 String noteColorString = Preferences.getPreference(Preferences.NOTE_COLORING);
    
 /**
@@ -5642,19 +5645,20 @@ public String extract(String title, ExtractMode mode, int grade,
                                   }
                                 break;
 
-                            case LICK:
-                                // Changed to 7 in order to recognize longer 
-                                // chord progressions for lick critic.
-                                if ( chordCount > 7 )
-                                {
-                                    done = true;
-                                }
                             case QUOTE:
-                            case BRICK:
-                                if( chordCount > 1 && mode != ExtractMode.LICK)
+                                if( chordCount > 1 )
                                   {
                                     done = true;
                                   }
+                            case BRICK:
+                            case LICK:
+                                // Changed to 16 in order to recognize longer 
+                                // chord progressions for lick critic.
+                                if ( chordCount > MAX_LICK_CHORDS )
+                                {
+                                    done = true;
+                                }
+                            
                             // No break here!
                             case CHORDS:
                             case BOTH:
