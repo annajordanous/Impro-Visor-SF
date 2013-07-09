@@ -27,7 +27,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Scanner;
 import java.util.concurrent.atomic.*;
@@ -74,11 +73,7 @@ public class Critic {
     public final int defaultEpochLimit = 20000;
     public final int defaultTrace = 1;
     public final int minimumParameters = 9;
-    
-    // If we have weights already, set this to true
-    private boolean fixWeights = false;
 
-    
     ActivationFunction hardlim  = new Hardlim();
     ActivationFunction hardlims = new Hardlims();
     ActivationFunction logsig   = new Logsig();
@@ -141,23 +136,26 @@ public class Critic {
         }
     }
     
-    public void showAndCountSamples(String title, 
+    public StringBuilder showAndCountSamples(String title, 
             ArrayList<Sample> samples, AtomicInteger nSamples)
     {
+        StringBuilder output = new StringBuilder();
+        
         if (Trace.atLevel(4))
             System.out.println("\n" + title + " samples are:\n");
 
         for (Sample s : samples)
         {
             nSamples.getAndIncrement();
-
+            
             if (Trace.atLevel(4))
-                System.out.println(nSamples.get() + ": " + s.toString());
-
+                System.out.println(nSamples.get() + ": "+ s.toString());
         }
         
-        System.out.println("\n" + nSamples.get() + " " + title 
-                + " samples");
+        output.append(nSamples.get()).append(" ").append(title).append(" samples");
+        output.append("\n");
+        
+        return output;
     }
     
     //training
@@ -184,8 +182,13 @@ public class Critic {
     private int[] layerSize;
     private ActivationFunction[] layerType;
     
-    public void trainNetwork(Object ... args)
+    public StringBuilder trainNetwork(Object ... args)
     {
+        StringBuilder output = new StringBuilder();
+        
+        // If we have weights already, set this to true
+        boolean fixWeights = false;
+        
         //Asumed
         trainingFile = (String) args[0];
         
@@ -231,34 +234,25 @@ public class Critic {
         }
         
         // Check if we're using a file with already-set weights
-        File f = new File(weightFile);
+        File f = new File(ImproVisor.getVocabDirectory(), weightFile);
         if (f.length() != 0)
             fixWeights = true;
         
-        if (Trace.atLevel(1))
+        output.append(numberLayers).append(" layers structured (from input to output) as: \n");
+
+        for( int i = 0; i < numberLayers; i++ )
         {
-            System.out.println(numberLayers +
-                    " layers structured (from input to output) as: ");
-
-            for( int i = 0; i < numberLayers; i++ )
-            {
-                System.out.println("    " + layerType[i].getName() 
-                    + " (" + layerSize[i] + " " + "neurons" + ")");
-            }
-
-            System.out.println();
-
-            System.out.println("epoch limit = " + epochLimit);
-
-            System.out.println("specified rate = " + rate);
-
-            System.out.println("goal = " + goal);
-
-            System.out.println("mode = " + modeName[mode.ordinal()]);
-            
+            output.append("    ").append(layerType[i].getName()).append(" (").append(layerSize[i]).append(" " + "neurons" + ")");
+            output.append("\n");
         }
-                    
-        
+
+        output.append("\n");
+        output.append("epoch limit = ").append(epochLimit).append("\n");
+        output.append("specified rate = ").append(rate).append("\n");
+        output.append("goal = ").append(goal).append("\n");
+        output.append("mode = ").append(modeName[mode.ordinal()]).append("\n");
+        output.append("\n");
+            
         AtomicInteger inputD = new AtomicInteger();
         AtomicInteger outputD = new AtomicInteger();
         ArrayList<Sample> trainingSamples = new ArrayList<Sample>();
@@ -273,7 +267,7 @@ public class Critic {
         }
         
         AtomicInteger nTrainingSamples = new AtomicInteger();
-        showAndCountSamples("training", trainingSamples, nTrainingSamples);
+        output.append(showAndCountSamples("training", trainingSamples, nTrainingSamples));
         
         Network thisNetwork = new Network(numberLayers, layerSize, layerType, inputD.get());
      
@@ -295,13 +289,10 @@ public class Critic {
         if (Trace.atLevel(4))
         {
             System.out.println("\nInitial Weights:");
-            thisNetwork.showWeights("initial");
+            System.out.println(thisNetwork.showWeights("initial"));
         }
         
-        if (Trace.atLevel(1))
-        {
-            System.out.println("\nTraining begins with epoch 1.");
-        }
+        output.append("\nTraining begins with epoch 1.\n");
         
         int epoch = 1;
         double sse;
@@ -387,16 +378,14 @@ public class Critic {
                 usageError += (thisNetwork.computeUsageError(sample) != 0) ? 1 : 0;
             }
             
-            if (Trace.atLevel(3) || (Trace.atLevel(2) && epoch%interval == 0) )
-            {
-                System.out.printf("\nend epoch %d, mse: %10.8f %s, usage error: %d/%d (%5.2f%%)\n",
-                                epoch, 
-                                mse, 
-                                mse < oldmse ? "decreasing" : "increasing",
-                                (int)usageError,
-                                nTrainingSamples.get(),
-                                100 * usageError / nTrainingSamples.get());
-            }
+            output.append(String.format("end epoch %d, mse: %10.8f %s, usage error: %d/%d (%5.2f%%)\n",
+                            epoch, 
+                            mse, 
+                            mse < oldmse ? "decreasing" : "increasing",
+                            (int)usageError,
+                            nTrainingSamples.get(),
+                            100 * usageError / nTrainingSamples.get()));
+            output.append("\n");
 
             epoch++;
 
@@ -412,15 +401,12 @@ public class Critic {
             oldmse = mse;
         }
         
-        if (Trace.atLevel(1))
-        {
-            System.out.println("\nTraining ends at epoch " + epoch + ", "
-                  + reasonName[reason.ordinal()] + ".");
-        }
+        output.append("Training ends at epoch ").append(epoch).append(", ").append(reasonName[reason.ordinal()]).append(".");
+        output.append("\n").append("\n");
+        output.append("Final weights:");
+        output.append("\n");
         
-        System.out.println("\nFinal weights:");
-        
-        thisNetwork.showWeights("Final");
+        output.append(thisNetwork.showWeights("Final"));
         
         try 
         {
@@ -436,6 +422,8 @@ public class Critic {
         {
             
         }
+        
+        return output;
     }
     
     
@@ -513,12 +501,13 @@ public class Critic {
         return network;
     }
     
-    public void prepareNetwork(String weights) throws Exception
+    public StringBuilder prepareNetwork(String weights) throws Exception
     {
         try 
         {
             File file = new File(ImproVisor.getVocabDirectory(), weights);
             BufferedReader in = new BufferedReader(new FileReader(file));
+            StringBuilder output = new StringBuilder();
             
             // Parse first line, containing network stats
             String[] networkInfo = in.readLine().split(" ");
@@ -537,9 +526,20 @@ public class Critic {
                 thisLayerType[j] = getLayerType(networkInfo[currPos++]);
             }
 
+            output.append("length of input: ").append(thisInputDimension).append("\n");
+            output.append(thisNumLayers).append(" layers structured (from input to output) as: \n");
+            for( int i = 0; i < thisNumLayers; i++ )
+            {
+                output.append("    ").append(thisLayerType[i].getName()).append(" (").append(thisLayerSize[i]).append(" " + "neurons" + ")");
+                output.append("\n");
+            }
+            
             network = new Network(thisNumLayers, thisLayerSize, thisLayerType, thisInputDimension);
             network.fixWeights(in);
+            output.append(network.showWeights("final"));
             in.close();
+            
+            return output;
         }
         catch (Exception e) 
         {

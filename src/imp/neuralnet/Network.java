@@ -189,10 +189,12 @@ public class Network {
     /*
      * Show the weights and sensitivities of all Neurons in the network.
      */
-    public void showWeights(String message)
+    public StringBuilder showWeights(String message)
     {
+        StringBuilder output = new StringBuilder();
         for (int i = 0; i < numberLayers; i++)
-            layer[i].showWeights(message);
+            layer[i].showWeights(message, output);
+        return output;
     }
     
     /*
@@ -224,5 +226,23 @@ public class Network {
 
             layer[i].fixWeights(mem);       
         }
+    }
+    
+    /*
+     * Get statistics for the network
+     */
+    public StringBuilder getStatistics()
+    {
+        StringBuilder output = new StringBuilder();
+        output.append(numberLayers).append(" layers structured (from input to output) as: \n");
+        for( int i = 0; i < numberLayers; i++ )
+        {
+            Layer thisLayer = layer[i];
+            output.append("    ").append(thisLayer.getFunctionType().getName());
+            output.append(" (").append(thisLayer.getSize()).append(" " + "neurons" + ")");
+            output.append("\n");
+        }
+        
+        return output;
     }
 }

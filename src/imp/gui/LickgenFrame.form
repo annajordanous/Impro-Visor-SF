@@ -2736,7 +2736,7 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout"/>
           <SubComponents>
-            <Container class="javax.swing.JPanel" name="nnetOutputTextField">
+            <Container class="javax.swing.JPanel" name="nnetOutputPanel">
               <Properties>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
@@ -2783,20 +2783,17 @@
 
                   <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                   <SubComponents>
-                    <Component class="javax.swing.JTextArea" name="nnetField">
+                    <Component class="javax.swing.JTextArea" name="nnetOutputTextField">
                       <Properties>
                         <Property name="columns" type="int" value="20"/>
                         <Property name="lineWrap" type="boolean" value="true"/>
-                        <Property name="rows" type="int" value="500"/>
+                        <Property name="rows" type="int" value="20000"/>
                         <Property name="text" type="java.lang.String" value="To generate a weight file:&#xa;-Select training file&#xa;-Weight file name with automatically be set&#xa;--Weight file will save to personal settings folder, in vocab&#xa;-Change the epoch limit if desired&#xa;-Change the default learning rate if desired&#xa;-Change the default MSE goal if desired&#xa;-Change the default mode if desired&#xa;-In the table to the right:&#xa;--Set the layer size for each layer&#xa;---Input (first) layer size determinted at runtime from input size&#xa;---The last layer, for output, should be of size 1&#xa;--Set the function for each layer&#xa;--Reorder rows as desired. Empty rows will be ignored.&#xa;-Press &quot;Generate Weight File&quot;&#xa;&#xa;To load network:&#xa;-Select the weight file, from the vocab folder, under &quot;Weight File&quot;&#xa;-Press &quot;Load Weight&quot;&#xa;-Network will be initialized per leadsheet&#xa;&#xa;To clear a weight file:&#xa;-Select the weight file, from the vocab folder, under &quot;Weight File&quot;&#xa;-Press &quot;Clear Weight File&quot;"/>
                         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                           <Border info="null"/>
                         </Property>
                         <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                           <Dimension value="[800, 100]"/>
-                        </Property>
-                        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                          <Dimension value="[260, 5000]"/>
                         </Property>
                       </Properties>
                     </Component>
@@ -2814,25 +2811,12 @@
 
                   <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                   <SubComponents>
-                    <Component class="javax.swing.JTable" name="layerInfoTable">
+                    <Component class="javax.swing.JTable" name="layerDataTable">
                       <Properties>
-                        <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                          <Table columnCount="3" rowCount="2">
-                            <Column editable="false" title="Layer Index" type="java.lang.Integer">
-                              <Data value="1"/>
-                              <Data value="2"/>
-                            </Column>
-                            <Column editable="true" title="Layer Size" type="java.lang.Integer">
-                              <Data value="64"/>
-                              <Data value="1"/>
-                            </Column>
-                            <Column editable="true" title="Layer Type" type="java.lang.String">
-                              <Data value="Logsig"/>
-                              <Data value="Logsig"/>
-                            </Column>
-                          </Table>
+                        <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                          <Connection code="new javax.swing.table.DefaultTableModel(&#xa;    new Object [][] {&#xa;        { new Integer(1),  new Integer(64), &quot;Logsig&quot;},&#xa;        { new Integer(2),  new Integer(1), &quot;Logsig&quot;}&#xa;    },&#xa;    new String [] {&#xa;        &quot;Layer Index&quot;, &quot;Layer Size&quot;, &quot;Layer Type&quot;&#xa;    }&#xa;) {&#xa;    Class[] types = new Class [] {&#xa;        java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class&#xa;    };&#xa;    boolean[] canEdit = new boolean [] {&#xa;        false, true, true&#xa;    };&#xa;&#xa;    public Class getColumnClass(int columnIndex) {&#xa;        return types [columnIndex];&#xa;    }&#xa;&#xa;    public boolean isCellEditable(int rowIndex, int columnIndex) {&#xa;        if (columnIndex == 1&#xa;            &amp;&amp; rowIndex == layerDataTable.getRowCount() - 1)&#xa;        {&#xa;            return false;&#xa;        }&#xa;        return canEdit [columnIndex];&#xa;    }&#xa;}" type="code"/>
                         </Property>
-                        <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor" postCode="JComboBox comboBox = new JComboBox();&#xa;comboBox.addItem(&quot;Logsig&quot;);&#xa;comboBox.addItem(&quot;Tansig&quot;);&#xa;comboBox.addItem(&quot;Hardlim&quot;);&#xa;comboBox.addItem(&quot;Hardlims&quot;);&#xa;comboBox.addItem(&quot;Purelin&quot;);&#xa;comboBox.addItem(&quot;Satlin&quot;);&#xa;comboBox.addItem(&quot;Satlins&quot;);&#xa;layerInfoTable.getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(comboBox));">
+                        <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor" postCode="JComboBox comboBox = new JComboBox();&#xa;comboBox.addItem(&quot;Logsig&quot;);&#xa;comboBox.addItem(&quot;Tansig&quot;);&#xa;comboBox.addItem(&quot;Hardlim&quot;);&#xa;comboBox.addItem(&quot;Hardlims&quot;);&#xa;comboBox.addItem(&quot;Purelin&quot;);&#xa;comboBox.addItem(&quot;Satlin&quot;);&#xa;comboBox.addItem(&quot;Satlins&quot;);&#xa;layerDataTable.getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(comboBox));">
                           <TableColumnModel selectionModel="0">
                             <Column maxWidth="-1" minWidth="-1" prefWidth="50" resizable="false">
                               <Title/>
@@ -2864,6 +2848,9 @@
                           <TableHeader reorderingAllowed="false" resizingAllowed="true"/>
                         </Property>
                       </Properties>
+                      <Events>
+                        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="layerDataTableMouseClicked"/>
+                      </Events>
                     </Component>
                   </SubComponents>
                 </Container>
@@ -2913,7 +2900,7 @@
                   </Events>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
-                      <GridBagConstraints gridX="0" gridY="0" gridWidth="3" gridHeight="1" fill="0" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="10" weightX="1.0" weightY="0.0"/>
+                      <GridBagConstraints gridX="0" gridY="0" gridWidth="1" gridHeight="1" fill="0" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="10" weightX="1.0" weightY="0.0"/>
                     </Constraint>
                   </Constraints>
                 </Component>
@@ -2936,7 +2923,7 @@
                   </Events>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
-                      <GridBagConstraints gridX="0" gridY="3" gridWidth="3" gridHeight="1" fill="0" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="10" weightX="1.0" weightY="0.0"/>
+                      <GridBagConstraints gridX="0" gridY="3" gridWidth="1" gridHeight="1" fill="0" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="10" weightX="1.0" weightY="0.0"/>
                     </Constraint>
                   </Constraints>
                 </Component>
@@ -2959,7 +2946,7 @@
                   </Events>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
-                      <GridBagConstraints gridX="0" gridY="2" gridWidth="3" gridHeight="1" fill="0" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="10" weightX="1.0" weightY="0.0"/>
+                      <GridBagConstraints gridX="0" gridY="2" gridWidth="1" gridHeight="1" fill="0" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="10" weightX="1.0" weightY="0.0"/>
                     </Constraint>
                   </Constraints>
                 </Component>
@@ -2982,7 +2969,53 @@
                   </Events>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
-                      <GridBagConstraints gridX="0" gridY="1" gridWidth="3" gridHeight="1" fill="0" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="10" weightX="1.0" weightY="0.0"/>
+                      <GridBagConstraints gridX="0" gridY="1" gridWidth="1" gridHeight="1" fill="0" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="10" weightX="1.0" weightY="0.0"/>
+                    </Constraint>
+                  </Constraints>
+                </Component>
+                <Component class="javax.swing.JButton" name="resetNnetInstructionsButton">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Reset Instructions"/>
+                    <Property name="toolTipText" type="java.lang.String" value="Reset the instructions for how to use the neural network."/>
+                    <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                      <Dimension value="[300, 29]"/>
+                    </Property>
+                    <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                      <Dimension value="[300, 29]"/>
+                    </Property>
+                    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                      <Dimension value="[300, 29]"/>
+                    </Property>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="resetNnetInstructionsButtonActionPerformed"/>
+                  </Events>
+                  <Constraints>
+                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
+                      <GridBagConstraints gridX="0" gridY="4" gridWidth="1" gridHeight="1" fill="0" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="10" weightX="1.0" weightY="0.0"/>
+                    </Constraint>
+                  </Constraints>
+                </Component>
+                <Component class="javax.swing.JButton" name="resetDefaultValuesButton">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Reset Default Values"/>
+                    <Property name="toolTipText" type="java.lang.String" value="Reset all default values for all fields."/>
+                    <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                      <Dimension value="[300, 29]"/>
+                    </Property>
+                    <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                      <Dimension value="[300, 29]"/>
+                    </Property>
+                    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                      <Dimension value="[300, 29]"/>
+                    </Property>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="resetDefaultValuesButtonActionPerformed"/>
+                  </Events>
+                  <Constraints>
+                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
+                      <GridBagConstraints gridX="0" gridY="5" gridWidth="1" gridHeight="1" fill="0" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="10" weightX="1.0" weightY="0.0"/>
                     </Constraint>
                   </Constraints>
                 </Component>

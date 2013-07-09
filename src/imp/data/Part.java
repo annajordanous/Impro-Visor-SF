@@ -875,7 +875,9 @@ public void newSetUnit(int unitIndex, Unit unit)
           }
         else
           {
-          slots.set(nextUnitStart, new Chord(nextUnitEnd - nextUnitStart));            
+          // HB - Disabled as of 7-8-13, not sure this is needed when pasting
+          //       chords back into leadsheet.
+          // slots.set(nextUnitStart, new Chord(nextUnitEnd - nextUnitStart));            
           }
       }
 

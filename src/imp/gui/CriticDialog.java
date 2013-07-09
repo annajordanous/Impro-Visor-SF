@@ -49,7 +49,8 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
         NAME (String.class, "Name"),
         NOTES (String.class, "Notes"),
         CHORDS (String.class, "Chords"),
-        GRADE (Integer.class, "Grade", 30),
+        GRADE (Integer.class, "Grade", 50),
+        LOADBTN (ImageIcon.class, "Load", 50),
         PLAYBTN (ImageIcon.class, "", 20);
         
         private final String name;
@@ -138,6 +139,7 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         dataTable.setModel(dataModel);
+        dataTable.getTableHeader().setReorderingAllowed(false);
         dataTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 dataTableMouseClicked(evt);
@@ -252,14 +254,16 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
     }//GEN-LAST:event_deleteSelectedActionPerformed
 
     private void dataTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dataTableMouseClicked
-        if(dataTable.getSelectedColumn() == TCol.PLAYBTN.ordinal()) {
+        if(dataTable.getSelectedColumn() == TCol.PLAYBTN.ordinal() ||
+                dataTable.getSelectedColumn() == TCol.LOADBTN.ordinal()) {
             int row = dataTable.getSelectedRow();
             if(row == -1)
                 return;
             Polylist dataRow = dataModel.getRow(row);
             ChordPart chords = new ChordPart(BEAT*8);
-            MelodyPart melody = new MelodyPart(BEAT*8);
-            
+            MelodyPart melody = new MelodyPart(BEAT*8);         
+            String name = (String) dataRow.nth(TCol.NAME.ordinal());
+         
             Polylist combined = ((Polylist) (dataRow.nth(TCol.CHORDS.ordinal()))).append(
                                 (Polylist) (dataRow.nth(TCol.NOTES.ordinal()))
                                 );
@@ -271,15 +275,25 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
             score.setChordProg(chords);
             score.addPart(melody);
 
-            new PlayScoreCommand(score, 
-                                 0, 
-                                 true, 
-                                 ImproVisor.getLastMidiSynth(),
-                                 ImproVisor.getCurrentWindow(),
-                                 0, 
-                                 0,
-                                 false,
-                                 BEAT*4).execute();
+            if (dataTable.getSelectedColumn() == TCol.PLAYBTN.ordinal()) { 
+                new PlayScoreCommand(score, 
+                                     0, 
+                                     true, 
+                                     ImproVisor.getLastMidiSynth(),
+                                     ImproVisor.getCurrentWindow(),
+                                     0, 
+                                     0,
+                                     false,
+                                     BEAT*4).execute();
+            }
+            
+            if (dataTable.getSelectedColumn() == TCol.LOADBTN.ordinal()) {
+                Notate notate = ImproVisor.getCurrentWindow();
+                
+                notate.lickgenFrame.setSaveLickTextField(name);
+                notate.getChordProg().newPasteOver(chords, notate.getCurrentSelectionStart());
+                notate.putLickWithoutRectify(melody);
+            }
         }
     }//GEN-LAST:event_dataTableMouseClicked
 
@@ -896,6 +910,7 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
     
     private class CriticTableModel extends AbstractTableModel {
         private ImageIcon playIcon = new ImageIcon(getClass().getResource("/imp/gui/graphics/icons/play.png"));
+        private ImageIcon loadIcon = new ImageIcon(getClass().getResource("/imp/gui/graphics/icons/load.png"));
 
         private ArrayList<Polylist> data = new ArrayList<Polylist>(); //Changed from Vector
 
@@ -961,6 +976,8 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
         public Object getValueAt(int row, int col) {
             if(col == TCol.PLAYBTN.ordinal())
                 return playIcon;
+            if (col == TCol.LOADBTN.ordinal())
+                return loadIcon;
             Object o = data.get(row).nth(col);
             if(o instanceof Polylist && !((Polylist)o).nonEmpty())
                 return "";
@@ -984,7 +1001,8 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
 
         @Override
         public boolean isCellEditable(int rowIndex, int columnIndex) {
-            return columnIndex != TCol.PLAYBTN.ordinal();
+            return columnIndex != TCol.PLAYBTN.ordinal() &&
+                   columnIndex != TCol.LOADBTN.ordinal();
         }
 
         @Override

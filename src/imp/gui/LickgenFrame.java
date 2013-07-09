@@ -35,14 +35,12 @@ import imp.data.*;
 import imp.lickgen.Grammar;
 import imp.lickgen.LickGen;
 import imp.neuralnet.Critic;
-import imp.neuralnet.Network;
 import imp.util.Preferences;
 import imp.util.ProfileFilter;
 import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -363,16 +361,18 @@ private void initCompFileChoosers() {
         reverseProbabilityField.setText(reverseProb + "");
         disclaimer = new javax.swing.JLabel();
         neuralNetworkPanel = new javax.swing.JPanel();
-        nnetOutputTextField = new javax.swing.JPanel();
+        nnetOutputPanel = new javax.swing.JPanel();
         nnetScrollPane = new javax.swing.JScrollPane();
-        nnetField = new javax.swing.JTextArea();
+        nnetOutputTextField = new javax.swing.JTextArea();
         layerInfoScrollPane = new javax.swing.JScrollPane();
-        layerInfoTable = new javax.swing.JTable();
+        layerDataTable = new javax.swing.JTable();
         nnetWeightGenerationPanel = new javax.swing.JPanel();
         generateWeightFileButton = new javax.swing.JButton();
         getNetworkStatsButton = new javax.swing.JButton();
         clearWeightFileButton = new javax.swing.JButton();
         loadWeightFileButton = new javax.swing.JButton();
+        resetNnetInstructionsButton = new javax.swing.JButton();
+        resetDefaultValuesButton = new javax.swing.JButton();
         nnetParametersPanel = new javax.swing.JPanel();
         trainingFileButton = new javax.swing.JButton();
         trainingFileTextField = new javax.swing.JTextField();
@@ -2259,23 +2259,22 @@ private void initCompFileChoosers() {
 
         neuralNetworkPanel.setLayout(new java.awt.GridBagLayout());
 
-        nnetOutputTextField.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Neural Network Output", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
-        nnetOutputTextField.setMinimumSize(new java.awt.Dimension(850, 200));
-        nnetOutputTextField.setPreferredSize(new java.awt.Dimension(850, 200));
-        nnetOutputTextField.setLayout(new java.awt.GridBagLayout());
+        nnetOutputPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Neural Network Output", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
+        nnetOutputPanel.setMinimumSize(new java.awt.Dimension(850, 200));
+        nnetOutputPanel.setPreferredSize(new java.awt.Dimension(850, 200));
+        nnetOutputPanel.setLayout(new java.awt.GridBagLayout());
 
         nnetScrollPane.setBorder(null);
         nnetScrollPane.setMinimumSize(new java.awt.Dimension(223, 180));
         nnetScrollPane.setPreferredSize(new java.awt.Dimension(223, 180));
 
-        nnetField.setColumns(20);
-        nnetField.setLineWrap(true);
-        nnetField.setRows(500);
-        nnetField.setText("To generate a weight file:\n-Select training file\n-Weight file name with automatically be set\n--Weight file will save to personal settings folder, in vocab\n-Change the epoch limit if desired\n-Change the default learning rate if desired\n-Change the default MSE goal if desired\n-Change the default mode if desired\n-In the table to the right:\n--Set the layer size for each layer\n---Input (first) layer size determinted at runtime from input size\n---The last layer, for output, should be of size 1\n--Set the function for each layer\n--Reorder rows as desired. Empty rows will be ignored.\n-Press \"Generate Weight File\"\n\nTo load network:\n-Select the weight file, from the vocab folder, under \"Weight File\"\n-Press \"Load Weight\"\n-Network will be initialized per leadsheet\n\nTo clear a weight file:\n-Select the weight file, from the vocab folder, under \"Weight File\"\n-Press \"Clear Weight File\"");
-        nnetField.setBorder(null);
-        nnetField.setMinimumSize(new java.awt.Dimension(800, 100));
-        nnetField.setPreferredSize(new java.awt.Dimension(260, 5000));
-        nnetScrollPane.setViewportView(nnetField);
+        nnetOutputTextField.setColumns(20);
+        nnetOutputTextField.setLineWrap(true);
+        nnetOutputTextField.setRows(20000);
+        nnetOutputTextField.setText("To generate a weight file:\n-Select training file\n-Weight file name with automatically be set\n--Weight file will save to personal settings folder, in vocab\n-Change the epoch limit if desired\n-Change the default learning rate if desired\n-Change the default MSE goal if desired\n-Change the default mode if desired\n-In the table to the right:\n--Set the layer size for each layer\n---Input (first) layer size determinted at runtime from input size\n---The last layer, for output, should be of size 1\n--Set the function for each layer\n--Reorder rows as desired. Empty rows will be ignored.\n-Press \"Generate Weight File\"\n\nTo load network:\n-Select the weight file, from the vocab folder, under \"Weight File\"\n-Press \"Load Weight\"\n-Network will be initialized per leadsheet\n\nTo clear a weight file:\n-Select the weight file, from the vocab folder, under \"Weight File\"\n-Press \"Clear Weight File\"");
+        nnetOutputTextField.setBorder(null);
+        nnetOutputTextField.setMinimumSize(new java.awt.Dimension(800, 100));
+        nnetScrollPane.setViewportView(nnetOutputTextField);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -2283,9 +2282,9 @@ private void initCompFileChoosers() {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 0.2;
-        nnetOutputTextField.add(nnetScrollPane, gridBagConstraints);
+        nnetOutputPanel.add(nnetScrollPane, gridBagConstraints);
 
-        layerInfoTable.setModel(new javax.swing.table.DefaultTableModel(
+        layerDataTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 { new Integer(1),  new Integer(64), "Logsig"},
                 { new Integer(2),  new Integer(1), "Logsig"}
@@ -2306,20 +2305,30 @@ private void initCompFileChoosers() {
             }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
+                if (columnIndex == 1
+                    && rowIndex == layerDataTable.getRowCount() - 1)
+                {
+                    return false;
+                }
                 return canEdit [columnIndex];
             }
         });
-        layerInfoTable.setMaximumSize(new java.awt.Dimension(2147483647, 2147483647));
-        layerInfoTable.setMinimumSize(new java.awt.Dimension(150, 900));
-        layerInfoTable.setPreferredSize(new java.awt.Dimension(150, 900));
-        layerInfoTable.getTableHeader().setReorderingAllowed(false);
-        layerInfoScrollPane.setViewportView(layerInfoTable);
-        layerInfoTable.getColumnModel().getColumn(0).setResizable(false);
-        layerInfoTable.getColumnModel().getColumn(0).setPreferredWidth(50);
-        layerInfoTable.getColumnModel().getColumn(1).setResizable(false);
-        layerInfoTable.getColumnModel().getColumn(1).setPreferredWidth(50);
-        layerInfoTable.getColumnModel().getColumn(2).setResizable(false);
-        layerInfoTable.getColumnModel().getColumn(2).setPreferredWidth(50);
+        layerDataTable.setMaximumSize(new java.awt.Dimension(2147483647, 2147483647));
+        layerDataTable.setMinimumSize(new java.awt.Dimension(150, 900));
+        layerDataTable.setPreferredSize(new java.awt.Dimension(150, 900));
+        layerDataTable.getTableHeader().setReorderingAllowed(false);
+        layerDataTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                layerDataTableMouseClicked(evt);
+            }
+        });
+        layerInfoScrollPane.setViewportView(layerDataTable);
+        layerDataTable.getColumnModel().getColumn(0).setResizable(false);
+        layerDataTable.getColumnModel().getColumn(0).setPreferredWidth(50);
+        layerDataTable.getColumnModel().getColumn(1).setResizable(false);
+        layerDataTable.getColumnModel().getColumn(1).setPreferredWidth(50);
+        layerDataTable.getColumnModel().getColumn(2).setResizable(false);
+        layerDataTable.getColumnModel().getColumn(2).setPreferredWidth(50);
         JComboBox comboBox = new JComboBox();
         comboBox.addItem("Logsig");
         comboBox.addItem("Tansig");
@@ -2328,14 +2337,14 @@ private void initCompFileChoosers() {
         comboBox.addItem("Purelin");
         comboBox.addItem("Satlin");
         comboBox.addItem("Satlins");
-        layerInfoTable.getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(comboBox));
+        layerDataTable.getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(comboBox));
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.weightx = 0.1;
         gridBagConstraints.weighty = 0.2;
-        nnetOutputTextField.add(layerInfoScrollPane, gridBagConstraints);
+        nnetOutputPanel.add(layerInfoScrollPane, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -2345,7 +2354,7 @@ private void initCompFileChoosers() {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 0.5;
-        neuralNetworkPanel.add(nnetOutputTextField, gridBagConstraints);
+        neuralNetworkPanel.add(nnetOutputPanel, gridBagConstraints);
 
         nnetWeightGenerationPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Neural Network Operations", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
         nnetWeightGenerationPanel.setMinimumSize(new java.awt.Dimension(300, 230));
@@ -2366,7 +2375,6 @@ private void initCompFileChoosers() {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.weightx = 1.0;
         nnetWeightGenerationPanel.add(generateWeightFileButton, gridBagConstraints);
 
@@ -2383,7 +2391,6 @@ private void initCompFileChoosers() {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
-        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.weightx = 1.0;
         nnetWeightGenerationPanel.add(getNetworkStatsButton, gridBagConstraints);
 
@@ -2400,7 +2407,6 @@ private void initCompFileChoosers() {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.weightx = 1.0;
         nnetWeightGenerationPanel.add(clearWeightFileButton, gridBagConstraints);
 
@@ -2417,9 +2423,40 @@ private void initCompFileChoosers() {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.weightx = 1.0;
         nnetWeightGenerationPanel.add(loadWeightFileButton, gridBagConstraints);
+
+        resetNnetInstructionsButton.setText("Reset Instructions");
+        resetNnetInstructionsButton.setToolTipText("Reset the instructions for how to use the neural network.");
+        resetNnetInstructionsButton.setMaximumSize(new java.awt.Dimension(300, 29));
+        resetNnetInstructionsButton.setMinimumSize(new java.awt.Dimension(300, 29));
+        resetNnetInstructionsButton.setPreferredSize(new java.awt.Dimension(300, 29));
+        resetNnetInstructionsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                resetNnetInstructionsButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.weightx = 1.0;
+        nnetWeightGenerationPanel.add(resetNnetInstructionsButton, gridBagConstraints);
+
+        resetDefaultValuesButton.setText("Reset Default Values");
+        resetDefaultValuesButton.setToolTipText("Reset all default values for all fields.");
+        resetDefaultValuesButton.setMaximumSize(new java.awt.Dimension(300, 29));
+        resetDefaultValuesButton.setMinimumSize(new java.awt.Dimension(300, 29));
+        resetDefaultValuesButton.setPreferredSize(new java.awt.Dimension(300, 29));
+        resetDefaultValuesButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                resetDefaultValuesButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.weightx = 1.0;
+        nnetWeightGenerationPanel.add(resetDefaultValuesButton, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -5077,7 +5114,7 @@ private void useSoloistCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//
     }//GEN-LAST:event_gradeGoodBtnActionPerformed
 
     private void generateWeightFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateWeightFileButtonActionPerformed
-        int numRows = layerInfoTable.getRowCount();
+        int numRows = layerDataTable.getRowCount();
         int count = 0;
         LinkedHashMap<Integer, String> data = new LinkedHashMap<Integer, String>();
         
@@ -5086,8 +5123,8 @@ private void useSoloistCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//
         {
             try
             {
-                int size = (Integer) layerInfoTable.getValueAt(i, 1);
-                String type = (String) layerInfoTable.getValueAt(i, 2);
+                int size = (Integer) layerDataTable.getValueAt(i, 1);
+                String type = (String) layerDataTable.getValueAt(i, 2);
                 data.put(size, type);
                 count++;
             }
@@ -5104,22 +5141,39 @@ private void useSoloistCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//
                 || weightFileTextField.getText().isEmpty()
                 || data.size() < 2)
         {
+            StringBuilder output = new StringBuilder();
+            if (trainingFileTextField.getText().isEmpty())
+                output.append("    ").append("Training File").append("<br/>");
+            if (epochLimitTextField.getText().isEmpty())
+                output.append("    ").append("Epoch Limit").append("<br/>");
+            if (learningRateTextField.getText().isEmpty())
+                output.append("    ").append("Learning Rate").append("<br/>");
+            if (mseGoalTextField.getText().isEmpty())
+                output.append("    ").append("MSE Goal").append("<br/>");
+            if (weightFileTextField.getText().isEmpty())
+                output.append("    ").append("Weight File").append("<br/>");
+            if (data.size() < 2)
+                output.append("    ").append("Too Few Layers").append("<br/>");            
+                       
             JOptionPane.showMessageDialog(null, 
                         new JLabel("<html><div style=\"text-align: center;\">"
-                        + "Missing the weight file."), 
+                        + "Missing the following needed values:<br/>"
+                        + output.toString()), 
                           "Alert", JOptionPane.PLAIN_MESSAGE);
         }
         
         else
         {
-            critic.trainNetwork(trainingFileTextField.getText(),
-                                epochLimitTextField.getText(),
-                                learningRateTextField.getText(),
-                                mseGoalTextField.getText(),
-                                Integer.toString(modeComboBox.getSelectedIndex()),
-                                weightFileTextField.getText(),
-                                count,
-                                data);
+            StringBuilder networkOutput = 
+                    critic.trainNetwork(trainingFileTextField.getText(),
+                                        epochLimitTextField.getText(),
+                                        learningRateTextField.getText(),
+                                        mseGoalTextField.getText(),
+                                        Integer.toString(modeComboBox.getSelectedIndex()),
+                                        weightFileTextField.getText(),
+                                        count,
+                                        data);
+            nnetOutputTextField.setText(networkOutput.toString());
         }
     }//GEN-LAST:event_generateWeightFileButtonActionPerformed
 
@@ -5134,7 +5188,8 @@ private void useSoloistCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//
         }
         else
         {
-            // FIX, need to add statistics
+            StringBuilder statOutput = critic.getNetwork().getStatistics();
+            nnetOutputTextField.setText(statOutput.toString());
         }
     }//GEN-LAST:event_getNetworkStatsButtonActionPerformed
 
@@ -5161,7 +5216,10 @@ private void useSoloistCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//
         {
             try 
             {
-                critic.prepareNetwork(weightFileTextField.getText());    
+                StringBuilder weightOutput = 
+                        critic.prepareNetwork(weightFileTextField.getText()); 
+                
+                nnetOutputTextField.setText(weightOutput.toString());
             }
             catch (Exception e)
             {
@@ -5205,83 +5263,101 @@ private void useSoloistCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//
     }//GEN-LAST:event_trainingFileButtonActionPerformed
 
     private void addLayerToTableButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addLayerToTableButtonActionPerformed
-        int index = layerInfoTable.getSelectedRow();
-        DefaultTableModel model = (DefaultTableModel) layerInfoTable.getModel();
+        int index = layerDataTable.getSelectedRow();
+        DefaultTableModel model = (DefaultTableModel) layerDataTable.getModel();
         
-        int nextIndex = layerInfoTable.getRowCount();
-        model.addRow(new Object[]{new Integer(nextIndex + 1), new Integer(64), "Logsig"});
+        int nextIndex = layerDataTable.getRowCount();
+        model.insertRow(nextIndex - 1, new Object[]{new Integer(nextIndex), new Integer(64), "Logsig"});
+        model.setValueAt(new Integer(nextIndex + 1), nextIndex, 0);
         model.fireTableRowsInserted(nextIndex, nextIndex);
-        layerInfoTable.getSelectionModel().setSelectionInterval(nextIndex, nextIndex);
-        numberOfLayersTextField.setText(String.valueOf(layerInfoTable.getRowCount()));
+        layerDataTable.getSelectionModel().setSelectionInterval(nextIndex, nextIndex);
+        numberOfLayersTextField.setText(String.valueOf(layerDataTable.getRowCount()));
         
         // Move row up to insert it below currently selected.
-        if (index != -1)
+        if (index != -1 && index != layerDataTable.getRowCount() - 2)
         {
-            model.moveRow(nextIndex, nextIndex, index + 1);
+            model.moveRow(nextIndex -1 , nextIndex - 1, index + 1);
             
             // Update index values
-            for (int i = 0; i < layerInfoTable.getRowCount(); i++)
-            {
-                model.setValueAt(new Integer(i + 1), i, 0);
-            }
+            resetIndexColumn(model);
+            
             model.fireTableDataChanged();
             
-            layerInfoTable.getSelectionModel().setSelectionInterval(index, index);
+            layerDataTable.getSelectionModel().setSelectionInterval(index, index);
         }  
     }//GEN-LAST:event_addLayerToTableButtonActionPerformed
 
     private void removeLayerFromTableButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeLayerFromTableButtonActionPerformed
-            int index = layerInfoTable.getSelectedRow();
-            if (index != -1)
+        if (layerDataTable.getRowCount() <= 2)
+        {
+            JOptionPane.showMessageDialog(null, 
+                        new JLabel("<html><div style=\"text-align: center;\">"
+                        + "Must have at least two layers for network."), 
+                          "Alert", JOptionPane.PLAIN_MESSAGE);
+        }
+        else 
+        {
+            int[] indices = layerDataTable.getSelectedRows();
+            int lastIndex = layerDataTable.getRowCount() - 1;
+            if (indices.length > layerDataTable.getRowCount() - 2)
             {
-                DefaultTableModel model = (DefaultTableModel) layerInfoTable.getModel();
-                model.removeRow(index);
-                model.fireTableRowsDeleted(index, index);
-                
-                // Update index values
-                for (int i = 0; i < layerInfoTable.getRowCount(); i++)
+                JOptionPane.showMessageDialog(null, 
+                        new JLabel("<html><div style=\"text-align: center;\">"
+                        + "Selected too many layers for deletion,<br/>"
+                        + "must have at least two layers for network."), 
+                          "Alert", JOptionPane.PLAIN_MESSAGE);
+            }
+            else if (indices.length != 0)
+            {
+                DefaultTableModel model = (DefaultTableModel) layerDataTable.getModel();
+                for (int i = indices.length - 1; i >= 0; i--)
                 {
-                    model.setValueAt(new Integer(i + 1), i, 0);
+                    int index = indices[i];
+                    if (index != lastIndex)
+                        model.removeRow(index);
+                    model.fireTableRowsDeleted(index, index);
                 }
+  
+                // Update index values
+                resetIndexColumn(model);
+                
                 model.fireTableDataChanged();
                 
-                numberOfLayersTextField.setText(String.valueOf(layerInfoTable.getRowCount()));
-            }
+                numberOfLayersTextField.setText(String.valueOf(layerDataTable.getRowCount()));
+            }        
+        }
     }//GEN-LAST:event_removeLayerFromTableButtonActionPerformed
 
     private void moveLayerUpTableButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_moveLayerUpTableButtonActionPerformed
-        int row = layerInfoTable.getSelectedRow();
-        DefaultTableModel model = (DefaultTableModel) layerInfoTable.getModel();
-        if (row != 0 && row != - 1)
+        int row = layerDataTable.getSelectedRow();
+        DefaultTableModel model = (DefaultTableModel) layerDataTable.getModel();
+        if (row != 0 && row != - 1 && row != layerDataTable.getRowCount() - 1)
         {
             model.moveRow(row, row, row - 1);
             
             // Update index values
-            for (int i = 0; i < layerInfoTable.getRowCount(); i++)
-            {
-                model.setValueAt(new Integer(i + 1), i, 0);
-            }
+            resetIndexColumn(model);
+            
             model.fireTableDataChanged();
             
-            layerInfoTable.getSelectionModel().setSelectionInterval(row - 1, row - 1);
+            layerDataTable.getSelectionModel().setSelectionInterval(row - 1, row - 1);
         }
     }//GEN-LAST:event_moveLayerUpTableButtonActionPerformed
 
     private void moveLayerDownTableButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_moveLayerDownTableButtonActionPerformed
-        int row = layerInfoTable.getSelectedRow();
-        DefaultTableModel model = (DefaultTableModel) layerInfoTable.getModel();
-        if (row != layerInfoTable.getRowCount() - 1 && row != - 1)
+        int row = layerDataTable.getSelectedRow();
+        DefaultTableModel model = (DefaultTableModel) layerDataTable.getModel();
+        if (row != layerDataTable.getRowCount() - 1 && row != - 1
+                && row != layerDataTable.getRowCount() - 2)
         {
             model.moveRow(row, row, row + 1);
             
             // Update index values
-            for (int i = 0; i < layerInfoTable.getRowCount(); i++)
-            {
-                model.setValueAt(new Integer(i + 1), i, 0);
-            }
+            resetIndexColumn(model);
+            
             model.fireTableDataChanged();
             
-            layerInfoTable.getSelectionModel().setSelectionInterval(row + 1, row + 1);
+            layerDataTable.getSelectionModel().setSelectionInterval(row + 1, row + 1);
         }
     }//GEN-LAST:event_moveLayerDownTableButtonActionPerformed
 
@@ -5295,6 +5371,56 @@ private void useSoloistCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//
         File file = openDialog.getSelectedFile();
         weightFileTextField.setText(file.getName());
     }//GEN-LAST:event_weightFileButtonActionPerformed
+
+    private void layerDataTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_layerDataTableMouseClicked
+        int row = layerDataTable.rowAtPoint(evt.getPoint());
+        int column = layerDataTable.columnAtPoint(evt.getPoint());
+        
+        if (row == -1 || column == -1)
+        {
+            ListSelectionModel model = layerDataTable.getSelectionModel();
+            model.removeSelectionInterval(0, layerDataTable.getRowCount());
+            model.removeSelectionInterval(0, layerDataTable.getColumnCount());
+        }
+    }//GEN-LAST:event_layerDataTableMouseClicked
+
+    private void resetNnetInstructionsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetNnetInstructionsButtonActionPerformed
+        nnetOutputTextField.setText("To generate a weight file:\n"
+                + "-Select training file\n-Weight file name with automatically be set\n"
+                + "--Weight file will save to personal settings folder, in vocab\n"
+                + "-Change the epoch limit if desired\n"
+                + "-Change the default learning rate if desired\n"
+                + "-Change the default MSE goal if desired\n"
+                + "-Change the default mode if desired\n"
+                + "-In the table to the right:\n"
+                + "--Set the layer size for each layer\n"
+                + "---Input (first) layer size determinted at runtime from input size\n"
+                + "---The last layer, for output, should be of size 1\n"
+                + "--Set the function for each layer\n"
+                + "--Reorder rows as desired. Empty rows will be ignored.\n"
+                + "-Press \"Generate Weight File\"\n\nTo load network:\n"
+                + "-Select the weight file, from the vocab folder, under \"Weight File\"\n"
+                + "-Press \"Load Weight\"\n-Network will be initialized per leadsheet\n\n"
+                + "To clear a weight file:\n-Select the weight file, from the vocab folder, "
+                + "under \"Weight File\"\n-Press \"Clear Weight File\"");
+    }//GEN-LAST:event_resetNnetInstructionsButtonActionPerformed
+
+    private void resetDefaultValuesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetDefaultValuesButtonActionPerformed
+        resetNnetInstructionsButtonActionPerformed(null);
+        trainingFileTextField.setText("");
+        epochLimitTextField.setText("20000");
+        learningRateTextField.setText("0.01");
+        mseGoalTextField.setText("0.01");
+        modeComboBox.setSelectedIndex(2);
+        weightFileTextField.setText("");
+        
+        DefaultTableModel model = (DefaultTableModel) layerDataTable.getModel();
+        model.setRowCount(0);
+        model.addRow(new Object[]{new Integer(1),  new Integer(64), "Logsig"});
+        model.addRow(new Object[]{new Integer(2),  new Integer(1), "Logsig"});
+        numberOfLayersTextField.setText("2");
+        
+    }//GEN-LAST:event_resetDefaultValuesButtonActionPerformed
   
     public void showCriticGrades()
     {
@@ -5354,6 +5480,21 @@ private void useSoloistCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//
     public void setCounterForCriticTextField(int count)
     {
         counterForCriticTextField.setText(String.valueOf(count));
+    }
+    
+    // Sets the name for the lick generator name text field
+    public void setSaveLickTextField(String text)
+    {
+        saveLickTF.setText(text);
+    }
+    
+    // Re-number all rows, reseting the index of each row
+    private void resetIndexColumn(DefaultTableModel model)
+    {
+        for (int i = 0; i < layerDataTable.getRowCount(); i++)
+        {
+            model.setValueAt(new Integer(i + 1), i, 0);
+        }
     }
     
                         /**
@@ -5453,8 +5594,8 @@ private void useSoloistCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//
     private javax.swing.JCheckBox initializeCriticOptionsCheckBox;
     private javax.swing.JLabel intervalLabel;
     private javax.swing.JTextField invertProbabilityField;
+    private javax.swing.JTable layerDataTable;
     private javax.swing.JScrollPane layerInfoScrollPane;
-    private javax.swing.JTable layerInfoTable;
     private javax.swing.JTextField leapProbField;
     private javax.swing.JLabel leapProbLabel;
     private javax.swing.JLabel learningRateLabel;
@@ -5483,8 +5624,8 @@ private void useSoloistCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//
     private javax.swing.JLabel mseGoalLabel;
     private javax.swing.JTextField mseGoalTextField;
     private javax.swing.JPanel neuralNetworkPanel;
-    private javax.swing.JTextArea nnetField;
-    private javax.swing.JPanel nnetOutputTextField;
+    private javax.swing.JPanel nnetOutputPanel;
+    private javax.swing.JTextArea nnetOutputTextField;
     private javax.swing.JPanel nnetParametersPanel;
     private javax.swing.JScrollPane nnetScrollPane;
     private javax.swing.JPanel nnetWeightGenerationPanel;
@@ -5504,6 +5645,8 @@ private void useSoloistCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//
     private javax.swing.JButton regenerateHeadDataBtn;
     private javax.swing.JMenuItem reloadGrammarMI1;
     private javax.swing.JButton removeLayerFromTableButton;
+    private javax.swing.JButton resetDefaultValuesButton;
+    private javax.swing.JButton resetNnetInstructionsButton;
     private javax.swing.JTextField restProbField;
     private javax.swing.JLabel restProbLabel;
     private javax.swing.JTextField reverseProbabilityField;
