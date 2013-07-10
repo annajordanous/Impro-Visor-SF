@@ -10859,7 +10859,8 @@ private void startRecording()
 
         return;
       } else if (midiManager.getInDevice().getDeviceInfo().getName().equals("IAC Bus 1") ||
-              midiManager.getInDevice().getDeviceInfo().getName().equals("Bus 1"))
+              midiManager.getInDevice().getDeviceInfo().getName().equals("Bus 1") ||
+              midiManager.getInDevice().getDeviceInfo().getName().equals("LoopBe Internal MIDI"))
         {
             isAudioInput = true;
             readyButtonActive = true;
