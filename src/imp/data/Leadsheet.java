@@ -683,7 +683,7 @@ static final int UNKNOWN = -1;
                           } // end switch
                         }
                       }
-                    if( !handled )
+                    if( !handled && subOb instanceof Polylist && ((Polylist)subOb).nonEmpty() )
                       {
                       ErrorLog.log(ErrorLog.WARNING,
                               "item in part not handled: " + subOb);
