@@ -229,7 +229,7 @@ static public int[][] downTranspositions =
   /*  5 */ {cb, gb, db, ab, eb, bb,  f,  c,  g,  d,  a,  e,  b, gb, db, ab, eb, bb,  f,  c,  g},
   /*  6 */ {bb,  f,  c,  g,  d,  a,  e, cb, gb, db, ab, eb, bb,  f,  c,  g,  d,  a,  e,  b, gb},
   /*  7 */ { a, fb, cb, gb, db, ab, eb, bb,  f,  c,  g,  d,  a,  e,  b, gb, db, ab, eb, bb,  f},
-  /*  8 */ {ab, eb, bb,  f,  c,  g,  d,  a,  e,  b, gb, db, ab, eb, bb,  f, bb,  g,  d,  a,  f},
+  /*  8 */ {ab, eb, bb,  f,  c,  g,  d,  a,  e,  b, gb, db, ab, eb, bb,  f,  c,  g,  d,  a,  f},
   /*  9 */ { g,  d,  a, fb, cb, gb, db, ab, eb, bb,  f,  c,  g,  d,  a,  e,  b, gb, db, ab, eb},
   /* 10 */ {gb, db, ab, eb, bb,  f,  c,  g,  d,  a,  e,  b, gb, db, ab, eb, bb,  f,  c,  g,  d},
   /* 11 */ { f,  c,  g,  d,  a, fb, cb, gb, db, ab, eb, bb,  f,  c,  g,  d,  a,  e,  b, gb, db}
