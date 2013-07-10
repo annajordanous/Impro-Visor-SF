@@ -71,4 +71,8 @@ public void remove(int i)
   {
     theList.remove(i);
   }
+
+public void move(int i1, int i2){
+    theList.add(i2,theList.remove(i1));
+}
 }
