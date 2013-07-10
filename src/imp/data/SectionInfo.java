@@ -420,6 +420,18 @@ public SectionRecord getSectionRecordByIndex(int n)
                 {
                 }
                 break;
+            case 3:
+                int barValue;
+                try {
+                    barValue = getSectionMeasure(row)+(int)(Integer.parseInt(aValue.toString()))-1;
+                    adjustEndOfSection(row,
+                                        barValue,
+                                        records.get(row).getIsPhrase(),
+                                        false);                                        
+                }
+                catch( NumberFormatException e)
+                {                
+                }
             default:
                 getSectionRecordByIndex(row).setColumn(aValue, column);
         }
