@@ -37,6 +37,7 @@ var highThreshold = 95;//Default
 var lowThreshold = 43;//Default
 var lowSlider, highSlider, lowTextVal, highTextVal;
 var lowDesc, highDesc;
+var readyWindow, readyButton;
 var pitchAndOnsets = \pitchAndOnsets;
 var lastTime, lastPitch, duration, started=false;//Note recognition variables
 ~restCheckOn = true; //Monitors trigger response
@@ -64,7 +65,7 @@ s.doWhenBooted({
 	c = [20, 120, 'lin', 1, 20].asSpec;
 
 	//Create window
-	w = Window.new("Set Note Ranges: MIDI", Rect(200,200,490,160));
+	w = Window.new("Set Note Ranges: MIDI", Rect(800,500,490,160));
 
 	//Create sliders and associated text
 	lowSlider = Slider.new(w, Rect(20, 30, 200, 30));
@@ -155,7 +156,8 @@ s.doWhenBooted({
 			MIDIClient.list;
 			~outports = MIDIClient.destinations.size;
 			MIDIClient.init;
-			~m_out_server = MIDIOut(1, MIDIClient.destinations.at(0).uid);
+			//~m_out_server = MIDIOut(1, MIDIClient.destinations.at(1).uid);
+			~m_out_server = MIDIOut.newByName("IAC Driver" , "IAC Bus 1", true);
 			~m_out_server.latency = 0;
 
 			//Create Responder
@@ -187,7 +189,6 @@ s.doWhenBooted({
 							//time.post;
 							//" freq: ".post;
 							//(msg[3].cpsmidi).postln;
-							//filter too high; too low
 							lastPitch = (msg[3]).cpsmidi;//Reset pitch
 							~m_out_server.noteOn(1, lastPitch, 64);
 							~restCheckOn = true;//Ok to start rests again
@@ -204,8 +205,19 @@ s.doWhenBooted({
 
 				}//End Function
 			).add;//End Responder
-		});
-	});
+		});//End routine
+
+		//Create ready popup
+		readyWindow = Window.new("SuperCollider is Ready", Rect(800, 500, 300, 100));
+		readyButton = Button.new(readyWindow, Rect(110,25,80,50)).states_([["OK"]]);
+
+		readyButton.action = {
+			readyWindow.close;
+		};
+
+		readyWindow.front;
+
+	});//End onClose
 
 })//End doWhenBooted
 )//End server asgt block

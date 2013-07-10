@@ -103,11 +103,12 @@ public class Notate
 
   MidiImport midiImport;
 
-  PitchExtractor extractor;
-  //# of slots per audio capture interval
-  private int captureInterval;
+  PitchExtractor extractor; 
+  private int captureInterval;//# of slots per audio capture interval
   java.util.Timer captureTimer;
   CaptureTimerTask task;
+  private boolean isAudioInput;
+  private boolean readyButtonActive;
 
   static int LEADSHEET_EDITOR_ROWS = 1000;
 
@@ -10795,35 +10796,38 @@ public AudioSettings getAudioSettings(){
 
 private void startRecording()
   {
-    boolean isAudioInput = false;//If doing real audio input
+    isAudioInput = false;//If doing real audio input
     
     turnStepInputOff();
 
-    if(useAudioInputMI.isSelected())
-        {//@TODO phase this out
-          startAudioCapture();
-      }
-    else if( midiManager.getInDevice() == null )
+    if( midiManager.getInDevice() == null )
       {
         ErrorLog.log(ErrorLog.COMMENT, "No valid MIDI in devices found.  \n\nPlease check your device connection and the MIDI Preferences. It is possible another program is currently using this device.");
 
         return;
-      }
-    else if(midiManager.getInDevice().getDeviceInfo().getName().equals("Bus 1"))
-        {//@TODO Bus 1 not necessarily correct, only for Mac                                                                                    
-        isAudioInput = true;
-        SCHandler handler = new SCHandler();
-        handler.openSC();
+      } else if (midiManager.getInDevice().getDeviceInfo().getName().equals("IAC Bus 1") ||
+              midiManager.getInDevice().getDeviceInfo().getName().equals("Bus 1"))
+        {
+            isAudioInput = true;
+            readyButtonActive = true;
+            SCHandler handler = new SCHandler();
+            handler.openSC();
 
-        //Wait until handler's dialog box oks continuing
-        //@TODO tie into preference box button
-        try{
-          Thread.sleep(2000);
-            //handler.wait();
-        } catch (Exception e){
-            e.printStackTrace();
+            // Open preferences panel, switch to audio. Tab + accompanying
+            // button waits until user clicks button, then starts the helper.
+            changePrefTab(audioBtn, audioPreferences);
+            showPreferencesDialog();
+        } else {
+            startRecordingHelper();//below
         }
-        }
+  }
+
+
+/**
+ * Takes care of midiSynth and midiRecorder material for startRecording().
+ * Called separately from startRecording() so SuperCollider has time to run.
+ */
+private void startRecordingHelper(){
 
     playBtn.setEnabled(false);
 
@@ -23037,7 +23041,11 @@ public void setKconstantSlider(double value)
 
     private void superColliderReadyButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_superColliderReadyButtonActionPerformed
     {//GEN-HEADEREND:event_superColliderReadyButtonActionPerformed
-        // TODO add your handling code here:
+        if (readyButtonActive) {//Only if audio recording
+            preferencesDialog.setVisible(false);      
+            startRecordingHelper();//Start the necessary recording
+        }
+        readyButtonActive = false;
     }//GEN-LAST:event_superColliderReadyButtonActionPerformed
 
     private void reAnalyzeMIAction(java.awt.event.ActionEvent evt)//GEN-FIRST:event_reAnalyzeMIAction
