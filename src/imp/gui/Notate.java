@@ -12050,7 +12050,7 @@ public class SectionTableModel extends DefaultTableModel
 
     boolean[] canEdit = new boolean [] {
               //phrase, start, end  , bars , style, options
-                true  , true , true, false, false, true
+                true  , true , true, true, false, true
             };
     int [] columnWidths = new int [] {
                 30    , 25   , 25   , 20   , 110  , 45
