@@ -467,6 +467,15 @@ public class Score implements Constants, Serializable {
         if (index >= 0 && index < partList.size())
             partList.remove(index);
     }
+    
+    /**
+     * Moves part from specified index 1 to specified index 2
+     * @param index1    the index of the Part to be moved
+     * @param index2    destination of moved Part
+     */
+    public void movePart(int index1, int index2){
+        partList.move(index1,index2);
+    }
 
     /**
      * Sets the metre of the Score

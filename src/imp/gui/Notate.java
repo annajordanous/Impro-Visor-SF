@@ -1963,6 +1963,10 @@ public class Notate
         maxPitchSpinner1 = new javax.swing.JSpinner();
         pitchRangePresetComboBox1 = new javax.swing.JComboBox();
         jLabel6 = new javax.swing.JLabel();
+        tabPopupMenu = new javax.swing.JPopupMenu();
+        addTabPopupMenuItem = new javax.swing.JMenuItem();
+        delTabPopupMenuItem = new javax.swing.JMenuItem();
+        delTabCheckBox = new javax.swing.JCheckBox();
         toolbarPanel = new javax.swing.JPanel();
         standardToolbar = new javax.swing.JToolBar();
         newBtn = new javax.swing.JButton();
@@ -2082,7 +2086,24 @@ public class Notate
                 stopPlayMIActionPerformed(evt);
             }
         });
-        scoreTab = new javax.swing.JTabbedPane();
+        scoreTab = new javax.swing.JTabbedPane() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                if(tabDragged){
+                    int currentIndex = indexAtLocation(currentMouseLocation.x,currentMouseLocation.y);
+                    if(currentIndex != -1){
+                        Rectangle bounds = scoreTab.getBoundsAt(currentIndex);
+                        Graphics2D g2d = (Graphics2D)g;
+                        Stroke oldStroke = g2d.getStroke();
+                        g2d.setStroke(new BasicStroke(3));
+                        g2d.setColor(Color.GREEN);
+                        g2d.drawRect(bounds.x,bounds.y,bounds.width,bounds.height);
+                        g2d.setStroke(oldStroke);
+                    }
+                }
+            }
+        };
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         aboutMI = new javax.swing.JMenuItem();
@@ -6958,6 +6979,29 @@ public class Notate
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 0);
         audioPreferencesOld.add(jLabel6, gridBagConstraints);
 
+        addTabPopupMenuItem.setText("Add Chorus");
+        addTabPopupMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addTabPopupMenuItemActionPerformed(evt);
+            }
+        });
+        tabPopupMenu.add(addTabPopupMenuItem);
+
+        delTabPopupMenuItem.setText("Delete Chorus");
+        delTabPopupMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                delTabPopupMenuItemActionPerformed(evt);
+            }
+        });
+        tabPopupMenu.add(delTabPopupMenuItem);
+
+        delTabCheckBox.setText("Do not show this message again.");
+        delTabCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                delTabCheckBoxActionPerformed(evt);
+            }
+        });
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setIconImage((new ImageIcon(getClass().getResource("/imp/gui/graphics/icons/trumpetsmall.png"))).getImage());
@@ -6988,11 +7032,11 @@ public class Notate
             }
         });
         addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                formFocusLost(evt);
-            }
             public void focusGained(java.awt.event.FocusEvent evt) {
                 formFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                formFocusLost(evt);
             }
         });
         addKeyListener(new java.awt.event.KeyAdapter() {
@@ -8080,16 +8124,27 @@ public class Notate
         scoreTab.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         scoreTab.setOpaque(true);
         scoreTab.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                scoreTabMouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 mouseEnteredTabPanel(evt);
             }
             public void mousePressed(java.awt.event.MouseEvent evt) {
-                scoreTabMousePressedHandler(evt);
+                scoreTabMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                scoreTabMouseReleased(evt);
             }
         });
         scoreTab.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 scoreTabStateChanged(evt);
+            }
+        });
+        scoreTab.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                scoreTabMouseDragged(evt);
             }
         });
         scoreTab.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -8146,12 +8201,12 @@ public class Notate
 
         openRecentLeadsheetMenu.setText("Open Recent Leadsheet (same window)");
         openRecentLeadsheetMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuDeselected(javax.swing.event.MenuEvent evt) {
-            }
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 populateRecentFileMenu(evt);
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -8167,12 +8222,12 @@ public class Notate
 
         openRecentLeadsheetNewWindowMenu.setText("Open Recent Leadsheet (new window)");
         openRecentLeadsheetNewWindowMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuDeselected(javax.swing.event.MenuEvent evt) {
-            }
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 populateRecentLeadsheetNewWindow(evt);
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -9137,10 +9192,8 @@ public class Notate
         reAnalyzeMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_SEMICOLON, 0));
         reAnalyzeMI.setText("Re-Analyze");
         reAnalyzeMI.setToolTipText("Open road map and analyze entire chorus.\n");
-        reAnalyzeMI.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        reAnalyzeMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 reAnalyzeMIAction(evt);
             }
         });
@@ -9161,12 +9214,12 @@ public class Notate
         windowMenu.setMnemonic('W');
         windowMenu.setText("Window");
         windowMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuDeselected(javax.swing.event.MenuEvent evt) {
-            }
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 windowMenuMenuSelected(evt);
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -9199,12 +9252,12 @@ public class Notate
             }
         });
         notateGrammarMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuDeselected(javax.swing.event.MenuEvent evt) {
-            }
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 notateGrammarMenuMenuSelected(evt);
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
         });
         notateGrammarMenu.addActionListener(new java.awt.event.ActionListener() {
@@ -16532,6 +16585,7 @@ public void addTab()
     MelodyPart mp = new MelodyPart(length);
     mp.setInstrument(score.getPart(0).getInstrument());
     addChorus(mp);
+    cm.changedSinceLastSave(true);
   }
 
  public void addChorus(MelodyPart mp)
@@ -21799,15 +21853,23 @@ private void newVoicingNameTFActionPerformed(java.awt.event.ActionEvent evt) {//
 }
 
 private void delTabBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delTabBtnActionPerformed
+    deleteTab();
+}//GEN-LAST:event_delTabBtnActionPerformed
+
+private boolean hideDelTabDialog;
+
+public void deleteTab(){
     // initialize the option pane
 
     Object[] options =
       {
         "Yes", "No"
       };
+    
+    Object[] messages = { "Do you wish to delete the current chorus?\nThis can't be undone.\n" , delTabCheckBox };
 
-    int choice = JOptionPane.showOptionDialog(this,
-        "Do you wish to delete the current chorus?\n\nThis can't be undone.",
+    int choice = hideDelTabDialog ? 0 : JOptionPane.showOptionDialog(this,
+        messages,
         "Delete Current Chorus?", JOptionPane.YES_NO_OPTION,
         JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
@@ -21818,6 +21880,8 @@ private void delTabBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
             && scoreTab.getTabCount() > 1 )
       {
         score.delPart(currTabIndex);
+        partList.remove(currTabIndex);
+        cm.changedSinceLastSave(true);
 
         setupArrays();
 
@@ -21825,7 +21889,7 @@ private void delTabBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
 
         setItemStates();
       }
-}//GEN-LAST:event_delTabBtnActionPerformed
+}
 
 private void pauseMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pauseMIActionPerformed
 pauseBtnActionPerformed(null);
@@ -22492,10 +22556,14 @@ private void generationLeadSpinnerChanged(javax.swing.event.ChangeEvent evt)//GE
     lickgenFrame.setGap(Double.parseDouble(generationGapSpinner.getValue().toString()));
   }//GEN-LAST:event_generationLeadSpinnerChanged
 
-private void scoreTabMousePressedHandler(java.awt.event.MouseEvent evt)//GEN-FIRST:event_scoreTabMousePressedHandler
-  {//GEN-HEADEREND:event_scoreTabMousePressedHandler
+private void scoreTabMousePressed(java.awt.event.MouseEvent evt)//GEN-FIRST:event_scoreTabMousePressed
+  {//GEN-HEADEREND:event_scoreTabMousePressed
       requestFocusInWindow();
-  }//GEN-LAST:event_scoreTabMousePressedHandler
+      if(evt.isPopupTrigger()){
+            delTabPopupMenuItem.setEnabled(scoreTab.getTabCount() > 1);
+            tabPopupMenu.show(evt.getComponent(),evt.getX(),evt.getY());
+      }
+  }//GEN-LAST:event_scoreTabMousePressed
 
 private void sendSetBankCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_sendSetBankCheckBoxActionPerformed
   {//GEN-HEADEREND:event_sendSetBankCheckBoxActionPerformed
@@ -22989,6 +23057,10 @@ public void setKconstantSlider(double value)
         // TODO add your handling code here:
     }//GEN-LAST:event_adviceTabbedPaneMouseReleased
 
+    private void scoreTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_scoreTabMouseClicked
+        
+    }//GEN-LAST:event_scoreTabMouseClicked
+
     private void audioInputResolutionComboBox1Changed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_audioInputResolutionComboBox1Changed
     {//GEN-HEADEREND:event_audioInputResolutionComboBox1Changed
         // TODO add your handling code here:
@@ -23048,6 +23120,49 @@ public void setKconstantSlider(double value)
         readyButtonActive = false;
     }//GEN-LAST:event_superColliderReadyButtonActionPerformed
 
+    private Point currentMouseLocation;
+    private void scoreTabMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_scoreTabMouseDragged
+        tabDragged = true;
+        currentMouseLocation = evt.getPoint();
+        scoreTab.repaint();
+    }//GEN-LAST:event_scoreTabMouseDragged
+
+    private boolean tabDragged;
+    private void scoreTabMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_scoreTabMouseReleased
+        if(evt.isPopupTrigger()){
+            delTabPopupMenuItem.setEnabled(scoreTab.getTabCount() > 1);
+            tabPopupMenu.show(evt.getComponent(),evt.getX(),evt.getY());
+        } else if(tabDragged){
+            destinationTabIndex = scoreTab.indexAtLocation(evt.getX(),evt.getY());
+            moveTab();
+        }
+        tabDragged = false;
+        scoreTab.repaint();
+    }//GEN-LAST:event_scoreTabMouseReleased
+
+    private void addTabPopupMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addTabPopupMenuItemActionPerformed
+        addTab();
+    }//GEN-LAST:event_addTabPopupMenuItemActionPerformed
+
+    private void delTabPopupMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delTabPopupMenuItemActionPerformed
+        deleteTab();
+    }//GEN-LAST:event_delTabPopupMenuItemActionPerformed
+
+    private void delTabCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delTabCheckBoxActionPerformed
+        hideDelTabDialog = delTabCheckBox.isSelected();
+    }//GEN-LAST:event_delTabCheckBoxActionPerformed
+
+    private int destinationTabIndex;
+    public void moveTab(){
+        if(destinationTabIndex >= 0 && currTabIndex != destinationTabIndex) {
+            partList.move(currTabIndex,destinationTabIndex);
+            score.movePart(currTabIndex, destinationTabIndex);
+            cm.changedSinceLastSave(true);
+            setupArrays();
+            scoreTab.setSelectedIndex(destinationTabIndex);
+        }
+    }
+    
     private void reAnalyzeMIAction(java.awt.event.ActionEvent evt)//GEN-FIRST:event_reAnalyzeMIAction
     {//GEN-HEADEREND:event_reAnalyzeMIAction
         reAnalyze();
@@ -24652,6 +24767,7 @@ preferencesAcceleratorMI.setEnabled(true);
     private javax.swing.JButton acceptTruncate;
     private javax.swing.JMenuItem addRestMI;
     private javax.swing.JButton addTabBtn;
+    private javax.swing.JMenuItem addTabPopupMenuItem;
     protected javax.swing.JFrame adviceFrame;
     private javax.swing.JMenuItem advicePMI;
     private javax.swing.JList adviceScrollListBricks;
@@ -24826,6 +24942,8 @@ preferencesAcceleratorMI.setEnabled(true);
     private javax.swing.JPanel defaultsTab;
     private javax.swing.JButton delSectionButton;
     private javax.swing.JButton delTabBtn;
+    private javax.swing.JCheckBox delTabCheckBox;
+    private javax.swing.JMenuItem delTabPopupMenuItem;
     private javax.swing.JButton deleteVoicingCancelButton;
     private javax.swing.JDialog deleteVoicingDialog;
     private javax.swing.JLabel deleteVoicingLabel;
@@ -25249,6 +25367,7 @@ preferencesAcceleratorMI.setEnabled(true);
     private javax.swing.JMenuItem stylePrefsMI;
     private javax.swing.JTabbedPane styleTabs;
     private javax.swing.JButton superColliderReadyButton;
+    private javax.swing.JPopupMenu tabPopupMenu;
     private javax.swing.JLabel tempoLabel;
     private javax.swing.JPanel tempoPanel;
     private javax.swing.JTextField tempoSet;
