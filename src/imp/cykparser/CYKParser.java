@@ -474,104 +474,118 @@ public class CYKParser
         
     }
         
-    /** findNonterminal
-     * findNontermimal looks at every single possible combination of 
-     * nonterminals from previously filled cells and sees if there is a 
-     * production which will generate those two nonterminals. If so, it adds
-     * that new single symbol to the current cell as a TreeNode.
-     * @param row: the row number in the table currently being filled
-     * @param col: the column number in the table currently being filled
-     */
-    private void findNonterminal(int row, int col)
-    {
-        cykTable[row][col] = new LinkedList<TreeNode>();
-        
-        LinkedList<TreeNode> overlaps = new LinkedList<TreeNode>();
-        
-        // We make sure that the code loops through the different possible cell
-        // pairs, starting at the leftmost and topmost.
-        for(int index = 0; index < (col - row); index++) {
-            assert(row+index < this.chords.size());
-            
-            
-            // We loop through the TreeNodes in each cell, with iter1 being
-            // for the cell in the same row and iter2 being for the cell in the
-            // same column as the current cell.
-            ListIterator<TreeNode> iter1 = cykTable[row][row+index].listIterator();
-            
-            while(iter1.hasNext()) {
+/**
+ * findNonterminal findNontermimal looks at every single possible combination of
+ * nonterminals from previously filled cells and sees if there is a production
+ * which will generate those two nonterminals. If so, it adds that new single
+ * symbol to the current cell as a TreeNode.
+ *
+ * @param row: the row number in the table currently being filled
+ * @param col: the column number in the table currently being filled
+ */
+    
+private void findNonterminal(int row, int col)
+  {
+    cykTable[row][col] = new LinkedList<TreeNode>();
+
+    LinkedList<TreeNode> overlaps = new LinkedList<TreeNode>();
+
+    // We make sure that the code loops through the different possible cell
+    // pairs, starting at the leftmost and topmost.
+    for( int index = 0; index < (col - row); index++ )
+      {
+        assert (row + index < this.chords.size());
+
+
+        // We loop through the TreeNodes in each cell, with iter1 being
+        // for the cell in the same row and iter2 being for the cell in the
+        // same column as the current cell.
+        ListIterator<TreeNode> iter1 = cykTable[row][row + index].listIterator();
+
+        while( iter1.hasNext() )
+          {
+            try
+              {
                 // Have gotten ConcurrentModificationException here. Not sure why. RK
                 TreeNode symbol1 = iter1.next();
-                
-                if (!symbol1.isSectionEnd() && !symbol1.isOverlap())
-                {
-                    ListIterator<TreeNode> iter2 = cykTable[row+index+1][col].listIterator();
 
-                    while(iter2.hasNext()) {
+                if( !symbol1.isSectionEnd() && !symbol1.isOverlap() )
+                  {
+                    ListIterator<TreeNode> iter2 = cykTable[row + index + 1][col].listIterator();
+
+                    while( iter2.hasNext() )
+                      {
                         // possible to get ConcurrentModificationException here!
                         // during fillTable()
                         TreeNode symbol2 = iter2.next();
-                        if (!symbol2.isOverlap()) {
-                        // We check every rule against each pair of symbols.
-                        ListIterator<BinaryProduction> iterRule = nonterminalRules.listIterator();
+                        if( !symbol2.isOverlap() )
+                          {
+                            // We check every rule against each pair of symbols.
+                            ListIterator<BinaryProduction> iterRule = nonterminalRules.listIterator();
 
-                        while (iterRule.hasNext()) { 
-                            BinaryProduction rule = iterRule.next();
+                            while( iterRule.hasNext() )
+                              {
+                                BinaryProduction rule = iterRule.next();
 
-                            // checkProduction returns a long describing the key
-                            // of the resulting brick if rule applies to symbol1
-                            // and symbol2, or -1 if no such brick can be made.
-                            AbstractProduction.MatchValue match;
-                            match = rule.checkProduction(symbol1, symbol2);
-                            // If newKey comes up with an appropriate key distance,
-                            // make a new TreeNode for the current two TreeNodes.
-                            if (!(match.chordDiff < 0)) {
+                                // checkProduction returns a long describing the key
+                                // of the resulting brick if rule applies to symbol1
+                                // and symbol2, or -1 if no such brick can be made.
+                                AbstractProduction.MatchValue match;
+                                match = rule.checkProduction(symbol1, symbol2);
+                                // If newKey comes up with an appropriate key distance,
+                                // make a new TreeNode for the current two TreeNodes.
+                                if( !(match.chordDiff < 0) )
+                                  {
 
-                                // The cost becomes larger for the final TreeNode if
-                                // either the first or second TreeNode uses a chord
-                                // substitute
-                                long cost = rule.getCost();
-                                if (symbol1.isSub())
-                                  {
-                                    cost += SUB_COST;
-                                  }
-                                if (symbol2.isSub())
-                                  {
-                                    cost += SUB_COST;
-                                  }
-                                if (symbol2.isOverlap())
-                                  {
-                                    cost += TreeNode.OVERLAP_COST;
-                                  }
+                                    // The cost becomes larger for the final TreeNode if
+                                    // either the first or second TreeNode uses a chord
+                                    // substitute
+                                    long cost = rule.getCost();
+                                    if( symbol1.isSub() )
+                                      {
+                                        cost += SUB_COST;
+                                      }
+                                    if( symbol2.isSub() )
+                                      {
+                                        cost += SUB_COST;
+                                      }
+                                    if( symbol2.isOverlap() )
+                                      {
+                                        cost += TreeNode.OVERLAP_COST;
+                                      }
 
-                                TreeNode newNode = new TreeNode(rule.getHead(),
-                                        rule.getType(), rule.getMode(), 
-                                        symbol1, symbol2, cost, match.chordDiff);
-                                // Have gotten NullPointerException here. RK
-                                if( cykTable[row][col] != null )
-                                  {
-                                    cykTable[row][col].add(newNode);
-                                  }
+                                    TreeNode newNode = new TreeNode(rule.getHead(),
+                                                                    rule.getType(), rule.getMode(),
+                                                                    symbol1, symbol2, cost, match.chordDiff);
+                                    // Have gotten NullPointerException here. RK
+                                    if( cykTable[row][col] != null )
+                                      {
+                                        cykTable[row][col].add(newNode);
+                                      }
 
-                                // Additionally, if this block could overlap with 
-                                // another later one, then we store a TreeNode 
-                                // with a 0-duration final chord to put in the 
-                                // table later.
-                                if (!(rule.getType().equals("On-Off")) && 
-                                        !(rule.getType().equals("Off-On")) &&
-                                        !(symbol2.isSectionEnd()) &&
-                                        !(symbol2.isOverlap()) &&
-                                        !(symbol2.getDuration() == 0))
-                                  {
-                                    overlaps.add(newNode.overlapCopy());
+                                    // Additionally, if this block could overlap with 
+                                    // another later one, then we store a TreeNode 
+                                    // with a 0-duration final chord to put in the 
+                                    // table later.
+                                    if( !(rule.getType().equals("On-Off"))
+                                            && !(rule.getType().equals("Off-On"))
+                                            && !(symbol2.isSectionEnd())
+                                            && !(symbol2.isOverlap())
+                                            && !(symbol2.getDuration() == 0) )
+                                      {
+                                        overlaps.add(newNode.overlapCopy());
+                                      }
                                   }
-                            }
-                        }
-                        }
-                    }
-                }
-            }
-        }
+                              }
+                          }
+                      }
+                  }
+              }
+            catch( ConcurrentModificationException e )
+              {
+              }
+          }
+      }
         
         LinkedList<TreeNode> unaries = new LinkedList<TreeNode>();
         
