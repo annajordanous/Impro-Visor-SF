@@ -48,7 +48,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
-import polya.Formatting;
 import polya.Tokenizer;
 
 
@@ -2577,7 +2576,10 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
 
 
     private void preferencesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_preferencesMenuItemActionPerformed
-        if(!roadMapTextEntry.isFocusOwner()) activatePreferencesDialog();
+        if(!roadMapTextEntry.isFocusOwner())
+          {
+            activatePreferencesDialog();
+          }
     }//GEN-LAST:event_preferencesMenuItemActionPerformed
 
     private void prefDialogCancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prefDialogCancelButtonActionPerformed
@@ -2624,7 +2626,9 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     private void formComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentResized
         javax.swing.border.TitledBorder border = (javax.swing.border.TitledBorder)featureWidthSlider.getBorder();
         if(border.getTitle().endsWith(featureWidthSuffix))
+          {
             scaleToWindow();
+          }
     }//GEN-LAST:event_formComponentResized
 
     private void libraryTreeTreeCollapsed(javax.swing.event.TreeExpansionEvent evt) {//GEN-FIRST:event_libraryTreeTreeCollapsed
@@ -2651,7 +2655,9 @@ private void adjustForTreeChange()
         if(notate.getAutoCreateRoadMap())
             ;
         else
+          {
             notate.roadMapThisAnalyze();
+          }
 }//GEN-LAST:event_fileStepBackBtnActionPerformed
 
     private void fileStepForwardBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileStepForwardBtnActionPerformed
@@ -2659,7 +2665,9 @@ private void adjustForTreeChange()
         if(notate.getAutoCreateRoadMap())
             ;
         else
+          {
             notate.roadMapThisAnalyze();
+          }
 }//GEN-LAST:event_fileStepForwardBtnActionPerformed
 
     private void dialogKeyComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dialogKeyComboBoxActionPerformed
@@ -2693,7 +2701,9 @@ private void adjustForTreeChange()
             preferencesDialog.setVisible(false);
             setRoadMapInfo();
         } else
-            ErrorLog.log(ErrorLog.COMMENT, "Metre bottom must be 1, 2, 4 or 8");    
+            {
+              ErrorLog.log(ErrorLog.COMMENT, "Metre bottom must be 1, 2, 4 or 8");
+            }    
       }
     private void prefDialogAcceptButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prefDialogAcceptButton1ActionPerformed
        acceptPreferences();                                                     
@@ -2861,7 +2871,7 @@ private void tempoSetMousePressed(java.awt.event.MouseEvent evt)//GEN-FIRST:even
 
 private void tempoSetActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_tempoSetActionPerformed
   {//GEN-HEADEREND:event_tempoSetActionPerformed
-     setTempo((int)Notate.intFromTextField(tempoSet, Notate.MIN_TEMPO, Notate.MAX_TEMPO, (int)notate.getDefaultTempo()));   
+     setTempo(Notate.intFromTextField(tempoSet, Notate.MIN_TEMPO, Notate.MAX_TEMPO, (int)notate.getDefaultTempo()));   
 }//GEN-LAST:event_tempoSetActionPerformed
 
 private void tempoSetFocusGained(java.awt.event.FocusEvent evt)//GEN-FIRST:event_tempoSetFocusGained
@@ -2885,7 +2895,7 @@ private void tempoSliderStateChanged(javax.swing.event.ChangeEvent evt)//GEN-FIR
        }
      int value = tempoSlider.getValue();
      value = 2 * Math.round(value / 2);
-     setTempo((int) value);
+     setTempo(value);
      //setPlaybackManagerTime(); 
 }//GEN-LAST:event_tempoSliderStateChanged
 
@@ -3087,7 +3097,7 @@ public void setVolumeSlider(int volume)
         }
       catch( java.lang.OutOfMemoryError e)
         {
-        ErrorLog.log(ErrorLog.SEVERE, "Out of memory. It will not be possible to continue.");
+        ErrorLog.log(ErrorLog.SEVERE, "Out of memory. It might not be possible to continue.");
         }
     }
     
@@ -3098,8 +3108,8 @@ public void setVolumeSlider(int volume)
         
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("root");
         
-        ArrayList<String> categoryNames = new ArrayList(Arrays.asList(brickLibrary.getTypes()));
-        ArrayList<DefaultMutableTreeNode> categories = new ArrayList();
+        ArrayList<String> categoryNames = new ArrayList<String>(Arrays.asList(brickLibrary.getTypes()));
+        ArrayList<DefaultMutableTreeNode> categories = new ArrayList<DefaultMutableTreeNode>();
         
         for(String name : categoryNames)
           {
@@ -3117,15 +3127,23 @@ public void setVolumeSlider(int volume)
             node = new DefaultMutableTreeNode(name);
             
             if(variants.size() > 1)
+              {
                 for( Brick variant : variants)
-                    node.add(new DefaultMutableTreeNode(variant.getVariant()));
+                    {
+                      node.add(new DefaultMutableTreeNode(variant.getVariant()));
+                    }
+              }
              
             int ind = categoryNames.indexOf(type);
             
             if(ind != -1)
+              {
                 categories.get(ind).add(node);
+              }
             else
+              {
                 ErrorLog.log(ErrorLog.WARNING, type + " is not in type list.");
+              }
         }
         
         for(DefaultMutableTreeNode type : categories)
@@ -3204,8 +3222,10 @@ public void setVolumeSlider(int volume)
         //in relevant actions
         if(name.equals("Transpose") &&
                 roadMapHistory.getLast().getName().equals("Transpose"))
-            return; //Multiple transpositions should be the same action
-                    //ISSUE: changing multiple bricks in render undoes them all
+          {
+            return;
+          } //Multiple transpositions should be the same action
+            //ISSUE: changing multiple bricks in render undoes them all
         RoadMapSnapShot ss = new RoadMapSnapShot(name, roadMapPanel.getRoadMap());
         roadMapHistory.add(ss);
         roadMapFuture.clear();
@@ -3467,7 +3487,7 @@ public void setVolumeSlider(int volume)
     public void addBrickFromPreview()
     {
         saveState("Drop");
-        ArrayList<Block> block = new ArrayList();
+        ArrayList<Block> block = new ArrayList<Block>();
         Block preview = previewPanel.getBlock();
         if( preview == null )
           {
@@ -3499,9 +3519,13 @@ public void setVolumeSlider(int volume)
                 Brick brick;
                 
                 if(pathLength > 3 )
+                  {
                     brick = brickLibrary.getBrick(parent.toString(),node.toString(), 0);
+                  }
                 else
+                  {
                     brick = brickLibrary.getBrick(node.toString(), 0);
+                  }
                 
                 //setDurationChoices(brick);
                 
@@ -3523,7 +3547,9 @@ public void setVolumeSlider(int volume)
     {
         String key = (String)keyComboBox.getSelectedItem();
         if(BrickLibrary.isValidKey(key))
+          {
             previewPanel.setKey( key );
+          }
     }
     
     /** Sets the duration of the brick in the preview pane to the key chosen by
@@ -3631,9 +3657,13 @@ public void setVolumeSlider(int volume)
         initLibraryTree();
         libraryTree.setModel(libraryTreeModel);
         if (scaledBrick.getVariant().isEmpty())
+          {
             addToLibraryTree(scaledBrick.getName());
+          }
         else
+          {
             addToLibraryTree(scaledBrick.getName(), scaledBrick.getVariant());
+          }
     }
     
     /** Adds a brick name to the library tree */
@@ -3883,11 +3913,15 @@ public void setParent(Notate notate)
      */
     public void playSelection() {
         if (roadMapPanel.getNumBlocks() < 1)
+          {
             return;
+          }
         
         boolean nothingSelected = !roadMapPanel.hasSelection();
         if (nothingSelected)
+          {
             selectAllBricks();
+          }
 
         ChordPart chordPart = new ChordPart();
         chordPart.setStyle(getStyle());
@@ -3904,9 +3938,13 @@ public void setParent(Notate notate)
         setPlaying(MidiPlayListener.Status.PLAYING, 0);
          
         if( loopToggleButton.isSelected() )
+          {
             notate.playAscore(score, style.getName(), -1);
+          }
         else
+          {
             notate.playAscore(score, style.getName(), 0);
+          }
         
         if( nothingSelected )
           {
@@ -3948,9 +3986,13 @@ public void setParent(Notate notate)
     public void setPlaying(boolean status)
     {
         if(status)
+          {
             setPlaying(MidiPlayListener.Status.PLAYING,0);
+          }
         else
+          {
             setPlaying(MidiPlayListener.Status.STOPPED,0);
+          }
     }
     
     /** Returns the playback status */
@@ -3971,11 +4013,15 @@ public void setParent(Notate notate)
     {
         brickDictionaryFrame.setVisible(false); //TODO somehow make only one window
         if(isPlaying())
+          {
             stopPlayingSelection();
+          }
         WindowRegistry.unregisterWindow(this);
 
         if( notate != null )
+          {
             notate.disestablishRoadMapFrame();
+          }
 
         disposeBuffers();
         dispose();
@@ -4088,10 +4134,10 @@ public void setParent(Notate notate)
     /** Returns the tempo */
     public int getTempo()
     {
-        return (int)Notate.intFromTextField(tempoSet, 
-                                            Notate.MIN_TEMPO, 
-                                            Notate.MAX_TEMPO, 
-                                            (int)notate.getDefaultTempo());
+        return Notate.intFromTextField(tempoSet, 
+                                       Notate.MIN_TEMPO, 
+                                       Notate.MAX_TEMPO, 
+                                       (int)notate.getDefaultTempo());
     }
 
     /** Returns the style */ 
@@ -4179,7 +4225,9 @@ public void setParent(Notate notate)
         javax.swing.border.TitledBorder border = (javax.swing.border.TitledBorder)featureWidthSlider.getBorder();
         String title = featureWidthTitle;
         if(value)
+          {
             title += " " + featureWidthSuffix;
+          }
         border.setTitle(title);
     }
     

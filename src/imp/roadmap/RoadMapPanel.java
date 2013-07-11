@@ -124,6 +124,7 @@ public class RoadMapPanel extends JPanel {
         removeBlocks();
         this.roadMap = roadMap;
         graphicMap = makeBricks(roadMap.getBlocks());
+        rebuildRoadMap();
     }
     
 
@@ -200,7 +201,9 @@ public class RoadMapPanel extends JPanel {
         roadMap.add(block);
         graphicMap.add(new GraphicBrick(block, settings));
         if(selectBlocks)
+          {
             selectBrick(roadMap.size() - 1);
+          }
     }
     
     /** Adds a list of blocks to the roadmap */
