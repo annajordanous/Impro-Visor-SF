@@ -476,6 +476,11 @@ public class ChordBlock extends Block {
     {
         return Polylist.list(Brick.CHORD_KEYWORD, name, duration);
     }
+    
+    public Polylist toRoadmapSave()
+      {
+        return toPolylist();
+      }
 
     /**
      * Make a ChordBlock from a Polylist
