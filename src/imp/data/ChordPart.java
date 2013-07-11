@@ -43,7 +43,7 @@ import polya.Polylist;
 */
 public class ChordPart extends Part implements Serializable{
     
-    Polylist roadmapPoly = Polylist.nil;
+    Polylist roadmapPoly = Polylist.list(RoadMap.ROADMAP_KEYWORD);
     
     RoadMap roadmap = null;
 
@@ -70,7 +70,9 @@ public class ChordPart extends Part implements Serializable{
         super(size);
         Trace.log(3, "creating new chord part of size " + size);
         if(size != 0)
+          {
             slots.set(0, new Chord(size));
+          }
         volume = DEFAULT_CHORD_VOLUME;
     }
     
@@ -150,7 +152,9 @@ public class ChordPart extends Part implements Serializable{
      */
     public Chord getChord(int slotIndex) {
         if( slotIndex < 0 || slotIndex >= size )
+          {
           return null;
+          }
         if (getUnit(slotIndex) instanceof Chord){
             return (Chord)getUnit(slotIndex);
         }
@@ -177,15 +181,21 @@ public class ChordPart extends Part implements Serializable{
      */
     public int getCurrentChordIndex(int slotIndex) {
         if(getChord(slotIndex) != null)
+          {
             return slotIndex;
+          }
         else
+          {
             return getPrevIndex(slotIndex);
+    }
     }
    
     public Chord getNextUniqueChord(int slotIndex) {
         int nextUniqueChordIndex = getNextUniqueChordIndex(slotIndex);
         if( nextUniqueChordIndex < 0 )
+          {
           return null;
+          }
         return getChord(nextUniqueChordIndex);
     }
     
@@ -225,7 +235,9 @@ public int getNextUniqueChordIndex(int slotIndex)
     public int getPrevUniqueChordIndex(int slotIndex)
     {
         if(slotIndex < 0 || slotIndex >= size)
+          {
             return -1;
+          }
         int currentChordIndex = getCurrentChordIndex(slotIndex);
         Chord currentChord = getChord(currentChordIndex);
         Chord prevChord = currentChord;
@@ -410,12 +422,18 @@ public long render(MidiSequence seq,
         // Complete with the remainder of the chords.
 
         for(int i = first+1; i <= last; i++)
+          {
             if(getUnit(i) != null)
+                {
                 newPart.addUnit(getUnit(i).copy());
+                }
+          }
 
         // We don't want the accompaniment to play past the end
         if(newPart.size() > last - first + 1)
+          {
             newPart.setSize(last - first + 1);
+          }
         
         newPart.setSectionInfo(sectionInfo.extract(first,last,newPart));
         
@@ -497,9 +515,10 @@ return sectionInfo.toBlockList();
  * @param roadmap 
  */
 
-public void toRoadMapFrame(RoadMapFrame roadmap)
+public void toRoadMapFrame(RoadMapFrame roadmapFrame)
   {
-    roadmap.addBlocks(0, toBlockList());
+    roadmapFrame.addBlocks(0, toBlockList());
+    this.roadmap = roadmapFrame.getRoadMap();
   }
 
 
@@ -556,17 +575,21 @@ public void addFromRoadMapFrame(RoadMapFrame roadmap)
     public void setRoadmapPoly(Polylist roadmapPoly)
     {
         this.roadmapPoly = roadmapPoly;
-        //System.out.println("The original roadmap poly is " + Formatting.prettyFormat(roadmapPoly));
+        if( roadmapPoly.nonEmpty() && roadmapPoly.first() instanceof Polylist )
+          {
+          roadmap = RoadMap.fromPolylist(roadmapPoly);
+          }
     }
     
     public Polylist getRoadmapPoly()
     {
-        return roadmapPoly;
+        return roadmap.toPolylist();
     }
     
     public RoadMap getRoadMap()
       {
-        roadmap = new RoadMap(roadmapPoly);
+       //System.out.println("Getting Roadmap Poly as " + Formatting.prettyFormat(roadmapPoly));
+        //roadmap = new RoadMap(roadmapPoly);
         //System.out.println("The reconstructed roadmap is " + Formatting.prettyFormat(roadmap.toPolylist()));
         return roadmap;
       }

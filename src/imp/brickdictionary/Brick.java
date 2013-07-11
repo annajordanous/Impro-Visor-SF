@@ -38,10 +38,11 @@ import polya.*;
 public class Brick extends Block {
 
     private static final Long DEFAULT_SUBRICK_DURATION = new Long(1);
+    private static final String DEFAULT_VARIANT = "";
     
-    private ArrayList<Block> subBlocks; // Components of a Brick
-    private String type;                // The class of Brick (e.g. "Cadence")
-    private String variant = "";        // The variant of a Brick name, if it
+    private ArrayList<Block> subBlocks;       // Components of a Brick
+    private String type;                      // The class of Brick (e.g. "Cadence")
+    private String variant = DEFAULT_VARIANT; // The variant of a Brick name, if it
                                         // shares a name with another Brick
     
     public static String BLOCKS_KEYWORD = "blocks";
@@ -288,10 +289,7 @@ public Brick(String brickName,
             else {
                 newBlock = new ChordBlock((ChordBlock) block);
             }
-            if( !block.isOverlap() )
-              {
-              duration += block.getDuration();
-              }
+            duration += block.getDuration();
             subBlocks.add(newBlock); 
         }
         endValue = getSectionEnd();
@@ -397,7 +395,7 @@ public Brick(String brickName,
           {
             return null;
           }
-        if( subBlocks.isEmpty() )
+        if( subBlocks.size() == 0 )
           {
             return null;
           }
@@ -464,6 +462,7 @@ public Brick(String brickName,
                     String brickKeyString = pList.first().toString();
                     pList = pList.rest();
                     Object durObj = pList.first();
+                    pList = pList.rest();
                     boolean starFlag = isStar(durObj);
                     if(durObj instanceof Long || starFlag)
                     {
@@ -568,6 +567,7 @@ public Brick(String brickName,
                     else
                       {
                       durObj = pList.first();
+                      pList = pList.rest();
                       }
                     
                     // when all data members are initialized, find the correct 
@@ -676,6 +676,7 @@ public Brick(String brickName,
                     String chordName = pList.first().toString();
                     pList = pList.rest();
                     Object durObj = pList.first();
+                    pList = pList.rest();
                     boolean starFlag = isStar(durObj);
                     if(durObj instanceof Long || starFlag)
                     {
@@ -735,6 +736,7 @@ public Brick(String brickName,
      */
     private void updateDuration() {
         int dur = 0;
+        ArrayList<Block> subBlocks = this.getSubBlocks();
 
         if( subBlocks == null )
           {
@@ -743,7 +745,7 @@ public Brick(String brickName,
 
         for(Block b : subBlocks)
         {
-          if( b != null && !b.isOverlap())
+          if( b != null )
             {
             dur += b.getDuration();
             }
@@ -1066,10 +1068,14 @@ public Brick(String brickName,
     {
       PolylistBuffer buffer = new PolylistBuffer();
       buffer.append(BRICK_KEYWORD);
-      buffer.append(dashed(name));
-      buffer.append(BrickLibrary.keyNumToName(key));
-      buffer.append(type);
-      buffer.append(duration);
+      buffer.append(Polylist.list("name", dashed(name)));
+      buffer.append(Polylist.list("variant", variant));
+      buffer.append(Polylist.list("type", type));
+      buffer.append(Polylist.list("key", BrickLibrary.keyNumToName(key)));
+      buffer.append(Polylist.list("mode", mode));
+      buffer.append(Polylist.list("duration", duration));
+      buffer.append(Polylist.list("overlap", overlap));
+      buffer.append(Polylist.list("end", endValue));
       buffer.append(subBlocksAsPolylist());
       return buffer.toPolylist();
     }
@@ -1082,22 +1088,46 @@ public Brick(String brickName,
     public static Block fromPolylist(Polylist blockPolylist)
       {
         // Need to populate sub-blocks before calling constructor!
+        Polylist temp;
+        temp = blockPolylist.assoc("name");
         
+        String name = (String)temp.second();
+        temp = blockPolylist.assoc("variant");
+        String variant = temp.rest().nonEmpty()? (String)temp.second() : DEFAULT_VARIANT;
+        
+        temp = blockPolylist.assoc("type");
+        String type = (String)temp.second();
+        
+        temp = blockPolylist.assoc("key");
+        String key = (String)temp.second();
+        
+        temp = blockPolylist.assoc("duration");
+        int duration = ((Number)temp.second()).intValue();
+        
+        temp = blockPolylist.assoc("overlap");
+        boolean overlap = temp.second().equals("true");
+        
+        temp = blockPolylist.assoc("end");
+        int endValue = ((Number)temp.second()).intValue();
+        
+        temp = blockPolylist.assoc("mode");
+        String mode = (String)temp.second();
+        
+        temp = blockPolylist.assoc("blocks");
         ArrayList<Block> blocks = new ArrayList<Block>();
-        Polylist polyBlocks = ((Polylist)blockPolylist.sixth()).rest();
-        Block block = null;
+        
+        Polylist polyBlocks = temp.rest();
         while( polyBlocks.nonEmpty() )
           {
             Polylist polyBlock = (Polylist)polyBlocks.first();
-            block = Block.fromPolylist(polyBlock);
+            Block block = Block.fromPolylist(polyBlock);
             blocks.add(block);
             polyBlocks = polyBlocks.rest();
           }
         
-        Brick brick = new Brick((String)blockPolylist.second(), // name
-                                BrickLibrary.keyNameToNum((String)blockPolylist.third()), // key
-                                (String)blockPolylist.fourth(), // type
-                                blocks); // blocks
+        Brick brick = new Brick(name, variant, BrickLibrary.keyNameToNum(key), type, blocks, mode);
+        brick.setOverlap(overlap);
+        brick.setSectionEnd(endValue);
         
         // Duration is not needed currently
         // int duration = ((Number)blockPolylist.fifth()).intValue();
@@ -1116,7 +1146,7 @@ public Brick(String brickName,
       {
       PolylistBuffer buffer = new PolylistBuffer();
       buffer.append(BLOCKS_KEYWORD);
-      for( Block subBlock: getSubBlocks() )
+      for( Block subBlock: subBlocks )
         {
           buffer.append(subBlock.toPolylist());
         }

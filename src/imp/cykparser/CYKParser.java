@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2011 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2011-2013 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -13,18 +13,17 @@
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
  *
-
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
 package imp.cykparser;
-import java.util.*;
-import imp.brickdictionary.*;
 import imp.ImproVisor;
+import imp.brickdictionary.*;
 import imp.util.ErrorLog;
 import java.io.*;
+import java.util.*;
 import polya.*;
 
 /** CYKParser
@@ -35,11 +34,8 @@ import polya.*;
  * @author Xanda Schofield
  */
 
-
-
 public class CYKParser
 {
-
     // Constants used by the CYKParser
     public static final String DICTIONARY_NAME = "My.substitutions";
     public static final String INVISIBLE = "Invisible";
@@ -261,8 +257,10 @@ public class CYKParser
             // defined, then the Brick will be rejected in parsing, as it could
             // not be displayed or found by parsing.
             if (size < 1)
+              {
                 ErrorLog.log(ErrorLog.WARNING, "Error: brick of size " + size, 
                         true);
+              }
             
             // Unary case: single-Block bricks are added to a separate list of 
             // UnaryProductions, processed after a table cell is filled by the
@@ -347,7 +345,9 @@ public class CYKParser
         // Create nodes for the terminals, and put them into the table.
         int size = this.chords.size();
         for (int i=0; i < size; i++)
+          {
             findTerminal(i);
+          }
         
         // Iterate through the table by degrees parallel to the diagonal.
         // We use the column where each diagonal starts to determine where
@@ -385,12 +385,14 @@ public class CYKParser
                 
                     minVals[row][col] = new TreeNode();
 
-                    ListIterator node = cykTable[row][col].listIterator();
+                    ListIterator<TreeNode> node = cykTable[row][col].listIterator();
                     while (node.hasNext()) {
-                        TreeNode nextNode = (TreeNode) node.next();
+                        TreeNode nextNode = node.next();
                     if (nextNode.toShow() && 
                         nextNode.lessThan(minVals[row][col]))
+                          {
                             minVals[row][col] = nextNode;
+                          }
                  
                     }
                 }
@@ -453,6 +455,7 @@ public class CYKParser
         LinkedList<TreeNode> unaries = new LinkedList<TreeNode>();
         
         for (TreeNode t : cykTable[index][index])
+          {
             for (UnaryProduction rule : terminalRules)
             {
                 AbstractProduction.MatchValue match;
@@ -466,6 +469,7 @@ public class CYKParser
                     unaries.add(newNode);
                 }
             }
+          }
         cykTable[index][index].addAll(unaries);
         
     }
@@ -480,7 +484,6 @@ public class CYKParser
      */
     private void findNonterminal(int row, int col)
     {
-        
         cykTable[row][col] = new LinkedList<TreeNode>();
         
         LinkedList<TreeNode> overlaps = new LinkedList<TreeNode>();
@@ -494,27 +497,26 @@ public class CYKParser
             // We loop through the TreeNodes in each cell, with iter1 being
             // for the cell in the same row and iter2 being for the cell in the
             // same column as the current cell.
-            ListIterator iter1 = cykTable[row][row+index].listIterator();
+            ListIterator<TreeNode> iter1 = cykTable[row][row+index].listIterator();
             
             while(iter1.hasNext()) {
                 // Have gotten ConcurrentModificationException here. Not sure why. RK
-                TreeNode symbol1 = (TreeNode)iter1.next();
+                TreeNode symbol1 = iter1.next();
                 
                 if (!symbol1.isSectionEnd() && !symbol1.isOverlap())
                 {
-                    ListIterator iter2 = cykTable[row+index+1][col].listIterator();
+                    ListIterator<TreeNode> iter2 = cykTable[row+index+1][col].listIterator();
 
                     while(iter2.hasNext()) {
                         // possible to get ConcurrentModificationException here!
                         // during fillTable()
-                        TreeNode symbol2 = (TreeNode)iter2.next();
+                        TreeNode symbol2 = iter2.next();
                         if (!symbol2.isOverlap()) {
                         // We check every rule against each pair of symbols.
-                        ListIterator iterRule = nonterminalRules.listIterator();
+                        ListIterator<BinaryProduction> iterRule = nonterminalRules.listIterator();
 
                         while (iterRule.hasNext()) { 
-                            BinaryProduction rule = 
-                                    (BinaryProduction) iterRule.next();
+                            BinaryProduction rule = iterRule.next();
 
                             // checkProduction returns a long describing the key
                             // of the resulting brick if rule applies to symbol1
@@ -530,11 +532,17 @@ public class CYKParser
                                 // substitute
                                 long cost = rule.getCost();
                                 if (symbol1.isSub())
+                                  {
                                     cost += SUB_COST;
+                                  }
                                 if (symbol2.isSub())
+                                  {
                                     cost += SUB_COST;
+                                  }
                                 if (symbol2.isOverlap())
+                                  {
                                     cost += TreeNode.OVERLAP_COST;
+                                  }
 
                                 TreeNode newNode = new TreeNode(rule.getHead(),
                                         rule.getType(), rule.getMode(), 
@@ -554,7 +562,9 @@ public class CYKParser
                                         !(symbol2.isSectionEnd()) &&
                                         !(symbol2.isOverlap()) &&
                                         !(symbol2.getDuration() == 0))
+                                  {
                                     overlaps.add(newNode.overlapCopy());
+                                  }
                             }
                         }
                         }
@@ -570,6 +580,7 @@ public class CYKParser
         // with all UnaryProductions to see if additional TreeNodes should 
         // be added for unary Bricks. Overlaps are not processed for these.
         for (TreeNode t : cykTable[row][col])
+          {
             for (UnaryProduction rule : terminalRules)
             {
                 AbstractProduction.MatchValue match;
@@ -583,6 +594,7 @@ public class CYKParser
                     unaries.add(newNode);
                 }
             }
+          }
         cykTable[row][col].addAll(unaries);
         // TreeNodes in overlaps, due to the zero duration of the last chord, 
         // justify one fewer chords than those in [row][col]. They are placed
@@ -640,6 +652,7 @@ public class CYKParser
         String output = new String();
         
         for (int i = 0; i < cykTable.length; i++)
+          {
             for (int j = i; j < cykTable.length; j++)
             {
                 output += "(" + i + ", " + j + ")\n";
@@ -653,17 +666,20 @@ public class CYKParser
                     // adding each of the major child TreeNodes of the current
                     // TreeNode
                     if (!t.isTerminal())
+                      {
                         output += ": " + t.getFirstChild().getSymbol() + " in " + 
                                   BrickLibrary.keyNumToName(t.getFirstChild().getKey())
                                   + " (" + t.getFirstChild().getDuration() + ")"
                                   + ", " + t.getSecondChild().getSymbol() + " in " +
                                   BrickLibrary.keyNumToName(t.getSecondChild().getKey())
                                   + " (" + t.getSecondChild().getDuration() + ")";
+                      }
                     
                     output += "\n";
                 }         
                 output += "----------------------\n";
             }
+          }
         return output;
     }
     // end of CYKParser class
