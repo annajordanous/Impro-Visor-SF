@@ -1089,7 +1089,7 @@ public Brick(String brickName,
       buffer.append(Polylist.list("duration", duration));
       buffer.append(Polylist.list("overlap", overlap));
       buffer.append(Polylist.list("end", endValue));
-      buffer.append(subBlocksAsPolylist());
+      buffer.append(subBlocksToRoadmapSave());
       return buffer.toPolylist();
     }  
 
@@ -1152,13 +1152,13 @@ public Brick(String brickName,
       }
 
 
-    public Polylist subBlocksAsPolylist()
+    public Polylist subBlocksToRoadmapSave()
       {
       PolylistBuffer buffer = new PolylistBuffer();
       buffer.append(BLOCKS_KEYWORD);
       for( Block subBlock: subBlocks )
         {
-          buffer.append(subBlock.toPolylist());
+          buffer.append(subBlock.toRoadmapSave());
         }
       return buffer.toPolylist();
       }
