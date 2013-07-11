@@ -25935,7 +25935,7 @@ public void roadMapThisAnalyze()
     setMode(Mode.ROADMAP);
     setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
     establishRoadMapFrame();
-    score.toRoadMapFrame(roadmapFrame);  // ensureRoadmap(); //
+    ensureRoadmap(); //score.toRoadMapFrame(roadmapFrame);  // 
     roadmapFrame.setRoadMapTitle(getTitle());
     roadmapFrame.updatePhiAndDelta(getPhiStatus(),getDeltaStatus());
     roadmapFrame.makeVisible(true);
@@ -25949,12 +25949,12 @@ public void ensureRoadmap()
     //System.out.println("roadmapPoly is " + chordProg.getRoadmapPoly() );
     RoadMap roadmap = chordProg.getRoadMap();
    
-    if( roadmap != null )
-      {
-        System.out.println("Reusing saved roadmap ");
-        roadmapFrame.rawSetRoadMap(roadmap);
-      }
-    else
+//    if( roadmap != null )
+//      {
+//        System.out.println("Reusing saved roadmap ");
+//        roadmapFrame.rawSetRoadMap(roadmap);
+//      }
+//    else
       {
         score.toRoadMapFrame(roadmapFrame);//reAnalyze();
        }
@@ -25963,18 +25963,6 @@ public void ensureRoadmap()
 public void reAnalyze()
   {
     roadMapThisAnalyze();
-//      System.out.println("Recomputing roadmap");
-////      if( roadmapFrame == null )
-////        {
-////          roadMapThisAnalyze();
-////  }
-////      else
-//        {
-//        roadmapFrame.reset();
-//        score.toRoadMapFrame(roadmapFrame);
-//        roadmapFrame.analyze();
-//        roadmapFrame.makeVisible(true);
-//        }
   }
 
 

@@ -241,8 +241,14 @@ public class RoadMap {
     {
         ArrayList<Block> bricks = new ArrayList<Block>(blocks);
         blocks.clear();
-        keyMap.clear();
-        joins.clear();
+        if( keyMap != null )
+          {
+            keyMap.clear();
+          }
+        if( joins != null )
+          {
+            joins.clear();
+          }
         return bricks;
     }
     
