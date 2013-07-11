@@ -78,12 +78,8 @@ public class RoadMapPanel extends JPanel {
     
     /** Section breaks list. Only used for keymapping. Possibly unideal. */
     private ArrayList<Long> sectionBreaks = new ArrayList<Long>();
-    
-    /** Things needed to store StringBuilder version Roadmap.
-    *  Used with recurSubBlocks */
-
+ 
     public ArrayList<Block> allBlocks = new ArrayList<Block>();
-    public ArrayList<Block> temp = new ArrayList<Block>();
     
     /** Keeps track of graphical settings for the roadmap */
     RoadMapSettings settings;
@@ -122,6 +118,15 @@ public class RoadMapPanel extends JPanel {
         roadMap.process();
     }
     
+    public void rawSetRoadMap(RoadMap roadMap)
+    {
+        //System.out.println("setting RoadMap and reanalyzing " + Formatting.prettyFormat(roadMap.toPolylist()));
+        removeBlocks();
+        this.roadMap = roadMap;
+        graphicMap = makeBricks(roadMap.getBlocks());
+    }
+    
+
     /** Returns the number of blocks in the roadmap */
     protected int getNumBlocks()
     {
@@ -224,6 +229,7 @@ protected void addBlocks(ArrayList<Block> blocks, Boolean selectBlocks)
     {
         addBlocks(ind, blocks, false);
     }
+    
     /** Adds a list of blocks at the specified position
      * @param ind Index to insert the blocks
      * @param blocks Blocks to be inserted
@@ -1014,7 +1020,7 @@ protected void addBlocks(ArrayList<Block> blocks, Boolean selectBlocks)
         }
         
 
-        drawKeyMap();
+        //drawKeyMap();
     }
     
     /** Draws the given bricks at the given point */
@@ -1192,4 +1198,8 @@ protected void addBlocks(ArrayList<Block> blocks, Boolean selectBlocks)
         g.drawImage(buffer, 0, 0, null);
     }
     
+    public void reset()
+      {
+        removeBlocks();
+      }
 }

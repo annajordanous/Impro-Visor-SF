@@ -4320,7 +4320,7 @@ public void analyze(boolean showJoinsOnCompletion)
         analyzeSelection(showJoinsOnCompletion);
       }
     
-  notate.getScore().getChordProg().setRoadmapPoly(roadMapPanel.getRoadmapPoly());
+  //notate.getScore().getChordProg().setRoadmapPoly(roadMapPanel.getRoadmapPoly());
   }
 
 
@@ -4511,5 +4511,20 @@ public boolean getDeltaStatus(){
 public void setRoadMap(RoadMap roadmap)
   {
     roadMapPanel.setRoadMap(roadmap);
+  }
+
+public void rawSetRoadMap(RoadMap roadmap)
+  {
+    roadMapPanel.rawSetRoadMap(roadmap);
+}
+
+public void analyze()
+  {
+    analyzeInBackground(settings.showJoins);
+  }
+
+public void reset()
+  {
+    roadMapPanel.reset();
   }
 }

@@ -192,7 +192,9 @@ abstract public class Block {
      */
     public void transpose(long diff) {
         if (key >= 0)
+          {
             key = (key + diff)%12;
+    }
     }
     /** flattenBlock
      * Returns the individual chords that constitute this Block
@@ -257,9 +259,13 @@ abstract public class Block {
      */
     public void setSectionEnd(boolean value) {
         if(value)
+          {
             endValue = SECTION_END;
+          }
         else
+          {
             endValue = NO_END;
+    }
     }
     
     /** setPhraseEnd
@@ -268,9 +274,13 @@ abstract public class Block {
      */
     public void setPhraseEnd(boolean value) {
         if(value)
+          {
             endValue = PHRASE_END;
+          }
         else
+          {
             endValue = NO_END;
+    }
     }
    
     /** isChord

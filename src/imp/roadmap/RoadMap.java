@@ -27,6 +27,7 @@ import imp.brickdictionary.KeySpan;
 import imp.cykparser.PostProcessor;
 import java.util.ArrayList;
 import java.util.List;
+import polya.Formatting;
 import polya.Polylist;
 import polya.PolylistBuffer;
 
@@ -80,21 +81,58 @@ public class RoadMap {
      * Construct RoadMap from Polylist representation
      * @param polylist 
      */
-    public RoadMap(Polylist polylist)
+//    public RoadMap(Polylist polylist)
+//      {
+//        blocks = new ArrayList<Block>();
+//        System.out.println("Constructing RoadMap from saved information "); // + Formatting.prettyFormat(polylist));
+//        // Get the list of blocks
+//        Polylist found = polylist.assoc(BLOCKS_KEYWORD);
+//        if( found == null || found.isEmpty() )
+//          {
+//            System.out.println("Unable to construct RoadMap from saved information");
+//          }
+//        else
+//          {
+//          Polylist blockList = found.rest();
+//          //System.out.println("blockList = " + blockList);
+//          while( blockList.nonEmpty() )
+//            {
+//            Polylist blockPolylist = (Polylist)blockList.first();
+//            // Here we need to make a Block from blockPoly.
+//            Block block = Block.fromPolylist(blockPolylist);
+//            blocks.add(block);
+//            blockList = blockList.rest();
+//            }
+//          process();
+//          System.out.println("RoadMap constructed from saved information");
+//          }
+//      }
+    
+    public static RoadMap fromPolylist(Polylist polylist)
       {
-        //System.out.println("constructing RoadMap from Polylist " + polylist);
+        RoadMap roadmap = new RoadMap();
+        roadmap.blocks = new ArrayList<Block>();
+        //System.out.println("Constructing RoadMap from saved information "); // + Formatting.prettyFormat(polylist));
         // Get the list of blocks
-        Polylist blockList = polylist.assoc(BLOCKS_KEYWORD).rest();
-        blocks = new ArrayList<Block>();
+        Polylist found = polylist.assoc(BLOCKS_KEYWORD);
+        if( found == null || found.isEmpty() )
+          {
+            //System.out.println("Unable to construct RoadMap from saved information");
+            return null;
+          }
+        Polylist blockList = found.rest();
         //System.out.println("blockList = " + blockList);
         while( blockList.nonEmpty() )
           {
-            Polylist blockPolylist = (Polylist)blockList.first();
-            // Here we need to make a Block from blockPoly.
-            Block block = Block.fromPolylist(blockPolylist);
-            add(block);
-            blockList = blockList.rest();
+          Polylist blockPolylist = (Polylist)blockList.first();
+          // Here we need to make a Block from blockPoly.
+          Block block = Block.fromPolylist(blockPolylist);
+          roadmap.blocks.add(block);
+          blockList = blockList.rest();
           }
+        roadmap.process();
+        //System.out.println("RoadMap constructed from saved information");
+        return roadmap;
       }
     
     /**
@@ -381,23 +419,23 @@ public class RoadMap {
         
         buffer.append(innerBuffer.toPolylist().cons(BLOCKS_KEYWORD));
         
-        innerBuffer = new PolylistBuffer();
-        
-        for( String s: joins )
-          {
-            innerBuffer.append(Brick.dashed(s));
-          }
-        
-        buffer.append(innerBuffer.toPolylist().cons(JOINS_KEYWORD));
-        
-        innerBuffer = new PolylistBuffer();
-        
-        for( KeySpan k: keyMap )
-          {
-            innerBuffer.append(k.toPolylist());
-          }
-        
-        buffer.append(innerBuffer.toPolylist().cons(KEYMAP_KEYWORD));
+//        innerBuffer = new PolylistBuffer();
+//        
+//        for( String s: joins )
+//          {
+//            innerBuffer.append(Brick.dashed(s));
+//          }
+//        
+//        buffer.append(innerBuffer.toPolylist().cons(JOINS_KEYWORD));
+//        
+//        innerBuffer = new PolylistBuffer();
+//        
+//        for( KeySpan k: keyMap )
+//          {
+//            innerBuffer.append(k.toPolylist());
+//          }
+//        
+//        buffer.append(innerBuffer.toPolylist().cons(KEYMAP_KEYWORD));
   
         return buffer.toPolylist();
       }

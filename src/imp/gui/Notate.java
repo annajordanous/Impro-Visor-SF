@@ -38,6 +38,7 @@ import imp.data.*;
 import imp.data.musicXML.ChordDescription;
 import imp.lickgen.LickGen;
 import imp.neuralnet.*;
+import imp.roadmap.RoadMap;
 import imp.roadmap.RoadMapFrame;
 import imp.util.*;
 import java.awt.*;
@@ -25934,7 +25935,7 @@ public void roadMapThisAnalyze()
     setMode(Mode.ROADMAP);
     setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
     establishRoadMapFrame();
-    score.toRoadMapFrame(roadmapFrame);
+    score.toRoadMapFrame(roadmapFrame);  // ensureRoadmap(); //
     roadmapFrame.setRoadMapTitle(getTitle());
     roadmapFrame.updatePhiAndDelta(getPhiStatus(),getDeltaStatus());
     roadmapFrame.makeVisible(true);
@@ -25942,14 +25943,39 @@ public void roadMapThisAnalyze()
     staveRequestFocus();
   }
 
+// currently disconnected
+public void ensureRoadmap()
+  {
+    //System.out.println("roadmapPoly is " + chordProg.getRoadmapPoly() );
+    RoadMap roadmap = chordProg.getRoadMap();
+   
+    if( roadmap != null )
+      {
+        System.out.println("Reusing saved roadmap ");
+        roadmapFrame.rawSetRoadMap(roadmap);
+      }
+    else
+      {
+        score.toRoadMapFrame(roadmapFrame);//reAnalyze();
+       }
+  }
+    
 public void reAnalyze()
   {
-    if( roadmapFrame != null && chordProg.getRoadMap() != null )
-      {
-      roadmapFrame.setRoadMap(chordProg.getRoadMap());
-      }
-    
+      System.out.println("Recomputing roadmap");
+//      if( roadmapFrame == null )
+//        {
+//          roadMapThisAnalyze();
+//  }
+//      else
+        {
+        roadmapFrame.reset();
+        score.toRoadMapFrame(roadmapFrame);
+        roadmapFrame.analyze();
+        roadmapFrame.makeVisible(true);
+        }
   }
+
 
 /**
  * Create an empty road map tied to the current Notate frame.

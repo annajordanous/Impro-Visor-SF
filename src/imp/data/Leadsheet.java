@@ -22,14 +22,12 @@ package imp.data;
 
 import imp.Constants;
 import imp.Constants.StaveType;
-import imp.lickgen.Tension;
 import imp.util.ErrorLog;
 import imp.util.ErrorLogWithResponse;
 import imp.util.Preferences;
 import imp.util.Trace;
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.util.Arrays;
 import polya.Polylist;
 import polya.Tokenizer;
 
