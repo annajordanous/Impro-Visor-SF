@@ -1706,7 +1706,7 @@ public void saveLeadsheet(BufferedWriter out, String type) throws IOException
       }
     else
     {
-        out.write(Formatting.prettyFormat(4, ((ChordPart)this).getRoadmapPoly()));
+        out.write(Formatting.prettyFormat(4, ((ChordPart)this).getRoadMap() == null ? "" : ((ChordPart)this).getRoadmapPoly()));
         out.newLine();
     }
 
