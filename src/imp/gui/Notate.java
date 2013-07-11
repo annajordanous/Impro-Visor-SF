@@ -25962,18 +25962,19 @@ public void ensureRoadmap()
     
 public void reAnalyze()
   {
-      System.out.println("Recomputing roadmap");
-//      if( roadmapFrame == null )
+    roadMapThisAnalyze();
+//      System.out.println("Recomputing roadmap");
+////      if( roadmapFrame == null )
+////        {
+////          roadMapThisAnalyze();
+////  }
+////      else
 //        {
-//          roadMapThisAnalyze();
-//  }
-//      else
-        {
-        roadmapFrame.reset();
-        score.toRoadMapFrame(roadmapFrame);
-        roadmapFrame.analyze();
-        roadmapFrame.makeVisible(true);
-        }
+//        roadmapFrame.reset();
+//        score.toRoadMapFrame(roadmapFrame);
+//        roadmapFrame.analyze();
+//        roadmapFrame.makeVisible(true);
+//        }
   }
 
 
