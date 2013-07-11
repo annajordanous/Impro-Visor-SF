@@ -1066,6 +1066,19 @@ public Brick(String brickName,
     @Override
     public Polylist toPolylist()
     {
+        return Polylist.list(BRICK_KEYWORD, dashed(name), 
+                             BrickLibrary.keyNumToName(key), duration);
+    }
+
+    /** toRoadmapSave is used to create a Polylist for saving to a RoadMap
+     * This is NOT the same as the Polylist usedd to save in the dictionary.
+     * Returns a Polylist representation of a Brick.
+     * @return a Polylist containing the Brick's contents
+     */
+    
+    @Override
+    public Polylist toRoadmapSave()
+    {
       PolylistBuffer buffer = new PolylistBuffer();
       buffer.append(BRICK_KEYWORD);
       buffer.append(Polylist.list("name", dashed(name)));
@@ -1078,10 +1091,10 @@ public Brick(String brickName,
       buffer.append(Polylist.list("end", endValue));
       buffer.append(subBlocksAsPolylist());
       return buffer.toPolylist();
-    }
+    }  
 
     /**
-     * Make a Brick from a Polylist
+     * Make a Brick from a Polylist in the external representation of a RoadMap
      * @param blockPolylist
      * @return 
      */
@@ -1128,18 +1141,15 @@ public Brick(String brickName,
         Brick brick = new Brick(name, variant, BrickLibrary.keyNameToNum(key), type, blocks, mode);
         brick.setOverlap(overlap);
         brick.setSectionEnd(endValue);
-        
-        // Duration is not needed currently
-        // int duration = ((Number)blockPolylist.fifth()).intValue();
-        
+        // Above, we are targeting this constructor:
+        //
+        //   public Brick(String brickName, 
+        //                 long brickKey, 
+        //                 String type, 
+        //                 List<Block> brickList)
+         
         return brick;
       }
-// Above, we are targeting this constructor:
-//
-//   public Brick(String brickName, 
-//                 long brickKey, 
-//                 String type, 
-//                 List<Block> brickList)
 
 
     public Polylist subBlocksAsPolylist()

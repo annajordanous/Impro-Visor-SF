@@ -315,7 +315,9 @@ abstract public class Block {
      */
 
     public abstract Polylist toPolylist();
-    
+
+    public abstract Polylist toRoadmapSave();
+
     /**
      * Make a Block from a Polylist
      * @param blockPolylist

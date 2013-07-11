@@ -414,7 +414,7 @@ public class RoadMap {
         
         for( Block b: blocks )
           {
-            innerBuffer.append(b.toPolylist());
+            innerBuffer.append(b.toRoadmapSave());
           }
         
         buffer.append(innerBuffer.toPolylist().cons(BLOCKS_KEYWORD));
