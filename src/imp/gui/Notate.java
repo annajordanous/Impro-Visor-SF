@@ -1388,11 +1388,28 @@ public class Notate
     }
 
   private String windowTitle;
+  private String nameOfOpenFile;
 
+  public void setFileName(String name){
+      nameOfOpenFile = name;
+  }
+  
   @Override
   public void setTitle(String title)
     {
-    super.setTitle(windowTitlePrefix + (title.trim().equals("") ? "" : windowTitlePrefixSeparator) + title.trim());
+        String setTitle = windowTitlePrefix;
+        boolean titleExists = !title.trim().equals("");
+        boolean fileNameExists = nameOfOpenFile != null;
+        setTitle += (titleExists || fileNameExists ?
+                windowTitlePrefixSeparator
+                + (fileNameExists ? nameOfOpenFile : "")
+                + (titleExists ?
+                    (fileNameExists ? " (" : "")
+                    + title.trim()
+                    + (fileNameExists ? ")" : "")
+                : "")
+        : "" );
+    super.setTitle(setTitle);
 
     if( score != null )
       {
@@ -18637,6 +18654,8 @@ public MidiSynth getMidiSynth2()
     String selected = saveAWT.getFile();
 
     ImproVisor.setLastLeadsheetFileStem(saveAWT.getFile());
+    nameOfOpenFile = saveAWT.getFile();
+    setTitle(score.getTitle());
 
     String dir = saveAWT.getDirectory();
 
@@ -18700,9 +18719,12 @@ public boolean saveAsLeadsheetSwing()
           {
             noErrors = saveLeadsheet(saveLSFC.getSelectedFile(), score);
 
-            setTitle(score.getTitle());
 
             setSavedLeadsheet(saveLSFC.getSelectedFile());
+            
+            ImproVisor.setLastLeadsheetFileStem(selectedFile.getName());
+            nameOfOpenFile = selectedFile.getName();
+            setTitle(selectedFile.getName());
           }
         else
           {
@@ -18714,12 +18736,14 @@ public boolean saveAsLeadsheetSwing()
 
             noErrors = saveLeadsheet(newFile, score);
 
-            setTitle(score.getTitle());
-
             setSavedLeadsheet(newFile);
+            
+            ImproVisor.setLastLeadsheetFileStem(newFile.getName());
+            nameOfOpenFile = newFile.getName();
+            setTitle(score.getTitle());
           }
 
-        ImproVisor.setLastLeadsheetFileStem(selectedFile.getName());
+        
 
 
         if( !savedLeadsheet.exists() )
@@ -18802,6 +18826,7 @@ public void openLeadsheet(boolean openCorpus)
             File file = openLSFC.getSelectedFile();
 
             ImproVisor.setLastLeadsheetFileStem(file.getName());
+        nameOfOpenFile = file.getName();
 
             new OpenLeadsheetCommand(file, newScore).execute();
 
@@ -18893,6 +18918,7 @@ public void openLeadsheet(boolean openCorpus)
                 setupLeadsheet(file, false);
 
                 ImproVisor.setLastLeadsheetFileStem(file.getName());
+                nameOfOpenFile = file.getName();
 
                 if( createRoadMapCheckBox.isSelected() )
                   {
@@ -19422,6 +19448,7 @@ public ArrayList<String> getMelodyData(int chorusNumber)
       if( f != null )
         {
         ImproVisor.setLastLeadsheetFileStem(f.getName());
+        nameOfOpenFile = f.getName();
         }
   }
 
@@ -22054,6 +22081,8 @@ private void populateRecentFileMenu(javax.swing.event.MenuEvent evt) {//GEN-FIRS
                         File selected = new File(item.getText());
                         if( selected.exists() )
                           {
+                            ImproVisor.setLastLeadsheetFileStem(selected.getName());
+                            nameOfOpenFile = selected.getName();
                             try
                               {
                                 setupLeadsheet(selected, false);
@@ -23534,6 +23563,8 @@ public void openInNewWindow(File selectedFile)
                                     this.impro,
                                     getNewXlocation(),
                                     getNewYlocation());
+        newNotate.setFileName(selectedFile.getName());
+        newNotate.setTitle(newScore.getTitle());
         newNotate.makeVisible(this);
       }
 }
