@@ -1402,12 +1402,8 @@ public class Notate
         boolean fileNameExists = nameOfOpenFile != null;
         setTitle += (titleExists || fileNameExists ?
                 windowTitlePrefixSeparator
-                + (fileNameExists ? nameOfOpenFile : "")
-                + (titleExists ?
-                    (fileNameExists ? " (" : "")
-                    + title.trim()
-                    + (fileNameExists ? ")" : "")
-                : "")
+                + (titleExists ? title.trim() + " " : "")
+                + (fileNameExists ? "(" + nameOfOpenFile + ")" : "")
         : "" );
     super.setTitle(setTitle);
 
@@ -18652,12 +18648,11 @@ public MidiSynth getMidiSynth2()
     saveAWT.setVisible(true);
 
     String selected = saveAWT.getFile();
-
-    ImproVisor.setLastLeadsheetFileStem(saveAWT.getFile());
-    nameOfOpenFile = saveAWT.getFile();
-    setTitle(score.getTitle());
-
     String dir = saveAWT.getDirectory();
+
+    ImproVisor.setLastLeadsheetFileStem(selected);
+    nameOfOpenFile = dir + selected;
+    setTitle(score.getTitle());
 
     if( selected != null )
       {
@@ -18722,9 +18717,9 @@ public boolean saveAsLeadsheetSwing()
 
             setSavedLeadsheet(saveLSFC.getSelectedFile());
             
-            ImproVisor.setLastLeadsheetFileStem(selectedFile.getName());
-            nameOfOpenFile = selectedFile.getName();
-            setTitle(selectedFile.getName());
+            ImproVisor.setLastLeadsheetFileStem(selectedFile.getAbsolutePath());
+            nameOfOpenFile = selectedFile.getAbsolutePath();
+            setTitle(score.getTitle());
           }
         else
           {
@@ -18738,8 +18733,8 @@ public boolean saveAsLeadsheetSwing()
 
             setSavedLeadsheet(newFile);
             
-            ImproVisor.setLastLeadsheetFileStem(newFile.getName());
-            nameOfOpenFile = newFile.getName();
+            ImproVisor.setLastLeadsheetFileStem(file);
+            nameOfOpenFile = file;
             setTitle(score.getTitle());
           }
 
@@ -18826,7 +18821,7 @@ public void openLeadsheet(boolean openCorpus)
             File file = openLSFC.getSelectedFile();
 
             ImproVisor.setLastLeadsheetFileStem(file.getName());
-        nameOfOpenFile = file.getName();
+        nameOfOpenFile = file.getAbsolutePath();
 
             new OpenLeadsheetCommand(file, newScore).execute();
 
@@ -18918,7 +18913,7 @@ public void openLeadsheet(boolean openCorpus)
                 setupLeadsheet(file, false);
 
                 ImproVisor.setLastLeadsheetFileStem(file.getName());
-                nameOfOpenFile = file.getName();
+                nameOfOpenFile = file.getAbsolutePath();
 
                 if( createRoadMapCheckBox.isSelected() )
                   {
@@ -19448,7 +19443,7 @@ public ArrayList<String> getMelodyData(int chorusNumber)
       if( f != null )
         {
         ImproVisor.setLastLeadsheetFileStem(f.getName());
-        nameOfOpenFile = f.getName();
+        nameOfOpenFile = f.getAbsolutePath();
         }
   }
 
@@ -22082,7 +22077,7 @@ private void populateRecentFileMenu(javax.swing.event.MenuEvent evt) {//GEN-FIRS
                         if( selected.exists() )
                           {
                             ImproVisor.setLastLeadsheetFileStem(selected.getName());
-                            nameOfOpenFile = selected.getName();
+                            nameOfOpenFile = selected.getAbsolutePath();
                             try
                               {
                                 setupLeadsheet(selected, false);
