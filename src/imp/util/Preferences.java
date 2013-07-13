@@ -216,6 +216,8 @@ public class Preferences implements imp.Constants
   
   public static final String DEFAULT_MIDI_SEND_BANK_SELECT = NO;
   
+  public static final String AUDIO_IN_LATENCY = "audio-in-latency";
+  
   public static final String MELODY_CHANNEL = "melody-channel";
   
   public static final String CHORD_CHANNEL = "chord-channel";
@@ -515,6 +517,15 @@ public static void setMidiRecordSnap(String value)
     setPreference(MIDI_RECORD_SNAP, value);
   }
 
+public static void setAudioInLatency(double value)
+{
+    setPreference(AUDIO_IN_LATENCY, "" + value);
+}
+
+public static double getAudioInLatency()
+{
+    return Double.parseDouble(getPreference(AUDIO_IN_LATENCY));
+}
 
 public static boolean getAlwaysUse(int index)
  {

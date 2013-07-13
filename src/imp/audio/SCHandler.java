@@ -1,12 +1,11 @@
 package imp.audio;
 
-import java.awt.Frame;
 import java.io.*;
-import javax.swing.JOptionPane;
 
 /**
  *
  * @author Anna Turner
+ * @author Brian Kwak
  * @author mkyong, from
  * http://www.mkyong.com/java/how-to-detect-os-in-java-systemgetpropertyosname/
  * @since June 27 2013
