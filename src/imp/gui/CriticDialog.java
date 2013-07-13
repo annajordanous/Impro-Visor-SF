@@ -513,7 +513,7 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
         for (Chord c : chordList)
             chordPart.addChord(c);
         
-        int [] classifications = Critic.collectNoteColors(melodyPart, chordPart);
+        int [] classifications = Coloration.collectNoteColors(melodyPart, chordPart);
         
         // Boolean used atomically to track potential errors
         AtomicBoolean error = new AtomicBoolean(false);
@@ -528,7 +528,7 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
          for (int index = 0; index < noteList.size(); index++)
         {
             int indexPrev = index - 1;
-            int currNoteClassification = Critic.getNoteClassification(classifications[beatPosition]);
+            int currNoteClassification = Coloration.getNoteClassification(classifications[beatPosition]);
             
             if (indexPrev < 0)
             {

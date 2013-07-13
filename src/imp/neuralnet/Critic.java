@@ -25,6 +25,7 @@ import imp.com.SetChordsCommand;
 import imp.data.Chord;
 import imp.data.ChordPart;
 import imp.data.ChordSymbol;
+import imp.data.Coloration;
 import imp.data.MelodyPart;
 import imp.data.Note;
 import imp.data.NoteSymbol;
@@ -66,7 +67,7 @@ public class Critic implements imp.Constants {
     
     String modeName[] = {"on-line", "batch", "rprop"};
     
-    public static final int NONE = 0;
+    public static final int NO_REASON = 0;
     public static final int GOAL_REACHED = 1;
     public static final int LIMIT_EXCEEDED = 2;
     public static final int LACK_OF_PROGRESS = 3;
@@ -74,7 +75,7 @@ public class Critic implements imp.Constants {
     
     public enum TERMINATION_REASON 
     {
-        NONE, GOAL_REACHED, LIMIT_EXCEEDED, LACK_OF_PROGRESS, WEIGHTS_ALREADY_SET
+        NO_REASON, GOAL_REACHED, LIMIT_EXCEEDED, LACK_OF_PROGRESS, WEIGHTS_ALREADY_SET
     }
     
     String reasonName[] = {"", "goal reached", "limit exceeded", 
@@ -404,7 +405,7 @@ public class Critic implements imp.Constants {
         double etaPlus = 1.2; //for rprop
         double etaMinus = 0.5;
         
-        TERMINATION_REASON reason = TERMINATION_REASON.NONE;
+        TERMINATION_REASON reason = TERMINATION_REASON.NO_REASON;
         
         if (fixWeights)
         {
@@ -416,7 +417,7 @@ public class Critic implements imp.Constants {
         int interval = 1;
         
         // Training loop
-        while ( reason == TERMINATION_REASON.NONE)
+        while ( reason == TERMINATION_REASON.NO_REASON)
         {
             sse = 0;
             switch (mode)
@@ -597,105 +598,6 @@ public class Critic implements imp.Constants {
         }
     }
     
-    public static int getNoteClassification(int color)
-    {
-        switch (color)
-        {
-            case BLACK:
-                return CHORD_TONE;
-            case GREEN:
-                return COLOR_TONE;
-            case BLUE:
-                return APPROACH_TONE;
-            case RED:
-                return FOREIGN_TONE;
-        }
-        return CHORD_TONE;
-    }
-    
-    public static int[] collectNoteColors(MelodyPart part, ChordPart chordProg) 
-    {
-        int number = part.size();
-        
-        int[] color = new int[number];
-        for (int i = 0; i < number; i++) 
-        {
-            Note curNote = part.getNote(i);
-            if (curNote != null) 
-            {
-                Note origNote = part.getNote(i);
-                color[i] = determineColor(curNote, origNote,
-                        i, false, color, part, chordProg);
-            }
-        }
-        
-        for(int i = 0; i < number; i++) 
-        {
-            Note curNote = part.getNote(i);
-            if (curNote != null && curNote.isTied() && !curNote.firstTied() 
-                    && part.getPrevIndex(i) >= 0) 
-            {
-                color[i] = color[part.getPrevIndex(i)];                
-            }
-        }
-        
-        return color;
-    }
-    
-    static String noteColorString = Preferences.getPreference(Preferences.NOTE_COLORING);
-    
-    public static int determineColor(Note note, Note pitchDeterminer, int i,  
-                         boolean isApproach, int[] colorArray, MelodyPart melody, ChordPart chordProg)
-
-    {      
-        Chord c = chordProg.getCurrentChord(i);
-
-        // Deal with note coloration
-
-        int noteType;
-
-        noteType = (c == null || pitchDeterminer == null) ? CHORD_TONE
-                : c.getTypeIndex(pitchDeterminer);
-
-        // Approach tone coloring has a higher priority than foreign tone coloring,
-        // but less than chord or color tones.
-        if( noteType == FOREIGN_TONE && isApproach )
-        {
-            noteType = APPROACH_TONE;
-        }
-
-        int prevIndex = melody.getPrevIndex(i);
-        Note prevNote = melody.getNote(prevIndex);
-
-        boolean approachable = (noteType == CHORD_TONE || noteType == COLOR_TONE);
-
-        if( c != null 
-            && (note != null) 
-            && approachable 
-            && !note.isRest() 
-            && !c.getName().equals("NC")
-            && prevNote != null 
-            && !prevNote.isRest() 
-            && !isApproach )
-        {
-
-            if( prevNote.getPitch() == note.getPitch() - 1
-                    || prevNote.getPitch() == note.getPitch() + 1 )
-            {
-                colorArray[prevIndex] = determineColor(prevNote,
-                                                       melody.getNote(prevIndex),
-                                                       prevIndex, true, colorArray, melody, chordProg);
-            }
-
-        }
-
-        // Avoid re-parsing.  Also, should do some range checking on digits
-        // in the user preferences.
-
-        int noteColor = Integer.parseInt("" + noteColorString.charAt(noteType)) - 1;
-        return noteColor;
-    }
-    
     /*
      * Takes a list of chords and notes and will generate a grade
      */
@@ -714,7 +616,7 @@ public class Critic implements imp.Constants {
             chords.addChord(c);
         
         // Get classifications for all notes
-        int [] classifications = collectNoteColors(melody, chords);
+        int [] classifications = Coloration.collectNoteColors(melody, chords);
     
         // Random grade needed for correct length of input
         int grade = 1;
@@ -726,7 +628,7 @@ public class Critic implements imp.Constants {
         for (int index = 0; index < noteList.size(); index++)
         {
             int indexPrev = index - 1;
-            int currNoteClassification = getNoteClassification(classifications[beatPosition]);
+            int currNoteClassification = Coloration.getNoteClassification(classifications[beatPosition]);
             
             if (indexPrev < 0)
             {
