@@ -25,6 +25,7 @@ import imp.ImproVisor;
 import imp.com.PlayScoreCommand;
 import imp.com.SetChordsCommand;
 import imp.data.*;
+import imp.neuralnet.Critic;
 import imp.util.Preferences;
 import java.io.*;
 import java.util.ArrayList;
@@ -290,7 +291,7 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
             if (dataTable.getSelectedColumn() == TCol.LOADBTN.ordinal()) {
                 Notate notate = ImproVisor.getCurrentWindow();
                 
-                notate.lickgenFrame.setSaveLickTextField(name);
+                notate.getLickgenFrame().setSaveLickTextField(name);
                 notate.getChordProg().newPasteOver(chords, notate.getCurrentSelectionStart());
                 notate.putLickWithoutRectify(melody);
             }
@@ -388,15 +389,14 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
             return;
         }
         
-        // FIX: Split into separate helper method
         Scanner in;
         BufferedWriter outTemp;
         BufferedWriter outWeight;
         try {
             in = new Scanner(f);
-            File fileTemp = new File(f.getAbsolutePath() + "_temp");
+            File fileTemp = new File(f.getAbsolutePath() + ".temp");
             outTemp = new BufferedWriter(new FileWriter(fileTemp));
-            File fileWeight = new File(f.getAbsolutePath() + "_for_weights");
+            File fileWeight = new File(f.getAbsolutePath() + ".weights");
             outWeight = new BufferedWriter(new FileWriter(fileWeight));
            
             int maxSize = 0;
@@ -475,17 +475,6 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
         int grade = (int) (Integer) r.fourth();
         Polylist lick = Polylist.list("lick", notes.cons("notes"), chords.cons("sequence"), name, Polylist.list("grade", grade));
 
-        // Boolean used atomically to track potential errors
-        AtomicBoolean error = new AtomicBoolean(false);
-        ArrayList<Note> noteList = new ArrayList<Note>();
-        ArrayList<Chord> chordList = new ArrayList<Chord>();
-        StringBuilder output = new StringBuilder();
-        int beatPosition = 0;
-        int chordLengthAccum = 0;
-
-        output.append(String.valueOf(grade / 10.0));
-        output.append(' ');
-        
         // Prepare a score so that Chord lengths can be determined
         ChordPart chordsList = new ChordPart(BEAT*8);
         MelodyPart melody = new MelodyPart(BEAT*8);
@@ -498,11 +487,12 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
         ArrayList<ChordSymbol> symbols = score.getChordProg().getChordSymbols();
         ArrayList<Integer> durations = score.getChordProg().getChordDurations();
         
+        ArrayList<Note> noteList = new ArrayList<Note>();
+        ArrayList<Chord> chordList = new ArrayList<Chord>();
+        
         // Add all chords to the chord list
         for (int i = 0; i < symbols.size(); i++)
-        {
             chordList.add(new Chord(symbols.get(i), durations.get(i)));
-        }
         
         // Add all notes to the note list
         while(!notes.isEmpty()) {
@@ -516,50 +506,42 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
             }
         }
         
+        MelodyPart melodyPart = new MelodyPart();
+        ChordPart chordPart = new ChordPart();
+        for (Note n : noteList)
+            melodyPart.addNote(n);
+        for (Chord c : chordList)
+            chordPart.addChord(c);
+        
+        int [] classifications = Critic.collectNoteColors(melodyPart, chordPart);
+        
+        // Boolean used atomically to track potential errors
+        AtomicBoolean error = new AtomicBoolean(false);
+        StringBuilder output = new StringBuilder();
+        int beatPosition = 0;
+        
+        // Add the grade
+        output.append(String.valueOf(grade / 10.0));
+        output.append(' ');
+        
         // Print all note data for all notes within one lick
-        for (int index = 0; index < noteList.size(); index++)
+         for (int index = 0; index < noteList.size(); index++)
         {
             int indexPrev = index - 1;
-            int indexNext = index + 1;
-            Chord chordCurr = null;
-            Chord chordNext= null;
-            
-            if (!chordList.isEmpty())
-            {
-                chordCurr = chordList.get(0);
-                if(chordList.size() > 1)
-                {
-                    chordNext = chordList.get(1);
-                }
-            }
+            int currNoteClassification = Critic.getNoteClassification(classifications[beatPosition]);
             
             if (indexPrev < 0)
             {
-                beatPosition = printNoteData(output, null, noteList.get(index), 
-                        noteList.get(indexNext),
-                        chordCurr, chordNext, beatPosition, error);
-            }
-            else if (indexNext >= noteList.size())
-            {
-                beatPosition = printNoteData(output, noteList.get(indexPrev), 
-                        noteList.get(index), null,
-                        chordCurr, chordNext, beatPosition, error);
+                beatPosition = CriticDialog.printNoteData(output, null, noteList.get(index), 
+                        currNoteClassification, beatPosition, error);
             }
             else
             {
-                beatPosition = printNoteData(output, noteList.get(indexPrev), 
-                        noteList.get(index), noteList.get(indexNext),
-                        chordCurr, chordNext, beatPosition, error);
-            }
-            
-            // Updates the current chord based on the current slot.
-            if(!chordList.isEmpty() && chordCurr != null 
-                    && chordCurr.getRhythmValue() + chordLengthAccum <= beatPosition)
-            {
-                chordLengthAccum += chordCurr.getRhythmValue();
-                chordList.remove(0);
+                beatPosition = CriticDialog.printNoteData(output, noteList.get(indexPrev), 
+                        noteList.get(index), currNoteClassification, beatPosition, error);
             }
         }
+        
         
         output.append(lick.toString());
         
@@ -574,7 +556,6 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
         }
     }
 
-    // FIX: Split lots into seperate sequences
     /**
      * Saves note data as an 18-bit vector.
      * Bit 1      - Rest/Not rest
@@ -586,17 +567,15 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
      *              WHOLE-HALF-QUARTER-EIGHTH-SIXTEENTH-TRIPLET
      * @param out
      * @param notePrev Used for note distance
-     * @param noteCurr
-     * @param noteNext Used for note classification
-     * @param chordCurr Used for note classification
-     * @param chordNext Used for note classification
-     * @param beatPos
+     * @param noteCurr Current note
+     * @param classification Classification (color) of note
+     * @param beatPos Current position in the lick
      * @param error Keeps track of any potential note parsing errors
      * @return beatPos, to keep track of the current slot
      * @throws IOException 
      */
-    public static int printNoteData(StringBuilder out, Note notePrev, Note noteCurr, Note noteNext, 
-                              Chord chordCurr, Chord chordNext, int beatPos, AtomicBoolean error) {
+    public static int printNoteData(StringBuilder out, Note notePrev, Note noteCurr, 
+                      int classification, int beatPos, AtomicBoolean error) {
         
         char[] bits = {'0', ' ', '0', ' ', '0', ' ',
                        '0', ' ', '0', ' ', '0', ' ', '0', ' ', 
@@ -614,8 +593,6 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
         else
         {
             currPos += 2;
-            
-            int classification = chordCurr.classify(noteCurr, noteNext, chordNext);
 
             if (classification == CHORD_TONE)
             {
@@ -731,7 +708,6 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
         
         for (String note : values)
         {
-            // FIX: Split into separate method for clarity
             if (note.equals("1"))
                 durationEncoding[0] = '1'; //WHOLE note
             else if (note.equals("2"))

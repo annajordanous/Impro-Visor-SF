@@ -1466,6 +1466,11 @@ public class Notate
       return stepInputBtn.isSelected();
   }
   
+  public LickgenFrame getLickgenFrame()
+  {
+      return lickgenFrame;
+  }
+  
   public Critic getCritic()
   {
       return critic;
@@ -21454,10 +21459,6 @@ public void originalGenerate(LickGen lickgen, int improviseStartSlot, int improv
 
             if (lick != null)
             {
-                StringBuilder output = new StringBuilder();
-                int beatPosition = 0;
-                int chordLengthAccum = 0;
-                AtomicBoolean error = new AtomicBoolean(false);
                 ArrayList<Unit> units = lick.getUnitList();
                 ArrayList<ChordSymbol> symbols = stave.getChordProg().getChordSymbols();
                 ArrayList<Integer> durations = stave.getChordProg().getChordDurations();
@@ -21470,89 +21471,34 @@ public void originalGenerate(LickGen lickgen, int improviseStartSlot, int improv
                     noteList.add((Note) u);
                 for (int i = 0; i < symbols.size(); i++)
                     chordList.add(new Chord(symbols.get(i), durations.get(i)));
-
-                // Print all note data for all notes within one lick
-                for (int index = 0; index < noteList.size(); index++)
+                
+                // Grade the lick, passing it through the critic filter
+                Double gradeFromCritic = critic.gradeFromCritic(noteList, chordList); 
+                
+                // Stop the generation if we've gone too many times
+                if (gradeFromCritic != null && count >= criticLimit)
                 {
-                    int indexPrev = index - 1;
-                    int indexNext = index + 1;
-                    Chord chordCurr = null;
-                    Chord chordNext= null;
-
-                    if (!chordList.isEmpty())
-                    {
-                        chordCurr = chordList.get(0);
-                        if(chordList.size() > 1)
-                        {
-                            chordNext = chordList.get(1);
-                        }
-                    }
-
-                    if (indexPrev < 0)
-                    {
-                        beatPosition = CriticDialog.printNoteData(output, null, noteList.get(index), 
-                                noteList.get(indexNext),
-                                chordCurr, chordNext, beatPosition, error);
-                    }
-                    else if (indexNext >= noteList.size())
-                    {
-                        beatPosition = CriticDialog.printNoteData(output, noteList.get(indexPrev), 
-                                noteList.get(index), null,
-                                chordCurr, chordNext, beatPosition, error);
-                    }
-                    else
-                    {
-                        beatPosition = CriticDialog.printNoteData(output, noteList.get(indexPrev), 
-                                noteList.get(index), noteList.get(indexNext),
-                                chordCurr, chordNext, beatPosition, error);
-                    }
-
-                    // Updates the current chord based on the current slot.
-                    if(!chordList.isEmpty() && chordCurr != null 
-                            && chordCurr.getRhythmValue() + chordLengthAccum <= beatPosition)
-                    {
-                        chordLengthAccum += chordCurr.getRhythmValue();
-                        chordList.remove(0);
-                    }
+                    JOptionPane.showMessageDialog(null, 
+                         new JLabel("<html><div style=\"text-align: center;\">"
+                           + "Too many generation attempts, <br/>"
+                           + "cannot generate lick with desired grade."), 
+                           "Alert", JOptionPane.PLAIN_MESSAGE);
+                
+                    useCritic = false;
+                    count++;
+                    lickgenFrame.setCounterForCriticTextField(count);
+                    putLick(lick);
+                    lickgenFrame.setLickFromStaveGradeTextField(gradeFromCritic);
                 }
 
-                // Add a fake grade so the input is correct for the critic
-                output.insert(0, "0.1 ");
-
-                if (!error.get())
-                {     
-                    // Fix the length if the lick is too short or too long
-                    if (output.length() > critic.getLickLength())
-                    {
-                        output.delete(critic.getLickLength(), output.length());
-                    }
-
-                    while (output.length() < critic.getLickLength())
-                    {
-                        output.append("1 0 0 0 0 0 0 1 1 1 1 1 1 0 0 0 0 0 ");
-                    }
-
-                    double gradeFromFilter = 
-                            lickgenFrame.getCritic().filter(output.toString());
-
-                    // If the critic grade is high enough, pass the lick through
-                    if (gradeFromFilter >= criticGrade || count == criticLimit)
-                    {
-                        // Stop the generation if we've gone too many times
-                        if (count == criticLimit)
-                        {
-                            JOptionPane.showMessageDialog(null, 
-                                 new JLabel("<html><div style=\"text-align: center;\">"
-                                   + "Too many generation attempts, <br/>"
-                                   + "cannot generate lick with desired grade."), 
-                                   "Alert", JOptionPane.PLAIN_MESSAGE);
-                        }
-                        useCritic = false;
-                        count++;
-                        lickgenFrame.setCounterForCriticTextField(count);
-                        putLick(lick);
-                        lickgenFrame.setLickFromStaveGradeTextField(gradeFromFilter);
-                    }
+                // If the grade is high enough, pass it through the filter
+                else if (gradeFromCritic != null && gradeFromCritic >= criticGrade)
+                {
+                    useCritic = false;
+                    count++;
+                    lickgenFrame.setCounterForCriticTextField(count);
+                    putLick(lick);
+                    lickgenFrame.setLickFromStaveGradeTextField(gradeFromCritic);                  
                 }
             }
             else
