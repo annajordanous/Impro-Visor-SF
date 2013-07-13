@@ -24,6 +24,7 @@ package imp.audio;
 import imp.gui.Notate;
 import imp.data.Score;
 import imp.Constants;
+import imp.util.Preferences;
 
 /**
  * This class calculates the uniform delays stemming from SuperCollider 
@@ -38,6 +39,7 @@ import imp.Constants;
  * @since June 24 2013
  */
 public class SCDelayOffsetter {
+    private Notate notate;
     private double tempo;
     private Score score;
     private AudioSettings audioSettings;
@@ -48,7 +50,8 @@ public class SCDelayOffsetter {
      * Constructor. Assigns variable values.
      * @param notate same notate used everywhere
      */
-    public SCDelayOffsetter(Notate notate){
+    public SCDelayOffsetter(Notate notate1){
+    notate = notate1;
     score = notate.getScore();
     tempo = score.getTempo();
     audioSettings = notate.getAudioSettings();
@@ -57,12 +60,18 @@ public class SCDelayOffsetter {
     
     /**
      * Calculates certain delay for each note when capturing  audio through 
-     * SuperCollider. Due to snapping from note values, depending on the 
+     * SuperCollider. 
+     * 
+     * Due to snapping from note values, depending on the 
      * tempo, we can pull each note back (so it is earlier on the score) 
      * by a certain value.
+     * 
+     * Because each machine is different, we also allow the user to determine
+     * another constant latency that is added on top of the regular midi 
+     * latency.
      */
     //@TODO *could* consolidate 'else = 0's.
-    //@TODO finetune range boundaries.
+    //@TODO finetune range boundaries?
     public double determineOffsetSlots(){
         //First, convert to ms/slot    
         double slotsPerBeat = (480/(score.getMetre()[1]));//480 slots in whole note - see Constants.java
@@ -88,7 +97,7 @@ public class SCDelayOffsetter {
             } else { 
                 offsetSlots = 0; 
             }   
-        } else {
+        } else {    
             if (resolution >= 4) {
                 offsetSlots = Constants.QUARTER; 
             } else { 
@@ -96,7 +105,10 @@ public class SCDelayOffsetter {
             }
         }
         
-        offsetSlots = offsetSlots*msPerSlot;
+        //Combine both latencies.
+        double userDefinedSecondAudioLatency = Preferences.getAudioInLatency();
+        offsetSlots = (offsetSlots*msPerSlot) + userDefinedSecondAudioLatency;
+        
         return offsetSlots; //in ms.
     }   
 }

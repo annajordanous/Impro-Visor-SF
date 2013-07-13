@@ -110,6 +110,7 @@ public class Notate
   CaptureTimerTask task;
   private boolean isAudioInput;
   private boolean readyButtonActive;
+  private boolean audioLatencyRegistered = false;
 
   static int LEADSHEET_EDITOR_ROWS = 1000;
 
@@ -1699,6 +1700,10 @@ public class Notate
         audioInputTab = new javax.swing.JPanel();
         audioInputLabel = new javax.swing.JLabel();
         superColliderReadyButton = new javax.swing.JButton();
+        AudioMsInputBox = new javax.swing.JTextField();
+        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(60, 60), new java.awt.Dimension(60, 60), new java.awt.Dimension(60, 60));
+        LatencyDesc = new javax.swing.JLabel();
+        millisecondsLabel = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         staveButtonGroup = new javax.swing.ButtonGroup();
         popupMenu = new javax.swing.JPopupMenu();
@@ -4283,12 +4288,8 @@ public class Notate
         audioInputTab.setLayout(new java.awt.GridBagLayout());
 
         audioInputLabel.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        audioInputLabel.setText("<html>\nAudio Input is Provided by Running an Auxilliary SuperCollider Program, \n<br>\nwhich is to be used as a MIDI input device.\n<br>\nThis device must be selected in MIDI Preferences.\n</html>");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.ipady = 25;
-        audioInputTab.add(audioInputLabel, gridBagConstraints);
+        audioInputLabel.setText("<html> Audio Input is Provided by Running an Auxilliary SuperCollider Program,  <br> which is to be used as a MIDI input device. <br> This device must be selected in MIDI Preferences. </html>");
+        audioInputTab.add(audioInputLabel, new java.awt.GridBagConstraints());
 
         superColliderReadyButton.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         superColliderReadyButton.setText("Click Here to Indicate SuperCollider is Ready");
@@ -4303,6 +4304,37 @@ public class Notate
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         audioInputTab.add(superColliderReadyButton, gridBagConstraints);
+
+        AudioMsInputBox.setText("0");
+        AudioMsInputBox.setPreferredSize(new java.awt.Dimension(65, 28));
+        AudioMsInputBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AudioMsInputBoxActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 5;
+        audioInputTab.add(AudioMsInputBox, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        audioInputTab.add(filler1, gridBagConstraints);
+
+        LatencyDesc.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        LatencyDesc.setText("<html>Using audio input may result in some delay. <br> Below, you can adjust for the delays in milliseconds.<br> Press ENTER to set value.</html>");
+        LatencyDesc.setToolTipText("");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        audioInputTab.add(LatencyDesc, gridBagConstraints);
+
+        millisecondsLabel.setText("(ms)");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 6;
+        audioInputTab.add(millisecondsLabel, gridBagConstraints);
 
         jTabbedPane6.addTab("Audio Input", audioInputTab);
 
@@ -8143,17 +8175,17 @@ public class Notate
         scoreTab.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         scoreTab.setOpaque(true);
         scoreTab.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                scoreTabMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                mouseEnteredTabPanel(evt);
-            }
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 scoreTabMousePressed(evt);
             }
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 scoreTabMouseReleased(evt);
+            }
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                scoreTabMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                mouseEnteredTabPanel(evt);
             }
         });
         scoreTab.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -8220,12 +8252,12 @@ public class Notate
 
         openRecentLeadsheetMenu.setText("Open Recent Leadsheet (same window)");
         openRecentLeadsheetMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
-            }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 populateRecentFileMenu(evt);
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -8241,12 +8273,12 @@ public class Notate
 
         openRecentLeadsheetNewWindowMenu.setText("Open Recent Leadsheet (new window)");
         openRecentLeadsheetNewWindowMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
-            }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 populateRecentLeadsheetNewWindow(evt);
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -9233,12 +9265,12 @@ public class Notate
         windowMenu.setMnemonic('W');
         windowMenu.setText("Window");
         windowMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
-            }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 windowMenuMenuSelected(evt);
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -9271,12 +9303,12 @@ public class Notate
             }
         });
         notateGrammarMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
-            }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 notateGrammarMenuMenuSelected(evt);
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
         notateGrammarMenu.addActionListener(new java.awt.event.ActionListener() {
@@ -10860,6 +10892,7 @@ public AudioSettings getAudioSettings(){
     return audioSettings;
 }
 
+
 /**
  *
  * Starts recording: registers the midiRecorder and changes the mode
@@ -10869,6 +10902,12 @@ public AudioSettings getAudioSettings(){
 private void startRecording()
   {
     isAudioInput = false;//If doing real audio input
+    
+    //Take care of first time recording audio preferences
+    if(!audioLatencyRegistered){
+        Preferences.setAudioInLatency(0);
+        audioLatencyRegistered = true;//Can also be true from saveAudioLatency()
+    }
     
     turnStepInputOff();
 
@@ -10889,7 +10928,9 @@ private void startRecording()
             // Open preferences panel, switch to audio. Tab + accompanying
             // button waits until user clicks button, then starts the helper.
             changePrefTab(audioBtn, audioPreferences);
-            showPreferencesDialog();
+            //jTabbedPane6.setEnabled(true);
+            jTabbedPane6.setEnabledAt(0, true);
+            showPreferencesDialog();            
         } else {
             startRecordingHelper();//below
         }
@@ -14844,7 +14885,9 @@ private void savePrefs()
   }
 
 
-
+/*
+ * Midi latency is constant. Audio latency is on top of midi latency.
+ */
 private boolean saveMidiLatency()
   {
     double latency = doubleFromTextField(midiLatencyTF, 0, Double.POSITIVE_INFINITY, 0);
@@ -14853,6 +14896,14 @@ private boolean saveMidiLatency()
       midiRecorder.setLatency(latency);
       }
     Preferences.setMidiInLatency(latency);
+    return true;
+  }
+
+private boolean saveAudioLatency()
+  {
+    double latency = doubleFromTextField(AudioMsInputBox, 0, Double.POSITIVE_INFINITY, 0);
+    Preferences.setAudioInLatency(latency);
+    audioLatencyRegistered = true;//Have edited audio latency at least once
     return true;
   }
 
@@ -23140,6 +23191,10 @@ public void setKconstantSlider(double value)
         reAnalyze();
     }//GEN-LAST:event_reAnalyzeMIAction
 
+    private void AudioMsInputBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AudioMsInputBoxActionPerformed
+       saveAudioLatency();
+    }//GEN-LAST:event_AudioMsInputBoxActionPerformed
+
 public void setNoteLength(int len)
 {
     getCurrentStave().getMelodyPart().setNoteLength(len);
@@ -24736,6 +24791,8 @@ preferencesAcceleratorMI.setEnabled(true);
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField AudioMsInputBox;
+    private javax.swing.JLabel LatencyDesc;
     private javax.swing.JScrollPane SectionTableScrollPane;
     private javax.swing.JMenuItem aboutMI;
     private javax.swing.JButton acceptTruncate;
@@ -24963,6 +25020,7 @@ preferencesAcceleratorMI.setEnabled(true);
     private javax.swing.JButton fileStepForwardBtn;
     private javax.swing.JLabel fileStepLabel;
     private javax.swing.JMenuItem fileStepMI;
+    private javax.swing.Box.Filler filler1;
     private javax.swing.JMenuItem firstTimePrefsMI;
     private javax.swing.JComboBox frameSizeComboBox1;
     private javax.swing.JToggleButton freezeLayoutButton;
@@ -25157,6 +25215,7 @@ preferencesAcceleratorMI.setEnabled(true);
     private javax.swing.JMenuItem midiPrefsMI;
     private javax.swing.JSpinner midiRecordSnapSpinner;
     private javax.swing.JFrame midiStyleSpec;
+    private javax.swing.JLabel millisecondsLabel;
     private javax.swing.JSpinner minPitchSpinner1;
     private javax.swing.JButton mixerBtn;
     private javax.swing.JDialog mixerDialog;
