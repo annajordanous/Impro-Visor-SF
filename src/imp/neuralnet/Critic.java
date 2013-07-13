@@ -21,6 +21,18 @@
 package imp.neuralnet;
 
 import imp.ImproVisor;
+import imp.com.SetChordsCommand;
+import imp.data.Chord;
+import imp.data.ChordPart;
+import imp.data.ChordSymbol;
+import imp.data.MelodyPart;
+import imp.data.Note;
+import imp.data.NoteSymbol;
+import imp.data.Score;
+import imp.gui.CriticDialog;
+import imp.gui.LickgenFrame;
+import imp.gui.Notate;
+import imp.util.Preferences;
 import imp.util.Trace;
 import java.io.BufferedReader;
 import java.io.File;
@@ -30,13 +42,14 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Scanner;
 import java.util.concurrent.atomic.*;
+import polya.Polylist;
 
 /**
  * Created in June 2013  
  * @author Hayden Blauzvern (Based on Robert Keller's C++ implementation of a 
  *                           multi-layer neural network for backpropagation)
  */
-public class Critic {
+public class Critic implements imp.Constants {
     
     // output should always be 1
     private final int outputDimension = 1;
@@ -46,7 +59,7 @@ public class Critic {
     public static final int BATCH = 1;
     public static final int RPROP = 2;
     
-    public enum MODE
+    public enum LEARNING_MODE
     {
         ONLINE, BATCH, RPROP    
     }
@@ -67,7 +80,7 @@ public class Critic {
     String reasonName[] = {"", "goal reached", "limit exceeded", 
                            "lack of progress", "testing with set weights"};
     
-    public final MODE defaultMode = MODE.ONLINE;
+    public final LEARNING_MODE defaultMode = LEARNING_MODE.ONLINE;
     public final double defaultGoal = 0.01;
     public final double defaultLearningRate = 0.01;
     public final int defaultEpochLimit = 20000;
@@ -83,12 +96,20 @@ public class Critic {
     ActivationFunction tansig   = new Tansig();
     
     private Network network;
+    private Notate notate; 
+    private LickgenFrame lickgenFrame;
     
+    /*
+     * Initializes network
+     */
     public Critic()
     {
         network = null;
     }
-
+    
+    /*
+     * Gets ActivationFunction from String
+     */
     private ActivationFunction getLayerType(String name)
     {
         name = name.toLowerCase();
@@ -104,7 +125,10 @@ public class Critic {
         return null;
     }
 
-    public void getSamples(String inputFile, AtomicInteger outputDimension, 
+    /*
+     * Initializes all of the samples from input
+     */
+    private void getSamples(String inputFile, AtomicInteger outputDimension, 
             AtomicInteger inputDimension, ArrayList<Sample> listOfSamples) throws Exception
     {
         File f = new File(inputFile);
@@ -136,7 +160,10 @@ public class Critic {
         }
     }
     
-    public StringBuilder showAndCountSamples(String title, 
+    /*
+     * Counts the samples
+     */
+    private String showAndCountSamples(String title, 
             ArrayList<Sample> samples, AtomicInteger nSamples)
     {
         StringBuilder output = new StringBuilder();
@@ -155,7 +182,69 @@ public class Critic {
         output.append(nSamples.get()).append(" ").append(title).append(" samples");
         output.append("\n");
         
-        return output;
+        return output.toString();
+    }
+    
+    /*
+     * Parse a sample of data we're given
+     */
+    private Sample parseData (String data, Sample s)
+    {
+        String[] inputs = data.split(" ");
+        for (int i = 0; i < inputs.length; i++)
+        {
+            if (i == 0)
+            {
+                double gradeOutput = Double.parseDouble(inputs[i]);
+                s.setOutput(0, gradeOutput);
+            }
+            else if (inputs[i].length() != 1)
+            {
+                break;
+            }
+            else
+            {
+                double dataInput = Double.parseDouble(inputs[i]);
+                
+                try 
+                {
+                     s.setInput(i - 1, dataInput);
+                }
+                catch (Exception e)
+                {
+                    break;
+                }
+            }
+        }
+        return s;
+    }
+    
+    
+    /*
+     * Used to grade a single lick from a sample
+     */
+    private double filter(String data)
+    {
+        //Get sample inputDimension
+        int inputDimension = (data.length() - 4) / 2;
+        
+        Sample s = new Sample(outputDimension, inputDimension);
+        
+        parseData(data, s);
+        network.use(s);
+        return network.getSingleOutput();
+    }
+    
+    /*
+     * Private Runnable class that can take arguments
+     */
+    private class MyRunnable implements Runnable
+    {
+        public MyRunnable (Object ... args)
+        {}
+
+        public void run() 
+        {}  
     }
     
     //training
@@ -172,7 +261,7 @@ public class Critic {
     
     //mode
     private int modeInt;
-    private MODE mode;
+    private LEARNING_MODE mode;
     
     //weights
     private String weightFile;
@@ -182,12 +271,24 @@ public class Critic {
     private int[] layerSize;
     private ActivationFunction[] layerType;
     
-    public StringBuilder trainNetwork(Object ... args)
-    {
-        StringBuilder output = new StringBuilder();
-        
+    /*
+     * Trains the network given the correct parameters.
+     * Executes in a separate thread.
+     */
+    public void trainNetwork(final Object ... args)
+    {  
+        new Thread(new MyRunnable(args) {
+            @Override
+            public void run() {
+                
         // If we have weights already, set this to true
         boolean fixWeights = false;
+        
+        notate = ImproVisor.getCurrentWindow();
+        lickgenFrame = notate.getLickgenFrame();
+        
+        // Refresh output screen
+        lickgenFrame.setNetworkOutputTextField("");
         
         //Asumed
         trainingFile = (String) args[0];
@@ -210,7 +311,7 @@ public class Critic {
         if (args[4] != null)
         {
             int modeTemp = Integer.parseInt( (String) args[4]);
-            mode = MODE.values()[modeTemp];
+            mode = LEARNING_MODE.values()[modeTemp];
         }
         else
             mode = defaultMode;
@@ -238,20 +339,20 @@ public class Critic {
         if (f.length() != 0)
             fixWeights = true;
         
-        output.append(numberLayers).append(" layers structured (from input to output) as: \n");
+        lickgenFrame.appendNetworkOutputTextField(numberLayers + " layers structured (from input to output) as: \n");
 
         for( int i = 0; i < numberLayers; i++ )
         {
-            output.append("    ").append(layerType[i].getName()).append(" (").append(layerSize[i]).append(" " + "neurons" + ")");
-            output.append("\n");
+            lickgenFrame.appendNetworkOutputTextField("    " + layerType[i].getName()
+                    + " (" + layerSize[i] + " " + "neurons" + ")" + "\n");
         }
 
-        output.append("\n");
-        output.append("epoch limit = ").append(epochLimit).append("\n");
-        output.append("specified rate = ").append(rate).append("\n");
-        output.append("goal = ").append(goal).append("\n");
-        output.append("mode = ").append(modeName[mode.ordinal()]).append("\n");
-        output.append("\n");
+        lickgenFrame.appendNetworkOutputTextField("\n");
+        lickgenFrame.appendNetworkOutputTextField("epoch limit = " + epochLimit + "\n");
+        lickgenFrame.appendNetworkOutputTextField("specified rate = " + rate + "\n");
+        lickgenFrame.appendNetworkOutputTextField("goal = " + goal + "\n");
+        lickgenFrame.appendNetworkOutputTextField("mode = " + modeName[mode.ordinal()] + "\n");
+        lickgenFrame.appendNetworkOutputTextField("\n");
             
         AtomicInteger inputD = new AtomicInteger();
         AtomicInteger outputD = new AtomicInteger();
@@ -267,7 +368,9 @@ public class Critic {
         }
         
         AtomicInteger nTrainingSamples = new AtomicInteger();
-        output.append(showAndCountSamples("training", trainingSamples, nTrainingSamples));
+        lickgenFrame.appendNetworkOutputTextField(showAndCountSamples("training", trainingSamples, nTrainingSamples));
+        lickgenFrame.appendNetworkOutputTextField("Sample input size is " + inputD.get() + "\n");
+        lickgenFrame.appendNetworkOutputTextField("Sample output size is " + outputD.get() + "\n");
         
         Network thisNetwork = new Network(numberLayers, layerSize, layerType, inputD.get());
      
@@ -292,7 +395,7 @@ public class Critic {
             System.out.println(thisNetwork.showWeights("initial"));
         }
         
-        output.append("\nTraining begins with epoch 1.\n");
+        lickgenFrame.appendNetworkOutputTextField("\nTraining begins with epoch 1.\n");
         
         int epoch = 1;
         double sse;
@@ -378,14 +481,14 @@ public class Critic {
                 usageError += (thisNetwork.computeUsageError(sample) != 0) ? 1 : 0;
             }
             
-            output.append(String.format("end epoch %d, mse: %10.8f %s, usage error: %d/%d (%5.2f%%)\n",
-                            epoch, 
-                            mse, 
-                            mse < oldmse ? "decreasing" : "increasing",
-                            (int)usageError,
-                            nTrainingSamples.get(),
-                            100 * usageError / nTrainingSamples.get()));
-            output.append("\n");
+            lickgenFrame.appendNetworkOutputTextField(String.format("end epoch %d, mse: %10.8f %s, usage error: %d/%d (%5.2f%%)\n",
+                                                        epoch, 
+                                                        mse, 
+                                                        mse < oldmse ? "decreasing" : "increasing",
+                                                        (int)usageError,
+                                                        nTrainingSamples.get(),
+                                                        100 * usageError / nTrainingSamples.get()));
+            lickgenFrame.appendNetworkOutputTextField("\n");
 
             epoch++;
 
@@ -401,13 +504,13 @@ public class Critic {
             oldmse = mse;
         }
         
-        output.append("Training ends at epoch ").append(epoch).append(", ").append(reasonName[reason.ordinal()]).append(".");
-        output.append("\n").append("\n");
-        output.append("Final weights:");
-        output.append("\n");
-        
-        output.append(thisNetwork.showWeights("Final"));
-        
+        lickgenFrame.appendNetworkOutputTextField("Training ends at epoch " + epoch
+                + ", " + reasonName[reason.ordinal()] + ".");
+        lickgenFrame.appendNetworkOutputTextField("\n" + "\n");
+        lickgenFrame.appendNetworkOutputTextField("Final weights:");
+        lickgenFrame.appendNetworkOutputTextField("\n");
+        lickgenFrame.appendNetworkOutputTextField(thisNetwork.showWeights("Final").toString());
+     
         try 
         {
             PrintWriter out = new PrintWriter(new File(ImproVisor.getVocabDirectory(), weightFile));
@@ -422,85 +525,247 @@ public class Critic {
         {
             
         }
+            } // End of Runnable
+        }).start(); // End of Thread
+    }
+     
+    /*
+     * Generate note and chord list from a score
+     */
+    public void generateNotesAndChords(ArrayList<Note> noteList, ArrayList<Chord> chordList,
+                                          int start, int end)
+    {
+        // Fake grade for the lick, so the input for the critic is correct
+        int grade = 1;
         
-        return output;
+        // Get Notate panel
+        notate = ImproVisor.getCurrentWindow();
+   
+        // Parse stave selection into notes and chords
+        String lickStr = notate.getCurrentStave().extract("<Extracted Lick>", ExtractMode.LICK, grade, start, end);
+        Polylist lick = Notate.parseListFromString(lickStr);
+            if(lick.length() == 1 && lick.first() instanceof Polylist && ((Polylist) lick.first()).length() > 1) {
+                lick = (Polylist) (lick.first());
+            }
+            Polylist notes = Polylist.list();
+            Polylist chords = Polylist.list();
+            String name = "";
+            while(lick.nonEmpty()) {
+                Object o = lick.first();
+                if(o instanceof Polylist) {
+                    Polylist p = (Polylist) o;
+                    String s = (String) p.first();
+                    if(s.equals("notes")) {
+                        notes = p.rest();
+                    } else if(s.equals("sequence")) {
+                        chords = p.rest();
+                    } else if(s.equals("name")) {
+                        name = (String) p.rest().implode(" ");
+                    }
+                }
+                lick = lick.rest();
+            }
+        
+        // Generate score to get exact chord durations  
+        ChordPart chordsList = new ChordPart(BEAT*8);
+        MelodyPart melody = new MelodyPart(BEAT*8);
+        Polylist combined = chords.append(notes);
+        (new SetChordsCommand(0, combined, chordsList, melody)).execute();
+        chordsList.setStyle(Preferences.getPreference(Preferences.DEFAULT_STYLE));
+        Score score = new Score();
+        score.setChordProg(chordsList);
+        score.addPart(melody);
+        ArrayList<ChordSymbol> symbols = score.getChordProg().getChordSymbols();
+        ArrayList<Integer> durations = score.getChordProg().getChordDurations();
+
+        // Add all chords to chord list
+        for (int i = 0; i < symbols.size(); i++)
+        {
+            chordList.add(new Chord(symbols.get(i), durations.get(i)));
+        }
+        
+        // Add all notes to note list
+        while(!notes.isEmpty()) {
+            while(!notes.isEmpty() && notes.first() == null) {
+                notes = notes.rest();
+            }
+            
+            if(!notes.isEmpty()) {
+                noteList.add(NoteSymbol.toNote(notes.first().toString()));
+                notes = notes.rest();
+            }
+        }
     }
     
-    
-    // Different steps/usages
-    // -From input file, generate weight file
-    // -From input file, generate weight file and network?
-    // -From weight file, generate appropriate network
-    // -From single Sample, use network and grade
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
- 
- 
- 
-    private Sample parseData (String data, Sample s)
+    public static int getNoteClassification(int color)
     {
-        String[] inputs = data.split(" ");
-        for (int i = 0; i < inputs.length; i++)
+        switch (color)
         {
-            if (i == 0)
+            case BLACK:
+                return CHORD_TONE;
+            case GREEN:
+                return COLOR_TONE;
+            case BLUE:
+                return APPROACH_TONE;
+            case RED:
+                return FOREIGN_TONE;
+        }
+        return CHORD_TONE;
+    }
+    
+    public static int[] collectNoteColors(MelodyPart part, ChordPart chordProg) 
+    {
+        int number = part.size();
+        
+        int[] color = new int[number];
+        for (int i = 0; i < number; i++) 
+        {
+            Note curNote = part.getNote(i);
+            if (curNote != null) 
             {
-                double gradeOutput = Double.parseDouble(inputs[i]);
-                s.setOutput(0, gradeOutput);
+                Note origNote = part.getNote(i);
+                color[i] = determineColor(curNote, origNote,
+                        i, false, color, part, chordProg);
             }
-            else if (inputs[i].length() != 1)
+        }
+        
+        for(int i = 0; i < number; i++) 
+        {
+            Note curNote = part.getNote(i);
+            if (curNote != null && curNote.isTied() && !curNote.firstTied() 
+                    && part.getPrevIndex(i) >= 0) 
             {
-                break;
+                color[i] = color[part.getPrevIndex(i)];                
+            }
+        }
+        
+        return color;
+    }
+    
+    static String noteColorString = Preferences.getPreference(Preferences.NOTE_COLORING);
+    
+    public static int determineColor(Note note, Note pitchDeterminer, int i,  
+                         boolean isApproach, int[] colorArray, MelodyPart melody, ChordPart chordProg)
+
+    {      
+        Chord c = chordProg.getCurrentChord(i);
+
+        // Deal with note coloration
+
+        int noteType;
+
+        noteType = (c == null || pitchDeterminer == null) ? CHORD_TONE
+                : c.getTypeIndex(pitchDeterminer);
+
+        // Approach tone coloring has a higher priority than foreign tone coloring,
+        // but less than chord or color tones.
+        if( noteType == FOREIGN_TONE && isApproach )
+        {
+            noteType = APPROACH_TONE;
+        }
+
+        int prevIndex = melody.getPrevIndex(i);
+        Note prevNote = melody.getNote(prevIndex);
+
+        boolean approachable = (noteType == CHORD_TONE || noteType == COLOR_TONE);
+
+        if( c != null 
+            && (note != null) 
+            && approachable 
+            && !note.isRest() 
+            && !c.getName().equals("NC")
+            && prevNote != null 
+            && !prevNote.isRest() 
+            && !isApproach )
+        {
+
+            if( prevNote.getPitch() == note.getPitch() - 1
+                    || prevNote.getPitch() == note.getPitch() + 1 )
+            {
+                colorArray[prevIndex] = determineColor(prevNote,
+                                                       melody.getNote(prevIndex),
+                                                       prevIndex, true, colorArray, melody, chordProg);
+            }
+
+        }
+
+        // Avoid re-parsing.  Also, should do some range checking on digits
+        // in the user preferences.
+
+        int noteColor = Integer.parseInt("" + noteColorString.charAt(noteType)) - 1;
+        return noteColor;
+    }
+    
+    /*
+     * Takes a list of chords and notes and will generate a grade
+     */
+    public Double gradeFromCritic(ArrayList<Note> noteList, ArrayList<Chord> chordList)
+    {
+        StringBuilder output = new StringBuilder();
+        int beatPosition = 0;
+        AtomicBoolean error = new AtomicBoolean(false);
+        
+        // Create new Melody Part
+        MelodyPart melody = new MelodyPart();
+        ChordPart chords = new ChordPart();
+        for (Note n : noteList)
+           melody.addNote(n);
+        for (Chord c: chordList)
+            chords.addChord(c);
+        
+        // Get classifications for all notes
+        int [] classifications = collectNoteColors(melody, chords);
+    
+        // Random grade needed for correct length of input
+        int grade = 1;
+        
+        output.append(String.valueOf(grade / 10.0));
+        output.append(' ');
+
+        // Print all note data for all notes within one lick
+        for (int index = 0; index < noteList.size(); index++)
+        {
+            int indexPrev = index - 1;
+            int currNoteClassification = getNoteClassification(classifications[beatPosition]);
+            
+            if (indexPrev < 0)
+            {
+                beatPosition = CriticDialog.printNoteData(output, null, noteList.get(index), 
+                        currNoteClassification, beatPosition, error);
             }
             else
             {
-                double dataInput = Double.parseDouble(inputs[i]);
-                
-                try 
-                {
-                     s.setInput(i - 1, dataInput); //Had one time issue with out of
-                                                   //range Sample input (int = 342)
-                                                   //Happens if the data input is too large
-                }
-                catch (Exception e)
-                {
-                    e.printStackTrace();
-                    break;
-                }
+                beatPosition = CriticDialog.printNoteData(output, noteList.get(indexPrev), 
+                        noteList.get(index), currNoteClassification, beatPosition, error);
             }
         }
-        return s;
-    }
-    
-    public double filter(String data)
-    {
-        //Get sample inputDimension
-        int inputDimension = (data.length() - 4) / 2;
         
-        Sample s = new Sample(outputDimension, inputDimension);
-        
-        parseData(data, s);
-        network.use(s);
-        return network.getSingleOutput();
-    }
+        if (!error.get())
+        {     
 
-    public int getLickLength()
-    {
-        return lickLength;
+            // Fix the length if the lick is too short or too long
+            if (output.length() > lickLength)
+            {
+                output.delete(lickLength, output.length());
+            }
+
+            while (output.length() < lickLength)
+            {
+                output.append("1 0 0 0 0 0 0 1 1 1 1 1 1 0 0 0 0 0 ");
+            }
+
+            return filter(output.toString());
+         }
+        else
+        {
+            // Represents an error
+            return null;
+        }
     }
-    
-    public Network getNetwork()
-    {
-        return network;
-    }
-    
+   
+    /*
+     * Initializes the network given a weight file
+     */
     public StringBuilder prepareNetwork(String weights) throws Exception
     {
         try 
@@ -545,5 +810,13 @@ public class Critic {
         {
             throw new Exception(e);
         }
+    }
+    
+    /*
+     * Returns the network
+     */
+    public Network getNetwork()
+    {
+        return network;
     }
 }

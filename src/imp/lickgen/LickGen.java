@@ -1561,9 +1561,19 @@ public MelodyPart fillMelody(int minPitch,
     // In response to potential null notes, possibly generated from
     // fillPartOfMelody(), we simply repeat the fill until we create
     // a melody with no null notes.
+    // 7-9-13 - HB
+    // Found this to get into an infinte loop sometimes, so I've
+    // added a count so it can get out of the loop. Not sure
+    // what's the issue, seems to involve the lick generator having
+    // issues with licks ending in rests.
     boolean repeatFill = true;
-    while (repeatFill)
+    int count = 0;
+    while (repeatFill && count < MELODY_GEN_LIMIT)
     {
+        count++;
+        if (count == MELODY_GEN_LIMIT)
+            notate.setLickGenStatus("Too many lick generations, aborting.");
+
         try  // I have seen this fail once, hence the try/catch. RK
         // However, someone needs to follow up on what happens if this
         // return null.
@@ -1592,7 +1602,7 @@ public MelodyPart fillMelody(int minPitch,
                 }
               start = position;
             }
-          
+
           repeatFill = false;
         }
         catch( NullPointerException e )

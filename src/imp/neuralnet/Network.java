@@ -33,11 +33,13 @@ public class Network {
     private int numberLayers;
     private int lastLayer;
     private Layer[] layer;
+    private int inputDimension;
     
     public Network(int numberLayers, int[] layerSize, ActivationFunction[] type, int inputDimension)
     {
         this.numberLayers = numberLayers;
         this.lastLayer = numberLayers - 1;
+        this.inputDimension = inputDimension;
 
         layer = new Layer[numberLayers];
         if (numberLayers < 1)
@@ -234,6 +236,7 @@ public class Network {
     public StringBuilder getStatistics()
     {
         StringBuilder output = new StringBuilder();
+        output.append("length of input: ").append(inputDimension).append("\n");
         output.append(numberLayers).append(" layers structured (from input to output) as: \n");
         for( int i = 0; i < numberLayers; i++ )
         {
