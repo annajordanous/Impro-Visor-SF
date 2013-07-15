@@ -874,7 +874,8 @@ public boolean requestFocusInWindow()
         notate.setStatus("Select Advice.");
       }
 
-    boolean result = true; //super.requestFocusInWindow(); This messes things up.
+    boolean result = true;
+    super.requestFocusInWindow(); // uncommented on r1418 to fix problem with listeners
     Trace.log(2, "stave has focus");
     return result;
   }
