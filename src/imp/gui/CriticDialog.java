@@ -354,8 +354,8 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
         errorLabel.setText(null);
     }
     
-    JFileChooser openDialog = new JFileChooser();
-    JFileChooser saveDialog = new JFileChooser();
+    JFileChooser openDialog = new JFileChooser(ImproVisor.getNNetDataDirectory());
+    JFileChooser saveDialog = new JFileChooser(ImproVisor.getNNetDataDirectory());
     
     public void save() {
         if(currentFile != null)
