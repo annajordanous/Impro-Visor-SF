@@ -1064,7 +1064,7 @@ public MelodyPart copy(int startingIndex, int endingIndex)
     // We need this for trading, as long as more than one instrument
     // is playing on the same track.
 
-    track.add(MidiSynth.createProgramChangeEvent(ch, instrument, time));
+    // track.add(MidiSynth.createProgramChangeEvent(ch, instrument, time));
 
     if( sendBankSelect )
       {
