@@ -582,6 +582,12 @@ public static File getVocabDirectory()
   return new File(getUserDirectory(), Directories.vocabDirName);
   }
 
+public static File getNNetDataDirectory()
+{
+    File f = new File(getUserDirectory(), Directories.vocabDirName);
+    return new File(f, Directories.nnetTrainingDataDirName);
+}
+
 public static File getLeadsheetDirectory()
   {
   return new File(getUserDirectory(), Directories.leadsheetDirName);

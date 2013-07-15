@@ -93,6 +93,12 @@ public static String leadsheetDirName = "leadsheets";
 public static String midiDirName = "midi";
 
 /**
+ * Name of sub-directory stored in "vocab" for
+ * neural network training data
+ */
+public static String nnetTrainingDataDirName = "nnet-training-data";
+
+/**
  * Name of the error log file.
  */
 

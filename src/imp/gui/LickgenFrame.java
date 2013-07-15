@@ -5293,7 +5293,7 @@ private void useSoloistCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//
     }//GEN-LAST:event_loadWeightFileButtonActionPerformed
 
     private void trainingFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_trainingFileButtonActionPerformed
-        JFileChooser openDialog = new JFileChooser();
+        JFileChooser openDialog = new JFileChooser(ImproVisor.getNNetDataDirectory());
         openDialog.setDialogType(JFileChooser.OPEN_DIALOG);
 
         if(openDialog.showDialog(this, "Open") != JFileChooser.APPROVE_OPTION)

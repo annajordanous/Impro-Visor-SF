@@ -63,9 +63,17 @@ public class Coloration implements Constants {
         int prevIndex = melody.getPrevIndex(i);
         Note prevNote = melody.getNote(prevIndex);
         boolean approachable = noteType == CHORD_TONE || noteType == COLOR_TONE;
-        if (c != null && (note != null) && approachable && !note.isRest() && !c.getName().equals("NC") && prevNote != null && !prevNote.isRest() && !isApproach) {
-            if (prevNote.getPitch() == note.getPitch() - 1 || prevNote.getPitch() == note.getPitch() + 1) {
-                colorArray[prevIndex] = determineColor(prevNote, melody.getNote(prevIndex), prevIndex, true, colorArray, melody, chordProg);
+        if (c != null 
+            && (note != null) 
+            && approachable && !note.isRest() 
+            && !c.getName().equals("NC") 
+            && prevNote != null 
+            && !prevNote.isRest() 
+            && !isApproach) {
+            if (prevNote.getPitch() == note.getPitch() - 1 
+                || prevNote.getPitch() == note.getPitch() + 1) {
+                colorArray[prevIndex] = determineColor(prevNote, melody.getNote(prevIndex), 
+                        prevIndex, true, colorArray, melody, chordProg);
             }
         }
         int noteColor = Integer.parseInt("" + noteColorString.charAt(noteType)) - 1;
