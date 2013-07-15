@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2013 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,6 @@
 package imp.data;
 
 import imp.brickdictionary.Block;
-import java.util.*;
 
 /**
  * SectionRecord records the information about a section. It was added when
@@ -59,24 +58,26 @@ SectionRecord(SectionRecord orig)
   }
 
 public void setColumn(Object aValue, int column)
-{
-    
-    switch(column){
-            case 4: //styleName
-                setStyleName((String)aValue);
-            case 5: //tempo
-                break;
-            case 6: //Time Sig.
-                break;
-            case 7: //Key Sig.
-                break;
-            case 8: //Options
-                break;
-            default:
-                break;
-    }
-    
-}
+  {
+
+    switch( column )
+      {
+        case 4: //styleName
+            setStyleName((String) aValue);
+            break;
+        case 5: //tempo
+            break;
+        case 6: //Time Sig.
+            break;
+        case 7: //Key Sig.
+            break;
+        case 8: //Options
+            break;
+        default:
+            break;
+      }
+
+  }
 
 public boolean getIsPhrase()
   {

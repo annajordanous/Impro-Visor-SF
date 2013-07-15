@@ -2704,7 +2704,7 @@ private boolean drawPart(MelodyPart part, Graphics g)
     int inext;
 
     // the color indices for the notes in the part
-    int[] noteColors = this.collectNoteColors(part, g);
+    int[] noteColors = this.collectNoteColors(part);
 
     // box a group of tied notes
     boolean boxTies = false;
@@ -2715,7 +2715,7 @@ private boolean drawPart(MelodyPart part, Graphics g)
         resizeCstrLines(part);
       }
 
-    Note pitchDeterminer = null;
+//    Note pitchDeterminer = null;
     
     SectionInfo sectionInfo = chordProg.getSectionInfo();
 
@@ -2769,10 +2769,10 @@ private boolean drawPart(MelodyPart part, Graphics g)
         Note note = part.getNote(i);
         Note orignote = origPart.getNote(i);
 
-        if( orignote != null )
-          {
-            pitchDeterminer = orignote;
-          }
+//        if( orignote != null )
+//          {
+//            pitchDeterminer = orignote;
+//          }
 
         // Handle sections within or at start of line.
 
@@ -3725,7 +3725,7 @@ boolean sameBeat(int i, int j)
  * Returns an array of color values to use in drawing the notes.
  * @return int[]  color values of notes
  */
-public int[] collectNoteColors(MelodyPart part, Graphics g) {
+public int[] collectNoteColors(MelodyPart part) {
         int number = part.size();
 
         int[] color = new int[number];
@@ -3734,7 +3734,7 @@ public int[] collectNoteColors(MelodyPart part, Graphics g) {
             if (curNote != null) {
                 Note origNote = this.getMelodyPart().getNote(i);
                 color[i] = determineColor(curNote, origNote,
-                        i, g, false, color);
+                        i, false, color);
             }
         }
         for(int i = 0; i < number; i++) {
@@ -3755,7 +3755,7 @@ public int[] collectNoteColors(MelodyPart part, Graphics g) {
  * because determining an approach note requires a look-behind from all determined
  * chord tones), and a color array to modify.
  */
-public int determineColor(Note note, Note pitchDeterminer, int i, Graphics g,
+public int determineColor(Note note, Note pitchDeterminer, int i, 
                           boolean isApproach, int[] colorArray)
   {
     if( !notate.getColoration() )
@@ -3799,7 +3799,7 @@ public int determineColor(Note note, Note pitchDeterminer, int i, Graphics g,
 
             colorArray[prevIndex] = determineColor(prevNote,
                                                    getMelodyPart().getNote(prevIndex),
-                                                   prevIndex, g, true, colorArray);
+                                                   prevIndex, true, colorArray);
 
           }
 
