@@ -326,6 +326,8 @@ public class Tension
     {
         int[] w = getWeightArray(measures, WEIGHTS);
         int synco = 0;
+        try
+          {
         for(int i = 0; i < onsets.length; i ++)
         {
             if(onsets[i] == 0)
@@ -345,6 +347,11 @@ public class Tension
                 }
             }
         }
+          }
+        catch(Exception e)
+          {
+            System.out.println("Exception caught in getSyncopation: " + e);
+          }
         return synco;
     }
     

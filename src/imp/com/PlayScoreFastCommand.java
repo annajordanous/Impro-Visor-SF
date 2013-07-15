@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2013 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
@@ -17,6 +17,7 @@
  * Impro-Visor; if not, write to the Free Software Foundation, Inc., 51 Franklin
  * St, Fifth Floor, Boston, MA 02110-1301 USA
  */
+
 package imp.com;
 
 import imp.Constants;
@@ -31,7 +32,7 @@ import javax.sound.midi.InvalidMidiDataException;
  * @see CommandManager
  * @see Score
  * @see MidiSynth
- * @author Stephen Jones
+ * @author Stephen Jones, Robert Keller
  */
 public class PlayScoreFastCommand implements Command, Constants
 {
@@ -57,6 +58,7 @@ private Score score;
  * true if the playback should be swung
  */
 private boolean swing;
+private Style style;
 private long startTime;
 private int endLimitIndex;
 /**
@@ -67,43 +69,16 @@ private MidiPlayListener listener;
 private int loopCount = 0;
 private int transposition = 0;
 private int offset;
+
 /**
  * The duration of the accompanying chord for single-note entry
  */
 private int oneNoteChordPlayValue = BEAT;
 
-/**
- * Used in LeadsheetPreview, Stave, and one other PlayScoreCommand.
- *
- * @param score
- * @param startTime
- * @param swing
- * @param ms
- * @param listener
- * @param loopCount
- * @param transposition
- */
-public PlayScoreFastCommand(Score score,
-                        long startTime,
-                        boolean swing,
-                        MidiSynth ms,
-                        MidiPlayListener listener,
-                        int loopCount,
-                        int transposition)
-  {
-    this(score,
-         startTime,
-         swing,
-         ms,
-         listener,
-         loopCount,
-         transposition,
-         USEDRUMS,
-         ENDSCORE);
-  }
+
 
 /**
- * Used by Notate, Stave, and other PlayScoreCommands
+ * Used by AutoImprovisation
  *
  * @param score
  * @param startTime
@@ -118,6 +93,7 @@ public PlayScoreFastCommand(Score score,
 public PlayScoreFastCommand(Score score,
                         long startTime,
                         boolean swing,
+                        Style style,
                         MidiSynth ms,
                         MidiPlayListener listener,
                         int loopCount,
@@ -127,6 +103,7 @@ public PlayScoreFastCommand(Score score,
   {
     this.score = score;
     this.swing = swing;
+    this.style = style;
     this.ms = ms;
     this.startTime = startTime;
     this.listener = listener;
@@ -177,7 +154,7 @@ public final void preExecute()
           }
 
         SectionInfo info = new SectionInfo(chords);
-        info.setStyle(swing ? "no-style-but-swing" : "no-style");
+        info.setStyle(style); 
         chords.setSectionInfo(info);
       }
 

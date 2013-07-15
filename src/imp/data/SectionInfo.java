@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2013 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -335,6 +335,45 @@ public SectionRecord getSectionRecordByIndex(int n)
         return si;
     }
 
+/**
+ * getStyleAtSlot returns Style operative at a given slot in the ChordPart
+ * @param slot
+ * @return 
+ */
+            
+public Style getStyleAtSlot(int slot)
+  {
+    return Style.getStyle(getStyleNameAtSlot(slot));
+  }
+
+
+/**
+ * getStyleNameAtSlot returns the name of the Style operative at a given slot
+ * in the ChordPart
+ * @param slot
+ * @return 
+ */
+            
+public String getStyleNameAtSlot(int slot)
+  {
+    String previousStyleName = "no-style";
+    String styleName = previousStyleName;
+    for( SectionRecord k: records )
+      {
+         styleName = k.getStyleName();
+         if( styleName.equals("*") )
+           {
+            styleName = previousStyleName;
+            }
+         if( k.getIndex() >= slot )
+          {
+             return styleName;
+          }
+         previousStyleName = styleName;
+      }
+    return styleName;
+  }
+
     public Style getStyle(int n) {
         if( records == null )
           {
@@ -410,7 +449,7 @@ public SectionRecord getSectionRecordByIndex(int n)
             case 2:
                 int endValue;
                 try {
-                    endValue = (int)(Integer.parseInt(aValue.toString()));
+                    endValue = Integer.parseInt(aValue.toString());
                     adjustEndOfSection(row,
                                        endValue,
                                        records.get(row).getIsPhrase(),
@@ -423,7 +462,7 @@ public SectionRecord getSectionRecordByIndex(int n)
             case 3:
                 int barValue;
                 try {
-                    barValue = getSectionMeasure(row)+(int)(Integer.parseInt(aValue.toString()))-1;
+                    barValue = getSectionMeasure(row)+(Integer.parseInt(aValue.toString()))-1;
                     adjustEndOfSection(row,
                                         barValue,
                                         records.get(row).getIsPhrase(),
@@ -432,6 +471,7 @@ public SectionRecord getSectionRecordByIndex(int n)
                 catch( NumberFormatException e)
                 {                
                 }
+                break;
             default:
                 getSectionRecordByIndex(row).setColumn(aValue, column);
         }
@@ -573,7 +613,9 @@ public SectionRecord getSectionRecordByIndex(int n)
     public boolean setStyle(String name) {
         Style s = Style.getStyle(name);
         if(s == null)
+          {
             return false;
+          }
         else {
             setStyle(s);
             return true;
@@ -581,6 +623,11 @@ public SectionRecord getSectionRecordByIndex(int n)
     }
     
     public void setStyle(Style s) {
+        if(s == null)
+          {
+            System.out.println("null Style; should not happen");
+            return;
+          }
         records = new ArrayList<SectionRecord>();
         addSection(s.getName(),0, false);
     }

@@ -30,7 +30,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.Track;
-import polya.Formatting;
 import polya.Polylist;
 
 /**
@@ -350,10 +349,31 @@ public void addSection(String styleName, int n, boolean isPhrase)
     sectionInfo.addSection(styleName, n, isPhrase);
   }
 
+
+/**
+ * This should be deprecated, as the ChordPart can contain numerous styles,
+ * one for each section. However, lots of uses remain as of 14 July 2013.
+ * See getStyleAtSlot.
+ * @return 
+ */
+
 public Style getStyle()
   {
     return sectionInfo.getStyle();
   }
+
+
+/**
+ * getStyleAtSlot returns Style operative at a given slot in the ChordPart
+ * @param slot
+ * @return 
+ */
+            
+public Style getStyleAtSlot(int slot)
+  {
+  return sectionInfo.getStyleAtSlot(slot);
+  }
+
 
 public SectionInfo getSectionInfo()
   {

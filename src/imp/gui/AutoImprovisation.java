@@ -25,6 +25,7 @@ import imp.com.Command;
 import imp.com.PlayScoreFastCommand;
 import imp.data.MelodyPart;
 import imp.data.Score;
+import imp.data.Style;
 
 /**
  * Class for controlling improvisation in conjunection with playback
@@ -297,16 +298,18 @@ public void maybeCreateLick(int slotInPlayback)
             improScore.setTempo(notate.getTempo());
 
             improLick.setInstrument(notate.getAuxInstrument().getValue());
-            improLick.setSwing(melodyPart.getSwing());
 
             improScore.addPart(improLick);
 
-//            Style style = notate.getChordProg().getStyle();
+            Style style = notate.getChordProg().getStyleAtSlot(chordStartSlot);
+            improLick.setSwing(style.getSwing());
 
+            //System.out.println("slot " + chordStartSlot + " style " + style);
             setImproCommand(
                     new PlayScoreFastCommand(improScore,
                                              0,         // startTime
-                                             true,      // swing
+                                             true,      // To cause swing value to be used.
+                                             style,
                                              notate.getMidiSynth2(),
                                              null,      // play listener
                                              0,         // loopCount,
