@@ -1049,26 +1049,16 @@ public class Notate
 
     initComponents();
 
-    sectionTableModel.addTableModelListener(new javax.swing.event.TableModelListener() {
-        public void tableChanged(javax.swing.event.TableModelEvent evt) {            
-            tableRefreshSelection();
-        }
-    });
     sectionTable.setModel(sectionTableModel);
-    sectionTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+    sectionTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     sectionTable.addMouseListener(new MouseAdapter() {
         public void mouseReleased(MouseEvent e) {
-                int col = sectionTable.columnAtPoint(e.getPoint());
-            if(col != 0){
+            if(e.getClickCount() >= 1) {
                 int row = sectionTable.rowAtPoint(e.getPoint());
-                for(int i = 0; i < sectionTable.getRowCount(); i++) {
-                    Boolean b = i == row ? new Boolean(true) : new Boolean(false);
-                    sectionTable.setValueAt(b,i,0);
-                }          
-            nWaySplitComboBoxModel.createItems(row);
-            nWaySplitComboBox.setSelectedItem("");  
+                sectionTable.getSelectionModel().setSelectionInterval(row,row);
+                nWaySplitComboBoxModel.createItems(row);
+                nWaySplitComboBox.setSelectedItem("");
             }
-            sectionTableModel.fireTableDataChanged();
         }
     });
     
@@ -10529,61 +10519,33 @@ private void setSectionParameters()
   }
 
     private void newSectionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newSectionButtonActionPerformed
-        int[] indexes = sectionTable.getSelectedRows();
-        for (int i = indexes.length - 1; i >= 0; i--) {
-            int index = indexes[i];
-            if (index < 0 || (Integer)sectionTableModel.getValueAt(index,3) < 2) {
-            } else{
-                sectionTableModel.addARow();
-                sectionInfo.newSection(index);
-                sectionTable.getSelectionModel().setSelectionInterval(index, index);
-                nWaySplitComboBoxModel.createItems(index);
-                nWaySplitComboBox.setSelectedItem("");
-            }
-        }
-        sectionTableModel.tableRefresh();
-        sectionTableModel.fireTableDataChanged();
+        int index = sectionTable.getSelectedRow();
+      if(index < 0)
+          return;
+      sectionTableModel.addARow();
+      sectionInfo.newSection(index);
+      sectionTableModel.tableRefresh();
+      sectionTable.getSelectionModel().setSelectionInterval(index, index);
+      nWaySplitComboBoxModel.createItems(index);
+      nWaySplitComboBox.setSelectedItem("");
     }//GEN-LAST:event_newSectionButtonActionPerformed
 
     private void delSectionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delSectionButtonActionPerformed
-        int[] indexes = sectionTable.getSelectedRows();
-        for (int i = indexes.length-1; i >= 0; i--) {
-            int index = indexes[i];
-            if (index < 0) {
-                return;
-            }
-            sectionInfo.deleteSection(index);
-            if (index == sectionInfo.size()) {
-                index -= 1;
-                sectionTable.getSelectionModel().setSelectionInterval(index, index);
-            } else {
-                sectionTable.getSelectionModel().setSelectionInterval(index, index);
-            }
-            nWaySplitComboBoxModel.createItems(index);
-            nWaySplitComboBox.setSelectedItem("");
-        }
-            sectionTableModel.tableRefresh();
-      sectionTableModel.fireTableDataChanged();
+        int index = sectionTable.getSelectedRow();
+      if(index < 0)
+          return;
+      sectionInfo.deleteSection(index);
+      sectionTableModel.tableRefresh();
+      if(index == sectionInfo.size())
+      {
+          index -= 1;
+          sectionTable.getSelectionModel().setSelectionInterval(index, index);
+      }
+      else
+          sectionTable.getSelectionModel().setSelectionInterval(index, index);
+      nWaySplitComboBoxModel.createItems(index);
+      nWaySplitComboBox.setSelectedItem("");
     }//GEN-LAST:event_delSectionButtonActionPerformed
-
-    public void tableRefreshSelection() {
-        int row = -1;
-        for (int i = 0; i < sectionTable.getRowCount(); i++) {
-            if ((Boolean) sectionTable.getValueAt(i, 0)) {
-                sectionTable.addRowSelectionInterval(i, i);
-                if (row == -1 || (Integer) sectionTableModel.getValueAt(row, 3) > (Integer) sectionTableModel.getValueAt(i, 3)) {
-                    row = i;
-                }
-            } else {
-                sectionTable.removeRowSelectionInterval(i, i);
-            }
-
-        }
-        if (row >= 0) {
-            nWaySplitComboBoxModel.createItems(row);
-            nWaySplitComboBox.setSelectedItem("");
-        }
-    }
     
     public void toCritic()
   {
@@ -13028,14 +12990,14 @@ public class SectionTableModel extends DefaultTableModel
 
     public void tableRefresh() {
         int index = sectionTable.getSelectionModel().getLeadSelectionIndex();
+        fireTableDataChanged();
         if(index >= 0)
         {
-            if(index >= sectionInfo.size())
-                addRecentStyle(sectionInfo.getSectionRecordByIndex(sectionInfo.size()-1).getStyle());
+            if(index == sectionInfo.size())
+                addRecentStyle(sectionInfo.getSectionRecordByIndex(index-1).getStyle());
             else
                 addRecentStyle(sectionInfo.getSectionRecordByIndex(index).getStyle());
         }
-        sectionTableModel.fireTableDataChanged();
     }
 
     public void tableReset() {
@@ -23771,28 +23733,24 @@ public void setKconstantSlider(double value)
   }
 
     private void nWaySplitComboBoxActionHandler(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nWaySplitComboBoxActionHandler
-        int[] indexes = sectionTable.getSelectedRows();
+        int index = sectionTable.getSelectionModel().getLeadSelectionIndex();
 
         int split = nWaySplitComboBox.getSelectedIndex() + 2;
-        for(int i = indexes.length - 1; i >= 0; i--) {
-            int index = indexes[i];
-            if (index < 0 || index >= sectionInfo.size() || split < 2) {
-                return;
-            }
 
-            //System.out.println("SPLIT: " + split);
-            //*
-            for (int j = 0; j < split; j++) {
-                sectionTableModel.addARow();
-            }
+        if(index < 0 || index >= sectionInfo.size() || split < 2)
+            return;
 
-            sectionInfo.nWaySplit(index, split);
+        //System.out.println("SPLIT: " + split);
+        //*
+        for(int j = 0; j < split; j++)
+            sectionTableModel.addARow();
 
-            nWaySplitComboBoxModel.createItems(index);
-            nWaySplitComboBox.setSelectedItem("");
-        }
+        sectionInfo.nWaySplit(index, split);
+
         sectionTableModel.tableRefresh();
-        tableRefreshSelection();
+        sectionTable.getSelectionModel().setSelectionInterval(index, index);
+        nWaySplitComboBoxModel.createItems(index);
+        nWaySplitComboBox.setSelectedItem("");
     }//GEN-LAST:event_nWaySplitComboBoxActionHandler
 
     private void noteCursorBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_noteCursorBtnActionPerformed
