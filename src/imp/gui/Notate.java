@@ -23793,8 +23793,6 @@ public void setKconstantSlider(double value)
     }//GEN-LAST:event_noteLen1MIActionPerformed
 
     private void autoFillMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_autoFillMIActionPerformed
-        autoFillMI.setSelected(!autoFillMI.isSelected());
-        System.out.println(autoFillMI.isSelected());
         MelodyPart melody = getCurrentStave().getMelodyPart();
         melody.setAutoFill(autoFillMI.isSelected());
     }//GEN-LAST:event_autoFillMIActionPerformed
