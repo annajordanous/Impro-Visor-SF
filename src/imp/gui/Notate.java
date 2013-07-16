@@ -2067,7 +2067,6 @@ public class Notate
         noteCursorBtn = new javax.swing.JButton();
         showAdviceButton = new javax.swing.JToggleButton();
         improviseButton = new javax.swing.JToggleButton();
-        stopBtn1 = new javax.swing.JButton();
         generationGapSpinner = new javax.swing.JSpinner();
         openGeneratorButton = new javax.swing.JButton();
         freezeLayoutButton = new javax.swing.JToggleButton();
@@ -7720,25 +7719,6 @@ public class Notate
             }
         });
         standardToolbar.add(improviseButton);
-
-        stopBtn1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/stop.gif"))); // NOI18N
-        stopBtn1.setToolTipText("Stop playback.");
-        stopBtn1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        stopBtn1.setEnabled(false);
-        stopBtn1.setFocusable(false);
-        stopBtn1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        stopBtn1.setMaximumSize(new java.awt.Dimension(30, 30));
-        stopBtn1.setMinimumSize(new java.awt.Dimension(30, 30));
-        stopBtn1.setPreferredSize(new java.awt.Dimension(30, 30));
-        stopBtn1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        stopBtn1.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                stopBtn1ActionPerformed(evt);
-            }
-        });
-        standardToolbar.add(stopBtn1);
 
         generationGapSpinner.setModel(new javax.swing.SpinnerNumberModel(0.99d, -20.0d, 20.0d, 0.01d));
         generationGapSpinner.setToolTipText("Specifies the lead time, in beats, for generating next chorus before the end of the current chorus, if Recur is toggled on.");
@@ -19304,7 +19284,6 @@ public ChordPart makeCountIn()
   public void enableStopButton(boolean enabled)
     {
     stopBtn.setEnabled(enabled);
-    stopBtn1.setEnabled(enabled);
     }
 
   public void setPlaying(MidiPlayListener.Status playing, int transposition)
@@ -19327,7 +19306,6 @@ public ChordPart makeCountIn()
         pauseBtn.setEnabled(true);
 
         stopBtn.setEnabled(true);
-        stopBtn1.setEnabled(true);
 
         pauseBtn.setSelected(false);
 
@@ -19342,7 +19320,6 @@ public ChordPart makeCountIn()
         pauseBtn.setEnabled(true);
 
         stopBtn.setEnabled(true);
-        stopBtn1.setEnabled(true);
 
         pauseBtn.setSelected(true);
 
@@ -19359,8 +19336,7 @@ public ChordPart makeCountIn()
         pauseBtn.setEnabled(false);
 
         stopBtn.setEnabled(false);
-        stopBtn1.setEnabled(false);
-
+ 
         pauseBtn.setSelected(false);
 
         recordBtn.setEnabled(true);
@@ -23978,11 +23954,6 @@ public void setKconstantSlider(double value)
        saveAudioLatency();
     }//GEN-LAST:event_AudioMsInputBoxActionPerformed
 
-    private void stopBtn1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_stopBtn1ActionPerformed
-    {//GEN-HEADEREND:event_stopBtn1ActionPerformed
-        stopButtonPressed();
-    }//GEN-LAST:event_stopBtn1ActionPerformed
-
 public void setNoteLength(int len)
 {
     getCurrentStave().getMelodyPart().setNoteLength(len);
@@ -26174,7 +26145,6 @@ preferencesAcceleratorMI.setEnabled(true);
     private javax.swing.JToggleButton stepInputBtn;
     private javax.swing.JMenuItem stepKeyboardMI;
     private javax.swing.JButton stopBtn;
-    private javax.swing.JButton stopBtn1;
     private javax.swing.JMenuItem stopPlayMI;
     private javax.swing.JToggleButton styleBtn;
     private javax.swing.JMenuItem styleGenerator1;
