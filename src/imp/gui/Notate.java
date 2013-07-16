@@ -918,7 +918,7 @@ public class Notate
 
     midiSynth3 = new MidiSynth(midiManager);
 
-    autoImprovisation = new AutoImprovisation(this);
+    autoImprovisation = new Trading(this);
 
     midiStepInput = new MidiStepEntryActionHandler(this);
 
@@ -26950,7 +26950,7 @@ public String bar(long slot)
  */
 private boolean originalGeneration = true;
 
-private AutoImprovisation autoImprovisation = null;
+private Trading autoImprovisation = null;
 
 private long totalSlotsElapsed = 0;
 private int previousSynthSlot = 0;
