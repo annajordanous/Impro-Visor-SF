@@ -14020,7 +14020,7 @@ private MelodyPart makeLick(Polylist rhythm, int start, int stop)
 
     if( actualSize > desiredSize )
       {
-        System.out.println("makeLick: reducing size from " + actualSize + " to desired " + desiredSize);
+        //System.out.println("makeLick: reducing size from " + actualSize + " to desired " + desiredSize);
         lick = lick.extract(0, desiredSize-1);
       }
 
@@ -14051,7 +14051,7 @@ private MelodyPart makeLick(Polylist rhythm)
 
     if( actualSize > desiredSize )
       {
-        System.out.println("makeLick: reducing size from " + actualSize + " to desired " + desiredSize);
+        //System.out.println("makeLick: reducing size from " + actualSize + " to desired " + desiredSize);
         lick = lick.extract(0, desiredSize-1);
       }
 
@@ -23467,11 +23467,6 @@ private void midiRecordSnapChanged(javax.swing.event.ChangeEvent evt)//GEN-FIRST
     Preferences.setMidiRecordSnap(midiRecordSnapSpinner.getValue().toString());
   }//GEN-LAST:event_midiRecordSnapChanged
 
-private void stopBtn1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_stopBtn1ActionPerformed
-  {//GEN-HEADEREND:event_stopBtn1ActionPerformed
-    stopButtonPressed();
-  }//GEN-LAST:event_stopBtn1ActionPerformed
-
     private void stepKeyboardMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stepKeyboardMIActionPerformed
       openStepKeyboard();
     }//GEN-LAST:event_stepKeyboardMIActionPerformed
@@ -23983,6 +23978,11 @@ public void setKconstantSlider(double value)
        saveAudioLatency();
     }//GEN-LAST:event_AudioMsInputBoxActionPerformed
 
+    private void stopBtn1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_stopBtn1ActionPerformed
+    {//GEN-HEADEREND:event_stopBtn1ActionPerformed
+        stopButtonPressed();
+    }//GEN-LAST:event_stopBtn1ActionPerformed
+
 public void setNoteLength(int len)
 {
     getCurrentStave().getMelodyPart().setNoteLength(len);
@@ -24042,7 +24042,7 @@ public void improviseButtonToggled()
 
     if( improvisationOn )
       {
-        // Auto-improvisation is not compatible with using this button,
+        // Trading is not compatible with using this button,
         // so the checkboxes are reverted to using the button.
 
         setUseImproviseCheckBox();
@@ -24066,6 +24066,7 @@ public void improviseButtonToggled()
       {
         improviseButton.setBackground(new Color(0, 255, 0));
         improviseButton.setText("<html><center>Improvise</center></html>");
+        stopPlaying();
       }
   }
 

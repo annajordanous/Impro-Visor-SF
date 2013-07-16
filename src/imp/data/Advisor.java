@@ -1383,9 +1383,9 @@ public Polylist getChordTree(ChordSymbol chordSymbol,
   ArrayList<Integer> chordMIDI = chordForm.getSpellMIDIarray(chordRoot);
   ArrayList<Integer> colorMIDI = chordForm.getColorMIDIarray(chordRoot);
  
-  System.out.println("ChordSymbol: " + chordSymbol + " bit vector: " + NoteSymbol.showContents(vector) 
-                     + ", chord MIDI: " + chordMIDI
-                     + ", color MIDI: " + colorMIDI);
+//  System.out.println("ChordSymbol: " + chordSymbol + " bit vector: " + NoteSymbol.showContents(vector) 
+//                     + ", chord MIDI: " + chordMIDI
+//                     + ", color MIDI: " + colorMIDI);
   
   int rise = PitchClass.findRise(chordRoot);
 
