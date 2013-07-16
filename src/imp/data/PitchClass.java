@@ -712,6 +712,23 @@ public static Note makeNoteAbove(PitchClass pc, int midiBase, int minimum, int d
   return new Note(midi, natural, sharp, duration);  
   }
 
+    /**
+     * Returns the Roman numeral equivalent of the pitch class as a String.
+     */
+    public static String romanNumerals[] = {"bIV", "bI", "bV", "bII", "bVI", "bIII", "bVII", "IV", "I", "V", "II", "VI", "III", "VII", "#IV", "#I", "#V", "#II", "#VI", "#III", "#VII"};
+
+    public String keyToRomanNumeral(PitchClass homeKey) {
+        int index = transpose(findRiseToC(homeKey)).getIndex();
+        return romanNumerals[index];
+    }
+
+    public static String keyToRomanNumeral(PitchClass currentKey, PitchClass homeKey) {
+        return currentKey.keyToRomanNumeral(homeKey);
+    }
+
+    public static String keyToRomanNumeral(String currentKeyName, PitchClass homeKey) {
+        return keyToRomanNumeral(getPitchClass(currentKeyName), homeKey);
+    }
 
 }
 

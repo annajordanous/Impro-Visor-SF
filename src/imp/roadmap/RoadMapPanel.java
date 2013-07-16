@@ -21,6 +21,7 @@
 package imp.roadmap;
 
 import imp.brickdictionary.*;
+import imp.data.PitchClass;
 import imp.util.ErrorLog;
 import java.awt.*;
 import java.util.ArrayList;
@@ -1079,7 +1080,10 @@ protected void addBlocks(ArrayList<Block> blocks, Boolean selectBlocks)
             FontMetrics metrics = g2d.getFontMetrics();
             int fontOffset = (blockHeight + metrics.getAscent())/2;
             long key = keySpan.getKey();
-            String keyName = BrickLibrary.keyNumToName(key) + " " + keySpan.getMode();
+            String keyName = BrickLibrary.keyNumToName(key);
+            PitchClass homeKey = settings.getRomanNumeralHomeKey();
+            keyName = homeKey != null ? PitchClass.keyToRomanNumeral(keyName,homeKey) : keyName;
+            keyName += " " + keySpan.getMode();
             long dur = keySpan.getDuration();
             int cutoff = settings.getCutoff();
             
@@ -1153,6 +1157,7 @@ protected void addBlocks(ArrayList<Block> blocks, Boolean selectBlocks)
               g2d.setColor(settings.textColor);
               keyName = RoadMapSettings.trimString(keyName, cutoff - x, metrics);
               keyName = RoadMapSettings.trimString(keyName, settings.getLength((int)dur), metrics);
+              //briankwak
               g2d.drawString(margin + keyName, x+2, y+fontOffset);
               }
     }
