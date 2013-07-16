@@ -28,11 +28,11 @@ import imp.data.Score;
 import imp.data.Style;
 
 /**
- * Class for controlling improvisation in conjunection with playback
+ * Class for controlling Trading over any grammar
  * @author Robert Keller
  */
 
-public class AutoImprovisation
+public class Trading
 {
 Notate notate;
 
@@ -168,7 +168,7 @@ int numCycles;
 
 int licksGenerated = 0;
 
-public AutoImprovisation(Notate notate)
+public Trading(Notate notate)
   {
     this.notate = notate;
   }
