@@ -26,6 +26,7 @@
 package imp.roadmap;
 
 import imp.brickdictionary.*;
+import imp.data.PitchClass;
 import java.awt.*;
 
 /**
@@ -381,5 +382,15 @@ public class RoadMapSettings {
 
     public void setDelta(boolean delta) {
         useDelta = delta;
+    }
+    
+    private PitchClass romanNumeralHomeKey;
+    
+    public void setRomanNumeralHomeKey(String keyName) {
+        romanNumeralHomeKey = keyName.equals("") ? null : PitchClass.getPitchClass(keyName);
+    }
+    
+    public PitchClass getRomanNumeralHomeKey(){
+        return romanNumeralHomeKey;
     }
 }
