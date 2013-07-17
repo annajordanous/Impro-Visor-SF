@@ -20,6 +20,7 @@
  */
 package imp.cykparser;
 import imp.brickdictionary.*;
+import imp.data.Advisor;
 
 /** BinaryProduction
  *A production rule for a brick music grammar with two nonterminals as the body.
@@ -124,9 +125,11 @@ public class UnaryProduction extends AbstractProduction {
      */
     public MatchValue checkProduction(TreeNode t, 
             EquivalenceDictionary e, SubstitutionDictionary s) 
-    {
-        if (t.getSymbol().equals(name))
-                return new MatchValue(modKeys(t.getKey() - termKey - key), t.getDuration());
+   {
+       if ((t.getBlock() instanceof ChordBlock && 
+            Advisor.getChordFamily('C' + t.getSymbol()).equals(Advisor.getChordFamily('C' + name))) ||
+            t.getSymbol().equals(name))
+               return new MatchValue(modKeys(t.getKey() - termKey - key), t.getDuration());           
         // in the event that the production is incorrect (most of the time)
         return new MatchValue();
     }

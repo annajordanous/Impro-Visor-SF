@@ -22,6 +22,7 @@
 package imp.cykparser;
 import imp.brickdictionary.*;
 import java.util.ArrayList;
+import imp.data.Advisor;
 
 /** BinaryProduction
  * A class used to describe production rules for a brick music grammar with 
@@ -200,26 +201,88 @@ public class BinaryProduction extends AbstractProduction {
         // - a must not mark a section end (the block cannot span a section end)
         // - the relative difference in key must be the same for the TreeNodes
         //   and the two halves of the production
-        // - a and b must have names corresponding to the two composing symbols
-        //   of the production
-        // - a and b must have durations that match, or can be scaled to match,
-        //   the durations of the right-hand rules of the production
+        // - either production is a chord that matches the family of the produciton chord,
+        //   or the productions have the same name, e.g. both are SPOT
+        // - the production rule contains an arbitrary-length brick or
+        //   the durations of the composing bricks can be scaled to match right-hand rules
         if (a.getKey() != NC && b.getKey() != NC &&
-                modKeys(key2 - key1) == modKeys(b.getKey() - a.getKey()) &&
-                (a.getSymbol().equals(name1) || a.getTrimmedSymbol().equals(name1)) && 
-                (b.getSymbol().equals(name2))) {
+            modKeys(key2 - key1) == modKeys(b.getKey() - a.getKey()) &&
+            matchFamily(a, b) && durationScales(a.getDuration(), b.getDuration())) {   
 
-            // if production rule contains an arbitrary-length brick
-            if (isArbitrary()) {
-                return new MatchValue(modKeys(b.getKey() - key2), duration);
-            }
-            // check if composing bricks can be scaled to match right-hand rules	
-            if (a.getDuration() * dur2 == b.getDuration() * dur1) {
-                	return new MatchValue(modKeys(b.getKey() - key2), duration);
-            }
+            return new MatchValue(modKeys(b.getKey() - key2), duration);
         } 
         // In the event that the production is incorrect (most of the time)
         return new MatchValue();
+    }
+
+    /** matchFamily
+     * Whether the Blocks represented in two treenodes match the names of the
+     * Blocks referenced in the binary production, matching chords with against
+     * their chord families and bricks against literal brick names
+     *
+     * @param a, the first TreeNode
+     * @param b, the second TreeNode
+     * @return true if the blocks are matches, false otherwise
+     */
+    private boolean matchFamily(TreeNode a, TreeNode b) {
+        return (matchNode(a, name1) && matchNode(b, name2)) ||
+               (matchNode(a, name1) && matchName(b, name2)) ||
+               (matchName(a, name1) && matchNode(b, name2)) ||
+               (matchName(a, name1) && matchName(b, name2));
+    }
+    
+    /** matchNode
+     * Whether two literal chord names are members of the same family
+     * 
+     * @param t, the TreeNode being matched
+     * @param name, the name of the production chord being matched
+     * @return true if the chords are members of the same family, else false
+     */
+    private boolean matchNode(TreeNode t, String name) {
+        if (t.getBlock() instanceof ChordBlock) {
+            String nodeFamA = simplify(Advisor.getChordFamily('C' + t.getSymbol()));
+            String nodeFamB = simplify(Advisor.getChordFamily('C' + t.getTrimmedSymbol()));
+            String prodFam = Advisor.getChordFamily('C' + name); 
+            if (prodFam != null && (nodeFamA.equals(simplify(prodFam)) || 
+                                    nodeFamB.equals(simplify(prodFam))))
+                return true;
+        }
+        return false;
+    }   
+    
+    /** simplify 
+     * Takes in a chord family and returns the generalized form of that family
+     *
+     * @param family
+     * @return the simplified family
+     */
+    private String simplify(String family) {
+        if (family.equals("minor") || family.equals("minor7") || family.equals("half-diminished")) 
+            return "genMinor";
+        return family;
+    }
+
+    /** matchName
+     * Match two literal brick names
+     * 
+     * @param t
+     * @param name
+     * @return whether the brick names match
+     */
+    private boolean matchName(TreeNode t, String name) {
+        return t.getSymbol().equals(name) || t.getTrimmedSymbol().equals(name);
+    }
+
+    /** durationScales
+     * Checks whether a production is of arbitrary duration, and if not whether
+     * two durations can be scaled to match it
+     *
+     * @param durA, duration of the first TreeNode
+     * @param durB, duration of the second TreeNode
+     * @return whether duration is arbitrary or can be scaled to match
+     */
+    private boolean durationScales (long durA, long durB) {
+        return isArbitrary() || (durA * dur2 == durB * dur1);
     }
     
     /** modKeys
