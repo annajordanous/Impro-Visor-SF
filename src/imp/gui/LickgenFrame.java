@@ -35,7 +35,6 @@ import imp.data.*;
 import imp.lickgen.Grammar;
 import imp.lickgen.LickGen;
 import imp.neuralnet.Critic;
-import imp.util.Preferences;
 import imp.util.ProfileFilter;
 import java.awt.*;
 import java.io.*;
@@ -2380,7 +2379,7 @@ private void initCompFileChoosers() {
         nnetOutputTextField.setColumns(20);
         nnetOutputTextField.setLineWrap(true);
         nnetOutputTextField.setRows(20000);
-        nnetOutputTextField.setText("To generate a weight file:\n-Select training file (File name will end with \".weights\")\n-Weight file name with automatically be set\n--Weight file will save to personal settings folder, in vocab\n-Change the epoch limit if desired\n-Change the default learning rate if desired\n-Change the default MSE goal if desired\n-Change the default mode if desired\n-In the table to the right:\n--Set the layer size for each layer\n---Input (first) layer size determinted at runtime from input size\n---The last layer, for output, should be of size 1\n--Set the function for each layer\n--Reorder rows as desired. Empty rows will be ignored.\n-Press \"Generate Weight File\"\n\nTo load network:\n-Select the weight file, from the vocab folder, under \"Weight File\"\n-Press \"Load Weight\"\n-Network will be initialized per leadsheet\n\nTo clear a weight file:\n-Select the weight file, from the vocab folder, under \"Weight File\"\n-Press \"Clear Weight File\"\n\n***There is a sample weight file in impro-visor-version-X.xx-files/vocab\n   for general use. The licks used to create it were subjectively graded,\n   and therefore may not reflect the preferences of the user.");
+        nnetOutputTextField.setText("To generate a weight file:\n-Select training file (File name will end with \".training.data\")\n-Weight file name with automatically be set\n--Weight file will save to personal settings folder, in vocab\n-Change the epoch limit if desired\n-Change the default learning rate if desired\n-Change the default MSE goal if desired\n-Change the default mode if desired\n-In the table to the right:\n--Set the layer size for each layer\n---Input (first) layer size determinted at runtime from input size\n---The last layer, for output, should be of size 1\n--Set the function for each layer\n--Reorder rows as desired. Empty rows will be ignored.\n-Press \"Generate Weight File\"\n\nTo load network:\n-Select the weight file, from the vocab folder, under \"Weight File\"\n-Press \"Load Weight\"\n-Network will be initialized per leadsheet\n\nTo clear a weight file:\n-Select the weight file, from the vocab folder, under \"Weight File\"\n-Press \"Clear Weight File\"\n\n***There is a sample weight file in impro-visor-version-X.xx-files/vocab\n   for general use. The licks used to create it were subjectively graded,\n   and therefore may not reflect the preferences of the user.");
         nnetOutputTextField.setBorder(null);
         nnetOutputTextField.setMinimumSize(new java.awt.Dimension(800, 100));
         nnetScrollPane.setViewportView(nnetOutputTextField);
@@ -5390,7 +5389,7 @@ private void useSoloistCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//
         nnetOutputTextField.setCaretPosition(0);
         nnetScrollPane.getVerticalScrollBar().setValue(0);
         nnetOutputTextField.setText("To generate a weight file:\n"
-                + "-Select training file (File name will end with \".weights\")\n"
+                + "-Select training file (File name will end with \".training.data\")\n"
                 + "-Weight file name with automatically be set\n"
                 + "--Weight file will save to personal settings folder, in vocab\n"
                 + "-Change the epoch limit if desired\n"

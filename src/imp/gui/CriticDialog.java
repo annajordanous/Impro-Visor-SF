@@ -25,7 +25,6 @@ import imp.ImproVisor;
 import imp.com.PlayScoreCommand;
 import imp.com.SetChordsCommand;
 import imp.data.*;
-import imp.neuralnet.Critic;
 import imp.util.Preferences;
 import java.io.*;
 import java.util.ArrayList;
@@ -311,6 +310,9 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
     }//GEN-LAST:event_openFileActionPerformed
 
     File currentFile = null;
+    JFileChooser openDialog = new JFileChooser(ImproVisor.getNNetDataDirectory());
+    JFileChooser saveDialog = new JFileChooser(ImproVisor.getNNetDataDirectory());
+    
     
     public void addFromFile(boolean overwrite) {
         openDialog.setDialogType(JFileChooser.OPEN_DIALOG);
@@ -354,9 +356,6 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
         errorLabel.setText(null);
     }
     
-    JFileChooser openDialog = new JFileChooser(ImproVisor.getNNetDataDirectory());
-    JFileChooser saveDialog = new JFileChooser(ImproVisor.getNNetDataDirectory());
-    
     public void save() {
         if(currentFile != null)
             save(currentFile);
@@ -394,11 +393,21 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
         BufferedWriter outWeight;
         try {
             in = new Scanner(f);
-            File fileTemp = new File(f.getAbsolutePath() + ".temp");
+            
+            String filePath = f.getAbsolutePath();
+            
+            // Truncate the suffix of the file name if it exists
+            if (f.getName().lastIndexOf(".") > 0)
+            {
+                int pos = f.getAbsolutePath().lastIndexOf(".");
+                filePath = f.getAbsolutePath().substring(0, pos);
+            }
+            
+            File fileTemp = new File(filePath + ".temp");
             outTemp = new BufferedWriter(new FileWriter(fileTemp));
-            File fileWeight = new File(f.getAbsolutePath() + ".weights");
+            File fileWeight = new File(filePath + ".training.data");
             outWeight = new BufferedWriter(new FileWriter(fileWeight));
-           
+            
             int maxSize = 0;
             while (in.hasNextLine()) {
                 String line = in.nextLine();

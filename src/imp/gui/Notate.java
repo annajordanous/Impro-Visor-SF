@@ -46,7 +46,6 @@ import java.awt.event.*;
 import java.io.*;
 import java.util.*;
 import java.util.Timer;
-import java.util.concurrent.atomic.AtomicBoolean;
 import javax.sound.midi.MidiDevice;
 import javax.sound.midi.Sequencer;
 import javax.swing.*;
@@ -21411,7 +21410,7 @@ public void originalGenerate(LickGen lickgen, int improviseStartSlot, int improv
     
     boolean useCritic = lickgenFrame.useCritic();
     
-    double criticGrade = lickgenFrame.getCriticGrade() / 10.0;
+    double criticGrade = lickgenFrame.getCriticGrade();
     
     // To prevent lag from too many interations, we limit the number of times
     // the critic can test licks.
