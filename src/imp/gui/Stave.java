@@ -6059,4 +6059,8 @@ public int getNumMeasures()
     public void focusLost(FocusEvent e) {
      //notate.setBorderColor(new java.awt.Color(255, 255, 255));   
     }
+    
+    public void partTitleFocus(){
+        partTitleEditor.setVisible(true);
+    }
 }
