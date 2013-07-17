@@ -233,7 +233,10 @@ public class Critic implements imp.Constants {
         
         parseData(data, s);
         network.use(s);
-        return network.getSingleOutput();
+        
+        // Multiple by 10 for correct output
+        Double singleOutput = network.getSingleOutput() * 10;
+        return singleOutput;
     }
     
     /*
@@ -703,7 +706,6 @@ public class Critic implements imp.Constants {
             
             network = new Network(thisNumLayers, thisLayerSize, thisLayerType, thisInputDimension);
             network.fixWeights(in);
-            output.append(network.showWeights("final"));
             in.close();
             
             return output;

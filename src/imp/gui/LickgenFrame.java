@@ -43,7 +43,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.concurrent.atomic.AtomicBoolean;
 import javax.swing.*;
 import javax.swing.plaf.metal.MetalButtonUI;
 import javax.swing.table.DefaultTableModel;
@@ -262,11 +261,7 @@ private void initCompFileChoosers() {
         useSoloistCheckBox = new javax.swing.JCheckBox();
         useHeadCheckBox = new javax.swing.JCheckBox();
         regenerateHeadDataBtn = new javax.swing.JButton();
-        useCriticCheckBox = new javax.swing.JCheckBox();
-        criticGradeTextField = new javax.swing.JTextField();
         continuallyGenerateCheckBox = new javax.swing.JCheckBox();
-        counterForCriticTextField = new javax.swing.JTextField();
-        initializeCriticOptionsCheckBox = new javax.swing.JCheckBox();
         toneProbabilityPanel = new javax.swing.JPanel();
         chordToneProbLabel = new javax.swing.JLabel();
         colorToneProbLabel = new javax.swing.JLabel();
@@ -320,11 +315,16 @@ private void initCompFileChoosers() {
         offsetByMeasureGradeSoloButton = new javax.swing.JButton();
         forwardGradeSoloButton = new javax.swing.JButton();
         backwardGradeSoloButton = new javax.swing.JButton();
-        undoGradeSoloButton = new javax.swing.JButton();
+        resetSelectionButton = new javax.swing.JButton();
         gradeAllMeasuresButton = new javax.swing.JButton();
         regenerateLickForSoloButton = new javax.swing.JButton();
         gradeLickFromStaveButton = new javax.swing.JButton();
         lickFromStaveGradeTextField = new javax.swing.JTextField();
+        useCriticCheckBox = new javax.swing.JCheckBox();
+        criticGradeTextField = new javax.swing.JTextField();
+        counterForCriticTextField = new javax.swing.JTextField();
+        criticGradeLabel = new javax.swing.JLabel();
+        counterForCriticLabel = new javax.swing.JLabel();
         grammarLearningPanel = new javax.swing.JPanel();
         finalLabel = new javax.swing.JLabel();
         windowParametersPanel = new javax.swing.JPanel();
@@ -1109,46 +1109,6 @@ private void initCompFileChoosers() {
         gridBagConstraints.weightx = 0.2;
         lickgenParametersPanel.add(regenerateHeadDataBtn, gridBagConstraints);
 
-        useCriticCheckBox.setText("Use Critic");
-        useCriticCheckBox.setToolTipText("Filter lick generation with a trained network.");
-        useCriticCheckBox.setMaximumSize(new java.awt.Dimension(160, 23));
-        useCriticCheckBox.setMinimumSize(new java.awt.Dimension(160, 23));
-        useCriticCheckBox.setPreferredSize(new java.awt.Dimension(160, 23));
-        useCriticCheckBox.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                useCriticCheckBoxMouseClicked(evt);
-            }
-        });
-        useCriticCheckBox.setVisible(false);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 5;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.weightx = 0.1;
-        lickgenParametersPanel.add(useCriticCheckBox, gridBagConstraints);
-
-        criticGradeTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        criticGradeTextField.setText("Grade");
-        criticGradeTextField.setToolTipText("Lowest grade acceptable by the filter.");
-        criticGradeTextField.setEnabled(false);
-        criticGradeTextField.setMinimumSize(new java.awt.Dimension(60, 24));
-        criticGradeTextField.setPreferredSize(new java.awt.Dimension(60, 24));
-        criticGradeTextField.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                criticGradeTextFieldFocusGained(evt);
-            }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                criticGradeTextFieldFocusLost(evt);
-            }
-        });
-        criticGradeTextField.setVisible(false);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 6;
-        gridBagConstraints.insets = new java.awt.Insets(0, 5, 2, 10);
-        lickgenParametersPanel.add(criticGradeTextField, gridBagConstraints);
-
         continuallyGenerateCheckBox.setSelected(true);
         continuallyGenerateCheckBox.setText("Continually Generate ");
         continuallyGenerateCheckBox.setToolTipText("After grading, continually generate new licks.");
@@ -1164,36 +1124,6 @@ private void initCompFileChoosers() {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 0.1;
         lickgenParametersPanel.add(continuallyGenerateCheckBox, gridBagConstraints);
-
-        counterForCriticTextField.setEditable(false);
-        counterForCriticTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        counterForCriticTextField.setText("Counter");
-        counterForCriticTextField.setToolTipText("Counter for how many times the critic generates a lick.");
-        counterForCriticTextField.setEnabled(false);
-        counterForCriticTextField.setMinimumSize(new java.awt.Dimension(80, 24));
-        counterForCriticTextField.setName(""); // NOI18N
-        counterForCriticTextField.setPreferredSize(new java.awt.Dimension(80, 24));
-        counterForCriticTextField.setVisible(false);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 7;
-        gridBagConstraints.insets = new java.awt.Insets(0, 5, 2, 10);
-        lickgenParametersPanel.add(counterForCriticTextField, gridBagConstraints);
-
-        initializeCriticOptionsCheckBox.setText("Use Neural Network");
-        initializeCriticOptionsCheckBox.setToolTipText("Enable all options involving the neural network.");
-        initializeCriticOptionsCheckBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                initializeCriticOptionsCheckBoxActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.weightx = 0.1;
-        lickgenParametersPanel.add(initializeCriticOptionsCheckBox, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -1734,7 +1664,7 @@ private void initCompFileChoosers() {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridx = 6;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.insets = new java.awt.Insets(2, 10, 2, 10);
         soloCorrectionPanel.add(offsetByMeasureGradeSoloButton, gridBagConstraints);
@@ -1747,7 +1677,7 @@ private void initCompFileChoosers() {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 5;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.insets = new java.awt.Insets(2, 10, 2, 10);
         soloCorrectionPanel.add(forwardGradeSoloButton, gridBagConstraints);
@@ -1760,23 +1690,23 @@ private void initCompFileChoosers() {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 5;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.insets = new java.awt.Insets(2, 10, 2, 10);
         soloCorrectionPanel.add(backwardGradeSoloButton, gridBagConstraints);
 
-        undoGradeSoloButton.setText("Undo");
-        undoGradeSoloButton.setToolTipText("Undo a change.");
-        undoGradeSoloButton.addActionListener(new java.awt.event.ActionListener() {
+        resetSelectionButton.setText("Reset Selection");
+        resetSelectionButton.setToolTipText("Undo a change.");
+        resetSelectionButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                undoGradeSoloButtonActionPerformed(evt);
+                resetSelectionButtonActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridx = 6;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.insets = new java.awt.Insets(2, 10, 2, 10);
-        soloCorrectionPanel.add(undoGradeSoloButton, gridBagConstraints);
+        soloCorrectionPanel.add(resetSelectionButton, gridBagConstraints);
 
         gradeAllMeasuresButton.setText("Correct All");
         gradeAllMeasuresButton.setToolTipText("Moves two measures at a time, correcting licks if the correct grade is insufficient.");
@@ -1789,7 +1719,7 @@ private void initCompFileChoosers() {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.insets = new java.awt.Insets(2, 10, 2, 10);
         soloCorrectionPanel.add(gradeAllMeasuresButton, gridBagConstraints);
@@ -1802,7 +1732,7 @@ private void initCompFileChoosers() {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.insets = new java.awt.Insets(2, 10, 2, 10);
         soloCorrectionPanel.add(regenerateLickForSoloButton, gridBagConstraints);
@@ -1815,7 +1745,7 @@ private void initCompFileChoosers() {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.insets = new java.awt.Insets(2, 10, 2, 10);
         soloCorrectionPanel.add(gradeLickFromStaveButton, gridBagConstraints);
@@ -1827,10 +1757,84 @@ private void initCompFileChoosers() {
         lickFromStaveGradeTextField.setMinimumSize(new java.awt.Dimension(156, 27));
         lickFromStaveGradeTextField.setPreferredSize(new java.awt.Dimension(156, 27));
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.insets = new java.awt.Insets(2, 10, 2, 10);
         soloCorrectionPanel.add(lickFromStaveGradeTextField, gridBagConstraints);
+
+        useCriticCheckBox.setText("Use Critic");
+        useCriticCheckBox.setToolTipText("Filter lick generation with a trained network.");
+        useCriticCheckBox.setMaximumSize(new java.awt.Dimension(110, 23));
+        useCriticCheckBox.setMinimumSize(new java.awt.Dimension(110, 23));
+        useCriticCheckBox.setPreferredSize(new java.awt.Dimension(110, 23));
+        useCriticCheckBox.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                useCriticCheckBoxMouseClicked(evt);
+            }
+        });
+        useCriticCheckBox.setVisible(false);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(2, 10, 2, 0);
+        soloCorrectionPanel.add(useCriticCheckBox, gridBagConstraints);
+
+        criticGradeTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        criticGradeTextField.setText("Grade");
+        criticGradeTextField.setToolTipText("Lowest grade acceptable by the filter.");
+        criticGradeTextField.setEnabled(false);
+        criticGradeTextField.setMinimumSize(new java.awt.Dimension(60, 24));
+        criticGradeTextField.setPreferredSize(new java.awt.Dimension(60, 24));
+        criticGradeTextField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                criticGradeTextFieldFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                criticGradeTextFieldFocusLost(evt);
+            }
+        });
+        criticGradeTextField.setVisible(false);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(2, 10, 2, 0);
+        soloCorrectionPanel.add(criticGradeTextField, gridBagConstraints);
+
+        counterForCriticTextField.setEditable(false);
+        counterForCriticTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        counterForCriticTextField.setText("Counter");
+        counterForCriticTextField.setToolTipText("Counter for how many times the critic generates a lick.");
+        counterForCriticTextField.setEnabled(false);
+        counterForCriticTextField.setMinimumSize(new java.awt.Dimension(80, 24));
+        counterForCriticTextField.setName(""); // NOI18N
+        counterForCriticTextField.setPreferredSize(new java.awt.Dimension(80, 24));
+        counterForCriticTextField.setVisible(false);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(2, 10, 2, 0);
+        soloCorrectionPanel.add(counterForCriticTextField, gridBagConstraints);
+
+        criticGradeLabel.setText("Grade");
+        criticGradeLabel.setToolTipText("Lowest grade acceptable by the filter.");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(2, 0, 2, 10);
+        soloCorrectionPanel.add(criticGradeLabel, gridBagConstraints);
+
+        counterForCriticLabel.setText("Counter");
+        counterForCriticLabel.setToolTipText("Counter for how many times the critic generates a lick.");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(2, 0, 2, 10);
+        soloCorrectionPanel.add(counterForCriticLabel, gridBagConstraints);
 
         soloCorrectionPanel.setVisible(false);
 
@@ -5024,11 +5028,6 @@ private void useSoloistCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//
         criticGradeTextField.setText("");
     }//GEN-LAST:event_criticGradeTextFieldFocusGained
 
-    public void setLickFromStaveGradeTextField(Double grade)
-    {
-        lickFromStaveGradeTextField.setText(String.format("%.3f", grade));
-    }
-    
     private void useCriticCheckBoxMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_useCriticCheckBoxMouseClicked
         useCritic = useCriticCheckBox.isSelected();
         criticGradeTextField.setEnabled(useCritic);
@@ -5074,48 +5073,6 @@ private void useSoloistCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//
     private void continuallyGenerateCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_continuallyGenerateCheckBoxActionPerformed
         continuallyGenerate = continuallyGenerateCheckBox.isSelected();
     }//GEN-LAST:event_continuallyGenerateCheckBoxActionPerformed
-
-    private void initializeCriticOptionsCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_initializeCriticOptionsCheckBoxActionPerformed
-        // Attempt to initialize the network if it hasn't been initialize
-        if (critic.getNetwork() == null)
-        {
-            try 
-            {
-                critic.prepareNetwork(weightFileTextField.getText());
-            }
-            catch (Exception e)
-            { 
-                initializeCriticOptionsCheckBox.setSelected(false);
-                JOptionPane.showMessageDialog(null, 
-                        new JLabel("<html><div style=\"text-align: center;\">"
-                        + "Missing the weight file, <br/>"
-                        + "need to train the network offline first<br/>"
-                        + "and generate a weight file.<br/>"
-                        + "Then enter the name of the file <br/>"
-                        + "in the \"Weight File\" text field under<br/>"
-                        + "the \"Neural Network\" tab."), 
-                          "Alert", JOptionPane.PLAIN_MESSAGE);
-            }
-        }
-        
-        // If the network has been initialized, allow for critic use
-        if (critic.getNetwork() != null)
-        {
-            boolean initializeCritic = initializeCriticOptionsCheckBox.isSelected();
-            useCriticCheckBox.setVisible(initializeCritic);
-            criticGradeTextField.setVisible(initializeCritic);
-            counterForCriticTextField.setVisible(initializeCritic);
-            soloCorrectionPanel.setVisible(initializeCritic);
-            
-            // Reset the now hidden options if we have deselected using the net
-            if (!initializeCritic)
-            {
-                useCriticCheckBox.setSelected(false);
-                criticGrade = DEFAULT_GRADE; // Reset default grade
-                useCriticCheckBoxMouseClicked(null);
-            }
-        }
-    }//GEN-LAST:event_initializeCriticOptionsCheckBoxActionPerformed
 
     private void gradeBadBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gradeBadBtnActionPerformed
         triageAndGenerate(1);
@@ -5284,7 +5241,6 @@ private void useSoloistCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//
         // If the network has been initialized, allow for critic use
         if (critic.getNetwork() != null)
         {
-            initializeCriticOptionsCheckBox.setSelected(true);
             useCriticCheckBox.setVisible(true);
             criticGradeTextField.setVisible(true);
             counterForCriticTextField.setVisible(true);
@@ -5524,9 +5480,10 @@ private void useSoloistCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//
         notate.getCurrentStave().unlockSelectionWidth();
     }//GEN-LAST:event_offsetByMeasureGradeSoloButtonActionPerformed
 
-    private void undoGradeSoloButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_undoGradeSoloButtonActionPerformed
-        notate.undoCommand();
-    }//GEN-LAST:event_undoGradeSoloButtonActionPerformed
+    private void resetSelectionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetSelectionButtonActionPerformed
+        notate.getCurrentStave().setSelection(0, 16 * EIGHTH - 1);
+        notate.getCurrentStave().repaint();
+    }//GEN-LAST:event_resetSelectionButtonActionPerformed
 
     private void gradeAllMeasuresButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gradeAllMeasuresButtonActionPerformed
         notate.getCurrentStave().lockSelectionWidth(16 * EIGHTH);
@@ -5569,12 +5526,12 @@ private void useSoloistCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//
             
             // Default grade guarentees generating a new lick if there
             // if an error
-            int grade = 0;
+            double grade = 0;
             if (gradeFromFilter != null)
-                 grade = (int) Math.round(gradeFromFilter);
+                 grade = gradeFromFilter;
             
             if (grade < criticGrade)
-                regenerateLickForSoloButtonActionPerformed(null);
+                generateLickButtonActionPerformed(null);
       
             // Move forward two measures
             start += 16 * EIGHTH;
@@ -5595,7 +5552,10 @@ private void useSoloistCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//
     }//GEN-LAST:event_gradeAllMeasuresButtonActionPerformed
 
     private void regenerateLickForSoloButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regenerateLickForSoloButtonActionPerformed
-        notate.generateFromButton();
+        gradeLickFromStaveButtonActionPerformed(null);
+        double currGrade = Double.parseDouble(lickFromStaveGradeTextField.getText());
+        if (currGrade < criticGrade)
+            generateLickButtonActionPerformed(null);
     }//GEN-LAST:event_regenerateLickForSoloButtonActionPerformed
   
     public void showCriticGrades()
@@ -5663,6 +5623,12 @@ private void useSoloistCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//
     {
         saveLickTF.setText(text);
     }
+    
+    // Sets the grade text field with a given grade
+    public void setLickFromStaveGradeTextField(Double grade)
+    {
+        lickFromStaveGradeTextField.setText(String.format("%.3f", grade));
+    } 
     
     // Sets the neural network output text field
     public void setNetworkOutputTextField(String text)
@@ -5743,7 +5709,9 @@ private void useSoloistCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//
     private javax.swing.JLabel colorToneProbLabel;
     private javax.swing.JTextField colorToneWeightField;
     private javax.swing.JCheckBox continuallyGenerateCheckBox;
+    private javax.swing.JLabel counterForCriticLabel;
     private javax.swing.JTextField counterForCriticTextField;
+    private javax.swing.JLabel criticGradeLabel;
     private javax.swing.JTextField criticGradeTextField;
     private javax.swing.JLabel disclaimer;
     private javax.swing.JLabel durationLabel;
@@ -5785,7 +5753,6 @@ private void useSoloistCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//
     private javax.swing.JButton gradeLickFromStaveButton;
     private javax.swing.JPanel grammarLearningPanel;
     private javax.swing.JMenu grammarMenu1;
-    private javax.swing.JCheckBox initializeCriticOptionsCheckBox;
     private javax.swing.JLabel intervalLabel;
     private javax.swing.JTextField invertProbabilityField;
     private javax.swing.JTable layerDataTable;
@@ -5843,6 +5810,7 @@ private void useSoloistCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//
     private javax.swing.JButton removeLayerFromTableButton;
     private javax.swing.JButton resetDefaultValuesButton;
     private javax.swing.JButton resetNnetInstructionsButton;
+    private javax.swing.JButton resetSelectionButton;
     private javax.swing.JTextField restProbField;
     private javax.swing.JLabel restProbLabel;
     private javax.swing.JTextField reverseProbabilityField;
@@ -5884,7 +5852,6 @@ private void useSoloistCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//
     private javax.swing.JLabel transposeProbLabel;
     private javax.swing.JTextField transposeProbabilityField;
     private javax.swing.JLabel typeLabel;
-    private javax.swing.JButton undoGradeSoloButton;
     private javax.swing.JCheckBox useCriticCheckBox;
     private javax.swing.JCheckBoxMenuItem useGrammarMI1;
     private javax.swing.JCheckBox useHeadCheckBox;
