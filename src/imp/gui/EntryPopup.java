@@ -167,6 +167,7 @@ public void setVisible(boolean visible, boolean save)
       { // check if visible cause we can lose focus when not being visible 
         // and thus this method might get called twice
         textToStave(input.getText());
+        this.notate.cm.changedSinceLastSave(true);
       }
 
     super.setVisible(visible);
