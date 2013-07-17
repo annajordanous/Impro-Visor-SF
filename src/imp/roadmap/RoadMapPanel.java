@@ -21,9 +21,14 @@
 package imp.roadmap;
 
 import imp.brickdictionary.*;
+import imp.data.Chord;
 import imp.data.PitchClass;
 import imp.util.ErrorLog;
 import java.awt.*;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 import polya.*;
@@ -580,6 +585,32 @@ protected void addBlocks(ArrayList<Block> blocks, Boolean selectBlocks)
             
             replaceSelection(newBlocks);
         }       
+    }
+    
+    /** Copies chords of the selection to the text entry window */
+    public String copySelectionToTextWindow() {
+        String text = "";
+        if (selectionStart != -1 && selectionEnd != -1) {
+            Writer writer = new StringWriter();
+            try {
+                BufferedWriter out = new BufferedWriter(writer);
+                Chord.initSaveToLeadsheet();
+                Chord c;
+                for (ChordBlock chord : roadMap.getChordsInRange(selectionStart, selectionEnd + 1)) {
+//                    String chordText = chord.getName() + " " + chord.getDuration() + " | ";
+//                    text += chordText;
+                    c = chord.getChord().copy();
+                    //System.out.println(c);
+                    c.saveLeadsheet(out, view.getMetre(), false);
+                    //Chord.flushChordBuffer(out, view.getMetre(), false, false);
+                }
+                out.close();
+            } catch (IOException e) {
+                ErrorLog.log(ErrorLog.SEVERE, "Internal Error");
+            }
+            text = writer.toString();
+        }
+        return text;
     }
     
     @Override

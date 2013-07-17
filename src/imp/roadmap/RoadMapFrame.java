@@ -335,6 +335,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         deleteMenuItem = new javax.swing.JMenuItem();
         flattenMenuItem = new javax.swing.JMenuItem();
         breakMenuItem = new javax.swing.JMenuItem();
+        copyToTextMenuItem = new javax.swing.JMenuItem();
         jSeparator4 = new javax.swing.JPopupMenu.Separator();
         analyzeMenuItem = new javax.swing.JMenuItem();
         transposeMenu = new javax.swing.JMenu();
@@ -825,11 +826,11 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         setMinimumSize(new java.awt.Dimension(800, 600));
         setName("Form"); // NOI18N
         addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosing(java.awt.event.WindowEvent evt) {
-                roadMapWindowClosing(evt);
-            }
             public void windowActivated(java.awt.event.WindowEvent evt) {
                 formWindowActivated(evt);
+            }
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                roadMapWindowClosing(evt);
             }
         });
         addComponentListener(new java.awt.event.ComponentAdapter() {
@@ -1591,6 +1592,16 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         });
         editMenu.add(breakMenuItem);
 
+        copyToTextMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_J, 0));
+        copyToTextMenuItem.setText("Copy Selection to Text Window");
+        copyToTextMenuItem.setName("copyToTextMenuItem"); // NOI18N
+        copyToTextMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                copyToTextMenuItemActionPerformed(evt);
+            }
+        });
+        editMenu.add(copyToTextMenuItem);
+
         jSeparator4.setName("jSeparator4"); // NOI18N
         editMenu.add(jSeparator4);
 
@@ -1661,12 +1672,12 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         dictionaryMenu.setText("Dictionary"); // NOI18N
         dictionaryMenu.setName("dictionaryMenu"); // NOI18N
         dictionaryMenu.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 dictionaryMenuMenuSelected(evt);
-            }
-            public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -1713,12 +1724,12 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         preferencesMenu.setToolTipText("Set preferences for this roadmap."); // NOI18N
         preferencesMenu.setName("preferencesMenu"); // NOI18N
         preferencesMenu.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 preferencesMenuMenuSelected(evt);
-            }
-            public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -2062,12 +2073,12 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         windowMenu.setText("Window"); // NOI18N
         windowMenu.setName("windowMenu"); // NOI18N
         windowMenu.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 windowMenuMenuSelected(evt);
-            }
-            public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -2362,8 +2373,9 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
                 Tokenizer tokenizer = new Tokenizer(new StringReader(entered));
 
                 Leadsheet.readLeadSheet(tokenizer, score);
-
-                if( score.getPart(0).size() > 0 )
+                
+                System.out.println(score.getPart(0));
+                if( score.getPart(0).size() > 120 )
                     ErrorLog.log(ErrorLog.WARNING, "Melody notes entered with chord part will be ignored.");
 
             roadMapPanel.addBlocksBeforeSelection(score.getChordProg().toBlockList(), true); 
@@ -2938,6 +2950,9 @@ private void playOnClickToggleButtonPressed(java.awt.event.ActionEvent evt)//GEN
         settings.setRomanNumeralHomeKey("db"); roadMapPanel.draw();
     }//GEN-LAST:event_romanNumeralRelativeToDbbuttonActionPerformed
 
+    private void copyToTextMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyToTextMenuItemActionPerformed
+        if(!roadMapTextEntry.isFocusOwner()) copySelectionToTextWindow();
+    }//GEN-LAST:event_copyToTextMenuItemActionPerformed
 
 private Notate.StyleComboBoxModel getStyleMenuModel()
   {
@@ -3278,6 +3293,12 @@ public void setVolumeSlider(int volume)
     {
         saveState("Break");
         roadMapPanel.breakSelection();
+    }
+    
+    /** Action to copy the chords of the selection to the text entry window */
+    public void copySelectionToTextWindow(){
+        String chordText = roadMapPanel.copySelectionToTextWindow();
+        roadMapTextEntry.setText(chordText);
     }
     
     /** Action to create a new brick from the selection */
@@ -3697,6 +3718,7 @@ public void setVolumeSlider(int volume)
     private javax.swing.JMenu colorationPreferences;
     private javax.swing.ButtonGroup colorationPreferencesButtonGroup;
     private javax.swing.JMenuItem copyMenuItem;
+    private javax.swing.JMenuItem copyToTextMenuItem;
     private javax.swing.JMenuItem cutMenuItem;
     private javax.swing.JButton deleteButton;
     private javax.swing.JMenuItem deleteMenuItem;
