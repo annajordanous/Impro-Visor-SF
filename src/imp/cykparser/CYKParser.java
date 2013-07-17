@@ -436,17 +436,17 @@ public class CYKParser
         cykTable[index][index].add(currentNode);
         
         
-        // Then, every chord which the terminal could be substituted for is also
-        // added to that same cell as a TreeNode with the original Chord but a
-        // different name for the TreeNode.
-        SubstituteList subs = edict.checkEquivalence(currentChord);
-        subs.addAll(sdict.checkSubstitution(currentChord));
-        for (int i = 0; i < subs.length(); i++)
-        {
-            currentNode = new TreeNode(subs.getName(i), subs.getKey(i),
-                                                currentChord);
-            cykTable[index][index].add(currentNode);
-        }
+//        // Then, every chord which the terminal could be substituted for is also
+//        // added to that same cell as a TreeNode with the original Chord but a
+//        // different name for the TreeNode.
+//        SubstituteList subs = edict.checkEquivalence(currentChord);
+//        subs.addAll(sdict.checkSubstitution(currentChord));
+//        for (int i = 0; i < subs.length(); i++)
+//        {
+//            currentNode = new TreeNode(subs.getName(i), subs.getKey(i),
+//                                                currentChord);
+//            cykTable[index][index].add(currentNode);
+//        }
         
         // If any UnaryProductions apply to just this ChordBlock, they will
         // be processed and appropriate TreeNodes will be added to the same

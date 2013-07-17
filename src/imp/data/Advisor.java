@@ -3170,12 +3170,17 @@ public static ChordForm getChordForm(String name)
  * is taken as the family.  If the name sans root is
  * empty, the implied name is "M" for major.
  */
-String getChordFamily(String chordName)
+public static String getChordFamily(String chordName)
   {
   // The given root might not be C
   Polylist parts = Key.explodeChord(chordName);
-  chordName = CROOT + (String)parts.second();
-
+  
+  try { 
+      chordName = CROOT + (String)parts.second();
+  } catch (NullPointerException e) {
+      return chordName;
+  }
+  
   Polylist entry = chords.assoc(chordName);
   if( entry == null )
     {
