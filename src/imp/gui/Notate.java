@@ -12321,7 +12321,7 @@ public class SectionTableModel extends DefaultTableModel
         int index = sectionTableModel.getSectionFromMeasure(measure);
         if(index == 0)
             return;
-        boolean isPhrase = (Boolean)getValueAt(index + 1, 0);
+        boolean isPhrase = (Boolean)getValueAt(index, 0);
         sectionInfo.deleteSection(index);
         setValueAt(new Boolean(isPhrase),index - 1,0);
         tableRefresh();
