@@ -22,6 +22,7 @@ package imp.neuralnet;
 
 import imp.ImproVisor;
 import imp.com.SetChordsCommand;
+import imp.data.BitVectorGenerator;
 import imp.data.Chord;
 import imp.data.ChordPart;
 import imp.data.ChordSymbol;
@@ -30,7 +31,7 @@ import imp.data.MelodyPart;
 import imp.data.Note;
 import imp.data.NoteSymbol;
 import imp.data.Score;
-import imp.gui.CriticDialog;
+import imp.data.Unit;
 import imp.gui.LickgenFrame;
 import imp.gui.Notate;
 import imp.util.Preferences;
@@ -571,8 +572,9 @@ public class Critic implements imp.Constants {
             }
         
         // Generate score to get exact chord durations  
-        ChordPart chordsList = new ChordPart(BEAT*8);
-        MelodyPart melody = new MelodyPart(BEAT*8);
+        ChordPart chordsList = new ChordPart(BEAT * WHOLE); // Must initialize
+                                                            // with something
+        MelodyPart melody = new MelodyPart();
         Polylist combined = chords.append(notes);
         (new SetChordsCommand(0, combined, chordsList, melody)).execute();
         chordsList.setStyle(Preferences.getPreference(Preferences.DEFAULT_STYLE));
@@ -607,9 +609,114 @@ public class Critic implements imp.Constants {
     public Double gradeFromCritic(ArrayList<Note> noteList, ArrayList<Chord> chordList)
     {
         StringBuilder output = new StringBuilder();
-        int beatPosition = 0;
         AtomicBoolean error = new AtomicBoolean(false);
+               
+        // Create new Melody Part
+        MelodyPart melody = new MelodyPart();
+        ChordPart chords = new ChordPart();
+        for (Note n : noteList)
+           melody.addNote(n);
+        for (Chord c: chordList)
+            chords.addChord(c);
+   
+        ArrayList<Double> grades = new ArrayList<Double>();
+        int currStart = 0;
+        int currEnd = BEAT * 8 - 1;
+        int size = melody.size() - 1;
+        int beatPosition;
         
+        // Get classifications for all notes
+        int [] classifications = Coloration.collectNoteColors(melody, chords);
+    
+        while (currEnd <= size && !error.get())
+        {
+            // Random grade needed for correct length of input
+            int grade = 1;
+
+            beatPosition = currStart;
+            MelodyPart currMelody = melody.extract(currStart, currEnd);
+            ArrayList<Unit> unitList = currMelody.getUnitList();
+            ArrayList<Note> currNoteList = new ArrayList<Note>();
+            for (Unit u : unitList)
+                currNoteList.add((Note) u);
+            
+            output.append(String.valueOf(grade / 10.0));
+            output.append(' ');
+
+            // Print all note data for all notes within one lick
+            for (int index = 0; index < currNoteList.size(); index++)
+            {
+                int indexPrev = index - 1;
+                int currNoteClassification = Coloration.getNoteClassification(classifications[beatPosition]);
+
+                if (indexPrev < 0)
+                {
+                    if (currStart == 0)
+                    {
+                        beatPosition = BitVectorGenerator.printNoteData(output, null, currNoteList.get(index), 
+                                currNoteClassification, beatPosition, error);
+                    }
+                    else
+                    {   
+                        // For correct distance to preceding note
+                        Note prevNote = melody.getPrevNote(currStart);
+                        beatPosition = BitVectorGenerator.printNoteData(output, prevNote, currNoteList.get(index), 
+                                currNoteClassification, beatPosition, error);
+                    }
+                }
+                else
+                {
+                    beatPosition = BitVectorGenerator.printNoteData(output, currNoteList.get(indexPrev), 
+                            currNoteList.get(index), currNoteClassification, beatPosition, error);
+                }
+            }
+            
+            if (!error.get())
+            {     
+                // Fix the length if the lick is too short or too long
+                if (output.length() > lickLength)
+                {
+                    output.delete(lickLength, output.length());
+                }
+
+                while (output.length() < lickLength)
+                {
+                    // Add a whole note rest landing on beat 1 
+                    output.append(BitVectorGenerator.WHOLE_REST);
+                }
+
+                grades.add(filter(output.toString()));
+            }
+            
+            // Move two beats ahead
+            currStart += BEAT * 2;
+            currEnd += BEAT * 2;  
+        }
+        
+        if (!error.get())
+        {
+            double accum = 0;
+            for (Double d : grades)
+                accum += d;
+            return accum / grades.size();
+        }
+        else
+        {
+            // Represents an error
+            return null;
+        }
+    }
+    
+    /*
+     * Grade only two measures
+     */
+    public Double gradeTwoMeasures(ArrayList<Note> noteList, 
+                         ArrayList<Chord> chordList, Note prevNote, int currBeatPos)
+    {
+        StringBuilder output = new StringBuilder();
+        AtomicBoolean error = new AtomicBoolean(false);
+        int beatPosition = 0;
+               
         // Create new Melody Part
         MelodyPart melody = new MelodyPart();
         ChordPart chords = new ChordPart();
@@ -620,10 +727,12 @@ public class Critic implements imp.Constants {
         
         // Get classifications for all notes
         int [] classifications = Coloration.collectNoteColors(melody, chords);
-    
+        
         // Random grade needed for correct length of input
         int grade = 1;
-        
+
+        beatPosition = currBeatPos;
+
         output.append(String.valueOf(grade / 10.0));
         output.append(' ');
 
@@ -631,36 +740,37 @@ public class Critic implements imp.Constants {
         for (int index = 0; index < noteList.size(); index++)
         {
             int indexPrev = index - 1;
-            int currNoteClassification = Coloration.getNoteClassification(classifications[beatPosition]);
-            
+            int currNoteClassification = Coloration.getNoteClassification(classifications[beatPosition - currBeatPos]);
+
             if (indexPrev < 0)
             {
-                beatPosition = CriticDialog.printNoteData(output, null, noteList.get(index), 
-                        currNoteClassification, beatPosition, error);
+                // For correct distance to preceding note
+                beatPosition = BitVectorGenerator.printNoteData(output, prevNote, noteList.get(index), 
+                       currNoteClassification, beatPosition, error);            
             }
             else
             {
-                beatPosition = CriticDialog.printNoteData(output, noteList.get(indexPrev), 
+                beatPosition = BitVectorGenerator.printNoteData(output, noteList.get(indexPrev), 
                         noteList.get(index), currNoteClassification, beatPosition, error);
             }
         }
-        
+
+        // Fix the length if the lick is too short or too long
+        if (output.length() > lickLength)
+        {
+            output.delete(lickLength, output.length());
+        }
+
+        while (output.length() < lickLength)
+        {
+            // Add a whole note rest landing on beat 1 
+            output.append(BitVectorGenerator.WHOLE_REST);
+        }
+
         if (!error.get())
-        {     
-
-            // Fix the length if the lick is too short or too long
-            if (output.length() > lickLength)
-            {
-                output.delete(lickLength, output.length());
-            }
-
-            while (output.length() < lickLength)
-            {
-                output.append("1 0 0 0 0 0 0 1 1 1 1 1 1 0 0 0 0 0 ");
-            }
-
+        {
             return filter(output.toString());
-         }
+        }
         else
         {
             // Represents an error

@@ -4404,7 +4404,7 @@ public void stopPlaying()
 
 public void verifyTriageFields()
   {
-    notate.toCritic();
+    //notate.toCritic();
 
     minPitch = notate.intFromTextField(minPitchField, LickGen.MIN_PITCH,
                                        maxPitch, minPitch);
@@ -5042,8 +5042,6 @@ private void useSoloistCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//
 
     private void gradeLickFromStaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gradeLickFromStaveButtonActionPerformed
         // Lock stave selection
-        notate.getCurrentStave().lockSelectionWidth(16 * EIGHTH);
-        notate.getCurrentStave().repaint();
         int start = notate.getCurrentStave().getSelectionStart();
         int end = notate.getCurrentStave().getSelectionEnd();
         
@@ -5065,8 +5063,6 @@ private void useSoloistCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//
         {
             lickFromStaveGradeTextField.setText("Error");
         }
-        
-        notate.getCurrentStave().unlockSelectionWidth();
     }//GEN-LAST:event_gradeLickFromStaveButtonActionPerformed
 
     private void continuallyGenerateCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_continuallyGenerateCheckBoxActionPerformed
@@ -5484,10 +5480,13 @@ private void useSoloistCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//
         notate.getCurrentStave().repaint();
     }//GEN-LAST:event_resetSelectionButtonActionPerformed
 
+    // FIX: Now, grade should be able to grade a whole solo, and we need to
+    // have generate() be able to create something not by first creating it
+    // and then grading it, but by creating two measure chunks at a time
+    // and grading those, then placing notes down a few beats at a time
+    // FIX: What is then the purpose of this? We don't need a grade all, and we
+    // don't need a generate per two measure...
     private void gradeAllMeasuresButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gradeAllMeasuresButtonActionPerformed
-        notate.getCurrentStave().lockSelectionWidth(16 * EIGHTH);
-        notate.getCurrentStave().repaint();
-        
         final int totalMeasures = notate.getCurrentStave().getNumMeasures();
         if (totalMeasures % 2 == 1)
         {
@@ -5543,9 +5542,7 @@ private void useSoloistCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//
         notate.setMasterVolumes(volume);
         
         notate.getCurrentStave().play(0);
-                        
-        notate.getCurrentStave().unlockSelectionWidth();   
- 
+                         
             } // End of Runnable
         }).start(); // End of Thread    
     }//GEN-LAST:event_gradeAllMeasuresButtonActionPerformed
@@ -5642,6 +5639,12 @@ private void useSoloistCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//
         String currentText = nnetOutputTextField.getText();
         nnetOutputTextField.setText(currentText + text);
         nnetOutputTextField.setCaretPosition(nnetOutputTextField.getText().length());
+    }
+    
+    // Changes if we are sending licks to the critic panel
+    public void setToCriticDialog(boolean bool)
+    {
+        toCriticMI1.setSelected(bool);
     }
     
     // Re-number all rows, reseting the index of each row

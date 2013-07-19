@@ -5780,7 +5780,7 @@ public Polylist extractChordNamePolylist(int startIndex, int stopIndex)
 @param base
 @return
  */
-static int roundToMultiple(int value, int base)
+public int roundToMultiple(int value, int base)
   {
     int quotient = value / base;
     int lower = quotient * base;
