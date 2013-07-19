@@ -240,26 +240,39 @@ public class BinaryProduction extends AbstractProduction {
      */
     private boolean matchNode(TreeNode t, String name) {
         if (t.getBlock() instanceof ChordBlock) {
-            String nodeFamA = simplify(Advisor.getSymbolFamily(t.getSymbol()));
-            String nodeFamB = simplify(Advisor.getSymbolFamily(t.getTrimmedSymbol()));
+            String nodeFamA = Advisor.getSymbolFamily(t.getSymbol());
+            String nodeFamB = Advisor.getSymbolFamily(t.getTrimmedSymbol());
             String prodFam = Advisor.getSymbolFamily(name); 
-            if (prodFam != null && (nodeFamA.equals(simplify(prodFam)) || 
-                                    nodeFamB.equals(simplify(prodFam))))
+            if (nodeFamA.equals(prodFam) || nodeFamB.equals(prodFam))
+                return true;
+            if (matchAssymetric(nodeFamA, nodeFamB, prodFam))
                 return true;
         }
         return false;
     }   
     
-    /** simplify 
-     * Takes in a chord family and returns the generalized form of that family
-     *
-     * @param family
-     * @return the simplified family
+    /** matchAssymetric
+     * Matches assymetric chord families (matches are neither symmetric nor
+     * transitive), family in leadsheat against family in rule.
+     * 
+     * @param nodeFamA, the family from the leadsheet
+     * @param nodeFamB, the (trimmed) family from the leadsheet
+     * @param prodFam, the family from the production rule being matched against
      */
-    private String simplify(String family) {
-        if (family.equals("minor") || family.equals("minor7") /*|| family.equals("half-diminished") */ ) 
-            return "genMinor";
-        return family;
+    private boolean matchAssymetric(String nodeFamA, String nodeFamB, 
+                                    String prodFam) {
+        if (nodeFamA.equals("bass") || nodeFamB.equals("bass")) return true;
+        if ((nodeFamA.equals("major") || nodeFamB.equals("major")) && 
+             prodFam.equals("dominant")) return true;
+        if ((nodeFamA.equals("half-diminished") || nodeFamB.equals("half-diminished")) && 
+             prodFam.equals("minor7")) return true;
+        if ((nodeFamA.equals("sus4") || nodeFamB.equals("sus4")) && 
+             prodFam.equals("dominant")) return true;
+        if ((nodeFamA.equals("augmented") || nodeFamB.equals("augmented")) && 
+             prodFam.equals("major")) return true;
+        if ((nodeFamA.equals("minor7") || nodeFamB.equals("minor7")) && 
+             prodFam.equals("minor")) return true;
+        return false;
     }
 
     /** matchName

@@ -127,7 +127,7 @@ public class UnaryProduction extends AbstractProduction {
             EquivalenceDictionary e, SubstitutionDictionary s) 
    {
        if ((t.getBlock() instanceof ChordBlock && 
-            Advisor.getChordFamily('C' + t.getSymbol()).equals(Advisor.getChordFamily('C' + name))) ||
+            Advisor.getSymbolFamily(t.getSymbol()).equals(Advisor.getSymbolFamily(name))) ||
             t.getSymbol().equals(name))
                return new MatchValue(modKeys(t.getKey() - termKey - key), t.getDuration());           
         // in the event that the production is incorrect (most of the time)
