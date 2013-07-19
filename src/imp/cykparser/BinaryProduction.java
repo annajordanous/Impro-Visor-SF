@@ -257,7 +257,7 @@ public class BinaryProduction extends AbstractProduction {
      * @return the simplified family
      */
     private String simplify(String family) {
-        if (family.equals("minor") || family.equals("minor7") || family.equals("half-diminished")) 
+        if (family.equals("minor") || family.equals("minor7") /*|| family.equals("half-diminished") */ ) 
             return "genMinor";
         return family;
     }
