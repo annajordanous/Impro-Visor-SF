@@ -821,7 +821,7 @@ public void mouseClicked(MouseEvent e)
 
   /* If drawing we want to add a single note at this position */
   //if( drawing )
-  if( !e.isShiftDown() && !e.isControlDown() )
+  if( !e.isShiftDown() && !e.isControlDown() && e.getButton() != MouseEvent.BUTTON3 )
    {
     //Trace.log(2, "point J");
     // get the current line the mouse is on
@@ -1259,7 +1259,7 @@ public void mousePressed(MouseEvent e)
 
       notate.popupMenu.show(e.getComponent(), e.getX(), e.getY());
       stave.currentLine = getCurrentLine(e.getY());
-
+      
       selectingGroup = false;
       return;
      }
