@@ -3199,7 +3199,35 @@ public static String getChordFamily(String chordName)
   return form.getFamily();
   }
 
+/**
+ * Gets the formally-defined family of a chord symbol.
+ * If not family is specified, then the name (sans root)
+ * is taken as the family.  If the name sans root is
+ * empty, the implied name is "M" for major.
+ */
+public static String getSymbolFamily(String chordSymbol)
+  {
+ 
+      String chordName = CROOT + chordSymbol;
 
+  
+  Polylist entry = chords.assoc(chordName);
+  if( entry == null )
+    {
+    return null;
+    }
+
+  ChordForm form = (ChordForm)entry.second();
+
+  String same = form.getSame();
+
+  if( same != null )
+    {
+    return getChordFamily(same);
+    }
+
+  return form.getFamily();
+  }
 /**
  * Some chord families are defined in terms of others
  * using "same".  This gets the final basic name of

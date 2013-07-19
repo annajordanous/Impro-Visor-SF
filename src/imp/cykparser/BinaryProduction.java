@@ -240,9 +240,9 @@ public class BinaryProduction extends AbstractProduction {
      */
     private boolean matchNode(TreeNode t, String name) {
         if (t.getBlock() instanceof ChordBlock) {
-            String nodeFamA = simplify(Advisor.getChordFamily('C' + t.getSymbol()));
-            String nodeFamB = simplify(Advisor.getChordFamily('C' + t.getTrimmedSymbol()));
-            String prodFam = Advisor.getChordFamily('C' + name); 
+            String nodeFamA = simplify(Advisor.getSymbolFamily(t.getSymbol()));
+            String nodeFamB = simplify(Advisor.getSymbolFamily(t.getTrimmedSymbol()));
+            String prodFam = Advisor.getSymbolFamily(name); 
             if (prodFam != null && (nodeFamA.equals(simplify(prodFam)) || 
                                     nodeFamB.equals(simplify(prodFam))))
                 return true;
