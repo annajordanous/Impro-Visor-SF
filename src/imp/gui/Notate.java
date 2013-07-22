@@ -8295,12 +8295,12 @@ public class Notate
 
         openRecentLeadsheetMenu.setText("Open Recent Leadsheet (same window)");
         openRecentLeadsheetMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuDeselected(javax.swing.event.MenuEvent evt) {
-            }
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 populateRecentFileMenu(evt);
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -8316,12 +8316,12 @@ public class Notate
 
         openRecentLeadsheetNewWindowMenu.setText("Open Recent Leadsheet (new window)");
         openRecentLeadsheetNewWindowMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuDeselected(javax.swing.event.MenuEvent evt) {
-            }
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 populateRecentLeadsheetNewWindow(evt);
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -9307,12 +9307,12 @@ public class Notate
         windowMenu.setMnemonic('W');
         windowMenu.setText("Window");
         windowMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuDeselected(javax.swing.event.MenuEvent evt) {
-            }
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 windowMenuMenuSelected(evt);
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -9345,12 +9345,12 @@ public class Notate
             }
         });
         notateGrammarMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuDeselected(javax.swing.event.MenuEvent evt) {
-            }
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 notateGrammarMenuMenuSelected(evt);
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
         });
         notateGrammarMenu.addActionListener(new java.awt.event.ActionListener() {
@@ -12380,7 +12380,7 @@ public class SectionTableModel extends DefaultTableModel
         int after = isAfter ? 1 : 0;
         int measure = getCurrentStave().mouseOverMeasure + 1;
         int index = sectionTableModel.getSectionFromMeasure(measure) + after;
-        if(index == 0)
+        if(index == 0 || index >= sectionTable.getRowCount())
             return;
         boolean isPhrase = (Boolean)getValueAt(index, 0);
         sectionInfo.deleteSection(index);
@@ -19568,6 +19568,8 @@ public ArrayList<String> getMelodyData(int chorusNumber)
     newNotate.updatePhiAndDelta(this.getPhiStatus(), this.getDeltaStatus());
 
     newNotate.makeVisible(this);
+    
+    newNotate.setPrefsDialog();
 
     // set the menu and button states
 
@@ -23742,7 +23744,7 @@ public void openInNewWindow(File selectedFile)
     Score newScore = new Score();
     if( readLeadsheetFile(selectedFile, newScore) )
       {
-        //create a new window and show the score
+        //create a nnew window and show the score
         Notate newNotate = new Notate(newScore,
                                     this.adv,
                                     this.impro,
