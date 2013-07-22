@@ -1745,11 +1745,6 @@ public class Notate
         });
         jSeparator11 = new javax.swing.JPopupMenu.Separator();
         autoFillMI = new javax.swing.JCheckBoxMenuItem();
-        noteLen16MI = new javax.swing.JMenuItem();
-        noteLen8MI = new javax.swing.JMenuItem();
-        noteLen4MI = new javax.swing.JMenuItem();
-        noteLen2MI = new javax.swing.JMenuItem();
-        noteLen1MI = new javax.swing.JMenuItem();
         adviceFrame = new javax.swing.JFrame();
         adviceTabbedPane = new javax.swing.JTabbedPane();
         scrollNotes = new javax.swing.JScrollPane();
@@ -1988,6 +1983,18 @@ public class Notate
         delTabPopupMenuItem = new javax.swing.JMenuItem();
         renameTabPopupMenuItem = new javax.swing.JMenuItem();
         delTabCheckBox = new javax.swing.JCheckBox();
+        noteLenDialog = new javax.swing.JDialog();
+        noteLenPanel = new javax.swing.JPanel();
+        noteLen32Btn = new javax.swing.JToggleButton();
+        noteLen16Btn = new javax.swing.JToggleButton();
+        noteLen8Btn = new javax.swing.JToggleButton();
+        noteLen4Btn = new javax.swing.JToggleButton();
+        noteLen2Btn = new javax.swing.JToggleButton();
+        noteLen1Btn = new javax.swing.JToggleButton();
+        noteLenModPanel = new javax.swing.JPanel();
+        noteLenTripletCheckBox = new javax.swing.JCheckBox();
+        noteLenDottedCheckBox = new javax.swing.JCheckBox();
+        noteLenBtnGrp = new javax.swing.ButtonGroup();
         toolbarPanel = new javax.swing.JPanel();
         standardToolbar = new javax.swing.JToolBar();
         newBtn = new javax.swing.JButton();
@@ -4452,52 +4459,6 @@ public class Notate
             }
         });
         popupMenu.add(autoFillMI);
-
-        noteLen16MI.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/blacknotes/semiquaverUp.png"))); // NOI18N
-        noteLen16MI.setVisible(false);
-        noteLen16MI.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                noteLen16MIActionPerformed(evt);
-            }
-        });
-        popupMenu.add(noteLen16MI);
-
-        noteLen8MI.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/blacknotes/quaverUp.png"))); // NOI18N
-        noteLen8MI.setToolTipText("");
-        noteLen8MI.setVisible(false);
-        noteLen8MI.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                noteLen8MIActionPerformed(evt);
-            }
-        });
-        popupMenu.add(noteLen8MI);
-
-        noteLen4MI.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/blacknotes/crotchetUp.png"))); // NOI18N
-        noteLen4MI.setVisible(false);
-        noteLen4MI.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                noteLen4MIActionPerformed(evt);
-            }
-        });
-        popupMenu.add(noteLen4MI);
-
-        noteLen2MI.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/blacknotes/minimUp.png"))); // NOI18N
-        noteLen2MI.setVisible(false);
-        noteLen2MI.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                noteLen2MIActionPerformed(evt);
-            }
-        });
-        popupMenu.add(noteLen2MI);
-
-        noteLen1MI.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/blacknotes/semibreve.png"))); // NOI18N
-        noteLen1MI.setVisible(false);
-        noteLen1MI.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                noteLen1MIActionPerformed(evt);
-            }
-        });
-        popupMenu.add(noteLen1MI);
 
         adviceFrame.setTitle("Advice Directory");
         adviceFrame.setAlwaysOnTop(true);
@@ -7111,6 +7072,92 @@ public class Notate
                 delTabCheckBoxActionPerformed(evt);
             }
         });
+
+        noteLenDialog.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        noteLenDialog.setTitle("Select Note Length");
+        noteLenDialog.setAlwaysOnTop(true);
+        noteLenDialog.setMinimumSize(new java.awt.Dimension(370, 140));
+        noteLenDialog.addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                noteLenDialogWindowClosed(evt);
+            }
+        });
+        noteLenDialog.getContentPane().setLayout(new javax.swing.BoxLayout(noteLenDialog.getContentPane(), javax.swing.BoxLayout.PAGE_AXIS));
+
+        noteLenBtnGrp.add(noteLen32Btn);
+        noteLen32Btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/blacknotes/demisemiquaverUp.png"))); // NOI18N
+        noteLen32Btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                noteLen32BtnActionPerformed(evt);
+            }
+        });
+        noteLenPanel.add(noteLen32Btn);
+
+        noteLenBtnGrp.add(noteLen16Btn);
+        noteLen16Btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/blacknotes/semiquaverUp.png"))); // NOI18N
+        noteLen16Btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                noteLen16BtnActionPerformed(evt);
+            }
+        });
+        noteLenPanel.add(noteLen16Btn);
+
+        noteLenBtnGrp.add(noteLen8Btn);
+        noteLen8Btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/blacknotes/quaverUp.png"))); // NOI18N
+        noteLen8Btn.setSelected(true);
+        noteLen8Btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                noteLen8BtnActionPerformed(evt);
+            }
+        });
+        noteLenPanel.add(noteLen8Btn);
+
+        noteLenBtnGrp.add(noteLen4Btn);
+        noteLen4Btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/blacknotes/crotchetUp.png"))); // NOI18N
+        noteLen4Btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                noteLen4BtnActionPerformed(evt);
+            }
+        });
+        noteLenPanel.add(noteLen4Btn);
+
+        noteLenBtnGrp.add(noteLen2Btn);
+        noteLen2Btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/blacknotes/minimUp.png"))); // NOI18N
+        noteLen2Btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                noteLen2BtnActionPerformed(evt);
+            }
+        });
+        noteLenPanel.add(noteLen2Btn);
+
+        noteLenBtnGrp.add(noteLen1Btn);
+        noteLen1Btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/blacknotes/semibreve.png"))); // NOI18N
+        noteLen1Btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                noteLen1BtnActionPerformed(evt);
+            }
+        });
+        noteLenPanel.add(noteLen1Btn);
+
+        noteLenDialog.getContentPane().add(noteLenPanel);
+
+        noteLenTripletCheckBox.setText("Triplet");
+        noteLenTripletCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                noteLenTripletCheckBoxActionPerformed(evt);
+            }
+        });
+        noteLenModPanel.add(noteLenTripletCheckBox);
+
+        noteLenDottedCheckBox.setText("Dotted");
+        noteLenDottedCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                noteLenDottedCheckBoxActionPerformed(evt);
+            }
+        });
+        noteLenModPanel.add(noteLenDottedCheckBox);
+
+        noteLenDialog.getContentPane().add(noteLenModPanel);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -23166,11 +23213,8 @@ public void setKconstantSlider(double value)
         boolean isSelected = autoFillMI.isSelected();
         MelodyPart melody = getCurrentStave().getMelodyPart();
         melody.setAutoFill(isSelected);
-        noteLen16MI.setVisible(!isSelected);
-        noteLen8MI.setVisible(!isSelected);
-        noteLen4MI.setVisible(!isSelected);
-        noteLen2MI.setVisible(!isSelected);
-        noteLen1MI.setVisible(!isSelected);
+        noteLenDialog.setLocationRelativeTo(this);
+        noteLenDialog.setVisible(!isSelected);
     }//GEN-LAST:event_autoFillMIActionPerformed
 
     private void adviceScrollListBricksMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_adviceScrollListBricksMouseClicked
@@ -23347,26 +23391,6 @@ public void setKconstantSlider(double value)
         savePrefs();
     }//GEN-LAST:event_mergeSectionPreviousPMIActionPerformed
 
-    private void noteLen1MIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_noteLen1MIActionPerformed
-        setNoteLength(480);
-    }//GEN-LAST:event_noteLen1MIActionPerformed
-
-    private void noteLen2MIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_noteLen2MIActionPerformed
-        setNoteLength(240);
-    }//GEN-LAST:event_noteLen2MIActionPerformed
-
-    private void noteLen4MIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_noteLen4MIActionPerformed
-        setNoteLength(120);
-    }//GEN-LAST:event_noteLen4MIActionPerformed
-
-    private void noteLen8MIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_noteLen8MIActionPerformed
-        setNoteLength(60);
-    }//GEN-LAST:event_noteLen8MIActionPerformed
-
-    private void noteLen16MIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_noteLen16MIActionPerformed
-        setNoteLength(30);
-    }//GEN-LAST:event_noteLen16MIActionPerformed
-
     private void insertPhraseAfterPMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertPhraseAfterPMIActionPerformed
         sectionTableModel.insertSection(true,true);
         savePrefs();
@@ -23381,10 +23405,67 @@ public void setKconstantSlider(double value)
         sectionTableModel.mergeSection(true);
         savePrefs();
     }//GEN-LAST:event_mergeSectionFollowingPMIActionPerformed
+
+    private int noteLength = 60;
+    private boolean isTriplet = false;
+    private boolean isDotted = false;
     
-public void setNoteLength(int len)
+    private void noteLen16BtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_noteLen16BtnActionPerformed
+        noteLength = 30;
+        setNoteLength();
+    }//GEN-LAST:event_noteLen16BtnActionPerformed
+
+    private void noteLen8BtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_noteLen8BtnActionPerformed
+        noteLength = 60;
+        setNoteLength();
+    }//GEN-LAST:event_noteLen8BtnActionPerformed
+
+    private void noteLen4BtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_noteLen4BtnActionPerformed
+        noteLength = 120;
+        setNoteLength();
+    }//GEN-LAST:event_noteLen4BtnActionPerformed
+
+    private void noteLen2BtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_noteLen2BtnActionPerformed
+        noteLength = 240;
+        setNoteLength();
+    }//GEN-LAST:event_noteLen2BtnActionPerformed
+
+    private void noteLen1BtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_noteLen1BtnActionPerformed
+        noteLength = 480;
+        setNoteLength();
+    }//GEN-LAST:event_noteLen1BtnActionPerformed
+
+    private void noteLenDialogWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_noteLenDialogWindowClosed
+        MelodyPart melody = getCurrentStave().getMelodyPart();
+        melody.setAutoFill(true);
+        noteLenDialog.setVisible(false);
+        autoFillMI.setSelected(true);
+    }//GEN-LAST:event_noteLenDialogWindowClosed
+
+    private void noteLen32BtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_noteLen32BtnActionPerformed
+        noteLength = 15;
+        setNoteLength();
+    }//GEN-LAST:event_noteLen32BtnActionPerformed
+
+    private void noteLenDottedCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_noteLenDottedCheckBoxActionPerformed
+        noteLenTripletCheckBox.setSelected(false);
+        updateDottedAndTriplet();
+    }//GEN-LAST:event_noteLenDottedCheckBoxActionPerformed
+
+    private void noteLenTripletCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_noteLenTripletCheckBoxActionPerformed
+        noteLenDottedCheckBox.setSelected(false);
+        updateDottedAndTriplet();
+    }//GEN-LAST:event_noteLenTripletCheckBoxActionPerformed
+    
+    private void updateDottedAndTriplet() {
+        isDotted = noteLenDottedCheckBox.isSelected();
+        isTriplet = noteLenTripletCheckBox.isSelected();
+        setNoteLength();
+    }
+    
+public void setNoteLength()
 {
-    getCurrentStave().getMelodyPart().setNoteLength(len);
+    getCurrentStave().getMelodyPart().setNoteLength(noteLength,isTriplet,isDotted);
 }
     
 public boolean getPhiStatus()
@@ -23736,6 +23817,7 @@ private void closingThisWindow()
     {
       createdByRoadmap.resetAuxNotate();
     }
+  noteLenDialog.dispose();
   }
 
 public void openInNewWindow(File selectedFile)
@@ -23743,7 +23825,7 @@ public void openInNewWindow(File selectedFile)
     Score newScore = new Score();
     if( readLeadsheetFile(selectedFile, newScore) )
       {
-        //create a nnew window and show the score
+        //create a new window and show the score
         Notate newNotate = new Notate(newScore,
                                     this.adv,
                                     this.impro,
@@ -25436,11 +25518,18 @@ preferencesAcceleratorMI.setEnabled(true);
     private javax.swing.JMenu notateGrammarMenu;
     private javax.swing.JLabel noteColoringLabel;
     private javax.swing.JButton noteCursorBtn;
-    private javax.swing.JMenuItem noteLen16MI;
-    private javax.swing.JMenuItem noteLen1MI;
-    private javax.swing.JMenuItem noteLen2MI;
-    private javax.swing.JMenuItem noteLen4MI;
-    private javax.swing.JMenuItem noteLen8MI;
+    private javax.swing.JToggleButton noteLen16Btn;
+    private javax.swing.JToggleButton noteLen1Btn;
+    private javax.swing.JToggleButton noteLen2Btn;
+    private javax.swing.JToggleButton noteLen32Btn;
+    private javax.swing.JToggleButton noteLen4Btn;
+    private javax.swing.JToggleButton noteLen8Btn;
+    private javax.swing.ButtonGroup noteLenBtnGrp;
+    private javax.swing.JDialog noteLenDialog;
+    private javax.swing.JCheckBox noteLenDottedCheckBox;
+    private javax.swing.JPanel noteLenModPanel;
+    private javax.swing.JPanel noteLenPanel;
+    private javax.swing.JCheckBox noteLenTripletCheckBox;
     private javax.swing.JTextField numStavesPerPage;
     private javax.swing.JButton okMeasBtn;
     private javax.swing.JButton okSaveButton;
