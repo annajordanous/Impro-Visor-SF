@@ -11038,12 +11038,10 @@ private void enableRecording()
       {
         midiRecorder = new MidiRecorder(this, score);
       }
-    System.out.println("WHY");
 
     midiSynth.registerReceiver(midiRecorder);
 
     staveRequestFocus();
-    System.out.println("What");
 
     //playScore();
 
@@ -21571,6 +21569,8 @@ public void originalGenerate(LickGen lickgen, int improviseStartSlot, int improv
     
     boolean useCritic = lickgenFrame.useCritic();
     
+    boolean enableRecording = !useCritic;
+    
     double criticGrade = lickgenFrame.getCriticGrade();
     
     // To prevent lag from too many interations, we limit the number of times
@@ -21613,10 +21613,9 @@ public void originalGenerate(LickGen lickgen, int improviseStartSlot, int improv
         int currStart = improviseStartSlot;
         int currEnd = currStart + ((BEAT * 8) -1);
         int thisTotalSlots = currEnd - currStart + 1;
+        
 
         // FIX: Generating better
-        // getMelodyPart(stave).newPasteOver(lick, getCurrentSelectionStart(stave));
-        // repaint() at the end
         
         // ...continually generate licks until a lick passes through the filter.
         while ( useCritic && currEnd <= improviseEndSlot)
@@ -21624,7 +21623,7 @@ public void originalGenerate(LickGen lickgen, int improviseStartSlot, int improv
             rhythm = lickgen.generateRhythmFromGrammar(improviseStartSlot, thisTotalSlots);
 
             MelodyPart lick = generateLick(rhythm, currStart, currEnd);
-System.out.println(lick);
+
             if (lick != null)
             {
                 ArrayList<Unit> units = lick.getUnitList();
@@ -21647,8 +21646,6 @@ System.out.println(lick);
                 
                 Double gradeFromCritic = critic.gradeTwoMeasures(noteList, chordList,
                                                                  prevNote, currStart);
-                System.out.println(gradeFromCritic);
-                System.out.println();
                 
                 //------------
                 // Stop the generation if we've gone too many times
@@ -21663,10 +21660,10 @@ System.out.println(lick);
                     useCritic = false;
                     count++;
                     lickgenFrame.setCounterForCriticTextField(count);
-                    //putLick(lick);
                     getMelodyPart(stave).newPasteOver(lick, currStart);
-                    lickgenFrame.setLickFromStaveGradeTextField(gradeFromCritic);
                     repaint();
+                    // FIX: Grade needs to be the average, not the last grade
+                    lickgenFrame.setLickFromStaveGradeTextField(gradeFromCritic);
                 }
 
                 // If the grade is high enough, pass it through the filter
@@ -21674,17 +21671,20 @@ System.out.println(lick);
                 {
                     count++;
                     getMelodyPart(stave).newPasteOver(lick, currStart);
-                    System.out.println("hello");
+                    repaint();
+                    
                     if (currEnd == improviseEndSlot)
                     {
-                        System.out.println("hello2");
+                        //getMelodyPart(stave).newPasteOver(lick, currStart);
+                        //repaint();
+                        
                         useCritic = false;
                         //count++;
                         lickgenFrame.setCounterForCriticTextField(count);
-                        putLick(lick);
+                        System.out.println(lick);
+                        
+                        // FIX: Grade needs to be the average, not the last grade
                         lickgenFrame.setLickFromStaveGradeTextField(gradeFromCritic);
-                        System.out.println("hello3");
-                        //repaint();
                     }
                     
                     currStart += BEAT * 2;
@@ -21702,7 +21702,6 @@ System.out.println(lick);
                 setMode(Mode.GENERATION_FAILED);
                 return;
             }
-            System.out.println("WAHT");
         }
     }
     // If the outline is unable to generate a solo, which might
@@ -21746,7 +21745,6 @@ System.out.println(lick);
             return;
           }
      }
-System.out.println("out");
 
     if( rhythm != null )
       {
@@ -21757,10 +21755,11 @@ System.out.println("out");
 //      {
 //        stave.setSelection(selectionStart);
 //      }
-System.out.println("setting mode");
+
     setMode(Mode.GENERATED);
-System.out.println("about to record");
-    enableRecording(); // TRIAL
+
+    if ( enableRecording )
+        enableRecording(); // TRIAL
   }
 
 public MelodyPart generate(int improviseStartSlot, int improviseEndSlot)
