@@ -62,8 +62,8 @@ public class CYKParser
     // or substitutable are required for populating the table
     private EquivalenceDictionary edict;
     private SubstitutionDictionary sdict;
-    
-    
+
+     
     // Constructors //
     
     /**

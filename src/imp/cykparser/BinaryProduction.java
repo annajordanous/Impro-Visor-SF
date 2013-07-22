@@ -23,6 +23,7 @@ package imp.cykparser;
 import imp.brickdictionary.*;
 import java.util.ArrayList;
 import imp.data.Advisor;
+import polya.Polylist;
 
 /** BinaryProduction
  * A class used to describe production rules for a brick music grammar with 
@@ -245,35 +246,16 @@ public class BinaryProduction extends AbstractProduction {
             String prodFam = Advisor.getSymbolFamily(name); 
             if (nodeFamA.equals(prodFam) || nodeFamB.equals(prodFam))
                 return true;
-            if (matchAssymetric(nodeFamA, nodeFamB, prodFam))
-                return true;
+            Polylist matchValA = adict.assoc(nodeFamA);
+            Polylist matchValB = adict.assoc(nodeFamB);
+            if ((matchValA != null && (prodFam.equals(matchValA.second()) ||
+                                       matchValA.second().equals("any"))) ||
+                (matchValB != null && (prodFam.equals(matchValB.second()) ||
+                                       matchValB.second().equals("any"))))
+                    return true; 
         }
         return false;
     }   
-    
-    /** matchAssymetric
-     * Matches assymetric chord families (matches are neither symmetric nor
-     * transitive), family in leadsheat against family in rule.
-     * 
-     * @param nodeFamA, the family from the leadsheet
-     * @param nodeFamB, the (trimmed) family from the leadsheet
-     * @param prodFam, the family from the production rule being matched against
-     */
-    private boolean matchAssymetric(String nodeFamA, String nodeFamB, 
-                                    String prodFam) {
-        if (nodeFamA.equals("bass") || nodeFamB.equals("bass")) return true;
-        if ((nodeFamA.equals("major") || nodeFamB.equals("major")) && 
-             prodFam.equals("dominant")) return true;
-        if ((nodeFamA.equals("half-diminished") || nodeFamB.equals("half-diminished")) && 
-             prodFam.equals("minor7")) return true;
-        if ((nodeFamA.equals("sus4") || nodeFamB.equals("sus4")) && 
-             prodFam.equals("dominant")) return true;
-        if ((nodeFamA.equals("augmented") || nodeFamB.equals("augmented")) && 
-             prodFam.equals("major")) return true;
-        if ((nodeFamA.equals("minor7") || nodeFamB.equals("minor7")) && 
-             prodFam.equals("minor")) return true;
-        return false;
-    }
 
     /** matchName
      * Match two literal brick names
