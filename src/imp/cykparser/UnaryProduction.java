@@ -21,6 +21,7 @@
 package imp.cykparser;
 import imp.brickdictionary.*;
 import imp.data.Advisor;
+import polya.Polylist;
 
 /** BinaryProduction
  *A production rule for a brick music grammar with two nonterminals as the body.
@@ -126,12 +127,23 @@ public class UnaryProduction extends AbstractProduction {
     public MatchValue checkProduction(TreeNode t, 
             EquivalenceDictionary e, SubstitutionDictionary s) 
    {
-       if ((t.getBlock() instanceof ChordBlock && 
-            Advisor.getSymbolFamily(t.getSymbol()).equals(Advisor.getSymbolFamily(name))) ||
-            t.getSymbol().equals(name))
-               return new MatchValue(modKeys(t.getKey() - termKey - key), t.getDuration());           
+       if (matchFamily(t) || t.getSymbol().equals(name))
+            return new MatchValue(modKeys(t.getKey() - termKey - key), t.getDuration());           
         // in the event that the production is incorrect (most of the time)
         return new MatchValue();
+    }
+
+    private boolean matchFamily(TreeNode t) {
+        if (t.getBlock() instanceof ChordBlock) {
+            String nodeFam = Advisor.getSymbolFamily(t.getSymbol());
+            String prodFam = Advisor.getSymbolFamily(name);
+            if (nodeFam.equals(prodFam)) return true;
+            Polylist matchVal = adict.assoc(nodeFam);
+            if (matchVal != null && (prodFam.equals(matchVal.second()) || 
+                                     matchVal.second().equals("any")))
+                return true;
+        }
+        return false;
     }
     
     /** modKeys
