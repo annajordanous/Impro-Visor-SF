@@ -1681,9 +1681,15 @@ public int getNoteLength()
     return noteLength;
 }
 
-public void setNoteLength(int len)
+public void setNoteLength(int len, boolean triplet, boolean dotted)
 {
-    noteLength = len;
+    int length = len;
+    if(triplet) {
+        length = (length * 2) / 3;
+    } else if(dotted) {
+        length = (length * 3) / 2;
+    }
+    noteLength = length;
 }
 
 public boolean getAutoFill()
