@@ -42,7 +42,7 @@ public abstract class AbstractProduction {
     
     // Dictionary specifying asymmetrical chord substitutions
     protected static Polylist adict = Polylist.list(Polylist.list("bass", "any"), 
-        Polylist.list("major", "dominant"), Polylist.list("half-diminished", "minor7"), 
+        /*Polylist.list("major", "dominant"), */ Polylist.list("half-diminished", "minor7"), 
         Polylist.list("sus4", "dominant"), Polylist.list("augmented", "major"), 
         Polylist.list("minor7", "minor"));
 
