@@ -60,6 +60,8 @@ public class HelpDialog extends javax.swing.JDialog {
         roadmapHelp = new javax.swing.JTextArea();
         lickGenSettingsPane = new javax.swing.JScrollPane();
         lickGenSettings = new javax.swing.JTextArea();
+        audioInputPane = new javax.swing.JScrollPane();
+        audioInputPaneText = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(680, 800));
@@ -169,6 +171,18 @@ public class HelpDialog extends javax.swing.JDialog {
 
         helpTabbedPane.addTab("Lick Generator", lickGenSettingsPane);
 
+        audioInputPane.setMinimumSize(new java.awt.Dimension(500, 800));
+        audioInputPane.setPreferredSize(new java.awt.Dimension(600, 900));
+
+        audioInputPaneText.setColumns(20);
+        audioInputPaneText.setFont(new java.awt.Font("Lucida Console", 0, 13)); // NOI18N
+        audioInputPaneText.setRows(5);
+        audioInputPaneText.setText("Help for Audio Input\n\n\nWINDOWS\n1. Download SuperCollider and the SuperCollider plugins. Find them here:\nSuperCollider: http://supercollider.sourceforge.net/downloads/\nPlugins: http://sourceforge.net/projects/sc3-plugins/files/\n\n2. Download 'LoopBe1' (NOT LoopBe30) here: \nhttp://www.nerds.de/en/download.html \n(minimal effort - don't worry) and make sure it's running and not on mute.\n\n3. Plug in your microphone and make sure it is set as your sound-in source.\nMake sure the sound sensitivity is at a satisfactory level.\n\n4. Restart ImproVisor if it is already running. If not, run ImproVisor.\nIn Improvisor, go to MIDI setup and select 'LoopBe Internal MIDI'.\n\n5. Open the 'SCPitchDetectionWindows' file in SuperCollider, highlight\neverything and press command+enter. Another window will appear to let you \nselect note ranges. This is in MIDI notes. SuperCollider is now ready\n(may take a few seconds), so you may start audio capture. You are now ready\nto start recording (press red circle button in ImproVisor).\n\n\n\nOSX\n1. Download SuperCollider and the SuperCollider plugins. Find them here:\nSuperCollider: http://supercollider.sourceforge.net/downloads/\nPlugins: http://sourceforge.net/projects/sc3-plugins/files/\n\n2.Navigate through Go->Utilities->Audio MIDI Setup ->Window->Show MIDI Window->\nIAC Driver and make sure the box next to 'Device Is Online' is checked. \nMake sure that 'IAC Bus 1' is selected under 'Ports'. If it only says 'Bus 1,' \nclick the minus sign once and the plus sign once. It should now say 'IAC Bus 1.'\n\n3. Plug in your microphone and make sure it is set as your sound-in source.\nMake sure the sound sensitivity is at a satisfactory level.\n\n4. Restart Improvisor if it is already running. If not, run Improvisor.\nIn ImproVisor, go to MIDI setup and select 'IAC Bus 1'.\n\n5. Open the 'SCPitchDetectionOSX' file in SuperCollider, highlight everything\nand press control+enter. Another window will appear to let you select note ranges. \nThis is in MIDI notes. SuperCollider is now ready (may take a few seconds), \nso you may start audio capture. You are now ready to start recording \n(press red circle button in ImproVisor).\n\nLINUX\nCurrently under construction.");
+        audioInputPane.setViewportView(audioInputPaneText);
+        lickGenSettings.setEditable(false);
+
+        helpTabbedPane.addTab("Audio Input", audioInputPane);
+
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -200,6 +214,8 @@ public class HelpDialog extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea alphaCommandList;
     private javax.swing.JScrollPane alphaCommandPane;
+    private javax.swing.JScrollPane audioInputPane;
+    private javax.swing.JTextArea audioInputPaneText;
     private javax.swing.JTextArea chordList;
     private javax.swing.JScrollPane chordListingPane;
     private javax.swing.JTextArea drawingHelp;
