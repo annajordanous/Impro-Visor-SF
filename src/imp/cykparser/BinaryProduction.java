@@ -241,18 +241,15 @@ public class BinaryProduction extends AbstractProduction {
      */
     private boolean matchNode(TreeNode t, String name) {
         if (t.getBlock() instanceof ChordBlock) {
-            String nodeFamA = Advisor.getSymbolFamily(t.getSymbol());
-            String nodeFamB = Advisor.getSymbolFamily(t.getTrimmedSymbol());
+            String nodeSym = t.getSymbol().equals(t.getTrimmedSymbol()) ?
+                             t.getSymbol() : t.getTrimmedSymbol();
+            String nodeFam = Advisor.getSymbolFamily(nodeSym);
             String prodFam = Advisor.getSymbolFamily(name); 
-            if (nodeFamA.equals(prodFam) || nodeFamB.equals(prodFam))
-                return true;
-            Polylist matchValA = adict.assoc(nodeFamA);
-            Polylist matchValB = adict.assoc(nodeFamB);
-            if ((matchValA != null && (prodFam.equals(matchValA.second()) ||
-                                       matchValA.second().equals("any"))) ||
-                (matchValB != null && (prodFam.equals(matchValB.second()) ||
-                                       matchValB.second().equals("any"))))
-                    return true; 
+            if (nodeFam.equals(prodFam)) return true;
+            Polylist matchVal = adict.assoc(nodeFam);
+            if (matchVal != null && (prodFam.equals(matchVal.second()) ||
+                                       matchVal.second().equals("any")))
+                return true; 
         }
         return false;
     }   
