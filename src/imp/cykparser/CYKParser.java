@@ -462,10 +462,10 @@ public class CYKParser
                 match = rule.checkProduction(t, edict, sdict);
                 if (!(match.chordDiff < 0))
                 {
-                    long cost = rule.getCost() + SUB_COST;
+                    long cost = SUB_COST;
                     TreeNode newNode = new TreeNode(rule.getHead(),
                                     rule.getType(), rule.getMode(), 
-                                    t, cost, match.chordDiff);
+                                    t, match.cost + cost, match.chordDiff);
                     unaries.add(newNode);
                 }
             }
@@ -540,7 +540,7 @@ private void findNonterminal(int row, int col)
                                     // The cost becomes larger for the final TreeNode if
                                     // either the first or second TreeNode uses a chord
                                     // substitute
-                                    long cost = rule.getCost();
+                                    long cost = 0;
                                     if( symbol1.isSub() )
                                       {
                                         cost += SUB_COST;
@@ -556,7 +556,8 @@ private void findNonterminal(int row, int col)
 
                                     TreeNode newNode = new TreeNode(rule.getHead(),
                                                                     rule.getType(), rule.getMode(),
-                                                                    symbol1, symbol2, cost, match.chordDiff);
+                                                                    symbol1, symbol2, match.cost + cost, 
+                                                                    match.chordDiff);
                                     // Have gotten NullPointerException here. RK
                                     if( cykTable[row][col] != null )
                                       {
@@ -601,10 +602,9 @@ private void findNonterminal(int row, int col)
                 match = rule.checkProduction(t, edict, sdict);
                 if (!(match.chordDiff < 0))
                 {
-                    long cost = rule.getCost();
                     TreeNode newNode = new TreeNode(rule.getHead(),
                                     rule.getType(), rule.getMode(), 
-                                    t, cost, match.chordDiff);
+                                    t, match.cost, match.chordDiff);
                     unaries.add(newNode);
                 }
             }
