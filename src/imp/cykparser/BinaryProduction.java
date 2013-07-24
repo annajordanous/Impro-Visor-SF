@@ -210,7 +210,7 @@ public class BinaryProduction extends AbstractProduction {
             modKeys(key2 - key1) == modKeys(b.getKey() - a.getKey()) &&
             matchFamily(a, b) && durationScales(a.getDuration(), b.getDuration())) {   
 
-            return new MatchValue(modKeys(b.getKey() - key2), duration);
+            return new MatchValue(modKeys(b.getKey() - key2), this.getCost());
         } 
         // In the event that the production is incorrect (most of the time)
         return new MatchValue();
@@ -226,10 +226,11 @@ public class BinaryProduction extends AbstractProduction {
      * @return true if the blocks are matches, false otherwise
      */
     private boolean matchFamily(TreeNode a, TreeNode b) {
-        return (matchNode(a, name1) && matchNode(b, name2)) ||
-               (matchNode(a, name1) && matchName(b, name2)) ||
-               (matchName(a, name1) && matchNode(b, name2)) ||
-               (matchName(a, name1) && matchName(b, name2));
+        boolean matchA = a.getBlock() instanceof ChordBlock ?
+                         matchNode(a, name1) : matchName(a, name1);
+        boolean matchB = b.getBlock() instanceof ChordBlock ?
+                         matchNode(b, name2) : matchName(b, name2);
+        return matchA && matchB;
     }
     
     /** matchNode
@@ -240,17 +241,15 @@ public class BinaryProduction extends AbstractProduction {
      * @return true if the chords are members of the same family, else false
      */
     private boolean matchNode(TreeNode t, String name) {
-        if (t.getBlock() instanceof ChordBlock) {
-            String nodeSym = t.getSymbol().equals(t.getTrimmedSymbol()) ?
-                             t.getSymbol() : t.getTrimmedSymbol();
-            String nodeFam = Advisor.getSymbolFamily(nodeSym);
-            String prodFam = Advisor.getSymbolFamily(name); 
-            if (nodeFam.equals(prodFam)) return true;
-            Polylist matchVal = adict.assoc(nodeFam);
-            if (matchVal != null && (prodFam.equals(matchVal.second()) ||
-                                       matchVal.second().equals("any")))
-                return true; 
-        }
+        String nodeSym = t.getSymbol().equals(t.getTrimmedSymbol()) ?
+                         t.getSymbol() : t.getTrimmedSymbol();
+        String nodeFam = Advisor.getSymbolFamily(nodeSym);
+        String prodFam = Advisor.getSymbolFamily(name); 
+        if (nodeFam.equals(prodFam)) return true;
+        Polylist matchVal = adict.assoc(nodeFam);
+        if (matchVal != null && (prodFam.equals(matchVal.second()) ||
+                                 matchVal.second().equals("any")))
+            return true; 
         return false;
     }   
 

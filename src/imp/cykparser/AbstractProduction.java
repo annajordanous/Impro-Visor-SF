@@ -42,22 +42,22 @@ public abstract class AbstractProduction {
     
     // Dictionary specifying asymmetrical chord substitutions
     protected static Polylist adict = Polylist.list(Polylist.list("bass", "any"), 
-        /*Polylist.list("major", "dominant"), */ Polylist.list("half-diminished", "minor7"), 
+        /*Polylist.list("major", "dominant"), */ Polylist.list("half-diminished", "minor7"),
         Polylist.list("sus4", "dominant"), Polylist.list("augmented", "major"), 
         Polylist.list("minor7", "minor"));
 
     // Composite class for production checking
     public class MatchValue {
         public long chordDiff; // interval difference between production and chord 
-        public long duration;  // duration of production being compared 
+        public long cost;  // duration of production being compared 
         // constructors
         public MatchValue() {
             chordDiff = -1;
-            duration = -1;
+            cost = Long.MAX_VALUE;
         }
-        public MatchValue(long c, long d) {
-            chordDiff = c;
-            duration = d;
+        public MatchValue(long cd, long c) {
+            chordDiff = cd;
+            cost = c;
         }
     }
 }

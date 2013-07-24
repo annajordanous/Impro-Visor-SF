@@ -128,7 +128,7 @@ public class UnaryProduction extends AbstractProduction {
             EquivalenceDictionary e, SubstitutionDictionary s) 
    {
        if (matchFamily(t) || t.getSymbol().equals(name))
-            return new MatchValue(modKeys(t.getKey() - termKey - key), t.getDuration());           
+            return new MatchValue(modKeys(t.getKey() - termKey - key), this.getCost());           
         // in the event that the production is incorrect (most of the time)
         return new MatchValue();
     }
