@@ -208,9 +208,11 @@ public class BinaryProduction extends AbstractProduction {
         //   the durations of the composing bricks can be scaled to match right-hand rules
         if (a.getKey() != NC && b.getKey() != NC &&
             modKeys(key2 - key1) == modKeys(b.getKey() - a.getKey()) &&
-            matchFamily(a, b) && durationScales(a.getDuration(), b.getDuration())) {   
-
-            return new MatchValue(modKeys(b.getKey() - key2), this.getCost());
+            matchFamily(a, b)) {   
+            if (durationScales(a.getDuration(), b.getDuration()))
+                return new MatchValue(modKeys(b.getKey() - key2), this.getCost());
+            // non-scaling rules that still match are accepted at twice the cost
+            return new MatchValue(modKeys(b.getKey() - key2), this.getCost() * 2);
         } 
         // In the event that the production is incorrect (most of the time)
         return new MatchValue();
