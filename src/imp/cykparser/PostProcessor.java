@@ -67,7 +67,7 @@ public class PostProcessor {
     // For launching other than straight across a section
     
     public static final String[] RESOLUTIONS = {"", "", "", "", /* "3rd Bartok Sub" */ 
-        "", "", "Tritone", "", "Happenstance", "Yardbird", 
+        "", "", "Tritone", "", "Bauble", "Yardbird", 
         "", "Nowhere"};
 
     
@@ -85,7 +85,7 @@ public class PostProcessor {
       {
         setEquivalenceDictionary();
       }
-    
+
     /** Default constructor
      * Constructs a new PostProcessor with empty rules lists
      */
