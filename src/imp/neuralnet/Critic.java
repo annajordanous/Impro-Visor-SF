@@ -572,8 +572,7 @@ public class Critic implements imp.Constants {
             }
         
         // Generate score to get exact chord durations  
-        ChordPart chordsList = new ChordPart(BEAT * WHOLE); // Must initialize
-                                                            // with something
+        ChordPart chordsList = new ChordPart(notate.getScoreLength() - 1);
         MelodyPart melody = new MelodyPart();
         Polylist combined = chords.append(notes);
         (new SetChordsCommand(0, combined, chordsList, melody)).execute();
@@ -583,7 +582,7 @@ public class Critic implements imp.Constants {
         score.addPart(melody);
         ArrayList<ChordSymbol> symbols = score.getChordProg().getChordSymbols();
         ArrayList<Integer> durations = score.getChordProg().getChordDurations();
-
+        
         // Add all chords to chord list
         for (int i = 0; i < symbols.size(); i++)
         {
@@ -691,13 +690,17 @@ public class Critic implements imp.Constants {
             // Move two beats ahead
             currStart += BEAT * 2;
             currEnd += BEAT * 2;  
+            
+            output.delete(0, output.length());
         }
         
-        if (!error.get())
+        if (!error.get() && !grades.isEmpty())
         {
             double accum = 0;
             for (Double d : grades)
+            {
                 accum += d;
+            }
             return accum / grades.size();
         }
         else
@@ -833,4 +836,13 @@ public class Critic implements imp.Constants {
     {
         return network;
     }
+    
+    /*
+     * Reset the network
+     */
+    public void resetNetwork()
+    {
+        network = null;
+    }
+    
 }

@@ -261,6 +261,7 @@ private void initCompFileChoosers() {
         useHeadCheckBox = new javax.swing.JCheckBox();
         regenerateHeadDataBtn = new javax.swing.JButton();
         continuallyGenerateCheckBox = new javax.swing.JCheckBox();
+        generationSelectionButton = new javax.swing.JButton();
         toneProbabilityPanel = new javax.swing.JPanel();
         chordToneProbLabel = new javax.swing.JLabel();
         colorToneProbLabel = new javax.swing.JLabel();
@@ -324,6 +325,7 @@ private void initCompFileChoosers() {
         counterForCriticTextField = new javax.swing.JTextField();
         criticGradeLabel = new javax.swing.JLabel();
         counterForCriticLabel = new javax.swing.JLabel();
+        loadRandomGrammarButton = new javax.swing.JButton();
         grammarLearningPanel = new javax.swing.JPanel();
         finalLabel = new javax.swing.JLabel();
         windowParametersPanel = new javax.swing.JPanel();
@@ -379,6 +381,7 @@ private void initCompFileChoosers() {
         loadWeightFileButton = new javax.swing.JButton();
         resetNnetInstructionsButton = new javax.swing.JButton();
         resetDefaultValuesButton = new javax.swing.JButton();
+        resetNetworkButton = new javax.swing.JButton();
         nnetParametersPanel = new javax.swing.JPanel();
         trainingFileButton = new javax.swing.JButton();
         trainingFileTextField = new javax.swing.JTextField();
@@ -1124,6 +1127,18 @@ private void initCompFileChoosers() {
         gridBagConstraints.weightx = 0.1;
         lickgenParametersPanel.add(continuallyGenerateCheckBox, gridBagConstraints);
 
+        generationSelectionButton.setText("Size of Selection");
+        generationSelectionButton.setToolTipText("Lock the selection for lick generation.");
+        generationSelectionButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                generationSelectionButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        lickgenParametersPanel.add(generationSelectionButton, gridBagConstraints);
+
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
@@ -1771,7 +1786,6 @@ private void initCompFileChoosers() {
                 useCriticCheckBoxMouseClicked(evt);
             }
         });
-        useCriticCheckBox.setVisible(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -1793,7 +1807,6 @@ private void initCompFileChoosers() {
                 criticGradeTextFieldFocusLost(evt);
             }
         });
-        criticGradeTextField.setVisible(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
@@ -1809,7 +1822,6 @@ private void initCompFileChoosers() {
         counterForCriticTextField.setMinimumSize(new java.awt.Dimension(80, 24));
         counterForCriticTextField.setName(""); // NOI18N
         counterForCriticTextField.setPreferredSize(new java.awt.Dimension(80, 24));
-        counterForCriticTextField.setVisible(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
@@ -1834,6 +1846,19 @@ private void initCompFileChoosers() {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(2, 0, 2, 10);
         soloCorrectionPanel.add(counterForCriticLabel, gridBagConstraints);
+
+        loadRandomGrammarButton.setText("Load Random");
+        loadRandomGrammarButton.setToolTipText("Loads the random grammar for lick generation.");
+        loadRandomGrammarButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loadRandomGrammarButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.insets = new java.awt.Insets(2, 10, 2, 0);
+        soloCorrectionPanel.add(loadRandomGrammarButton, gridBagConstraints);
 
         soloCorrectionPanel.setVisible(false);
 
@@ -2550,7 +2575,7 @@ private void initCompFileChoosers() {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.weightx = 1.0;
         nnetWeightGenerationPanel.add(resetNnetInstructionsButton, gridBagConstraints);
 
@@ -2566,9 +2591,25 @@ private void initCompFileChoosers() {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 6;
         gridBagConstraints.weightx = 1.0;
         nnetWeightGenerationPanel.add(resetDefaultValuesButton, gridBagConstraints);
+
+        resetNetworkButton.setText("Reset Network");
+        resetNetworkButton.setToolTipText("Reset the network to load a new network.");
+        resetNetworkButton.setMaximumSize(new java.awt.Dimension(300, 29));
+        resetNetworkButton.setMinimumSize(new java.awt.Dimension(300, 29));
+        resetNetworkButton.setPreferredSize(new java.awt.Dimension(300, 29));
+        resetNetworkButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                resetNetworkButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.weightx = 1.0;
+        nnetWeightGenerationPanel.add(resetNetworkButton, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -2922,12 +2963,12 @@ private void initCompFileChoosers() {
 
         generatorWindowMenu1.setLabel("Window");
         generatorWindowMenu1.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                generatorWindowMenu1MenuSelected(evt);
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
-            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                generatorWindowMenu1MenuSelected(evt);
             }
         });
 
@@ -4527,6 +4568,9 @@ public void resetTriageParameters(boolean menu)
     rectifyCheckBox.setSelected(rectify);
 
     useGrammar = true; // Boolean.parseBoolean(lickgen.getParameter(LickGen.USE_GRAMMAR));
+    
+    useGrammarMI1.setSelected(useGrammar);
+    useGrammarAction();
 
     avoidRepeats = Boolean.parseBoolean(lickgen.getParameter(
         LickGen.AVOID_REPEATS));
@@ -5041,7 +5085,6 @@ private void useSoloistCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//
     }//GEN-LAST:event_useCriticCheckBoxMouseClicked
 
     private void gradeLickFromStaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gradeLickFromStaveButtonActionPerformed
-        // Lock stave selection
         int start = notate.getCurrentStave().getSelectionStart();
         int end = notate.getCurrentStave().getSelectionEnd();
         
@@ -5233,12 +5276,18 @@ private void useSoloistCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//
             }
         }
         
+        if (critic.getNetwork() != null && soloCorrectionPanel.isVisible())
+        {
+            JOptionPane.showMessageDialog(null, 
+                        new JLabel("<html><div style=\"text-align: center;\">"
+                        + "Network already initialized."
+                        + "Reset the network to load a new weight file."), 
+                          "Alert", JOptionPane.PLAIN_MESSAGE);
+        }
+        
         // If the network has been initialized, allow for critic use
         if (critic.getNetwork() != null)
         {
-            useCriticCheckBox.setVisible(true);
-            criticGradeTextField.setVisible(true);
-            counterForCriticTextField.setVisible(true);
             soloCorrectionPanel.setVisible(true);
         }
     }//GEN-LAST:event_loadWeightFileButtonActionPerformed
@@ -5253,7 +5302,7 @@ private void useSoloistCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//
         File file = openDialog.getSelectedFile();
         trainingFileTextField.setText(file.getAbsolutePath()); 
         String fileName = file.getName();
-        int pos = fileName.lastIndexOf(".");
+        int pos = fileName.lastIndexOf(".training.data");
         if (pos > 0)
             fileName = fileName.substring(0, pos);
         weightFileTextField.setText(fileName + ".weights.save");
@@ -5553,6 +5602,52 @@ private void useSoloistCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//
         if (currGrade < criticGrade)
             generateLickButtonActionPerformed(null);
     }//GEN-LAST:event_regenerateLickForSoloButtonActionPerformed
+
+    private void generationSelectionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generationSelectionButtonActionPerformed
+        if (notate.getCurrentStave().getLockSelectionWidth() == -1)
+        {
+            String s = JOptionPane.showInputDialog("Select the number of measures\n"
+                    + "for the graded licks", 2);
+
+            if( s != null && s.length() > 0 )
+            {
+                int measureNum;
+
+                try
+                {
+                    measureNum = Integer.parseInt(s);
+                }
+                catch( Exception e)
+                {
+                    measureNum = 2;
+                }
+
+                notate.getCurrentStave().lockSelectionWidth(measureNum * WHOLE);
+
+                notate.getCurrentStave().repaint();
+                
+                generationSelectionButton.setText("Unlock selection");
+            }
+        }
+        else
+        {
+            notate.getCurrentStave().unlockSelectionWidth();
+            
+            generationSelectionButton.setText("Size of Selection");
+        }
+    }//GEN-LAST:event_generationSelectionButtonActionPerformed
+
+    private void loadRandomGrammarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadRandomGrammarButtonActionPerformed
+        // Load Random grammar for neural network lick generation
+        notate.setGrammar("Random");
+    }//GEN-LAST:event_loadRandomGrammarButtonActionPerformed
+
+    private void resetNetworkButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetNetworkButtonActionPerformed
+        critic.resetNetwork();
+        soloCorrectionPanel.setVisible(false);
+        resetNnetInstructionsButtonActionPerformed(null);
+        resetDefaultValuesButtonActionPerformed(null);
+    }//GEN-LAST:event_resetNetworkButtonActionPerformed
   
     public void showCriticGrades()
     {
@@ -5590,6 +5685,24 @@ private void useSoloistCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//
         gradeGoodBtn.setVisible(false);
     }
     
+    // Return min duration text field
+    public int getMinDuration()
+    {
+        return minDuration;
+    }
+    
+    // Return max duration text field
+    public int getMaxDuration()
+    {
+        return maxDuration;
+    }
+    
+    // Return rest prob
+    public double getRestProb()
+    {
+        return restProb;
+    }
+ 
     // Return critic
     public Critic getCritic()
     {
@@ -5731,6 +5844,7 @@ private void useSoloistCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//
     private javax.swing.JButton generateThemeButton;
     private javax.swing.JButton generateWeightFileButton;
     private javax.swing.JLabel generationGapLabel;
+    private javax.swing.JButton generationSelectionButton;
     private javax.swing.JMenuBar generatorMenuBar1;
     private javax.swing.JTabbedPane generatorPane;
     private javax.swing.JMenu generatorWindowMenu1;
@@ -5771,6 +5885,7 @@ private void useSoloistCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//
     private javax.swing.JLabel lickSavedLabel;
     private javax.swing.JPanel lickgenParametersPanel;
     private javax.swing.JButton loadBaseGrammarBtn;
+    private javax.swing.JButton loadRandomGrammarButton;
     private javax.swing.JButton loadWeightFileButton;
     private javax.swing.JTextField maxDurationField;
     private javax.swing.JTextField maxIntervalField;
@@ -5811,6 +5926,7 @@ private void useSoloistCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//
     private javax.swing.JMenuItem reloadGrammarMI1;
     private javax.swing.JButton removeLayerFromTableButton;
     private javax.swing.JButton resetDefaultValuesButton;
+    private javax.swing.JButton resetNetworkButton;
     private javax.swing.JButton resetNnetInstructionsButton;
     private javax.swing.JButton resetSelectionButton;
     private javax.swing.JTextField restProbField;

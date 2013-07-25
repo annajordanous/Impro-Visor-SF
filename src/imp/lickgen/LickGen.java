@@ -1077,18 +1077,18 @@ public Polylist generateRandomRhythm(int slots,
     while( pos < slots )
       {
         int duration = noteDurations.get(randomIndex(distinctDurations));
-        String toCons;
-        if( bernoulli(restProb) )
-          {
-            toCons = REST_SYMBOL + duration;
-          }
-        else
-          {
-            toCons = NOTE_SYMBOL + duration;
-          }
-        rhythmString = rhythmString.cons(toCons);
+            String toCons;
+            if( bernoulli(restProb) )
+              {
+                toCons = REST_SYMBOL + duration;
+              }
+            else
+              {
+                toCons = NOTE_SYMBOL + duration;
+              }
+            rhythmString = rhythmString.cons(toCons);
         pos += (4 * BEAT) / duration; // Only works for 4-meter?? FIX
-      }
+        }
     rhythmString = rhythmString.reverse();
     return rhythmString;
   }
