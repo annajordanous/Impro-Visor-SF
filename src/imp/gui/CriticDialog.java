@@ -114,6 +114,10 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
         dataModel.add(data, grade);
     }
     
+    public boolean rowExists(String data, int grade) {
+        return dataModel.rowExists(data, grade);
+    }
+    
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -259,9 +263,13 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
             int row = dataTable.getSelectedRow();
             if(row == -1)
                 return;
+            
+            Notate notate = ImproVisor.getCurrentWindow();
+            int totalNumSlots = notate.getScoreLength();
+            ChordPart chords = new ChordPart(totalNumSlots - 1);
+            MelodyPart melody = new MelodyPart();    
+            
             Polylist dataRow = dataModel.getRow(row);
-            ChordPart chords = new ChordPart(BEAT*8);
-            MelodyPart melody = new MelodyPart(BEAT*8);         
             String name = (String) dataRow.nth(TCol.NAME.ordinal());
          
             Polylist combined = ((Polylist) (dataRow.nth(TCol.CHORDS.ordinal()))).append(
@@ -271,10 +279,23 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
 
             chords.setStyle(Preferences.getPreference(Preferences.DEFAULT_STYLE));
             
+            Polylist notes = (Polylist) (dataRow.nth(TCol.NOTES.ordinal()));
+            // Add all notes to the note list
+            while(!notes.isEmpty()) {
+                while(!notes.isEmpty() && notes.first() == null) {
+                    notes = notes.rest();
+                }
+
+                if(!notes.isEmpty()) {
+                    melody.addNote(NoteSymbol.toNote(notes.first().toString()));
+                    notes = notes.rest();
+                }
+            }
+            
             Score score = new Score();
             score.setChordProg(chords);
             score.addPart(melody);
-
+            
             if (dataTable.getSelectedColumn() == TCol.PLAYBTN.ordinal()) { 
                 new PlayScoreCommand(score, 
                                      0, 
@@ -288,8 +309,6 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
             }
             
             if (dataTable.getSelectedColumn() == TCol.LOADBTN.ordinal()) {
-                Notate notate = ImproVisor.getCurrentWindow();
-                
                 notate.getLickgenFrame().setSaveLickTextField(name);
                 notate.getChordProg().newPasteOver(chords, notate.getCurrentSelectionStart());
                 notate.putLickWithoutRectify(melody);
@@ -345,7 +364,9 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
 
                     int lickStart = line.indexOf("(");
                     String lick = line.substring(lickStart);
-                    add(lick, grade);
+                    
+                    if (!rowExists(lick, grade))
+                        add(lick, grade);
                 }
             } catch(IOException e) {
                 errorLabel.setText("File IO Error: " + e.getMessage());
@@ -485,8 +506,7 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
         Polylist lick = Polylist.list("lick", notes.cons("notes"), chords.cons("sequence"), name, Polylist.list("grade", grade));
 
         // Prepare a score so that Chord lengths can be determined
-        ChordPart chordsList = new ChordPart(BEAT * WHOLE); // Must initialize
-                                                            // with something
+        ChordPart chordsList = new ChordPart(ImproVisor.getCurrentWindow().getScoreLength() - 1);
         MelodyPart melody = new MelodyPart();
         Polylist combined = chords.append(notes);
         (new SetChordsCommand(0, combined, chordsList, melody)).execute();
@@ -533,8 +553,6 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
         int currEnd = BEAT * 8 - 1;
         int size = melodyPart.size() - 1;
         
-        // FIX: Potential issue when reloading file, since it will reload many of
-        //      the same lick
         // FIX: How will I pad the data?
         while (currEnd <= size && !error.get())
         {
@@ -764,6 +782,33 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
         
         public Polylist getRow(int row) {
             return data.get(row);
+        }
+        
+        public boolean rowExists(String lickStr, int grade) {
+            Polylist lick = Notate.parseListFromString(lickStr);
+            if(lick.length() == 1 && lick.first() instanceof Polylist && ((Polylist) lick.first()).length() > 1) {
+                lick = (Polylist) (lick.first());
+            }
+            Polylist notes = Polylist.list();
+            Polylist chords = Polylist.list();
+            String name = "";
+            while(lick.nonEmpty()) {
+                Object o = lick.first();
+                if(o instanceof Polylist) {
+                    Polylist p = (Polylist) o;
+                    String s = (String) p.first();
+                    if(s.equals("notes")) {
+                        notes = p.rest();
+                    } else if(s.equals("sequence")) {
+                        chords = p.rest();
+                    } else if(s.equals("name")) {
+                        name = (String) p.rest().implode(" ");
+                    }
+                }
+                lick = lick.rest();
+            }
+            
+            return data.contains(Polylist.list(name, notes, chords, grade));
         }
 
         public int getColumnCount() {

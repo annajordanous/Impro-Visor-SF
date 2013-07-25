@@ -10385,6 +10385,16 @@ private String getChordRedirectName(int row)
       grammarfc.setCurrentDirectory(oldDirectory);
       lickgenFrame.toFront();
     }
+    
+    public void setGrammar(String grammarName)
+    {
+        notateGrammarMenu.setText(grammarName + " grammar");
+        String extendedName = grammarName + GrammarFilter.EXTENSION;
+        grammarFilename = ImproVisor.getGrammarDirectory() + File.separator +  extendedName;
+        lickgen.loadGrammar(grammarFilename);
+        lickgenFrame.resetTriageParameters(false);
+        Preferences.setPreference(Preferences.DEFAULT_GRAMMAR_FILE, extendedName);
+    }
 
     private static int VoicingTableChordColumn     = 0;
     private static int VoicingTableNameColumn      = 1;
@@ -13363,7 +13373,7 @@ private MelodyPart makeLick(Polylist rhythm, int start, int stop)
 
     int actualSize = lick.size();
     int desiredSize = stop - start + 1;
-
+    
     if( actualSize > desiredSize )
       {
         //System.out.println("makeLick: reducing size from " + actualSize + " to desired " + desiredSize);
@@ -13457,10 +13467,10 @@ public boolean putLick(MelodyPart lick)
 
     getMelodyPart(stave).newPasteOver(lick, getCurrentSelectionStart(stave));
  
-//    if( lickgenFrame.rectifySelected() )
-//      {
+    if( lickgenFrame.rectifySelected() )
+      {
         rectifySelection(stave, start, stop);
-//      }
+      }
 
     playCurrentSelection(false, 0, PlayScoreCommand.USEDRUMS, "putLick " + start + " - " + stop);
     ImproVisor.setPlayEntrySounds(true);
@@ -21637,7 +21647,7 @@ public void originalGenerate(LickGen lickgen, int improviseStartSlot, int improv
                                         chordProg,
                                         0,
                                         avoidRepeats);
-
+        
         MelodyPart solo = lickgen.generateSoloFromOutline(totalSlots);
         if( solo != null )
           {
@@ -21657,14 +21667,73 @@ public void originalGenerate(LickGen lickgen, int improviseStartSlot, int improv
         // Keep track of the number of lick generations
         int count = 0;
         
+        /*
         int currStart = improviseStartSlot;
         int currEnd = currStart + ((BEAT * 8) -1);
         int thisTotalSlots = currEnd - currStart + 1;
+        */
         
+        while ( useCritic )
+        {
+            rhythm = lickgen.generateRhythmFromGrammar(improviseStartSlot, totalSlots);
+            
+            MelodyPart lick = generateLick(rhythm, improviseStartSlot, improviseEndSlot);
+            
+            if (lick != null)
+            {
+                //Increment the count
+                count++;
+                
+                ArrayList<Unit> units = lick.getUnitList();
+                ArrayList<ChordSymbol> symbols = stave.getChordProg().getChordSymbols();
+                ArrayList<Integer> durations = stave.getChordProg().getChordDurations();
 
-        // FIX: Generating better
+                ArrayList<Note> noteList = new ArrayList<Note>();
+                ArrayList<Chord> chordList = new ArrayList<Chord>();
+
+                // Add all notes and chords to the lists
+                for (Unit u : units)
+                    noteList.add((Note) u);
+                for (int i = 0; i < symbols.size(); i++)
+                    chordList.add(new Chord(symbols.get(i), durations.get(i)));
+                
+                Double gradeFromCritic = critic.gradeFromCritic(noteList, chordList);
+                
+                 // Stop the generation if we've gone too many times
+                if (gradeFromCritic != null && count >= criticLimit)
+                {
+                    JOptionPane.showMessageDialog(null, 
+                         new JLabel("<html><div style=\"text-align: center;\">"
+                           + "Too many generation attempts, <br/>"
+                           + "cannot generate lick with desired grade."), 
+                           "Alert", JOptionPane.PLAIN_MESSAGE);
+                    
+                    putLick(lick);
+                    useCritic = false;
+                    lickgenFrame.setCounterForCriticTextField(count);
+                    lickgenFrame.setLickFromStaveGradeTextField(gradeFromCritic);
+                }
+
+                // If the grade is high enough, pass it through the filter
+                else if (gradeFromCritic != null && gradeFromCritic >= criticGrade)
+                {
+                    putLick(lick);
+                    useCritic = false;
+                    lickgenFrame.setCounterForCriticTextField(count);
+                    lickgenFrame.setLickFromStaveGradeTextField(gradeFromCritic);
+                }
+            }
+            else
+            {
+                //debug System.out.println("panic: generated null lick");
+                setMode(Mode.GENERATION_FAILED);
+                return;
+            }
+        }
+        //FIX: Delete this
         
         // ...continually generate licks until a lick passes through the filter.
+        /*
         while ( useCritic && currEnd <= improviseEndSlot)
         {
             rhythm = lickgen.generateRhythmFromGrammar(improviseStartSlot, thisTotalSlots);
@@ -21703,35 +21772,62 @@ public void originalGenerate(LickGen lickgen, int improviseStartSlot, int improv
                            + "Too many generation attempts, <br/>"
                            + "cannot generate lick with desired grade."), 
                            "Alert", JOptionPane.PLAIN_MESSAGE);
-                
-                    useCritic = false;
-                    count++;
-                    lickgenFrame.setCounterForCriticTextField(count);
+                    
                     getMelodyPart(stave).newPasteOver(lick, currStart);
                     repaint();
-                    // FIX: Grade needs to be the average, not the last grade
-                    lickgenFrame.setLickFromStaveGradeTextField(gradeFromCritic);
+                    count++;
+                    useCritic = false;
+                    lickgenFrame.setCounterForCriticTextField(count);
+                    
+                    // Get the new grade for the lick
+                    ArrayList<Note> fullNoteList = new ArrayList<Note>();
+                    ArrayList<Chord> fullChordList = new ArrayList<Chord>();
+
+                    // Generate notes and chords over the lick
+                    critic.generateNotesAndChords(fullNoteList, fullChordList, 
+                                        improviseStartSlot, improviseEndSlot);
+
+                    // Grade the lick, passing it through the critic filter
+                    Double gradeFromFilter = critic.gradeFromCritic(fullNoteList, fullChordList); 
+                    if (gradeFromFilter != null)
+                    {
+                        lickgenFrame.setLickFromStaveGradeTextField(gradeFromFilter);
+                    }
                 }
 
                 // If the grade is high enough, pass it through the filter
                 else if (gradeFromCritic != null && gradeFromCritic >= criticGrade)
                 {
-                    count++;
                     getMelodyPart(stave).newPasteOver(lick, currStart);
                     repaint();
+                    count++;
                     
                     if (currEnd == improviseEndSlot)
                     {
-                        //getMelodyPart(stave).newPasteOver(lick, currStart);
-                        //repaint();
+                        // Get the new grade for the lick
+                        ArrayList<Note> fullNoteList = new ArrayList<Note>();
+                        ArrayList<Chord> fullChordList = new ArrayList<Chord>();
+
+                        // Generate notes and chords over the lick
+                        critic.generateNotesAndChords(fullNoteList, fullChordList, 
+                                            improviseStartSlot, improviseEndSlot);
+
+                        // Grade the lick, passing it through the critic filter
+                        Double gradeFromFilter = critic.gradeFromCritic(fullNoteList, fullChordList); 
                         
-                        useCritic = false;
-                        //count++;
-                        lickgenFrame.setCounterForCriticTextField(count);
-                        System.out.println(lick);
+                        System.out.println(gradeFromFilter);
                         
-                        // FIX: Grade needs to be the average, not the last grade
-                        lickgenFrame.setLickFromStaveGradeTextField(gradeFromCritic);
+                        if (gradeFromFilter != null && gradeFromFilter >= criticGrade)
+                        {
+                            lickgenFrame.setLickFromStaveGradeTextField(gradeFromFilter);
+                            useCritic = false;
+                            lickgenFrame.setCounterForCriticTextField(count);
+                        }
+                        else
+                        {
+                            currStart = improviseStartSlot - (BEAT * 2);
+                            currEnd = currStart + ((BEAT * 8) -1) - (BEAT * 2);
+                        }
                     }
                     
                     currStart += BEAT * 2;
@@ -21750,7 +21846,9 @@ public void originalGenerate(LickGen lickgen, int improviseStartSlot, int improv
                 return;
             }
         }
+        */
     }
+    
     // If the outline is unable to generate a solo, which might
     // happen if there are no outlines of the correct length or the soloist
     // file was not correctly loaded, use the grammar.
@@ -21763,11 +21861,11 @@ public void originalGenerate(LickGen lickgen, int improviseStartSlot, int improv
             rhythm = lickgen.generateRhythmFromGrammar(improviseStartSlot, totalSlots);
           }
         else
-          {
+          { 
             rhythm = lickgen.generateRandomRhythm(totalSlots,
-                                                  minDuration,
-                                                  maxDuration,
-                                                  restProb);
+                                                  lickgenFrame.getMinDuration(),
+                                                  lickgenFrame.getMaxDuration(),
+                                                  lickgenFrame.getRestProb());
           }
 
         MelodyPart lick = generateLick(rhythm, improviseStartSlot, improviseEndSlot);
@@ -21890,9 +21988,9 @@ public MelodyPart generate(LickGen lickgen, int improviseStartSlot, int improvis
         else
           {
             rhythm = lickgen.generateRandomRhythm(totalSlots,
-                                                  minDuration,
-                                                  maxDuration,
-                                                  restProb);
+                                                  lickgenFrame.getMinDuration(),
+                                                  lickgenFrame.getMaxDuration(),
+                                                  lickgenFrame.getRestProb());
           }
 
         //System.out.println("\nrhythm at " + improviseStartSlot + " to " + improviseEndSlot + " = " + rhythm);
