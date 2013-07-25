@@ -41,7 +41,7 @@ public class BinaryProduction extends AbstractProduction {
                                                   // an octave
     public static final long NC = -1;             // the key of a No Chord
     
-    
+    private int inexact_match_factor = 100;
     
     
     // NB: All production rules are put into the key of C when they are 
@@ -212,7 +212,7 @@ public class BinaryProduction extends AbstractProduction {
             if (durationScales(a.getDuration(), b.getDuration()))
                 return new MatchValue(modKeys(b.getKey() - key2), this.getCost());
             // non-scaling rules that still match are accepted at twice the cost
-            return new MatchValue(modKeys(b.getKey() - key2), this.getCost() * 2);
+            return new MatchValue(modKeys(b.getKey() - key2), this.getCost() * inexact_match_factor);
         } 
         // In the event that the production is incorrect (most of the time)
         return new MatchValue();
