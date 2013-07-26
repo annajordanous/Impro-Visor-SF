@@ -28,6 +28,8 @@ import imp.util.Preferences;
 import imp.util.Trace;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.ListIterator;
 import polya.Polylist;
 import polya.PolylistEnum;
@@ -622,6 +624,15 @@ public static void readStyles()
   if( styleDir.canRead() )
     {
     File[] styleFiles = styleDir.listFiles();
+    
+    // 7-26-13 HB
+    // Fix for Linux, where the file list is not in alphabetic order
+    Arrays.sort(styleFiles,  new Comparator<File>() {
+                public int compare(File f1, File f2) {
+                    return f1.getName().toUpperCase().compareTo(f2.getName().toUpperCase());
+            } 
+        });
+    
     for( int i = 0; i < styleFiles.length; i++ )
       {
       readStyleFile(styleFiles[i]);
