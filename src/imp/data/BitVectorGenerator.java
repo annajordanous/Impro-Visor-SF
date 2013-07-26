@@ -248,16 +248,4 @@ public class BitVectorGenerator implements Constants {
         beatPos += duration;
         return beatPos;
     }
-    
-    // FIX: Locking happens throughout the code for two measures, change that
-    // Possible fix: Round up to nearest whole note or whole beat, minus one
-    public static void windowedTrain(int start, int end, int beatPosition) {
-        
-        
-    }
-    
-    public static void windowedGenerate() {
-        
-        
-    }
 }

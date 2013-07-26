@@ -2973,24 +2973,8 @@
                         <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                           <Connection code="new javax.swing.table.DefaultTableModel(&#xa;    new Object [][] {&#xa;        { new Integer(1),  new Integer(64), &quot;Logsig&quot;},&#xa;        { new Integer(2),  new Integer(1), &quot;Logsig&quot;}&#xa;    },&#xa;    new String [] {&#xa;        &quot;Layer Index&quot;, &quot;Layer Size&quot;, &quot;Layer Type&quot;&#xa;    }&#xa;) {&#xa;    Class[] types = new Class [] {&#xa;        java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class&#xa;    };&#xa;    boolean[] canEdit = new boolean [] {&#xa;        false, true, true&#xa;    };&#xa;&#xa;    public Class getColumnClass(int columnIndex) {&#xa;        return types [columnIndex];&#xa;    }&#xa;&#xa;    public boolean isCellEditable(int rowIndex, int columnIndex) {&#xa;        if (columnIndex == 1&#xa;            &amp;&amp; rowIndex == layerDataTable.getRowCount() - 1)&#xa;        {&#xa;            return false;&#xa;        }&#xa;        return canEdit [columnIndex];&#xa;    }&#xa;}" type="code"/>
                         </Property>
-                        <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor" postCode="JComboBox comboBox = new JComboBox();&#xa;comboBox.addItem(&quot;Logsig&quot;);&#xa;comboBox.addItem(&quot;Tansig&quot;);&#xa;comboBox.addItem(&quot;Hardlim&quot;);&#xa;comboBox.addItem(&quot;Hardlims&quot;);&#xa;comboBox.addItem(&quot;Purelin&quot;);&#xa;comboBox.addItem(&quot;Satlin&quot;);&#xa;comboBox.addItem(&quot;Satlins&quot;);&#xa;layerDataTable.getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(comboBox));">
-                          <TableColumnModel selectionModel="0">
-                            <Column maxWidth="-1" minWidth="-1" prefWidth="50" resizable="false">
-                              <Title/>
-                              <Editor/>
-                              <Renderer/>
-                            </Column>
-                            <Column maxWidth="-1" minWidth="-1" prefWidth="50" resizable="false">
-                              <Title/>
-                              <Editor/>
-                              <Renderer/>
-                            </Column>
-                            <Column maxWidth="-1" minWidth="-1" prefWidth="50" resizable="false">
-                              <Title/>
-                              <Editor/>
-                              <Renderer/>
-                            </Column>
-                          </TableColumnModel>
+                        <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor" postCode="JComboBox comboBox = new JComboBox();&#xa;comboBox.addItem(&quot;Logsig&quot;);&#xa;comboBox.addItem(&quot;Tansig&quot;);&#xa;comboBox.addItem(&quot;Elliot&quot;);&#xa;comboBox.addItem(&quot;Elliots&quot;);&#xa;comboBox.addItem(&quot;Hardlim&quot;);&#xa;comboBox.addItem(&quot;Hardlims&quot;);&#xa;comboBox.addItem(&quot;Purelin&quot;);&#xa;comboBox.addItem(&quot;Satlin&quot;);&#xa;comboBox.addItem(&quot;Satlins&quot;);&#xa;layerDataTable.getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(comboBox));">
+                          <TableColumnModel selectionModel="0"/>
                         </Property>
                         <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                           <Dimension value="[2147483647, 2147483647]"/>

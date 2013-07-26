@@ -280,6 +280,7 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
             chords.setStyle(Preferences.getPreference(Preferences.DEFAULT_STYLE));
             
             Polylist notes = (Polylist) (dataRow.nth(TCol.NOTES.ordinal()));
+            
             // Add all notes to the note list
             while(!notes.isEmpty()) {
                 while(!notes.isEmpty() && notes.first() == null) {
@@ -292,6 +293,7 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
                 }
             }
             
+            melody.setInstrument(notate.getCurrentStave().getMelodyPart().getInstrument());
             Score score = new Score();
             score.setChordProg(chords);
             score.addPart(melody);
@@ -305,7 +307,7 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
                                      0, 
                                      0,
                                      false,
-                                     BEAT*4).execute();
+                                     BEAT * 4).execute();
             }
             
             if (dataTable.getSelectedColumn() == TCol.LOADBTN.ordinal()) {

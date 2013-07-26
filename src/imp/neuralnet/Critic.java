@@ -96,6 +96,8 @@ public class Critic implements imp.Constants {
     ActivationFunction satlin   = new Satlin();
     ActivationFunction satlins  = new Satlins();
     ActivationFunction tansig   = new Tansig();
+    ActivationFunction elliot   = new Elliot();
+    ActivationFunction elliots  = new Elliots();
     
     private Network network;
     private Notate notate; 
@@ -122,6 +124,8 @@ public class Critic implements imp.Constants {
         if( "satlin".equals(name) )   return satlin;
         if( "satlins".equals(name) )  return satlins;
         if( "tansig".equals(name) )   return tansig;
+        if( "elliot".equals(name) )   return elliot;
+        if( "elliots".equals(name) )  return elliots;
 
         System.out.println("error, unrecognized function: " + name);
         return null;

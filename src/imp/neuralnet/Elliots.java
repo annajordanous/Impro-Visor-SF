@@ -24,26 +24,27 @@ package imp.neuralnet;
  * Created in July 2013  
  * @author Hayden Blauzvern
  */
-public class Purelin implements ActivationFunction {
 
+public class Elliots implements ActivationFunction {
+    
     public double act(double arg) 
     {
-        return arg;
+        return arg / (1 + Math.abs(arg));
     }
 
     public double use(double arg) 
     {
-        return arg;
+        return arg / (1 + Math.abs(arg));
     }
 
     public double deriv(double arg, double out) 
     {
-        return 1;
+        return 1 / ((1 + Math.abs(out)) * (1 + Math.abs(out)));
     }
 
     public String getName() 
     {
-        return "purelin";
+        return "elliots";
     }
     
 }

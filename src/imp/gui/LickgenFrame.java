@@ -43,6 +43,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.plaf.metal.MetalButtonUI;
 import javax.swing.table.DefaultTableModel;
 import polya.Polylist;
@@ -2459,15 +2460,11 @@ private void initCompFileChoosers() {
             }
         });
         layerInfoScrollPane.setViewportView(layerDataTable);
-        layerDataTable.getColumnModel().getColumn(0).setResizable(false);
-        layerDataTable.getColumnModel().getColumn(0).setPreferredWidth(50);
-        layerDataTable.getColumnModel().getColumn(1).setResizable(false);
-        layerDataTable.getColumnModel().getColumn(1).setPreferredWidth(50);
-        layerDataTable.getColumnModel().getColumn(2).setResizable(false);
-        layerDataTable.getColumnModel().getColumn(2).setPreferredWidth(50);
         JComboBox comboBox = new JComboBox();
         comboBox.addItem("Logsig");
         comboBox.addItem("Tansig");
+        comboBox.addItem("Elliot");
+        comboBox.addItem("Elliots");
         comboBox.addItem("Hardlim");
         comboBox.addItem("Hardlims");
         comboBox.addItem("Purelin");
@@ -5294,6 +5291,8 @@ private void useSoloistCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//
 
     private void trainingFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_trainingFileButtonActionPerformed
         JFileChooser openDialog = new JFileChooser(ImproVisor.getNNetDataDirectory());
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Training Data", "data");
+        openDialog.setFileFilter(filter);
         openDialog.setDialogType(JFileChooser.OPEN_DIALOG);
 
         if(openDialog.showDialog(this, "Open") != JFileChooser.APPROVE_OPTION)
@@ -5409,6 +5408,8 @@ private void useSoloistCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//
 
     private void weightFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_weightFileButtonActionPerformed
         JFileChooser openDialog = new JFileChooser(ImproVisor.getVocabDirectory());
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Weight File", "save");
+        openDialog.setFileFilter(filter);
         openDialog.setDialogType(JFileChooser.OPEN_DIALOG);
 
         if(openDialog.showDialog(this, "Open") != JFileChooser.APPROVE_OPTION)
@@ -5475,41 +5476,41 @@ private void useSoloistCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//
     }//GEN-LAST:event_resetDefaultValuesButtonActionPerformed
 
     private void forwardGradeSoloButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_forwardGradeSoloButtonActionPerformed
-        notate.getCurrentStave().lockSelectionWidth(16 * EIGHTH);
-        notate.getCurrentStave().repaint();
         int start = notate.getCurrentStave().getSelectionStart();
         int end = notate.getCurrentStave().getSelectionEnd();
         
-        // Move the selection two measures ahead
-        start += 16 * EIGHTH;
-        end += 16 * EIGHTH;
+        int numSlotsSelected = notate.getCurrentStave().roundToMultiple(end - start, WHOLE);
+        
+        // Move forwards by the selection length
+        start += numSlotsSelected;
+        end += numSlotsSelected;
         int thisTotalSlots = notate.getCurrentStave().getNumMeasures() * WHOLE;
         
         if (start < thisTotalSlots && end < thisTotalSlots)
+        {
             notate.getCurrentStave().setSelection(start, end);
-            
-        notate.getCurrentStave().unlockSelectionWidth();
+            notate.getCurrentStave().repaint();
+        }
     }//GEN-LAST:event_forwardGradeSoloButtonActionPerformed
 
     private void backwardGradeSoloButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backwardGradeSoloButtonActionPerformed
-        notate.getCurrentStave().lockSelectionWidth(16 * EIGHTH);
-        notate.getCurrentStave().repaint();
         int start = notate.getCurrentStave().getSelectionStart();
         int end = notate.getCurrentStave().getSelectionEnd();
         
-        // Move the selection two measures ahead
-        start -= 16 * EIGHTH;
-        end -= 16 * EIGHTH;
+        int numSlotsSelected = notate.getCurrentStave().roundToMultiple(end - start, WHOLE);
+        
+        // Move backwards by the selection length
+        start -= numSlotsSelected;
+        end -= numSlotsSelected;
         
         if (start >= 0)
+        {
             notate.getCurrentStave().setSelection(start, end);
-            
-        notate.getCurrentStave().unlockSelectionWidth();
+            notate.getCurrentStave().repaint();
+        }
     }//GEN-LAST:event_backwardGradeSoloButtonActionPerformed
 
     private void offsetByMeasureGradeSoloButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_offsetByMeasureGradeSoloButtonActionPerformed
-        notate.getCurrentStave().lockSelectionWidth(16 * EIGHTH);
-        notate.getCurrentStave().repaint();
         int start = notate.getCurrentStave().getSelectionStart();
         int end = notate.getCurrentStave().getSelectionEnd();
         
@@ -5519,9 +5520,10 @@ private void useSoloistCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//
         int totalSlotsOffset = (notate.getCurrentStave().getNumMeasures() * WHOLE) - WHOLE;
 
         if (start < totalSlotsOffset)
+        {
             notate.getCurrentStave().setSelection(start, end);
-            
-        notate.getCurrentStave().unlockSelectionWidth();
+            notate.getCurrentStave().repaint();
+        }
     }//GEN-LAST:event_offsetByMeasureGradeSoloButtonActionPerformed
 
     private void resetSelectionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetSelectionButtonActionPerformed
@@ -5529,12 +5531,6 @@ private void useSoloistCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//
         notate.getCurrentStave().repaint();
     }//GEN-LAST:event_resetSelectionButtonActionPerformed
 
-    // FIX: Now, grade should be able to grade a whole solo, and we need to
-    // have generate() be able to create something not by first creating it
-    // and then grading it, but by creating two measure chunks at a time
-    // and grading those, then placing notes down a few beats at a time
-    // FIX: What is then the purpose of this? We don't need a grade all, and we
-    // don't need a generate per two measure...
     private void gradeAllMeasuresButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gradeAllMeasuresButtonActionPerformed
         final int totalMeasures = notate.getCurrentStave().getNumMeasures();
         if (totalMeasures % 2 == 1)
@@ -5559,6 +5555,9 @@ private void useSoloistCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//
         int start = notate.getCurrentStave().getSelectionStart();
         int end = notate.getCurrentStave().getSelectionEnd();
         
+        // Round to the nearest measure
+        int numSlotsSelected = notate.getCurrentStave().roundToMultiple(end - start, WHOLE);
+        
         // Iterate through all two measure selections
         while (start < thisTotalSlots && end < thisTotalSlots)
         {
@@ -5580,9 +5579,9 @@ private void useSoloistCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//
             if (grade < criticGrade)
                 generateLickButtonActionPerformed(null);
       
-            // Move forward two measures
-            start += 16 * EIGHTH;
-            end += 16 * EIGHTH;
+            // Move forward by the selection length
+            start += numSlotsSelected;
+            end += numSlotsSelected;
             notate.getCurrentStave().setSelection(start, end);
         }
 
