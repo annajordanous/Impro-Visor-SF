@@ -18355,7 +18355,7 @@ public void playScore()
 
     autoImprovisation.reset();
 
-    if( improviseButton.isSelected() )
+    if( improvisationOn )
       {
         if( continuousImprovisation )
           {
@@ -23617,7 +23617,7 @@ boolean improvisationOn = false;
 
 public void improviseButtonToggled()
   {
-    improvisationOn = improviseButton.isSelected();
+    improvisationOn = !improviseButton.isSelected();
 
     if( improvisationOn )
       {
@@ -26605,9 +26605,11 @@ public void actionPerformed(ActionEvent evt)
 
 
     //handleAudioInput(slotInPlayback);
-
-    handleAutoImprov(synthSlot); //midiSynth.getSlot());
-
+    if( improvisationOn )
+      {
+      handleAutoImprov(synthSlot); //midiSynth.getSlot());
+      }
+    
     // The following variant was originally added to stop playback at the end of a selection
     // However, it also truncates the drum patterns etc. so that needs to be fixed.
 
