@@ -8526,24 +8526,13 @@
             <Property name="toolTipText" type="java.lang.String" value="Options for creating a roadmap of the chord progression."/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="emptyRoadMapMI">
-              <Properties>
-                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="Ctrl+SEMICOLON"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="Empty Roadmap "/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="EmptyRoadMapAction"/>
-              </Events>
-            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="roadMapThisAnalyze">
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="SEMICOLON"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Roadmap this &amp; Analyze"/>
-                <Property name="toolTipText" type="java.lang.String" value="Open road map and analyze entire chorus.&#xa;"/>
+                <Property name="text" type="java.lang.String" value="Show Roadmap"/>
+                <Property name="toolTipText" type="java.lang.String" value="Show Roadmap"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="roadMapThisAnalyzeAction"/>
@@ -8552,13 +8541,25 @@
             <MenuItem class="javax.swing.JMenuItem" name="reAnalyzeMI">
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="SEMICOLON"/>
+                  <KeyStroke key="Shift+SEMICOLON"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Re-Analyze"/>
-                <Property name="toolTipText" type="java.lang.String" value="Open road map and analyze entire chorus.&#xa;"/>
+                <Property name="text" type="java.lang.String" value="Re-Analyze Roadmap"/>
+                <Property name="toolTipText" type="java.lang.String" value="Perform a new roadmap analysis."/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="reAnalyzeMIAction"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="emptyRoadMapMI">
+              <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+SEMICOLON"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Open Empty Roadmap "/>
+                <Property name="toolTipText" type="java.lang.String" value="Opens a blank roadmap unrelated to this leadsheet"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="EmptyRoadMapAction"/>
               </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator1">
