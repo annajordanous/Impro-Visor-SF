@@ -39,7 +39,7 @@ public class Elliot implements ActivationFunction {
 
     public double deriv(double arg, double out) 
     {
-        return 1 / (2 * (1 + Math.abs(out)) * (1 + Math.abs(out)));
+        return 1 / (2 * (1 + Math.abs(arg)) * (1 + Math.abs(arg)));
     }
 
     public String getName() 

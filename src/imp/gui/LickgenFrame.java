@@ -2960,12 +2960,12 @@ private void initCompFileChoosers() {
 
         generatorWindowMenu1.setLabel("Window");
         generatorWindowMenu1.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                generatorWindowMenu1MenuSelected(evt);
             }
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                generatorWindowMenu1MenuSelected(evt);
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
         });
 

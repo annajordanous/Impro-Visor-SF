@@ -22482,8 +22482,10 @@ public void originalGenerate(LickGen lickgen, int improviseStartSlot, int improv
     double criticGrade = lickgenFrame.getCriticGrade();
     
     // To prevent lag from too many interations, we limit the number of times
-    // the critic can test licks.
+    // the critic can test licks. We also limit the time of the iterations.
     final int criticLimit = 999;
+    long currTime = System.currentTimeMillis();
+    long totalTime = currTime + 20000;
 
     if( useOutlines )
       {
@@ -22518,12 +22520,6 @@ public void originalGenerate(LickGen lickgen, int improviseStartSlot, int improv
         // Keep track of the number of lick generations
         int count = 0;
         
-        /*
-        int currStart = improviseStartSlot;
-        int currEnd = currStart + ((BEAT * 8) -1);
-        int thisTotalSlots = currEnd - currStart + 1;
-        */
-        
         while ( useCritic )
         {
             rhythm = lickgen.generateRhythmFromGrammar(improviseStartSlot, totalSlots);
@@ -22534,6 +22530,7 @@ public void originalGenerate(LickGen lickgen, int improviseStartSlot, int improv
             {
                 //Increment the count
                 count++;
+                currTime = System.currentTimeMillis();
                 
                 ArrayList<Unit> units = lick.getUnitList();
                 ArrayList<ChordSymbol> symbols = stave.getChordProg().getChordSymbols();
@@ -22551,7 +22548,8 @@ public void originalGenerate(LickGen lickgen, int improviseStartSlot, int improv
                 Double gradeFromCritic = critic.gradeFromCritic(noteList, chordList);
                 
                  // Stop the generation if we've gone too many times
-                if (gradeFromCritic != null && count >= criticLimit)
+                if (gradeFromCritic != null && 
+                        (count >= criticLimit || currTime >= totalTime))
                 {
                     JOptionPane.showMessageDialog(null, 
                          new JLabel("<html><div style=\"text-align: center;\">"
