@@ -516,9 +516,13 @@ public class Critic implements imp.Constants {
         lickgenFrame.appendNetworkOutputTextField("Training ends at epoch " + epoch
                 + ", " + reasonName[reason.ordinal()] + ".");
         lickgenFrame.appendNetworkOutputTextField("\n" + "\n");
-        lickgenFrame.appendNetworkOutputTextField("Final weights:");
-        lickgenFrame.appendNetworkOutputTextField("\n");
-        lickgenFrame.appendNetworkOutputTextField(thisNetwork.showWeights("Final").toString());
+        
+        if (Trace.atLevel(4))
+        {
+            lickgenFrame.appendNetworkOutputTextField("Final weights:");
+            lickgenFrame.appendNetworkOutputTextField("\n");
+            lickgenFrame.appendNetworkOutputTextField(thisNetwork.showWeights("Final").toString());
+        }
      
         try 
         {
