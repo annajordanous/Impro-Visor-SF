@@ -37,7 +37,6 @@ var highThreshold = 95;//Default
 var lowThreshold = 43;//Default
 var lowSlider, highSlider, lowTextVal, highTextVal;
 var lowDesc, highDesc;
-var readyWindow, readyButton;
 var pitchAndOnsets = \pitchAndOnsets;
 var lastTime, lastPitch, duration, started=false;//Note recognition variables
 ~restCheckOn = true; //Monitors trigger response
@@ -108,10 +107,10 @@ s.doWhenBooted({
 	//Set button functionality
 	b.action = {
 		w.close;
-		//"Low thresh: ".post;
-		//lowThreshold.postln;
-		//"Hi thresh: ".post;
-		//highThreshold.postln;
+		"Low thresh: ".post;
+		lowThreshold.postln;
+		"Hi thresh: ".post;
+		highThreshold.postln;
 	};
 
 	w.front;
@@ -189,7 +188,7 @@ s.doWhenBooted({
 							//time.post;
 							//" freq: ".post;
 							//(msg[3].cpsmidi).postln;
-							lastPitch = (msg[3]).cpsmidi;//Reset pitch
+							lastPitch = (msg[3]).cpsmidi.round(1);//Reset pitch
 							~m_out_server.noteOn(1, lastPitch, 64);
 							~restCheckOn = true;//Ok to start rests again
 						};
@@ -206,17 +205,6 @@ s.doWhenBooted({
 				}//End Function
 			).add;//End Responder
 		});//End routine
-
-		//Create ready popup
-		readyWindow = Window.new("SuperCollider is Ready", Rect(800, 500, 300, 100));
-		readyButton = Button.new(readyWindow, Rect(110,25,80,50)).states_([["OK"]]);
-
-		readyButton.action = {
-			readyWindow.close;
-		};
-
-		readyWindow.front;
-
 	});//End onClose
 
 })//End doWhenBooted
