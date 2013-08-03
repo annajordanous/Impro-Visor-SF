@@ -26,12 +26,16 @@ import imp.com.PlayScoreCommand;
 import imp.com.SetChordsCommand;
 import imp.data.*;
 import imp.util.Preferences;
+import java.awt.Point;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicBoolean;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileFilter;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
 import polya.Polylist;
@@ -127,6 +131,11 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
+        dataTablePopupMenu = new javax.swing.JPopupMenu();
+        changeNameMenuItem = new javax.swing.JMenuItem();
+        changeChordsMenuItem = new javax.swing.JMenuItem();
+        changeGradeMenuItem = new javax.swing.JMenuItem();
+        numRowsMenuItem = new javax.swing.JMenuItem();
         jScrollPane1 = new javax.swing.JScrollPane();
         dataTable = new javax.swing.JTable();
         fileLabel = new javax.swing.JLabel();
@@ -139,14 +148,50 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
         deleteSelected = new javax.swing.JButton();
         deleteAll = new javax.swing.JButton();
 
+        changeNameMenuItem.setText("Change Name(s)");
+        changeNameMenuItem.setToolTipText("Change the name of all the selected licks.");
+        changeNameMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                changeNameMenuItemActionPerformed(evt);
+            }
+        });
+        dataTablePopupMenu.add(changeNameMenuItem);
+
+        changeChordsMenuItem.setText("Change Chords");
+        changeChordsMenuItem.setToolTipText("Change the chords for all the selected licks.");
+        changeChordsMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                changeChordsMenuItemActionPerformed(evt);
+            }
+        });
+        dataTablePopupMenu.add(changeChordsMenuItem);
+
+        changeGradeMenuItem.setText("Change Grade(s)");
+        changeGradeMenuItem.setToolTipText("Change the grade for all the selected licks.");
+        changeGradeMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                changeGradeMenuItemActionPerformed(evt);
+            }
+        });
+        dataTablePopupMenu.add(changeGradeMenuItem);
+
+        numRowsMenuItem.setText("Number of Licks");
+        numRowsMenuItem.setToolTipText("Displays the number of selected licks.");
+        numRowsMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                numRowsMenuItemActionPerformed(evt);
+            }
+        });
+        dataTablePopupMenu.add(numRowsMenuItem);
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         dataTable.setModel(dataModel);
         dataTable.getTableHeader().setReorderingAllowed(false);
         dataTable.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                dataTableMouseClicked(evt);
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                dataTableMousePressed(evt);
             }
         });
         jScrollPane1.setViewportView(dataTable);
@@ -257,8 +302,16 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
         dataModel.deleteRows(dataTable.getSelectedRows());
     }//GEN-LAST:event_deleteSelectedActionPerformed
 
-    private void dataTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dataTableMouseClicked
-        if(dataTable.getSelectedColumn() == TCol.PLAYBTN.ordinal() ||
+    private void dataTableMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dataTableMousePressed
+        if (evt.isPopupTrigger()) {
+            if (dataTable.getSelectedRows().length == 0) {
+                int r = dataTable.rowAtPoint(new Point(evt.getX(), evt.getY()));
+                dataTable.setRowSelectionInterval(r, r);
+            }
+            dataTablePopupMenu.show(evt.getComponent(), evt.getX(), evt.getY());
+        }
+
+        else if(dataTable.getSelectedColumn() == TCol.PLAYBTN.ordinal() ||
                 dataTable.getSelectedColumn() == TCol.LOADBTN.ordinal()) {
             int row = dataTable.getSelectedRow();
             if(row == -1)
@@ -316,7 +369,7 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
                 notate.putLickWithoutRectify(melody);
             }
         }
-    }//GEN-LAST:event_dataTableMouseClicked
+    }//GEN-LAST:event_dataTableMousePressed
 
     private void saveFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveFileActionPerformed
         save();
@@ -330,14 +383,72 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
         addFromFile(true);
     }//GEN-LAST:event_openFileActionPerformed
 
+    private void saveAsFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAsFileActionPerformed
+        saveAs();
+    }//GEN-LAST:event_saveAsFileActionPerformed
+
+    private void changeNameMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeNameMenuItemActionPerformed
+        String s = JOptionPane.showInputDialog("Set the name for the selected rows");
+        if( s != null && s.length() > 0 )
+        {
+            int[] rows = dataTable.getSelectedRows();
+            int col = TCol.NAME.ordinal();
+            for (int row : rows)
+                dataModel.setValueAt(s, row, col);
+        }
+    }//GEN-LAST:event_changeNameMenuItemActionPerformed
+
+    private void changeChordsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeChordsMenuItemActionPerformed
+        String s = JOptionPane.showInputDialog("Set the chords for the selected rows");
+        if( s != null && s.length() > 0 )
+        {
+            int[] rows = dataTable.getSelectedRows();
+            int col = TCol.CHORDS.ordinal();
+            for (int row : rows)
+                dataModel.setValueAt(s, row, col);
+        }
+    }//GEN-LAST:event_changeChordsMenuItemActionPerformed
+
+    private void changeGradeMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeGradeMenuItemActionPerformed
+        int grade;
+        String s = JOptionPane.showInputDialog("Set the grade for the selected rows");
+        if( s != null && s.length() > 0 )
+        {
+            grade = Integer.parseInt(s);
+            int[] rows = dataTable.getSelectedRows();
+            int col = TCol.GRADE.ordinal();
+            for (int row : rows)
+                dataModel.setValueAt(grade, row, col);
+        }
+    }//GEN-LAST:event_changeGradeMenuItemActionPerformed
+
+    private void numRowsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_numRowsMenuItemActionPerformed
+        JOptionPane.showMessageDialog(null, 
+                new JLabel("<html><div style=\"text-align: center;\">"
+                + "Number of Rows: " + dataTable.getSelectedRows().length), 
+                  "Info", JOptionPane.PLAIN_MESSAGE);
+    }//GEN-LAST:event_numRowsMenuItemActionPerformed
+
+    // File to be read from or written to
     File currentFile = null;
-    JFileChooser openDialog = new JFileChooser(ImproVisor.getNNetDataDirectory());
-    JFileChooser saveDialog = new JFileChooser(ImproVisor.getNNetDataDirectory());
-    
     
     public void addFromFile(boolean overwrite) {
-        openDialog.setDialogType(JFileChooser.OPEN_DIALOG);
+        JFileChooser openDialog = new JFileChooser(ImproVisor.getNNetDataDirectory());
+        openDialog.setFileFilter(new FileFilter() {
 
+            public boolean accept(File pathname) {
+                if (pathname.isDirectory())
+                    return true;
+                return !pathname.getName().endsWith(".training.data");
+            }
+
+            public String getDescription() {
+                return "Lick Files";
+            }
+        });
+        
+        openDialog.setDialogType(JFileChooser.OPEN_DIALOG);
+        
         if(openDialog.showDialog(this, "Open") != JFileChooser.APPROVE_OPTION)
             return;
         
@@ -477,6 +588,20 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
     }
     
     public void saveAs() {
+        JFileChooser saveDialog = new JFileChooser(ImproVisor.getNNetDataDirectory());
+        saveDialog.setFileFilter(new FileFilter() {
+
+            public boolean accept(File pathname) {
+                if (pathname.isDirectory())
+                    return true;
+                return !pathname.getName().endsWith(".training.data");
+            }
+
+            public String getDescription() {
+                return "Lick Files";
+            }
+        });
+        
         saveDialog.setDialogType(JFileChooser.SAVE_DIALOG);
         if(saveDialog.showDialog(this, "Save") != JFileChooser.APPROVE_OPTION)
             return;
@@ -484,10 +609,6 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
         updateLabel();
         save(currentFile);
     }
-    
-    private void saveAsFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAsFileActionPerformed
-        saveAs();
-    }//GEN-LAST:event_saveAsFileActionPerformed
     
     /**
      * Saves a lick for the critic, later to be used as input for a neural network.
@@ -885,13 +1006,18 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton appendFile;
+    private javax.swing.JMenuItem changeChordsMenuItem;
+    private javax.swing.JMenuItem changeGradeMenuItem;
+    private javax.swing.JMenuItem changeNameMenuItem;
     private javax.swing.JTable dataTable;
+    private javax.swing.JPopupMenu dataTablePopupMenu;
     private javax.swing.JButton deleteAll;
     private javax.swing.JButton deleteSelected;
     private javax.swing.JLabel errorLabel;
     private javax.swing.JLabel fileLabel;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JMenuItem numRowsMenuItem;
     private javax.swing.JButton openFile;
     private javax.swing.JButton saveAsFile;
     private javax.swing.JButton saveFile;

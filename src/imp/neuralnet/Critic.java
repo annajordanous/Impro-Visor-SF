@@ -331,15 +331,15 @@ public class Critic implements imp.Constants {
             weightFile = trainingFile + ".weights.save";
         
         numberLayers = (Integer) args[6];
-        LinkedHashMap<Integer, String> layerData = (LinkedHashMap<Integer, String>) args[7];
+        ArrayList<Object[]> layerData = (ArrayList<Object[]>) args[7];
         layerSize = new int[numberLayers];
         layerType = new ActivationFunction[numberLayers];
         
         int j = 0;
-        for (Integer i : layerData.keySet())
+        for (Object[] items : layerData)
         {
-            layerSize[j] = i;
-            layerType[j] = getLayerType(layerData.get(i));
+            layerSize[j] = (Integer) items[0];
+            layerType[j] = getLayerType((String) items[1]);
             j++;
         }
         

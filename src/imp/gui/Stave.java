@@ -63,7 +63,7 @@ public class Stave
         extends JPanel
         implements Constants, FocusListener
 {
-static int MAX_LICK_CHORDS = 15;
+static int MAX_LICK_CHORDS = 1000;
     
 String noteColorString = Preferences.getPreference(Preferences.NOTE_COLORING);
    
