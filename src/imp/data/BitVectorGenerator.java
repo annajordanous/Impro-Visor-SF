@@ -168,6 +168,8 @@ public class BitVectorGenerator implements Constants {
         
         // Determine 6-bit beat durations and encode them as such:
         // WHOLE HALF QUARTER EIGHTH SIXTEENTH TRIPLET
+        // If the note is not one of these, it leaves the duration encoding
+        // as zeros.
         char[] durationEncoding = {'0', '0',  '0', '0', '0', '0'};
         
         StringBuilder buffer = new StringBuilder();
@@ -225,7 +227,7 @@ public class BitVectorGenerator implements Constants {
                 
             else
             {
-                error.set(true);
+                // error.set(true);
             }
         }
         for (char b : durationEncoding)

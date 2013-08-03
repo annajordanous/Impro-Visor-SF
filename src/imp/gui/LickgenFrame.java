@@ -5124,7 +5124,7 @@ private void useSoloistCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//
     private void generateWeightFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateWeightFileButtonActionPerformed
         int numRows = layerDataTable.getRowCount();
         int count = 0;
-        LinkedHashMap<Integer, String> data = new LinkedHashMap<Integer, String>();
+        ArrayList<Object[]> data = new ArrayList<Object[]>();
         boolean incompleteRows = false;
         
         for (int i = 0; i < numRows ; i++)
@@ -5133,7 +5133,10 @@ private void useSoloistCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//
             {
                 int size = (Integer) layerDataTable.getValueAt(i, 1);
                 String type = (String) layerDataTable.getValueAt(i, 2);
-                data.put(size, type);
+                Object[] items = new Object[2];
+                items[0] = size;
+                items[1] = type;
+                data.add(items);
                 count++;
             }
             catch (Exception e)
@@ -5277,7 +5280,7 @@ private void useSoloistCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//
         {
             JOptionPane.showMessageDialog(null, 
                         new JLabel("<html><div style=\"text-align: center;\">"
-                        + "Network already initialized."
+                        + "Network already initialized.<br/>"
                         + "Reset the network to load a new weight file."), 
                           "Alert", JOptionPane.PLAIN_MESSAGE);
         }
