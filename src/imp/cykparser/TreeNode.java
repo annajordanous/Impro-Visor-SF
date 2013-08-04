@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2011 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2011-2013 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,8 +28,8 @@ package imp.cykparser;
  * @Author Xanda Schofield
  */
 
-import java.util.*;
 import imp.brickdictionary.*;
+import java.util.*;
 
 /** TreeNode
  *
@@ -60,7 +60,6 @@ public class TreeNode {
     private boolean isSub;            // whether the Node has a substitution
     
     private int height;               // height of the tree at the TreeNode
-    
     
     
     // Constructors for TreeNodes //
@@ -450,6 +449,11 @@ public class TreeNode {
         return cost; 
     }
     
+    public void setCost(double cost)
+      {
+        this.cost = cost;
+      }
+    
     /** getKey
      * Gets the key that the contents of the TreeNode are in
      * @return the key, a long
@@ -458,6 +462,11 @@ public class TreeNode {
     {
         return block.getKey();
     }
+    
+    public String getKeySymbol()
+      {
+        return BrickLibrary.keyNumToName(getKey());
+      }
     
     /** getDuration
      * Gets the duration of the contents of the TreeNode
@@ -517,17 +526,31 @@ public class TreeNode {
     @Override
     public String toString() 
     {
+      return toString("");
+    }
+    
+    public String toString(String indent) 
+    {
+      String subIndent = "    " + indent;
         if (!toPrint) {
-            return child1.toString() + "\n" + child2.toString();
+            return indent + "(synthetic " + getKeySymbol() + " " + cost + " " + getDuration()
+                       + (child1 == null ? " null" : "\n" + child1.toString(subIndent)) 
+                       + (child2 == null ? " null" : "\n" + child2.toString(subIndent)) + ")";
+            
         }
         else if (isTerminal()) {
-            return "(" + BrickLibrary.keyNumToName(getKey()) + symbol + " " 
-                + getDuration() + ")";
+            return indent + "(" + getKeySymbol() + " " + Brick.dashed(symbol) 
+                 + " " + getMode() + " " 
+                 +  cost + " "  
+                 + getDuration() + ")";
         }
         else {
-            return "(" + symbol + " " + BrickLibrary.keyNumToName(getKey()) + 
-                " " + getDuration() + " " + child1.toString() + " " + 
-                child2.toString() + ")";
+            return indent + "(" + getKeySymbol() + " " + Brick.dashed(symbol) 
+                 + " " + getMode() + " " 
+                 + cost + " "  
+                 + getDuration()
+                       + (child1 == null ? "null" : "\n" + child1.toString(subIndent)) 
+                       + (child2 == null ? "null " : "\n" + child2.toString(subIndent)) + ")";
         }
     }
     
@@ -575,8 +598,79 @@ public class TreeNode {
         }
     }                                    
 
-    // end of TreeNode class
-    
+    @Override
+    public int hashCode()
+      {
+        int hash = 7;
+        hash = 23 * hash + (this.child1 != null ? this.child1.hashCode() : 0);
+        hash = 23 * hash + (this.child2 != null ? this.child2.hashCode() : 0);
+        hash = 23 * hash + (this.symbol != null ? this.symbol.hashCode() : 0);
+        hash = 23 * hash + (this.chords != null ? this.chords.hashCode() : 0);
+        hash = 23 * hash + (this.block != null ? this.block.hashCode() : 0);
+        hash = 23 * hash + (int) (this.key ^ (this.key >>> 32));
+        hash = 23 * hash + (int) (Double.doubleToLongBits(this.cost) ^ (Double.doubleToLongBits(this.cost) >>> 32));
+        hash = 23 * hash + (this.toPrint ? 1 : 0);
+        hash = 23 * hash + (this.isEnd ? 1 : 0);
+        hash = 23 * hash + (this.isSub ? 1 : 0);
+        return hash;
+      }
+
+    @Override
+    public boolean equals(Object obj)
+      {
+        if( obj == null )
+          {
+            return false;
+          }
+        if( getClass() != obj.getClass() )
+          {
+            return false;
+          }
+        final TreeNode other = (TreeNode) obj;
+        if( this.child1 != other.child1 && (this.child1 == null || !this.child1.equals(other.child1)) )
+          {
+            return false;
+          }
+        if( this.child2 != other.child2 && (this.child2 == null || !this.child2.equals(other.child2)) )
+          {
+            return false;
+          }
+        if( (this.symbol == null) ? (other.symbol != null) : !this.symbol.equals(other.symbol) )
+          {
+            return false;
+          }
+        if( this.chords != other.chords && (this.chords == null || !this.chords.equals(other.chords)) )
+          {
+            return false;
+          }
+        if( this.block != other.block && (this.block == null || !this.block.equals(other.block)) )
+          {
+            return false;
+          }
+        if( this.key != other.key )
+          {
+            return false;
+          }
+        if( Double.doubleToLongBits(this.cost) != Double.doubleToLongBits(other.cost) )
+          {
+            return false;
+          }
+        if( this.toPrint != other.toPrint )
+          {
+            return false;
+          }
+        if( this.isEnd != other.isEnd )
+          {
+            return false;
+          }
+        if( this.isSub != other.isSub )
+          {
+            return false;
+          }
+        return true;
+      }
+
+
 }
 
 
