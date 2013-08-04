@@ -36,6 +36,8 @@ import polya.*;
 
 public class CYKParser
 {
+    private static boolean DEBUG = false;
+    
     // Constants used by the CYKParser
     public static final String DICTIONARY_NAME = "My.substitutions";
     public static final String INVISIBLE = "Invisible";
@@ -362,6 +364,12 @@ public class CYKParser
             }
         }        
         tableFilled = true;
+        
+    if( DEBUG )
+      {
+       System.out.println("CYK Parse Table:");
+       System.out.println(printTable());
+      }
     }
     
     /** findSolutions
@@ -414,10 +422,31 @@ public class CYKParser
     
         // The shortest path in the top right cell gets printed as the best
         // explanation for the whole chord progression
+        if( DEBUG )
+          {
+          showMinVals(minVals);
+          }
         return minVals[0][size - 1].toBlocks();
             
     }
     
+    public void showMinVals(TreeNode[][] minVals)
+      {
+        System.out.println("minVals: ");
+        for( int row = 0; row < minVals.length; row++ )
+          {
+            TreeNode[] rowContents = minVals[row];
+            for( int col = row; col < rowContents.length; col++ )
+              {
+                TreeNode L = rowContents[col];
+                
+                System.out.println("-------------------------------------------\n"
+                        + "minVals(" + row + ", " + col + "):\n" + L); 
+                }
+              }
+            System.out.println();
+          }
+
     /** findTerminal
      * findTerminal is a helper function which, for a given index i takes the
      * ith ChordBlock in chords and fills the [i, i] space in the 2D List 
@@ -642,8 +671,7 @@ private void findNonterminal(int row, int col)
             fillTable();
             solution.addAll(findSolution(lib));
         }
-//System.out.println("Parse Table:");
-//System.out.println(printTable());
+
         solution = PostProcessor.findLaunchers(solution);
         return solution;
     }
@@ -663,38 +691,23 @@ private void findNonterminal(int row, int col)
      * ----------------------
      */
     public String printTable() {
-        String output = new String();
-        
+        StringBuilder buffer = new StringBuilder();
         for (int i = 0; i < cykTable.length; i++)
           {
             for (int j = i; j < cykTable.length; j++)
             {
-                output += "(" + i + ", " + j + ")\n";
+            
+                buffer.append("-------------------------------------------\n"
+                        +"CYK (" + i + ", " + j + "):\n");
                 for (TreeNode t : cykTable[i][j])
                 {
+                    buffer.append(t);
 
-                    output += t.getSymbol() + " in " 
-                           + BrickLibrary.keyNumToName(t.getKey()) + " (" 
-                           + t.getDuration() + ")";
-                    
-                    // adding each of the major child TreeNodes of the current
-                    // TreeNode
-                    if (!t.isTerminal())
-                      {
-                        output += ": " + t.getFirstChild().getSymbol() + " in " + 
-                                  BrickLibrary.keyNumToName(t.getFirstChild().getKey())
-                                  + " (" + t.getFirstChild().getDuration() + ")"
-                                  + ", " + t.getSecondChild().getSymbol() + " in " +
-                                  BrickLibrary.keyNumToName(t.getSecondChild().getKey())
-                                  + " (" + t.getSecondChild().getDuration() + ")";
+                    buffer.append("\n");
                       }
-                    
-                    output += "\n";
                 }         
-                output += "----------------------\n";
             }
+        return buffer.toString();
           }
-        return output;
-    }
     // end of CYKParser class
 }
