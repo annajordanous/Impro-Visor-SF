@@ -1666,7 +1666,7 @@ private void initCompFileChoosers() {
         gridBagConstraints.weighty = 0.5;
         lickGenPanel.add(pitchProbabilitiesPanel, gridBagConstraints);
 
-        soloCorrectionPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Solo Correction Through Critic Filter", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
+        soloCorrectionPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Critic Options (Using Neural Network)", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
         soloCorrectionPanel.setMinimumSize(new java.awt.Dimension(600, 83));
         soloCorrectionPanel.setPreferredSize(new java.awt.Dimension(600, 83));
         soloCorrectionPanel.setLayout(new java.awt.GridBagLayout());
@@ -1752,7 +1752,7 @@ private void initCompFileChoosers() {
         gridBagConstraints.insets = new java.awt.Insets(2, 10, 2, 10);
         soloCorrectionPanel.add(regenerateLickForSoloButton, gridBagConstraints);
 
-        gradeLickFromStaveButton.setText("Grade Onscreen Lick");
+        gradeLickFromStaveButton.setText("Grade Selected Lick");
         gradeLickFromStaveButton.setToolTipText("Use the critic to grade the current two measure selection.");
         gradeLickFromStaveButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

@@ -676,7 +676,6 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
         int currEnd = BEAT * 8 - 1;
         int size = melodyPart.size() - 1;
         
-        // FIX: How will I pad the data?
         while (currEnd <= size && !error.get())
         {
             // Add the grade

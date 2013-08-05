@@ -1833,7 +1833,7 @@
               <Properties>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                    <TitledBorder title="Solo Correction Through Critic Filter">
+                    <TitledBorder title="Critic Options (Using Neural Network)">
                       <Font PropertyName="font" name="Lucida Grande" size="13" style="1"/>
                     </TitledBorder>
                   </Border>
@@ -1951,7 +1951,7 @@
                 </Component>
                 <Component class="javax.swing.JButton" name="gradeLickFromStaveButton">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Grade Onscreen Lick"/>
+                    <Property name="text" type="java.lang.String" value="Grade Selected Lick"/>
                     <Property name="toolTipText" type="java.lang.String" value="Use the critic to grade the current two measure selection."/>
                   </Properties>
                   <Events>
