@@ -159,6 +159,11 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
              <attribute name="Main-Class" value="imp.ImproVisor" />
          </manifest>
     </jar>
+    
+    <copy todir="${distDir}/vocab">
+        <fileset dir="${vocabDir}" includes="**/*" />
+    </copy>
+    
     <copy todir="${distDir}/vocab">
         <fileset dir="${vocabDir}" includes="**/*.voc" />
     </copy>
@@ -375,11 +380,15 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
         <fileset dir="${vocabDir}" includes="**/*.voc HeadData.data" />
     </copy>
     
-    <copy todir="${distDir}">
+    <copy todir="${dist-mac}/vocab">
+        <fileset dir="${vocabDir}" includes="**/*" />
+    </copy>
+    
+    <copy todir="${dist-mac}">
         <fileset dir="" includes="LICENSE.txt README.txt" />
     </copy>
 
-    <copy todir="${distDir}/vocab">
+    <copy todir="${dist-mac}/vocab">
         <fileset dir="${vocabDir}" includes="**/*.grammar **/*.soloist" />
     </copy>
 
@@ -432,6 +441,10 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
     
     <copy todir="${dist-win}/vocab">
         <fileset dir="${vocabDir}" includes="**/*.voc" />  
+    </copy>
+
+    <copy todir="${dist-win}/vocab">
+        <fileset dir="${vocabDir}" includes="**/*" />
     </copy>
     
     <copy todir="${dist-win}/vocab">
