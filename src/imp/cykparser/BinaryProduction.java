@@ -63,6 +63,7 @@ public class BinaryProduction extends AbstractProduction {
     private boolean toPrint;    // whether the brick is a user-side viewable one
     private boolean arbitrary = false; // whether the brick contains a block of
                                        // arbitrary duration
+    private boolean familyMatch = false; // if match is made with chord family
     
     
     // BinaryProduction Constructors // 
@@ -208,11 +209,13 @@ public class BinaryProduction extends AbstractProduction {
         //   the durations of the composing bricks can be scaled to match right-hand rules
         if (a.getKey() != NC && b.getKey() != NC &&
             modKeys(key2 - key1) == modKeys(b.getKey() - a.getKey()) &&
-            matchFamily(a, b)) {   
+            matchFamily(a, b)) {
             if (durationScales(a.getDuration(), b.getDuration()))
-                return new MatchValue(modKeys(b.getKey() - key2), this.getCost());
-            // non-scaling rules that still match are accepted at twice the cost
-            return new MatchValue(modKeys(b.getKey() - key2), this.getCost() * inexact_match_factor);
+                return new MatchValue(modKeys(b.getKey() - key2), 
+                    this.getCost(), this.familyMatch);
+            // non-scaling rules that still match are accepted at a scaled cost
+            return new MatchValue(modKeys(b.getKey() - key2), 
+                this.getCost() * inexact_match_factor, this.familyMatch);
         } 
         // In the event that the production is incorrect (most of the time)
         return new MatchValue();
@@ -230,9 +233,10 @@ public class BinaryProduction extends AbstractProduction {
     private boolean matchFamily(TreeNode a, TreeNode b) {
         boolean matchA = a.getBlock() instanceof ChordBlock ?
                          matchNode(a, name1) : matchName(a, name1);
+        if (!matchA) return false;
         boolean matchB = b.getBlock() instanceof ChordBlock ?
                          matchNode(b, name2) : matchName(b, name2);
-        return matchA && matchB;
+        return matchB;
     }
     
     /** matchNode
@@ -247,11 +251,16 @@ public class BinaryProduction extends AbstractProduction {
                          t.getSymbol() : t.getTrimmedSymbol();
         String nodeFam = Advisor.getSymbolFamily(nodeSym);
         String prodFam = Advisor.getSymbolFamily(name); 
-        if (nodeFam.equals(prodFam)) return true;
+        if (nodeFam.equals(prodFam)) {
+            this.familyMatch = false;
+            return true;
+        }
         Polylist matchVal = adict.assoc(nodeFam);
         if (matchVal != null && (prodFam.equals(matchVal.second()) ||
-                                 matchVal.second().equals("any")))
-            return true; 
+                                 matchVal.second().equals("any"))) {
+            this.familyMatch = true;
+            return true;
+        } 
         return false;
     }   
 

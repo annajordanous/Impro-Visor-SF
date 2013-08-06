@@ -582,6 +582,10 @@ private void findNonterminal(int row, int col)
                                       {
                                         cost += TreeNode.OVERLAP_COST;
                                       }
+                                    if( match.familyMatch )
+                                      {
+                                        cost += SUB_COST;
+                                      }
 
                                     TreeNode newNode = new TreeNode(rule.getHead(),
                                                                     rule.getType(), rule.getMode(),
@@ -631,9 +635,11 @@ private void findNonterminal(int row, int col)
                 match = rule.checkProduction(t, edict, sdict);
                 if (!(match.chordDiff < 0))
                 {
+                    long cost = 0;
+                    if (match.familyMatch) cost += SUB_COST;
                     TreeNode newNode = new TreeNode(rule.getHead(),
                                     rule.getType(), rule.getMode(), 
-                                    t, match.cost, match.chordDiff);
+                                    t, match.cost + cost, match.chordDiff);
                     unaries.add(newNode);
                 }
             }
