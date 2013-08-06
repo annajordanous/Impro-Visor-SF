@@ -39,9 +39,11 @@ import imp.util.ProfileFilter;
 import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
+import java.util.TreeMap;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.plaf.metal.MetalButtonUI;
@@ -263,6 +265,7 @@ private void initCompFileChoosers() {
         regenerateHeadDataBtn = new javax.swing.JButton();
         continuallyGenerateCheckBox = new javax.swing.JCheckBox();
         generationSelectionButton = new javax.swing.JButton();
+        styleRecognitionButton = new javax.swing.JButton();
         toneProbabilityPanel = new javax.swing.JPanel();
         chordToneProbLabel = new javax.swing.JLabel();
         colorToneProbLabel = new javax.swing.JLabel();
@@ -1139,6 +1142,18 @@ private void initCompFileChoosers() {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
         lickgenParametersPanel.add(generationSelectionButton, gridBagConstraints);
+
+        styleRecognitionButton.setText("Guess Musician");
+        styleRecognitionButton.setToolTipText("Attempts to guess the musician of the selection based off parellel trained networks.");
+        styleRecognitionButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                styleRecognitionButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 6;
+        lickgenParametersPanel.add(styleRecognitionButton, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -2960,10 +2975,10 @@ private void initCompFileChoosers() {
 
         generatorWindowMenu1.setLabel("Window");
         generatorWindowMenu1.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 generatorWindowMenu1MenuSelected(evt);
-            }
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
@@ -5650,6 +5665,156 @@ private void useSoloistCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//
         resetNnetInstructionsButtonActionPerformed(null);
         resetDefaultValuesButtonActionPerformed(null);
     }//GEN-LAST:event_resetNetworkButtonActionPerformed
+
+    private void styleRecognitionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_styleRecognitionButtonActionPerformed
+        // Do only if there is some selection
+        if(notate.getCurrentStave().getSelectionLength() != 0) {
+        
+        new Thread(new Runnable() {
+            public void run() {
+        
+            // Create list of critics for grading, paired with a musician's name
+            TreeMap<String, Critic> critics = new TreeMap<String, Critic>();
+            TreeMap<String, Double> grades = new TreeMap<String, Double>();
+
+            // Iterate through every weight file
+            File folder = ImproVisor.getStyleRecognitionDirectory();
+            File[] files = folder.listFiles();
+
+            Arrays.sort(files, new Comparator<File>() {
+                    public int compare(File f1, File f2) {
+                        return f1.getName().compareTo(f2.getName());
+                } 
+            });
+
+            setRhythmFieldText("Preparing critics for grading...");
+            
+            // Prepare all critics, and pair them with a file name
+            for (File f : files)
+            {
+                if (f.getName().endsWith(".weights.save"))
+                {
+                    try 
+                    {
+                        Critic currCritic = new Critic();
+                        currCritic.prepareNetworkFromFile(f);
+
+                        String fileName = f.getName();
+                        int pos = fileName.lastIndexOf(".weights.save");
+                        if (pos > 0)
+                            fileName = fileName.substring(0, pos);
+                        critics.put(fileName, currCritic);
+                    }
+                    catch (Exception e) 
+                    {
+                        System.out.println("Problem with one file: " + f.getName());
+                    }
+                }
+            }
+
+            // Use all critics to get all grades for each network
+            for (String name : critics.keySet())
+            {
+                Critic thisCritic = critics.get(name);
+                int start = notate.getCurrentStave().getSelectionStart();
+                int end = notate.getCurrentStave().getSelectionEnd();
+
+                ArrayList<Note> noteList = new ArrayList<Note>();
+                ArrayList<Chord> chordList = new ArrayList<Chord>();
+
+                // Generate notes and chords over the lick
+                thisCritic.generateNotesAndChords(noteList, chordList, start, end);
+
+                // Grade the lick, passing it through the critic filter
+                Double gradeFromFilter = thisCritic.gradeFromCritic(noteList, chordList); 
+                if (gradeFromFilter != null)
+                {
+                    grades.put(name, gradeFromFilter);
+                }
+
+                else
+                {
+                    System.out.println("Error from grading.");
+                }
+            }
+            
+            // Output for extra content from critics
+            StringBuilder criticsOutput = new StringBuilder();
+
+            // Guess on stylistic similarity based on highest grade
+            double highestGrade = 0.0;
+            String likelyName = "";
+            for (String name : grades.keySet())
+            {
+                double currGrade = grades.get(name);
+                
+                criticsOutput.append(name).append(": ").append(String.format("%.3f", currGrade)).append("\n\n");
+                
+                if (currGrade > highestGrade)
+                {
+                    highestGrade = currGrade;
+                    likelyName = name;
+                }
+            }
+
+            // Clean up formatting
+            String cleanName;
+            String cleanGrade;
+
+            int pos = 0;
+            char[] chars = likelyName.toCharArray();
+            for (int i = chars.length - 1; i >= 0; i--)
+                pos += Character.isUpperCase(chars[i]) ? i : 0;
+
+            // Display in format "Firstname Lastname"
+            cleanName = likelyName.substring(0, 1).toUpperCase() + 
+                        likelyName.substring(1, pos) + 
+                        " " + 
+                        likelyName.substring(pos);
+
+            // Display to third floating point
+            cleanGrade = String.format("%.3f", highestGrade);
+
+            setRhythmFieldText("");
+            setNetworkOutputTextField(criticsOutput.toString());
+            
+            Object[] options = {"Yes, to Neural Network tab",
+                                "Cancel"};
+            String label = "<html><div style=\"text-align: center;\">" +
+                           "The musician whose style is most similar: <br/>" + 
+                            cleanName + "<br/><br/>" +
+                           "Grade: " + cleanGrade + "<br/><br/>" +
+                           "Choose \"Yes\" if you want to see more output";
+            int n = JOptionPane.showOptionDialog(null, 
+                                label,
+                                "Style Recogntion",
+                                JOptionPane.YES_NO_OPTION,
+                                JOptionPane.QUESTION_MESSAGE,
+                                null,
+                                options,
+                                options[0]);
+            
+            if (n == 0)
+            {
+                // Avoids using a specific index for setting the tab
+                int index = 0;
+                for (int i = 0; i < generatorPane.getTabCount(); i++)
+                    if (generatorPane.getTitleAt(i).contains("Network"))
+                        index = i;
+                generatorPane.setSelectedIndex(index);
+            }
+        
+            } // End of Runnable
+        }).start(); // End of Thread 
+        } 
+        
+        else {
+            JOptionPane.showMessageDialog(null, 
+                        new JLabel("<html><div style=\"text-align: center;\">"
+                        + "Lock a selection of measures before guessing."), 
+                          "Alert", JOptionPane.PLAIN_MESSAGE);
+        }
+    }//GEN-LAST:event_styleRecognitionButtonActionPerformed
   
     public void showCriticGrades()
     {
@@ -5955,6 +6120,7 @@ private void useSoloistCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//
     private javax.swing.JPanel soloGenPanel;
     private javax.swing.JButton stopLickButton;
     private javax.swing.JButton stopSoloPlayBtn;
+    private javax.swing.JButton styleRecognitionButton;
     private javax.swing.JButton testGeneration;
     private javax.swing.JTextField themeField;
     private javax.swing.JLabel themeLabel;

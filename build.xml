@@ -107,6 +107,14 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
      </javac>
 </target>
 
+<target name="polya" depends="init" description="compile polya">
+    <javac srcdir="${srcDir}" destdir = "${buildDir}" debug="true" includeantruntime="false">
+        <classpath refid="base.classpath" />
+        <include name="polya/**/*.java"/>
+        <exclude name="**/package-info.java"/>
+    </javac>
+</target>
+
 <target name="buildImp" depends="buildInit,imp" description="compile imp in build">
     <copy todir="${buildDir}">
         <fileset dir="${srcDir}">
@@ -120,27 +128,19 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
     </copy>
 </target>
 
-<target name="polya" depends="init" description="compile polya">
-    <javac srcdir="${polyaDir}" destdir = "${buildDir}" includeantruntime="false">
-        <classpath refid="base.classpath" />
-        <include name="**/*.java"/>
-        <exclude name="**/package-info.java"/>
-    </javac>
+<target name="buildJm" depends="buildInit,jm" description="compile jm in build">
+    <copy todir="${buildDir}">
+        <fileset dir="${srcDir}">
+            <include name="jm/**/*.class" />
+            <exclude name="**/package-info.java" />
+        </fileset>
+    </copy>
 </target>
 
 <target name="buildPolya" depends="buildInit,polya" description="compile polya in build">
     <copy todir="${buildDir}">
         <fileset dir="${srcDir}">
             <include name="polya/**/*.class" />
-            <exclude name="**/package-info.java" />
-        </fileset>
-    </copy>
-</target>
-
-<target name="buildJm" depends="buildInit,jm" description="compile jm in build">
-    <copy todir="${buildDir}">
-        <fileset dir="${srcDir}">
-            <include name="jm/**/*.class" />
             <exclude name="**/package-info.java" />
         </fileset>
     </copy>
