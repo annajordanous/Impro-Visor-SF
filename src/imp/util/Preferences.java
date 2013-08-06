@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2013 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -239,6 +239,15 @@ public class Preferences implements imp.Constants
   public static final String DEFAULT_IMPROV_MENU_SETTING = "Use Improvise Button";
           
   public static final String DEFAULT_RECENT_STYLE_FILE = "swing.sty";
+
+  public static final String LANGUAGE="language";
+
+  public static final String DEFAULT_LANGUAGE="fr";
+
+  public static final String LANGUAGE_LIST="language_list";
+
+  public static final String DEFAULT_LANGUAGE_LIST="(en,fr)";
+
   /**
    * The ALWAYS_USE_BUTTONS are y or n standing for CHORD, BASS, DRUMS, STAVE.
    */
@@ -606,7 +615,9 @@ public static boolean getAlwaysUse(int index)
       out.println("(" + BASS_CHANNEL + " " + DEFAULT_BASS_CHANNEL + ")");
       out.println("(" + DRUM_CHANNEL + " " + DEFAULT_DRUM_CHANNEL + ")");
       out.println("(" + IMPROV_MENU_SETTING + " " + DEFAULT_IMPROV_MENU_SETTING + ")");
-      out.println("(" + RECENT_STYLE_FILE + DEFAULT_RECENT_STYLE_FILE + ")");
+      out.println("(" + RECENT_STYLE_FILE + " " + DEFAULT_RECENT_STYLE_FILE + ")");
+      out.println("(" + LANGUAGE + " " + DEFAULT_LANGUAGE + ")");
+      out.println("(" + LANGUAGE_LIST + " " + DEFAULT_LANGUAGE_LIST + ")");
       }
     catch( Exception e )
       {
