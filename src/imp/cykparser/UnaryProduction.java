@@ -45,6 +45,7 @@ public class UnaryProduction extends AbstractProduction {
     private long duration;	    // duration of header brick (left-hand side)
     private String mode = "";   // the mode of the brick in the production
     private boolean toPrint;    // whether the brick is a user-side viewable one
+    private boolean familyMatch = false; // whether the brick is matched by family
     
     
     // NOTE: Assumes it's a production in C
@@ -128,7 +129,8 @@ public class UnaryProduction extends AbstractProduction {
             EquivalenceDictionary e, SubstitutionDictionary s) 
    {
        if (matchFamily(t) || t.getSymbol().equals(name))
-            return new MatchValue(modKeys(t.getKey() - termKey - key), this.getCost());           
+            return new MatchValue(modKeys(t.getKey() - termKey - key), this.getCost(),
+                this.familyMatch);           
         // in the event that the production is incorrect (most of the time)
         return new MatchValue();
     }
@@ -137,11 +139,16 @@ public class UnaryProduction extends AbstractProduction {
         if (t.getBlock() instanceof ChordBlock) {
             String nodeFam = Advisor.getSymbolFamily(t.getSymbol());
             String prodFam = Advisor.getSymbolFamily(name);
-            if (nodeFam.equals(prodFam)) return true;
+            if (nodeFam.equals(prodFam)) {
+                this.familyMatch = false;
+                return true;
+            }
             Polylist matchVal = adict.assoc(nodeFam);
             if (matchVal != null && (prodFam.equals(matchVal.second()) || 
-                                     matchVal.second().equals("any")))
+                                     matchVal.second().equals("any"))) {
+                this.familyMatch = true;
                 return true;
+            }
         }
         return false;
     }

@@ -49,15 +49,18 @@ public abstract class AbstractProduction {
     // Composite class for production checking
     public class MatchValue {
         public long chordDiff; // interval difference between production and chord 
-        public long cost;  // duration of production being compared 
+        public long cost;  // duration of production being compared
+        public boolean familyMatch; 
         // constructors
         public MatchValue() {
             chordDiff = -1;
             cost = Long.MAX_VALUE;
+            familyMatch = false;
         }
-        public MatchValue(long cd, long c) {
+        public MatchValue(long cd, long c, boolean b) {
             chordDiff = cd;
             cost = c;
+            familyMatch = b;
         }
     }
 }
