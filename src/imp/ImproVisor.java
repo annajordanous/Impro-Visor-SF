@@ -587,6 +587,12 @@ public static File getNNetDataDirectory()
     return new File(f, Directories.nnetTrainingDataDirName);
 }
 
+public static File getStyleRecognitionDirectory()
+{
+    File f = new File(getUserDirectory(), Directories.vocabDirName);
+    return new File(f, Directories.styleRecognitionDirName);
+}
+
 public static File getLeadsheetDirectory()
   {
   return new File(getUserDirectory(), Directories.leadsheetDirName);

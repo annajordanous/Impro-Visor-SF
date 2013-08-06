@@ -41,7 +41,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.Scanner;
 import java.util.concurrent.atomic.*;
 import polya.Polylist;
@@ -830,6 +829,42 @@ public class Critic implements imp.Constants {
             in.close();
             
             return output;
+        }
+        catch (Exception e) 
+        {
+            throw new Exception(e);
+        }
+    }
+    
+    /*
+     * Initializes the network given a specific weight file
+     */
+    public void prepareNetworkFromFile(File file) throws Exception
+    {
+        try 
+        {
+            BufferedReader in = new BufferedReader(new FileReader(file));
+            
+            // Parse first line, containing network stats
+            String[] networkInfo = in.readLine().split(" ");
+            int currPos = 0;
+            int thisInputDimension = Integer.parseInt(networkInfo[currPos++]);
+            lickLength = (thisInputDimension * 2) + 4;
+            int thisNumLayers = Integer.parseInt(networkInfo[currPos++]);
+            int[] thisLayerSize = new int[thisNumLayers];
+            ActivationFunction[] thisLayerType = new ActivationFunction[thisNumLayers];
+            
+            int j = 0;
+            int layers = currPos + 2 * thisNumLayers; 
+            for (int i = 2; i < layers; i+=2, j++)
+            {
+                thisLayerSize[j] = Integer.parseInt(networkInfo[currPos++]);
+                thisLayerType[j] = getLayerType(networkInfo[currPos++]);
+            }
+            
+            network = new Network(thisNumLayers, thisLayerSize, thisLayerType, thisInputDimension);
+            network.fixWeights(in);
+            in.close();
         }
         catch (Exception e) 
         {

@@ -99,6 +99,12 @@ public static String midiDirName = "midi";
 public static String nnetTrainingDataDirName = "nnet-training-data";
 
 /**
+ * Name of sub-director stored in "vocab" for
+ * weights used for style recognition 
+ */
+public static String styleRecognitionDirName = "style-recognition-weights";
+
+/**
  * Name of the error log file.
  */
 
