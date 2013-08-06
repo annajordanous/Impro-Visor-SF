@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2013 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,18 +30,17 @@ import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
 import polya.Polylist;
-import imp.audio.*;
 
 /**
  * Impro-Visor main class
  *
  * @author Stephen Jones, Aaron Wolin, Robert Keller
- * @version 5.17
+ * @version 6.0
  */
 
 public class ImproVisor implements Constants {
     
-    public static final String version = "5.17";
+    public static final String version = "6.0";
     
     private static boolean firstTime = false;
     

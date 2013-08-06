@@ -41,7 +41,8 @@ public class AboutDialog extends javax.swing.JDialog {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
         java.awt.GridBagConstraints gridBagConstraints;
 
         menuBar1 = new java.awt.MenuBar();
@@ -85,11 +86,11 @@ public class AboutDialog extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(5, 0, 0, 0);
         aboutDialogPanel.add(aboutLabel, gridBagConstraints);
 
+        aboutText.setEditable(false);
         aboutText.setBackground(new java.awt.Color(255, 204, 102));
         aboutText.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        aboutText.setEditable(false);
         aboutText.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
-        aboutText.setText("\n  Welcome to Improvisation Advisor version 5.17.\n \n  Authors: \n\tBob Keller, Stephen Jones, Aaron Wolin, David Morrison,\n\tMartin Hunt, Steven Gomez, Jim Herold, Brandy McMenamy,\n\tSayuri Soejima, Emma Carlson, Jon Gillick, Kevin Tang,\n\tStephen Lee, Chad Waters, John Goodman, Lasconic, \n\tRyan Wieghard, Amos Byon, Zachary Merritt,\n\tXanda Schofield, August Toman-Yih\n\n  For further information and tutorial, please visit the website:\n\n\thttp://www.cs.hmc.edu/~keller/jazz/improvisor\n\n  For free leadsheets and support, please join our Yahoo! group:\t\n\n\thttp://launch.groups.yahoo.com/group/impro-visor/\n\n  For source code, please see:\t\n\n\thttps://sourceforge.net/projects/impro-visor/\n\n  Copyright (c) 2005-2012, Robert Keller and Harvey Mudd College \n\n  This program is FREE software. You can redistribute it and/or modify it\n  under the terms of the GNU General Public License as published by the\n  Free Software Foundation, either version 2 of the License, or any later\n  version. This program is distributed in the hope that it will be useful,\n  but WITHOUT ANY WARRANTY; without even the implied warranty of\n  merchantability or fitness for a particular purpose.  See the GNU\n  General Public License for more details, which may be found at:\n  http://www.gnu.org/licenses/\n                                                                   We hope you enjoy using it!\n");
+        aboutText.setText("\n  Welcome to Improvisation Advisor version 6.0..\n \n Authors: \n Bob Keller, Stephen Jones, Aaron Wolin, David Morrison, Martin Hunt, \n Steven Gomez, Jim Herold, Brandy McMenamy, Sayuri Soejima, Emma Carlson, \n Jon Gillick, Kevin Tang, Stephen Lee, Chad Waters, John Goodman, Lasconic, \n Julia Botev, Michael Carney, Paul Hobbs, Ryan Wieghard, Amos Byon, \n Zachary Merritt, Xanda Schofield, August Toman-Yih, David Halpern,\n Jack Davison, Audrey Musselman-Brown, Kevin Choi,Brian Howell, \n Caitlin Chen, Nicolas Chung, Anna Turner, Hayden Blauzvern, \n Nate Tarrh, Brian Kwan, Willem Engen\n\n  For further information and tutorial, please visit the website:\n\n\thttp://www.cs.hmc.edu/~keller/jazz/improvisor\n\n  For free leadsheets and support, please join our Yahoo! group:\t\n\n\thttp://launch.groups.yahoo.com/group/impro-visor/\n\n  For source code, please see:\t\n\n\thttps://sourceforge.net/projects/impro-visor/\n\n  Copyright (c) 2005-2013, Robert Keller and Harvey Mudd College \n\n  This program is FREE software. You can redistribute it and/or modify it\n  under the terms of the GNU General Public License as published by the\n  Free Software Foundation, either version 2 of the License, or any later\n  version. This program is distributed in the hope that it will be useful,\n  but WITHOUT ANY WARRANTY; without even the implied warranty of\n  merchantability or fitness for a particular purpose.  See the GNU\n  General Public License for more details, which may be found at:\n  http://www.gnu.org/licenses/\n                                                                   We hope you enjoy using it!\n");
         aboutText.setMinimumSize(new java.awt.Dimension(400, 350));
         aboutText.setPreferredSize(new java.awt.Dimension(400, 350));
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -112,8 +113,10 @@ public class AboutDialog extends javax.swing.JDialog {
         okAboutBtn.setOpaque(true);
         okAboutBtn.setPreferredSize(new java.awt.Dimension(300, 30));
         okAboutBtn.setSelected(true);
-        okAboutBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        okAboutBtn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 okAboutBtnActionPerformed(evt);
             }
         });
