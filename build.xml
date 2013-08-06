@@ -1,9 +1,9 @@
 <project name="Impro-Visor" default="compile" basedir=".">
 
 <description>
-Build-file for Impro-Visor 5.16
+Build-file for Impro-Visor 6.0
 
-Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
+Copyright (C) 2005-2013 Robert Keller and Harvey Mudd College
 
 Impro-Visor is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -22,11 +22,11 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
     
 <target name="init">
     <property name="appName"                value="Impro-Visor"              />
-    <property name="distDir"                value="improvisor516"            />
-    <property name="dist-mac"               value="improvisor516-mac"        />
-    <property name="dist-win"               value="improvisor516-win"        />
-    <property name="zipName"                value="improvisor516.zip"        />
-    <property name="zipMacName"             value="improvisor516mac.zip"     />
+    <property name="distDir"                value="improvisor600"            />
+    <property name="dist-mac"               value="improvisor600-mac"        />
+    <property name="dist-win"               value="improvisor600-win"        />
+    <property name="zipName"                value="improvisor600.zip"        />
+    <property name="zipMacName"             value="improvisor600mac.zip"     />
     <property name="miscDir"                value="improvisor"               />
     <property name="srcDir"                 value="src"                      />
     <property name="impDir"                 value="src/imp"                  />
@@ -92,19 +92,19 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 </target>
 
 <target name="imp" depends="init,jm" description="compile imp">
-    <javac srcdir="${impDir}" destdir = "${buildDir}" debug="true" includeantruntime="false">
-        <classpath refid="base.classpath" />
-        <include name="**/*.java"/>
-        <exclude name="**/package-info.java"/>
-    </javac>
+    <javac srcdir="${srcDir}" destdir="${buildDir}" debug="true" includeantruntime="false">
+         <classpath refid="base.classpath" />
+         <include name="imp/**/*.java"/>
+         <exclude name="**/package-info.java"/>
+     </javac>
 </target>
 
 <target name="jm" depends="init" description="compile jm">
-    <javac srcdir="${jmDir}" destdir = "${buildDir}" debug="true" includeantruntime="false">
-        <classpath refid="base.classpath" />
-        <include name="**/*.java"/>
-        <exclude name="**/package-info.java"/>
-    </javac>
+     <javac srcdir="${srcDir}" destdir="${buildDir}" debug="true" includeantruntime="false">
+         <classpath refid="base.classpath" />
+         <include name="jm/**/*.java"/>
+         <exclude name="**/package-info.java"/>
+     </javac>
 </target>
 
 <target name="buildImp" depends="buildInit,imp" description="compile imp in build">
@@ -309,7 +309,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 </target>
 
 <target name="zipSrc" depends="cleanSrc" description="zips up the source">
-    <zip destfile="improvisor516-src.zip" basedir="${srcDir}" />
+    <zip destfile="improvisor600-src.zip" basedir="${srcDir}" />
 </target>
 
 <target name="cleanJavadoc" depends="init" description="">
@@ -322,9 +322,11 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
     </delete>
 </target>
 
-<target name="cleanBuild" depends="init" description="removes build directory contents">
-    <fileset dir="${buildDir}" includes="imp jm polya" />
-</target>
+ <target name="cleanBuild" depends="init" description="removes build directory contents">
+    <delete includeemptydirs="true">
+        <fileset dir="${buildDir}" includes="imp/** jm/** polya/**" />
+    </delete>
+ </target>
 
 <target name="cleanTest" depends="init" description="removes class files from test directory">
 </target>
@@ -443,6 +445,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
         <fileset dir="${vocabDir}" includes="**/*.voc" />  
     </copy>
 
+    <move todir="${dist-win}" file="${winDir}/Impro-Visor.exe" />
+
     <copy todir="${dist-win}/vocab">
         <fileset dir="${vocabDir}" includes="**/*" />
     </copy>
@@ -466,40 +470,40 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
     <move todir="${dist-win}" file="${winDir}/Impro-Visor.exe" />
 </target>
 
-    <target name="package-for-store" depends="dist">
+<target name="package-for-store" depends="dist">
+ 
+    <!-- Change the value of this property to be the name of your JAR,
+         minus the .jar extension. It should not have spaces.
+         <property name="store.jar.name" value="MyJarName"/>
+    -->
+    <property name="store.jar.name" value="Impro-Visor"/>
+ 
+ 
+    <!-- don't edit below this line -->
+ 
+    <property name="store.dir" value="store"/>
+    <property name="store.jar" value="${store.dir}/${store.jar.name}.jar"/>
+ 
+    <echo message="Packaging ${application.title} into a single JAR at ${store.jar}"/>
+ 
+    <delete dir="${store.dir}"/>
+    <mkdir dir="${store.dir}"/>
+ 
+    <jar destfile="${store.dir}/temp_final.jar" filesetmanifest="skip">
+        <zipgroupfileset dir="${distDir}" includes="*.jar"/>
+ 
+        <manifest>
+            <attribute name="Main-Class" value="${main.class}"/>
+        </manifest>
+    </jar>
+ 
+    <zip destfile="${store.jar}">
+        <zipfileset src="${store.dir}/temp_final.jar"
+        excludes="META-INF/*.SF, META-INF/*.DSA, META-INF/*.RSA"/>
+    </zip>
+ 
+    <delete file="${store.dir}/temp_final.jar"/>
+</target>
 
-        <!-- Change the value of this property to be the name of your JAR,
-             minus the .jar extension. It should not have spaces.
-             <property name="store.jar.name" value="MyJarName"/>
-        -->
-        <property name="store.jar.name" value="Impro-Visor"/>
-
-
-        <!-- don't edit below this line -->
-
-        <property name="store.dir" value="store"/>
-        <property name="store.jar" value="${store.dir}/${store.jar.name}.jar"/>
-
-        <echo message="Packaging ${application.title} into a single JAR at ${store.jar}"/>
-
-        <delete dir="${store.dir}"/>
-        <mkdir dir="${store.dir}"/>
-
-        <jar destfile="${store.dir}/temp_final.jar" filesetmanifest="skip">
-            <zipgroupfileset dir="${distDir}" includes="*.jar"/>
-
-            <manifest>
-                <attribute name="Main-Class" value="${main.class}"/>
-            </manifest>
-        </jar>
-
-        <zip destfile="${store.jar}">
-            <zipfileset src="${store.dir}/temp_final.jar"
-            excludes="META-INF/*.SF, META-INF/*.DSA, META-INF/*.RSA"/>
-        </zip>
-
-        <delete file="${store.dir}/temp_final.jar"/>
-
-    </target>
-
+ 
 </project>
