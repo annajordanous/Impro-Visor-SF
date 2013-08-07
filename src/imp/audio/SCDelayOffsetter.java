@@ -26,13 +26,13 @@ import imp.Constants;
 import imp.util.Preferences;
 
 /**
- * This class calculates the uniform delays stemming from SuperCollider
- * communication with improVisor.
- *
- * For details, see the included graph in the audio package. If the score tempo
- * reaches a certain range, the uniform latency changes. Found by trial and
- * error. May need to be in tandem with user latency definition in the audio
- * preferences.
+ * This class calculates necessary delay compensation based on user input.
+ * 
+ * The user inputs desired MIDI note delay compensation in terms of beats,
+ * and Impro-Visor calculates the equivalent in milliseconds.
+ * 
+ * This is then set as Midirecorder delay.
+ * 
  *
  * @author Anna Turner
  * @since June 24 2013
@@ -61,18 +61,21 @@ public class SCDelayOffsetter {
 
     /**
      * Reads user delay offset input and translates it into delay in ms.
+     * Accounts for tempo.
+     *
      * @return latency in milliseconds
      */
-    public double gatherDelay() {
-        //Calculate extra latency from beat offset in audioInLatency.
-        double userDefinedSecondAudioBeatLatency = Preferences.getAudioInLatency(); //in beats
+    public double gatherDelay(double userDefinedBeatDelay) {
+        //Calculate latency from beat offset in audioInLatency.
         double msPerBeat = (1 / tempo) * 60 * 1000;//min per beat times sec per min times ms per sec
-        double userDefinedSecondMSLatency = msPerBeat * userDefinedSecondAudioBeatLatency;
+        double userDefinedSecondMSLatency = msPerBeat * userDefinedBeatDelay;
         System.out.println("User defined is: " + Preferences.getAudioInLatency() + "msPerBeat is: " + msPerBeat);
         return userDefinedSecondMSLatency;
     }
 
     /**
+     * UNUSED.
+     * 
      * Calculates certain delay for each note when capturing audio through
      * SuperCollider.
      *
