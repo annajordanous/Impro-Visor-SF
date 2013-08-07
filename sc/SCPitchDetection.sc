@@ -1,3 +1,4 @@
+/*RUN*/
 /**
 * This Java Class is part of the Impro-Visor Application
 *
@@ -35,8 +36,19 @@
 (
 var highThreshold = 95;//Default
 var lowThreshold = 43;//Default
-var lowSlider, highSlider, lowTextVal, highTextVal;
-var lowDesc, highDesc;
+var lowSlider, highSlider, lowTextVal, highTextVal, lowDesc, highDesc;
+var attackDelay = 0.1;//Default. User can manipulate with gui
+var attackSlider, attackVal, attackText;
+var separatorLine1, separatorLine2;
+//var closeWindow, closeButton, closeText;
+
+//File IO variables
+var prefGetFunc, prefSetFunc;//Reading and writing functions
+var prefFile = "preferences";
+var prefFilePath;//TODO: determine path for linux and windows
+var f, g, h;//All will refer to preferences file
+var line;//Line from preferences file
+
 var pitchAndOnsets = \pitchAndOnsets;
 var lastTime, lastPitch, duration, started=false;//Note recognition variables
 ~restCheckOn = true; //Monitors trigger response
@@ -44,32 +56,79 @@ var lastTime, lastPitch, duration, started=false;//Note recognition variables
 /*Set up server stuff*/
 Server.default = s = Server.internal.boot;
 
+/*IO THINGS*/
+/*Function for reading or initializing preference file*/
+(
+prefGetFunc = {
+	//IO things. The order is: lowThreshold, highThreshold, attackDelay.
+	//Check for pref file, create if necessary with prefSetFunc.
+	if(File.exists(prefFile), {
+		g = File(prefFile, "r+");
+		//get low midi note
+		line = g.getLine(1024);
+		lowThreshold = line.asInt;
+		//get high midi note
+		line = g.getLine(1024);
+		highThreshold = line.asInt;
+		//get attack delay
+		line = g.getLine(1024);
+		attackDelay = line.asFloat;
+		//close file
+		g.close;
+		},{
+			//Else call set Func
+			prefSetFunc.value;
 
-/*Handle GUI, create pitch/rest recognition, run.*/
+	});
+}
+);
+
+/*Function for setting values of preferences file*/
+(
+prefSetFunc = {
+	f = File(prefFile, "w");
+	f.write(lowThreshold.asString);
+	f.write("\n");
+	f.write(highThreshold.asString);
+	f.write("\n");
+	f.write(attackDelay.asString);
+	f.close;
+}
+);
+
+
+
+/*Handle GUI, call IO functions, create pitch/rest recognition, run.*/
 s.doWhenBooted({
 
+
 	//GUI
-    /*
-	 * This section handles the user-input for accepted note ranges.
-	 *
-	 * A small window pops up, allowing the user to choose what the highest
-	 * and lowest notes registered by improvisor are. Done via sliders.
-	 *
-	 */
+	/*
+	* This section handles the user-input for accepted note ranges.
+	*
+	* A small window pops up, allowing the user to choose what the highest
+	* and lowest notes registered by improvisor are. Done via sliders.
+	*
+	*/
 
 	//Set to Qt for platform-independence
 	GUI.qt;
 
-	//Create controlSpec
-	c = [20, 120, 'lin', 1, 20].asSpec;
+	//Create controlSpecs
+	c = [20, 120, 'lin', 1, 20].asSpec;//For note range
+	d = [0, 4, 'lin', 0.01, 0.1].asSpec;//For attack delay
 
 	//Create window
-	w = Window.new("Set Note Ranges: MIDI", Rect(800,500,490,160));
+	w = Window.new("Set Note Range and Attack Delay", Rect(500,500,500,290));
+
+	prefGetFunc.value;
 
 	//Create sliders and associated text
 	lowSlider = Slider.new(w, Rect(20, 30, 200, 30));
-	lowTextVal = StaticText.new(w, Rect(10, 3, 300, 30));
-	lowTextVal.string = "43";//Default
+	lowSlider.toolTip_("Middle C is a MIDI note value of 60. Each half-step
+	up or down is 1 MIDI note more or less, respectively.");
+	lowTextVal = StaticText.new(w, Rect(20, 3, 300, 30));
+	lowTextVal.string = lowThreshold.asString;//Read from pref file
 	lowSlider.value = (lowTextVal.string.asInt-20)/100;//Linearly scaling
 	lowSlider.action = {//Update vals, don't allow crossing over highSlider value
 		lowTextVal.string = c.map(lowSlider.value);
@@ -82,8 +141,10 @@ s.doWhenBooted({
 	};
 
 	highSlider = Slider.new(w, Rect(270, 30, 200, 30));
+	highSlider.toolTip_("Middle C is a MIDI note value of 60. Each half-step
+	up or down is 1 MIDI note more or less, respectively.");
 	highTextVal = StaticText.new(w, Rect(270, 3, 300, 30));
-	highTextVal.string = "95";//Default
+	highTextVal.string = highThreshold.asString;//Read from pref file
 	highSlider.value = (highTextVal.string.asInt - 20)/100;//Lin scaling
 	highSlider.action = {//Update vals, don't allow crossing over lowSlider value
 		highTextVal.string = c.map(highSlider.value);
@@ -95,26 +156,49 @@ s.doWhenBooted({
 	};
 
 	//Create text labels
-	lowDesc = StaticText(w, Rect(20, 60, 140, 30));
+	lowDesc = StaticText(w, Rect(20, 65, 140, 30));
 	lowDesc.string = "Adjust lowest possible MIDI note";
 
-	highDesc = StaticText(w, Rect(270, 60, 140, 30));
+	highDesc = StaticText(w, Rect(270, 65, 140, 30));
 	highDesc.string = "Adjust highest possible MIDI note";
 
-	//Create button
-	b = Button.new(w,Rect(190,110,110,30)).states_([["Set Note Range"]]);
+	//Create Attack Delay features
+	attackSlider = Slider.new(w, Rect(20, 140, 200, 30));
+	attackSlider.toolTip_("Attack delay attempts to compensate for the
+		incorrect pitch one gets from the attack of
+		a note - so an attack delay of 0.1 means you
+		allow 0.1 seconds for the attack before
+	reading the pitch.");
+	attackVal = StaticText.new(w, Rect(20, 125, 30, 10));
+	attackVal.string = attackDelay.asString;//Read from pref file
+	attackSlider.value = (attackVal.string.asInt);//Linearly scaling
+	attackSlider.action = {//Update val
+		attackVal.string = d.map(attackSlider.value);
+		attackDelay = attackVal.string.asFloat;//Adjust delay.
+	};
+
+	//Create text labels
+	attackText = StaticText.new(w, Rect(20, 175, 180, 30));
+	attackText.string = "Adjust note attack delay in seconds (0.1 good default)";
+
+	//Create separators
+	separatorLine1 = StaticText(w, Rect(0, 95, 800, 15));
+	separatorLine1.string =  "_________________________________________________________________________________________";
+
+	separatorLine2 = StaticText(w, Rect(0, 205, 800, 15));
+	separatorLine2.string =  "_________________________________________________________________________________________";
+
+	//Create set button
+	q = Button.new(w,Rect(190,240,100,30)).states_([["Continue"]]);
+	q.toolTip_("You can set MIDI range and attack delay before but not during each session.");
 
 	//Set button functionality
-	b.action = {
+	q.action = {
+		prefSetFunc.value;
 		w.close;
-		"Low thresh: ".post;
-		lowThreshold.postln;
-		"Hi thresh: ".post;
-		highThreshold.postln;
 	};
 
 	w.front;
-
 
 
 	//NOTES
@@ -138,7 +222,7 @@ s.doWhenBooted({
 				onsets = Onsets.kr(chain, 0.9, \rcomplex);
 
 				//COULD DO: only if hasFreq > 0.9 then execute following line
-				trigger = SendTrig.kr(TDelay.kr(onsets, 0.1), 1, freq);
+				trigger = SendTrig.kr(TDelay.kr(onsets, attackDelay), 1, freq);
 
 				restTrig = freq<110;//All notes below 110 qualify as rest
 				SendTrig.kr(restTrig,2,0);
@@ -149,15 +233,36 @@ s.doWhenBooted({
 
 			x = Synth(\pitchAndOnsets);
 
+
+
 			/*Handle Note List Input*/
 
-			//MIDIOut setup
-			MIDIClient.list;
-			~outports = MIDIClient.destinations.size;
-			MIDIClient.init;
-			//~m_out_server = MIDIOut(1, MIDIClient.destinations.at(1).uid);
-			~m_out_server = MIDIOut.newByName("IAC Driver" , "IAC Bus 1", true);
-			~m_out_server.latency = 0;
+			//MIDIOut setup, based on Platform
+			Platform.case(
+				    \osx,       {
+					"You are running OSX".postln;
+					MIDIClient.list;
+					~outports = MIDIClient.destinations.size;
+					MIDIClient.init;
+					~m_out_server = MIDIOut.newByName("IAC Driver" , "IAC Bus 1", true);
+					~m_out_server.latency = 0;
+				},
+				    \linux,     {
+					"You are running Linux".postln;
+					MIDIClient.init;
+					~m_out_server = MIDIOut(0);
+					~m_out_server.latency = 0;
+				},
+				    \windows,   {
+					"You are running Windows".postln;
+					MIDIClient.list;
+					~outports = MIDIClient.destinations.size;
+					MIDIClient.init;
+					~m_out_server = MIDIOut.newByName("LoopBe Internal MIDI", "LoopBe Internal MIDI", true);
+					~m_out_server.latency = 0;
+				}
+			);
+
 
 			//Create Responder
 			o = OSCresponder(s.addr,'/tr',{ arg time,responder,msg;
@@ -196,7 +301,7 @@ s.doWhenBooted({
 					},{
 						started = true;
 						lastPitch=0;
-				});//End if
+				});//End if else
 
 				if(~restCheckOn){
 					lastTime = time;//Reset time, if not chaining rests
@@ -209,6 +314,7 @@ s.doWhenBooted({
 
 })//End doWhenBooted
 )//End server asgt block
+
 
 
 
