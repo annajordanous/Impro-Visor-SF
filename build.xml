@@ -40,6 +40,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
     <property name="styleDir"               value="styles"                   />
     <property name="styleExtractDir"        value="styleExtract"             />
     <property name="midiDir"                value="midi"                     />
+    <property name="scDir"                  value="supercollider"            />
     <property name="packagingDir"           value="packaging"                />
     <property name="javadocDir"             value="javadoc"                  />
 
@@ -196,6 +197,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
     </copy>
     <copy todir="${distDir}/leadsheets">
         <fileset dir="${lsDir}" includes="**/*.ls" />
+    </copy>
+    <copy todir="${distDir}/supercollider">
+        <fileset dir="${scDir}" includes="**/*.*" />
     </copy>
     <copy todir="${distDir}">
         <fileset dir="${miscDir}" includes="**/*.*" />
