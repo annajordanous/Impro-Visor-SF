@@ -1683,14 +1683,17 @@ public class Notate
         beatDelayInputBox = new javax.swing.JTextField();
         beatDelayLabel = new javax.swing.JLabel();
         filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(35, 35), new java.awt.Dimension(35, 35), new java.awt.Dimension(35, 35));
+        audioInputLabel1 = new javax.swing.JLabel();
         useSuperColliderCheckbox = new javax.swing.JCheckBox();
-        jLabel5 = new javax.swing.JLabel();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(35, 35), new java.awt.Dimension(35, 35), new java.awt.Dimension(35, 35));
-        jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
-        jLabel12 = new javax.swing.JLabel();
-        jLabel26 = new javax.swing.JLabel();
+        delayText2 = new javax.swing.JLabel();
+        delayText3 = new javax.swing.JLabel();
+        delayText1 = new javax.swing.JLabel();
+        useSuperColliderCheckboxText = new javax.swing.JLabel();
+        ReloadSuperColliderButton = new javax.swing.JButton();
+        audioInputLabel2 = new javax.swing.JLabel();
+        OpenHelpText = new javax.swing.JLabel();
+        filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(26, 26), new java.awt.Dimension(26, 26), new java.awt.Dimension(26, 26));
         jLabel4 = new javax.swing.JLabel();
         contourPreferences = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
@@ -4309,13 +4312,13 @@ public class Notate
 
         audioTab.setLayout(new java.awt.GridBagLayout());
 
-        audioInputLabel.setText("Audio Input is Provided by Running an Auxilliary SuperCollider Program,  which is");
+        audioInputLabel.setText("Audio Input is Provided by Running an Auxilliary ");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
         audioTab.add(audioInputLabel, gridBagConstraints);
 
-        beatDelayInputBox.setText("0.125");
+        beatDelayInputBox.setText("1.0");
         beatDelayInputBox.setMaximumSize(new java.awt.Dimension(100, 28));
         beatDelayInputBox.setMinimumSize(new java.awt.Dimension(65, 28));
         beatDelayInputBox.setPreferredSize(new java.awt.Dimension(65, 28));
@@ -4328,20 +4331,26 @@ public class Notate
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 10;
+        gridBagConstraints.gridy = 11;
         audioTab.add(beatDelayInputBox, gridBagConstraints);
 
         beatDelayLabel.setText("(beats)");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 11;
+        gridBagConstraints.gridy = 12;
         audioTab.add(beatDelayLabel, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 6;
+        gridBagConstraints.gridy = 7;
         audioTab.add(filler3, gridBagConstraints);
 
-        useSuperColliderCheckbox.setText("Use SuperCollider. To restart, simply close SuperCollider");
+        audioInputLabel1.setText("SuperCollider Program,  which is to be used as a MIDI ");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 5;
+        audioTab.add(audioInputLabel1, gridBagConstraints);
+
+        useSuperColliderCheckbox.setText("Use SuperCollider. To restart, press the button");
         useSuperColliderCheckbox.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -4353,46 +4362,65 @@ public class Notate
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         audioTab.add(useSuperColliderCheckbox, gridBagConstraints);
-
-        jLabel5.setText("to be used as a MIDI input device. This device must be selected in MIDI Preferences.");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 5;
-        audioTab.add(jLabel5, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
         audioTab.add(filler1, gridBagConstraints);
 
-        jLabel7.setText("Below, you can adjust for the delays in beats. Use decimals for fractions of beats.");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 8;
-        audioTab.add(jLabel7, gridBagConstraints);
-
-        jLabel8.setText(" Press ENTER to set value.");
+        delayText2.setText("adjust for the delays in beats. Use decimals for fractions of beats.");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 9;
-        audioTab.add(jLabel8, gridBagConstraints);
+        audioTab.add(delayText2, gridBagConstraints);
 
-        jLabel9.setText("Using audio input may result in some delay.");
+        delayText3.setText(" Press ENTER to set value.");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 7;
-        audioTab.add(jLabel9, gridBagConstraints);
+        gridBagConstraints.gridy = 10;
+        audioTab.add(delayText3, gridBagConstraints);
 
-        jLabel12.setText("and keep this box checked, then click record again.");
+        delayText1.setText("Using audio input may result in some delay. Below , you can");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 8;
+        audioTab.add(delayText1, gridBagConstraints);
+
+        useSuperColliderCheckboxText.setText("to the right. See Audio Input Help for more details.");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        audioTab.add(jLabel12, gridBagConstraints);
+        audioTab.add(useSuperColliderCheckboxText, gridBagConstraints);
 
-        jLabel26.setText("See Audio Input Help for more details.");
+        ReloadSuperColliderButton.setText("Reload SuperCollider");
+        ReloadSuperColliderButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ReloadSuperColliderButtonActionPerformed(evt);
+            }
+        });
+        audioTab.add(ReloadSuperColliderButton, new java.awt.GridBagConstraints());
+
+        audioInputLabel2.setText("input device. This device must be selected in MIDI Preferences.");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        audioTab.add(jLabel26, gridBagConstraints);
+        gridBagConstraints.gridy = 6;
+        audioTab.add(audioInputLabel2, gridBagConstraints);
+
+        OpenHelpText.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
+        OpenHelpText.setForeground(new java.awt.Color(0, 51, 255));
+        OpenHelpText.setText("Open Help Dialog");
+        OpenHelpText.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                OpenHelpTextMouseClicked(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 14;
+        audioTab.add(OpenHelpText, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 13;
+        audioTab.add(filler2, gridBagConstraints);
 
         jTabbedPane2.addTab("Audio Input", audioTab);
 
@@ -11820,8 +11848,7 @@ private void startRecording()
   {    
     //Take care of first time recording audio preferences
     if(!audioLatencyRegistered){
-        System.out.println("first time recording audio.");
-        Preferences.setAudioInLatency(0.125);
+        Preferences.setAudioInLatency(1.0);
         audioLatencyRegistered = true;//Can also be true from saveAudioLatency()
     }
     
@@ -11835,7 +11862,6 @@ private void startRecording()
       }
     else if (superColliderMode) //User wants to use SuperCollider. Works if checkbox selected
       {
-            System.out.println("In SuperCollider mode.");
             //Check for valid Input Device associated with using SuperCollider
             boolean validSCInDevice = midiManager.getInDevice().getDeviceInfo().getName().equals("IAC Bus 1") ||
                                       midiManager.getInDevice().getDeviceInfo().getName().equals("Bus 1") ||
@@ -11846,12 +11872,13 @@ private void startRecording()
             //yell at user. @TODO potential trouble spot for user-defined 
             //workarounds.            
           if (validSCInDevice) {
-              System.out.println("Valid SC In Device");
               SCHandler handler = new SCHandler();
               handler.openSC();
               startRecordingHelper();
           } else {
               //@TODO Yell at user. Like through a dialog. Then quit.
+              ErrorLog.log(ErrorLog.WARNING, "You need a valid MIDI input device "
+                      + "to do this! See Help->Audio Input for instructions/details.");
           }
       } else {
             startRecordingHelper();//below
@@ -11878,11 +11905,7 @@ private void startRecordingHelper(){
 
     //Deal with latency
     if(superColliderMode){//Set latency to default
-        System.out.println("SuperCollider mode in recordinghelper");
-        SCDelayOffsetter offsetter = new SCDelayOffsetter(this);
-        //double latency = offsetter.determineOffsetSlots();
-        double latency = offsetter.gatherDelay();
-        System.out.println("Latency in recording helper is: " + latency + "ms");
+        double latency = Preferences.getAudioInLatency();
         midiRecorder.setLatency(latency);
     }
 
@@ -15866,7 +15889,7 @@ private void savePrefs()
 
 
 /*
- * Midi latency is constant. Audio latency is on top of midi latency.
+ * Midi latency is constant. Audio latency is not on top of midi latency.
  */
 private boolean saveMidiLatency()
   {
@@ -15879,14 +15902,24 @@ private boolean saveMidiLatency()
     return true;
   }
 
+/**
+ * Saves audio latency in milliseconds.
+ * 
+ * Gets latency in terms of beats from user input, converts based on
+ * current tempo.
+ * 
+ * @return 
+ */
 private boolean saveAudioLatency()
   {
-    double latency = doubleFromTextField(beatDelayInputBox, 0, Double.POSITIVE_INFINITY, 0);
-    Preferences.setAudioInLatency(latency);
+    System.out.println("Saved audio latency");
+    double beatLatency = doubleFromTextField(beatDelayInputBox, 0, Double.POSITIVE_INFINITY, 0);
+    SCDelayOffsetter delayOffsetter = new SCDelayOffsetter(this);
+    double msLatency = delayOffsetter.gatherDelay(beatLatency);
+    Preferences.setAudioInLatency(msLatency);
     audioLatencyRegistered = true;//Have edited audio latency at least once
     return true;
   }
-
 
 private boolean saveSectionInfo()
   {
@@ -24255,11 +24288,22 @@ public void setKconstantSlider(double value)
             superColliderMode = true;
             SCHandler handler = new SCHandler();
             handler.openSC();
-            //startRecordingHelper();
         } else {
             superColliderMode = false;
         }
     }//GEN-LAST:event_useSuperColliderCheckboxActionPerformed
+
+    private void ReloadSuperColliderButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ReloadSuperColliderButtonActionPerformed
+        if(useSuperColliderCheckbox.isSelected()){
+        SCHandler handler = new SCHandler();
+        handler.openSC();
+        }
+    }//GEN-LAST:event_ReloadSuperColliderButtonActionPerformed
+
+    private void OpenHelpTextMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_OpenHelpTextMouseClicked
+        //Pull up help menu
+        openHelpDialog();
+    }//GEN-LAST:event_OpenHelpTextMouseClicked
     
     private void updateDottedAndTriplet() {
         isDotted = noteLenDottedCheckBox.isSelected();
@@ -25868,6 +25912,8 @@ preferencesAcceleratorMI.setEnabled(true);
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel OpenHelpText;
+    private javax.swing.JButton ReloadSuperColliderButton;
     private javax.swing.JScrollPane SectionTableScrollPane;
     private javax.swing.JMenuItem aboutMI;
     private javax.swing.JButton acceptTruncate;
@@ -25898,6 +25944,8 @@ preferencesAcceleratorMI.setEnabled(true);
     private javax.swing.JLabel approachToneLabel;
     private javax.swing.JCheckBox approachTones;
     private javax.swing.JLabel audioInputLabel;
+    private javax.swing.JLabel audioInputLabel1;
+    private javax.swing.JLabel audioInputLabel2;
     private javax.swing.JComboBox audioInputResolutionComboBox1;
     private javax.swing.JPanel audioInputTab1;
     private javax.swing.JPanel audioPreferencesOld;
@@ -26049,6 +26097,9 @@ preferencesAcceleratorMI.setEnabled(true);
     private javax.swing.JButton delTabBtn;
     private javax.swing.JCheckBox delTabCheckBox;
     private javax.swing.JMenuItem delTabPopupMenuItem;
+    private javax.swing.JLabel delayText1;
+    private javax.swing.JLabel delayText2;
+    private javax.swing.JLabel delayText3;
     private javax.swing.JButton deleteVoicingCancelButton;
     private javax.swing.JDialog deleteVoicingDialog;
     private javax.swing.JLabel deleteVoicingLabel;
@@ -26095,6 +26146,7 @@ preferencesAcceleratorMI.setEnabled(true);
     private javax.swing.JLabel fileStepLabel;
     private javax.swing.JMenuItem fileStepMI;
     private javax.swing.Box.Filler filler1;
+    private javax.swing.Box.Filler filler2;
     private javax.swing.Box.Filler filler3;
     private javax.swing.JMenuItem firstTimePrefsMI;
     private javax.swing.JComboBox frameSizeComboBox1;
@@ -26145,7 +26197,6 @@ preferencesAcceleratorMI.setEnabled(true);
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
@@ -26160,14 +26211,9 @@ preferencesAcceleratorMI.setEnabled(true);
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
-    private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JList jList1;
     private javax.swing.JList jList2;
     private javax.swing.JList jList4;
@@ -26546,6 +26592,7 @@ preferencesAcceleratorMI.setEnabled(true);
     private javax.swing.JCheckBoxMenuItem useImproviseButtonCheckBoxMI;
     private javax.swing.JButton usePreviousStyleButton;
     private javax.swing.JCheckBox useSuperColliderCheckbox;
+    private javax.swing.JLabel useSuperColliderCheckboxText;
     private javax.swing.JMenu utilitiesMenu;
     private javax.swing.JMenu viewMenu;
     private javax.swing.JLabel visAdviceLabel;
