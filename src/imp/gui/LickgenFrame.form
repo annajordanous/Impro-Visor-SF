@@ -1029,7 +1029,7 @@
                 </Component>
                 <Component class="javax.swing.JButton" name="styleRecognitionButton">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Guess Musician"/>
+                    <Property name="text" type="java.lang.String" value="Prepare Critics"/>
                     <Property name="toolTipText" type="java.lang.String" value="Attempts to guess the musician of the selection based off parellel trained networks."/>
                   </Properties>
                   <Events>

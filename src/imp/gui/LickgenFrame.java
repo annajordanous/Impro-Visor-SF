@@ -169,6 +169,17 @@ private boolean allMeasures = false;
  * Initialize critic, from Notate leadsheet.
  */
  private Critic critic;
+ 
+ /*
+  * TreeMap for usage with style recognition
+  */
+ private TreeMap<String, Critic> critics;
+ 
+ /*
+  * Number of expected weight files, will be used to encourage users to
+  * download the rest of the weights if they desire style recognition
+  */
+ private static int numCritics = 22;
 
 /**
  * Creates new LickgenFrame
@@ -1143,7 +1154,7 @@ private void initCompFileChoosers() {
         gridBagConstraints.gridy = 4;
         lickgenParametersPanel.add(generationSelectionButton, gridBagConstraints);
 
-        styleRecognitionButton.setText("Guess Musician");
+        styleRecognitionButton.setText("Prepare Critics");
         styleRecognitionButton.setToolTipText("Attempts to guess the musician of the selection based off parellel trained networks.");
         styleRecognitionButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -5667,15 +5678,14 @@ private void useSoloistCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//
     }//GEN-LAST:event_resetNetworkButtonActionPerformed
 
     private void styleRecognitionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_styleRecognitionButtonActionPerformed
-        // Do only if there is some selection
-        if(notate.getCurrentStave().getSelectionLength() != 0) {
-        
+        // First prepare critics for usage
+        if (styleRecognitionButton.getText().equals("Prepare Critics")) {
+            
         new Thread(new Runnable() {
             public void run() {
-        
+
             // Create list of critics for grading, paired with a musician's name
-            TreeMap<String, Critic> critics = new TreeMap<String, Critic>();
-            TreeMap<String, Double> grades = new TreeMap<String, Double>();
+            critics = new TreeMap<String, Critic>();
 
             // Iterate through every weight file
             File folder = ImproVisor.getStyleRecognitionDirectory();
@@ -5688,7 +5698,7 @@ private void useSoloistCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//
             });
 
             setRhythmFieldText("Preparing critics for grading...");
-            
+
             // Prepare all critics, and pair them with a file name
             for (File f : files)
             {
@@ -5711,6 +5721,32 @@ private void useSoloistCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//
                     }
                 }
             }
+            
+            setRhythmFieldText("");
+            
+            if (critics.size() != numCritics)
+            {
+                JOptionPane.showMessageDialog(null, 
+                            new JLabel("<html><div style=\"text-align: center;\">"
+                            + "This feature works best with the full set of critics.<br/>"
+                            + "You have " + critics.size() + " out of the total " + numCritics + " critics.<br/>"
+                            + "Please download the rest of the critics."), 
+                              "Using Critics", JOptionPane.PLAIN_MESSAGE);
+            }
+            
+            styleRecognitionButton.setText("Guess Musician");
+
+            } // End of Runnable
+        }).start(); // End of Thread 
+        }
+        
+        // Do only if there is some selection
+        else if(notate.getCurrentStave().getSelectionLength() != 0) {
+        
+        new Thread(new Runnable() {
+            public void run() {
+                
+            TreeMap<String, Double> grades = new TreeMap<String, Double>();
 
             // Use all critics to get all grades for each network
             for (String name : critics.keySet())
@@ -5748,7 +5784,7 @@ private void useSoloistCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//
             {
                 double currGrade = grades.get(name);
                 
-                criticsOutput.append(name).append(": ").append(String.format("%.3f", currGrade)).append("\n\n");
+                criticsOutput.append(fixName(name)).append(": ").append(String.format("%.3f", currGrade)).append("\n\n");
                 
                 if (currGrade > highestGrade)
                 {
@@ -5758,24 +5794,9 @@ private void useSoloistCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//
             }
 
             // Clean up formatting
-            String cleanName;
-            String cleanGrade;
+            String cleanName = fixName(likelyName);
+            String cleanGrade = String.format("%.3f", highestGrade);
 
-            int pos = 0;
-            char[] chars = likelyName.toCharArray();
-            for (int i = chars.length - 1; i >= 0; i--)
-                pos += Character.isUpperCase(chars[i]) ? i : 0;
-
-            // Display in format "Firstname Lastname"
-            cleanName = likelyName.substring(0, 1).toUpperCase() + 
-                        likelyName.substring(1, pos) + 
-                        " " + 
-                        likelyName.substring(pos);
-
-            // Display to third floating point
-            cleanGrade = String.format("%.3f", highestGrade);
-
-            setRhythmFieldText("");
             setNetworkOutputTextField(criticsOutput.toString());
             
             Object[] options = {"Yes, to Neural Network tab",
@@ -5792,7 +5813,7 @@ private void useSoloistCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//
                                 JOptionPane.QUESTION_MESSAGE,
                                 null,
                                 options,
-                                options[0]);
+                                options[1]);
             
             if (n == 0)
             {
@@ -5811,7 +5832,7 @@ private void useSoloistCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//
         else {
             JOptionPane.showMessageDialog(null, 
                         new JLabel("<html><div style=\"text-align: center;\">"
-                        + "Lock a selection of measures before guessing."), 
+                        + "Choose a selection of measures before guessing."), 
                           "Alert", JOptionPane.PLAIN_MESSAGE);
         }
     }//GEN-LAST:event_styleRecognitionButtonActionPerformed
@@ -5934,6 +5955,22 @@ private void useSoloistCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//
         {
             model.setValueAt(new Integer(i + 1), i, 0);
         }
+    }
+    
+    // Cleanly print a musician's name
+    private String fixName(String name)
+    {
+        int pos = 0;
+        char[] chars = name.toCharArray();
+        for (int i = chars.length - 1; i >= 0; i--)
+            pos += Character.isUpperCase(chars[i]) ? i : 0;
+
+        // Display in format "Firstname Lastname"
+        name = name.substring(0, 1).toUpperCase() + 
+                    name.substring(1, pos) + 
+                    " " + 
+                    name.substring(pos);
+        return name;
     }
     
                         /**
