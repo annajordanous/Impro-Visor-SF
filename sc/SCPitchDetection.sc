@@ -116,7 +116,7 @@ s.doWhenBooted({
 
 	//Create controlSpecs
 	c = [20, 120, 'lin', 1, 20].asSpec;//For note range
-	d = [0, 4, 'lin', 0.01, 0.1].asSpec;//For attack delay
+	d = [0, 0.7, 'lin', 0.01, 0.1].asSpec;//For attack delay
 
 	//Create window
 	w = Window.new("Set Note Range and Attack Delay", Rect(500,500,500,290));
