@@ -242,7 +242,7 @@ public class Preferences implements imp.Constants
 
   public static final String LANGUAGE="language";
 
-  public static final String DEFAULT_LANGUAGE="fr";
+  public static final String DEFAULT_LANGUAGE="en";
 
   public static final String LANGUAGE_LIST="language_list";
 
