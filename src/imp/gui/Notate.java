@@ -4630,7 +4630,7 @@ public class Notate
         popupMenu.add(insertPhraseAfterPMI);
         popupMenu.add(jSeparator23);
 
-        advicePMI.setText("Advice");
+        advicePMI.setText(Lang.getInstance().getString("Notate.advicePMI.Text"));
         advicePMI.setEnabled(false);
         popupMenu.add(advicePMI);
         popupMenu.add(jSeparator11);
@@ -4646,7 +4646,7 @@ public class Notate
         });
         popupMenu.add(autoFillMI);
 
-        adviceFrame.setTitle("Advice Directory");
+        adviceFrame.setTitle(Lang.getInstance().getString("Notate.adviceFrame.Title"));
         adviceFrame.setAlwaysOnTop(true);
         adviceFrame.setFocusCycleRoot(false);
         adviceFrame.setName("adviceFrame"); // NOI18N
@@ -5248,6 +5248,7 @@ public class Notate
         allVolumeMixerSlider.setMinorTickSpacing(5);
         allVolumeMixerSlider.setOrientation(javax.swing.JSlider.VERTICAL);
         allVolumeMixerSlider.setPaintTicks(true);
+        allVolumeMixerSlider.setToolTipText(Lang.getInstance().getString("Notate.allVolumeToolBarSlider.ToolTipText"));
         allVolumeMixerSlider.setValue(80);
         allVolumeMixerSlider.setMaximumSize(new java.awt.Dimension(38, 256));
         allVolumeMixerSlider.setMinimumSize(new java.awt.Dimension(38, 256));
@@ -5265,7 +5266,7 @@ public class Notate
         allPanel.add(allVolumeMixerSlider, gridBagConstraints);
 
         allMuteMixerBtn.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
-        allMuteMixerBtn.setText("Mute All");
+        allMuteMixerBtn.setText(Lang.getInstance().getString("Notate.allMuteMixerBtn.Text"));
         allMuteMixerBtn.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -7126,8 +7127,8 @@ public class Notate
         truncatePartDialog.getContentPane().setLayout(new java.awt.GridBagLayout());
 
         cancelTruncate.setBackground(java.awt.Color.green);
-        cancelTruncate.setText("Cancel truncation");
-        cancelTruncate.setToolTipText("Do not truncate the part.");
+        cancelTruncate.setText(Lang.getInstance().getString("Notate.cancelTruncate.Text"));
+        cancelTruncate.setToolTipText(Lang.getInstance().getString("Notate.cancelTruncate.ToolTipText"));
         cancelTruncate.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         cancelTruncate.setOpaque(true);
         cancelTruncate.addActionListener(new java.awt.event.ActionListener()
@@ -7150,8 +7151,8 @@ public class Notate
         truncatePartDialog.getContentPane().add(cancelTruncate, gridBagConstraints);
 
         acceptTruncate.setBackground(java.awt.Color.red);
-        acceptTruncate.setText("Truncate Anyway");
-        acceptTruncate.setToolTipText("Truncates the part as specified.");
+        acceptTruncate.setText(Lang.getInstance().getString("Notate.acceptTruncate.Text"));
+        acceptTruncate.setToolTipText(Lang.getInstance().getString("Notate.acceptTruncate.ToolTipText"));
         acceptTruncate.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         acceptTruncate.setDefaultCapable(false);
         acceptTruncate.setOpaque(true);
@@ -8009,7 +8010,7 @@ public class Notate
         standardToolbar.add(chordFontSizeSpinner);
 
         addTabBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/addtab.gif"))); // NOI18N
-        addTabBtn.setToolTipText("Add a new chorus tab, at the end.");
+        addTabBtn.setToolTipText(Lang.getInstance().getString("Notate.addTabBtn.ToolTipText"));
         addTabBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         addTabBtn.setMaximumSize(new java.awt.Dimension(30, 30));
         addTabBtn.setMinimumSize(new java.awt.Dimension(30, 30));
@@ -8490,8 +8491,8 @@ public class Notate
 
         allMuteToolBarBtn.setBackground(new java.awt.Color(0, 255, 0));
         allMuteToolBarBtn.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
-        allMuteToolBarBtn.setText("<html><center>Mute</center></html>");
-        allMuteToolBarBtn.setToolTipText("Play or not play notes as they are inserted?");
+        allMuteToolBarBtn.setText(Lang.getInstance().getString("Notate.allMuteToolBarBtn.Text.Mute"));
+        allMuteToolBarBtn.setToolTipText(Lang.getInstance().getString("Notate.allVolumeToolBarSlider.ToolTipText"));
         allMuteToolBarBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         allMuteToolBarBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         allMuteToolBarBtn.setMaximumSize(new java.awt.Dimension(40, 20));
@@ -8928,7 +8929,7 @@ public class Notate
             }
         });
 
-        aboutMI.setText("About Impro-Visor");
+        aboutMI.setText(Lang.getInstance().getString("Notate.aboutMI.Text"));
         aboutMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9549,7 +9550,7 @@ public class Notate
         editMenu.add(insertRestMeasure);
 
         addRestMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, 0));
-        addRestMI.setText("Add Rest");
+        addRestMI.setText(Lang.getInstance().getString("Notate.addRestMI.Text"));
         addRestMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
