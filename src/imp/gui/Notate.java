@@ -21,6 +21,8 @@
 
 package imp.gui;
 
+import imp.lang.Lang;
+
 import imp.Constants;
 import imp.Constants.ExtractMode;
 import imp.Constants.StaveType;
@@ -94,6 +96,8 @@ public class Notate
   private static final long serialVersionUID = 1L;
 
   private int DEFAULT_SLIDER_VOLUME = 80;
+
+  private static boolean firstTime = true;
 
   RoadMapFrame roadmapFrame = null;
 
@@ -1289,6 +1293,9 @@ public class Notate
 
   public void postInitComponents()
     {
+      
+    loadLangPref();
+
     notateGrammarMenu.setText(getDefaultGrammarName() + " grammar");
 
     voicingTestFrame.pack();
@@ -1610,6 +1617,7 @@ public class Notate
         numStavesPerPage = new javax.swing.JTextField();
         replaceWithDeltaCheckBox = new javax.swing.JCheckBox();
         replaceWithPhiCheckBox = new javax.swing.JCheckBox();
+        langList = new javax.swing.JComboBox();
         appearanceTab = new javax.swing.JPanel();
         visAdvicePanel = new javax.swing.JPanel();
         cells = new javax.swing.JCheckBox();
@@ -2323,7 +2331,7 @@ public class Notate
         helpAboutMI = new javax.swing.JMenuItem();
         statusMenu = new javax.swing.JMenu();
 
-        preferencesDialog.setTitle("Preferences and Settings");
+        preferencesDialog.setTitle(Lang.getInstance().getString("Notate.preferencesDialog.Title"));
         preferencesDialog.setAlwaysOnTop(true);
         preferencesDialog.setFocusCycleRoot(false);
         preferencesDialog.getRootPane().setDefaultButton(savePrefsBtn);
@@ -2343,7 +2351,7 @@ public class Notate
 
         prefsTabBtnGrp.add(globalBtn);
         globalBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/global.png"))); // NOI18N
-        globalBtn.setText("Global");
+        globalBtn.setText(Lang.getInstance().getString("Notate.globalBtn.Text"));
         globalBtn.setToolTipText("Global preferences");
         globalBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         globalBtn.setIconTextGap(6);
@@ -3729,7 +3737,7 @@ public class Notate
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 10;
+        gridBagConstraints.gridy = 9;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         defaultsTab.add(replaceWithDeltaCheckBox, gridBagConstraints);
 
@@ -3743,9 +3751,18 @@ public class Notate
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 9;
+        gridBagConstraints.gridy = 8;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         defaultsTab.add(replaceWithPhiCheckBox, gridBagConstraints);
+
+        langList.setBorder(javax.swing.BorderFactory.createTitledBorder("Language Preferred"));
+        langList.setPreferredSize(new java.awt.Dimension(96, 50));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 10;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
+        defaultsTab.add(langList, gridBagConstraints);
 
         globalTabs.addTab("Defaults", defaultsTab);
 
@@ -4392,8 +4409,10 @@ public class Notate
         audioTab.add(useSuperColliderCheckboxText, gridBagConstraints);
 
         ReloadSuperColliderButton.setText("Reload SuperCollider");
-        ReloadSuperColliderButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        ReloadSuperColliderButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 ReloadSuperColliderButtonActionPerformed(evt);
             }
         });
@@ -4408,8 +4427,10 @@ public class Notate
         OpenHelpText.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         OpenHelpText.setForeground(new java.awt.Color(0, 51, 255));
         OpenHelpText.setText("Open Help Dialog");
-        OpenHelpText.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+        OpenHelpText.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
                 OpenHelpTextMouseClicked(evt);
             }
         });
@@ -10519,7 +10540,7 @@ public void playCurrentSelection(boolean playToEndOfChorus, int loopCount, boole
   private void setToLoop()
   {
       toLoop = true;
-      loopButton.setText("<html><center>Straight</center></html>");
+      loopButton.setText(Lang.getInstance().getString("Notate.loopButton.Text.Loop"));
       loopButton.setBackground(Color.RED);
   }
 
@@ -10527,7 +10548,7 @@ public void playCurrentSelection(boolean playToEndOfChorus, int loopCount, boole
   {
       toLoop = false;
       stopPlaying("set not to Loop");
-      loopButton.setText("<html><center>Loop</center></html>");
+      loopButton.setText(Lang.getInstance().getString("Notate.loopButton.Text.Straight"));
       loopButton.setBackground(Color.GREEN);
   }
 
@@ -10712,7 +10733,7 @@ private void setStepInputBtn(boolean selected)
 {
     if( selected )
       {
-      stepInputBtn.setText("<html><center>Stop</center></html>");
+      stepInputBtn.setText(Lang.getInstance().getString("Notate.stepInputBtn.Text.Stop"));
 
       stepInputBtn.setBackground(Color.RED);
       stopRecording();
@@ -10720,7 +10741,7 @@ private void setStepInputBtn(boolean selected)
       }
     else
       {
-      stepInputBtn.setText("<html><center>Step<br>Input</center></html>");
+      stepInputBtn.setText(Lang.getInstance().getString("Notate.stepInputBtn.Text.Step"));
 
       stepInputBtn.setBackground(Color.GREEN);
       setNormalStatus();
@@ -10740,7 +10761,7 @@ private void setStepInputBtn(boolean selected)
    */
   private void turnStepInputOff()
     {
-      stepInputBtn.setText("<html><center>Step<br>Input</center></html>");
+      stepInputBtn.setText(Lang.getInstance().getString("Notate.stepInputBtn.Text.Step"));
       stepInputBtn.setBackground(Color.GREEN);
       setStepInput(false);
       stepInputBtn.setSelected(false);
@@ -11342,7 +11363,7 @@ private String getChordRedirectName(int row)
 
             if( e.equals("()" ) )
               {
-              extEntryTF.setText("");
+  	      extEntryTF.setText(Lang.getInstance().getString("Notate.extEntryTF.Text"));
               }
             else
               {
@@ -12374,7 +12395,7 @@ private void setMuteAll(boolean muted)
 
         allMuteToolBarBtn.setBackground(Color.red);
 
-        allMuteToolBarBtn.setText("Play");
+        allMuteToolBarBtn.setText(Lang.getInstance().getString("Notate.allMuteToolBarBtn.Text.Mute"));
       }
     else
       {
@@ -12384,7 +12405,7 @@ private void setMuteAll(boolean muted)
 
         allMuteToolBarBtn.setBackground(Color.green);
 
-        allMuteToolBarBtn.setText("Mute");
+        allMuteToolBarBtn.setText(Lang.getInstance().getString("Notate.allMuteToolBarBtn.Text.Play"));
       }
 
     mixerMasterVolumeChanged();
@@ -12667,6 +12688,7 @@ public void volumeSliderChanged(JSlider volumeSlider)
     private void cancelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtnActionPerformed
 
         resetDrawingPrefs();
+	resetLangPref();
 
         preferencesDialog.setVisible(false);
 
@@ -15865,6 +15887,7 @@ private void savePrefs()
 
     // Initialize all the preferences except for the length and metre;
 
+    saveLangPref();
     saveLeadsheetPreferences();
 
     closeDialog = closeDialog && saveMidiLatency();
@@ -16876,6 +16899,7 @@ private boolean saveGlobalPreferences()
     sectionTable.getSelectionModel().setSelectionInterval(0,0);
     nWaySplitComboBoxModel.createItems(0);
     nWaySplitComboBox.setSelectedItem("");
+    resetLangPref();
   }
 
   public void setRoadMapCheckBox(boolean value)
@@ -16924,7 +16948,7 @@ private boolean saveGlobalPreferences()
     {
     if( frozen )
       {
-      freezeLayoutButton.setText("<html><center>Thaw<br>Layout</center></html>");
+      freezeLayoutButton.setText(Lang.getInstance().getString("Notate.freezeLayoutButton.Text.Thaw"));
 
       freezeLayoutButton.setBackground(Color.RED);
       }
@@ -16932,7 +16956,7 @@ private boolean saveGlobalPreferences()
       {
       score.setLayoutList(Polylist.nil);
 
-      freezeLayoutButton.setText("<html><center>Freeze<br>Layout</center></html>");
+      freezeLayoutButton.setText(Lang.getInstance().getString("Notate.freezeLayoutButton.Text.Freeze"));
 
       freezeLayoutButton.setBackground(Color.GREEN);
       }
@@ -16982,7 +17006,36 @@ private boolean saveGlobalPreferences()
     scoreTab.setTitleAt(i, title);
     }
 
-
+  // Language choice routines
+  private void saveLangPref()
+  {
+	int idx = langList.getSelectedIndex();
+	String data = langData[idx].trim();
+	Preferences.setPreference(Preferences.LANGUAGE,data);
+  }
+  
+  private void resetLangPref()
+  {
+  	langPref = Preferences.getPreference(Preferences.LANGUAGE);
+	for(int i = 0; i < langData.length ; i++){
+		String data = langData[i].trim();
+		if(data.equals(langPref)){
+			langList.setSelectedIndex(i);
+		}
+	}
+  }
+  
+  private void loadLangPref()
+  {
+	for(int i = 0; i < langData.length ; i++){
+		String data = langData[i].trim();
+		java.util.Locale local = new java.util.Locale(data);
+		langList.addItem(local.getDisplayName());
+		if(data.equals(langPref)){
+			langList.setSelectedIndex(i);
+		}
+	}
+  }
 
   private void saveLeadsheetPreferences()
     {
@@ -17746,12 +17799,12 @@ public void addTab()
        }
       else
         {
-        measErrorLabel.setText("Invalid number!");
+        measErrorLabel.setText(Lang.getInstance().getString("Notate.measErrorLabel.Text"));
         }
       }
     catch( NumberFormatException e )
       {
-      measErrorLabel.setText("Invalid number!");
+      measErrorLabel.setText(Lang.getInstance().getString("Notate.measErrorLabel.Text"));
       }
     }
 
@@ -20650,13 +20703,13 @@ public ArrayList<String> getMelodyData(int chorusNumber)
         {
         noteColoration = false;
         colorationButton.setBackground(Color.red);
-        colorationButton.setText("<html><center>Color</center></html>");
+        colorationButton.setText(Lang.getInstance().getString("Notate.colorationButton.Text.Color"));
         }
       else
         {
         noteColoration = true;
         colorationButton.setBackground(new Color(153, 204, 255));
-        colorationButton.setText("<html><center>Black&<br>White</center></html>");
+        colorationButton.setText(Lang.getInstance().getString("Notate.colorationButton.Text.NoColor"));
         }
 
 }//GEN-LAST:event_colorationButtonActionPerformed
@@ -20667,13 +20720,13 @@ public ArrayList<String> getMelodyData(int chorusNumber)
         {
         smartEntry = false;
         smartEntryButton.setBackground(Color.red);
-        smartEntryButton.setText("<html><center>Harmonic<br>Entry</center></html>");
+        smartEntryButton.setText(Lang.getInstance().getString("Notate.smartEntryButton.Text.Harmonic"));
         }
       else
         {
         smartEntry = true;
         smartEntryButton.setBackground(new Color(255, 153, 255));
-        smartEntryButton.setText("<html><center>Simple<br>Entry</center></html>");
+        smartEntryButton.setText(Lang.getInstance().getString("Notate.smartEntryButton.Text.Simple"));
         }
 }//GEN-LAST:event_smartEntryButtonActionPerformed
 
@@ -20973,9 +21026,9 @@ private void newVoicingSaveButtonActionPerformed(java.awt.event.ActionEvent evt)
 
     newVoicingDialog.setVisible(false);
 
-    newVoicingNameTF.setText("");
+    newVoicingNameTF.setText(Lang.getInstance().getString("Notate.newVoicingNameTF.Text"));
 
-    newVoicingChordTF.setText("");
+    newVoicingChordTF.setText(Lang.getInstance().getString("Notate.newVoicingChordTF.Text"));
 
     newVoicingTypeCB.setSelectedItem("open");
 
@@ -21174,7 +21227,7 @@ public void addVoicingEntryTFText(String text)
     String s = voicingEntryTF.getText();
     if (s.equals(""))
     {
-        voicingEntryTF.setText("(" + text + ")");
+        voicingEntryTF.setText(Lang.getInstance().getString("Notate.voicingEntryTF.Text"));
     }
     else {
         voicingEntryTF.setText(s.replace(')', ' ') + text + ")");
@@ -21186,7 +21239,7 @@ public void addExtEntryTFText(String text)
     String s = extEntryTF.getText();
     if (s.equals(""))
     {
-        extEntryTF.setText("(" + text + ")");
+        extEntryTF.setText(Lang.getInstance().getString("Notate.extEntryTF.Text"));
     }
     else
     {
@@ -21199,8 +21252,8 @@ public void addExtEntryTFText(String text)
  */
 public void clearVoicingEntryTF()
 {
-  voicingEntryTF.setText("");
-  extEntryTF.setText("");
+  voicingEntryTF.setText(Lang.getInstance().getString("Notate.voicingEntryTF.Text"));
+  extEntryTF.setText(Lang.getInstance().getString("Notate.extEntryTF.Text"));
 
 }
 
@@ -23044,13 +23097,13 @@ private void earlyScrollBtnActionPerformed(java.awt.event.ActionEvent evt) {//GE
     if( earlyScrollBtn.isSelected() )
         {
         earlyScrollBtn.setBackground(new java.awt.Color(51, 255, 255));
-        earlyScrollBtn.setText("<html><center>Early<br>Scroll</center></html>");
+        earlyScrollBtn.setText(Lang.getInstance().getString("Notate.earlyScrollBtn.Text.Early"));
         earlyScrollBtn.setSelected(true);
         }
       else
         {
         earlyScrollBtn.setBackground(Color.red);
-        earlyScrollBtn.setText("<html><center>Late<br>Scroll</center></html>");
+        earlyScrollBtn.setText(Lang.getInstance().getString("Notate.earlyScrollBtn.Text.Late"));
         earlyScrollBtn.setSelected(false);
         }
 }//GEN-LAST:event_earlyScrollBtnActionPerformed
@@ -24377,13 +24430,13 @@ public void improviseButtonToggled()
         //setUseImproviseCheckBox();
 
         improviseButton.setBackground(new Color(255, 0, 0));
-        improviseButton.setText("<html><center>No Impro</center></html>");
+        improviseButton.setText(Lang.getInstance().getString("Notate.improviseButton.Text.Quit"));
+
         }
     else
       {
         improviseButton.setBackground(new Color(0, 255, 0));
-        improviseButton.setText("<html><center>Improv</center></html>");
-        //stopPlaying();
+        improviseButton.setText(Lang.getInstance().getString("Notate.improviseButton.Text.Improvise"));
       }
   }
 
@@ -24392,7 +24445,7 @@ public void improvisationOff()
     improviseButton.setSelected(false);
     lickgenFrame.setRecurrent(false);
     improviseButton.setBackground(new Color(0, 255, 0));
-    improviseButton.setText("<html><center>Improv</center></html>");
+    improviseButton.setText(Lang.getInstance().getString("Notate.improviseButton.Text.Improvise"));
   }
 
 
@@ -24870,7 +24923,7 @@ public void showNewVoicingDialog()
         }
 
         else {
-            newVoicingChordTF.setText("");
+            newVoicingChordTF.setText(Lang.getInstance().getString("Notate.newVoicingChordTF.Text"));
         }
 
     }
@@ -25386,11 +25439,11 @@ public void showNewVoicingDialog()
     overrideFrame.setLocationRelativeTo(this);
 
 
-    lineLabel.setText("Number of measures in line " + (getCurrentStave().currentLine + 1) + ":   ");
+    lineLabel.setText(Lang.getInstance().getString("Notate.lineLabel.Text"));
 
     enterMeasures.setText("" + lockedMeasures[getCurrentStave().currentLine]);
 
-    measErrorLabel.setText("");
+    measErrorLabel.setText(Lang.getInstance().getString("Notate.measErrorLabel.Text"));
 
 
     overrideFrame.setVisible(true);
@@ -26295,6 +26348,7 @@ preferencesAcceleratorMI.setEnabled(true);
     private javax.swing.ButtonGroup keySigBtnGroup;
     private javax.swing.JLabel keySignatureLabel;
     private javax.swing.JTextField keySignatureTF;
+    private javax.swing.JComboBox langList;
     private javax.swing.JPanel latencyTab;
     private javax.swing.JLabel layoutLabel;
     private javax.swing.JTextField layoutTF;

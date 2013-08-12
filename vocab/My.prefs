@@ -38,5 +38,5 @@
 (drum-channel 10)
 (recent-style-file swing.sty)
 (improv-menu-setting (Use Improvise Button))
-(language fr)
-(language_list (en fr))
+(language en)
+(language_list (en , fr))
