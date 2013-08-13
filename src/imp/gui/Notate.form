@@ -7584,8 +7584,12 @@
                   <KeyStroke key="Ctrl+N"/>
                 </Property>
                 <Property name="mnemonic" type="int" value="110"/>
-                <Property name="text" type="java.lang.String" value="New Leadsheet"/>
-                <Property name="toolTipText" type="java.lang.String" value="Start a new leadsheet in its own window."/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.newMI.Text&quot;)" type="code"/>
+                </Property>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.newMI.ToolTipText&quot;)" type="code"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="newMIActionPerformed"/>
@@ -7600,8 +7604,12 @@
                   <KeyStroke key="Ctrl+O"/>
                 </Property>
                 <Property name="mnemonic" type="int" value="111"/>
-                <Property name="text" type="java.lang.String" value="Open Leadsheet"/>
-                <Property name="toolTipText" type="java.lang.String" value="Open a leadsheet in the current window."/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.oneAutoMI.Text&quot;)" type="code"/>
+                </Property>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.openLeadsheetMI.ToolTipText&quot;)" type="code"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="openLeadsheetMIActionPerformed"/>
@@ -7609,7 +7617,9 @@
             </MenuItem>
             <Menu class="javax.swing.JMenu" name="openRecentLeadsheetMenu">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Open Recent Leadsheet (same window)"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.openRecentLeadsheetMenu.Text&quot;)" type="code"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="menuSelected" listener="javax.swing.event.MenuListener" parameters="javax.swing.event.MenuEvent" handler="populateRecentFileMenu"/>
@@ -7627,7 +7637,9 @@
             </Menu>
             <Menu class="javax.swing.JMenu" name="openRecentLeadsheetNewWindowMenu">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Open Recent Leadsheet (new window)"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.openRecentLeadsheetNewWindowMenu.Text&quot;)" type="code"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="menuSelected" listener="javax.swing.event.MenuListener" parameters="javax.swing.event.MenuEvent" handler="populateRecentLeadsheetNewWindow"/>
@@ -7645,8 +7657,12 @@
             </Menu>
             <MenuItem class="javax.swing.JMenuItem" name="fileStepMI">
               <Properties>
-                <Property name="text" type="java.lang.String" value="File Stepper"/>
-                <Property name="toolTipText" type="java.lang.String" value="Open separate window for file-stepping.&#xa;"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.fileStepMI.Text&quot;)" type="code"/>
+                </Property>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.fileStepMI.ToolTipText&quot;)" type="code"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="fileStepMIActionPerformed"/>
@@ -7657,8 +7673,12 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+R"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Revert to Saved Leadsheet"/>
-                <Property name="toolTipText" type="java.lang.String" value="Revert leadsheet to saved version, discarding any changes."/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.revertToSavedMI.Text&quot;)" type="code"/>
+                </Property>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.revertToSavedMI.ToolTipText&quot;)" type="code"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="revertLeadsheetActionPerformed"/>
@@ -7666,8 +7686,12 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="clearHistoryMI">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Clear Command History&#xa;"/>
-                <Property name="toolTipText" type="java.lang.String" value="Clears the history, so that previous commands are forgotten.&#xa;"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.clearHistoryMI.Text&quot;)" type="code"/>
+                </Property>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.clearHistoryMI.ToolTipText&quot;)" type="code"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="clearHistoryMIrevertLeadsheetActionPerformed"/>
@@ -7680,7 +7704,9 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+S"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Save"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.saveLeadsheetMI.Text&quot;)" type="code"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="saveLeadsheetMIActionPerformed"/>
@@ -7691,8 +7717,12 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+W"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Save Leadsheet As"/>
-                <Property name="toolTipText" type="java.lang.String" value="Save the current leadsheet under a specified file name."/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.saveAsLeadsheetMI.Text&quot;)" type="code"/>
+                </Property>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.saveAsLeadsheetMI.ToolTipText&quot;)" type="code"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="saveAsLeadsheetMIActionPerformed"/>
@@ -7700,8 +7730,12 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="exportAllToMidi">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Export Leadsheet to MIDI"/>
-                <Property name="toolTipText" type="java.lang.String" value="Create a MIDI file of the playback of the current leadsheet."/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.exportAllToMidi.Text&quot;)" type="code"/>
+                </Property>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.exportAllToMidi.ToolTipText&quot;)" type="code"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="exportAllToMidiActionPerformed"/>
@@ -7712,7 +7746,9 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+M"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Import MIDI Tracks from File"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.importMidiMI.Text&quot;)" type="code"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="importMidiMIActionPerformed"/>
@@ -7720,8 +7756,12 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="exportChorusToMusicXML">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Export Chorus to MusicXML"/>
-                <Property name="toolTipText" type="java.lang.String" value="Create a MusicXML file for the current chorus."/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.exportChorusToMusicXML.Text&quot;)" type="code"/>
+                </Property>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.exportChorusToMusicXML.ToolTipText&quot;)" type="code"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="exportChorusToMusicXMLActionPerformed"/>
@@ -7731,8 +7771,12 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="loadAdvMI">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Load Vocabulary"/>
-                <Property name="toolTipText" type="java.lang.String" value="Load a new vocabulary."/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.loadAdvMI.Text&quot;)" type="code"/>
+                </Property>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.loadAdvMI.ToolTipText&quot;)" type="code"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="loadAdvMIActionPerformed"/>
@@ -7740,8 +7784,12 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="saveAdvice">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Save Vocabulary"/>
-                <Property name="toolTipText" type="java.lang.String" value="Save the current vocabulary."/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.saveAdvice.Text&quot;)" type="code"/>
+                </Property>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.saveAdvice.ToolTipText&quot;)" type="code"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="saveAdviceActionPerformed"/>
@@ -7749,8 +7797,12 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="saveAsAdvice">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Save Vocabulary As"/>
-                <Property name="toolTipText" type="java.lang.String" value="Save the current vocabulary in a file."/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.saveAsAdvice.Text&quot;)" type="code"/>
+                </Property>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.saveAsAdvice.ToolTipText&quot;)" type="code"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="saveAsAdviceActionPerformed"/>
@@ -7763,8 +7815,12 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+P"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Print the Current Chorus"/>
-                <Property name="toolTipText" type="java.lang.String" value="Print the current leadsheet."/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.printMI.Text&quot;)" type="code"/>
+                </Property>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.printMI.ToolTipText&quot;)" type="code"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="printMIActionPerformed"/>
@@ -7775,7 +7831,9 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Shift+Ctrl+P"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Print All Choruses"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.printAllMI.Text&quot;)" type="code"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="printAllMIActionPerformed"/>
@@ -7789,8 +7847,12 @@
                   <KeyStroke key="Ctrl+Q"/>
                 </Property>
                 <Property name="mnemonic" type="int" value="113"/>
-                <Property name="text" type="java.lang.String" value="Quit"/>
-                <Property name="toolTipText" type="java.lang.String" value="Quit Impro-Visor."/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.quitMI.Text&quot;)" type="code"/>
+                </Property>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.quitMI.ToolTipText&quot;)" type="code"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="quitMIActionPerformed"/>
@@ -9067,7 +9129,9 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/imp/gui/graphics/toolbar/new.gif"/>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" value="Start a new leadsheet, in addition to the current one (Ctrl+N)."/>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.newBtn.ToolTipText&quot;)" type="code"/>
+                </Property>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                     <BevelBorder/>
@@ -9095,7 +9159,9 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/imp/gui/graphics/icons/fileStepperBack.png"/>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" value="Browse previous leadsheet file in the current folder. (Does nothing if this is the first leadsheet in the folder.)&#xa;"/>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.fileStepBackBtn.ToolTipText&quot;)" type="code"/>
+                </Property>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                     <BevelBorder/>
@@ -9117,7 +9183,9 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/imp/gui/graphics/icons/fileStepperFront.png"/>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" value="Browse next leadsheet file in the current folder. (Does nothing if this is the last leadsheet in the folder.)&#xa;&#xa;"/>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.fileStepForwardBtn.ToolTipText&quot;)" type="code"/>
+                </Property>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                     <BevelBorder/>

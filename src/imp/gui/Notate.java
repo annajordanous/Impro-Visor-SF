@@ -7707,7 +7707,7 @@ public class Notate
         });
 
         newBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/new.gif"))); // NOI18N
-        newBtn.setToolTipText("Start a new leadsheet, in addition to the current one (Ctrl+N).");
+        newBtn.setToolTipText(Lang.getInstance().getString("Notate.newBtn.ToolTipText"));
         newBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         newBtn.setMaximumSize(new java.awt.Dimension(30, 30));
         newBtn.setMinimumSize(new java.awt.Dimension(30, 30));
@@ -7722,7 +7722,7 @@ public class Notate
         standardToolbar.add(newBtn);
 
         fileStepBackBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/icons/fileStepperBack.png"))); // NOI18N
-        fileStepBackBtn.setToolTipText("Browse previous leadsheet file in the current folder. (Does nothing if this is the first leadsheet in the folder.)\n");
+        fileStepBackBtn.setToolTipText(Lang.getInstance().getString("Notate.fileStepBackBtn.ToolTipText"));
         fileStepBackBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         fileStepBackBtn.setMaximumSize(new java.awt.Dimension(30, 30));
         fileStepBackBtn.setMinimumSize(new java.awt.Dimension(30, 30));
@@ -7736,7 +7736,7 @@ public class Notate
         standardToolbar.add(fileStepBackBtn);
 
         fileStepForwardBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/icons/fileStepperFront.png"))); // NOI18N
-        fileStepForwardBtn.setToolTipText("Browse next leadsheet file in the current folder. (Does nothing if this is the last leadsheet in the folder.)\n\n");
+        fileStepForwardBtn.setToolTipText(Lang.getInstance().getString("Notate.fileStepForwardBtn.ToolTipText"));
         fileStepForwardBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         fileStepForwardBtn.setMaximumSize(new java.awt.Dimension(30, 30));
         fileStepForwardBtn.setMinimumSize(new java.awt.Dimension(30, 30));
@@ -8942,8 +8942,8 @@ public class Notate
 
         newMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
         newMI.setMnemonic('n');
-        newMI.setText("New Leadsheet");
-        newMI.setToolTipText("Start a new leadsheet in its own window.");
+        newMI.setText(Lang.getInstance().getString("Notate.newMI.Text"));
+        newMI.setToolTipText(Lang.getInstance().getString("Notate.newMI.ToolTipText"));
         newMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -8955,8 +8955,8 @@ public class Notate
 
         openLeadsheetMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
         openLeadsheetMI.setMnemonic('o');
-        openLeadsheetMI.setText("Open Leadsheet");
-        openLeadsheetMI.setToolTipText("Open a leadsheet in the current window.");
+        openLeadsheetMI.setText(Lang.getInstance().getString("Notate.oneAutoMI.Text"));
+        openLeadsheetMI.setToolTipText(Lang.getInstance().getString("Notate.openLeadsheetMI.ToolTipText"));
         openLeadsheetMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -8966,7 +8966,7 @@ public class Notate
         });
         fileMenu.add(openLeadsheetMI);
 
-        openRecentLeadsheetMenu.setText("Open Recent Leadsheet (same window)");
+        openRecentLeadsheetMenu.setText(Lang.getInstance().getString("Notate.openRecentLeadsheetMenu.Text"));
         openRecentLeadsheetMenu.addMenuListener(new javax.swing.event.MenuListener()
         {
             public void menuSelected(javax.swing.event.MenuEvent evt)
@@ -8993,7 +8993,7 @@ public class Notate
 
         fileMenu.add(openRecentLeadsheetMenu);
 
-        openRecentLeadsheetNewWindowMenu.setText("Open Recent Leadsheet (new window)");
+        openRecentLeadsheetNewWindowMenu.setText(Lang.getInstance().getString("Notate.openRecentLeadsheetNewWindowMenu.Text"));
         openRecentLeadsheetNewWindowMenu.addMenuListener(new javax.swing.event.MenuListener()
         {
             public void menuSelected(javax.swing.event.MenuEvent evt)
@@ -9020,8 +9020,8 @@ public class Notate
 
         fileMenu.add(openRecentLeadsheetNewWindowMenu);
 
-        fileStepMI.setText("File Stepper");
-        fileStepMI.setToolTipText("Open separate window for file-stepping.\n");
+        fileStepMI.setText(Lang.getInstance().getString("Notate.fileStepMI.Text"));
+        fileStepMI.setToolTipText(Lang.getInstance().getString("Notate.fileStepMI.ToolTipText"));
         fileStepMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9032,8 +9032,8 @@ public class Notate
         fileMenu.add(fileStepMI);
 
         revertToSavedMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
-        revertToSavedMI.setText("Revert to Saved Leadsheet");
-        revertToSavedMI.setToolTipText("Revert leadsheet to saved version, discarding any changes.");
+        revertToSavedMI.setText(Lang.getInstance().getString("Notate.revertToSavedMI.Text"));
+        revertToSavedMI.setToolTipText(Lang.getInstance().getString("Notate.revertToSavedMI.ToolTipText"));
         revertToSavedMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9043,8 +9043,8 @@ public class Notate
         });
         fileMenu.add(revertToSavedMI);
 
-        clearHistoryMI.setText("Clear Command History\n");
-        clearHistoryMI.setToolTipText("Clears the history, so that previous commands are forgotten.\n");
+        clearHistoryMI.setText(Lang.getInstance().getString("Notate.clearHistoryMI.Text"));
+        clearHistoryMI.setToolTipText(Lang.getInstance().getString("Notate.clearHistoryMI.ToolTipText"));
         clearHistoryMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9056,7 +9056,7 @@ public class Notate
         fileMenu.add(jSeparator6);
 
         saveLeadsheetMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
-        saveLeadsheetMI.setText("Save");
+        saveLeadsheetMI.setText(Lang.getInstance().getString("Notate.saveLeadsheetMI.Text"));
         saveLeadsheetMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9067,8 +9067,8 @@ public class Notate
         fileMenu.add(saveLeadsheetMI);
 
         saveAsLeadsheetMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_W, java.awt.event.InputEvent.CTRL_MASK));
-        saveAsLeadsheetMI.setText("Save Leadsheet As");
-        saveAsLeadsheetMI.setToolTipText("Save the current leadsheet under a specified file name.");
+        saveAsLeadsheetMI.setText(Lang.getInstance().getString("Notate.saveAsLeadsheetMI.Text"));
+        saveAsLeadsheetMI.setToolTipText(Lang.getInstance().getString("Notate.saveAsLeadsheetMI.ToolTipText"));
         saveAsLeadsheetMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9078,8 +9078,8 @@ public class Notate
         });
         fileMenu.add(saveAsLeadsheetMI);
 
-        exportAllToMidi.setText("Export Leadsheet to MIDI");
-        exportAllToMidi.setToolTipText("Create a MIDI file of the playback of the current leadsheet.");
+        exportAllToMidi.setText(Lang.getInstance().getString("Notate.exportAllToMidi.Text"));
+        exportAllToMidi.setToolTipText(Lang.getInstance().getString("Notate.exportAllToMidi.ToolTipText"));
         exportAllToMidi.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9090,7 +9090,7 @@ public class Notate
         fileMenu.add(exportAllToMidi);
 
         importMidiMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, java.awt.event.InputEvent.CTRL_MASK));
-        importMidiMI.setText("Import MIDI Tracks from File");
+        importMidiMI.setText(Lang.getInstance().getString("Notate.importMidiMI.Text"));
         importMidiMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9100,8 +9100,8 @@ public class Notate
         });
         fileMenu.add(importMidiMI);
 
-        exportChorusToMusicXML.setText("Export Chorus to MusicXML");
-        exportChorusToMusicXML.setToolTipText("Create a MusicXML file for the current chorus.");
+        exportChorusToMusicXML.setText(Lang.getInstance().getString("Notate.exportChorusToMusicXML.Text"));
+        exportChorusToMusicXML.setToolTipText(Lang.getInstance().getString("Notate.exportChorusToMusicXML.ToolTipText"));
         exportChorusToMusicXML.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9112,8 +9112,8 @@ public class Notate
         fileMenu.add(exportChorusToMusicXML);
         fileMenu.add(jSeparator2);
 
-        loadAdvMI.setText("Load Vocabulary");
-        loadAdvMI.setToolTipText("Load a new vocabulary.");
+        loadAdvMI.setText(Lang.getInstance().getString("Notate.loadAdvMI.Text"));
+        loadAdvMI.setToolTipText(Lang.getInstance().getString("Notate.loadAdvMI.ToolTipText"));
         loadAdvMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9123,8 +9123,8 @@ public class Notate
         });
         fileMenu.add(loadAdvMI);
 
-        saveAdvice.setText("Save Vocabulary");
-        saveAdvice.setToolTipText("Save the current vocabulary.");
+        saveAdvice.setText(Lang.getInstance().getString("Notate.saveAdvice.Text"));
+        saveAdvice.setToolTipText(Lang.getInstance().getString("Notate.saveAdvice.ToolTipText"));
         saveAdvice.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9134,8 +9134,8 @@ public class Notate
         });
         fileMenu.add(saveAdvice);
 
-        saveAsAdvice.setText("Save Vocabulary As");
-        saveAsAdvice.setToolTipText("Save the current vocabulary in a file.");
+        saveAsAdvice.setText(Lang.getInstance().getString("Notate.saveAsAdvice.Text"));
+        saveAsAdvice.setToolTipText(Lang.getInstance().getString("Notate.saveAsAdvice.ToolTipText"));
         saveAsAdvice.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9147,8 +9147,8 @@ public class Notate
         fileMenu.add(jSeparator17);
 
         printMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_MASK));
-        printMI.setText("Print the Current Chorus");
-        printMI.setToolTipText("Print the current leadsheet.");
+        printMI.setText(Lang.getInstance().getString("Notate.printMI.Text"));
+        printMI.setToolTipText(Lang.getInstance().getString("Notate.printMI.ToolTipText"));
         printMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9159,7 +9159,7 @@ public class Notate
         fileMenu.add(printMI);
 
         printAllMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        printAllMI.setText("Print All Choruses");
+        printAllMI.setText(Lang.getInstance().getString("Notate.printAllMI.Text"));
         printAllMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9172,8 +9172,8 @@ public class Notate
 
         quitMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
         quitMI.setMnemonic('q');
-        quitMI.setText("Quit");
-        quitMI.setToolTipText("Quit Impro-Visor.");
+        quitMI.setText(Lang.getInstance().getString("Notate.quitMI.Text"));
+        quitMI.setToolTipText(Lang.getInstance().getString("Notate.quitMI.ToolTipText"));
         quitMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
