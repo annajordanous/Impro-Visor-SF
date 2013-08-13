@@ -7660,13 +7660,13 @@ public class Notate
         });
         addWindowListener(new java.awt.event.WindowAdapter()
         {
-            public void windowClosed(java.awt.event.WindowEvent evt)
-            {
-                notateWIndowClosed(evt);
-            }
             public void windowClosing(java.awt.event.WindowEvent evt)
             {
                 formWindowClosing(evt);
+            }
+            public void windowClosed(java.awt.event.WindowEvent evt)
+            {
+                notateWIndowClosed(evt);
             }
         });
         addFocusListener(new java.awt.event.FocusAdapter()
@@ -8920,7 +8920,7 @@ public class Notate
         getContentPane().add(scoreTab, gridBagConstraints);
 
         fileMenu.setMnemonic('f');
-        fileMenu.setText("File");
+        fileMenu.setText(Lang.getInstance().getString("Notate.fileMenu.Text"));
         fileMenu.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9186,7 +9186,8 @@ public class Notate
         menuBar.add(fileMenu);
 
         editMenu.setMnemonic('e');
-        editMenu.setText("Edit");
+        editMenu.setText(Lang.getInstance().getString("Notate.editMenu.Text")
+        );
 
         selectAllMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_MASK));
         selectAllMI.setText("Select All");
@@ -9573,7 +9574,7 @@ public class Notate
 
         menuBar.add(editMenu);
 
-        transposeMenu.setText("Transpose");
+        transposeMenu.setText(Lang.getInstance().getString("Notate.transposeMenu.Text"));
 
         transposeMelodyUpSemitone.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, 0));
         transposeMelodyUpSemitone.setText("Transpose Melody Up Semitone");
@@ -9698,7 +9699,7 @@ public class Notate
         menuBar.add(transposeMenu);
 
         viewMenu.setMnemonic('v');
-        viewMenu.setText("View");
+        viewMenu.setText(Lang.getInstance().getString("Notate.viewMenu.Text"));
 
         oneAutoMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_MASK));
         oneAutoMI.setText("Perform a Single Layout Adjustment");
@@ -9835,7 +9836,7 @@ public class Notate
         menuBar.add(viewMenu);
 
         playMenu.setMnemonic('p');
-        playMenu.setText("Play");
+        playMenu.setText(Lang.getInstance().getString("Notate.playMenu.Text"));
         playMenu.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9921,7 +9922,7 @@ public class Notate
         menuBar.add(playMenu);
 
         utilitiesMenu.setMnemonic('U');
-        utilitiesMenu.setText("Utilities");
+        utilitiesMenu.setText(Lang.getInstance().getString("Notate.utilitiesMenu.Text"));
 
         stepKeyboardMI.setText("Advice Keyboard");
         stepKeyboardMI.addActionListener(new java.awt.event.ActionListener()
@@ -9996,7 +9997,7 @@ public class Notate
 
         menuBar.add(utilitiesMenu);
 
-        roadmapMenu.setText("Roadmap\n");
+        roadmapMenu.setText(Lang.getInstance().getString("Notate.roadmapMenu.Text"));
         roadmapMenu.setToolTipText("Options for creating a roadmap of the chord progression.");
 
         roadMapThisAnalyze.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_SEMICOLON, 0));
@@ -10049,7 +10050,7 @@ public class Notate
 
         menuBar.add(roadmapMenu);
 
-        improvMenu.setText("Improvise");
+        improvMenu.setText(Lang.getInstance().getString("Notate.improvMenu.Text"));
         improvMenu.setToolTipText("Set the type of auto-improvisation, if any, to be used with play or record. NOTE: The melody may be over-written.");
 
         useImproviseButtonCheckBoxMI.setText("Impro-Visor improvises continuously");
@@ -10187,7 +10188,7 @@ public class Notate
         menuBar.add(improvMenu);
 
         windowMenu.setMnemonic('W');
-        windowMenu.setText("Window");
+        windowMenu.setText(Lang.getInstance().getString("Notate.windowMenu.Text"));
         windowMenu.addMenuListener(new javax.swing.event.MenuListener()
         {
             public void menuSelected(javax.swing.event.MenuEvent evt)
@@ -10259,7 +10260,7 @@ public class Notate
         menuBar.add(notateGrammarMenu);
 
         preferencesMenu.setMnemonic('R');
-        preferencesMenu.setText("Preferences");
+        preferencesMenu.setText(Lang.getInstance().getString("Notate.preferencesMenu.Text"));
         preferencesMenu.setNextFocusableComponent(leadsheetPreferences);
         preferencesMenu.addActionListener(new java.awt.event.ActionListener()
         {
@@ -10351,7 +10352,7 @@ public class Notate
         menuBar.add(preferencesMenu);
 
         helpMenu.setMnemonic('H');
-        helpMenu.setText("Help");
+        helpMenu.setText(Lang.getInstance().getString("Notate.helpMenu.Text"));
         helpMenu.setToolTipText("Open the help dialog.");
         helpMenu.addActionListener(new java.awt.event.ActionListener()
         {
@@ -10398,7 +10399,7 @@ public class Notate
 
         menuBar.add(helpMenu);
 
-        statusMenu.setText("Status:");
+        statusMenu.setText(Lang.getInstance().getString("Notate.statusMenu.Text"));
         menuBar.add(statusMenu);
 
         setJMenuBar(menuBar);
