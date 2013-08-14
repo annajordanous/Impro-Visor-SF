@@ -8371,8 +8371,12 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="E"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Transpose Melody Up Semitone"/>
-                <Property name="toolTipText" type="java.lang.String" value="Transpose the selected melody up one half-step."/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.transposeMelodyUpSemitone.Text&quot;)" type="code"/>
+                </Property>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.transposeMelodyUpSemitone.ToolTipText&quot;)" type="code"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="transposeMelodyUpSemitoneActionPerformed"/>
@@ -8383,8 +8387,12 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Shift+E"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Transpose Chords Up Semitone"/>
-                <Property name="toolTipText" type="java.lang.String" value="Transpose the selected chords up one half-step."/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.transposeChordsUpSemitone.Text&quot;)" type="code"/>
+                </Property>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.transposeChordsUpSemitone.ToolTipText&quot;)" type="code"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="transposeChordsUpSemitoneActionPerformed"/>
@@ -8395,8 +8403,12 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+E"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Transpose Both Up Semitone"/>
-                <Property name="toolTipText" type="java.lang.String" value="Transpose the selected melody and chords up one half-step."/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.transposeBothUpSemitone.Text&quot;)" type="code"/>
+                </Property>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.transposeBothUpSemitone.ToolTipText&quot;)" type="code"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="transposeBothUpSemitoneActionPerformed"/>
@@ -8407,8 +8419,12 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="W"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Transpose Melody Up Harmonically"/>
-                <Property name="toolTipText" type="java.lang.String" value="Transpose the selected melody upward, consistently with the chord/scale."/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.transposeMelodyUpHarmonically.Text&quot;)" type="code"/>
+                </Property>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.transposeMelodyUpHarmonically.ToolTipText&quot;)" type="code"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="transposeMelodyUpHarmonicallyActionPerformed"/>
@@ -8419,8 +8435,12 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="T"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Transpose Melody Up Octave"/>
-                <Property name="toolTipText" type="java.lang.String" value="Transpose the selected melody up one octave."/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.transposeMelodyUpOctave.Text&quot;)" type="code"/>
+                </Property>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.transposeMelodyUpOctave.ToolTipText&quot;)" type="code"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="transposeMelodyUpOctaveActionPerformed"/>
@@ -8431,8 +8451,12 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="D"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Transpose Melody Down Semitone"/>
-                <Property name="toolTipText" type="java.lang.String" value="Transpose the selected melody down one half-step."/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.transposeMelodyDownSemitone.Text&quot;)" type="code"/>
+                </Property>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.transposeMelodyDownSemitone.ToolTipText&quot;)" type="code"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="transposeMelodyDownSemitoneActionPerformed"/>
@@ -8443,8 +8467,12 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Shift+D"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Transpose Chords Down Semitone"/>
-                <Property name="toolTipText" type="java.lang.String" value="Transpose the selected chords down one half-step."/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.transposeChordsDownSemitone.Text&quot;)" type="code"/>
+                </Property>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.transposeChordsDownSemitone.ToolTipText&quot;)" type="code"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="transposeChordsDownSemitoneActionPerformed"/>
@@ -8455,8 +8483,12 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+D"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Transpose Both Down Semitone"/>
-                <Property name="toolTipText" type="java.lang.String" value="Transpose the selected melody and chords down one half-step."/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.transposeBothDownSemitone.Text&quot;)" type="code"/>
+                </Property>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.transposeBothDownSemitone.ToolTipText&quot;)" type="code"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="transposeBothDownSemitoneActionPerformed"/>
@@ -8467,8 +8499,12 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="S"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Transpose Melody Down Harmonically&#xa;"/>
-                <Property name="toolTipText" type="java.lang.String" value="Transpose the selected melody down, consistently with the chord/scale."/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.transposeMelodyDownHarmonically.Text&quot;)" type="code"/>
+                </Property>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.transposeMelodyDownHarmonically.ToolTipText&quot;)" type="code"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="transposeMelodyDownHarmonicallyActionPerformed"/>
@@ -8479,8 +8515,12 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="G"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Transpose Melody Down Octave"/>
-                <Property name="toolTipText" type="java.lang.String" value="Transpose the selected melody down one octave."/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.transposeMelodyDownOctave.Text&quot;)" type="code"/>
+                </Property>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.transposeMelodyDownOctave.ToolTipText&quot;)" type="code"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="transposeMelodyDownOctaveActionPerformed"/>
