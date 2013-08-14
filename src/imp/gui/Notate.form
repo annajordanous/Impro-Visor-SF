@@ -8541,7 +8541,9 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+L"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Perform a Single Layout Adjustment"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.oneAutoMI.Text&quot;)" type="code"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="oneAutoMIActionPerformed"/>
@@ -8549,7 +8551,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="autoAdjustMI">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Continuously Auto-Adjust the Stave Layout"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.autoAdjustMI.Text&quot;)" type="code"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="autoAdjustMIActionPerformed"/>
@@ -8558,7 +8562,9 @@
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="showTitlesMI">
               <Properties>
                 <Property name="selected" type="boolean" value="true"/>
-                <Property name="text" type="java.lang.String" value="Show Leadsheet Title"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.showTitlesMI.Text&quot;)" type="code"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="showTitlesMIActionPerformed"/>
@@ -8567,7 +8573,9 @@
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="showEmptyTitlesMI">
               <Properties>
                 <Property name="selected" type="boolean" value="true"/>
-                <Property name="text" type="java.lang.String" value="Show Empty Title Placeholders"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.showEmptyTitlesMI.Text&quot;)" type="code"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="showEmptyTitlesMIActionPerformed"/>
@@ -8576,7 +8584,9 @@
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="barNumsMI">
               <Properties>
                 <Property name="selected" type="boolean" value="true"/>
-                <Property name="text" type="java.lang.String" value="Show Bar Numbers"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.barNumsMI.Text&quot;)" type="code"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="barNumsMIActionPerformed"/>
@@ -8585,8 +8595,12 @@
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="phrasemarksMI">
               <Properties>
                 <Property name="selected" type="boolean" value="true"/>
-                <Property name="text" type="java.lang.String" value="Show Phrase Marks"/>
-                <Property name="toolTipText" type="java.lang.String" value="Check to show phrase marks on the leadsheet. Phrase marks are used in roadmap analysis."/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.phrasemarksMI.Text&quot;)" type="code"/>
+                </Property>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.phrasemarksMI.ToolTipText&quot;)" type="code"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="phrasemarksMIActionPerformed"/>
@@ -8595,7 +8609,9 @@
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="showBracketsCurrentMeasureMI">
               <Properties>
                 <Property name="selected" type="boolean" value="true"/>
-                <Property name="text" type="java.lang.String" value="Show Brackets on Current Measure"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.showBracketsCurrentMeasureMI.Text&quot;)" type="code"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="showBracketsCurrentMeasureMIActionPerformed"/>
@@ -8603,7 +8619,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="showBracketsAllMeasuresMI">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Show Brackets on All Measures"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.showBracketsAllMeasuresMI.Text&quot;)" type="code"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="showBracketsAllMeasuresMIActionPerformed"/>
@@ -8612,7 +8630,9 @@
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="showConstructionLinesMI">
               <Properties>
                 <Property name="selected" type="boolean" value="true"/>
-                <Property name="text" type="java.lang.String" value="Show Construction Lines and Boxes"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.showConstructionLinesMI.Text&quot;)" type="code"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="showConstructionLinesMIActionPerformed"/>
@@ -8621,8 +8641,12 @@
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="useBeamsMI">
               <Properties>
                 <Property name="selected" type="boolean" value="true"/>
-                <Property name="text" type="java.lang.String" value="Use Beams"/>
-                <Property name="toolTipText" type="java.lang.String" value="Connect notes of same duration with beams where possible."/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.useBeamsMI.Text&quot;)" type="code"/>
+                </Property>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.useBeamsMI.ToolTipText&quot;)" type="code"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="useBeamsMIActionPerformed"/>

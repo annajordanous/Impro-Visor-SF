@@ -9702,7 +9702,7 @@ public class Notate
         viewMenu.setText(Lang.getInstance().getString("Notate.viewMenu.Text"));
 
         oneAutoMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_MASK));
-        oneAutoMI.setText("Perform a Single Layout Adjustment");
+        oneAutoMI.setText(Lang.getInstance().getString("Notate.oneAutoMI.Text"));
         oneAutoMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9712,7 +9712,7 @@ public class Notate
         });
         viewMenu.add(oneAutoMI);
 
-        autoAdjustMI.setText("Continuously Auto-Adjust the Stave Layout");
+        autoAdjustMI.setText(Lang.getInstance().getString("Notate.autoAdjustMI.Text"));
         autoAdjustMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9723,7 +9723,7 @@ public class Notate
         viewMenu.add(autoAdjustMI);
 
         showTitlesMI.setSelected(true);
-        showTitlesMI.setText("Show Leadsheet Title");
+        showTitlesMI.setText(Lang.getInstance().getString("Notate.showTitlesMI.Text"));
         showTitlesMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9734,7 +9734,7 @@ public class Notate
         viewMenu.add(showTitlesMI);
 
         showEmptyTitlesMI.setSelected(true);
-        showEmptyTitlesMI.setText("Show Empty Title Placeholders");
+        showEmptyTitlesMI.setText(Lang.getInstance().getString("Notate.showEmptyTitlesMI.Text"));
         showEmptyTitlesMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9745,7 +9745,7 @@ public class Notate
         viewMenu.add(showEmptyTitlesMI);
 
         barNumsMI.setSelected(true);
-        barNumsMI.setText("Show Bar Numbers");
+        barNumsMI.setText(Lang.getInstance().getString("Notate.barNumsMI.Text"));
         barNumsMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9756,8 +9756,8 @@ public class Notate
         viewMenu.add(barNumsMI);
 
         phrasemarksMI.setSelected(true);
-        phrasemarksMI.setText("Show Phrase Marks");
-        phrasemarksMI.setToolTipText("Check to show phrase marks on the leadsheet. Phrase marks are used in roadmap analysis.");
+        phrasemarksMI.setText(Lang.getInstance().getString("Notate.phrasemarksMI.Text"));
+        phrasemarksMI.setToolTipText(Lang.getInstance().getString("Notate.phrasemarksMI.ToolTipText"));
         phrasemarksMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9768,7 +9768,7 @@ public class Notate
         viewMenu.add(phrasemarksMI);
 
         showBracketsCurrentMeasureMI.setSelected(true);
-        showBracketsCurrentMeasureMI.setText("Show Brackets on Current Measure");
+        showBracketsCurrentMeasureMI.setText(Lang.getInstance().getString("Notate.showBracketsCurrentMeasureMI.Text"));
         showBracketsCurrentMeasureMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9778,7 +9778,7 @@ public class Notate
         });
         viewMenu.add(showBracketsCurrentMeasureMI);
 
-        showBracketsAllMeasuresMI.setText("Show Brackets on All Measures");
+        showBracketsAllMeasuresMI.setText(Lang.getInstance().getString("Notate.showBracketsAllMeasuresMI.Text"));
         showBracketsAllMeasuresMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9789,7 +9789,7 @@ public class Notate
         viewMenu.add(showBracketsAllMeasuresMI);
 
         showConstructionLinesMI.setSelected(true);
-        showConstructionLinesMI.setText("Show Construction Lines and Boxes");
+        showConstructionLinesMI.setText(Lang.getInstance().getString("Notate.showConstructionLinesMI.Text"));
         showConstructionLinesMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9800,8 +9800,8 @@ public class Notate
         viewMenu.add(showConstructionLinesMI);
 
         useBeamsMI.setSelected(true);
-        useBeamsMI.setText("Use Beams");
-        useBeamsMI.setToolTipText("Connect notes of same duration with beams where possible.");
+        useBeamsMI.setText(Lang.getInstance().getString("Notate.useBeamsMI.Text"));
+        useBeamsMI.setToolTipText(Lang.getInstance().getString("Notate.useBeamsMI.ToolTipText"));
         useBeamsMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
