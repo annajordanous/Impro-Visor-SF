@@ -9577,8 +9577,8 @@ public class Notate
         transposeMenu.setText(Lang.getInstance().getString("Notate.transposeMenu.Text"));
 
         transposeMelodyUpSemitone.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, 0));
-        transposeMelodyUpSemitone.setText("Transpose Melody Up Semitone");
-        transposeMelodyUpSemitone.setToolTipText("Transpose the selected melody up one half-step.");
+        transposeMelodyUpSemitone.setText(Lang.getInstance().getString("Notate.transposeMelodyUpSemitone.Text"));
+        transposeMelodyUpSemitone.setToolTipText(Lang.getInstance().getString("Notate.transposeMelodyUpSemitone.ToolTipText"));
         transposeMelodyUpSemitone.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9589,8 +9589,8 @@ public class Notate
         transposeMenu.add(transposeMelodyUpSemitone);
 
         transposeChordsUpSemitone.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.SHIFT_MASK));
-        transposeChordsUpSemitone.setText("Transpose Chords Up Semitone");
-        transposeChordsUpSemitone.setToolTipText("Transpose the selected chords up one half-step.");
+        transposeChordsUpSemitone.setText(Lang.getInstance().getString("Notate.transposeChordsUpSemitone.Text"));
+        transposeChordsUpSemitone.setToolTipText(Lang.getInstance().getString("Notate.transposeChordsUpSemitone.ToolTipText"));
         transposeChordsUpSemitone.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9601,8 +9601,8 @@ public class Notate
         transposeMenu.add(transposeChordsUpSemitone);
 
         transposeBothUpSemitone.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
-        transposeBothUpSemitone.setText("Transpose Both Up Semitone");
-        transposeBothUpSemitone.setToolTipText("Transpose the selected melody and chords up one half-step.");
+        transposeBothUpSemitone.setText(Lang.getInstance().getString("Notate.transposeBothUpSemitone.Text"));
+        transposeBothUpSemitone.setToolTipText(Lang.getInstance().getString("Notate.transposeBothUpSemitone.ToolTipText"));
         transposeBothUpSemitone.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9613,8 +9613,8 @@ public class Notate
         transposeMenu.add(transposeBothUpSemitone);
 
         transposeMelodyUpHarmonically.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_W, 0));
-        transposeMelodyUpHarmonically.setText("Transpose Melody Up Harmonically");
-        transposeMelodyUpHarmonically.setToolTipText("Transpose the selected melody upward, consistently with the chord/scale.");
+        transposeMelodyUpHarmonically.setText(Lang.getInstance().getString("Notate.transposeMelodyUpHarmonically.Text"));
+        transposeMelodyUpHarmonically.setToolTipText(Lang.getInstance().getString("Notate.transposeMelodyUpHarmonically.ToolTipText"));
         transposeMelodyUpHarmonically.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9625,8 +9625,8 @@ public class Notate
         transposeMenu.add(transposeMelodyUpHarmonically);
 
         transposeMelodyUpOctave.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_T, 0));
-        transposeMelodyUpOctave.setText("Transpose Melody Up Octave");
-        transposeMelodyUpOctave.setToolTipText("Transpose the selected melody up one octave.");
+        transposeMelodyUpOctave.setText(Lang.getInstance().getString("Notate.transposeMelodyUpOctave.Text"));
+        transposeMelodyUpOctave.setToolTipText(Lang.getInstance().getString("Notate.transposeMelodyUpOctave.ToolTipText"));
         transposeMelodyUpOctave.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9637,8 +9637,8 @@ public class Notate
         transposeMenu.add(transposeMelodyUpOctave);
 
         transposeMelodyDownSemitone.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, 0));
-        transposeMelodyDownSemitone.setText("Transpose Melody Down Semitone");
-        transposeMelodyDownSemitone.setToolTipText("Transpose the selected melody down one half-step.");
+        transposeMelodyDownSemitone.setText(Lang.getInstance().getString("Notate.transposeMelodyDownSemitone.Text"));
+        transposeMelodyDownSemitone.setToolTipText(Lang.getInstance().getString("Notate.transposeMelodyDownSemitone.ToolTipText"));
         transposeMelodyDownSemitone.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9649,8 +9649,8 @@ public class Notate
         transposeMenu.add(transposeMelodyDownSemitone);
 
         transposeChordsDownSemitone.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.SHIFT_MASK));
-        transposeChordsDownSemitone.setText("Transpose Chords Down Semitone");
-        transposeChordsDownSemitone.setToolTipText("Transpose the selected chords down one half-step.");
+        transposeChordsDownSemitone.setText(Lang.getInstance().getString("Notate.transposeChordsDownSemitone.Text"));
+        transposeChordsDownSemitone.setToolTipText(Lang.getInstance().getString("Notate.transposeChordsDownSemitone.ToolTipText"));
         transposeChordsDownSemitone.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9661,8 +9661,8 @@ public class Notate
         transposeMenu.add(transposeChordsDownSemitone);
 
         transposeBothDownSemitone.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.CTRL_MASK));
-        transposeBothDownSemitone.setText("Transpose Both Down Semitone");
-        transposeBothDownSemitone.setToolTipText("Transpose the selected melody and chords down one half-step.");
+        transposeBothDownSemitone.setText(Lang.getInstance().getString("Notate.transposeBothDownSemitone.Text"));
+        transposeBothDownSemitone.setToolTipText(Lang.getInstance().getString("Notate.transposeBothDownSemitone.ToolTipText"));
         transposeBothDownSemitone.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9673,8 +9673,8 @@ public class Notate
         transposeMenu.add(transposeBothDownSemitone);
 
         transposeMelodyDownHarmonically.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, 0));
-        transposeMelodyDownHarmonically.setText("Transpose Melody Down Harmonically\n");
-        transposeMelodyDownHarmonically.setToolTipText("Transpose the selected melody down, consistently with the chord/scale.");
+        transposeMelodyDownHarmonically.setText(Lang.getInstance().getString("Notate.transposeMelodyDownHarmonically.Text"));
+        transposeMelodyDownHarmonically.setToolTipText(Lang.getInstance().getString("Notate.transposeMelodyDownHarmonically.ToolTipText"));
         transposeMelodyDownHarmonically.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9685,8 +9685,8 @@ public class Notate
         transposeMenu.add(transposeMelodyDownHarmonically);
 
         transposeMelodyDownOctave.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, 0));
-        transposeMelodyDownOctave.setText("Transpose Melody Down Octave");
-        transposeMelodyDownOctave.setToolTipText("Transpose the selected melody down one octave.");
+        transposeMelodyDownOctave.setText(Lang.getInstance().getString("Notate.transposeMelodyDownOctave.Text"));
+        transposeMelodyDownOctave.setToolTipText(Lang.getInstance().getString("Notate.transposeMelodyDownOctave.ToolTipText"));
         transposeMelodyDownOctave.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
