@@ -9190,8 +9190,8 @@ public class Notate
         );
 
         selectAllMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_MASK));
-        selectAllMI.setText("Select All");
-        selectAllMI.setToolTipText("Select all notes and chords on the sheet.");
+        selectAllMI.setText(Lang.getInstance().getString("Notate.selectAllMI.Text"));
+        selectAllMI.setToolTipText(Lang.getInstance().getString("Notate.selectAllMI.ToolTipText"));
         selectAllMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9204,8 +9204,8 @@ public class Notate
 
         undoMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, 0));
         undoMI.setMnemonic('u');
-        undoMI.setText("Undo");
-        undoMI.setToolTipText("Undo the most recent undoable action.");
+        undoMI.setText(Lang.getInstance().getString("Notate.undoMI.Text"));
+        undoMI.setToolTipText(Lang.getInstance().getString("Notate.undoMI.ToolTipText"));
         undoMI.setEnabled(false);
         undoMI.addActionListener(new java.awt.event.ActionListener()
         {
@@ -9217,8 +9217,8 @@ public class Notate
         editMenu.add(undoMI);
 
         redoMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Y, 0));
-        redoMI.setText("Redo");
-        redoMI.setToolTipText("Redo the most recent action that was undone.");
+        redoMI.setText(Lang.getInstance().getString("Notate.redoMI.Text"));
+        redoMI.setToolTipText(Lang.getInstance().getString("Notate.redoMI.ToolTipText"));
         redoMI.setEnabled(false);
         redoMI.addActionListener(new java.awt.event.ActionListener()
         {
@@ -9231,8 +9231,8 @@ public class Notate
         editMenu.add(jSeparator7);
 
         cutMelodyMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, 0));
-        cutMelodyMI.setText("Cut Melody");
-        cutMelodyMI.setToolTipText("Cut the selected melody (saves in clipboard).");
+        cutMelodyMI.setText(Lang.getInstance().getString("Notate.cutMelodyMI.Text"));
+        cutMelodyMI.setToolTipText(Lang.getInstance().getString("Notate.cutMelodyMI.ToolTipText"));
         cutMelodyMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9243,8 +9243,8 @@ public class Notate
         editMenu.add(cutMelodyMI);
 
         cutChordsMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.SHIFT_MASK));
-        cutChordsMI.setText("Cut Chords");
-        cutChordsMI.setToolTipText("Cut the selected  chords (saves in clipboard).");
+        cutChordsMI.setText(Lang.getInstance().getString("Notate.cutChordsMI.Text"));
+        cutChordsMI.setToolTipText(Lang.getInstance().getString("Notate.cutChordsMI.ToolTipText"));
         cutChordsMI.setEnabled(false);
         cutChordsMI.addActionListener(new java.awt.event.ActionListener()
         {
@@ -9256,8 +9256,8 @@ public class Notate
         editMenu.add(cutChordsMI);
 
         cutBothMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_MASK));
-        cutBothMI.setText("Cut Melody and Chords");
-        cutBothMI.setToolTipText("Cut the selected melody and chords (saves in clipboard).");
+        cutBothMI.setText(Lang.getInstance().getString("Notate.cutBothMI.Text"));
+        cutBothMI.setToolTipText(Lang.getInstance().getString("Notate.cutBothMI.ToolTipText"));
         cutBothMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9268,7 +9268,7 @@ public class Notate
         editMenu.add(cutBothMI);
 
         copyMelodyMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, 0));
-        copyMelodyMI.setLabel("Copy Melody");
+        copyMelodyMI.setText(Lang.getInstance().getString("Notate.copyMelodyMI.Label"));
         copyMelodyMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9279,8 +9279,8 @@ public class Notate
         editMenu.add(copyMelodyMI);
 
         copyChordsMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.SHIFT_MASK));
-        copyChordsMI.setText("Copy Chords");
-        copyChordsMI.setToolTipText("Copy chords to clipboard.");
+        copyChordsMI.setText(Lang.getInstance().getString("Notate.copyChordsMI.Text"));
+        copyChordsMI.setToolTipText(Lang.getInstance().getString("Notate.copyChordsMI.ToolTipText"));
         copyChordsMI.setEnabled(false);
         copyChordsMI.addActionListener(new java.awt.event.ActionListener()
         {
@@ -9292,8 +9292,8 @@ public class Notate
         editMenu.add(copyChordsMI);
 
         copyBothMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_MASK));
-        copyBothMI.setText("Copy Melody and Chords");
-        copyBothMI.setToolTipText("Copy melody and chords to clipboard.");
+        copyBothMI.setText(Lang.getInstance().getString("Notate.copyBothMI.Text"));
+        copyBothMI.setToolTipText(Lang.getInstance().getString("Notate.copyBothMI.ToolTipText"));
         copyBothMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9304,8 +9304,8 @@ public class Notate
         editMenu.add(copyBothMI);
 
         pasteMelodyMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, 0));
-        pasteMelodyMI.setText("Paste Melody");
-        pasteMelodyMI.setToolTipText("Paste melody from clipboard and selected grid line.");
+        pasteMelodyMI.setText(Lang.getInstance().getString("Notate.pasteMelodyMI.Text"));
+        pasteMelodyMI.setToolTipText(Lang.getInstance().getString("Notate.pasteMelodyMI.ToolTipText"));
         pasteMelodyMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9316,7 +9316,7 @@ public class Notate
         editMenu.add(pasteMelodyMI);
 
         pasteChordsMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.SHIFT_MASK));
-        pasteChordsMI.setText("Paste Chords");
+        pasteChordsMI.setText(Lang.getInstance().getString("Notate.pasteChordsMI.Text"));
         pasteChordsMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9327,8 +9327,8 @@ public class Notate
         editMenu.add(pasteChordsMI);
 
         pasteBothMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.CTRL_MASK));
-        pasteBothMI.setToolTipText("Paste chords and melody from clipboard and selected grid line.");
-        pasteBothMI.setLabel("Paste Melody and Chords");
+        pasteBothMI.setText(Lang.getInstance().getString("Notate.pasteBothMI.Label"));
+        pasteBothMI.setToolTipText(Lang.getInstance().getString("Notate.pasteBothMI.ToolTipText"));
         pasteBothMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9339,7 +9339,7 @@ public class Notate
         editMenu.add(pasteBothMI);
 
         pasteOverMI.setSelected(true);
-        pasteOverMI.setText("Always Overwrite when Pasting");
+        pasteOverMI.setText(Lang.getInstance().getString("Notate.pasteOverMI.Text"));
         pasteOverMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9351,7 +9351,7 @@ public class Notate
         editMenu.add(jSeparator16);
 
         enterTextMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_COMMA, 0));
-        enterTextMI.setText("Enter Text");
+        enterTextMI.setText(Lang.getInstance().getString("Notate.enterTextMI.Text"));
         enterTextMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9362,8 +9362,8 @@ public class Notate
         editMenu.add(enterTextMI);
 
         enterMelodyMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_B, 0));
-        enterMelodyMI.setText("Enter Melody from Text\n");
-        enterMelodyMI.setToolTipText("Enter melody currently in the text entry window.");
+        enterMelodyMI.setText(Lang.getInstance().getString("Notate.enterMelodyMI.Text"));
+        enterMelodyMI.setToolTipText(Lang.getInstance().getString("Notate.enterMelodyMI.ToolTipText"));
         enterMelodyMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9374,8 +9374,8 @@ public class Notate
         editMenu.add(enterMelodyMI);
 
         enterChordsMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_B, java.awt.event.InputEvent.SHIFT_MASK));
-        enterChordsMI.setText("Enter Chords from Text\n");
-        enterChordsMI.setToolTipText("Enter chords currently in text entry window.");
+        enterChordsMI.setText(Lang.getInstance().getString("Notate.enterChordsMI.Text"));
+        enterChordsMI.setToolTipText(Lang.getInstance().getString("Notate.enterChordsMI.ToolTipText"));
         enterChordsMI.setActionCommand("Enter Chords2");
         enterChordsMI.addActionListener(new java.awt.event.ActionListener()
         {
@@ -9387,8 +9387,8 @@ public class Notate
         editMenu.add(enterChordsMI);
 
         enterBothMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_B, java.awt.event.InputEvent.CTRL_MASK));
-        enterBothMI.setText("Enter Melody and Chords from Text\n");
-        enterBothMI.setToolTipText("Enter chords and melody currently in the text entry window.");
+        enterBothMI.setText(Lang.getInstance().getString("Notate.enterBothMI.Text"));
+        enterBothMI.setToolTipText(Lang.getInstance().getString("Notate.enterBothMI.ToolTipText"));
         enterBothMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9400,8 +9400,8 @@ public class Notate
         editMenu.add(jSeparator13);
 
         reverseMelody.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_SLASH, 0));
-        reverseMelody.setText("Reverse selected melody");
-        reverseMelody.setToolTipText("Reverse the notes in the selected melody.");
+        reverseMelody.setText(Lang.getInstance().getString("Notate.reverseMelody.Text"));
+        reverseMelody.setToolTipText(Lang.getInstance().getString("Notate.reverseMelody.ToolTipText"));
         reverseMelody.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9412,8 +9412,8 @@ public class Notate
         editMenu.add(reverseMelody);
 
         invertMelody.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_BACK_SLASH, 0));
-        invertMelody.setText("Invert selected melody");
-        invertMelody.setToolTipText("Invert the notes in the selected melody.");
+        invertMelody.setText(Lang.getInstance().getString("Notate.invertMelody.Text"));
+        invertMelody.setToolTipText(Lang.getInstance().getString("Notate.invertMelody.ToolTipText"));
         invertMelody.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9424,7 +9424,7 @@ public class Notate
         editMenu.add(invertMelody);
 
         expandMelodyBy2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_2, java.awt.event.InputEvent.SHIFT_MASK));
-        expandMelodyBy2.setText("Expand melody by 2");
+        expandMelodyBy2.setText(Lang.getInstance().getString("Notate.expandMelodyBy2.Text"));
         expandMelodyBy2.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9435,7 +9435,7 @@ public class Notate
         editMenu.add(expandMelodyBy2);
 
         expandMelodyBy3.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_3, java.awt.event.InputEvent.SHIFT_MASK));
-        expandMelodyBy3.setText("Expand melody by 3");
+        expandMelodyBy3.setText(Lang.getInstance().getString("Notate.expandMelodyBy3.Text"));
         expandMelodyBy3.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9446,7 +9446,7 @@ public class Notate
         editMenu.add(expandMelodyBy3);
 
         contractMelodyBy2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_2, java.awt.event.InputEvent.CTRL_MASK));
-        contractMelodyBy2.setText("Contract melody by 2");
+        contractMelodyBy2.setText(Lang.getInstance().getString("Notate.contractMelodyBy2.Text"));
         contractMelodyBy2.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9457,7 +9457,7 @@ public class Notate
         editMenu.add(contractMelodyBy2);
 
         contractMelodyBy3.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_3, java.awt.event.InputEvent.CTRL_MASK));
-        contractMelodyBy3.setText("Contract melody by 3");
+        contractMelodyBy3.setText(Lang.getInstance().getString("Notate.contractMelodyBy3.Text"));
         contractMelodyBy3.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9469,8 +9469,8 @@ public class Notate
         editMenu.add(jSeparator14);
 
         copyMelodySelectionToTextWindow.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_J, 0));
-        copyMelodySelectionToTextWindow.setText("Copy Melody to Text Window");
-        copyMelodySelectionToTextWindow.setToolTipText("Copy the melody in the selection to text window.");
+        copyMelodySelectionToTextWindow.setText(Lang.getInstance().getString("Notate.copyMelodySelectionToTextWindow.Text"));
+        copyMelodySelectionToTextWindow.setToolTipText(Lang.getInstance().getString("Notate.copyMelodySelectionToTextWindow.ToolTipText"));
         copyMelodySelectionToTextWindow.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9481,8 +9481,8 @@ public class Notate
         editMenu.add(copyMelodySelectionToTextWindow);
 
         copyChordSelectionToTextWindow.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_J, java.awt.event.InputEvent.SHIFT_MASK));
-        copyChordSelectionToTextWindow.setText("Copy Chords to Text Window");
-        copyChordSelectionToTextWindow.setToolTipText("Copy the chords in selection to text window.");
+        copyChordSelectionToTextWindow.setText(Lang.getInstance().getString("Notate.copyChordSelectionToTextWindow.Text"));
+        copyChordSelectionToTextWindow.setToolTipText(Lang.getInstance().getString("Notate.copyChordSelectionToTextWindow.ToolTipText"));
         copyChordSelectionToTextWindow.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9493,8 +9493,8 @@ public class Notate
         editMenu.add(copyChordSelectionToTextWindow);
 
         copyBothSelectionToTextWindow.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_J, java.awt.event.InputEvent.CTRL_MASK));
-        copyBothSelectionToTextWindow.setText("Copy Selection to Text Window");
-        copyBothSelectionToTextWindow.setToolTipText("Copy the selection to text window.");
+        copyBothSelectionToTextWindow.setText(Lang.getInstance().getString("Notate.copyBothSelectionToTextWindow.Text"));
+        copyBothSelectionToTextWindow.setToolTipText(Lang.getInstance().getString("Notate.copyBothSelectionToTextWindow.ToolTipText"));
         copyBothSelectionToTextWindow.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9505,8 +9505,8 @@ public class Notate
         editMenu.add(copyBothSelectionToTextWindow);
 
         saveSelectionAsLick.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, 0));
-        saveSelectionAsLick.setText("Save Selection as Lick, Cell, Idiom, or Quote");
-        saveSelectionAsLick.setToolTipText("Save the selection as a lick.\n");
+        saveSelectionAsLick.setText(Lang.getInstance().getString("Notate.saveSelectionAsLick.Text"));
+        saveSelectionAsLick.setToolTipText(Lang.getInstance().getString("Notate.saveSelectionAsLick.ToolTipText"));
         saveSelectionAsLick.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9517,8 +9517,8 @@ public class Notate
         editMenu.add(saveSelectionAsLick);
 
         generateLickInSelection.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.CTRL_MASK));
-        generateLickInSelection.setText("Generate Lick in Selection");
-        generateLickInSelection.setToolTipText("Save the selection as a lick.\n");
+        generateLickInSelection.setText(Lang.getInstance().getString("Notate.generateLickInSelection.Text"));
+        generateLickInSelection.setToolTipText(Lang.getInstance().getString("Notate.generateLickInSelection.ToolTipText"));
         generateLickInSelection.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9530,7 +9530,7 @@ public class Notate
         editMenu.add(jSeparator21);
 
         insertChorusTabMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_T, java.awt.event.InputEvent.CTRL_MASK));
-        insertChorusTabMI.setText("Insert New Chorus Tab");
+        insertChorusTabMI.setText(Lang.getInstance().getString("Notate.insertChorusTabMI.Text"));
         insertChorusTabMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9540,7 +9540,7 @@ public class Notate
         });
         editMenu.add(insertChorusTabMI);
 
-        insertRestMeasure.setText("Insert a Measure of Rest");
+        insertRestMeasure.setText(Lang.getInstance().getString("Notate.insertRestMeasure.Text"));
         insertRestMeasure.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9562,7 +9562,7 @@ public class Notate
         editMenu.add(addRestMI);
 
         resolvePitches.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.SHIFT_MASK));
-        resolvePitches.setLabel("Rectify Melody to Harmony");
+        resolvePitches.setText(Lang.getInstance().getString("Notate.resolvePitches.Label"));
         resolvePitches.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -21241,7 +21241,7 @@ public void addExtEntryTFText(String text)
     String s = extEntryTF.getText();
     if (s.equals(""))
     {
-        extEntryTF.setText(Lang.getInstance().getString("Notate.extEntryTF.Text"));
+        extEntryTF.setText(Lang.getInstance().getString("Notate.textEntryTF.Text"));
     }
     else
     {
@@ -21255,7 +21255,7 @@ public void addExtEntryTFText(String text)
 public void clearVoicingEntryTF()
 {
   voicingEntryTF.setText(Lang.getInstance().getString("Notate.voicingEntryTF.Text"));
-  extEntryTF.setText(Lang.getInstance().getString("Notate.extEntryTF.Text"));
+  extEntryTF.setText(Lang.getInstance().getString("Notate.textEntry.Text"));
 
 }
 
