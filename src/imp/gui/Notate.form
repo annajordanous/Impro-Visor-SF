@@ -10290,8 +10290,12 @@
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Arial" size="11" style="0"/>
                     </Property>
-                    <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;center&gt;Loop&lt;/center&gt;&lt;/html&gt;"/>
-                    <Property name="toolTipText" type="java.lang.String" value="Toggle playback looping."/>
+                    <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="Lang.getInstance().getString(&quot;Notate.loopButton.Text.Loop&quot;)" type="code"/>
+                    </Property>
+                    <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="Lang.getInstance().getString(&quot;Notate.loopButton.ToolTipText&quot;)" type="code"/>
+                    </Property>
                     <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                       <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                         <BevelBorder/>
@@ -10326,7 +10330,9 @@
                     </Property>
                     <Property name="horizontalAlignment" type="int" value="4"/>
                     <Property name="text" type="java.lang.String" value="0"/>
-                    <Property name="toolTipText" type="java.lang.String" value="Loop  on playback specified number of times (0 means loop forever; press k or stop button to stop)."/>
+                    <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="Lang.getInstance().getString(&quot;Notate.loopSet.ToolTipText&quot;)" type="code"/>
+                    </Property>
                     <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                       <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
                         <EtchetBorder/>
@@ -10368,7 +10374,9 @@
                     </TitledBorder>
                   </Border>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" value="Check to count in two measures before tune is played."/>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.countInPanel.ToolTipText&quot;)" type="code"/>
+                </Property>
                 <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                   <Dimension value="[40, 42]"/>
                 </Property>
@@ -10411,7 +10419,9 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/imp/gui/graphics/toolbar/play.gif"/>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" value="Play the entire leadsheet, starting with the first chorus.&#xa;To play just the current chorus, select the first beat of that chorus and press Shift-Enter."/>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.playBtn.ToolTipText&quot;)" type="code"/>
+                </Property>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                     <BevelBorder/>
@@ -10436,7 +10446,9 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/imp/gui/graphics/toolbar/pause.gif"/>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" value="Pause or resume playback."/>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.pauseBtn.ToolTipText&quot;)" type="code"/>
+                </Property>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                     <BevelBorder/>
@@ -10462,7 +10474,9 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/imp/gui/graphics/toolbar/stop.gif"/>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" value="Stop playback."/>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.styleBtn.ToolTipText&quot;)" type="code"/>
+                </Property>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                     <BevelBorder/>
@@ -10488,7 +10502,9 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/imp/gui/graphics/toolbar/record.gif"/>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" value="Record from audio or MIDI source. Caution: This is UNDER CONSTRUCTION. Your patience is appreciated."/>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.recordBtn.ToolTipText&quot;)" type="code"/>
+                </Property>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                     <BevelBorder/>
@@ -10516,8 +10532,12 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Arial" size="10" style="0"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;center&gt;Step&lt;br&gt;Input&lt;/center&gt;&lt;/html&gt;"/>
-                <Property name="toolTipText" type="java.lang.String" value="Step record from MIDI source. Each step uses the current slot showing and advances to the next. Use f and a keys to move forward and backward among slots, if desired, for making corrections."/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.stepInputBtn.Text.Step&quot;)" type="code"/>
+                </Property>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.stepInputBtn.ToolTipText&quot;)" type="code"/>
+                </Property>
                 <Property name="actionCommand" type="java.lang.String" value=""/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
@@ -10544,7 +10564,9 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/imp/gui/graphics/icons/playReversedGreen.gif"/>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" value="Move back to the previous chord (without playing).&#xa;"/>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.chordStepBackButton.ToolTipText&quot;)" type="code"/>
+                </Property>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                     <BevelBorder/>
@@ -10572,7 +10594,9 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/imp/gui/graphics/icons/replayGreen.gif"/>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" value="Replays chord."/>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.chordReplayButton.ToolTipText&quot;)" type="code"/>
+                </Property>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                     <BevelBorder/>
@@ -10597,7 +10621,9 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/imp/gui/graphics/icons/playGreen.gif"/>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" value="Move to, and play, the next chord."/>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.chordStepForwardButton.ToolTipText&quot;)" type="code"/>
+                </Property>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                     <BevelBorder/>
@@ -10798,7 +10824,9 @@
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                       <Image iconType="3" name="/imp/gui/graphics/toolbar/mixer.gif"/>
                     </Property>
-                    <Property name="toolTipText" type="java.lang.String" value="Open Volume Mixer"/>
+                    <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="Lang.getInstance().getString(&quot;Notate.mixerBtn.ToolTipText&quot;)" type="code"/>
+                    </Property>
                     <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                       <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                         <BevelBorder/>
@@ -10832,7 +10860,8 @@
               <Properties>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                    <TitledBorder justification="2" title="Tempo (Beats/Minute) ">
+                    <TitledBorder justification="2" title="&lt;User Code&gt;">
+                      <Connection PropertyName="titleX" code="Lang.getInstance().getString(&quot;Notate.tempoLabel.Text&quot;)" type="code"/>
                       <Font PropertyName="font" name="Dialog" size="10" style="0"/>
                     </TitledBorder>
                   </Border>
@@ -10857,7 +10886,9 @@
                       <Font name="Dialog" size="12" style="1"/>
                     </Property>
                     <Property name="horizontalAlignment" type="int" value="4"/>
-                    <Property name="toolTipText" type="java.lang.String" value="Set the tempo for the sheet in beats per minute."/>
+                    <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="Lang.getInstance().getString(&quot;Notate.tempoSet.ToolTipText&quot;)" type="code"/>
+                    </Property>
                     <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                       <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
                         <EtchetBorder/>
@@ -10914,7 +10945,9 @@
             </Container>
             <Component class="javax.swing.JSpinner" name="transposeSpinner">
               <Properties>
-                <Property name="toolTipText" type="java.lang.String" value="Transposes the playback the specified number of half steps (e.g. use -2 for Bb instruments, +3 for Eb)."/>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.transposeSpinner.ToolTipText&quot;)" type="code"/>
+                </Property>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
                     <TitledBorder justification="2" title="Transpose">
@@ -10948,7 +10981,9 @@
                     </TitledBorder>
                   </Border>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" value="Set the number of measures in one chorus."/>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.partBarsPanel.ToolTipText&quot;)" type="code"/>
+                </Property>
                 <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                   <Dimension value="[50, 50]"/>
                 </Property>
@@ -10969,7 +11004,9 @@
                       <Font name="Dialog" size="12" style="1"/>
                     </Property>
                     <Property name="horizontalAlignment" type="int" value="0"/>
-                    <Property name="toolTipText" type="java.lang.String" value="Set the number of bars in one chorus (the same for all choruses)"/>
+                    <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="Lang.getInstance().getString(&quot;Notate.partBarsTF1.ToolTipText&quot;)" type="code"/>
+                    </Property>
                     <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                       <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
                         <EtchetBorder/>
@@ -11006,7 +11043,8 @@
               <Properties>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                    <TitledBorder justification="2" title="Delay">
+                    <TitledBorder justification="2" title="&lt;User Code&gt;">
+                      <Connection PropertyName="titleX" code="Lang.getInstance().getString(&quot;Notate.trackerDelayLabel.Text&quot;)" type="code"/>
                       <Font PropertyName="font" name="Dialog" size="10" style="0"/>
                     </TitledBorder>
                   </Border>
@@ -11032,7 +11070,9 @@
                       <Font name="Dialog" size="12" style="1"/>
                     </Property>
                     <Property name="horizontalAlignment" type="int" value="4"/>
-                    <Property name="toolTipText" type="java.lang.String" value="Set the delay between the tracker and playback."/>
+                    <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="Lang.getInstance().getString(&quot;Notate.trackerDelayTextField2.ToolTipText&quot;)" type="code"/>
+                    </Property>
                     <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                       <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
                         <EtchetBorder/>
@@ -11067,7 +11107,9 @@
             </Container>
             <Component class="javax.swing.JSpinner" name="parallaxSpinner">
               <Properties>
-                <Property name="toolTipText" type="java.lang.String" value="Sets the vertical parallax for mouse clicks on staves."/>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.parallaxSpinner.ToolTipText&quot;)" type="code"/>
+                </Property>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
                     <TitledBorder title="Parallax">
@@ -11095,8 +11137,12 @@
                   <Font name="Arial" size="11" style="0"/>
                 </Property>
                 <Property name="selected" type="boolean" value="true"/>
-                <Property name="text" type="java.lang.String" value="&lt;html&gt;&#xa;&lt;center&gt;&#xa;Early&#xa;&lt;br&gt;&#xa;Scroll&#xa;&lt;/center&gt;&#xa;&lt;/html&gt;&#xa;"/>
-                <Property name="toolTipText" type="java.lang.String" value="Causes the staff display to scroll to the top earlier."/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.earlyScrollBtn.Text.Early&quot;)" type="code"/>
+                </Property>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.earlyScrollBtn.ToolTipText&quot;)" type="code"/>
+                </Property>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                     <BevelBorder/>
@@ -11142,7 +11188,9 @@
           <SubComponents>
             <Component class="javax.swing.JLabel" name="textEntryLabel">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Textual Entry "/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.textEntry.Text&quot;)" type="code"/>
+                </Property>
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="textEntry">
@@ -11150,7 +11198,9 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Dialog" size="14" style="0"/>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" value="Enter chords or melody in leadsheet notation."/>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.textEntryToolBar.ToolTipText&quot;)" type="code"/>
+                </Property>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
                     <EtchetBorder/>
@@ -11173,8 +11223,12 @@
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="33" green="ff" red="ff" type="rgb"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Clear"/>
-                <Property name="toolTipText" type="java.lang.String" value="Clear the textual entry field."/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.clearButton.Text&quot;)" type="code"/>
+                </Property>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.clearButton.ToolTipText&quot;)" type="code"/>
+                </Property>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                     <BevelBorder/>

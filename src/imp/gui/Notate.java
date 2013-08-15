@@ -8184,8 +8184,8 @@ public class Notate
 
         loopButton.setBackground(new java.awt.Color(0, 255, 0));
         loopButton.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
-        loopButton.setText("<html><center>Loop</center></html>");
-        loopButton.setToolTipText("Toggle playback looping.");
+        loopButton.setText(Lang.getInstance().getString("Notate.loopButton.Text.Loop"));
+        loopButton.setToolTipText(Lang.getInstance().getString("Notate.loopButton.ToolTipText"));
         loopButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         loopButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         loopButton.setMaximumSize(new java.awt.Dimension(30, 20));
@@ -8215,7 +8215,7 @@ public class Notate
         loopSet.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         loopSet.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         loopSet.setText("0");
-        loopSet.setToolTipText("Loop  on playback specified number of times (0 means loop forever; press k or stop button to stop).");
+        loopSet.setToolTipText(Lang.getInstance().getString("Notate.loopSet.ToolTipText"));
         loopSet.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         loopSet.setMaximumSize(new java.awt.Dimension(30, 20));
         loopSet.setMinimumSize(new java.awt.Dimension(24, 20));
@@ -8270,7 +8270,7 @@ public class Notate
         playToolBar.add(loopPanel);
 
         countInPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Count", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.ABOVE_TOP, new java.awt.Font("Dialog", 0, 10))); // NOI18N
-        countInPanel.setToolTipText("Check to count in two measures before tune is played.");
+        countInPanel.setToolTipText(Lang.getInstance().getString("Notate.countInPanel.ToolTipText"));
         countInPanel.setMaximumSize(new java.awt.Dimension(40, 42));
         countInPanel.setMinimumSize(new java.awt.Dimension(40, 42));
         countInPanel.setPreferredSize(new java.awt.Dimension(40, 42));
@@ -8292,7 +8292,7 @@ public class Notate
         playToolBar.add(countInPanel);
 
         playBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/play.gif"))); // NOI18N
-        playBtn.setToolTipText("Play the entire leadsheet, starting with the first chorus.\nTo play just the current chorus, select the first beat of that chorus and press Shift-Enter.");
+        playBtn.setToolTipText(Lang.getInstance().getString("Notate.playBtn.ToolTipText"));
         playBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         playBtn.setMaximumSize(new java.awt.Dimension(30, 30));
         playBtn.setMinimumSize(new java.awt.Dimension(30, 30));
@@ -8307,7 +8307,7 @@ public class Notate
         playToolBar.add(playBtn);
 
         pauseBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/pause.gif"))); // NOI18N
-        pauseBtn.setToolTipText("Pause or resume playback.");
+        pauseBtn.setToolTipText(Lang.getInstance().getString("Notate.pauseBtn.ToolTipText"));
         pauseBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         pauseBtn.setEnabled(false);
         pauseBtn.setMaximumSize(new java.awt.Dimension(30, 30));
@@ -8323,7 +8323,7 @@ public class Notate
         playToolBar.add(pauseBtn);
 
         stopBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/stop.gif"))); // NOI18N
-        stopBtn.setToolTipText("Stop playback.");
+        stopBtn.setToolTipText(Lang.getInstance().getString("Notate.styleBtn.ToolTipText"));
         stopBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         stopBtn.setEnabled(false);
         stopBtn.setMaximumSize(new java.awt.Dimension(30, 30));
@@ -8339,7 +8339,7 @@ public class Notate
         playToolBar.add(stopBtn);
 
         recordBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/record.gif"))); // NOI18N
-        recordBtn.setToolTipText("Record from audio or MIDI source. Caution: This is UNDER CONSTRUCTION. Your patience is appreciated.");
+        recordBtn.setToolTipText(Lang.getInstance().getString("Notate.recordBtn.ToolTipText"));
         recordBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         recordBtn.setMaximumSize(new java.awt.Dimension(30, 30));
         recordBtn.setMinimumSize(new java.awt.Dimension(30, 30));
@@ -8355,8 +8355,8 @@ public class Notate
 
         stepInputBtn.setBackground(new java.awt.Color(0, 255, 0));
         stepInputBtn.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
-        stepInputBtn.setText("<html><center>Step<br>Input</center></html>");
-        stepInputBtn.setToolTipText("Step record from MIDI source. Each step uses the current slot showing and advances to the next. Use f and a keys to move forward and backward among slots, if desired, for making corrections.");
+        stepInputBtn.setText(Lang.getInstance().getString("Notate.stepInputBtn.Text.Step"));
+        stepInputBtn.setToolTipText(Lang.getInstance().getString("Notate.stepInputBtn.ToolTipText"));
         stepInputBtn.setActionCommand("");
         stepInputBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         stepInputBtn.setMaximumSize(new java.awt.Dimension(30, 30));
@@ -8373,7 +8373,7 @@ public class Notate
         playToolBar.add(stepInputBtn);
 
         chordStepBackButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/icons/playReversedGreen.gif"))); // NOI18N
-        chordStepBackButton.setToolTipText("Move back to the previous chord (without playing).\n");
+        chordStepBackButton.setToolTipText(Lang.getInstance().getString("Notate.chordStepBackButton.ToolTipText"));
         chordStepBackButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         chordStepBackButton.setFocusable(false);
         chordStepBackButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -8391,7 +8391,7 @@ public class Notate
         playToolBar.add(chordStepBackButton);
 
         chordReplayButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/icons/replayGreen.gif"))); // NOI18N
-        chordReplayButton.setToolTipText("Replays chord.");
+        chordReplayButton.setToolTipText(Lang.getInstance().getString("Notate.chordReplayButton.ToolTipText"));
         chordReplayButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         chordReplayButton.setFocusable(false);
         chordReplayButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -8408,7 +8408,7 @@ public class Notate
         playToolBar.add(chordReplayButton);
 
         chordStepForwardButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/icons/playGreen.gif"))); // NOI18N
-        chordStepForwardButton.setToolTipText("Move to, and play, the next chord.");
+        chordStepForwardButton.setToolTipText(Lang.getInstance().getString("Notate.chordStepForwardButton.ToolTipText"));
         chordStepForwardButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         chordStepForwardButton.setFocusable(false);
         chordStepForwardButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -8530,7 +8530,7 @@ public class Notate
         masterVolumePanel.add(allVolumeToolBarSlider, gridBagConstraints);
 
         mixerBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/mixer.gif"))); // NOI18N
-        mixerBtn.setToolTipText("Open Volume Mixer");
+        mixerBtn.setToolTipText(Lang.getInstance().getString("Notate.mixerBtn.ToolTipText"));
         mixerBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         mixerBtn.setFocusable(false);
         mixerBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -8552,7 +8552,7 @@ public class Notate
 
         playToolBar.add(masterVolumePanel);
 
-        tempoPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Tempo (Beats/Minute) ", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 10))); // NOI18N
+        tempoPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, Lang.getInstance().getString("Notate.tempoLabel.Text"), javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 10))); // NOI18N
         tempoPanel.setMaximumSize(new java.awt.Dimension(160, 50));
         tempoPanel.setMinimumSize(new java.awt.Dimension(120, 50));
         tempoPanel.setOpaque(false);
@@ -8561,7 +8561,7 @@ public class Notate
 
         tempoSet.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         tempoSet.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        tempoSet.setToolTipText("Set the tempo for the sheet in beats per minute.");
+        tempoSet.setToolTipText(Lang.getInstance().getString("Notate.tempoSet.ToolTipText"));
         tempoSet.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         tempoSet.setMaximumSize(new java.awt.Dimension(40, 20));
         tempoSet.setMinimumSize(new java.awt.Dimension(30, 20));
@@ -8624,7 +8624,7 @@ public class Notate
 
         playToolBar.add(tempoPanel);
 
-        transposeSpinner.setToolTipText("Transposes the playback the specified number of half steps (e.g. use -2 for Bb instruments, +3 for Eb).");
+        transposeSpinner.setToolTipText(Lang.getInstance().getString("Notate.transposeSpinner.ToolTipText"));
         transposeSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Transpose", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 10))); // NOI18N
         transposeSpinner.setMaximumSize(new java.awt.Dimension(65, 45));
         transposeSpinner.setMinimumSize(new java.awt.Dimension(65, 45));
@@ -8640,7 +8640,7 @@ public class Notate
         playToolBar.add(transposeSpinner);
 
         partBarsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Bars", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 10))); // NOI18N
-        partBarsPanel.setToolTipText("Set the number of measures in one chorus.");
+        partBarsPanel.setToolTipText(Lang.getInstance().getString("Notate.partBarsPanel.ToolTipText"));
         partBarsPanel.setMaximumSize(new java.awt.Dimension(50, 50));
         partBarsPanel.setMinimumSize(new java.awt.Dimension(40, 50));
         partBarsPanel.setOpaque(false);
@@ -8649,7 +8649,7 @@ public class Notate
 
         partBarsTF1.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         partBarsTF1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        partBarsTF1.setToolTipText("Set the number of bars in one chorus (the same for all choruses)");
+        partBarsTF1.setToolTipText(Lang.getInstance().getString("Notate.partBarsTF1.ToolTipText"));
         partBarsTF1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         partBarsTF1.setMaximumSize(new java.awt.Dimension(45, 15));
         partBarsTF1.setMinimumSize(new java.awt.Dimension(30, 15));
@@ -8698,7 +8698,7 @@ public class Notate
 
         playToolBar.add(partBarsPanel);
 
-        trackerDelayPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Delay", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 10))); // NOI18N
+        trackerDelayPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, Lang.getInstance().getString("Notate.trackerDelayLabel.Text"), javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 10))); // NOI18N
         trackerDelayPanel.setMaximumSize(new java.awt.Dimension(50, 50));
         trackerDelayPanel.setMinimumSize(new java.awt.Dimension(40, 50));
         trackerDelayPanel.setOpaque(false);
@@ -8708,7 +8708,7 @@ public class Notate
 
         trackerDelayTextField2.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         trackerDelayTextField2.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        trackerDelayTextField2.setToolTipText("Set the delay between the tracker and playback.");
+        trackerDelayTextField2.setToolTipText(Lang.getInstance().getString("Notate.trackerDelayTextField2.ToolTipText"));
         trackerDelayTextField2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         trackerDelayTextField2.setMaximumSize(new java.awt.Dimension(40, 20));
         trackerDelayTextField2.setMinimumSize(new java.awt.Dimension(30, 20));
@@ -8757,7 +8757,7 @@ public class Notate
 
         playToolBar.add(trackerDelayPanel);
 
-        parallaxSpinner.setToolTipText("Sets the vertical parallax for mouse clicks on staves.");
+        parallaxSpinner.setToolTipText(Lang.getInstance().getString("Notate.parallaxSpinner.ToolTipText"));
         parallaxSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Parallax", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 10))); // NOI18N
         parallaxSpinner.setMaximumSize(new java.awt.Dimension(55, 45));
         parallaxSpinner.setMinimumSize(new java.awt.Dimension(55, 45));
@@ -8767,8 +8767,8 @@ public class Notate
         earlyScrollBtn.setBackground(new java.awt.Color(51, 255, 255));
         earlyScrollBtn.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
         earlyScrollBtn.setSelected(true);
-        earlyScrollBtn.setText("<html>\n<center>\nEarly\n<br>\nScroll\n</center>\n</html>\n");
-        earlyScrollBtn.setToolTipText("Causes the staff display to scroll to the top earlier.");
+        earlyScrollBtn.setText(Lang.getInstance().getString("Notate.earlyScrollBtn.Text.Early"));
+        earlyScrollBtn.setToolTipText(Lang.getInstance().getString("Notate.earlyScrollBtn.ToolTipText"));
         earlyScrollBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         earlyScrollBtn.setFocusable(false);
         earlyScrollBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -8798,11 +8798,11 @@ public class Notate
         textEntryToolBar.setMinimumSize(new java.awt.Dimension(117, 40));
         textEntryToolBar.setPreferredSize(new java.awt.Dimension(1050, 40));
 
-        textEntryLabel.setText("Textual Entry ");
+        textEntryLabel.setText(Lang.getInstance().getString("Notate.textEntry.Text"));
         textEntryToolBar.add(textEntryLabel);
 
         textEntry.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        textEntry.setToolTipText("Enter chords or melody in leadsheet notation.");
+        textEntry.setToolTipText(Lang.getInstance().getString("Notate.textEntryToolBar.ToolTipText"));
         textEntry.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         textEntry.setNextFocusableComponent(scoreTab);
         textEntry.addMouseListener(new java.awt.event.MouseAdapter()
@@ -8840,8 +8840,8 @@ public class Notate
         textEntryToolBar.add(textEntry);
 
         clearButton.setBackground(new java.awt.Color(255, 255, 51));
-        clearButton.setText("Clear");
-        clearButton.setToolTipText("Clear the textual entry field.");
+        clearButton.setText(Lang.getInstance().getString("Notate.clearButton.Text"));
+        clearButton.setToolTipText(Lang.getInstance().getString("Notate.clearButton.ToolTipText"));
         clearButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         clearButton.setMaximumSize(new java.awt.Dimension(46, 38));
         clearButton.setMinimumSize(new java.awt.Dimension(46, 38));
@@ -10538,7 +10538,7 @@ public void playCurrentSelection(boolean playToEndOfChorus, int loopCount, boole
   private void setToLoop()
   {
       toLoop = true;
-      loopButton.setText(Lang.getInstance().getString("Notate.loopButton.Text.Loop"));
+      loopButton.setText(Lang.getInstance().getString("Notate.loopButton.Text.Straight"));
       loopButton.setBackground(Color.RED);
   }
 
@@ -10546,7 +10546,7 @@ public void playCurrentSelection(boolean playToEndOfChorus, int loopCount, boole
   {
       toLoop = false;
       stopPlaying("set not to Loop");
-      loopButton.setText(Lang.getInstance().getString("Notate.loopButton.Text.Straight"));
+      loopButton.setText(Lang.getInstance().getString("Notate.loopButton.Text.Loop"));
       loopButton.setBackground(Color.GREEN);
   }
 
