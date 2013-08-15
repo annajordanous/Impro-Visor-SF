@@ -7750,7 +7750,7 @@ public class Notate
         standardToolbar.add(fileStepForwardBtn);
 
         openBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/open.gif"))); // NOI18N
-        openBtn.setToolTipText("Open a leadsheet in place of the current one (Ctrl+O).");
+        openBtn.setToolTipText(Lang.getInstance().getString("Notate.openBtn.ToolTipText"));
         openBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         openBtn.setMaximumSize(new java.awt.Dimension(30, 30));
         openBtn.setMinimumSize(new java.awt.Dimension(30, 30));
@@ -7765,7 +7765,7 @@ public class Notate
         standardToolbar.add(openBtn);
 
         saveBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/save.gif"))); // NOI18N
-        saveBtn.setToolTipText("Save the current Leadsheet (Ctrl+S).");
+        saveBtn.setToolTipText(Lang.getInstance().getString("Notate.saveBtn.ToolTipText"));
         saveBtn.setMaximumSize(new java.awt.Dimension(30, 30));
         saveBtn.setMinimumSize(new java.awt.Dimension(30, 30));
         saveBtn.setPreferredSize(new java.awt.Dimension(30, 30));
@@ -7779,7 +7779,7 @@ public class Notate
         standardToolbar.add(saveBtn);
 
         printBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/print.gif"))); // NOI18N
-        printBtn.setToolTipText("Print the current chorus (Ctrl+P).");
+        printBtn.setToolTipText(Lang.getInstance().getString("Notate.printBtn.ToolTipText"));
         printBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         printBtn.setMaximumSize(new java.awt.Dimension(30, 30));
         printBtn.setMinimumSize(new java.awt.Dimension(30, 30));
@@ -7787,7 +7787,7 @@ public class Notate
         standardToolbar.add(printBtn);
 
         cutBothBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/cut.gif"))); // NOI18N
-        cutBothBtn.setToolTipText("Cut the currently selected melody and chords (Ctrl+X).");
+        cutBothBtn.setToolTipText(Lang.getInstance().getString("Notate.cutBothBtn.ToolTipText"));
         cutBothBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         cutBothBtn.setEnabled(false);
         cutBothBtn.setMaximumSize(new java.awt.Dimension(30, 30));
@@ -7796,7 +7796,7 @@ public class Notate
         standardToolbar.add(cutBothBtn);
 
         copyBothBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/copy.gif"))); // NOI18N
-        copyBothBtn.setToolTipText("Copy the currently selected melody and chords (Ctrl+C).");
+        copyBothBtn.setToolTipText(Lang.getInstance().getString("Notate.copyBothBtn.ToolTipText"));
         copyBothBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         copyBothBtn.setEnabled(false);
         copyBothBtn.setMaximumSize(new java.awt.Dimension(30, 30));
@@ -7814,7 +7814,7 @@ public class Notate
         standardToolbar.add(pasteBothBtn);
 
         undoBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/undo.gif"))); // NOI18N
-        undoBtn.setToolTipText("Undo the previous action (Ctrl+Z)");
+        undoBtn.setToolTipText(Lang.getInstance().getString("Notate.undoBtn.ToolTipText"));
         undoBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         undoBtn.setMaximumSize(new java.awt.Dimension(30, 30));
         undoBtn.setMinimumSize(new java.awt.Dimension(30, 30));
@@ -7822,7 +7822,7 @@ public class Notate
         standardToolbar.add(undoBtn);
 
         redoBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/redo.gif"))); // NOI18N
-        redoBtn.setToolTipText("Redo the previous action (Ctrl+Y)");
+        redoBtn.setToolTipText(Lang.getInstance().getString("Notate.redoBtn.ToolTipText"));
         redoBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         redoBtn.setEnabled(false);
         redoBtn.setMaximumSize(new java.awt.Dimension(30, 30));
@@ -7831,7 +7831,7 @@ public class Notate
         standardToolbar.add(redoBtn);
 
         drawButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/pencil.gif"))); // NOI18N
-        drawButton.setToolTipText("Toggle drawing mode.");
+        drawButton.setToolTipText(Lang.getInstance().getString("Notate.drawButton.ToolTipText"));
         drawButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         drawButton.setMaximumSize(new java.awt.Dimension(30, 30));
         drawButton.setMinimumSize(new java.awt.Dimension(30, 30));
@@ -7846,7 +7846,7 @@ public class Notate
         standardToolbar.add(drawButton);
 
         noteCursorBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/cursors/blueNoteLineCursor.png"))); // NOI18N
-        noteCursorBtn.setToolTipText("Toggle note cursor.");
+        noteCursorBtn.setToolTipText(Lang.getInstance().getString("Notate.noteCursorBtn.ToolTipText"));
         noteCursorBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         noteCursorBtn.setFocusable(false);
         noteCursorBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -7865,7 +7865,7 @@ public class Notate
 
         showAdviceButton.setBackground(adviceBtnColorClosed);
         showAdviceButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/advice.gif"))); // NOI18N
-        showAdviceButton.setToolTipText("Show advice for chords.");
+        showAdviceButton.setToolTipText(Lang.getInstance().getString("Notate.showAdviceButton.ToolTipText"));
         showAdviceButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         showAdviceButton.setMaximumSize(new java.awt.Dimension(30, 30));
         showAdviceButton.setMinimumSize(new java.awt.Dimension(30, 30));
@@ -7881,8 +7881,8 @@ public class Notate
         standardToolbar.add(showAdviceButton);
 
         improviseButton.setBackground(new java.awt.Color(0, 255, 0));
-        improviseButton.setText("Improv");
-        improviseButton.setToolTipText("Toggle to turn auto-improvisation on or off");
+        improviseButton.setText(Lang.getInstance().getString("Notate.improviseButton.Text.Improvise"));
+        improviseButton.setToolTipText(Lang.getInstance().getString("Notate.improviseButton.ToolTipText"));
         improviseButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         improviseButton.setFocusable(false);
         improviseButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -7902,7 +7902,7 @@ public class Notate
         standardToolbar.add(improviseButton);
 
         generationGapSpinner.setModel(new javax.swing.SpinnerNumberModel(0.99d, -20.0d, 20.0d, 0.01d));
-        generationGapSpinner.setToolTipText("Specifies the lead time, in beats, for generating next chorus before the end of the current chorus, if Recur is toggled on.");
+        generationGapSpinner.setToolTipText(Lang.getInstance().getString("Notate.generationGapSpinner.ToolTipText"));
         generationGapSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Lead Beats", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 10))); // NOI18N
         generationGapSpinner.setInheritsPopupMenu(true);
         generationGapSpinner.setMaximumSize(new java.awt.Dimension(70, 45));
@@ -7918,7 +7918,7 @@ public class Notate
         standardToolbar.add(generationGapSpinner);
 
         openGeneratorButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/triage.gif"))); // NOI18N
-        openGeneratorButton.setToolTipText("Open the Lick Generator dialog.");
+        openGeneratorButton.setToolTipText(Lang.getInstance().getString("Notate.openGeneratorButton.ToolTipText"));
         openGeneratorButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         openGeneratorButton.setMaximumSize(new java.awt.Dimension(30, 30));
         openGeneratorButton.setMinimumSize(new java.awt.Dimension(30, 30));
@@ -7934,8 +7934,8 @@ public class Notate
 
         freezeLayoutButton.setBackground(new java.awt.Color(0, 255, 0));
         freezeLayoutButton.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
-        freezeLayoutButton.setText("<html><center>Freeze<br>Layout</center></html>");
-        freezeLayoutButton.setToolTipText("Freeze or thaw the current layout");
+        freezeLayoutButton.setText(Lang.getInstance().getString("Notate.freezeLayoutButton.Text.Freeze"));
+        freezeLayoutButton.setToolTipText(Lang.getInstance().getString("Notate.freezeLayoutButton.ToolTipText"));
         freezeLayoutButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         freezeLayoutButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         freezeLayoutButton.setMaximumSize(new java.awt.Dimension(45, 30));
@@ -7953,8 +7953,8 @@ public class Notate
 
         colorationButton.setBackground(new java.awt.Color(153, 204, 255));
         colorationButton.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
-        colorationButton.setText("<html><center>Black&<br>White</center></html>");
-        colorationButton.setToolTipText("Turn note coloration off or on.");
+        colorationButton.setText(Lang.getInstance().getString("Notate.colorationButton.Text.NoColor"));
+        colorationButton.setToolTipText(Lang.getInstance().getString("Notate.colorationButton.ToolTipText"));
         colorationButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         colorationButton.setFocusable(false);
         colorationButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -7974,8 +7974,8 @@ public class Notate
         smartEntryButton.setBackground(new java.awt.Color(255, 153, 255));
         smartEntryButton.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
         smartEntryButton.setSelected(true);
-        smartEntryButton.setText("<html><center>Simple<br>Entry</center></html>");
-        smartEntryButton.setToolTipText("Use simple or harmonic note entry (the latter observing chords).");
+        smartEntryButton.setText(Lang.getInstance().getString("Notate.smartEntryButton.Text.Simple"));
+        smartEntryButton.setToolTipText(Lang.getInstance().getString("Notate.smartEntryButton.ToolTipText"));
         smartEntryButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         smartEntryButton.setFocusable(false);
         smartEntryButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -7992,7 +7992,7 @@ public class Notate
         });
         standardToolbar.add(smartEntryButton);
 
-        chordFontSizeSpinner.setToolTipText("Specifies the chord font size.");
+        chordFontSizeSpinner.setToolTipText(Lang.getInstance().getString("Notate.chordFontSizeSpinner.ToolTipText"));
         chordFontSizeSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Chord Font", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 10))); // NOI18N
         chordFontSizeSpinner.setInheritsPopupMenu(true);
         chordFontSizeSpinner.setMaximumSize(new java.awt.Dimension(65, 45));
@@ -8024,7 +8024,7 @@ public class Notate
         standardToolbar.add(addTabBtn);
 
         delTabBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/deltab.gif"))); // NOI18N
-        delTabBtn.setToolTipText("Delete the current  chorus tab (can't be undone). If there is only one chorus, you can't delete it.\n");
+        delTabBtn.setToolTipText(Lang.getInstance().getString("Notate.delTabBtn.ToolTipText"));
         delTabBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         delTabBtn.setEnabled(false);
         delTabBtn.setMaximumSize(new java.awt.Dimension(30, 30));
@@ -8040,7 +8040,7 @@ public class Notate
         standardToolbar.add(delTabBtn);
 
         globalPreferencesBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/smallGlobe.png"))); // NOI18N
-        globalPreferencesBtn.setToolTipText("Open Global Preferences dialog.");
+        globalPreferencesBtn.setToolTipText(Lang.getInstance().getString("Notate.globalPreferencesBtn.ToolTipText"));
         globalPreferencesBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         globalPreferencesBtn.setFocusable(false);
         globalPreferencesBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -8058,7 +8058,7 @@ public class Notate
         standardToolbar.add(globalPreferencesBtn);
 
         leadsheetPreferencesBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/leadsheet.png"))); // NOI18N
-        leadsheetPreferencesBtn.setToolTipText("Open Leadsheet Preferences dialog.");
+        leadsheetPreferencesBtn.setToolTipText(Lang.getInstance().getString("Notate.leadsheetPreferencesBtn.ToolTipText"));
         leadsheetPreferencesBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         leadsheetPreferencesBtn.setFocusable(false);
         leadsheetPreferencesBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -8076,7 +8076,7 @@ public class Notate
         standardToolbar.add(leadsheetPreferencesBtn);
 
         chorusPreferencesBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/trebleClef.png"))); // NOI18N
-        chorusPreferencesBtn.setToolTipText("Open Chorus Preferences dialog.");
+        chorusPreferencesBtn.setToolTipText(Lang.getInstance().getString("Notate.chorusPreferences.ToolTipText"));
         chorusPreferencesBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         chorusPreferencesBtn.setFocusable(false);
         chorusPreferencesBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -8094,7 +8094,7 @@ public class Notate
         standardToolbar.add(chorusPreferencesBtn);
 
         sectionPreferencesBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/smallStyle.png"))); // NOI18N
-        sectionPreferencesBtn.setToolTipText("Open Section and Style Preferences dialog.");
+        sectionPreferencesBtn.setToolTipText(Lang.getInstance().getString("Notate.sectionPreferencesBtn.ToolTipText"));
         sectionPreferencesBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         sectionPreferencesBtn.setFocusable(false);
         sectionPreferencesBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -8112,7 +8112,7 @@ public class Notate
         standardToolbar.add(sectionPreferencesBtn);
 
         midiPreferencesBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/smallMidi.png"))); // NOI18N
-        midiPreferencesBtn.setToolTipText("Open MIDI Preferences dialog.");
+        midiPreferencesBtn.setToolTipText(Lang.getInstance().getString("Notate.midiPreferencesBtn.ToolTipText"));
         midiPreferencesBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         midiPreferencesBtn.setFocusable(false);
         midiPreferencesBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -8130,7 +8130,7 @@ public class Notate
         standardToolbar.add(midiPreferencesBtn);
 
         contourPreferencesBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/pencilCursor.png"))); // NOI18N
-        contourPreferencesBtn.setToolTipText("Open Contour Preferences dialog.");
+        contourPreferencesBtn.setToolTipText(Lang.getInstance().getString("Notate.contourPreferencesBtn.ToolTipText"));
         contourPreferencesBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         contourPreferencesBtn.setFocusable(false);
         contourPreferencesBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
