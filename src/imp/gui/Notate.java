@@ -10200,8 +10200,8 @@ public class Notate
         });
 
         closeWindowMI.setMnemonic('C');
-        closeWindowMI.setText("Close Window");
-        closeWindowMI.setToolTipText("Closes the current window (exits program if there are no other windows)");
+        closeWindowMI.setText(Lang.getInstance().getString("Notate.closeWindowMI.Text"));
+        closeWindowMI.setToolTipText(Lang.getInstance().getString("Notate.closeWindowMI.ToolTipText"));
         closeWindowMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -10212,7 +10212,7 @@ public class Notate
         windowMenu.add(closeWindowMI);
 
         cascadeMI.setMnemonic('A');
-        cascadeMI.setText("Cascade Windows");
+        cascadeMI.setText(Lang.getInstance().getString("Notate.cascadeMI.Text"));
         cascadeMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -10267,8 +10267,8 @@ public class Notate
         });
 
         preferencesAcceleratorMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, 0));
-        preferencesAcceleratorMI.setText("Open Preferences");
-        preferencesAcceleratorMI.setToolTipText("Open the preferences dialog.");
+        preferencesAcceleratorMI.setText(Lang.getInstance().getString("Notate.preferencesAcceleratorMI.Text"));
+        preferencesAcceleratorMI.setToolTipText(Lang.getInstance().getString("Notate.preferencesAcceleratorMI.ToolTipText"));
         preferencesAcceleratorMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -10279,7 +10279,7 @@ public class Notate
         preferencesMenu.add(preferencesAcceleratorMI);
 
         globalPrefsMI.setMnemonic('G');
-        globalPrefsMI.setText("Global");
+        globalPrefsMI.setText(Lang.getInstance().getString("Notate.globalPrefsMI.Text"));
         globalPrefsMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -10290,7 +10290,7 @@ public class Notate
         preferencesMenu.add(globalPrefsMI);
 
         leadsheetPrefsMI.setMnemonic('L');
-        leadsheetPrefsMI.setText("Leadsheet");
+        leadsheetPrefsMI.setText(Lang.getInstance().getString("Notate.leadsheetPrefsMI.Text"));
         leadsheetPrefsMI.setSelected(true);
         leadsheetPrefsMI.addActionListener(new java.awt.event.ActionListener()
         {
@@ -10302,7 +10302,7 @@ public class Notate
         preferencesMenu.add(leadsheetPrefsMI);
 
         chorusPrefsMI.setMnemonic('C');
-        chorusPrefsMI.setText("Chorus");
+        chorusPrefsMI.setText(Lang.getInstance().getString("Notate.chorusPrefsMI.Text"));
         chorusPrefsMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -10313,7 +10313,7 @@ public class Notate
         preferencesMenu.add(chorusPrefsMI);
 
         stylePrefsMI.setMnemonic('S');
-        stylePrefsMI.setText("Style");
+        stylePrefsMI.setText(Lang.getInstance().getString("Notate.stylePrefsMI.Text"));
         stylePrefsMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -10324,7 +10324,7 @@ public class Notate
         preferencesMenu.add(stylePrefsMI);
 
         midiPrefsMI.setMnemonic('M');
-        midiPrefsMI.setText("MIDI");
+        midiPrefsMI.setText(Lang.getInstance().getString("Notate.midiPrefsMI.Text"));
         midiPrefsMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -10335,7 +10335,7 @@ public class Notate
         preferencesMenu.add(midiPrefsMI);
 
         contourPrefsMI.setMnemonic('T');
-        contourPrefsMI.setText("Contour");
+        contourPrefsMI.setText(Lang.getInstance().getString("Notate.contourPrefsMI.Text"));
         contourPrefsMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -10359,8 +10359,8 @@ public class Notate
         });
 
         helpMI.setMnemonic('I');
-        helpMI.setText("Impro-Visor Help");
-        helpMI.setToolTipText("Shows the Help Dialog");
+        helpMI.setText(Lang.getInstance().getString("Notate.helpMI.Text"));
+        helpMI.setToolTipText(Lang.getInstance().getString("Notate.helpMI.ToolTipText"));
         helpMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -10370,8 +10370,8 @@ public class Notate
         });
         helpMenu.add(helpMI);
 
-        firstTimePrefsMI.setText("Show First-Launch Message");
-        firstTimePrefsMI.setToolTipText("Shows the message that appeared on the first launch of this version.");
+        firstTimePrefsMI.setText(Lang.getInstance().getString("Notate.firstTimePrefsMI.Text"));
+        firstTimePrefsMI.setToolTipText(Lang.getInstance().getString("Notate.firstTimePrefsMI.ToolTipText"));
         firstTimePrefsMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -10383,7 +10383,7 @@ public class Notate
         helpMenu.add(jSeparator32);
 
         helpAboutMI.setMnemonic('A');
-        helpAboutMI.setText("About Impro-Visor");
+        helpAboutMI.setText(Lang.getInstance().getString("Notate.helpAboutMI.Text"));
         helpAboutMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)

@@ -9094,8 +9094,12 @@
             <MenuItem class="javax.swing.JMenuItem" name="closeWindowMI">
               <Properties>
                 <Property name="mnemonic" type="int" value="67"/>
-                <Property name="text" type="java.lang.String" value="Close Window"/>
-                <Property name="toolTipText" type="java.lang.String" value="Closes the current window (exits program if there are no other windows)"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.closeWindowMI.Text&quot;)" type="code"/>
+                </Property>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.closeWindowMI.ToolTipText&quot;)" type="code"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="closeWindowMIActionPerformed"/>
@@ -9104,7 +9108,9 @@
             <MenuItem class="javax.swing.JMenuItem" name="cascadeMI">
               <Properties>
                 <Property name="mnemonic" type="int" value="65"/>
-                <Property name="text" type="java.lang.String" value="Cascade Windows"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.cascadeMI.Text&quot;)" type="code"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cascadeMIActionPerformed"/>
@@ -9145,8 +9151,12 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="P"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Open Preferences"/>
-                <Property name="toolTipText" type="java.lang.String" value="Open the preferences dialog."/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.preferencesAcceleratorMI.Text&quot;)" type="code"/>
+                </Property>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.preferencesAcceleratorMI.ToolTipText&quot;)" type="code"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="preferencesAcceleratorMIActionPerformed"/>
@@ -9155,7 +9165,9 @@
             <MenuItem class="javax.swing.JMenuItem" name="globalPrefsMI">
               <Properties>
                 <Property name="mnemonic" type="int" value="71"/>
-                <Property name="text" type="java.lang.String" value="Global"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.globalPrefsMI.Text&quot;)" type="code"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="globalPrefsMIActionPerformed"/>
@@ -9164,7 +9176,9 @@
             <MenuItem class="javax.swing.JMenuItem" name="leadsheetPrefsMI">
               <Properties>
                 <Property name="mnemonic" type="int" value="76"/>
-                <Property name="text" type="java.lang.String" value="Leadsheet"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.leadsheetPrefsMI.Text&quot;)" type="code"/>
+                </Property>
                 <Property name="selected" type="boolean" value="true"/>
               </Properties>
               <Events>
@@ -9174,7 +9188,9 @@
             <MenuItem class="javax.swing.JMenuItem" name="chorusPrefsMI">
               <Properties>
                 <Property name="mnemonic" type="int" value="67"/>
-                <Property name="text" type="java.lang.String" value="Chorus"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.chorusPrefsMI.Text&quot;)" type="code"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chorusPrefsMIActionPerformed"/>
@@ -9183,7 +9199,9 @@
             <MenuItem class="javax.swing.JMenuItem" name="stylePrefsMI">
               <Properties>
                 <Property name="mnemonic" type="int" value="83"/>
-                <Property name="text" type="java.lang.String" value="Style"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.stylePrefsMI.Text&quot;)" type="code"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="stylePrefsMIActionPerformed"/>
@@ -9192,7 +9210,9 @@
             <MenuItem class="javax.swing.JMenuItem" name="midiPrefsMI">
               <Properties>
                 <Property name="mnemonic" type="int" value="77"/>
-                <Property name="text" type="java.lang.String" value="MIDI"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.midiPrefsMI.Text&quot;)" type="code"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="midiPrefsMIActionPerformed"/>
@@ -9201,7 +9221,9 @@
             <MenuItem class="javax.swing.JMenuItem" name="contourPrefsMI">
               <Properties>
                 <Property name="mnemonic" type="int" value="84"/>
-                <Property name="text" type="java.lang.String" value="Contour"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.contourPrefsMI.Text&quot;)" type="code"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="contourPrefsMIActionPerformed"/>
@@ -9224,8 +9246,12 @@
             <MenuItem class="javax.swing.JMenuItem" name="helpMI">
               <Properties>
                 <Property name="mnemonic" type="int" value="73"/>
-                <Property name="text" type="java.lang.String" value="Impro-Visor Help"/>
-                <Property name="toolTipText" type="java.lang.String" value="Shows the Help Dialog"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.helpMI.Text&quot;)" type="code"/>
+                </Property>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.helpMI.ToolTipText&quot;)" type="code"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="helpMIActionPerformed"/>
@@ -9233,8 +9259,12 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="firstTimePrefsMI">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Show First-Launch Message"/>
-                <Property name="toolTipText" type="java.lang.String" value="Shows the message that appeared on the first launch of this version."/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.firstTimePrefsMI.Text&quot;)" type="code"/>
+                </Property>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.firstTimePrefsMI.ToolTipText&quot;)" type="code"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="firstTimePrefsMIActionPerformed"/>
@@ -9245,7 +9275,9 @@
             <MenuItem class="javax.swing.JMenuItem" name="helpAboutMI">
               <Properties>
                 <Property name="mnemonic" type="int" value="65"/>
-                <Property name="text" type="java.lang.String" value="About Impro-Visor"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Lang.getInstance().getString(&quot;Notate.helpAboutMI.Text&quot;)" type="code"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="helpAboutMIActionPerformed"/>
