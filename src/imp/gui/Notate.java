@@ -9919,7 +9919,7 @@ public class Notate
         utilitiesMenu.setMnemonic('U');
         utilitiesMenu.setText(Lang.getInstance().getString("Notate.utilitiesMenu.Text"));
 
-        stepKeyboardMI.setText("Advice Keyboard");
+        stepKeyboardMI.setText(Lang.getInstance().getString("Notate.stepKeyboardMI.Text"));
         stepKeyboardMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9931,8 +9931,8 @@ public class Notate
 
         openLeadsheetEditorMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_MASK));
         openLeadsheetEditorMI.setMnemonic('l');
-        openLeadsheetEditorMI.setText("Leadsheet Textual Editor");
-        openLeadsheetEditorMI.setToolTipText("Open file editor for leadsheet.");
+        openLeadsheetEditorMI.setText(Lang.getInstance().getString("Notate.openLeadsheetEditorMI.Text"));
+        openLeadsheetEditorMI.setToolTipText(Lang.getInstance().getString("Notate.openLeadsheetEditorMI.ToolTipText"));
         openLeadsheetEditorMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9944,7 +9944,7 @@ public class Notate
 
         lickGeneratorMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.CTRL_MASK));
         lickGeneratorMI.setMnemonic('g');
-        lickGeneratorMI.setText("Lick Generator");
+        lickGeneratorMI.setText(Lang.getInstance().getString("Notate.lickGeneratorMI.Text"));
         lickGeneratorMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9956,7 +9956,7 @@ public class Notate
 
         pianoKeyboardMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_K, java.awt.event.InputEvent.CTRL_MASK));
         pianoKeyboardMI.setMnemonic('K');
-        pianoKeyboardMI.setText("Voicing Keyboard");
+        pianoKeyboardMI.setText(Lang.getInstance().getString("Notate.pianoKeyboardMI.Text"));
         pianoKeyboardMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9968,7 +9968,7 @@ public class Notate
 
         styleGenerator1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Y, java.awt.event.InputEvent.CTRL_MASK));
         styleGenerator1.setMnemonic('S');
-        styleGenerator1.setText("Style Editor & Extractor");
+        styleGenerator1.setText(Lang.getInstance().getString("Notate.styleGenerator1.Text"));
         styleGenerator1.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9980,7 +9980,7 @@ public class Notate
 
         voicingTestMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.CTRL_MASK));
         voicingTestMI.setMnemonic('v');
-        voicingTestMI.setText("Voicing Editor");
+        voicingTestMI.setText(Lang.getInstance().getString("Notate.voicingTestMI.Text"));
         voicingTestMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9996,8 +9996,8 @@ public class Notate
         roadmapMenu.setToolTipText("Options for creating a roadmap of the chord progression.");
 
         roadMapThisAnalyze.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_SEMICOLON, 0));
-        roadMapThisAnalyze.setText("Show Roadmap");
-        roadMapThisAnalyze.setToolTipText("Show Roadmap");
+        roadMapThisAnalyze.setText(Lang.getInstance().getString("Notate.roadMapThisAnalyze.Text"));
+        roadMapThisAnalyze.setToolTipText(Lang.getInstance().getString("Notate.roadMapThisAnalyze.ToolTipText"));
         roadMapThisAnalyze.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -10020,7 +10020,7 @@ public class Notate
         roadmapMenu.add(reAnalyzeMI);
 
         emptyRoadMapMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_SEMICOLON, java.awt.event.InputEvent.CTRL_MASK));
-        emptyRoadMapMI.setText("Open Empty Roadmap ");
+        emptyRoadMapMI.setText(Lang.getInstance().getString("Notate.emptyRoadMapMI.Text"));
         emptyRoadMapMI.setToolTipText("Opens a blank roadmap unrelated to this leadsheet");
         emptyRoadMapMI.addActionListener(new java.awt.event.ActionListener()
         {
@@ -10048,7 +10048,7 @@ public class Notate
         improvMenu.setText(Lang.getInstance().getString("Notate.improvMenu.Text"));
         improvMenu.setToolTipText("Set the type of auto-improvisation, if any, to be used with play or record. NOTE: The melody may be over-written.");
 
-        useImproviseButtonCheckBoxMI.setText("Impro-Visor improvises continuously");
+        useImproviseButtonCheckBoxMI.setText(Lang.getInstance().getString("Notate.useImproviseButtonCheckBoxMI.Text"));
         useImproviseButtonCheckBoxMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -10059,7 +10059,8 @@ public class Notate
         improvMenu.add(useImproviseButtonCheckBoxMI);
         improvMenu.add(jSeparator4);
 
-        trade16IVfirstCheckBoxMI.setText("Impro-Visor plays first 16 bars");
+        trade16IVfirstCheckBoxMI.setText(Lang.getInstance().getString("Notate.trade16IVfirstCheckBoxMI.Text")
+        );
         trade16IVfirstCheckBoxMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -10069,7 +10070,7 @@ public class Notate
         });
         improvMenu.add(trade16IVfirstCheckBoxMI);
 
-        trade12IVfirstCheckBoxMI.setText("Impro-Visor plays first 12 bars");
+        trade12IVfirstCheckBoxMI.setText(Lang.getInstance().getString("Notate.trade12IVfirstCheckBoxMI.Text"));
         trade12IVfirstCheckBoxMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -10079,7 +10080,7 @@ public class Notate
         });
         improvMenu.add(trade12IVfirstCheckBoxMI);
 
-        trade8IVfirstCheckBoxMI.setText("Impro-Visor plays first 8 bars");
+        trade8IVfirstCheckBoxMI.setText(Lang.getInstance().getString("Notate.trade8IVfirstCheckBoxMI.Text"));
         trade8IVfirstCheckBoxMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -10089,7 +10090,7 @@ public class Notate
         });
         improvMenu.add(trade8IVfirstCheckBoxMI);
 
-        trade4IVfirstCheckBoxMI.setText("Impro-Visor plays first 4 bars");
+        trade4IVfirstCheckBoxMI.setText(Lang.getInstance().getString("Notate.trade4IVfirstCheckBoxMI.Text"));
         trade4IVfirstCheckBoxMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -10099,7 +10100,7 @@ public class Notate
         });
         improvMenu.add(trade4IVfirstCheckBoxMI);
 
-        trade2IVfirstCheckBoxMI.setText("Impro-Visor plays first 2 bars");
+        trade2IVfirstCheckBoxMI.setText(Lang.getInstance().getString("Notate.trade2IVfirstCheckBoxMI.Text"));
         trade2IVfirstCheckBoxMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -10109,7 +10110,7 @@ public class Notate
         });
         improvMenu.add(trade2IVfirstCheckBoxMI);
 
-        trade1IVfirstCheckBoxMI.setText("Impro-Visor plays first bar");
+        trade1IVfirstCheckBoxMI.setText(Lang.getInstance().getString("Notate.trade1IVfirstCheckBoxMI.Text"));
         trade1IVfirstCheckBoxMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -10120,7 +10121,7 @@ public class Notate
         improvMenu.add(trade1IVfirstCheckBoxMI);
         improvMenu.add(jSeparator10);
 
-        trade16userFirstCheckBoxMI.setText("User plays first 16 bars");
+        trade16userFirstCheckBoxMI.setText(Lang.getInstance().getString("Notate.trade16userFirstCheckBoxMI.Text"));
         trade16userFirstCheckBoxMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -10130,7 +10131,7 @@ public class Notate
         });
         improvMenu.add(trade16userFirstCheckBoxMI);
 
-        trade12userFirstCheckBoxMI.setText("User plays first 12 bars");
+        trade12userFirstCheckBoxMI.setText(Lang.getInstance().getString("Notate.trade12userFirstCheckBoxMI.Text"));
         trade12userFirstCheckBoxMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -10140,7 +10141,7 @@ public class Notate
         });
         improvMenu.add(trade12userFirstCheckBoxMI);
 
-        trade8userFirstCheckBoxMI.setText("User plays first 8 bars");
+        trade8userFirstCheckBoxMI.setText(Lang.getInstance().getString("Notate.trade8userFirstCheckBoxMI.Text"));
         trade8userFirstCheckBoxMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -10150,7 +10151,7 @@ public class Notate
         });
         improvMenu.add(trade8userFirstCheckBoxMI);
 
-        trade4userFirstCheckBoxMI.setText("User plays first 4 bars");
+        trade4userFirstCheckBoxMI.setText(Lang.getInstance().getString("Notate.trade4userFirstCheckBoxMI.Text"));
         trade4userFirstCheckBoxMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -10160,7 +10161,7 @@ public class Notate
         });
         improvMenu.add(trade4userFirstCheckBoxMI);
 
-        trade2userFirstCheckBoxMI.setText("User plays first 2 bars");
+        trade2userFirstCheckBoxMI.setText(Lang.getInstance().getString("Notate.trade2userFirstCheckBoxMI.Text"));
         trade2userFirstCheckBoxMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -10170,7 +10171,7 @@ public class Notate
         });
         improvMenu.add(trade2userFirstCheckBoxMI);
 
-        trade1userFirstCheckBoxMI.setText("User plays first bar");
+        trade1userFirstCheckBoxMI.setText(Lang.getInstance().getString("Notate.trade1userFirstCheckBoxMI.Text"));
         trade1userFirstCheckBoxMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
