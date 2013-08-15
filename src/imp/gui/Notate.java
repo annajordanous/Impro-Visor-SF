@@ -2281,7 +2281,6 @@ public class Notate
         stopPlayMI = new javax.swing.JMenuItem();
         pausePlayMI = new javax.swing.JMenuItem();
         recordMI = new javax.swing.JMenuItem();
-        useAudioInputMI = new javax.swing.JCheckBoxMenuItem();
         utilitiesMenu = new javax.swing.JMenu();
         stepKeyboardMI = new javax.swing.JMenuItem();
         openLeadsheetEditorMI = new javax.swing.JMenuItem();
@@ -9846,8 +9845,8 @@ public class Notate
         });
 
         playSelectionMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ENTER, 0));
-        playSelectionMI.setText("Play Selection");
-        playSelectionMI.setToolTipText("Play only the selection.");
+        playSelectionMI.setText(Lang.getInstance().getString("Notate.playSelectionMI.Text"));
+        playSelectionMI.setToolTipText(Lang.getInstance().getString("Notate.playSelectionMI.ToolTipText"));
         playSelectionMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9858,8 +9857,8 @@ public class Notate
         playMenu.add(playSelectionMI);
 
         playSelectionToEndMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ENTER, java.awt.event.InputEvent.SHIFT_MASK));
-        playSelectionToEndMI.setText("Play Selection to End");
-        playSelectionToEndMI.setToolTipText("Play from the selection to the end of the chorus.");
+        playSelectionToEndMI.setText(Lang.getInstance().getString("Notate.playSelectionToEndMI.Text"));
+        playSelectionToEndMI.setToolTipText(Lang.getInstance().getString("Notate.playSelectionToEndMI.ToolTipText"));
         playSelectionToEndMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9871,7 +9870,7 @@ public class Notate
 
         playAllMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, 0));
         playAllMI.setMnemonic('p');
-        playAllMI.setText("Play All");
+        playAllMI.setText(Lang.getInstance().getString("Notate.playAllMI.Text"));
         playAllMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9882,7 +9881,7 @@ public class Notate
         playMenu.add(playAllMI);
 
         stopPlayMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_K, 0));
-        stopPlayMI.setText("Stop Playback");
+        stopPlayMI.setText(Lang.getInstance().getString("Notate.stopPlayMI.Text"));
         stopPlayMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9893,7 +9892,7 @@ public class Notate
         playMenu.add(stopPlayMI);
 
         pausePlayMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, 0));
-        pausePlayMI.setText("Pause/Unpause Playback");
+        pausePlayMI.setText(Lang.getInstance().getString("Notate.pausePlayMI.Text"));
         pausePlayMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9904,8 +9903,8 @@ public class Notate
         playMenu.add(pausePlayMI);
 
         recordMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.CTRL_MASK));
-        recordMI.setText("Record");
-        recordMI.setToolTipText("Record from a MIDI instrument.");
+        recordMI.setText(Lang.getInstance().getString("Notate.recordMI.Text"));
+        recordMI.setToolTipText(Lang.getInstance().getString("Notate.recordMI.ToolTipText"));
         recordMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9914,10 +9913,6 @@ public class Notate
             }
         });
         playMenu.add(recordMI);
-
-        useAudioInputMI.setSelected(false);
-        useAudioInputMI.setText("Use Audio Input");
-        playMenu.add(useAudioInputMI);
 
         menuBar.add(playMenu);
 
@@ -11800,10 +11795,6 @@ public void stopRecording()
 //        System.out.println("Stopped. Mode = " + mode);
 //    }
 
-    if (useAudioInputMI.isSelected())
-        {
-            stopAudioCapture();
-        }
 
     playBtn.setEnabled(true);
 
@@ -11823,10 +11814,6 @@ public void stopRecording()
       midiSynth.registerReceiver(midiStepInput);
       }
 
-    if (!useAudioInputMI.isSelected())
-        {
-//    stopPlaying("stop Recording"); // Having this in causes stack overflow when stopping
-        }
   }
 
 private void startAudioCapture()
@@ -19352,15 +19339,8 @@ public void playScoreBody(int startAt)
       // reset playback offset
 
       initCurrentPlaybackTab(0, 0);
-        //sets up a Timer to handle audio capture
-        if (useAudioInputMI.isSelected())
-        {
-            setMode(Mode.RECORDING);
-            startAudioTimer();
-            System.out.println("Capture timer started.");
-        }
 
-        getStaveAtTab(0).playSelection(startAt, score.getTotalLength() - 1, getLoopCount(), true, "playScoreBody");
+      getStaveAtTab(0).playSelection(startAt, score.getTotalLength() - 1, getLoopCount(), true, "playScoreBody");
       //getCurrentStave().play(startAt);
       }
     setMode(Mode.PLAYING);
@@ -25593,254 +25573,163 @@ public void showNewVoicingDialog()
    */
   protected void setItemStates()
     {
-
     playAllMI.setEnabled(true);
 
     stopPlayMI.setEnabled(true);
     pausePlayMI.setEnabled(true);
-preferencesAcceleratorMI.setEnabled(true);
-
+    preferencesAcceleratorMI.setEnabled(true);
 
     // check to see if undo & redo can be enabled
 
     if( cm.canUndo() )
       {
-
       undoMI.setEnabled(true);
-
       undoPMI.setEnabled(true);
-
       undoBtn.setEnabled(true);
-
       }
     else
       {
-
       undoMI.setEnabled(false);
-
       undoPMI.setEnabled(false);
-
       undoBtn.setEnabled(false);
-
       }
-
-
 
     if( cm.canRedo() )
       {
-
       redoMI.setEnabled(true);
-
       redoPMI.setEnabled(true);
-
       redoBtn.setEnabled(true);
-
       }
     else
       {
-
       redoMI.setEnabled(false);
-
       redoPMI.setEnabled(false);
-
       redoBtn.setEnabled(false);
-
       }
-
-
 
     // checks if a construction line is selected
 
-
-
     if( slotIsSelected() )
       {
-
       cutChordsMI.setEnabled(true);
-
       copyChordsMI.setEnabled(true);
 
       // cut enabled
 
       cutMelodyMI.setEnabled(true);
-
       cutBothMI.setEnabled(true);
-
       cutBothPMI.setEnabled(true);
-
       cutBothBtn.setEnabled(true);
 
       // copy enabled
 
       copyMelodyMI.setEnabled(true);
-
-
-
       copyBothMI.setEnabled(true);
-
       copyBothPMI.setEnabled(true);
-
       copyBothBtn.setEnabled(true);
 
-
-
       boolean melodyClipboardNonEmpty = impro.melodyClipboardNonEmpty();
-
       boolean chordsClipboardNonEmpty = impro.chordsClipboardNonEmpty();
-
       boolean eitherNonEmpty =
               melodyClipboardNonEmpty || chordsClipboardNonEmpty;
 
-
-
       pasteMelodyMI.setEnabled(melodyClipboardNonEmpty);
-
       pasteChordsMI.setEnabled(chordsClipboardNonEmpty);
-
       pasteBothMI.setEnabled(eitherNonEmpty);
 
-
-
       pasteBothPMI.setEnabled(eitherNonEmpty);
-
       pasteBothBtn.setEnabled(eitherNonEmpty);
 
-
-
       enterMelodyMI.setEnabled(true);
-
       enterChordsMI.setEnabled(true);
-
       enterBothMI.setEnabled(true);
 
-
-
       addRestMI.setEnabled(true);
-
       selectAllMI.setEnabled(true);
 
-
-
       transposeBothDownSemitone.setEnabled(true);
-
       transposeBothUpSemitone.setEnabled(true);
 
       transposeChordsUpSemitone.setEnabled(true);
-
       transposeChordsDownSemitone.setEnabled(true);
 
       transposeMelodyDownOctave.setEnabled(true);
-
       transposeMelodyDownSemitone.setEnabled(true);
 
       transposeMelodyUpOctave.setEnabled(true);
-
       transposeMelodyUpSemitone.setEnabled(true);
 
       transposeMelodyUpHarmonically.setEnabled(true);
-
       transposeMelodyDownHarmonically.setEnabled(true);
 
-
       copyMelodySelectionToTextWindow.setEnabled(true);
-
       copyChordSelectionToTextWindow.setEnabled(true);
 
       copyBothSelectionToTextWindow.setEnabled(true);
-
       resolvePitches.setEnabled(true);
-
 
       // REVISIT generateLickButton.setEnabled(true);
 
-
       saveSelectionAsLick.setEnabled(true);
-
 
       // advice enabled
 
       advicePMI.setEnabled(true);
 
-
       reverseMelody.setEnabled(true);
 
       invertMelody.setEnabled(true);
-    expandMelodyBy2.setEnabled(true);
-    expandMelodyBy3.setEnabled(true);
-    contractMelodyBy2.setEnabled(true);
-    contractMelodyBy3.setEnabled(true);
+      expandMelodyBy2.setEnabled(true);
+      expandMelodyBy3.setEnabled(true);
+      contractMelodyBy2.setEnabled(true);
+      contractMelodyBy3.setEnabled(true);
       }
     else
       {
       // No slot selected
-
       cutMelodyMI.setEnabled(false);
-
       cutBothMI.setEnabled(false);
-
       cutBothPMI.setEnabled(false);
-
       cutBothBtn.setEnabled(false);
 
-
-
       copyMelodyMI.setEnabled(false);
-
       copyBothMI.setEnabled(false);
-
       copyBothPMI.setEnabled(false);
-
       copyBothBtn.setEnabled(false);
 
-
-
       pasteBothMI.setEnabled(false);
-
       pasteBothPMI.setEnabled(false);
-
       pasteBothBtn.setEnabled(false);
 
-
-
       enterMelodyMI.setEnabled(false);
-
       enterChordsMI.setEnabled(false);
-
       enterBothMI.setEnabled(false);
 
-
-
       transposeBothDownSemitone.setEnabled(false);
-
       transposeBothUpSemitone.setEnabled(false);
 
       transposeChordsUpSemitone.setEnabled(false);
-
       transposeChordsDownSemitone.setEnabled(false);
 
       transposeMelodyDownOctave.setEnabled(false);
-
       transposeMelodyDownSemitone.setEnabled(false);
 
       transposeMelodyUpOctave.setEnabled(false);
-
       transposeMelodyUpSemitone.setEnabled(false);
 
       transposeMelodyUpHarmonically.setEnabled(false);
-
       transposeMelodyDownHarmonically.setEnabled(false);
-
 
       advicePMI.setEnabled(false);
 
-
       reverseMelody.setEnabled(false);
-
       invertMelody.setEnabled(false);
-    expandMelodyBy2.setEnabled(true);
-    expandMelodyBy3.setEnabled(true);
-    contractMelodyBy2.setEnabled(true);
-    contractMelodyBy3.setEnabled(true);
+
+      expandMelodyBy2.setEnabled(true);
+      expandMelodyBy3.setEnabled(true);
+      
+      contractMelodyBy2.setEnabled(true);
+      contractMelodyBy3.setEnabled(true);
       }
 
     // checks if "delete tab" should be enabled
@@ -26643,7 +26532,6 @@ preferencesAcceleratorMI.setEnabled(true);
     private javax.swing.JButton undoBtn;
     private javax.swing.JMenuItem undoMI;
     private javax.swing.JMenuItem undoPMI;
-    private javax.swing.JCheckBoxMenuItem useAudioInputMI;
     private javax.swing.JCheckBoxMenuItem useBeamsMI;
     private javax.swing.JCheckBoxMenuItem useImproviseButtonCheckBoxMI;
     private javax.swing.JButton usePreviousStyleButton;
