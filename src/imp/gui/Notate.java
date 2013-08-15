@@ -2333,6 +2333,8 @@ public class Notate
         preferencesDialog.setTitle(Lang.getInstance().getString("Notate.preferencesDialog.Title"));
         preferencesDialog.setAlwaysOnTop(true);
         preferencesDialog.setFocusCycleRoot(false);
+        preferencesDialog.setMinimumSize(new java.awt.Dimension(750, 480));
+        preferencesDialog.setPreferredSize(new java.awt.Dimension(750, 480));
         preferencesDialog.getRootPane().setDefaultButton(savePrefsBtn);
         preferencesDialog.addWindowListener(new java.awt.event.WindowAdapter()
         {
@@ -2351,7 +2353,7 @@ public class Notate
         prefsTabBtnGrp.add(globalBtn);
         globalBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/global.png"))); // NOI18N
         globalBtn.setText(Lang.getInstance().getString("Notate.globalBtn.Text"));
-        globalBtn.setToolTipText("Global preferences");
+        globalBtn.setToolTipText(Lang.getInstance().getString("Notate.globalBtn.ToolTipText"));
         globalBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         globalBtn.setIconTextGap(6);
         globalBtn.setNextFocusableComponent(midiBtn);
@@ -2368,8 +2370,8 @@ public class Notate
 
         prefsTabBtnGrp.add(leadsheetBtn);
         leadsheetBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/leadsheet.png"))); // NOI18N
-        leadsheetBtn.setText("Leadsheet");
-        leadsheetBtn.setToolTipText("Leadsheet preferences");
+        leadsheetBtn.setText(Lang.getInstance().getString("Notate.leadsheetBtn.Text"));
+        leadsheetBtn.setToolTipText(Lang.getInstance().getString("Notate.leadsheetBtn.ToolTipText"));
         leadsheetBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         leadsheetBtn.setNextFocusableComponent(globalBtn);
         leadsheetBtn.setPreferredSize(new java.awt.Dimension(100, 85));
@@ -2385,8 +2387,8 @@ public class Notate
 
         prefsTabBtnGrp.add(chorusBtn);
         chorusBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/chorus.png"))); // NOI18N
-        chorusBtn.setText("Chorus");
-        chorusBtn.setToolTipText("Chorus preferences");
+        chorusBtn.setText(Lang.getInstance().getString("Notate.chorusBtn.Text"));
+        chorusBtn.setToolTipText(Lang.getInstance().getString("Notate.chorusBtn.ToolTipText"));
         chorusBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         chorusBtn.setNextFocusableComponent(leadsheetBtn);
         chorusBtn.setPreferredSize(new java.awt.Dimension(100, 85));
@@ -2403,8 +2405,8 @@ public class Notate
         prefsTabBtnGrp.add(styleBtn);
         styleBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/style.png"))); // NOI18N
         styleBtn.setSelected(true);
-        styleBtn.setText("Section & Style");
-        styleBtn.setToolTipText("Section and style preferences");
+        styleBtn.setText(Lang.getInstance().getString("Notate.styleBtn.Text"));
+        styleBtn.setToolTipText(Lang.getInstance().getString("Notate.styleBtn.ToolTipText"));
         styleBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         styleBtn.setIconTextGap(0);
         styleBtn.setNextFocusableComponent(chorusBtn);
@@ -2421,8 +2423,8 @@ public class Notate
 
         prefsTabBtnGrp.add(midiBtn);
         midiBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/largeMidi.png"))); // NOI18N
-        midiBtn.setText("MIDI");
-        midiBtn.setToolTipText("MIDI preferences");
+        midiBtn.setText(Lang.getInstance().getString("Notate.midiBtn.Text"));
+        midiBtn.setToolTipText(Lang.getInstance().getString("Notate.midiBtn.ToolTipText"));
         midiBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         midiBtn.setIconTextGap(0);
         midiBtn.setNextFocusableComponent(contourBtn);
@@ -2439,8 +2441,8 @@ public class Notate
 
         prefsTabBtnGrp.add(contourBtn);
         contourBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/largePencil.png"))); // NOI18N
-        contourBtn.setText("Contour");
-        contourBtn.setToolTipText("Drawing (\"contour\") tool preferences");
+        contourBtn.setText(Lang.getInstance().getString("Notate.contourBtn.Text"));
+        contourBtn.setToolTipText(Lang.getInstance().getString("Notate.contourBtn.ToolTipText"));
         contourBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         contourBtn.setIconTextGap(0);
         contourBtn.setNextFocusableComponent(styleBtn);
@@ -2494,11 +2496,17 @@ public class Notate
 
         stylePreferences.setBackground(new java.awt.Color(255, 255, 255));
         stylePreferences.setToolTipText("Style settings by section");
+        stylePreferences.setMinimumSize(new java.awt.Dimension(650, 480));
+        stylePreferences.setPreferredSize(new java.awt.Dimension(650, 480));
+        stylePreferences.setSize(new java.awt.Dimension(650, 480));
         stylePreferences.setLayout(new java.awt.GridBagLayout());
 
         stylePrefLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         stylePrefLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/style.png"))); // NOI18N
         stylePrefLabel.setText("Section and Style Settings");
+        stylePrefLabel.setMaximumSize(new java.awt.Dimension(650, 100));
+        stylePrefLabel.setMinimumSize(new java.awt.Dimension(650, 50));
+        stylePrefLabel.setPreferredSize(new java.awt.Dimension(650, 50));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -2508,13 +2516,13 @@ public class Notate
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 0);
         stylePreferences.add(stylePrefLabel, gridBagConstraints);
 
-        currentStyleTab.setMaximumSize(new java.awt.Dimension(400, 2147483647));
-        currentStyleTab.setMinimumSize(new java.awt.Dimension(300, 374));
-        currentStyleTab.setPreferredSize(new java.awt.Dimension(300, 376));
+        currentStyleTab.setMaximumSize(new java.awt.Dimension(600, 2147483647));
+        currentStyleTab.setMinimumSize(new java.awt.Dimension(600, 480));
+        currentStyleTab.setPreferredSize(new java.awt.Dimension(600, 480));
         currentStyleTab.setLayout(new java.awt.GridBagLayout());
 
         selectAStyleLabel.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
-        selectAStyleLabel.setText("Style");
+        selectAStyleLabel.setText(Lang.getInstance().getString("Notate.selectAStyleLabel.Text"));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 0;
@@ -2566,7 +2574,7 @@ public class Notate
 
         sectionLabel.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         sectionLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        sectionLabel.setText("Sections");
+        sectionLabel.setText(Lang.getInstance().getString("Notate.sectionLabel.Text"));
         sectionLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -2599,7 +2607,7 @@ public class Notate
 
         recentStyleLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         recentStyleLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        recentStyleLabel.setText("Recent Styles");
+        recentStyleLabel.setText(Lang.getInstance().getString("Notate.recentStyleLabel.Text"));
         recentStyleLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
