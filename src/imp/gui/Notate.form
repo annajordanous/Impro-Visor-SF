@@ -4,17 +4,9 @@
   <NonVisualComponents>
     <Container class="javax.swing.JDialog" name="preferencesDialog">
       <Properties>
-        <Property name="title" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="Lang.getInstance().getString(&quot;Notate.preferencesDialog.Title&quot;)" type="code"/>
-        </Property>
+        <Property name="title" type="java.lang.String" value="Preferences and Settings"/>
         <Property name="alwaysOnTop" type="boolean" value="true"/>
         <Property name="focusCycleRoot" type="boolean" value="false"/>
-        <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-          <Dimension value="[750, 480]"/>
-        </Property>
-        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-          <Dimension value="[750, 480]"/>
-        </Property>
       </Properties>
       <Events>
         <EventHandler event="windowClosing" listener="java.awt.event.WindowListener" parameters="java.awt.event.WindowEvent" handler="preferencesDialogWindowClosing"/>
@@ -61,12 +53,8 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/imp/gui/graphics/preferences/global.png"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.globalBtn.Text&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.globalBtn.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Global"/>
+                <Property name="toolTipText" type="java.lang.String" value="Global preferences"/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
                 <Property name="iconTextGap" type="int" value="6"/>
                 <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
@@ -89,12 +77,8 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/imp/gui/graphics/preferences/leadsheet.png"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.leadsheetBtn.Text&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.leadsheetBtn.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Leadsheet"/>
+                <Property name="toolTipText" type="java.lang.String" value="Leadsheet preferences"/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
                 <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
                   <ComponentRef name="globalBtn"/>
@@ -116,12 +100,8 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/imp/gui/graphics/preferences/chorus.png"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.chorusBtn.Text&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.chorusBtn.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Chorus"/>
+                <Property name="toolTipText" type="java.lang.String" value="Chorus preferences"/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
                 <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
                   <ComponentRef name="leadsheetBtn"/>
@@ -144,12 +124,8 @@
                   <Image iconType="3" name="/imp/gui/graphics/preferences/style.png"/>
                 </Property>
                 <Property name="selected" type="boolean" value="true"/>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.styleBtn.Text&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.styleBtn.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Section &amp; Style"/>
+                <Property name="toolTipText" type="java.lang.String" value="Section and style preferences"/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
                 <Property name="iconTextGap" type="int" value="0"/>
                 <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
@@ -172,12 +148,8 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/imp/gui/graphics/preferences/largeMidi.png"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.midiBtn.Text&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.midiBtn.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="MIDI"/>
+                <Property name="toolTipText" type="java.lang.String" value="MIDI preferences"/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
                 <Property name="iconTextGap" type="int" value="0"/>
                 <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
@@ -200,12 +172,8 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/imp/gui/graphics/preferences/largePencil.png"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.contourBtn.Text&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.contourBtn.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Contour"/>
+                <Property name="toolTipText" type="java.lang.String" value="Drawing (&quot;contour&quot;) tool preferences"/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
                 <Property name="iconTextGap" type="int" value="0"/>
                 <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
@@ -276,15 +244,6 @@
           <Color blue="ff" green="ff" red="ff" type="rgb"/>
         </Property>
         <Property name="toolTipText" type="java.lang.String" value="Style settings by section"/>
-        <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-          <Dimension value="[650, 480]"/>
-        </Property>
-        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-          <Dimension value="[650, 480]"/>
-        </Property>
-        <Property name="size" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-          <Dimension value="[650, 480]"/>
-        </Property>
       </Properties>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout"/>
@@ -298,15 +257,6 @@
               <Image iconType="3" name="/imp/gui/graphics/preferences/style.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Section and Style Settings"/>
-            <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[650, 100]"/>
-            </Property>
-            <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[650, 50]"/>
-            </Property>
-            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[650, 50]"/>
-            </Property>
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -326,13 +276,13 @@
             <Container class="javax.swing.JPanel" name="currentStyleTab">
               <Properties>
                 <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[600, 2147483647]"/>
+                  <Dimension value="[400, 2147483647]"/>
                 </Property>
                 <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[600, 480]"/>
+                  <Dimension value="[300, 374]"/>
                 </Property>
                 <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[600, 480]"/>
+                  <Dimension value="[300, 376]"/>
                 </Property>
               </Properties>
               <Constraints>
@@ -350,9 +300,7 @@
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Lucida Grande" size="13" style="1"/>
                     </Property>
-                    <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="Lang.getInstance().getString(&quot;Notate.selectAStyleLabel.Text&quot;)" type="code"/>
-                    </Property>
+                    <Property name="text" type="java.lang.String" value="Style"/>
                   </Properties>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -423,9 +371,7 @@
                       <Font name="Lucida Grande" size="13" style="1"/>
                     </Property>
                     <Property name="horizontalAlignment" type="int" value="0"/>
-                    <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="Lang.getInstance().getString(&quot;Notate.sectionLabel.Text&quot;)" type="code"/>
-                    </Property>
+                    <Property name="text" type="java.lang.String" value="Sections"/>
                     <Property name="horizontalTextPosition" type="int" value="0"/>
                   </Properties>
                   <Constraints>
@@ -463,9 +409,7 @@
                       <Font name="Tahoma" size="12" style="0"/>
                     </Property>
                     <Property name="horizontalAlignment" type="int" value="4"/>
-                    <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="Lang.getInstance().getString(&quot;Notate.recentStyleLabel.Text&quot;)" type="code"/>
-                    </Property>
+                    <Property name="text" type="java.lang.String" value="Recent Styles"/>
                     <Property name="horizontalTextPosition" type="int" value="0"/>
                   </Properties>
                   <Constraints>
@@ -2066,7 +2010,7 @@
                   </Events>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
-                      <GridBagConstraints gridX="0" gridY="9" gridWidth="1" gridHeight="1" fill="0" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="11" weightX="0.0" weightY="0.0"/>
+                      <GridBagConstraints gridX="0" gridY="10" gridWidth="1" gridHeight="1" fill="0" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="11" weightX="0.0" weightY="0.0"/>
                     </Constraint>
                   </Constraints>
                 </Component>
@@ -2081,24 +2025,7 @@
                   </Events>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
-                      <GridBagConstraints gridX="0" gridY="8" gridWidth="1" gridHeight="1" fill="0" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="11" weightX="0.0" weightY="0.0"/>
-                    </Constraint>
-                  </Constraints>
-                </Component>
-                <Component class="javax.swing.JComboBox" name="langList">
-                  <Properties>
-                    <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                      <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                        <TitledBorder title="Language Preferred"/>
-                      </Border>
-                    </Property>
-                    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[96, 50]"/>
-                    </Property>
-                  </Properties>
-                  <Constraints>
-                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
-                      <GridBagConstraints gridX="0" gridY="10" gridWidth="1" gridHeight="1" fill="2" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="11" weightX="0.0" weightY="0.0"/>
+                      <GridBagConstraints gridX="0" gridY="9" gridWidth="1" gridHeight="1" fill="0" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="11" weightX="0.0" weightY="0.0"/>
                     </Constraint>
                   </Constraints>
                 </Component>
@@ -3492,9 +3419,7 @@
         </Component>
         <MenuItem class="javax.swing.JMenuItem" name="advicePMI">
           <Properties>
-            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="Lang.getInstance().getString(&quot;Notate.advicePMI.Text&quot;)" type="code"/>
-            </Property>
+            <Property name="text" type="java.lang.String" value="Advice"/>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <AuxValues>
@@ -3516,9 +3441,7 @@
     </Container>
     <Container class="javax.swing.JFrame" name="adviceFrame">
       <Properties>
-        <Property name="title" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="Lang.getInstance().getString(&quot;Notate.adviceFrame.Title&quot;)" type="code"/>
-        </Property>
+        <Property name="title" type="java.lang.String" value="Advice Directory"/>
         <Property name="alwaysOnTop" type="boolean" value="true"/>
         <Property name="focusCycleRoot" type="boolean" value="false"/>
         <Property name="name" type="java.lang.String" value="adviceFrame" noResource="true"/>
@@ -4228,9 +4151,6 @@
                 <Property name="minorTickSpacing" type="int" value="5"/>
                 <Property name="orientation" type="int" value="1"/>
                 <Property name="paintTicks" type="boolean" value="true"/>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.allVolumeToolBarSlider.ToolTipText&quot;)" type="code"/>
-                </Property>
                 <Property name="value" type="int" value="80"/>
                 <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                   <Dimension value="[38, 256]"/>
@@ -4256,9 +4176,7 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Arial" size="10" style="0"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.allMuteMixerBtn.Text&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Mute All"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="allMuteMixerBtnActionPerformed"/>
@@ -6909,12 +6827,8 @@
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="0" green="ff" id="green" palette="1" red="0" type="palette"/>
             </Property>
-            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="Lang.getInstance().getString(&quot;Notate.cancelTruncate.Text&quot;)" type="code"/>
-            </Property>
-            <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="Lang.getInstance().getString(&quot;Notate.cancelTruncate.ToolTipText&quot;)" type="code"/>
-            </Property>
+            <Property name="text" type="java.lang.String" value="Cancel truncation"/>
+            <Property name="toolTipText" type="java.lang.String" value="Do not truncate the part."/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                 <BevelBorder/>
@@ -6936,12 +6850,8 @@
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="0" green="0" id="red" palette="1" red="ff" type="palette"/>
             </Property>
-            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="Lang.getInstance().getString(&quot;Notate.acceptTruncate.Text&quot;)" type="code"/>
-            </Property>
-            <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="Lang.getInstance().getString(&quot;Notate.acceptTruncate.ToolTipText&quot;)" type="code"/>
-            </Property>
+            <Property name="text" type="java.lang.String" value="Truncate Anyway"/>
+            <Property name="toolTipText" type="java.lang.String" value="Truncates the part as specified."/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                 <BevelBorder/>
@@ -7610,9 +7520,7 @@
         <Menu class="javax.swing.JMenu" name="fileMenu">
           <Properties>
             <Property name="mnemonic" type="int" value="102"/>
-            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="Lang.getInstance().getString(&quot;Notate.fileMenu.Text&quot;)" type="code"/>
-            </Property>
+            <Property name="text" type="java.lang.String" value="File"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="fileMenuActionPerformed"/>
@@ -7620,9 +7528,7 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="aboutMI">
               <Properties>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.aboutMI.Text&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="About Impro-Visor"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="aboutMIActionPerformed"/>
@@ -7636,12 +7542,8 @@
                   <KeyStroke key="Ctrl+N"/>
                 </Property>
                 <Property name="mnemonic" type="int" value="110"/>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.newMI.Text&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.newMI.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="New Leadsheet"/>
+                <Property name="toolTipText" type="java.lang.String" value="Start a new leadsheet in its own window."/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="newMIActionPerformed"/>
@@ -7656,12 +7558,8 @@
                   <KeyStroke key="Ctrl+O"/>
                 </Property>
                 <Property name="mnemonic" type="int" value="111"/>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.oneAutoMI.Text&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.openLeadsheetMI.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Open Leadsheet"/>
+                <Property name="toolTipText" type="java.lang.String" value="Open a leadsheet in the current window."/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="openLeadsheetMIActionPerformed"/>
@@ -7669,9 +7567,7 @@
             </MenuItem>
             <Menu class="javax.swing.JMenu" name="openRecentLeadsheetMenu">
               <Properties>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.openRecentLeadsheetMenu.Text&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Open Recent Leadsheet (same window)"/>
               </Properties>
               <Events>
                 <EventHandler event="menuSelected" listener="javax.swing.event.MenuListener" parameters="javax.swing.event.MenuEvent" handler="populateRecentFileMenu"/>
@@ -7689,9 +7585,7 @@
             </Menu>
             <Menu class="javax.swing.JMenu" name="openRecentLeadsheetNewWindowMenu">
               <Properties>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.openRecentLeadsheetNewWindowMenu.Text&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Open Recent Leadsheet (new window)"/>
               </Properties>
               <Events>
                 <EventHandler event="menuSelected" listener="javax.swing.event.MenuListener" parameters="javax.swing.event.MenuEvent" handler="populateRecentLeadsheetNewWindow"/>
@@ -7709,12 +7603,8 @@
             </Menu>
             <MenuItem class="javax.swing.JMenuItem" name="fileStepMI">
               <Properties>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.fileStepMI.Text&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.fileStepMI.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="File Stepper"/>
+                <Property name="toolTipText" type="java.lang.String" value="Open separate window for file-stepping.&#xa;"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="fileStepMIActionPerformed"/>
@@ -7725,12 +7615,8 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+R"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.revertToSavedMI.Text&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.revertToSavedMI.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Revert to Saved Leadsheet"/>
+                <Property name="toolTipText" type="java.lang.String" value="Revert leadsheet to saved version, discarding any changes."/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="revertLeadsheetActionPerformed"/>
@@ -7738,12 +7624,8 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="clearHistoryMI">
               <Properties>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.clearHistoryMI.Text&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.clearHistoryMI.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Clear Command History&#xa;"/>
+                <Property name="toolTipText" type="java.lang.String" value="Clears the history, so that previous commands are forgotten.&#xa;"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="clearHistoryMIrevertLeadsheetActionPerformed"/>
@@ -7756,9 +7638,7 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+S"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.saveLeadsheetMI.Text&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Save"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="saveLeadsheetMIActionPerformed"/>
@@ -7769,12 +7649,8 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+W"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.saveAsLeadsheetMI.Text&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.saveAsLeadsheetMI.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Save Leadsheet As"/>
+                <Property name="toolTipText" type="java.lang.String" value="Save the current leadsheet under a specified file name."/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="saveAsLeadsheetMIActionPerformed"/>
@@ -7782,12 +7658,8 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="exportAllToMidi">
               <Properties>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.exportAllToMidi.Text&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.exportAllToMidi.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Export Leadsheet to MIDI"/>
+                <Property name="toolTipText" type="java.lang.String" value="Create a MIDI file of the playback of the current leadsheet."/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="exportAllToMidiActionPerformed"/>
@@ -7798,9 +7670,7 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+M"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.importMidiMI.Text&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Import MIDI Tracks from File"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="importMidiMIActionPerformed"/>
@@ -7808,12 +7678,8 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="exportChorusToMusicXML">
               <Properties>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.exportChorusToMusicXML.Text&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.exportChorusToMusicXML.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Export Chorus to MusicXML"/>
+                <Property name="toolTipText" type="java.lang.String" value="Create a MusicXML file for the current chorus."/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="exportChorusToMusicXMLActionPerformed"/>
@@ -7823,12 +7689,8 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="loadAdvMI">
               <Properties>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.loadAdvMI.Text&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.loadAdvMI.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Load Vocabulary"/>
+                <Property name="toolTipText" type="java.lang.String" value="Load a new vocabulary."/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="loadAdvMIActionPerformed"/>
@@ -7836,12 +7698,8 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="saveAdvice">
               <Properties>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.saveAdvice.Text&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.saveAdvice.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Save Vocabulary"/>
+                <Property name="toolTipText" type="java.lang.String" value="Save the current vocabulary."/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="saveAdviceActionPerformed"/>
@@ -7849,12 +7707,8 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="saveAsAdvice">
               <Properties>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.saveAsAdvice.Text&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.saveAsAdvice.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Save Vocabulary As"/>
+                <Property name="toolTipText" type="java.lang.String" value="Save the current vocabulary in a file."/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="saveAsAdviceActionPerformed"/>
@@ -7867,12 +7721,8 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+P"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.printMI.Text&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.printMI.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Print the Current Chorus"/>
+                <Property name="toolTipText" type="java.lang.String" value="Print the current leadsheet."/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="printMIActionPerformed"/>
@@ -7883,9 +7733,7 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Shift+Ctrl+P"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.printAllMI.Text&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Print All Choruses"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="printAllMIActionPerformed"/>
@@ -7899,12 +7747,8 @@
                   <KeyStroke key="Ctrl+Q"/>
                 </Property>
                 <Property name="mnemonic" type="int" value="113"/>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.quitMI.Text&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.quitMI.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Quit"/>
+                <Property name="toolTipText" type="java.lang.String" value="Quit Impro-Visor."/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="quitMIActionPerformed"/>
@@ -7915,9 +7759,7 @@
         <Menu class="javax.swing.JMenu" name="editMenu">
           <Properties>
             <Property name="mnemonic" type="int" value="101"/>
-            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="Lang.getInstance().getString(&quot;Notate.editMenu.Text&quot;)&#xa;" type="code"/>
-            </Property>
+            <Property name="text" type="java.lang.String" value="Edit"/>
           </Properties>
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="selectAllMI">
@@ -7925,12 +7767,8 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+A"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.selectAllMI.Text&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.selectAllMI.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Select All"/>
+                <Property name="toolTipText" type="java.lang.String" value="Select all notes and chords on the sheet."/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="selectAllMIActionPerformed"/>
@@ -7944,12 +7782,8 @@
                   <KeyStroke key="Z"/>
                 </Property>
                 <Property name="mnemonic" type="int" value="117"/>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.undoMI.Text&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.undoMI.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Undo"/>
+                <Property name="toolTipText" type="java.lang.String" value="Undo the most recent undoable action."/>
                 <Property name="enabled" type="boolean" value="false"/>
               </Properties>
               <Events>
@@ -7961,12 +7795,8 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Y"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.redoMI.Text&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.redoMI.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Redo"/>
+                <Property name="toolTipText" type="java.lang.String" value="Redo the most recent action that was undone."/>
                 <Property name="enabled" type="boolean" value="false"/>
               </Properties>
               <Events>
@@ -7980,12 +7810,8 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="X"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.cutMelodyMI.Text&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.cutMelodyMI.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Cut Melody"/>
+                <Property name="toolTipText" type="java.lang.String" value="Cut the selected melody (saves in clipboard)."/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cutMelodyMIActionPerformed"/>
@@ -7996,12 +7822,8 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Shift+X"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.cutChordsMI.Text&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.cutChordsMI.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Cut Chords"/>
+                <Property name="toolTipText" type="java.lang.String" value="Cut the selected  chords (saves in clipboard)."/>
                 <Property name="enabled" type="boolean" value="false"/>
               </Properties>
               <Events>
@@ -8013,12 +7835,8 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+X"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.cutBothMI.Text&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.cutBothMI.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Cut Melody and Chords"/>
+                <Property name="toolTipText" type="java.lang.String" value="Cut the selected melody and chords (saves in clipboard)."/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cutBothMIActionPerformed"/>
@@ -8029,9 +7847,7 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="C"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.copyMelodyMI.Label&quot;)" type="code"/>
-                </Property>
+                <Property name="label" type="java.lang.String" value="Copy Melody"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="copyMelodyMIActionPerformed"/>
@@ -8042,12 +7858,8 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Shift+C"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.copyChordsMI.Text&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.copyChordsMI.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Copy Chords"/>
+                <Property name="toolTipText" type="java.lang.String" value="Copy chords to clipboard."/>
                 <Property name="enabled" type="boolean" value="false"/>
               </Properties>
               <Events>
@@ -8059,12 +7871,8 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+C"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.copyBothMI.Text&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.copyBothMI.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Copy Melody and Chords"/>
+                <Property name="toolTipText" type="java.lang.String" value="Copy melody and chords to clipboard."/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="copyBothMIActionPerformed"/>
@@ -8075,12 +7883,8 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="V"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.pasteMelodyMI.Text&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.pasteMelodyMI.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Paste Melody"/>
+                <Property name="toolTipText" type="java.lang.String" value="Paste melody from clipboard and selected grid line."/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="pasteMelodyMIActionPerformed"/>
@@ -8091,9 +7895,7 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Shift+V"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.pasteChordsMI.Text&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Paste Chords"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="pasteChordsMIActionPerformed"/>
@@ -8104,12 +7906,8 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+V"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.pasteBothMI.Label&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.pasteBothMI.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Paste chords and melody from clipboard and selected grid line."/>
+                <Property name="label" type="java.lang.String" value="Paste Melody and Chords"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="pasteBothMIActionPerformed"/>
@@ -8118,9 +7916,7 @@
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="pasteOverMI">
               <Properties>
                 <Property name="selected" type="boolean" value="true"/>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.pasteOverMI.Text&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Always Overwrite when Pasting"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="pasteOverMIActionPerformed"/>
@@ -8133,9 +7929,7 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="COMMA"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.enterTextMI.Text&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Enter Text"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="enterTextMIActionPerformed"/>
@@ -8146,12 +7940,8 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="B"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.enterMelodyMI.Text&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.enterMelodyMI.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Enter Melody from Text&#xa;"/>
+                <Property name="toolTipText" type="java.lang.String" value="Enter melody currently in the text entry window."/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="enterMelodyMIActionPerformed"/>
@@ -8162,12 +7952,8 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Shift+B"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.enterChordsMI.Text&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.enterChordsMI.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Enter Chords from Text&#xa;"/>
+                <Property name="toolTipText" type="java.lang.String" value="Enter chords currently in text entry window."/>
                 <Property name="actionCommand" type="java.lang.String" value="Enter Chords2"/>
               </Properties>
               <Events>
@@ -8179,12 +7965,8 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+B"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.enterBothMI.Text&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.enterBothMI.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Enter Melody and Chords from Text&#xa;"/>
+                <Property name="toolTipText" type="java.lang.String" value="Enter chords and melody currently in the text entry window."/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="enterBothMIActionPerformed"/>
@@ -8197,12 +7979,8 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="SLASH"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.reverseMelody.Text&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.reverseMelody.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Reverse selected melody"/>
+                <Property name="toolTipText" type="java.lang.String" value="Reverse the notes in the selected melody."/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="reverseMelodyActionPerformed"/>
@@ -8213,12 +7991,8 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="BACK_SLASH"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.invertMelody.Text&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.invertMelody.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Invert selected melody"/>
+                <Property name="toolTipText" type="java.lang.String" value="Invert the notes in the selected melody."/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="invertMelodyActionPerformed"/>
@@ -8229,9 +8003,7 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Shift+2"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.expandMelodyBy2.Text&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Expand melody by 2"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="expandMelodyBy2ActionPerformed"/>
@@ -8242,9 +8014,7 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Shift+3"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.expandMelodyBy3.Text&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Expand melody by 3"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="expandMelodyBy3ActionPerformed1"/>
@@ -8255,9 +8025,7 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+2"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.contractMelodyBy2.Text&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Contract melody by 2"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="contractMelodyBy2ActionPerformed1"/>
@@ -8268,9 +8036,7 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+3"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.contractMelodyBy3.Text&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Contract melody by 3"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="contractMelodyBy3ActionPerformed11"/>
@@ -8283,12 +8049,8 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="J"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.copyMelodySelectionToTextWindow.Text&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.copyMelodySelectionToTextWindow.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Copy Melody to Text Window"/>
+                <Property name="toolTipText" type="java.lang.String" value="Copy the melody in the selection to text window."/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="copyMelodySelectionToTextWindowActionPerformed"/>
@@ -8299,12 +8061,8 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Shift+J"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.copyChordSelectionToTextWindow.Text&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.copyChordSelectionToTextWindow.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Copy Chords to Text Window"/>
+                <Property name="toolTipText" type="java.lang.String" value="Copy the chords in selection to text window."/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="copyChordSelectionToTextWindowActionPerformed"/>
@@ -8315,12 +8073,8 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+J"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.copyBothSelectionToTextWindow.Text&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.copyBothSelectionToTextWindow.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Copy Selection to Text Window"/>
+                <Property name="toolTipText" type="java.lang.String" value="Copy the selection to text window."/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="copyBothSelectionToTextWindowActionPerformed"/>
@@ -8331,12 +8085,8 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="U"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.saveSelectionAsLick.Text&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.saveSelectionAsLick.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Save Selection as Lick, Cell, Idiom, or Quote"/>
+                <Property name="toolTipText" type="java.lang.String" value="Save the selection as a lick.&#xa;"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="saveSelectionAsLickActionPerformed"/>
@@ -8347,12 +8097,8 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+U"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.generateLickInSelection.Text&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.generateLickInSelection.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Generate Lick in Selection"/>
+                <Property name="toolTipText" type="java.lang.String" value="Save the selection as a lick.&#xa;"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="generateLickInSelectionActionPerformed"/>
@@ -8365,9 +8111,7 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+T"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.insertChorusTabMI.Text&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Insert New Chorus Tab"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="insertChorusTabMIActionPerformed"/>
@@ -8375,9 +8119,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="insertRestMeasure">
               <Properties>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.insertRestMeasure.Text&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Insert a Measure of Rest"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="insertRestMeasureActionPerformed"/>
@@ -8388,9 +8130,7 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="R"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.addRestMI.Text&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Add Rest"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addRestMIActionPerformed"/>
@@ -8401,9 +8141,7 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Shift+R"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.resolvePitches.Label&quot;)" type="code"/>
-                </Property>
+                <Property name="label" type="java.lang.String" value="Rectify Melody to Harmony"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="resolvePitchesActionPerformed"/>
@@ -8413,9 +8151,7 @@
         </Menu>
         <Menu class="javax.swing.JMenu" name="transposeMenu">
           <Properties>
-            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="Lang.getInstance().getString(&quot;Notate.transposeMenu.Text&quot;)" type="code"/>
-            </Property>
+            <Property name="text" type="java.lang.String" value="Transpose"/>
           </Properties>
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="transposeMelodyUpSemitone">
@@ -8423,12 +8159,8 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="E"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.transposeMelodyUpSemitone.Text&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.transposeMelodyUpSemitone.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Transpose Melody Up Semitone"/>
+                <Property name="toolTipText" type="java.lang.String" value="Transpose the selected melody up one half-step."/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="transposeMelodyUpSemitoneActionPerformed"/>
@@ -8439,12 +8171,8 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Shift+E"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.transposeChordsUpSemitone.Text&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.transposeChordsUpSemitone.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Transpose Chords Up Semitone"/>
+                <Property name="toolTipText" type="java.lang.String" value="Transpose the selected chords up one half-step."/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="transposeChordsUpSemitoneActionPerformed"/>
@@ -8455,12 +8183,8 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+E"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.transposeBothUpSemitone.Text&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.transposeBothUpSemitone.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Transpose Both Up Semitone"/>
+                <Property name="toolTipText" type="java.lang.String" value="Transpose the selected melody and chords up one half-step."/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="transposeBothUpSemitoneActionPerformed"/>
@@ -8471,12 +8195,8 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="W"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.transposeMelodyUpHarmonically.Text&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.transposeMelodyUpHarmonically.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Transpose Melody Up Harmonically"/>
+                <Property name="toolTipText" type="java.lang.String" value="Transpose the selected melody upward, consistently with the chord/scale."/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="transposeMelodyUpHarmonicallyActionPerformed"/>
@@ -8487,12 +8207,8 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="T"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.transposeMelodyUpOctave.Text&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.transposeMelodyUpOctave.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Transpose Melody Up Octave"/>
+                <Property name="toolTipText" type="java.lang.String" value="Transpose the selected melody up one octave."/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="transposeMelodyUpOctaveActionPerformed"/>
@@ -8503,12 +8219,8 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="D"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.transposeMelodyDownSemitone.Text&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.transposeMelodyDownSemitone.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Transpose Melody Down Semitone"/>
+                <Property name="toolTipText" type="java.lang.String" value="Transpose the selected melody down one half-step."/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="transposeMelodyDownSemitoneActionPerformed"/>
@@ -8519,12 +8231,8 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Shift+D"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.transposeChordsDownSemitone.Text&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.transposeChordsDownSemitone.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Transpose Chords Down Semitone"/>
+                <Property name="toolTipText" type="java.lang.String" value="Transpose the selected chords down one half-step."/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="transposeChordsDownSemitoneActionPerformed"/>
@@ -8535,12 +8243,8 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+D"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.transposeBothDownSemitone.Text&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.transposeBothDownSemitone.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Transpose Both Down Semitone"/>
+                <Property name="toolTipText" type="java.lang.String" value="Transpose the selected melody and chords down one half-step."/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="transposeBothDownSemitoneActionPerformed"/>
@@ -8551,12 +8255,8 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="S"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.transposeMelodyDownHarmonically.Text&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.transposeMelodyDownHarmonically.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Transpose Melody Down Harmonically&#xa;"/>
+                <Property name="toolTipText" type="java.lang.String" value="Transpose the selected melody down, consistently with the chord/scale."/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="transposeMelodyDownHarmonicallyActionPerformed"/>
@@ -8567,12 +8267,8 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="G"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.transposeMelodyDownOctave.Text&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.transposeMelodyDownOctave.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Transpose Melody Down Octave"/>
+                <Property name="toolTipText" type="java.lang.String" value="Transpose the selected melody down one octave."/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="transposeMelodyDownOctaveActionPerformed"/>
@@ -8583,9 +8279,7 @@
         <Menu class="javax.swing.JMenu" name="viewMenu">
           <Properties>
             <Property name="mnemonic" type="int" value="118"/>
-            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="Lang.getInstance().getString(&quot;Notate.viewMenu.Text&quot;)" type="code"/>
-            </Property>
+            <Property name="text" type="java.lang.String" value="View"/>
           </Properties>
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="oneAutoMI">
@@ -8593,9 +8287,7 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+L"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.oneAutoMI.Text&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Perform a Single Layout Adjustment"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="oneAutoMIActionPerformed"/>
@@ -8603,9 +8295,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="autoAdjustMI">
               <Properties>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.autoAdjustMI.Text&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Continuously Auto-Adjust the Stave Layout"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="autoAdjustMIActionPerformed"/>
@@ -8614,9 +8304,7 @@
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="showTitlesMI">
               <Properties>
                 <Property name="selected" type="boolean" value="true"/>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.showTitlesMI.Text&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Show Leadsheet Title"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="showTitlesMIActionPerformed"/>
@@ -8625,9 +8313,7 @@
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="showEmptyTitlesMI">
               <Properties>
                 <Property name="selected" type="boolean" value="true"/>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.showEmptyTitlesMI.Text&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Show Empty Title Placeholders"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="showEmptyTitlesMIActionPerformed"/>
@@ -8636,9 +8322,7 @@
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="barNumsMI">
               <Properties>
                 <Property name="selected" type="boolean" value="true"/>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.barNumsMI.Text&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Show Bar Numbers"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="barNumsMIActionPerformed"/>
@@ -8647,12 +8331,8 @@
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="phrasemarksMI">
               <Properties>
                 <Property name="selected" type="boolean" value="true"/>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.phrasemarksMI.Text&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.phrasemarksMI.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Show Phrase Marks"/>
+                <Property name="toolTipText" type="java.lang.String" value="Check to show phrase marks on the leadsheet. Phrase marks are used in roadmap analysis."/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="phrasemarksMIActionPerformed"/>
@@ -8661,9 +8341,7 @@
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="showBracketsCurrentMeasureMI">
               <Properties>
                 <Property name="selected" type="boolean" value="true"/>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.showBracketsCurrentMeasureMI.Text&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Show Brackets on Current Measure"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="showBracketsCurrentMeasureMIActionPerformed"/>
@@ -8671,9 +8349,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="showBracketsAllMeasuresMI">
               <Properties>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.showBracketsAllMeasuresMI.Text&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Show Brackets on All Measures"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="showBracketsAllMeasuresMIActionPerformed"/>
@@ -8682,9 +8358,7 @@
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="showConstructionLinesMI">
               <Properties>
                 <Property name="selected" type="boolean" value="true"/>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.showConstructionLinesMI.Text&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Show Construction Lines and Boxes"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="showConstructionLinesMIActionPerformed"/>
@@ -8693,12 +8367,8 @@
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="useBeamsMI">
               <Properties>
                 <Property name="selected" type="boolean" value="true"/>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.useBeamsMI.Text&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.useBeamsMI.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Use Beams"/>
+                <Property name="toolTipText" type="java.lang.String" value="Connect notes of same duration with beams where possible."/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="useBeamsMIActionPerformed"/>
@@ -8731,9 +8401,7 @@
         <Menu class="javax.swing.JMenu" name="playMenu">
           <Properties>
             <Property name="mnemonic" type="int" value="112"/>
-            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="Lang.getInstance().getString(&quot;Notate.playMenu.Text&quot;)" type="code"/>
-            </Property>
+            <Property name="text" type="java.lang.String" value="Play"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="playMenuActionPerformed"/>
@@ -8744,12 +8412,8 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="ENTER"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.playSelectionMI.Text&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.playSelectionMI.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Play Selection"/>
+                <Property name="toolTipText" type="java.lang.String" value="Play only the selection."/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="playSelectionMIActionPerformed"/>
@@ -8760,12 +8424,8 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Shift+ENTER"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.playSelectionToEndMI.Text&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.playSelectionToEndMI.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Play Selection to End"/>
+                <Property name="toolTipText" type="java.lang.String" value="Play from the selection to the end of the chorus."/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="playSelectionToEndMIActionPerformed"/>
@@ -8777,9 +8437,7 @@
                   <KeyStroke key="I"/>
                 </Property>
                 <Property name="mnemonic" type="int" value="112"/>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.playAllMI.Text&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Play All"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="playAllMIActionPerformed"/>
@@ -8790,9 +8448,7 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="K"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.stopPlayMI.Text&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Stop Playback"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="stopPlayMIActionPerformed"/>
@@ -8803,9 +8459,7 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="L"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.pausePlayMI.Text&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Pause/Unpause Playback"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="pauseMIActionPerformed"/>
@@ -8816,32 +8470,32 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+I"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.recordMI.Text&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.recordMI.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Record"/>
+                <Property name="toolTipText" type="java.lang.String" value="Record from a MIDI instrument."/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="recordMIActionPerformed"/>
               </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="useAudioInputMI">
+              <Properties>
+                <Property name="selected" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="false" type="code"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Use Audio Input"/>
+              </Properties>
             </MenuItem>
           </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="utilitiesMenu">
           <Properties>
             <Property name="mnemonic" type="int" value="85"/>
-            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="Lang.getInstance().getString(&quot;Notate.utilitiesMenu.Text&quot;)" type="code"/>
-            </Property>
+            <Property name="text" type="java.lang.String" value="Utilities"/>
           </Properties>
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="stepKeyboardMI">
               <Properties>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.stepKeyboardMI.Text&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Advice Keyboard"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="stepKeyboardMIActionPerformed"/>
@@ -8853,12 +8507,8 @@
                   <KeyStroke key="Ctrl+F"/>
                 </Property>
                 <Property name="mnemonic" type="int" value="108"/>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.openLeadsheetEditorMI.Text&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.openLeadsheetEditorMI.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Leadsheet Textual Editor"/>
+                <Property name="toolTipText" type="java.lang.String" value="Open file editor for leadsheet."/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="openLeadsheetEditorMIActionPerformed"/>
@@ -8873,9 +8523,7 @@
                   <KeyStroke key="Ctrl+G"/>
                 </Property>
                 <Property name="mnemonic" type="int" value="103"/>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.lickGeneratorMI.Text&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Lick Generator"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="lickGeneratorMIActionPerformed"/>
@@ -8887,9 +8535,7 @@
                   <KeyStroke key="Ctrl+K"/>
                 </Property>
                 <Property name="mnemonic" type="int" value="75"/>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.pianoKeyboardMI.Text&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Voicing Keyboard"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="pianoKeyboardMIActionPerformed"/>
@@ -8901,9 +8547,7 @@
                   <KeyStroke key="Ctrl+Y"/>
                 </Property>
                 <Property name="mnemonic" type="int" value="83"/>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.styleGenerator1.Text&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Style Editor &amp; Extractor"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="styleGenerator1ActionPerformed"/>
@@ -8915,9 +8559,7 @@
                   <KeyStroke key="Ctrl+I"/>
                 </Property>
                 <Property name="mnemonic" type="int" value="118"/>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.voicingTestMI.Text&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Voicing Editor"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="voicingTestMIActionPerformed"/>
@@ -8927,9 +8569,7 @@
         </Menu>
         <Menu class="javax.swing.JMenu" name="roadmapMenu">
           <Properties>
-            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="Lang.getInstance().getString(&quot;Notate.roadmapMenu.Text&quot;)" type="code"/>
-            </Property>
+            <Property name="text" type="java.lang.String" value="Roadmap&#xa;"/>
             <Property name="toolTipText" type="java.lang.String" value="Options for creating a roadmap of the chord progression."/>
           </Properties>
           <SubComponents>
@@ -8938,12 +8578,8 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="SEMICOLON"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.roadMapThisAnalyze.Text&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.roadMapThisAnalyze.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Show Roadmap"/>
+                <Property name="toolTipText" type="java.lang.String" value="Show Roadmap"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="roadMapThisAnalyzeAction"/>
@@ -8966,9 +8602,7 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+SEMICOLON"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.emptyRoadMapMI.Text&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Open Empty Roadmap "/>
                 <Property name="toolTipText" type="java.lang.String" value="Opens a blank roadmap unrelated to this leadsheet"/>
               </Properties>
               <Events>
@@ -8990,17 +8624,13 @@
         </Menu>
         <Menu class="javax.swing.JMenu" name="improvMenu">
           <Properties>
-            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="Lang.getInstance().getString(&quot;Notate.improvMenu.Text&quot;)" type="code"/>
-            </Property>
+            <Property name="text" type="java.lang.String" value="Improvise"/>
             <Property name="toolTipText" type="java.lang.String" value="Set the type of auto-improvisation, if any, to be used with play or record. NOTE: The melody may be over-written."/>
           </Properties>
           <SubComponents>
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="useImproviseButtonCheckBoxMI">
               <Properties>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.useImproviseButtonCheckBoxMI.Text&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Impro-Visor improvises continuously"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="useImproviseButtonCheckBoxMIActionPerformed"/>
@@ -9010,9 +8640,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="trade16IVfirstCheckBoxMI">
               <Properties>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.trade16IVfirstCheckBoxMI.Text&quot;)&#xa;" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Impro-Visor plays first 16 bars"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="trade16IVfirstCheckBoxMIActionPerformed"/>
@@ -9020,9 +8648,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="trade12IVfirstCheckBoxMI">
               <Properties>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.trade12IVfirstCheckBoxMI.Text&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Impro-Visor plays first 12 bars"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="trade12IVfirstCheckBoxMIActionPerformed"/>
@@ -9030,9 +8656,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="trade8IVfirstCheckBoxMI">
               <Properties>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.trade8IVfirstCheckBoxMI.Text&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Impro-Visor plays first 8 bars"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="trade8IVfirstCheckBoxMIActionPerformed"/>
@@ -9040,9 +8664,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="trade4IVfirstCheckBoxMI">
               <Properties>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.trade4IVfirstCheckBoxMI.Text&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Impro-Visor plays first 4 bars"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="trade4IVfirstCheckBoxMIActionPerformed"/>
@@ -9050,9 +8672,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="trade2IVfirstCheckBoxMI">
               <Properties>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.trade2IVfirstCheckBoxMI.Text&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Impro-Visor plays first 2 bars"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="trade2IVfirstCheckBoxMIActionPerformed"/>
@@ -9060,9 +8680,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="trade1IVfirstCheckBoxMI">
               <Properties>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.trade1IVfirstCheckBoxMI.Text&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Impro-Visor plays first bar"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="trade1IVfirstCheckBoxMIActionPerformed"/>
@@ -9072,9 +8690,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="trade16userFirstCheckBoxMI">
               <Properties>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.trade16userFirstCheckBoxMI.Text&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="User plays first 16 bars"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="trade16userFirstCheckBoxMIActionPerformed"/>
@@ -9082,9 +8698,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="trade12userFirstCheckBoxMI">
               <Properties>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.trade12userFirstCheckBoxMI.Text&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="User plays first 12 bars"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="trade12userFirstCheckBoxMIActionPerformed"/>
@@ -9092,9 +8706,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="trade8userFirstCheckBoxMI">
               <Properties>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.trade8userFirstCheckBoxMI.Text&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="User plays first 8 bars"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="trade8userFirstCheckBoxMIActionPerformed"/>
@@ -9102,9 +8714,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="trade4userFirstCheckBoxMI">
               <Properties>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.trade4userFirstCheckBoxMI.Text&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="User plays first 4 bars"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="trade4userFirstCheckBoxMIActionPerformed"/>
@@ -9112,9 +8722,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="trade2userFirstCheckBoxMI">
               <Properties>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.trade2userFirstCheckBoxMI.Text&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="User plays first 2 bars"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="trade2userFirstCheckBoxMIActionPerformed"/>
@@ -9122,9 +8730,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="trade1userFirstCheckBoxMI">
               <Properties>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.trade1userFirstCheckBoxMI.Text&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="User plays first bar"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="trade1userFirstCheckBoxMIActionPerformed"/>
@@ -9135,9 +8741,7 @@
         <Menu class="javax.swing.JMenu" name="windowMenu">
           <Properties>
             <Property name="mnemonic" type="int" value="87"/>
-            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="Lang.getInstance().getString(&quot;Notate.windowMenu.Text&quot;)" type="code"/>
-            </Property>
+            <Property name="text" type="java.lang.String" value="Window"/>
           </Properties>
           <Events>
             <EventHandler event="menuSelected" listener="javax.swing.event.MenuListener" parameters="javax.swing.event.MenuEvent" handler="windowMenuMenuSelected"/>
@@ -9146,12 +8750,8 @@
             <MenuItem class="javax.swing.JMenuItem" name="closeWindowMI">
               <Properties>
                 <Property name="mnemonic" type="int" value="67"/>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.closeWindowMI.Text&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.closeWindowMI.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Close Window"/>
+                <Property name="toolTipText" type="java.lang.String" value="Closes the current window (exits program if there are no other windows)"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="closeWindowMIActionPerformed"/>
@@ -9160,9 +8760,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="cascadeMI">
               <Properties>
                 <Property name="mnemonic" type="int" value="65"/>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.cascadeMI.Text&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Cascade Windows"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cascadeMIActionPerformed"/>
@@ -9187,9 +8785,7 @@
         <Menu class="javax.swing.JMenu" name="preferencesMenu">
           <Properties>
             <Property name="mnemonic" type="int" value="82"/>
-            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="Lang.getInstance().getString(&quot;Notate.preferencesMenu.Text&quot;)" type="code"/>
-            </Property>
+            <Property name="text" type="java.lang.String" value="Preferences"/>
             <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
               <ComponentRef name="leadsheetPreferences"/>
             </Property>
@@ -9203,12 +8799,8 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="P"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.preferencesAcceleratorMI.Text&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.preferencesAcceleratorMI.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Open Preferences"/>
+                <Property name="toolTipText" type="java.lang.String" value="Open the preferences dialog."/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="preferencesAcceleratorMIActionPerformed"/>
@@ -9217,9 +8809,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="globalPrefsMI">
               <Properties>
                 <Property name="mnemonic" type="int" value="71"/>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.globalPrefsMI.Text&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Global"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="globalPrefsMIActionPerformed"/>
@@ -9228,9 +8818,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="leadsheetPrefsMI">
               <Properties>
                 <Property name="mnemonic" type="int" value="76"/>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.leadsheetPrefsMI.Text&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Leadsheet"/>
                 <Property name="selected" type="boolean" value="true"/>
               </Properties>
               <Events>
@@ -9240,9 +8828,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="chorusPrefsMI">
               <Properties>
                 <Property name="mnemonic" type="int" value="67"/>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.chorusPrefsMI.Text&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Chorus"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chorusPrefsMIActionPerformed"/>
@@ -9251,9 +8837,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="stylePrefsMI">
               <Properties>
                 <Property name="mnemonic" type="int" value="83"/>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.stylePrefsMI.Text&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Style"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="stylePrefsMIActionPerformed"/>
@@ -9262,9 +8846,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="midiPrefsMI">
               <Properties>
                 <Property name="mnemonic" type="int" value="77"/>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.midiPrefsMI.Text&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="MIDI"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="midiPrefsMIActionPerformed"/>
@@ -9273,9 +8855,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="contourPrefsMI">
               <Properties>
                 <Property name="mnemonic" type="int" value="84"/>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.contourPrefsMI.Text&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Contour"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="contourPrefsMIActionPerformed"/>
@@ -9286,9 +8866,7 @@
         <Menu class="javax.swing.JMenu" name="helpMenu">
           <Properties>
             <Property name="mnemonic" type="int" value="72"/>
-            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="Lang.getInstance().getString(&quot;Notate.helpMenu.Text&quot;)" type="code"/>
-            </Property>
+            <Property name="text" type="java.lang.String" value="Help"/>
             <Property name="toolTipText" type="java.lang.String" value="Open the help dialog."/>
           </Properties>
           <Events>
@@ -9298,12 +8876,8 @@
             <MenuItem class="javax.swing.JMenuItem" name="helpMI">
               <Properties>
                 <Property name="mnemonic" type="int" value="73"/>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.helpMI.Text&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.helpMI.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Impro-Visor Help"/>
+                <Property name="toolTipText" type="java.lang.String" value="Shows the Help Dialog"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="helpMIActionPerformed"/>
@@ -9311,12 +8885,8 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="firstTimePrefsMI">
               <Properties>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.firstTimePrefsMI.Text&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.firstTimePrefsMI.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Show First-Launch Message"/>
+                <Property name="toolTipText" type="java.lang.String" value="Shows the message that appeared on the first launch of this version."/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="firstTimePrefsMIActionPerformed"/>
@@ -9327,9 +8897,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="helpAboutMI">
               <Properties>
                 <Property name="mnemonic" type="int" value="65"/>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.helpAboutMI.Text&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="About Impro-Visor"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="helpAboutMIActionPerformed"/>
@@ -9339,9 +8907,7 @@
         </Menu>
         <Menu class="javax.swing.JMenu" name="statusMenu">
           <Properties>
-            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="Lang.getInstance().getString(&quot;Notate.statusMenu.Text&quot;)" type="code"/>
-            </Property>
+            <Property name="text" type="java.lang.String" value="Status:"/>
           </Properties>
         </Menu>
       </SubComponents>
@@ -9369,8 +8935,8 @@
     <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="formMouseEntered"/>
     <EventHandler event="windowGainedFocus" listener="java.awt.event.WindowFocusListener" parameters="java.awt.event.WindowEvent" handler="formWindowGainedFocus"/>
     <EventHandler event="windowLostFocus" listener="java.awt.event.WindowFocusListener" parameters="java.awt.event.WindowEvent" handler="formWindowLostFocus"/>
-    <EventHandler event="windowClosing" listener="java.awt.event.WindowListener" parameters="java.awt.event.WindowEvent" handler="formWindowClosing"/>
     <EventHandler event="windowClosed" listener="java.awt.event.WindowListener" parameters="java.awt.event.WindowEvent" handler="notateWIndowClosed"/>
+    <EventHandler event="windowClosing" listener="java.awt.event.WindowListener" parameters="java.awt.event.WindowEvent" handler="formWindowClosing"/>
     <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="formFocusGained"/>
     <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="formFocusLost"/>
     <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="formKeyPressed"/>
@@ -9435,9 +9001,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/imp/gui/graphics/toolbar/new.gif"/>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.newBtn.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Start a new leadsheet, in addition to the current one (Ctrl+N)."/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                     <BevelBorder/>
@@ -9465,9 +9029,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/imp/gui/graphics/icons/fileStepperBack.png"/>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.fileStepBackBtn.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Browse previous leadsheet file in the current folder. (Does nothing if this is the first leadsheet in the folder.)&#xa;"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                     <BevelBorder/>
@@ -9489,9 +9051,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/imp/gui/graphics/icons/fileStepperFront.png"/>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.fileStepForwardBtn.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Browse next leadsheet file in the current folder. (Does nothing if this is the last leadsheet in the folder.)&#xa;&#xa;"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                     <BevelBorder/>
@@ -9516,9 +9076,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/imp/gui/graphics/toolbar/open.gif"/>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.openBtn.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Open a leadsheet in place of the current one (Ctrl+O)."/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                     <BevelBorder/>
@@ -9543,9 +9101,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/imp/gui/graphics/toolbar/save.gif"/>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.saveBtn.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Save the current Leadsheet (Ctrl+S)."/>
                 <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                   <Dimension value="[30, 30]"/>
                 </Property>
@@ -9568,9 +9124,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/imp/gui/graphics/toolbar/print.gif"/>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.printBtn.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Print the current chorus (Ctrl+P)."/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                     <BevelBorder/>
@@ -9595,9 +9149,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/imp/gui/graphics/toolbar/cut.gif"/>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.cutBothBtn.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Cut the currently selected melody and chords (Ctrl+X)."/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                     <BevelBorder/>
@@ -9623,9 +9175,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/imp/gui/graphics/toolbar/copy.gif"/>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.copyBothBtn.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Copy the currently selected melody and chords (Ctrl+C)."/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                     <BevelBorder/>
@@ -9677,9 +9227,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/imp/gui/graphics/toolbar/undo.gif"/>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.undoBtn.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Undo the previous action (Ctrl+Z)"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                     <BevelBorder/>
@@ -9704,9 +9252,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/imp/gui/graphics/toolbar/redo.gif"/>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.redoBtn.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Redo the previous action (Ctrl+Y)"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                     <BevelBorder/>
@@ -9732,9 +9278,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/imp/gui/graphics/toolbar/pencil.gif"/>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.drawButton.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Toggle drawing mode."/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                     <BevelBorder/>
@@ -9759,9 +9303,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/imp/gui/graphics/cursors/blueNoteLineCursor.png"/>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.noteCursorBtn.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Toggle note cursor."/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                     <BevelBorder/>
@@ -9792,9 +9334,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/imp/gui/graphics/toolbar/advice.gif"/>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.showAdviceButton.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Show advice for chords."/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                     <BevelBorder/>
@@ -9820,12 +9360,8 @@
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="0" green="ff" red="0" type="rgb"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.improviseButton.Text.Improvise&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.improviseButton.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Improv"/>
+                <Property name="toolTipText" type="java.lang.String" value="Toggle to turn auto-improvisation on or off"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                     <BevelBorder/>
@@ -9855,9 +9391,7 @@
                 <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
                   <SpinnerModel initial="0.99" maximum="20.0" minimum="-20.0" numberType="java.lang.Double" stepSize="0.01" type="number"/>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.generationGapSpinner.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Specifies the lead time, in beats, for generating next chorus before the end of the current chorus, if Recur is toggled on."/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
                     <TitledBorder justification="2" title="Lead Beats">
@@ -9885,9 +9419,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/imp/gui/graphics/toolbar/triage.gif"/>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.openGeneratorButton.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Open the Lick Generator dialog."/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                     <BevelBorder/>
@@ -9915,12 +9447,8 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Arial" size="11" style="0"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.freezeLayoutButton.Text.Freeze&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.freezeLayoutButton.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;center&gt;Freeze&lt;br&gt;Layout&lt;/center&gt;&lt;/html&gt;"/>
+                <Property name="toolTipText" type="java.lang.String" value="Freeze or thaw the current layout"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                     <BevelBorder/>
@@ -9950,12 +9478,8 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Arial" size="11" style="0"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.colorationButton.Text.NoColor&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.colorationButton.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;center&gt;Black&amp;&lt;br&gt;White&lt;/center&gt;&lt;/html&gt;"/>
+                <Property name="toolTipText" type="java.lang.String" value="Turn note coloration off or on."/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                     <BevelBorder/>
@@ -9987,12 +9511,8 @@
                   <Font name="Arial" size="11" style="0"/>
                 </Property>
                 <Property name="selected" type="boolean" value="true"/>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.smartEntryButton.Text.Simple&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.smartEntryButton.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;center&gt;Simple&lt;br&gt;Entry&lt;/center&gt;&lt;/html&gt;"/>
+                <Property name="toolTipText" type="java.lang.String" value="Use simple or harmonic note entry (the latter observing chords)."/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                     <BevelBorder/>
@@ -10017,9 +9537,7 @@
             </Component>
             <Component class="javax.swing.JSpinner" name="chordFontSizeSpinner">
               <Properties>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.chordFontSizeSpinner.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Specifies the chord font size."/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
                     <TitledBorder justification="2" title="Chord Font">
@@ -10050,9 +9568,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/imp/gui/graphics/toolbar/addtab.gif"/>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.addTabBtn.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Add a new chorus tab, at the end."/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                     <BevelBorder/>
@@ -10080,9 +9596,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/imp/gui/graphics/toolbar/deltab.gif"/>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.delTabBtn.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Delete the current  chorus tab (can&apos;t be undone). If there is only one chorus, you can&apos;t delete it.&#xa;"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                     <BevelBorder/>
@@ -10108,9 +9622,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/imp/gui/graphics/preferences/smallGlobe.png"/>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.globalPreferencesBtn.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Open Global Preferences dialog."/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                     <BevelBorder/>
@@ -10138,9 +9650,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/imp/gui/graphics/preferences/leadsheet.png"/>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.leadsheetPreferencesBtn.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Open Leadsheet Preferences dialog."/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                     <BevelBorder/>
@@ -10168,9 +9678,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/imp/gui/graphics/preferences/trebleClef.png"/>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.chorusPreferences.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Open Chorus Preferences dialog."/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                     <BevelBorder/>
@@ -10198,9 +9706,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/imp/gui/graphics/preferences/smallStyle.png"/>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.sectionPreferencesBtn.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Open Section and Style Preferences dialog."/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                     <BevelBorder/>
@@ -10228,9 +9734,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/imp/gui/graphics/preferences/smallMidi.png"/>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.midiPreferencesBtn.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Open MIDI Preferences dialog."/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                     <BevelBorder/>
@@ -10258,9 +9762,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/imp/gui/graphics/preferences/pencilCursor.png"/>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.contourPreferencesBtn.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Open Contour Preferences dialog."/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                     <BevelBorder/>
@@ -10342,12 +9844,8 @@
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Arial" size="11" style="0"/>
                     </Property>
-                    <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="Lang.getInstance().getString(&quot;Notate.loopButton.Text.Loop&quot;)" type="code"/>
-                    </Property>
-                    <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="Lang.getInstance().getString(&quot;Notate.loopButton.ToolTipText&quot;)" type="code"/>
-                    </Property>
+                    <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;center&gt;Loop&lt;/center&gt;&lt;/html&gt;"/>
+                    <Property name="toolTipText" type="java.lang.String" value="Toggle playback looping."/>
                     <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                       <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                         <BevelBorder/>
@@ -10382,9 +9880,7 @@
                     </Property>
                     <Property name="horizontalAlignment" type="int" value="4"/>
                     <Property name="text" type="java.lang.String" value="0"/>
-                    <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="Lang.getInstance().getString(&quot;Notate.loopSet.ToolTipText&quot;)" type="code"/>
-                    </Property>
+                    <Property name="toolTipText" type="java.lang.String" value="Loop  on playback specified number of times (0 means loop forever; press k or stop button to stop)."/>
                     <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                       <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
                         <EtchetBorder/>
@@ -10426,9 +9922,7 @@
                     </TitledBorder>
                   </Border>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.countInPanel.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Check to count in two measures before tune is played."/>
                 <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                   <Dimension value="[40, 42]"/>
                 </Property>
@@ -10471,9 +9965,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/imp/gui/graphics/toolbar/play.gif"/>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.playBtn.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Play the entire leadsheet, starting with the first chorus.&#xa;To play just the current chorus, select the first beat of that chorus and press Shift-Enter."/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                     <BevelBorder/>
@@ -10498,9 +9990,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/imp/gui/graphics/toolbar/pause.gif"/>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.pauseBtn.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Pause or resume playback."/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                     <BevelBorder/>
@@ -10526,9 +10016,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/imp/gui/graphics/toolbar/stop.gif"/>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.styleBtn.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Stop playback."/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                     <BevelBorder/>
@@ -10554,9 +10042,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/imp/gui/graphics/toolbar/record.gif"/>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.recordBtn.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Record from audio or MIDI source. Caution: This is UNDER CONSTRUCTION. Your patience is appreciated."/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                     <BevelBorder/>
@@ -10584,12 +10070,8 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Arial" size="10" style="0"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.stepInputBtn.Text.Step&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.stepInputBtn.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;center&gt;Step&lt;br&gt;Input&lt;/center&gt;&lt;/html&gt;"/>
+                <Property name="toolTipText" type="java.lang.String" value="Step record from MIDI source. Each step uses the current slot showing and advances to the next. Use f and a keys to move forward and backward among slots, if desired, for making corrections."/>
                 <Property name="actionCommand" type="java.lang.String" value=""/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
@@ -10616,9 +10098,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/imp/gui/graphics/icons/playReversedGreen.gif"/>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.chordStepBackButton.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Move back to the previous chord (without playing).&#xa;"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                     <BevelBorder/>
@@ -10646,9 +10126,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/imp/gui/graphics/icons/replayGreen.gif"/>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.chordReplayButton.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Replays chord."/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                     <BevelBorder/>
@@ -10673,9 +10151,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/imp/gui/graphics/icons/playGreen.gif"/>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.chordStepForwardButton.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Move to, and play, the next chord."/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                     <BevelBorder/>
@@ -10814,12 +10290,8 @@
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Arial" size="10" style="0"/>
                     </Property>
-                    <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="Lang.getInstance().getString(&quot;Notate.allMuteToolBarBtn.Text.Mute&quot;)" type="code"/>
-                    </Property>
-                    <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="Lang.getInstance().getString(&quot;Notate.allVolumeToolBarSlider.ToolTipText&quot;)" type="code"/>
-                    </Property>
+                    <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;center&gt;Mute&lt;/center&gt;&lt;/html&gt;"/>
+                    <Property name="toolTipText" type="java.lang.String" value="Play or not play notes as they are inserted?"/>
                     <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                       <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                         <BevelBorder/>
@@ -10876,9 +10348,7 @@
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                       <Image iconType="3" name="/imp/gui/graphics/toolbar/mixer.gif"/>
                     </Property>
-                    <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="Lang.getInstance().getString(&quot;Notate.mixerBtn.ToolTipText&quot;)" type="code"/>
-                    </Property>
+                    <Property name="toolTipText" type="java.lang.String" value="Open Volume Mixer"/>
                     <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                       <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                         <BevelBorder/>
@@ -10912,8 +10382,7 @@
               <Properties>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                    <TitledBorder justification="2" title="&lt;User Code&gt;">
-                      <Connection PropertyName="titleX" code="Lang.getInstance().getString(&quot;Notate.tempoLabel.Text&quot;)" type="code"/>
+                    <TitledBorder justification="2" title="Tempo (Beats/Minute) ">
                       <Font PropertyName="font" name="Dialog" size="10" style="0"/>
                     </TitledBorder>
                   </Border>
@@ -10938,9 +10407,7 @@
                       <Font name="Dialog" size="12" style="1"/>
                     </Property>
                     <Property name="horizontalAlignment" type="int" value="4"/>
-                    <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="Lang.getInstance().getString(&quot;Notate.tempoSet.ToolTipText&quot;)" type="code"/>
-                    </Property>
+                    <Property name="toolTipText" type="java.lang.String" value="Set the tempo for the sheet in beats per minute."/>
                     <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                       <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
                         <EtchetBorder/>
@@ -10997,9 +10464,7 @@
             </Container>
             <Component class="javax.swing.JSpinner" name="transposeSpinner">
               <Properties>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.transposeSpinner.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Transposes the playback the specified number of half steps (e.g. use -2 for Bb instruments, +3 for Eb)."/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
                     <TitledBorder justification="2" title="Transpose">
@@ -11033,9 +10498,7 @@
                     </TitledBorder>
                   </Border>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.partBarsPanel.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Set the number of measures in one chorus."/>
                 <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                   <Dimension value="[50, 50]"/>
                 </Property>
@@ -11056,9 +10519,7 @@
                       <Font name="Dialog" size="12" style="1"/>
                     </Property>
                     <Property name="horizontalAlignment" type="int" value="0"/>
-                    <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="Lang.getInstance().getString(&quot;Notate.partBarsTF1.ToolTipText&quot;)" type="code"/>
-                    </Property>
+                    <Property name="toolTipText" type="java.lang.String" value="Set the number of bars in one chorus (the same for all choruses)"/>
                     <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                       <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
                         <EtchetBorder/>
@@ -11095,8 +10556,7 @@
               <Properties>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                    <TitledBorder justification="2" title="&lt;User Code&gt;">
-                      <Connection PropertyName="titleX" code="Lang.getInstance().getString(&quot;Notate.trackerDelayLabel.Text&quot;)" type="code"/>
+                    <TitledBorder justification="2" title="Delay">
                       <Font PropertyName="font" name="Dialog" size="10" style="0"/>
                     </TitledBorder>
                   </Border>
@@ -11122,9 +10582,7 @@
                       <Font name="Dialog" size="12" style="1"/>
                     </Property>
                     <Property name="horizontalAlignment" type="int" value="4"/>
-                    <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="Lang.getInstance().getString(&quot;Notate.trackerDelayTextField2.ToolTipText&quot;)" type="code"/>
-                    </Property>
+                    <Property name="toolTipText" type="java.lang.String" value="Set the delay between the tracker and playback."/>
                     <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                       <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
                         <EtchetBorder/>
@@ -11159,9 +10617,7 @@
             </Container>
             <Component class="javax.swing.JSpinner" name="parallaxSpinner">
               <Properties>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.parallaxSpinner.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Sets the vertical parallax for mouse clicks on staves."/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
                     <TitledBorder title="Parallax">
@@ -11189,12 +10645,8 @@
                   <Font name="Arial" size="11" style="0"/>
                 </Property>
                 <Property name="selected" type="boolean" value="true"/>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.earlyScrollBtn.Text.Early&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.earlyScrollBtn.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="&lt;html&gt;&#xa;&lt;center&gt;&#xa;Early&#xa;&lt;br&gt;&#xa;Scroll&#xa;&lt;/center&gt;&#xa;&lt;/html&gt;&#xa;"/>
+                <Property name="toolTipText" type="java.lang.String" value="Causes the staff display to scroll to the top earlier."/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                     <BevelBorder/>
@@ -11240,9 +10692,7 @@
           <SubComponents>
             <Component class="javax.swing.JLabel" name="textEntryLabel">
               <Properties>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.textEntry.Text&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Textual Entry "/>
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="textEntry">
@@ -11250,9 +10700,7 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Dialog" size="14" style="0"/>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.textEntryToolBar.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Enter chords or melody in leadsheet notation."/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
                     <EtchetBorder/>
@@ -11275,12 +10723,8 @@
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="33" green="ff" red="ff" type="rgb"/>
                 </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.clearButton.Text&quot;)" type="code"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Lang.getInstance().getString(&quot;Notate.clearButton.ToolTipText&quot;)" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Clear"/>
+                <Property name="toolTipText" type="java.lang.String" value="Clear the textual entry field."/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                     <BevelBorder/>
