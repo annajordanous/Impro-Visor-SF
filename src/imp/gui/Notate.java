@@ -21,8 +21,6 @@
 
 package imp.gui;
 
-import imp.lang.Lang;
-
 import imp.Constants;
 import imp.Constants.ExtractMode;
 import imp.Constants.StaveType;
@@ -96,8 +94,6 @@ public class Notate
   private static final long serialVersionUID = 1L;
 
   private int DEFAULT_SLIDER_VOLUME = 80;
-
-  private static boolean firstTime = true;
 
   RoadMapFrame roadmapFrame = null;
 
@@ -1293,9 +1289,6 @@ public class Notate
 
   public void postInitComponents()
     {
-      
-    loadLangPref();
-
     notateGrammarMenu.setText(getDefaultGrammarName() + " grammar");
 
     voicingTestFrame.pack();
@@ -1617,7 +1610,6 @@ public class Notate
         numStavesPerPage = new javax.swing.JTextField();
         replaceWithDeltaCheckBox = new javax.swing.JCheckBox();
         replaceWithPhiCheckBox = new javax.swing.JCheckBox();
-        langList = new javax.swing.JComboBox();
         appearanceTab = new javax.swing.JPanel();
         visAdvicePanel = new javax.swing.JPanel();
         cells = new javax.swing.JCheckBox();
@@ -2281,6 +2273,7 @@ public class Notate
         stopPlayMI = new javax.swing.JMenuItem();
         pausePlayMI = new javax.swing.JMenuItem();
         recordMI = new javax.swing.JMenuItem();
+        useAudioInputMI = new javax.swing.JCheckBoxMenuItem();
         utilitiesMenu = new javax.swing.JMenu();
         stepKeyboardMI = new javax.swing.JMenuItem();
         openLeadsheetEditorMI = new javax.swing.JMenuItem();
@@ -2330,11 +2323,9 @@ public class Notate
         helpAboutMI = new javax.swing.JMenuItem();
         statusMenu = new javax.swing.JMenu();
 
-        preferencesDialog.setTitle(Lang.getInstance().getString("Notate.preferencesDialog.Title"));
+        preferencesDialog.setTitle("Preferences and Settings");
         preferencesDialog.setAlwaysOnTop(true);
         preferencesDialog.setFocusCycleRoot(false);
-        preferencesDialog.setMinimumSize(new java.awt.Dimension(750, 480));
-        preferencesDialog.setPreferredSize(new java.awt.Dimension(750, 480));
         preferencesDialog.getRootPane().setDefaultButton(savePrefsBtn);
         preferencesDialog.addWindowListener(new java.awt.event.WindowAdapter()
         {
@@ -2352,8 +2343,8 @@ public class Notate
 
         prefsTabBtnGrp.add(globalBtn);
         globalBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/global.png"))); // NOI18N
-        globalBtn.setText(Lang.getInstance().getString("Notate.globalBtn.Text"));
-        globalBtn.setToolTipText(Lang.getInstance().getString("Notate.globalBtn.ToolTipText"));
+        globalBtn.setText("Global");
+        globalBtn.setToolTipText("Global preferences");
         globalBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         globalBtn.setIconTextGap(6);
         globalBtn.setNextFocusableComponent(midiBtn);
@@ -2370,8 +2361,8 @@ public class Notate
 
         prefsTabBtnGrp.add(leadsheetBtn);
         leadsheetBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/leadsheet.png"))); // NOI18N
-        leadsheetBtn.setText(Lang.getInstance().getString("Notate.leadsheetBtn.Text"));
-        leadsheetBtn.setToolTipText(Lang.getInstance().getString("Notate.leadsheetBtn.ToolTipText"));
+        leadsheetBtn.setText("Leadsheet");
+        leadsheetBtn.setToolTipText("Leadsheet preferences");
         leadsheetBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         leadsheetBtn.setNextFocusableComponent(globalBtn);
         leadsheetBtn.setPreferredSize(new java.awt.Dimension(100, 85));
@@ -2387,8 +2378,8 @@ public class Notate
 
         prefsTabBtnGrp.add(chorusBtn);
         chorusBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/chorus.png"))); // NOI18N
-        chorusBtn.setText(Lang.getInstance().getString("Notate.chorusBtn.Text"));
-        chorusBtn.setToolTipText(Lang.getInstance().getString("Notate.chorusBtn.ToolTipText"));
+        chorusBtn.setText("Chorus");
+        chorusBtn.setToolTipText("Chorus preferences");
         chorusBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         chorusBtn.setNextFocusableComponent(leadsheetBtn);
         chorusBtn.setPreferredSize(new java.awt.Dimension(100, 85));
@@ -2405,8 +2396,8 @@ public class Notate
         prefsTabBtnGrp.add(styleBtn);
         styleBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/style.png"))); // NOI18N
         styleBtn.setSelected(true);
-        styleBtn.setText(Lang.getInstance().getString("Notate.styleBtn.Text"));
-        styleBtn.setToolTipText(Lang.getInstance().getString("Notate.styleBtn.ToolTipText"));
+        styleBtn.setText("Section & Style");
+        styleBtn.setToolTipText("Section and style preferences");
         styleBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         styleBtn.setIconTextGap(0);
         styleBtn.setNextFocusableComponent(chorusBtn);
@@ -2423,8 +2414,8 @@ public class Notate
 
         prefsTabBtnGrp.add(midiBtn);
         midiBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/largeMidi.png"))); // NOI18N
-        midiBtn.setText(Lang.getInstance().getString("Notate.midiBtn.Text"));
-        midiBtn.setToolTipText(Lang.getInstance().getString("Notate.midiBtn.ToolTipText"));
+        midiBtn.setText("MIDI");
+        midiBtn.setToolTipText("MIDI preferences");
         midiBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         midiBtn.setIconTextGap(0);
         midiBtn.setNextFocusableComponent(contourBtn);
@@ -2441,8 +2432,8 @@ public class Notate
 
         prefsTabBtnGrp.add(contourBtn);
         contourBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/largePencil.png"))); // NOI18N
-        contourBtn.setText(Lang.getInstance().getString("Notate.contourBtn.Text"));
-        contourBtn.setToolTipText(Lang.getInstance().getString("Notate.contourBtn.ToolTipText"));
+        contourBtn.setText("Contour");
+        contourBtn.setToolTipText("Drawing (\"contour\") tool preferences");
         contourBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         contourBtn.setIconTextGap(0);
         contourBtn.setNextFocusableComponent(styleBtn);
@@ -2496,17 +2487,11 @@ public class Notate
 
         stylePreferences.setBackground(new java.awt.Color(255, 255, 255));
         stylePreferences.setToolTipText("Style settings by section");
-        stylePreferences.setMinimumSize(new java.awt.Dimension(650, 480));
-        stylePreferences.setPreferredSize(new java.awt.Dimension(650, 480));
-        stylePreferences.setSize(new java.awt.Dimension(650, 480));
         stylePreferences.setLayout(new java.awt.GridBagLayout());
 
         stylePrefLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         stylePrefLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/style.png"))); // NOI18N
         stylePrefLabel.setText("Section and Style Settings");
-        stylePrefLabel.setMaximumSize(new java.awt.Dimension(650, 100));
-        stylePrefLabel.setMinimumSize(new java.awt.Dimension(650, 50));
-        stylePrefLabel.setPreferredSize(new java.awt.Dimension(650, 50));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -2516,13 +2501,13 @@ public class Notate
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 0);
         stylePreferences.add(stylePrefLabel, gridBagConstraints);
 
-        currentStyleTab.setMaximumSize(new java.awt.Dimension(600, 2147483647));
-        currentStyleTab.setMinimumSize(new java.awt.Dimension(600, 480));
-        currentStyleTab.setPreferredSize(new java.awt.Dimension(600, 480));
+        currentStyleTab.setMaximumSize(new java.awt.Dimension(400, 2147483647));
+        currentStyleTab.setMinimumSize(new java.awt.Dimension(300, 374));
+        currentStyleTab.setPreferredSize(new java.awt.Dimension(300, 376));
         currentStyleTab.setLayout(new java.awt.GridBagLayout());
 
         selectAStyleLabel.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
-        selectAStyleLabel.setText(Lang.getInstance().getString("Notate.selectAStyleLabel.Text"));
+        selectAStyleLabel.setText("Style");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 0;
@@ -2574,7 +2559,7 @@ public class Notate
 
         sectionLabel.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         sectionLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        sectionLabel.setText(Lang.getInstance().getString("Notate.sectionLabel.Text"));
+        sectionLabel.setText("Sections");
         sectionLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -2607,7 +2592,7 @@ public class Notate
 
         recentStyleLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         recentStyleLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        recentStyleLabel.setText(Lang.getInstance().getString("Notate.recentStyleLabel.Text"));
+        recentStyleLabel.setText("Recent Styles");
         recentStyleLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
@@ -3744,7 +3729,7 @@ public class Notate
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 9;
+        gridBagConstraints.gridy = 10;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         defaultsTab.add(replaceWithDeltaCheckBox, gridBagConstraints);
 
@@ -3758,18 +3743,9 @@ public class Notate
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 8;
+        gridBagConstraints.gridy = 9;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         defaultsTab.add(replaceWithPhiCheckBox, gridBagConstraints);
-
-        langList.setBorder(javax.swing.BorderFactory.createTitledBorder("Language Preferred"));
-        langList.setPreferredSize(new java.awt.Dimension(96, 50));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 10;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
-        defaultsTab.add(langList, gridBagConstraints);
 
         globalTabs.addTab("Defaults", defaultsTab);
 
@@ -4637,7 +4613,7 @@ public class Notate
         popupMenu.add(insertPhraseAfterPMI);
         popupMenu.add(jSeparator23);
 
-        advicePMI.setText(Lang.getInstance().getString("Notate.advicePMI.Text"));
+        advicePMI.setText("Advice");
         advicePMI.setEnabled(false);
         popupMenu.add(advicePMI);
         popupMenu.add(jSeparator11);
@@ -4653,7 +4629,7 @@ public class Notate
         });
         popupMenu.add(autoFillMI);
 
-        adviceFrame.setTitle(Lang.getInstance().getString("Notate.adviceFrame.Title"));
+        adviceFrame.setTitle("Advice Directory");
         adviceFrame.setAlwaysOnTop(true);
         adviceFrame.setFocusCycleRoot(false);
         adviceFrame.setName("adviceFrame"); // NOI18N
@@ -5255,7 +5231,6 @@ public class Notate
         allVolumeMixerSlider.setMinorTickSpacing(5);
         allVolumeMixerSlider.setOrientation(javax.swing.JSlider.VERTICAL);
         allVolumeMixerSlider.setPaintTicks(true);
-        allVolumeMixerSlider.setToolTipText(Lang.getInstance().getString("Notate.allVolumeToolBarSlider.ToolTipText"));
         allVolumeMixerSlider.setValue(80);
         allVolumeMixerSlider.setMaximumSize(new java.awt.Dimension(38, 256));
         allVolumeMixerSlider.setMinimumSize(new java.awt.Dimension(38, 256));
@@ -5273,7 +5248,7 @@ public class Notate
         allPanel.add(allVolumeMixerSlider, gridBagConstraints);
 
         allMuteMixerBtn.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
-        allMuteMixerBtn.setText(Lang.getInstance().getString("Notate.allMuteMixerBtn.Text"));
+        allMuteMixerBtn.setText("Mute All");
         allMuteMixerBtn.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -7134,8 +7109,8 @@ public class Notate
         truncatePartDialog.getContentPane().setLayout(new java.awt.GridBagLayout());
 
         cancelTruncate.setBackground(java.awt.Color.green);
-        cancelTruncate.setText(Lang.getInstance().getString("Notate.cancelTruncate.Text"));
-        cancelTruncate.setToolTipText(Lang.getInstance().getString("Notate.cancelTruncate.ToolTipText"));
+        cancelTruncate.setText("Cancel truncation");
+        cancelTruncate.setToolTipText("Do not truncate the part.");
         cancelTruncate.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         cancelTruncate.setOpaque(true);
         cancelTruncate.addActionListener(new java.awt.event.ActionListener()
@@ -7158,8 +7133,8 @@ public class Notate
         truncatePartDialog.getContentPane().add(cancelTruncate, gridBagConstraints);
 
         acceptTruncate.setBackground(java.awt.Color.red);
-        acceptTruncate.setText(Lang.getInstance().getString("Notate.acceptTruncate.Text"));
-        acceptTruncate.setToolTipText(Lang.getInstance().getString("Notate.acceptTruncate.ToolTipText"));
+        acceptTruncate.setText("Truncate Anyway");
+        acceptTruncate.setToolTipText("Truncates the part as specified.");
         acceptTruncate.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         acceptTruncate.setDefaultCapable(false);
         acceptTruncate.setOpaque(true);
@@ -7667,13 +7642,13 @@ public class Notate
         });
         addWindowListener(new java.awt.event.WindowAdapter()
         {
-            public void windowClosing(java.awt.event.WindowEvent evt)
-            {
-                formWindowClosing(evt);
-            }
             public void windowClosed(java.awt.event.WindowEvent evt)
             {
                 notateWIndowClosed(evt);
+            }
+            public void windowClosing(java.awt.event.WindowEvent evt)
+            {
+                formWindowClosing(evt);
             }
         });
         addFocusListener(new java.awt.event.FocusAdapter()
@@ -7714,7 +7689,7 @@ public class Notate
         });
 
         newBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/new.gif"))); // NOI18N
-        newBtn.setToolTipText(Lang.getInstance().getString("Notate.newBtn.ToolTipText"));
+        newBtn.setToolTipText("Start a new leadsheet, in addition to the current one (Ctrl+N).");
         newBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         newBtn.setMaximumSize(new java.awt.Dimension(30, 30));
         newBtn.setMinimumSize(new java.awt.Dimension(30, 30));
@@ -7729,7 +7704,7 @@ public class Notate
         standardToolbar.add(newBtn);
 
         fileStepBackBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/icons/fileStepperBack.png"))); // NOI18N
-        fileStepBackBtn.setToolTipText(Lang.getInstance().getString("Notate.fileStepBackBtn.ToolTipText"));
+        fileStepBackBtn.setToolTipText("Browse previous leadsheet file in the current folder. (Does nothing if this is the first leadsheet in the folder.)\n");
         fileStepBackBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         fileStepBackBtn.setMaximumSize(new java.awt.Dimension(30, 30));
         fileStepBackBtn.setMinimumSize(new java.awt.Dimension(30, 30));
@@ -7743,7 +7718,7 @@ public class Notate
         standardToolbar.add(fileStepBackBtn);
 
         fileStepForwardBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/icons/fileStepperFront.png"))); // NOI18N
-        fileStepForwardBtn.setToolTipText(Lang.getInstance().getString("Notate.fileStepForwardBtn.ToolTipText"));
+        fileStepForwardBtn.setToolTipText("Browse next leadsheet file in the current folder. (Does nothing if this is the last leadsheet in the folder.)\n\n");
         fileStepForwardBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         fileStepForwardBtn.setMaximumSize(new java.awt.Dimension(30, 30));
         fileStepForwardBtn.setMinimumSize(new java.awt.Dimension(30, 30));
@@ -7758,7 +7733,7 @@ public class Notate
         standardToolbar.add(fileStepForwardBtn);
 
         openBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/open.gif"))); // NOI18N
-        openBtn.setToolTipText(Lang.getInstance().getString("Notate.openBtn.ToolTipText"));
+        openBtn.setToolTipText("Open a leadsheet in place of the current one (Ctrl+O).");
         openBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         openBtn.setMaximumSize(new java.awt.Dimension(30, 30));
         openBtn.setMinimumSize(new java.awt.Dimension(30, 30));
@@ -7773,7 +7748,7 @@ public class Notate
         standardToolbar.add(openBtn);
 
         saveBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/save.gif"))); // NOI18N
-        saveBtn.setToolTipText(Lang.getInstance().getString("Notate.saveBtn.ToolTipText"));
+        saveBtn.setToolTipText("Save the current Leadsheet (Ctrl+S).");
         saveBtn.setMaximumSize(new java.awt.Dimension(30, 30));
         saveBtn.setMinimumSize(new java.awt.Dimension(30, 30));
         saveBtn.setPreferredSize(new java.awt.Dimension(30, 30));
@@ -7787,7 +7762,7 @@ public class Notate
         standardToolbar.add(saveBtn);
 
         printBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/print.gif"))); // NOI18N
-        printBtn.setToolTipText(Lang.getInstance().getString("Notate.printBtn.ToolTipText"));
+        printBtn.setToolTipText("Print the current chorus (Ctrl+P).");
         printBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         printBtn.setMaximumSize(new java.awt.Dimension(30, 30));
         printBtn.setMinimumSize(new java.awt.Dimension(30, 30));
@@ -7795,7 +7770,7 @@ public class Notate
         standardToolbar.add(printBtn);
 
         cutBothBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/cut.gif"))); // NOI18N
-        cutBothBtn.setToolTipText(Lang.getInstance().getString("Notate.cutBothBtn.ToolTipText"));
+        cutBothBtn.setToolTipText("Cut the currently selected melody and chords (Ctrl+X).");
         cutBothBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         cutBothBtn.setEnabled(false);
         cutBothBtn.setMaximumSize(new java.awt.Dimension(30, 30));
@@ -7804,7 +7779,7 @@ public class Notate
         standardToolbar.add(cutBothBtn);
 
         copyBothBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/copy.gif"))); // NOI18N
-        copyBothBtn.setToolTipText(Lang.getInstance().getString("Notate.copyBothBtn.ToolTipText"));
+        copyBothBtn.setToolTipText("Copy the currently selected melody and chords (Ctrl+C).");
         copyBothBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         copyBothBtn.setEnabled(false);
         copyBothBtn.setMaximumSize(new java.awt.Dimension(30, 30));
@@ -7822,7 +7797,7 @@ public class Notate
         standardToolbar.add(pasteBothBtn);
 
         undoBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/undo.gif"))); // NOI18N
-        undoBtn.setToolTipText(Lang.getInstance().getString("Notate.undoBtn.ToolTipText"));
+        undoBtn.setToolTipText("Undo the previous action (Ctrl+Z)");
         undoBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         undoBtn.setMaximumSize(new java.awt.Dimension(30, 30));
         undoBtn.setMinimumSize(new java.awt.Dimension(30, 30));
@@ -7830,7 +7805,7 @@ public class Notate
         standardToolbar.add(undoBtn);
 
         redoBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/redo.gif"))); // NOI18N
-        redoBtn.setToolTipText(Lang.getInstance().getString("Notate.redoBtn.ToolTipText"));
+        redoBtn.setToolTipText("Redo the previous action (Ctrl+Y)");
         redoBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         redoBtn.setEnabled(false);
         redoBtn.setMaximumSize(new java.awt.Dimension(30, 30));
@@ -7839,7 +7814,7 @@ public class Notate
         standardToolbar.add(redoBtn);
 
         drawButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/pencil.gif"))); // NOI18N
-        drawButton.setToolTipText(Lang.getInstance().getString("Notate.drawButton.ToolTipText"));
+        drawButton.setToolTipText("Toggle drawing mode.");
         drawButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         drawButton.setMaximumSize(new java.awt.Dimension(30, 30));
         drawButton.setMinimumSize(new java.awt.Dimension(30, 30));
@@ -7854,7 +7829,7 @@ public class Notate
         standardToolbar.add(drawButton);
 
         noteCursorBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/cursors/blueNoteLineCursor.png"))); // NOI18N
-        noteCursorBtn.setToolTipText(Lang.getInstance().getString("Notate.noteCursorBtn.ToolTipText"));
+        noteCursorBtn.setToolTipText("Toggle note cursor.");
         noteCursorBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         noteCursorBtn.setFocusable(false);
         noteCursorBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -7873,7 +7848,7 @@ public class Notate
 
         showAdviceButton.setBackground(adviceBtnColorClosed);
         showAdviceButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/advice.gif"))); // NOI18N
-        showAdviceButton.setToolTipText(Lang.getInstance().getString("Notate.showAdviceButton.ToolTipText"));
+        showAdviceButton.setToolTipText("Show advice for chords.");
         showAdviceButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         showAdviceButton.setMaximumSize(new java.awt.Dimension(30, 30));
         showAdviceButton.setMinimumSize(new java.awt.Dimension(30, 30));
@@ -7889,8 +7864,8 @@ public class Notate
         standardToolbar.add(showAdviceButton);
 
         improviseButton.setBackground(new java.awt.Color(0, 255, 0));
-        improviseButton.setText(Lang.getInstance().getString("Notate.improviseButton.Text.Improvise"));
-        improviseButton.setToolTipText(Lang.getInstance().getString("Notate.improviseButton.ToolTipText"));
+        improviseButton.setText("Improv");
+        improviseButton.setToolTipText("Toggle to turn auto-improvisation on or off");
         improviseButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         improviseButton.setFocusable(false);
         improviseButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -7910,7 +7885,7 @@ public class Notate
         standardToolbar.add(improviseButton);
 
         generationGapSpinner.setModel(new javax.swing.SpinnerNumberModel(0.99d, -20.0d, 20.0d, 0.01d));
-        generationGapSpinner.setToolTipText(Lang.getInstance().getString("Notate.generationGapSpinner.ToolTipText"));
+        generationGapSpinner.setToolTipText("Specifies the lead time, in beats, for generating next chorus before the end of the current chorus, if Recur is toggled on.");
         generationGapSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Lead Beats", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 10))); // NOI18N
         generationGapSpinner.setInheritsPopupMenu(true);
         generationGapSpinner.setMaximumSize(new java.awt.Dimension(70, 45));
@@ -7926,7 +7901,7 @@ public class Notate
         standardToolbar.add(generationGapSpinner);
 
         openGeneratorButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/triage.gif"))); // NOI18N
-        openGeneratorButton.setToolTipText(Lang.getInstance().getString("Notate.openGeneratorButton.ToolTipText"));
+        openGeneratorButton.setToolTipText("Open the Lick Generator dialog.");
         openGeneratorButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         openGeneratorButton.setMaximumSize(new java.awt.Dimension(30, 30));
         openGeneratorButton.setMinimumSize(new java.awt.Dimension(30, 30));
@@ -7942,8 +7917,8 @@ public class Notate
 
         freezeLayoutButton.setBackground(new java.awt.Color(0, 255, 0));
         freezeLayoutButton.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
-        freezeLayoutButton.setText(Lang.getInstance().getString("Notate.freezeLayoutButton.Text.Freeze"));
-        freezeLayoutButton.setToolTipText(Lang.getInstance().getString("Notate.freezeLayoutButton.ToolTipText"));
+        freezeLayoutButton.setText("<html><center>Freeze<br>Layout</center></html>");
+        freezeLayoutButton.setToolTipText("Freeze or thaw the current layout");
         freezeLayoutButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         freezeLayoutButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         freezeLayoutButton.setMaximumSize(new java.awt.Dimension(45, 30));
@@ -7961,8 +7936,8 @@ public class Notate
 
         colorationButton.setBackground(new java.awt.Color(153, 204, 255));
         colorationButton.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
-        colorationButton.setText(Lang.getInstance().getString("Notate.colorationButton.Text.NoColor"));
-        colorationButton.setToolTipText(Lang.getInstance().getString("Notate.colorationButton.ToolTipText"));
+        colorationButton.setText("<html><center>Black&<br>White</center></html>");
+        colorationButton.setToolTipText("Turn note coloration off or on.");
         colorationButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         colorationButton.setFocusable(false);
         colorationButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -7982,8 +7957,8 @@ public class Notate
         smartEntryButton.setBackground(new java.awt.Color(255, 153, 255));
         smartEntryButton.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
         smartEntryButton.setSelected(true);
-        smartEntryButton.setText(Lang.getInstance().getString("Notate.smartEntryButton.Text.Simple"));
-        smartEntryButton.setToolTipText(Lang.getInstance().getString("Notate.smartEntryButton.ToolTipText"));
+        smartEntryButton.setText("<html><center>Simple<br>Entry</center></html>");
+        smartEntryButton.setToolTipText("Use simple or harmonic note entry (the latter observing chords).");
         smartEntryButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         smartEntryButton.setFocusable(false);
         smartEntryButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -8000,7 +7975,7 @@ public class Notate
         });
         standardToolbar.add(smartEntryButton);
 
-        chordFontSizeSpinner.setToolTipText(Lang.getInstance().getString("Notate.chordFontSizeSpinner.ToolTipText"));
+        chordFontSizeSpinner.setToolTipText("Specifies the chord font size.");
         chordFontSizeSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Chord Font", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 10))); // NOI18N
         chordFontSizeSpinner.setInheritsPopupMenu(true);
         chordFontSizeSpinner.setMaximumSize(new java.awt.Dimension(65, 45));
@@ -8017,7 +7992,7 @@ public class Notate
         standardToolbar.add(chordFontSizeSpinner);
 
         addTabBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/addtab.gif"))); // NOI18N
-        addTabBtn.setToolTipText(Lang.getInstance().getString("Notate.addTabBtn.ToolTipText"));
+        addTabBtn.setToolTipText("Add a new chorus tab, at the end.");
         addTabBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         addTabBtn.setMaximumSize(new java.awt.Dimension(30, 30));
         addTabBtn.setMinimumSize(new java.awt.Dimension(30, 30));
@@ -8032,7 +8007,7 @@ public class Notate
         standardToolbar.add(addTabBtn);
 
         delTabBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/deltab.gif"))); // NOI18N
-        delTabBtn.setToolTipText(Lang.getInstance().getString("Notate.delTabBtn.ToolTipText"));
+        delTabBtn.setToolTipText("Delete the current  chorus tab (can't be undone). If there is only one chorus, you can't delete it.\n");
         delTabBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         delTabBtn.setEnabled(false);
         delTabBtn.setMaximumSize(new java.awt.Dimension(30, 30));
@@ -8048,7 +8023,7 @@ public class Notate
         standardToolbar.add(delTabBtn);
 
         globalPreferencesBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/smallGlobe.png"))); // NOI18N
-        globalPreferencesBtn.setToolTipText(Lang.getInstance().getString("Notate.globalPreferencesBtn.ToolTipText"));
+        globalPreferencesBtn.setToolTipText("Open Global Preferences dialog.");
         globalPreferencesBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         globalPreferencesBtn.setFocusable(false);
         globalPreferencesBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -8066,7 +8041,7 @@ public class Notate
         standardToolbar.add(globalPreferencesBtn);
 
         leadsheetPreferencesBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/leadsheet.png"))); // NOI18N
-        leadsheetPreferencesBtn.setToolTipText(Lang.getInstance().getString("Notate.leadsheetPreferencesBtn.ToolTipText"));
+        leadsheetPreferencesBtn.setToolTipText("Open Leadsheet Preferences dialog.");
         leadsheetPreferencesBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         leadsheetPreferencesBtn.setFocusable(false);
         leadsheetPreferencesBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -8084,7 +8059,7 @@ public class Notate
         standardToolbar.add(leadsheetPreferencesBtn);
 
         chorusPreferencesBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/trebleClef.png"))); // NOI18N
-        chorusPreferencesBtn.setToolTipText(Lang.getInstance().getString("Notate.chorusPreferences.ToolTipText"));
+        chorusPreferencesBtn.setToolTipText("Open Chorus Preferences dialog.");
         chorusPreferencesBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         chorusPreferencesBtn.setFocusable(false);
         chorusPreferencesBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -8102,7 +8077,7 @@ public class Notate
         standardToolbar.add(chorusPreferencesBtn);
 
         sectionPreferencesBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/smallStyle.png"))); // NOI18N
-        sectionPreferencesBtn.setToolTipText(Lang.getInstance().getString("Notate.sectionPreferencesBtn.ToolTipText"));
+        sectionPreferencesBtn.setToolTipText("Open Section and Style Preferences dialog.");
         sectionPreferencesBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         sectionPreferencesBtn.setFocusable(false);
         sectionPreferencesBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -8120,7 +8095,7 @@ public class Notate
         standardToolbar.add(sectionPreferencesBtn);
 
         midiPreferencesBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/smallMidi.png"))); // NOI18N
-        midiPreferencesBtn.setToolTipText(Lang.getInstance().getString("Notate.midiPreferencesBtn.ToolTipText"));
+        midiPreferencesBtn.setToolTipText("Open MIDI Preferences dialog.");
         midiPreferencesBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         midiPreferencesBtn.setFocusable(false);
         midiPreferencesBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -8138,7 +8113,7 @@ public class Notate
         standardToolbar.add(midiPreferencesBtn);
 
         contourPreferencesBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/pencilCursor.png"))); // NOI18N
-        contourPreferencesBtn.setToolTipText(Lang.getInstance().getString("Notate.contourPreferencesBtn.ToolTipText"));
+        contourPreferencesBtn.setToolTipText("Open Contour Preferences dialog.");
         contourPreferencesBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         contourPreferencesBtn.setFocusable(false);
         contourPreferencesBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -8192,8 +8167,8 @@ public class Notate
 
         loopButton.setBackground(new java.awt.Color(0, 255, 0));
         loopButton.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
-        loopButton.setText(Lang.getInstance().getString("Notate.loopButton.Text.Loop"));
-        loopButton.setToolTipText(Lang.getInstance().getString("Notate.loopButton.ToolTipText"));
+        loopButton.setText("<html><center>Loop</center></html>");
+        loopButton.setToolTipText("Toggle playback looping.");
         loopButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         loopButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         loopButton.setMaximumSize(new java.awt.Dimension(30, 20));
@@ -8223,7 +8198,7 @@ public class Notate
         loopSet.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         loopSet.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         loopSet.setText("0");
-        loopSet.setToolTipText(Lang.getInstance().getString("Notate.loopSet.ToolTipText"));
+        loopSet.setToolTipText("Loop  on playback specified number of times (0 means loop forever; press k or stop button to stop).");
         loopSet.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         loopSet.setMaximumSize(new java.awt.Dimension(30, 20));
         loopSet.setMinimumSize(new java.awt.Dimension(24, 20));
@@ -8278,7 +8253,7 @@ public class Notate
         playToolBar.add(loopPanel);
 
         countInPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Count", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.ABOVE_TOP, new java.awt.Font("Dialog", 0, 10))); // NOI18N
-        countInPanel.setToolTipText(Lang.getInstance().getString("Notate.countInPanel.ToolTipText"));
+        countInPanel.setToolTipText("Check to count in two measures before tune is played.");
         countInPanel.setMaximumSize(new java.awt.Dimension(40, 42));
         countInPanel.setMinimumSize(new java.awt.Dimension(40, 42));
         countInPanel.setPreferredSize(new java.awt.Dimension(40, 42));
@@ -8300,7 +8275,7 @@ public class Notate
         playToolBar.add(countInPanel);
 
         playBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/play.gif"))); // NOI18N
-        playBtn.setToolTipText(Lang.getInstance().getString("Notate.playBtn.ToolTipText"));
+        playBtn.setToolTipText("Play the entire leadsheet, starting with the first chorus.\nTo play just the current chorus, select the first beat of that chorus and press Shift-Enter.");
         playBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         playBtn.setMaximumSize(new java.awt.Dimension(30, 30));
         playBtn.setMinimumSize(new java.awt.Dimension(30, 30));
@@ -8315,7 +8290,7 @@ public class Notate
         playToolBar.add(playBtn);
 
         pauseBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/pause.gif"))); // NOI18N
-        pauseBtn.setToolTipText(Lang.getInstance().getString("Notate.pauseBtn.ToolTipText"));
+        pauseBtn.setToolTipText("Pause or resume playback.");
         pauseBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         pauseBtn.setEnabled(false);
         pauseBtn.setMaximumSize(new java.awt.Dimension(30, 30));
@@ -8331,7 +8306,7 @@ public class Notate
         playToolBar.add(pauseBtn);
 
         stopBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/stop.gif"))); // NOI18N
-        stopBtn.setToolTipText(Lang.getInstance().getString("Notate.styleBtn.ToolTipText"));
+        stopBtn.setToolTipText("Stop playback.");
         stopBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         stopBtn.setEnabled(false);
         stopBtn.setMaximumSize(new java.awt.Dimension(30, 30));
@@ -8347,7 +8322,7 @@ public class Notate
         playToolBar.add(stopBtn);
 
         recordBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/record.gif"))); // NOI18N
-        recordBtn.setToolTipText(Lang.getInstance().getString("Notate.recordBtn.ToolTipText"));
+        recordBtn.setToolTipText("Record from audio or MIDI source. Caution: This is UNDER CONSTRUCTION. Your patience is appreciated.");
         recordBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         recordBtn.setMaximumSize(new java.awt.Dimension(30, 30));
         recordBtn.setMinimumSize(new java.awt.Dimension(30, 30));
@@ -8363,8 +8338,8 @@ public class Notate
 
         stepInputBtn.setBackground(new java.awt.Color(0, 255, 0));
         stepInputBtn.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
-        stepInputBtn.setText(Lang.getInstance().getString("Notate.stepInputBtn.Text.Step"));
-        stepInputBtn.setToolTipText(Lang.getInstance().getString("Notate.stepInputBtn.ToolTipText"));
+        stepInputBtn.setText("<html><center>Step<br>Input</center></html>");
+        stepInputBtn.setToolTipText("Step record from MIDI source. Each step uses the current slot showing and advances to the next. Use f and a keys to move forward and backward among slots, if desired, for making corrections.");
         stepInputBtn.setActionCommand("");
         stepInputBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         stepInputBtn.setMaximumSize(new java.awt.Dimension(30, 30));
@@ -8381,7 +8356,7 @@ public class Notate
         playToolBar.add(stepInputBtn);
 
         chordStepBackButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/icons/playReversedGreen.gif"))); // NOI18N
-        chordStepBackButton.setToolTipText(Lang.getInstance().getString("Notate.chordStepBackButton.ToolTipText"));
+        chordStepBackButton.setToolTipText("Move back to the previous chord (without playing).\n");
         chordStepBackButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         chordStepBackButton.setFocusable(false);
         chordStepBackButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -8399,7 +8374,7 @@ public class Notate
         playToolBar.add(chordStepBackButton);
 
         chordReplayButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/icons/replayGreen.gif"))); // NOI18N
-        chordReplayButton.setToolTipText(Lang.getInstance().getString("Notate.chordReplayButton.ToolTipText"));
+        chordReplayButton.setToolTipText("Replays chord.");
         chordReplayButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         chordReplayButton.setFocusable(false);
         chordReplayButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -8416,7 +8391,7 @@ public class Notate
         playToolBar.add(chordReplayButton);
 
         chordStepForwardButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/icons/playGreen.gif"))); // NOI18N
-        chordStepForwardButton.setToolTipText(Lang.getInstance().getString("Notate.chordStepForwardButton.ToolTipText"));
+        chordStepForwardButton.setToolTipText("Move to, and play, the next chord.");
         chordStepForwardButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         chordStepForwardButton.setFocusable(false);
         chordStepForwardButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -8498,8 +8473,8 @@ public class Notate
 
         allMuteToolBarBtn.setBackground(new java.awt.Color(0, 255, 0));
         allMuteToolBarBtn.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
-        allMuteToolBarBtn.setText(Lang.getInstance().getString("Notate.allMuteToolBarBtn.Text.Mute"));
-        allMuteToolBarBtn.setToolTipText(Lang.getInstance().getString("Notate.allVolumeToolBarSlider.ToolTipText"));
+        allMuteToolBarBtn.setText("<html><center>Mute</center></html>");
+        allMuteToolBarBtn.setToolTipText("Play or not play notes as they are inserted?");
         allMuteToolBarBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         allMuteToolBarBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         allMuteToolBarBtn.setMaximumSize(new java.awt.Dimension(40, 20));
@@ -8538,7 +8513,7 @@ public class Notate
         masterVolumePanel.add(allVolumeToolBarSlider, gridBagConstraints);
 
         mixerBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/mixer.gif"))); // NOI18N
-        mixerBtn.setToolTipText(Lang.getInstance().getString("Notate.mixerBtn.ToolTipText"));
+        mixerBtn.setToolTipText("Open Volume Mixer");
         mixerBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         mixerBtn.setFocusable(false);
         mixerBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -8560,7 +8535,7 @@ public class Notate
 
         playToolBar.add(masterVolumePanel);
 
-        tempoPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, Lang.getInstance().getString("Notate.tempoLabel.Text"), javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 10))); // NOI18N
+        tempoPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Tempo (Beats/Minute) ", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 10))); // NOI18N
         tempoPanel.setMaximumSize(new java.awt.Dimension(160, 50));
         tempoPanel.setMinimumSize(new java.awt.Dimension(120, 50));
         tempoPanel.setOpaque(false);
@@ -8569,7 +8544,7 @@ public class Notate
 
         tempoSet.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         tempoSet.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        tempoSet.setToolTipText(Lang.getInstance().getString("Notate.tempoSet.ToolTipText"));
+        tempoSet.setToolTipText("Set the tempo for the sheet in beats per minute.");
         tempoSet.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         tempoSet.setMaximumSize(new java.awt.Dimension(40, 20));
         tempoSet.setMinimumSize(new java.awt.Dimension(30, 20));
@@ -8632,7 +8607,7 @@ public class Notate
 
         playToolBar.add(tempoPanel);
 
-        transposeSpinner.setToolTipText(Lang.getInstance().getString("Notate.transposeSpinner.ToolTipText"));
+        transposeSpinner.setToolTipText("Transposes the playback the specified number of half steps (e.g. use -2 for Bb instruments, +3 for Eb).");
         transposeSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Transpose", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 10))); // NOI18N
         transposeSpinner.setMaximumSize(new java.awt.Dimension(65, 45));
         transposeSpinner.setMinimumSize(new java.awt.Dimension(65, 45));
@@ -8648,7 +8623,7 @@ public class Notate
         playToolBar.add(transposeSpinner);
 
         partBarsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Bars", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 10))); // NOI18N
-        partBarsPanel.setToolTipText(Lang.getInstance().getString("Notate.partBarsPanel.ToolTipText"));
+        partBarsPanel.setToolTipText("Set the number of measures in one chorus.");
         partBarsPanel.setMaximumSize(new java.awt.Dimension(50, 50));
         partBarsPanel.setMinimumSize(new java.awt.Dimension(40, 50));
         partBarsPanel.setOpaque(false);
@@ -8657,7 +8632,7 @@ public class Notate
 
         partBarsTF1.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         partBarsTF1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        partBarsTF1.setToolTipText(Lang.getInstance().getString("Notate.partBarsTF1.ToolTipText"));
+        partBarsTF1.setToolTipText("Set the number of bars in one chorus (the same for all choruses)");
         partBarsTF1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         partBarsTF1.setMaximumSize(new java.awt.Dimension(45, 15));
         partBarsTF1.setMinimumSize(new java.awt.Dimension(30, 15));
@@ -8706,7 +8681,7 @@ public class Notate
 
         playToolBar.add(partBarsPanel);
 
-        trackerDelayPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, Lang.getInstance().getString("Notate.trackerDelayLabel.Text"), javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 10))); // NOI18N
+        trackerDelayPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Delay", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 10))); // NOI18N
         trackerDelayPanel.setMaximumSize(new java.awt.Dimension(50, 50));
         trackerDelayPanel.setMinimumSize(new java.awt.Dimension(40, 50));
         trackerDelayPanel.setOpaque(false);
@@ -8716,7 +8691,7 @@ public class Notate
 
         trackerDelayTextField2.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         trackerDelayTextField2.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        trackerDelayTextField2.setToolTipText(Lang.getInstance().getString("Notate.trackerDelayTextField2.ToolTipText"));
+        trackerDelayTextField2.setToolTipText("Set the delay between the tracker and playback.");
         trackerDelayTextField2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         trackerDelayTextField2.setMaximumSize(new java.awt.Dimension(40, 20));
         trackerDelayTextField2.setMinimumSize(new java.awt.Dimension(30, 20));
@@ -8765,7 +8740,7 @@ public class Notate
 
         playToolBar.add(trackerDelayPanel);
 
-        parallaxSpinner.setToolTipText(Lang.getInstance().getString("Notate.parallaxSpinner.ToolTipText"));
+        parallaxSpinner.setToolTipText("Sets the vertical parallax for mouse clicks on staves.");
         parallaxSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Parallax", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 10))); // NOI18N
         parallaxSpinner.setMaximumSize(new java.awt.Dimension(55, 45));
         parallaxSpinner.setMinimumSize(new java.awt.Dimension(55, 45));
@@ -8775,8 +8750,8 @@ public class Notate
         earlyScrollBtn.setBackground(new java.awt.Color(51, 255, 255));
         earlyScrollBtn.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
         earlyScrollBtn.setSelected(true);
-        earlyScrollBtn.setText(Lang.getInstance().getString("Notate.earlyScrollBtn.Text.Early"));
-        earlyScrollBtn.setToolTipText(Lang.getInstance().getString("Notate.earlyScrollBtn.ToolTipText"));
+        earlyScrollBtn.setText("<html>\n<center>\nEarly\n<br>\nScroll\n</center>\n</html>\n");
+        earlyScrollBtn.setToolTipText("Causes the staff display to scroll to the top earlier.");
         earlyScrollBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         earlyScrollBtn.setFocusable(false);
         earlyScrollBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -8806,11 +8781,11 @@ public class Notate
         textEntryToolBar.setMinimumSize(new java.awt.Dimension(117, 40));
         textEntryToolBar.setPreferredSize(new java.awt.Dimension(1050, 40));
 
-        textEntryLabel.setText(Lang.getInstance().getString("Notate.textEntry.Text"));
+        textEntryLabel.setText("Textual Entry ");
         textEntryToolBar.add(textEntryLabel);
 
         textEntry.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        textEntry.setToolTipText(Lang.getInstance().getString("Notate.textEntryToolBar.ToolTipText"));
+        textEntry.setToolTipText("Enter chords or melody in leadsheet notation.");
         textEntry.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         textEntry.setNextFocusableComponent(scoreTab);
         textEntry.addMouseListener(new java.awt.event.MouseAdapter()
@@ -8848,8 +8823,8 @@ public class Notate
         textEntryToolBar.add(textEntry);
 
         clearButton.setBackground(new java.awt.Color(255, 255, 51));
-        clearButton.setText(Lang.getInstance().getString("Notate.clearButton.Text"));
-        clearButton.setToolTipText(Lang.getInstance().getString("Notate.clearButton.ToolTipText"));
+        clearButton.setText("Clear");
+        clearButton.setToolTipText("Clear the textual entry field.");
         clearButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         clearButton.setMaximumSize(new java.awt.Dimension(46, 38));
         clearButton.setMinimumSize(new java.awt.Dimension(46, 38));
@@ -8927,7 +8902,7 @@ public class Notate
         getContentPane().add(scoreTab, gridBagConstraints);
 
         fileMenu.setMnemonic('f');
-        fileMenu.setText(Lang.getInstance().getString("Notate.fileMenu.Text"));
+        fileMenu.setText("File");
         fileMenu.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -8936,7 +8911,7 @@ public class Notate
             }
         });
 
-        aboutMI.setText(Lang.getInstance().getString("Notate.aboutMI.Text"));
+        aboutMI.setText("About Impro-Visor");
         aboutMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -8949,8 +8924,8 @@ public class Notate
 
         newMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
         newMI.setMnemonic('n');
-        newMI.setText(Lang.getInstance().getString("Notate.newMI.Text"));
-        newMI.setToolTipText(Lang.getInstance().getString("Notate.newMI.ToolTipText"));
+        newMI.setText("New Leadsheet");
+        newMI.setToolTipText("Start a new leadsheet in its own window.");
         newMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -8962,8 +8937,8 @@ public class Notate
 
         openLeadsheetMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
         openLeadsheetMI.setMnemonic('o');
-        openLeadsheetMI.setText(Lang.getInstance().getString("Notate.oneAutoMI.Text"));
-        openLeadsheetMI.setToolTipText(Lang.getInstance().getString("Notate.openLeadsheetMI.ToolTipText"));
+        openLeadsheetMI.setText("Open Leadsheet");
+        openLeadsheetMI.setToolTipText("Open a leadsheet in the current window.");
         openLeadsheetMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -8973,7 +8948,7 @@ public class Notate
         });
         fileMenu.add(openLeadsheetMI);
 
-        openRecentLeadsheetMenu.setText(Lang.getInstance().getString("Notate.openRecentLeadsheetMenu.Text"));
+        openRecentLeadsheetMenu.setText("Open Recent Leadsheet (same window)");
         openRecentLeadsheetMenu.addMenuListener(new javax.swing.event.MenuListener()
         {
             public void menuSelected(javax.swing.event.MenuEvent evt)
@@ -9000,7 +8975,7 @@ public class Notate
 
         fileMenu.add(openRecentLeadsheetMenu);
 
-        openRecentLeadsheetNewWindowMenu.setText(Lang.getInstance().getString("Notate.openRecentLeadsheetNewWindowMenu.Text"));
+        openRecentLeadsheetNewWindowMenu.setText("Open Recent Leadsheet (new window)");
         openRecentLeadsheetNewWindowMenu.addMenuListener(new javax.swing.event.MenuListener()
         {
             public void menuSelected(javax.swing.event.MenuEvent evt)
@@ -9027,8 +9002,8 @@ public class Notate
 
         fileMenu.add(openRecentLeadsheetNewWindowMenu);
 
-        fileStepMI.setText(Lang.getInstance().getString("Notate.fileStepMI.Text"));
-        fileStepMI.setToolTipText(Lang.getInstance().getString("Notate.fileStepMI.ToolTipText"));
+        fileStepMI.setText("File Stepper");
+        fileStepMI.setToolTipText("Open separate window for file-stepping.\n");
         fileStepMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9039,8 +9014,8 @@ public class Notate
         fileMenu.add(fileStepMI);
 
         revertToSavedMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
-        revertToSavedMI.setText(Lang.getInstance().getString("Notate.revertToSavedMI.Text"));
-        revertToSavedMI.setToolTipText(Lang.getInstance().getString("Notate.revertToSavedMI.ToolTipText"));
+        revertToSavedMI.setText("Revert to Saved Leadsheet");
+        revertToSavedMI.setToolTipText("Revert leadsheet to saved version, discarding any changes.");
         revertToSavedMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9050,8 +9025,8 @@ public class Notate
         });
         fileMenu.add(revertToSavedMI);
 
-        clearHistoryMI.setText(Lang.getInstance().getString("Notate.clearHistoryMI.Text"));
-        clearHistoryMI.setToolTipText(Lang.getInstance().getString("Notate.clearHistoryMI.ToolTipText"));
+        clearHistoryMI.setText("Clear Command History\n");
+        clearHistoryMI.setToolTipText("Clears the history, so that previous commands are forgotten.\n");
         clearHistoryMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9063,7 +9038,7 @@ public class Notate
         fileMenu.add(jSeparator6);
 
         saveLeadsheetMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
-        saveLeadsheetMI.setText(Lang.getInstance().getString("Notate.saveLeadsheetMI.Text"));
+        saveLeadsheetMI.setText("Save");
         saveLeadsheetMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9074,8 +9049,8 @@ public class Notate
         fileMenu.add(saveLeadsheetMI);
 
         saveAsLeadsheetMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_W, java.awt.event.InputEvent.CTRL_MASK));
-        saveAsLeadsheetMI.setText(Lang.getInstance().getString("Notate.saveAsLeadsheetMI.Text"));
-        saveAsLeadsheetMI.setToolTipText(Lang.getInstance().getString("Notate.saveAsLeadsheetMI.ToolTipText"));
+        saveAsLeadsheetMI.setText("Save Leadsheet As");
+        saveAsLeadsheetMI.setToolTipText("Save the current leadsheet under a specified file name.");
         saveAsLeadsheetMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9085,8 +9060,8 @@ public class Notate
         });
         fileMenu.add(saveAsLeadsheetMI);
 
-        exportAllToMidi.setText(Lang.getInstance().getString("Notate.exportAllToMidi.Text"));
-        exportAllToMidi.setToolTipText(Lang.getInstance().getString("Notate.exportAllToMidi.ToolTipText"));
+        exportAllToMidi.setText("Export Leadsheet to MIDI");
+        exportAllToMidi.setToolTipText("Create a MIDI file of the playback of the current leadsheet.");
         exportAllToMidi.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9097,7 +9072,7 @@ public class Notate
         fileMenu.add(exportAllToMidi);
 
         importMidiMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, java.awt.event.InputEvent.CTRL_MASK));
-        importMidiMI.setText(Lang.getInstance().getString("Notate.importMidiMI.Text"));
+        importMidiMI.setText("Import MIDI Tracks from File");
         importMidiMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9107,8 +9082,8 @@ public class Notate
         });
         fileMenu.add(importMidiMI);
 
-        exportChorusToMusicXML.setText(Lang.getInstance().getString("Notate.exportChorusToMusicXML.Text"));
-        exportChorusToMusicXML.setToolTipText(Lang.getInstance().getString("Notate.exportChorusToMusicXML.ToolTipText"));
+        exportChorusToMusicXML.setText("Export Chorus to MusicXML");
+        exportChorusToMusicXML.setToolTipText("Create a MusicXML file for the current chorus.");
         exportChorusToMusicXML.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9119,8 +9094,8 @@ public class Notate
         fileMenu.add(exportChorusToMusicXML);
         fileMenu.add(jSeparator2);
 
-        loadAdvMI.setText(Lang.getInstance().getString("Notate.loadAdvMI.Text"));
-        loadAdvMI.setToolTipText(Lang.getInstance().getString("Notate.loadAdvMI.ToolTipText"));
+        loadAdvMI.setText("Load Vocabulary");
+        loadAdvMI.setToolTipText("Load a new vocabulary.");
         loadAdvMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9130,8 +9105,8 @@ public class Notate
         });
         fileMenu.add(loadAdvMI);
 
-        saveAdvice.setText(Lang.getInstance().getString("Notate.saveAdvice.Text"));
-        saveAdvice.setToolTipText(Lang.getInstance().getString("Notate.saveAdvice.ToolTipText"));
+        saveAdvice.setText("Save Vocabulary");
+        saveAdvice.setToolTipText("Save the current vocabulary.");
         saveAdvice.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9141,8 +9116,8 @@ public class Notate
         });
         fileMenu.add(saveAdvice);
 
-        saveAsAdvice.setText(Lang.getInstance().getString("Notate.saveAsAdvice.Text"));
-        saveAsAdvice.setToolTipText(Lang.getInstance().getString("Notate.saveAsAdvice.ToolTipText"));
+        saveAsAdvice.setText("Save Vocabulary As");
+        saveAsAdvice.setToolTipText("Save the current vocabulary in a file.");
         saveAsAdvice.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9154,8 +9129,8 @@ public class Notate
         fileMenu.add(jSeparator17);
 
         printMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_MASK));
-        printMI.setText(Lang.getInstance().getString("Notate.printMI.Text"));
-        printMI.setToolTipText(Lang.getInstance().getString("Notate.printMI.ToolTipText"));
+        printMI.setText("Print the Current Chorus");
+        printMI.setToolTipText("Print the current leadsheet.");
         printMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9166,7 +9141,7 @@ public class Notate
         fileMenu.add(printMI);
 
         printAllMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        printAllMI.setText(Lang.getInstance().getString("Notate.printAllMI.Text"));
+        printAllMI.setText("Print All Choruses");
         printAllMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9179,8 +9154,8 @@ public class Notate
 
         quitMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
         quitMI.setMnemonic('q');
-        quitMI.setText(Lang.getInstance().getString("Notate.quitMI.Text"));
-        quitMI.setToolTipText(Lang.getInstance().getString("Notate.quitMI.ToolTipText"));
+        quitMI.setText("Quit");
+        quitMI.setToolTipText("Quit Impro-Visor.");
         quitMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9193,12 +9168,11 @@ public class Notate
         menuBar.add(fileMenu);
 
         editMenu.setMnemonic('e');
-        editMenu.setText(Lang.getInstance().getString("Notate.editMenu.Text")
-        );
+        editMenu.setText("Edit");
 
         selectAllMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_MASK));
-        selectAllMI.setText(Lang.getInstance().getString("Notate.selectAllMI.Text"));
-        selectAllMI.setToolTipText(Lang.getInstance().getString("Notate.selectAllMI.ToolTipText"));
+        selectAllMI.setText("Select All");
+        selectAllMI.setToolTipText("Select all notes and chords on the sheet.");
         selectAllMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9211,8 +9185,8 @@ public class Notate
 
         undoMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, 0));
         undoMI.setMnemonic('u');
-        undoMI.setText(Lang.getInstance().getString("Notate.undoMI.Text"));
-        undoMI.setToolTipText(Lang.getInstance().getString("Notate.undoMI.ToolTipText"));
+        undoMI.setText("Undo");
+        undoMI.setToolTipText("Undo the most recent undoable action.");
         undoMI.setEnabled(false);
         undoMI.addActionListener(new java.awt.event.ActionListener()
         {
@@ -9224,8 +9198,8 @@ public class Notate
         editMenu.add(undoMI);
 
         redoMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Y, 0));
-        redoMI.setText(Lang.getInstance().getString("Notate.redoMI.Text"));
-        redoMI.setToolTipText(Lang.getInstance().getString("Notate.redoMI.ToolTipText"));
+        redoMI.setText("Redo");
+        redoMI.setToolTipText("Redo the most recent action that was undone.");
         redoMI.setEnabled(false);
         redoMI.addActionListener(new java.awt.event.ActionListener()
         {
@@ -9238,8 +9212,8 @@ public class Notate
         editMenu.add(jSeparator7);
 
         cutMelodyMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, 0));
-        cutMelodyMI.setText(Lang.getInstance().getString("Notate.cutMelodyMI.Text"));
-        cutMelodyMI.setToolTipText(Lang.getInstance().getString("Notate.cutMelodyMI.ToolTipText"));
+        cutMelodyMI.setText("Cut Melody");
+        cutMelodyMI.setToolTipText("Cut the selected melody (saves in clipboard).");
         cutMelodyMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9250,8 +9224,8 @@ public class Notate
         editMenu.add(cutMelodyMI);
 
         cutChordsMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.SHIFT_MASK));
-        cutChordsMI.setText(Lang.getInstance().getString("Notate.cutChordsMI.Text"));
-        cutChordsMI.setToolTipText(Lang.getInstance().getString("Notate.cutChordsMI.ToolTipText"));
+        cutChordsMI.setText("Cut Chords");
+        cutChordsMI.setToolTipText("Cut the selected  chords (saves in clipboard).");
         cutChordsMI.setEnabled(false);
         cutChordsMI.addActionListener(new java.awt.event.ActionListener()
         {
@@ -9263,8 +9237,8 @@ public class Notate
         editMenu.add(cutChordsMI);
 
         cutBothMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_MASK));
-        cutBothMI.setText(Lang.getInstance().getString("Notate.cutBothMI.Text"));
-        cutBothMI.setToolTipText(Lang.getInstance().getString("Notate.cutBothMI.ToolTipText"));
+        cutBothMI.setText("Cut Melody and Chords");
+        cutBothMI.setToolTipText("Cut the selected melody and chords (saves in clipboard).");
         cutBothMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9275,7 +9249,7 @@ public class Notate
         editMenu.add(cutBothMI);
 
         copyMelodyMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, 0));
-        copyMelodyMI.setText(Lang.getInstance().getString("Notate.copyMelodyMI.Label"));
+        copyMelodyMI.setLabel("Copy Melody");
         copyMelodyMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9286,8 +9260,8 @@ public class Notate
         editMenu.add(copyMelodyMI);
 
         copyChordsMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.SHIFT_MASK));
-        copyChordsMI.setText(Lang.getInstance().getString("Notate.copyChordsMI.Text"));
-        copyChordsMI.setToolTipText(Lang.getInstance().getString("Notate.copyChordsMI.ToolTipText"));
+        copyChordsMI.setText("Copy Chords");
+        copyChordsMI.setToolTipText("Copy chords to clipboard.");
         copyChordsMI.setEnabled(false);
         copyChordsMI.addActionListener(new java.awt.event.ActionListener()
         {
@@ -9299,8 +9273,8 @@ public class Notate
         editMenu.add(copyChordsMI);
 
         copyBothMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_MASK));
-        copyBothMI.setText(Lang.getInstance().getString("Notate.copyBothMI.Text"));
-        copyBothMI.setToolTipText(Lang.getInstance().getString("Notate.copyBothMI.ToolTipText"));
+        copyBothMI.setText("Copy Melody and Chords");
+        copyBothMI.setToolTipText("Copy melody and chords to clipboard.");
         copyBothMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9311,8 +9285,8 @@ public class Notate
         editMenu.add(copyBothMI);
 
         pasteMelodyMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, 0));
-        pasteMelodyMI.setText(Lang.getInstance().getString("Notate.pasteMelodyMI.Text"));
-        pasteMelodyMI.setToolTipText(Lang.getInstance().getString("Notate.pasteMelodyMI.ToolTipText"));
+        pasteMelodyMI.setText("Paste Melody");
+        pasteMelodyMI.setToolTipText("Paste melody from clipboard and selected grid line.");
         pasteMelodyMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9323,7 +9297,7 @@ public class Notate
         editMenu.add(pasteMelodyMI);
 
         pasteChordsMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.SHIFT_MASK));
-        pasteChordsMI.setText(Lang.getInstance().getString("Notate.pasteChordsMI.Text"));
+        pasteChordsMI.setText("Paste Chords");
         pasteChordsMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9334,8 +9308,8 @@ public class Notate
         editMenu.add(pasteChordsMI);
 
         pasteBothMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.CTRL_MASK));
-        pasteBothMI.setText(Lang.getInstance().getString("Notate.pasteBothMI.Label"));
-        pasteBothMI.setToolTipText(Lang.getInstance().getString("Notate.pasteBothMI.ToolTipText"));
+        pasteBothMI.setToolTipText("Paste chords and melody from clipboard and selected grid line.");
+        pasteBothMI.setLabel("Paste Melody and Chords");
         pasteBothMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9346,7 +9320,7 @@ public class Notate
         editMenu.add(pasteBothMI);
 
         pasteOverMI.setSelected(true);
-        pasteOverMI.setText(Lang.getInstance().getString("Notate.pasteOverMI.Text"));
+        pasteOverMI.setText("Always Overwrite when Pasting");
         pasteOverMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9358,7 +9332,7 @@ public class Notate
         editMenu.add(jSeparator16);
 
         enterTextMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_COMMA, 0));
-        enterTextMI.setText(Lang.getInstance().getString("Notate.enterTextMI.Text"));
+        enterTextMI.setText("Enter Text");
         enterTextMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9369,8 +9343,8 @@ public class Notate
         editMenu.add(enterTextMI);
 
         enterMelodyMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_B, 0));
-        enterMelodyMI.setText(Lang.getInstance().getString("Notate.enterMelodyMI.Text"));
-        enterMelodyMI.setToolTipText(Lang.getInstance().getString("Notate.enterMelodyMI.ToolTipText"));
+        enterMelodyMI.setText("Enter Melody from Text\n");
+        enterMelodyMI.setToolTipText("Enter melody currently in the text entry window.");
         enterMelodyMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9381,8 +9355,8 @@ public class Notate
         editMenu.add(enterMelodyMI);
 
         enterChordsMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_B, java.awt.event.InputEvent.SHIFT_MASK));
-        enterChordsMI.setText(Lang.getInstance().getString("Notate.enterChordsMI.Text"));
-        enterChordsMI.setToolTipText(Lang.getInstance().getString("Notate.enterChordsMI.ToolTipText"));
+        enterChordsMI.setText("Enter Chords from Text\n");
+        enterChordsMI.setToolTipText("Enter chords currently in text entry window.");
         enterChordsMI.setActionCommand("Enter Chords2");
         enterChordsMI.addActionListener(new java.awt.event.ActionListener()
         {
@@ -9394,8 +9368,8 @@ public class Notate
         editMenu.add(enterChordsMI);
 
         enterBothMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_B, java.awt.event.InputEvent.CTRL_MASK));
-        enterBothMI.setText(Lang.getInstance().getString("Notate.enterBothMI.Text"));
-        enterBothMI.setToolTipText(Lang.getInstance().getString("Notate.enterBothMI.ToolTipText"));
+        enterBothMI.setText("Enter Melody and Chords from Text\n");
+        enterBothMI.setToolTipText("Enter chords and melody currently in the text entry window.");
         enterBothMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9407,8 +9381,8 @@ public class Notate
         editMenu.add(jSeparator13);
 
         reverseMelody.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_SLASH, 0));
-        reverseMelody.setText(Lang.getInstance().getString("Notate.reverseMelody.Text"));
-        reverseMelody.setToolTipText(Lang.getInstance().getString("Notate.reverseMelody.ToolTipText"));
+        reverseMelody.setText("Reverse selected melody");
+        reverseMelody.setToolTipText("Reverse the notes in the selected melody.");
         reverseMelody.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9419,8 +9393,8 @@ public class Notate
         editMenu.add(reverseMelody);
 
         invertMelody.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_BACK_SLASH, 0));
-        invertMelody.setText(Lang.getInstance().getString("Notate.invertMelody.Text"));
-        invertMelody.setToolTipText(Lang.getInstance().getString("Notate.invertMelody.ToolTipText"));
+        invertMelody.setText("Invert selected melody");
+        invertMelody.setToolTipText("Invert the notes in the selected melody.");
         invertMelody.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9431,7 +9405,7 @@ public class Notate
         editMenu.add(invertMelody);
 
         expandMelodyBy2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_2, java.awt.event.InputEvent.SHIFT_MASK));
-        expandMelodyBy2.setText(Lang.getInstance().getString("Notate.expandMelodyBy2.Text"));
+        expandMelodyBy2.setText("Expand melody by 2");
         expandMelodyBy2.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9442,7 +9416,7 @@ public class Notate
         editMenu.add(expandMelodyBy2);
 
         expandMelodyBy3.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_3, java.awt.event.InputEvent.SHIFT_MASK));
-        expandMelodyBy3.setText(Lang.getInstance().getString("Notate.expandMelodyBy3.Text"));
+        expandMelodyBy3.setText("Expand melody by 3");
         expandMelodyBy3.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9453,7 +9427,7 @@ public class Notate
         editMenu.add(expandMelodyBy3);
 
         contractMelodyBy2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_2, java.awt.event.InputEvent.CTRL_MASK));
-        contractMelodyBy2.setText(Lang.getInstance().getString("Notate.contractMelodyBy2.Text"));
+        contractMelodyBy2.setText("Contract melody by 2");
         contractMelodyBy2.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9464,7 +9438,7 @@ public class Notate
         editMenu.add(contractMelodyBy2);
 
         contractMelodyBy3.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_3, java.awt.event.InputEvent.CTRL_MASK));
-        contractMelodyBy3.setText(Lang.getInstance().getString("Notate.contractMelodyBy3.Text"));
+        contractMelodyBy3.setText("Contract melody by 3");
         contractMelodyBy3.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9476,8 +9450,8 @@ public class Notate
         editMenu.add(jSeparator14);
 
         copyMelodySelectionToTextWindow.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_J, 0));
-        copyMelodySelectionToTextWindow.setText(Lang.getInstance().getString("Notate.copyMelodySelectionToTextWindow.Text"));
-        copyMelodySelectionToTextWindow.setToolTipText(Lang.getInstance().getString("Notate.copyMelodySelectionToTextWindow.ToolTipText"));
+        copyMelodySelectionToTextWindow.setText("Copy Melody to Text Window");
+        copyMelodySelectionToTextWindow.setToolTipText("Copy the melody in the selection to text window.");
         copyMelodySelectionToTextWindow.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9488,8 +9462,8 @@ public class Notate
         editMenu.add(copyMelodySelectionToTextWindow);
 
         copyChordSelectionToTextWindow.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_J, java.awt.event.InputEvent.SHIFT_MASK));
-        copyChordSelectionToTextWindow.setText(Lang.getInstance().getString("Notate.copyChordSelectionToTextWindow.Text"));
-        copyChordSelectionToTextWindow.setToolTipText(Lang.getInstance().getString("Notate.copyChordSelectionToTextWindow.ToolTipText"));
+        copyChordSelectionToTextWindow.setText("Copy Chords to Text Window");
+        copyChordSelectionToTextWindow.setToolTipText("Copy the chords in selection to text window.");
         copyChordSelectionToTextWindow.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9500,8 +9474,8 @@ public class Notate
         editMenu.add(copyChordSelectionToTextWindow);
 
         copyBothSelectionToTextWindow.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_J, java.awt.event.InputEvent.CTRL_MASK));
-        copyBothSelectionToTextWindow.setText(Lang.getInstance().getString("Notate.copyBothSelectionToTextWindow.Text"));
-        copyBothSelectionToTextWindow.setToolTipText(Lang.getInstance().getString("Notate.copyBothSelectionToTextWindow.ToolTipText"));
+        copyBothSelectionToTextWindow.setText("Copy Selection to Text Window");
+        copyBothSelectionToTextWindow.setToolTipText("Copy the selection to text window.");
         copyBothSelectionToTextWindow.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9512,8 +9486,8 @@ public class Notate
         editMenu.add(copyBothSelectionToTextWindow);
 
         saveSelectionAsLick.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, 0));
-        saveSelectionAsLick.setText(Lang.getInstance().getString("Notate.saveSelectionAsLick.Text"));
-        saveSelectionAsLick.setToolTipText(Lang.getInstance().getString("Notate.saveSelectionAsLick.ToolTipText"));
+        saveSelectionAsLick.setText("Save Selection as Lick, Cell, Idiom, or Quote");
+        saveSelectionAsLick.setToolTipText("Save the selection as a lick.\n");
         saveSelectionAsLick.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9524,8 +9498,8 @@ public class Notate
         editMenu.add(saveSelectionAsLick);
 
         generateLickInSelection.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.CTRL_MASK));
-        generateLickInSelection.setText(Lang.getInstance().getString("Notate.generateLickInSelection.Text"));
-        generateLickInSelection.setToolTipText(Lang.getInstance().getString("Notate.generateLickInSelection.ToolTipText"));
+        generateLickInSelection.setText("Generate Lick in Selection");
+        generateLickInSelection.setToolTipText("Save the selection as a lick.\n");
         generateLickInSelection.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9537,7 +9511,7 @@ public class Notate
         editMenu.add(jSeparator21);
 
         insertChorusTabMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_T, java.awt.event.InputEvent.CTRL_MASK));
-        insertChorusTabMI.setText(Lang.getInstance().getString("Notate.insertChorusTabMI.Text"));
+        insertChorusTabMI.setText("Insert New Chorus Tab");
         insertChorusTabMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9547,7 +9521,7 @@ public class Notate
         });
         editMenu.add(insertChorusTabMI);
 
-        insertRestMeasure.setText(Lang.getInstance().getString("Notate.insertRestMeasure.Text"));
+        insertRestMeasure.setText("Insert a Measure of Rest");
         insertRestMeasure.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9558,7 +9532,7 @@ public class Notate
         editMenu.add(insertRestMeasure);
 
         addRestMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, 0));
-        addRestMI.setText(Lang.getInstance().getString("Notate.addRestMI.Text"));
+        addRestMI.setText("Add Rest");
         addRestMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9569,7 +9543,7 @@ public class Notate
         editMenu.add(addRestMI);
 
         resolvePitches.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.SHIFT_MASK));
-        resolvePitches.setText(Lang.getInstance().getString("Notate.resolvePitches.Label"));
+        resolvePitches.setLabel("Rectify Melody to Harmony");
         resolvePitches.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9581,11 +9555,11 @@ public class Notate
 
         menuBar.add(editMenu);
 
-        transposeMenu.setText(Lang.getInstance().getString("Notate.transposeMenu.Text"));
+        transposeMenu.setText("Transpose");
 
         transposeMelodyUpSemitone.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, 0));
-        transposeMelodyUpSemitone.setText(Lang.getInstance().getString("Notate.transposeMelodyUpSemitone.Text"));
-        transposeMelodyUpSemitone.setToolTipText(Lang.getInstance().getString("Notate.transposeMelodyUpSemitone.ToolTipText"));
+        transposeMelodyUpSemitone.setText("Transpose Melody Up Semitone");
+        transposeMelodyUpSemitone.setToolTipText("Transpose the selected melody up one half-step.");
         transposeMelodyUpSemitone.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9596,8 +9570,8 @@ public class Notate
         transposeMenu.add(transposeMelodyUpSemitone);
 
         transposeChordsUpSemitone.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.SHIFT_MASK));
-        transposeChordsUpSemitone.setText(Lang.getInstance().getString("Notate.transposeChordsUpSemitone.Text"));
-        transposeChordsUpSemitone.setToolTipText(Lang.getInstance().getString("Notate.transposeChordsUpSemitone.ToolTipText"));
+        transposeChordsUpSemitone.setText("Transpose Chords Up Semitone");
+        transposeChordsUpSemitone.setToolTipText("Transpose the selected chords up one half-step.");
         transposeChordsUpSemitone.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9608,8 +9582,8 @@ public class Notate
         transposeMenu.add(transposeChordsUpSemitone);
 
         transposeBothUpSemitone.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
-        transposeBothUpSemitone.setText(Lang.getInstance().getString("Notate.transposeBothUpSemitone.Text"));
-        transposeBothUpSemitone.setToolTipText(Lang.getInstance().getString("Notate.transposeBothUpSemitone.ToolTipText"));
+        transposeBothUpSemitone.setText("Transpose Both Up Semitone");
+        transposeBothUpSemitone.setToolTipText("Transpose the selected melody and chords up one half-step.");
         transposeBothUpSemitone.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9620,8 +9594,8 @@ public class Notate
         transposeMenu.add(transposeBothUpSemitone);
 
         transposeMelodyUpHarmonically.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_W, 0));
-        transposeMelodyUpHarmonically.setText(Lang.getInstance().getString("Notate.transposeMelodyUpHarmonically.Text"));
-        transposeMelodyUpHarmonically.setToolTipText(Lang.getInstance().getString("Notate.transposeMelodyUpHarmonically.ToolTipText"));
+        transposeMelodyUpHarmonically.setText("Transpose Melody Up Harmonically");
+        transposeMelodyUpHarmonically.setToolTipText("Transpose the selected melody upward, consistently with the chord/scale.");
         transposeMelodyUpHarmonically.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9632,8 +9606,8 @@ public class Notate
         transposeMenu.add(transposeMelodyUpHarmonically);
 
         transposeMelodyUpOctave.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_T, 0));
-        transposeMelodyUpOctave.setText(Lang.getInstance().getString("Notate.transposeMelodyUpOctave.Text"));
-        transposeMelodyUpOctave.setToolTipText(Lang.getInstance().getString("Notate.transposeMelodyUpOctave.ToolTipText"));
+        transposeMelodyUpOctave.setText("Transpose Melody Up Octave");
+        transposeMelodyUpOctave.setToolTipText("Transpose the selected melody up one octave.");
         transposeMelodyUpOctave.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9644,8 +9618,8 @@ public class Notate
         transposeMenu.add(transposeMelodyUpOctave);
 
         transposeMelodyDownSemitone.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, 0));
-        transposeMelodyDownSemitone.setText(Lang.getInstance().getString("Notate.transposeMelodyDownSemitone.Text"));
-        transposeMelodyDownSemitone.setToolTipText(Lang.getInstance().getString("Notate.transposeMelodyDownSemitone.ToolTipText"));
+        transposeMelodyDownSemitone.setText("Transpose Melody Down Semitone");
+        transposeMelodyDownSemitone.setToolTipText("Transpose the selected melody down one half-step.");
         transposeMelodyDownSemitone.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9656,8 +9630,8 @@ public class Notate
         transposeMenu.add(transposeMelodyDownSemitone);
 
         transposeChordsDownSemitone.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.SHIFT_MASK));
-        transposeChordsDownSemitone.setText(Lang.getInstance().getString("Notate.transposeChordsDownSemitone.Text"));
-        transposeChordsDownSemitone.setToolTipText(Lang.getInstance().getString("Notate.transposeChordsDownSemitone.ToolTipText"));
+        transposeChordsDownSemitone.setText("Transpose Chords Down Semitone");
+        transposeChordsDownSemitone.setToolTipText("Transpose the selected chords down one half-step.");
         transposeChordsDownSemitone.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9668,8 +9642,8 @@ public class Notate
         transposeMenu.add(transposeChordsDownSemitone);
 
         transposeBothDownSemitone.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.CTRL_MASK));
-        transposeBothDownSemitone.setText(Lang.getInstance().getString("Notate.transposeBothDownSemitone.Text"));
-        transposeBothDownSemitone.setToolTipText(Lang.getInstance().getString("Notate.transposeBothDownSemitone.ToolTipText"));
+        transposeBothDownSemitone.setText("Transpose Both Down Semitone");
+        transposeBothDownSemitone.setToolTipText("Transpose the selected melody and chords down one half-step.");
         transposeBothDownSemitone.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9680,8 +9654,8 @@ public class Notate
         transposeMenu.add(transposeBothDownSemitone);
 
         transposeMelodyDownHarmonically.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, 0));
-        transposeMelodyDownHarmonically.setText(Lang.getInstance().getString("Notate.transposeMelodyDownHarmonically.Text"));
-        transposeMelodyDownHarmonically.setToolTipText(Lang.getInstance().getString("Notate.transposeMelodyDownHarmonically.ToolTipText"));
+        transposeMelodyDownHarmonically.setText("Transpose Melody Down Harmonically\n");
+        transposeMelodyDownHarmonically.setToolTipText("Transpose the selected melody down, consistently with the chord/scale.");
         transposeMelodyDownHarmonically.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9692,8 +9666,8 @@ public class Notate
         transposeMenu.add(transposeMelodyDownHarmonically);
 
         transposeMelodyDownOctave.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, 0));
-        transposeMelodyDownOctave.setText(Lang.getInstance().getString("Notate.transposeMelodyDownOctave.Text"));
-        transposeMelodyDownOctave.setToolTipText(Lang.getInstance().getString("Notate.transposeMelodyDownOctave.ToolTipText"));
+        transposeMelodyDownOctave.setText("Transpose Melody Down Octave");
+        transposeMelodyDownOctave.setToolTipText("Transpose the selected melody down one octave.");
         transposeMelodyDownOctave.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9706,10 +9680,10 @@ public class Notate
         menuBar.add(transposeMenu);
 
         viewMenu.setMnemonic('v');
-        viewMenu.setText(Lang.getInstance().getString("Notate.viewMenu.Text"));
+        viewMenu.setText("View");
 
         oneAutoMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_MASK));
-        oneAutoMI.setText(Lang.getInstance().getString("Notate.oneAutoMI.Text"));
+        oneAutoMI.setText("Perform a Single Layout Adjustment");
         oneAutoMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9719,7 +9693,7 @@ public class Notate
         });
         viewMenu.add(oneAutoMI);
 
-        autoAdjustMI.setText(Lang.getInstance().getString("Notate.autoAdjustMI.Text"));
+        autoAdjustMI.setText("Continuously Auto-Adjust the Stave Layout");
         autoAdjustMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9730,7 +9704,7 @@ public class Notate
         viewMenu.add(autoAdjustMI);
 
         showTitlesMI.setSelected(true);
-        showTitlesMI.setText(Lang.getInstance().getString("Notate.showTitlesMI.Text"));
+        showTitlesMI.setText("Show Leadsheet Title");
         showTitlesMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9741,7 +9715,7 @@ public class Notate
         viewMenu.add(showTitlesMI);
 
         showEmptyTitlesMI.setSelected(true);
-        showEmptyTitlesMI.setText(Lang.getInstance().getString("Notate.showEmptyTitlesMI.Text"));
+        showEmptyTitlesMI.setText("Show Empty Title Placeholders");
         showEmptyTitlesMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9752,7 +9726,7 @@ public class Notate
         viewMenu.add(showEmptyTitlesMI);
 
         barNumsMI.setSelected(true);
-        barNumsMI.setText(Lang.getInstance().getString("Notate.barNumsMI.Text"));
+        barNumsMI.setText("Show Bar Numbers");
         barNumsMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9763,8 +9737,8 @@ public class Notate
         viewMenu.add(barNumsMI);
 
         phrasemarksMI.setSelected(true);
-        phrasemarksMI.setText(Lang.getInstance().getString("Notate.phrasemarksMI.Text"));
-        phrasemarksMI.setToolTipText(Lang.getInstance().getString("Notate.phrasemarksMI.ToolTipText"));
+        phrasemarksMI.setText("Show Phrase Marks");
+        phrasemarksMI.setToolTipText("Check to show phrase marks on the leadsheet. Phrase marks are used in roadmap analysis.");
         phrasemarksMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9775,7 +9749,7 @@ public class Notate
         viewMenu.add(phrasemarksMI);
 
         showBracketsCurrentMeasureMI.setSelected(true);
-        showBracketsCurrentMeasureMI.setText(Lang.getInstance().getString("Notate.showBracketsCurrentMeasureMI.Text"));
+        showBracketsCurrentMeasureMI.setText("Show Brackets on Current Measure");
         showBracketsCurrentMeasureMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9785,7 +9759,7 @@ public class Notate
         });
         viewMenu.add(showBracketsCurrentMeasureMI);
 
-        showBracketsAllMeasuresMI.setText(Lang.getInstance().getString("Notate.showBracketsAllMeasuresMI.Text"));
+        showBracketsAllMeasuresMI.setText("Show Brackets on All Measures");
         showBracketsAllMeasuresMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9796,7 +9770,7 @@ public class Notate
         viewMenu.add(showBracketsAllMeasuresMI);
 
         showConstructionLinesMI.setSelected(true);
-        showConstructionLinesMI.setText(Lang.getInstance().getString("Notate.showConstructionLinesMI.Text"));
+        showConstructionLinesMI.setText("Show Construction Lines and Boxes");
         showConstructionLinesMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9807,8 +9781,8 @@ public class Notate
         viewMenu.add(showConstructionLinesMI);
 
         useBeamsMI.setSelected(true);
-        useBeamsMI.setText(Lang.getInstance().getString("Notate.useBeamsMI.Text"));
-        useBeamsMI.setToolTipText(Lang.getInstance().getString("Notate.useBeamsMI.ToolTipText"));
+        useBeamsMI.setText("Use Beams");
+        useBeamsMI.setToolTipText("Connect notes of same duration with beams where possible.");
         useBeamsMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9843,7 +9817,7 @@ public class Notate
         menuBar.add(viewMenu);
 
         playMenu.setMnemonic('p');
-        playMenu.setText(Lang.getInstance().getString("Notate.playMenu.Text"));
+        playMenu.setText("Play");
         playMenu.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9853,8 +9827,8 @@ public class Notate
         });
 
         playSelectionMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ENTER, 0));
-        playSelectionMI.setText(Lang.getInstance().getString("Notate.playSelectionMI.Text"));
-        playSelectionMI.setToolTipText(Lang.getInstance().getString("Notate.playSelectionMI.ToolTipText"));
+        playSelectionMI.setText("Play Selection");
+        playSelectionMI.setToolTipText("Play only the selection.");
         playSelectionMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9865,8 +9839,8 @@ public class Notate
         playMenu.add(playSelectionMI);
 
         playSelectionToEndMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ENTER, java.awt.event.InputEvent.SHIFT_MASK));
-        playSelectionToEndMI.setText(Lang.getInstance().getString("Notate.playSelectionToEndMI.Text"));
-        playSelectionToEndMI.setToolTipText(Lang.getInstance().getString("Notate.playSelectionToEndMI.ToolTipText"));
+        playSelectionToEndMI.setText("Play Selection to End");
+        playSelectionToEndMI.setToolTipText("Play from the selection to the end of the chorus.");
         playSelectionToEndMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9878,7 +9852,7 @@ public class Notate
 
         playAllMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, 0));
         playAllMI.setMnemonic('p');
-        playAllMI.setText(Lang.getInstance().getString("Notate.playAllMI.Text"));
+        playAllMI.setText("Play All");
         playAllMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9889,7 +9863,7 @@ public class Notate
         playMenu.add(playAllMI);
 
         stopPlayMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_K, 0));
-        stopPlayMI.setText(Lang.getInstance().getString("Notate.stopPlayMI.Text"));
+        stopPlayMI.setText("Stop Playback");
         stopPlayMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9900,7 +9874,7 @@ public class Notate
         playMenu.add(stopPlayMI);
 
         pausePlayMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, 0));
-        pausePlayMI.setText(Lang.getInstance().getString("Notate.pausePlayMI.Text"));
+        pausePlayMI.setText("Pause/Unpause Playback");
         pausePlayMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9911,8 +9885,8 @@ public class Notate
         playMenu.add(pausePlayMI);
 
         recordMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.CTRL_MASK));
-        recordMI.setText(Lang.getInstance().getString("Notate.recordMI.Text"));
-        recordMI.setToolTipText(Lang.getInstance().getString("Notate.recordMI.ToolTipText"));
+        recordMI.setText("Record");
+        recordMI.setToolTipText("Record from a MIDI instrument.");
         recordMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9922,12 +9896,16 @@ public class Notate
         });
         playMenu.add(recordMI);
 
+        useAudioInputMI.setSelected(false);
+        useAudioInputMI.setText("Use Audio Input");
+        playMenu.add(useAudioInputMI);
+
         menuBar.add(playMenu);
 
         utilitiesMenu.setMnemonic('U');
-        utilitiesMenu.setText(Lang.getInstance().getString("Notate.utilitiesMenu.Text"));
+        utilitiesMenu.setText("Utilities");
 
-        stepKeyboardMI.setText(Lang.getInstance().getString("Notate.stepKeyboardMI.Text"));
+        stepKeyboardMI.setText("Advice Keyboard");
         stepKeyboardMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9939,8 +9917,8 @@ public class Notate
 
         openLeadsheetEditorMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_MASK));
         openLeadsheetEditorMI.setMnemonic('l');
-        openLeadsheetEditorMI.setText(Lang.getInstance().getString("Notate.openLeadsheetEditorMI.Text"));
-        openLeadsheetEditorMI.setToolTipText(Lang.getInstance().getString("Notate.openLeadsheetEditorMI.ToolTipText"));
+        openLeadsheetEditorMI.setText("Leadsheet Textual Editor");
+        openLeadsheetEditorMI.setToolTipText("Open file editor for leadsheet.");
         openLeadsheetEditorMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9952,7 +9930,7 @@ public class Notate
 
         lickGeneratorMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.CTRL_MASK));
         lickGeneratorMI.setMnemonic('g');
-        lickGeneratorMI.setText(Lang.getInstance().getString("Notate.lickGeneratorMI.Text"));
+        lickGeneratorMI.setText("Lick Generator");
         lickGeneratorMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9964,7 +9942,7 @@ public class Notate
 
         pianoKeyboardMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_K, java.awt.event.InputEvent.CTRL_MASK));
         pianoKeyboardMI.setMnemonic('K');
-        pianoKeyboardMI.setText(Lang.getInstance().getString("Notate.pianoKeyboardMI.Text"));
+        pianoKeyboardMI.setText("Voicing Keyboard");
         pianoKeyboardMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9976,7 +9954,7 @@ public class Notate
 
         styleGenerator1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Y, java.awt.event.InputEvent.CTRL_MASK));
         styleGenerator1.setMnemonic('S');
-        styleGenerator1.setText(Lang.getInstance().getString("Notate.styleGenerator1.Text"));
+        styleGenerator1.setText("Style Editor & Extractor");
         styleGenerator1.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9988,7 +9966,7 @@ public class Notate
 
         voicingTestMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.CTRL_MASK));
         voicingTestMI.setMnemonic('v');
-        voicingTestMI.setText(Lang.getInstance().getString("Notate.voicingTestMI.Text"));
+        voicingTestMI.setText("Voicing Editor");
         voicingTestMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -10000,12 +9978,12 @@ public class Notate
 
         menuBar.add(utilitiesMenu);
 
-        roadmapMenu.setText(Lang.getInstance().getString("Notate.roadmapMenu.Text"));
+        roadmapMenu.setText("Roadmap\n");
         roadmapMenu.setToolTipText("Options for creating a roadmap of the chord progression.");
 
         roadMapThisAnalyze.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_SEMICOLON, 0));
-        roadMapThisAnalyze.setText(Lang.getInstance().getString("Notate.roadMapThisAnalyze.Text"));
-        roadMapThisAnalyze.setToolTipText(Lang.getInstance().getString("Notate.roadMapThisAnalyze.ToolTipText"));
+        roadMapThisAnalyze.setText("Show Roadmap");
+        roadMapThisAnalyze.setToolTipText("Show Roadmap");
         roadMapThisAnalyze.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -10028,7 +10006,7 @@ public class Notate
         roadmapMenu.add(reAnalyzeMI);
 
         emptyRoadMapMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_SEMICOLON, java.awt.event.InputEvent.CTRL_MASK));
-        emptyRoadMapMI.setText(Lang.getInstance().getString("Notate.emptyRoadMapMI.Text"));
+        emptyRoadMapMI.setText("Open Empty Roadmap ");
         emptyRoadMapMI.setToolTipText("Opens a blank roadmap unrelated to this leadsheet");
         emptyRoadMapMI.addActionListener(new java.awt.event.ActionListener()
         {
@@ -10053,10 +10031,10 @@ public class Notate
 
         menuBar.add(roadmapMenu);
 
-        improvMenu.setText(Lang.getInstance().getString("Notate.improvMenu.Text"));
+        improvMenu.setText("Improvise");
         improvMenu.setToolTipText("Set the type of auto-improvisation, if any, to be used with play or record. NOTE: The melody may be over-written.");
 
-        useImproviseButtonCheckBoxMI.setText(Lang.getInstance().getString("Notate.useImproviseButtonCheckBoxMI.Text"));
+        useImproviseButtonCheckBoxMI.setText("Impro-Visor improvises continuously");
         useImproviseButtonCheckBoxMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -10067,8 +10045,7 @@ public class Notate
         improvMenu.add(useImproviseButtonCheckBoxMI);
         improvMenu.add(jSeparator4);
 
-        trade16IVfirstCheckBoxMI.setText(Lang.getInstance().getString("Notate.trade16IVfirstCheckBoxMI.Text")
-        );
+        trade16IVfirstCheckBoxMI.setText("Impro-Visor plays first 16 bars");
         trade16IVfirstCheckBoxMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -10078,7 +10055,7 @@ public class Notate
         });
         improvMenu.add(trade16IVfirstCheckBoxMI);
 
-        trade12IVfirstCheckBoxMI.setText(Lang.getInstance().getString("Notate.trade12IVfirstCheckBoxMI.Text"));
+        trade12IVfirstCheckBoxMI.setText("Impro-Visor plays first 12 bars");
         trade12IVfirstCheckBoxMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -10088,7 +10065,7 @@ public class Notate
         });
         improvMenu.add(trade12IVfirstCheckBoxMI);
 
-        trade8IVfirstCheckBoxMI.setText(Lang.getInstance().getString("Notate.trade8IVfirstCheckBoxMI.Text"));
+        trade8IVfirstCheckBoxMI.setText("Impro-Visor plays first 8 bars");
         trade8IVfirstCheckBoxMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -10098,7 +10075,7 @@ public class Notate
         });
         improvMenu.add(trade8IVfirstCheckBoxMI);
 
-        trade4IVfirstCheckBoxMI.setText(Lang.getInstance().getString("Notate.trade4IVfirstCheckBoxMI.Text"));
+        trade4IVfirstCheckBoxMI.setText("Impro-Visor plays first 4 bars");
         trade4IVfirstCheckBoxMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -10108,7 +10085,7 @@ public class Notate
         });
         improvMenu.add(trade4IVfirstCheckBoxMI);
 
-        trade2IVfirstCheckBoxMI.setText(Lang.getInstance().getString("Notate.trade2IVfirstCheckBoxMI.Text"));
+        trade2IVfirstCheckBoxMI.setText("Impro-Visor plays first 2 bars");
         trade2IVfirstCheckBoxMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -10118,7 +10095,7 @@ public class Notate
         });
         improvMenu.add(trade2IVfirstCheckBoxMI);
 
-        trade1IVfirstCheckBoxMI.setText(Lang.getInstance().getString("Notate.trade1IVfirstCheckBoxMI.Text"));
+        trade1IVfirstCheckBoxMI.setText("Impro-Visor plays first bar");
         trade1IVfirstCheckBoxMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -10129,7 +10106,7 @@ public class Notate
         improvMenu.add(trade1IVfirstCheckBoxMI);
         improvMenu.add(jSeparator10);
 
-        trade16userFirstCheckBoxMI.setText(Lang.getInstance().getString("Notate.trade16userFirstCheckBoxMI.Text"));
+        trade16userFirstCheckBoxMI.setText("User plays first 16 bars");
         trade16userFirstCheckBoxMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -10139,7 +10116,7 @@ public class Notate
         });
         improvMenu.add(trade16userFirstCheckBoxMI);
 
-        trade12userFirstCheckBoxMI.setText(Lang.getInstance().getString("Notate.trade12userFirstCheckBoxMI.Text"));
+        trade12userFirstCheckBoxMI.setText("User plays first 12 bars");
         trade12userFirstCheckBoxMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -10149,7 +10126,7 @@ public class Notate
         });
         improvMenu.add(trade12userFirstCheckBoxMI);
 
-        trade8userFirstCheckBoxMI.setText(Lang.getInstance().getString("Notate.trade8userFirstCheckBoxMI.Text"));
+        trade8userFirstCheckBoxMI.setText("User plays first 8 bars");
         trade8userFirstCheckBoxMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -10159,7 +10136,7 @@ public class Notate
         });
         improvMenu.add(trade8userFirstCheckBoxMI);
 
-        trade4userFirstCheckBoxMI.setText(Lang.getInstance().getString("Notate.trade4userFirstCheckBoxMI.Text"));
+        trade4userFirstCheckBoxMI.setText("User plays first 4 bars");
         trade4userFirstCheckBoxMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -10169,7 +10146,7 @@ public class Notate
         });
         improvMenu.add(trade4userFirstCheckBoxMI);
 
-        trade2userFirstCheckBoxMI.setText(Lang.getInstance().getString("Notate.trade2userFirstCheckBoxMI.Text"));
+        trade2userFirstCheckBoxMI.setText("User plays first 2 bars");
         trade2userFirstCheckBoxMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -10179,7 +10156,7 @@ public class Notate
         });
         improvMenu.add(trade2userFirstCheckBoxMI);
 
-        trade1userFirstCheckBoxMI.setText(Lang.getInstance().getString("Notate.trade1userFirstCheckBoxMI.Text"));
+        trade1userFirstCheckBoxMI.setText("User plays first bar");
         trade1userFirstCheckBoxMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -10192,7 +10169,7 @@ public class Notate
         menuBar.add(improvMenu);
 
         windowMenu.setMnemonic('W');
-        windowMenu.setText(Lang.getInstance().getString("Notate.windowMenu.Text"));
+        windowMenu.setText("Window");
         windowMenu.addMenuListener(new javax.swing.event.MenuListener()
         {
             public void menuSelected(javax.swing.event.MenuEvent evt)
@@ -10208,8 +10185,8 @@ public class Notate
         });
 
         closeWindowMI.setMnemonic('C');
-        closeWindowMI.setText(Lang.getInstance().getString("Notate.closeWindowMI.Text"));
-        closeWindowMI.setToolTipText(Lang.getInstance().getString("Notate.closeWindowMI.ToolTipText"));
+        closeWindowMI.setText("Close Window");
+        closeWindowMI.setToolTipText("Closes the current window (exits program if there are no other windows)");
         closeWindowMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -10220,7 +10197,7 @@ public class Notate
         windowMenu.add(closeWindowMI);
 
         cascadeMI.setMnemonic('A');
-        cascadeMI.setText(Lang.getInstance().getString("Notate.cascadeMI.Text"));
+        cascadeMI.setText("Cascade Windows");
         cascadeMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -10264,7 +10241,7 @@ public class Notate
         menuBar.add(notateGrammarMenu);
 
         preferencesMenu.setMnemonic('R');
-        preferencesMenu.setText(Lang.getInstance().getString("Notate.preferencesMenu.Text"));
+        preferencesMenu.setText("Preferences");
         preferencesMenu.setNextFocusableComponent(leadsheetPreferences);
         preferencesMenu.addActionListener(new java.awt.event.ActionListener()
         {
@@ -10275,8 +10252,8 @@ public class Notate
         });
 
         preferencesAcceleratorMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, 0));
-        preferencesAcceleratorMI.setText(Lang.getInstance().getString("Notate.preferencesAcceleratorMI.Text"));
-        preferencesAcceleratorMI.setToolTipText(Lang.getInstance().getString("Notate.preferencesAcceleratorMI.ToolTipText"));
+        preferencesAcceleratorMI.setText("Open Preferences");
+        preferencesAcceleratorMI.setToolTipText("Open the preferences dialog.");
         preferencesAcceleratorMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -10287,7 +10264,7 @@ public class Notate
         preferencesMenu.add(preferencesAcceleratorMI);
 
         globalPrefsMI.setMnemonic('G');
-        globalPrefsMI.setText(Lang.getInstance().getString("Notate.globalPrefsMI.Text"));
+        globalPrefsMI.setText("Global");
         globalPrefsMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -10298,7 +10275,7 @@ public class Notate
         preferencesMenu.add(globalPrefsMI);
 
         leadsheetPrefsMI.setMnemonic('L');
-        leadsheetPrefsMI.setText(Lang.getInstance().getString("Notate.leadsheetPrefsMI.Text"));
+        leadsheetPrefsMI.setText("Leadsheet");
         leadsheetPrefsMI.setSelected(true);
         leadsheetPrefsMI.addActionListener(new java.awt.event.ActionListener()
         {
@@ -10310,7 +10287,7 @@ public class Notate
         preferencesMenu.add(leadsheetPrefsMI);
 
         chorusPrefsMI.setMnemonic('C');
-        chorusPrefsMI.setText(Lang.getInstance().getString("Notate.chorusPrefsMI.Text"));
+        chorusPrefsMI.setText("Chorus");
         chorusPrefsMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -10321,7 +10298,7 @@ public class Notate
         preferencesMenu.add(chorusPrefsMI);
 
         stylePrefsMI.setMnemonic('S');
-        stylePrefsMI.setText(Lang.getInstance().getString("Notate.stylePrefsMI.Text"));
+        stylePrefsMI.setText("Style");
         stylePrefsMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -10332,7 +10309,7 @@ public class Notate
         preferencesMenu.add(stylePrefsMI);
 
         midiPrefsMI.setMnemonic('M');
-        midiPrefsMI.setText(Lang.getInstance().getString("Notate.midiPrefsMI.Text"));
+        midiPrefsMI.setText("MIDI");
         midiPrefsMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -10343,7 +10320,7 @@ public class Notate
         preferencesMenu.add(midiPrefsMI);
 
         contourPrefsMI.setMnemonic('T');
-        contourPrefsMI.setText(Lang.getInstance().getString("Notate.contourPrefsMI.Text"));
+        contourPrefsMI.setText("Contour");
         contourPrefsMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -10356,7 +10333,7 @@ public class Notate
         menuBar.add(preferencesMenu);
 
         helpMenu.setMnemonic('H');
-        helpMenu.setText(Lang.getInstance().getString("Notate.helpMenu.Text"));
+        helpMenu.setText("Help");
         helpMenu.setToolTipText("Open the help dialog.");
         helpMenu.addActionListener(new java.awt.event.ActionListener()
         {
@@ -10367,8 +10344,8 @@ public class Notate
         });
 
         helpMI.setMnemonic('I');
-        helpMI.setText(Lang.getInstance().getString("Notate.helpMI.Text"));
-        helpMI.setToolTipText(Lang.getInstance().getString("Notate.helpMI.ToolTipText"));
+        helpMI.setText("Impro-Visor Help");
+        helpMI.setToolTipText("Shows the Help Dialog");
         helpMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -10378,8 +10355,8 @@ public class Notate
         });
         helpMenu.add(helpMI);
 
-        firstTimePrefsMI.setText(Lang.getInstance().getString("Notate.firstTimePrefsMI.Text"));
-        firstTimePrefsMI.setToolTipText(Lang.getInstance().getString("Notate.firstTimePrefsMI.ToolTipText"));
+        firstTimePrefsMI.setText("Show First-Launch Message");
+        firstTimePrefsMI.setToolTipText("Shows the message that appeared on the first launch of this version.");
         firstTimePrefsMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -10391,7 +10368,7 @@ public class Notate
         helpMenu.add(jSeparator32);
 
         helpAboutMI.setMnemonic('A');
-        helpAboutMI.setText(Lang.getInstance().getString("Notate.helpAboutMI.Text"));
+        helpAboutMI.setText("About Impro-Visor");
         helpAboutMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -10403,7 +10380,7 @@ public class Notate
 
         menuBar.add(helpMenu);
 
-        statusMenu.setText(Lang.getInstance().getString("Notate.statusMenu.Text"));
+        statusMenu.setText("Status:");
         menuBar.add(statusMenu);
 
         setJMenuBar(menuBar);
@@ -10546,7 +10523,7 @@ public void playCurrentSelection(boolean playToEndOfChorus, int loopCount, boole
   private void setToLoop()
   {
       toLoop = true;
-      loopButton.setText(Lang.getInstance().getString("Notate.loopButton.Text.Straight"));
+      loopButton.setText("<html><center>Straight</center></html>");
       loopButton.setBackground(Color.RED);
   }
 
@@ -10554,7 +10531,7 @@ public void playCurrentSelection(boolean playToEndOfChorus, int loopCount, boole
   {
       toLoop = false;
       stopPlaying("set not to Loop");
-      loopButton.setText(Lang.getInstance().getString("Notate.loopButton.Text.Loop"));
+      loopButton.setText("<html><center>Loop</center></html>");
       loopButton.setBackground(Color.GREEN);
   }
 
@@ -10739,7 +10716,7 @@ private void setStepInputBtn(boolean selected)
 {
     if( selected )
       {
-      stepInputBtn.setText(Lang.getInstance().getString("Notate.stepInputBtn.Text.Stop"));
+      stepInputBtn.setText("<html><center>Stop</center></html>");
 
       stepInputBtn.setBackground(Color.RED);
       stopRecording();
@@ -10747,7 +10724,7 @@ private void setStepInputBtn(boolean selected)
       }
     else
       {
-      stepInputBtn.setText(Lang.getInstance().getString("Notate.stepInputBtn.Text.Step"));
+      stepInputBtn.setText("<html><center>Step<br>Input</center></html>");
 
       stepInputBtn.setBackground(Color.GREEN);
       setNormalStatus();
@@ -10767,7 +10744,7 @@ private void setStepInputBtn(boolean selected)
    */
   private void turnStepInputOff()
     {
-      stepInputBtn.setText(Lang.getInstance().getString("Notate.stepInputBtn.Text.Step"));
+      stepInputBtn.setText("<html><center>Step<br>Input</center></html>");
       stepInputBtn.setBackground(Color.GREEN);
       setStepInput(false);
       stepInputBtn.setSelected(false);
@@ -11369,7 +11346,7 @@ private String getChordRedirectName(int row)
 
             if( e.equals("()" ) )
               {
-  	      extEntryTF.setText(Lang.getInstance().getString("Notate.extEntryTF.Text"));
+              extEntryTF.setText("");
               }
             else
               {
@@ -11804,6 +11781,10 @@ public void stopRecording()
 //        System.out.println("Stopped. Mode = " + mode);
 //    }
 
+    if (useAudioInputMI.isSelected())
+        {
+            stopAudioCapture();
+        }
 
     playBtn.setEnabled(true);
 
@@ -11823,6 +11804,10 @@ public void stopRecording()
       midiSynth.registerReceiver(midiStepInput);
       }
 
+    if (!useAudioInputMI.isSelected())
+        {
+//    stopPlaying("stop Recording"); // Having this in causes stack overflow when stopping
+        }
   }
 
 private void startAudioCapture()
@@ -12393,7 +12378,7 @@ private void setMuteAll(boolean muted)
 
         allMuteToolBarBtn.setBackground(Color.red);
 
-        allMuteToolBarBtn.setText(Lang.getInstance().getString("Notate.allMuteToolBarBtn.Text.Mute"));
+        allMuteToolBarBtn.setText("Play");
       }
     else
       {
@@ -12403,7 +12388,7 @@ private void setMuteAll(boolean muted)
 
         allMuteToolBarBtn.setBackground(Color.green);
 
-        allMuteToolBarBtn.setText(Lang.getInstance().getString("Notate.allMuteToolBarBtn.Text.Play"));
+        allMuteToolBarBtn.setText("Mute");
       }
 
     mixerMasterVolumeChanged();
@@ -12686,7 +12671,6 @@ public void volumeSliderChanged(JSlider volumeSlider)
     private void cancelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtnActionPerformed
 
         resetDrawingPrefs();
-	resetLangPref();
 
         preferencesDialog.setVisible(false);
 
@@ -15885,7 +15869,6 @@ private void savePrefs()
 
     // Initialize all the preferences except for the length and metre;
 
-    saveLangPref();
     saveLeadsheetPreferences();
 
     closeDialog = closeDialog && saveMidiLatency();
@@ -16897,7 +16880,6 @@ private boolean saveGlobalPreferences()
     sectionTable.getSelectionModel().setSelectionInterval(0,0);
     nWaySplitComboBoxModel.createItems(0);
     nWaySplitComboBox.setSelectedItem("");
-    resetLangPref();
   }
 
   public void setRoadMapCheckBox(boolean value)
@@ -16946,7 +16928,7 @@ private boolean saveGlobalPreferences()
     {
     if( frozen )
       {
-      freezeLayoutButton.setText(Lang.getInstance().getString("Notate.freezeLayoutButton.Text.Thaw"));
+      freezeLayoutButton.setText("<html><center>Thaw<br>Layout</center></html>");
 
       freezeLayoutButton.setBackground(Color.RED);
       }
@@ -16954,7 +16936,7 @@ private boolean saveGlobalPreferences()
       {
       score.setLayoutList(Polylist.nil);
 
-      freezeLayoutButton.setText(Lang.getInstance().getString("Notate.freezeLayoutButton.Text.Freeze"));
+      freezeLayoutButton.setText("<html><center>Freeze<br>Layout</center></html>");
 
       freezeLayoutButton.setBackground(Color.GREEN);
       }
@@ -17004,36 +16986,7 @@ private boolean saveGlobalPreferences()
     scoreTab.setTitleAt(i, title);
     }
 
-  // Language choice routines
-  private void saveLangPref()
-  {
-	int idx = langList.getSelectedIndex();
-	String data = langData[idx].trim();
-	Preferences.setPreference(Preferences.LANGUAGE,data);
-  }
-  
-  private void resetLangPref()
-  {
-  	langPref = Preferences.getPreference(Preferences.LANGUAGE);
-	for(int i = 0; i < langData.length ; i++){
-		String data = langData[i].trim();
-		if(data.equals(langPref)){
-			langList.setSelectedIndex(i);
-		}
-	}
-  }
-  
-  private void loadLangPref()
-  {
-	for(int i = 0; i < langData.length ; i++){
-		String data = langData[i].trim();
-		java.util.Locale local = new java.util.Locale(data);
-		langList.addItem(local.getDisplayName());
-		if(data.equals(langPref)){
-			langList.setSelectedIndex(i);
-		}
-	}
-  }
+
 
   private void saveLeadsheetPreferences()
     {
@@ -17797,12 +17750,12 @@ public void addTab()
        }
       else
         {
-        measErrorLabel.setText(Lang.getInstance().getString("Notate.measErrorLabel.Text"));
+        measErrorLabel.setText("Invalid number!");
         }
       }
     catch( NumberFormatException e )
       {
-      measErrorLabel.setText(Lang.getInstance().getString("Notate.measErrorLabel.Text"));
+      measErrorLabel.setText("Invalid number!");
       }
     }
 
@@ -19348,8 +19301,15 @@ public void playScoreBody(int startAt)
       // reset playback offset
 
       initCurrentPlaybackTab(0, 0);
+        //sets up a Timer to handle audio capture
+        if (useAudioInputMI.isSelected())
+        {
+            setMode(Mode.RECORDING);
+            startAudioTimer();
+            System.out.println("Capture timer started.");
+        }
 
-      getStaveAtTab(0).playSelection(startAt, score.getTotalLength() - 1, getLoopCount(), true, "playScoreBody");
+        getStaveAtTab(0).playSelection(startAt, score.getTotalLength() - 1, getLoopCount(), true, "playScoreBody");
       //getCurrentStave().play(startAt);
       }
     setMode(Mode.PLAYING);
@@ -20694,13 +20654,13 @@ public ArrayList<String> getMelodyData(int chorusNumber)
         {
         noteColoration = false;
         colorationButton.setBackground(Color.red);
-        colorationButton.setText(Lang.getInstance().getString("Notate.colorationButton.Text.Color"));
+        colorationButton.setText("<html><center>Color</center></html>");
         }
       else
         {
         noteColoration = true;
         colorationButton.setBackground(new Color(153, 204, 255));
-        colorationButton.setText(Lang.getInstance().getString("Notate.colorationButton.Text.NoColor"));
+        colorationButton.setText("<html><center>Black&<br>White</center></html>");
         }
 
 }//GEN-LAST:event_colorationButtonActionPerformed
@@ -20711,13 +20671,13 @@ public ArrayList<String> getMelodyData(int chorusNumber)
         {
         smartEntry = false;
         smartEntryButton.setBackground(Color.red);
-        smartEntryButton.setText(Lang.getInstance().getString("Notate.smartEntryButton.Text.Harmonic"));
+        smartEntryButton.setText("<html><center>Harmonic<br>Entry</center></html>");
         }
       else
         {
         smartEntry = true;
         smartEntryButton.setBackground(new Color(255, 153, 255));
-        smartEntryButton.setText(Lang.getInstance().getString("Notate.smartEntryButton.Text.Simple"));
+        smartEntryButton.setText("<html><center>Simple<br>Entry</center></html>");
         }
 }//GEN-LAST:event_smartEntryButtonActionPerformed
 
@@ -21017,9 +20977,9 @@ private void newVoicingSaveButtonActionPerformed(java.awt.event.ActionEvent evt)
 
     newVoicingDialog.setVisible(false);
 
-    newVoicingNameTF.setText(Lang.getInstance().getString("Notate.newVoicingNameTF.Text"));
+    newVoicingNameTF.setText("");
 
-    newVoicingChordTF.setText(Lang.getInstance().getString("Notate.newVoicingChordTF.Text"));
+    newVoicingChordTF.setText("");
 
     newVoicingTypeCB.setSelectedItem("open");
 
@@ -21218,7 +21178,7 @@ public void addVoicingEntryTFText(String text)
     String s = voicingEntryTF.getText();
     if (s.equals(""))
     {
-        voicingEntryTF.setText(Lang.getInstance().getString("Notate.voicingEntryTF.Text"));
+        voicingEntryTF.setText("(" + text + ")");
     }
     else {
         voicingEntryTF.setText(s.replace(')', ' ') + text + ")");
@@ -21230,7 +21190,7 @@ public void addExtEntryTFText(String text)
     String s = extEntryTF.getText();
     if (s.equals(""))
     {
-        extEntryTF.setText(Lang.getInstance().getString("Notate.textEntryTF.Text"));
+        extEntryTF.setText("(" + text + ")");
     }
     else
     {
@@ -21243,8 +21203,8 @@ public void addExtEntryTFText(String text)
  */
 public void clearVoicingEntryTF()
 {
-  voicingEntryTF.setText(Lang.getInstance().getString("Notate.voicingEntryTF.Text"));
-  extEntryTF.setText(Lang.getInstance().getString("Notate.textEntry.Text"));
+  voicingEntryTF.setText("");
+  extEntryTF.setText("");
 
 }
 
@@ -23088,13 +23048,13 @@ private void earlyScrollBtnActionPerformed(java.awt.event.ActionEvent evt) {//GE
     if( earlyScrollBtn.isSelected() )
         {
         earlyScrollBtn.setBackground(new java.awt.Color(51, 255, 255));
-        earlyScrollBtn.setText(Lang.getInstance().getString("Notate.earlyScrollBtn.Text.Early"));
+        earlyScrollBtn.setText("<html><center>Early<br>Scroll</center></html>");
         earlyScrollBtn.setSelected(true);
         }
       else
         {
         earlyScrollBtn.setBackground(Color.red);
-        earlyScrollBtn.setText(Lang.getInstance().getString("Notate.earlyScrollBtn.Text.Late"));
+        earlyScrollBtn.setText("<html><center>Late<br>Scroll</center></html>");
         earlyScrollBtn.setSelected(false);
         }
 }//GEN-LAST:event_earlyScrollBtnActionPerformed
@@ -24421,13 +24381,13 @@ public void improviseButtonToggled()
         //setUseImproviseCheckBox();
 
         improviseButton.setBackground(new Color(255, 0, 0));
-        improviseButton.setText(Lang.getInstance().getString("Notate.improviseButton.Text.Quit"));
-
+        improviseButton.setText("<html><center>No Impro</center></html>");
         }
     else
       {
         improviseButton.setBackground(new Color(0, 255, 0));
-        improviseButton.setText(Lang.getInstance().getString("Notate.improviseButton.Text.Improvise"));
+        improviseButton.setText("<html><center>Improv</center></html>");
+        //stopPlaying();
       }
   }
 
@@ -24436,7 +24396,7 @@ public void improvisationOff()
     improviseButton.setSelected(false);
     lickgenFrame.setRecurrent(false);
     improviseButton.setBackground(new Color(0, 255, 0));
-    improviseButton.setText(Lang.getInstance().getString("Notate.improviseButton.Text.Improvise"));
+    improviseButton.setText("<html><center>Improv</center></html>");
   }
 
 
@@ -24914,7 +24874,7 @@ public void showNewVoicingDialog()
         }
 
         else {
-            newVoicingChordTF.setText(Lang.getInstance().getString("Notate.newVoicingChordTF.Text"));
+            newVoicingChordTF.setText("");
         }
 
     }
@@ -25430,11 +25390,11 @@ public void showNewVoicingDialog()
     overrideFrame.setLocationRelativeTo(this);
 
 
-    lineLabel.setText(Lang.getInstance().getString("Notate.lineLabel.Text"));
+    lineLabel.setText("Number of measures in line " + (getCurrentStave().currentLine + 1) + ":   ");
 
     enterMeasures.setText("" + lockedMeasures[getCurrentStave().currentLine]);
 
-    measErrorLabel.setText(Lang.getInstance().getString("Notate.measErrorLabel.Text"));
+    measErrorLabel.setText("");
 
 
     overrideFrame.setVisible(true);
@@ -25582,163 +25542,254 @@ public void showNewVoicingDialog()
    */
   protected void setItemStates()
     {
+
     playAllMI.setEnabled(true);
 
     stopPlayMI.setEnabled(true);
     pausePlayMI.setEnabled(true);
-    preferencesAcceleratorMI.setEnabled(true);
+preferencesAcceleratorMI.setEnabled(true);
+
 
     // check to see if undo & redo can be enabled
 
     if( cm.canUndo() )
       {
+
       undoMI.setEnabled(true);
+
       undoPMI.setEnabled(true);
+
       undoBtn.setEnabled(true);
+
       }
     else
       {
+
       undoMI.setEnabled(false);
+
       undoPMI.setEnabled(false);
+
       undoBtn.setEnabled(false);
+
       }
+
+
 
     if( cm.canRedo() )
       {
+
       redoMI.setEnabled(true);
+
       redoPMI.setEnabled(true);
+
       redoBtn.setEnabled(true);
+
       }
     else
       {
+
       redoMI.setEnabled(false);
+
       redoPMI.setEnabled(false);
+
       redoBtn.setEnabled(false);
+
       }
+
+
 
     // checks if a construction line is selected
 
+
+
     if( slotIsSelected() )
       {
+
       cutChordsMI.setEnabled(true);
+
       copyChordsMI.setEnabled(true);
 
       // cut enabled
 
       cutMelodyMI.setEnabled(true);
+
       cutBothMI.setEnabled(true);
+
       cutBothPMI.setEnabled(true);
+
       cutBothBtn.setEnabled(true);
 
       // copy enabled
 
       copyMelodyMI.setEnabled(true);
+
+
+
       copyBothMI.setEnabled(true);
+
       copyBothPMI.setEnabled(true);
+
       copyBothBtn.setEnabled(true);
 
+
+
       boolean melodyClipboardNonEmpty = impro.melodyClipboardNonEmpty();
+
       boolean chordsClipboardNonEmpty = impro.chordsClipboardNonEmpty();
+
       boolean eitherNonEmpty =
               melodyClipboardNonEmpty || chordsClipboardNonEmpty;
 
+
+
       pasteMelodyMI.setEnabled(melodyClipboardNonEmpty);
+
       pasteChordsMI.setEnabled(chordsClipboardNonEmpty);
+
       pasteBothMI.setEnabled(eitherNonEmpty);
 
+
+
       pasteBothPMI.setEnabled(eitherNonEmpty);
+
       pasteBothBtn.setEnabled(eitherNonEmpty);
 
+
+
       enterMelodyMI.setEnabled(true);
+
       enterChordsMI.setEnabled(true);
+
       enterBothMI.setEnabled(true);
 
+
+
       addRestMI.setEnabled(true);
+
       selectAllMI.setEnabled(true);
 
+
+
       transposeBothDownSemitone.setEnabled(true);
+
       transposeBothUpSemitone.setEnabled(true);
 
       transposeChordsUpSemitone.setEnabled(true);
+
       transposeChordsDownSemitone.setEnabled(true);
 
       transposeMelodyDownOctave.setEnabled(true);
+
       transposeMelodyDownSemitone.setEnabled(true);
 
       transposeMelodyUpOctave.setEnabled(true);
+
       transposeMelodyUpSemitone.setEnabled(true);
 
       transposeMelodyUpHarmonically.setEnabled(true);
+
       transposeMelodyDownHarmonically.setEnabled(true);
 
+
       copyMelodySelectionToTextWindow.setEnabled(true);
+
       copyChordSelectionToTextWindow.setEnabled(true);
 
       copyBothSelectionToTextWindow.setEnabled(true);
+
       resolvePitches.setEnabled(true);
+
 
       // REVISIT generateLickButton.setEnabled(true);
 
+
       saveSelectionAsLick.setEnabled(true);
+
 
       // advice enabled
 
       advicePMI.setEnabled(true);
 
+
       reverseMelody.setEnabled(true);
 
       invertMelody.setEnabled(true);
-      expandMelodyBy2.setEnabled(true);
-      expandMelodyBy3.setEnabled(true);
-      contractMelodyBy2.setEnabled(true);
-      contractMelodyBy3.setEnabled(true);
+    expandMelodyBy2.setEnabled(true);
+    expandMelodyBy3.setEnabled(true);
+    contractMelodyBy2.setEnabled(true);
+    contractMelodyBy3.setEnabled(true);
       }
     else
       {
       // No slot selected
+
       cutMelodyMI.setEnabled(false);
+
       cutBothMI.setEnabled(false);
+
       cutBothPMI.setEnabled(false);
+
       cutBothBtn.setEnabled(false);
 
+
+
       copyMelodyMI.setEnabled(false);
+
       copyBothMI.setEnabled(false);
+
       copyBothPMI.setEnabled(false);
+
       copyBothBtn.setEnabled(false);
 
+
+
       pasteBothMI.setEnabled(false);
+
       pasteBothPMI.setEnabled(false);
+
       pasteBothBtn.setEnabled(false);
 
+
+
       enterMelodyMI.setEnabled(false);
+
       enterChordsMI.setEnabled(false);
+
       enterBothMI.setEnabled(false);
 
+
+
       transposeBothDownSemitone.setEnabled(false);
+
       transposeBothUpSemitone.setEnabled(false);
 
       transposeChordsUpSemitone.setEnabled(false);
+
       transposeChordsDownSemitone.setEnabled(false);
 
       transposeMelodyDownOctave.setEnabled(false);
+
       transposeMelodyDownSemitone.setEnabled(false);
 
       transposeMelodyUpOctave.setEnabled(false);
+
       transposeMelodyUpSemitone.setEnabled(false);
 
       transposeMelodyUpHarmonically.setEnabled(false);
+
       transposeMelodyDownHarmonically.setEnabled(false);
+
 
       advicePMI.setEnabled(false);
 
-      reverseMelody.setEnabled(false);
-      invertMelody.setEnabled(false);
 
-      expandMelodyBy2.setEnabled(true);
-      expandMelodyBy3.setEnabled(true);
-      
-      contractMelodyBy2.setEnabled(true);
-      contractMelodyBy3.setEnabled(true);
+      reverseMelody.setEnabled(false);
+
+      invertMelody.setEnabled(false);
+    expandMelodyBy2.setEnabled(true);
+    expandMelodyBy3.setEnabled(true);
+    contractMelodyBy2.setEnabled(true);
+    contractMelodyBy3.setEnabled(true);
       }
 
     // checks if "delete tab" should be enabled
@@ -26248,7 +26299,6 @@ public void showNewVoicingDialog()
     private javax.swing.ButtonGroup keySigBtnGroup;
     private javax.swing.JLabel keySignatureLabel;
     private javax.swing.JTextField keySignatureTF;
-    private javax.swing.JComboBox langList;
     private javax.swing.JPanel latencyTab;
     private javax.swing.JLabel layoutLabel;
     private javax.swing.JTextField layoutTF;
@@ -26541,6 +26591,7 @@ public void showNewVoicingDialog()
     private javax.swing.JButton undoBtn;
     private javax.swing.JMenuItem undoMI;
     private javax.swing.JMenuItem undoPMI;
+    private javax.swing.JCheckBoxMenuItem useAudioInputMI;
     private javax.swing.JCheckBoxMenuItem useBeamsMI;
     private javax.swing.JCheckBoxMenuItem useImproviseButtonCheckBoxMI;
     private javax.swing.JButton usePreviousStyleButton;
