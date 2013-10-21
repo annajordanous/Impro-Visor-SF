@@ -1530,8 +1530,6 @@ public class Notate
         bassStaveBtn = new javax.swing.JRadioButton();
         grandStaveBtn = new javax.swing.JRadioButton();
         melodyInstPanel = melodyInst;
-        auxInstPanel = auxInst;
-        auxInstLabel = new javax.swing.JLabel();
         leadsheetPreferences = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jTabbedPane5 = new javax.swing.JTabbedPane();
@@ -2880,26 +2878,6 @@ public class Notate
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weighty = 0.1;
         chorusSpecificPanel.add(melodyInstPanel, gridBagConstraints);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weighty = 0.1;
-        chorusSpecificPanel.add(auxInstPanel, gridBagConstraints);
-
-        auxInstLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        auxInstLabel.setText("Aux Instrument MIDI Number:");
-        auxInstLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        auxInstLabel.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        chorusSpecificPanel.add(auxInstLabel, gridBagConstraints);
 
         jTabbedPane4.addTab("Chorus", chorusSpecificPanel);
 
@@ -25958,8 +25936,6 @@ preferencesAcceleratorMI.setEnabled(true);
     private javax.swing.JCheckBoxMenuItem autoFillMI;
     private javax.swing.JRadioButton autoStave;
     private javax.swing.JRadioButton autoStaveBtn;
-    private javax.swing.JLabel auxInstLabel;
-    private javax.swing.JPanel auxInstPanel;
     private javax.swing.JCheckBoxMenuItem barNumsMI;
     private javax.swing.JSpinner bassChannelSpinner;
     private javax.swing.JLabel bassInstLabel;

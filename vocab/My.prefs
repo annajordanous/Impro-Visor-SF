@@ -2,7 +2,6 @@
 (cache-enabled true)
 (default-load-stave 1)
 (default-melody-instrument 12)
-(default-aux-instrument 57)
 (default-chord-instrument 1)
 (default-bass-instrument 34)
 (default-mixer-all 80)
