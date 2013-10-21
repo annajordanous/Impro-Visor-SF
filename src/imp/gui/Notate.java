@@ -16059,7 +16059,7 @@ private boolean saveGlobalPreferences()
 
         String strMelody = defMelodyInst.getText();
 
-        String strAux = defAuxInst.getText();
+        String strAux = strMelody; // for now defAuxInst.getText();
 
         String strChord = defChordInst.getText();
 
@@ -26922,6 +26922,11 @@ preferencesAcceleratorMI.setEnabled(true);
   public double getTempo()
     {
       return score.getTempo();
+    }
+  
+  public InstrumentChooser getMelodyInstrument()
+    {
+      return melodyInst;
     }
   
   public InstrumentChooser getAuxInstrument()
