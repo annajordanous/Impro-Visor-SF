@@ -318,7 +318,7 @@ public void maybeCreateInitialLick(int melodyStart)
             Score improScore = new Score();
             improScore.setTempo(notate.getTempo());
 
-            improLick.setInstrument(notate.getAuxInstrument().getValue());
+            improLick.setInstrument(notate.getMelodyInstrument().getValue()-1);
 
             improScore.addPart(improLick);
 
@@ -445,7 +445,7 @@ public void maybeCreateLick(int slotInPlayback)
             Score improScore = new Score();
             improScore.setTempo(notate.getTempo());
 
-            improLick.setInstrument(notate.getAuxInstrument().getValue());
+            improLick.setInstrument(notate.getMelodyInstrument().getValue()-1);
 
             improScore.addPart(improLick);
 
