@@ -13247,7 +13247,7 @@ public class SectionTableModel extends DefaultTableModel
      */
     public void insertSection(boolean isAfter, boolean isPhrase){
         int after = isAfter ? 1 : 0;
-        int measure = getCurrentStave().mouseOverMeasure + 1 + after;
+        Integer measure = getCurrentStave().mouseOverMeasure + 1 + after;
         int index = sectionTableModel.getSectionFromMeasure(measure);
         if(index < 0)
             return;
