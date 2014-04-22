@@ -13247,20 +13247,26 @@ public class SectionTableModel extends DefaultTableModel
      */
     public void insertSection(boolean isAfter, boolean isPhrase){
         int after = isAfter ? 1 : 0;
-        Integer measure = getCurrentStave().mouseOverMeasure + 1 + after;
+        int measure = getCurrentStave().mouseOverMeasure + 1 + after;
         int index = sectionTableModel.getSectionFromMeasure(measure);
         if(index < 0)
+          {
             return;
-        if (measure != getValueAt(index,1)) {
+          }
+        // This code is suspect. May cause class cast exception
+        int value = ((Integer)getValueAt(index,1)).intValue();
+        if (measure !=  value) {
             addARow();
             sectionInfo.newSection(index);
             setValueAt(measure, index + 1, 1);
-        } else if (measure == getValueAt(index,1)) {
+        } else {
             index--;
         }
         if(index < 0)
+          {
             return;
-        setValueAt(new Boolean(isPhrase),index,0);
+          }
+        setValueAt(isPhrase,index,0);
         tableRefresh();
     }
     
