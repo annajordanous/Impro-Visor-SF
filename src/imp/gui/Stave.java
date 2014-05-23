@@ -5374,7 +5374,7 @@ public void playSelection(boolean playToEndOfChorus, int loopCount, boolean useD
 
 public void playSelection(int startIndex, int stopIndex, int loopCount, boolean useDrums, String message)
   {
-    if( startIndex != 0 )
+    if( startIndex != 0 || !notate.getFirstChorus() )
       {
         notate.noCountIn();
       }

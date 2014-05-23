@@ -12005,6 +12005,7 @@ private void recordFromMidi()
           {
             keyboard.setPlayback(true);
           }
+        firstChorus = true;
         playScore();
     }//GEN-LAST:event_playBtnActionPerformed
 
@@ -19163,6 +19164,18 @@ private void setCurrentStaveType(StaveType t)
       setCurrentStaveType(StaveType.TREBLE);
     }//GEN-LAST:event_trebleStaveMIActionPerformed
 
+boolean firstChorus = true;
+
+private void setFirstChorus(boolean value)
+  {
+    firstChorus = value;
+  }
+    
+public boolean getFirstChorus()
+  {
+    return firstChorus;
+  }
+
   /**
    *
    * Plays the score until the score's end
@@ -19174,6 +19187,7 @@ private void setCurrentStaveType(StaveType t)
           {
             keyboard.setPlayback(true);
           }
+        setFirstChorus(true);
         playScore();
     }//GEN-LAST:event_playAllMIActionPerformed
 
@@ -19245,6 +19259,8 @@ public void playScore()
         establishCountIn();
         playScoreBody(0);
       }
+    
+    setFirstChorus(false);
   }
 
 
@@ -24387,7 +24403,6 @@ public void improvisationOff()
 
 public void improviseContinuously()
   {
-    //System.out.println("improviseContinuously");
     // Looping is also automatically implied with improvisation.
     loopButton.setSelected(false);
     lickgenFrame.setRecurrent(true);
@@ -24397,8 +24412,7 @@ public void improviseContinuously()
     improviseEndSlot = getCurrentStave().getSelectionEnd();
 
     recurrentIteration = 1;
-    //debug System.out.println("Start improvising: " + improviseStartSlot + " to " + improviseEndSlot);
-    originalGenerate(lickgen, improviseStartSlot, improviseEndSlot);
+   originalGenerate(lickgen, improviseStartSlot, improviseEndSlot);
     //System.out.println("*** return from mproviseContinuously");
   }
 
@@ -27428,8 +27442,8 @@ private void handleAutoImprov(int slotInPlayback)
 //                             + " to " + improviseEndSlot
 //                             + " chorus # " + recurrentIteration);
             setStatus("Chorus " + recurrentIteration);
-
-            originalGenerate(lickgen, improviseStartSlot, improviseEndSlot);
+            int start = improviseStartSlot;
+            originalGenerate(lickgen, start, improviseEndSlot);
           }
       }
     else
