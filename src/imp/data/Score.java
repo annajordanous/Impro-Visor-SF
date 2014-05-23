@@ -435,7 +435,7 @@ public class Score implements Constants, Serializable {
      * @param parts     the number of Parts to add
      */
     public void addParts(int parts) {
-        Trace.log(0, "adding " + parts + " new parts to score");
+        //Trace.log(0, "adding " + parts + " new parts to score");
         for(int i = 0; i < parts; i++) {
             MelodyPart mp = new MelodyPart(length);
             if(partList.size() > 0)
