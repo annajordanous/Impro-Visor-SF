@@ -19210,6 +19210,7 @@ public void playScore()
 
     if( improvisationOn )
       {
+//        score.clearParts();
         if( continuousImprovisation )
           {
             improviseContinuously();

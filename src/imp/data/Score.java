@@ -435,7 +435,7 @@ public class Score implements Constants, Serializable {
      * @param parts     the number of Parts to add
      */
     public void addParts(int parts) {
-        Trace.log(2, "adding " + parts + " new parts to score");
+        Trace.log(0, "adding " + parts + " new parts to score");
         for(int i = 0; i < parts; i++) {
             MelodyPart mp = new MelodyPart(length);
             if(partList.size() > 0)
@@ -466,6 +466,16 @@ public class Score implements Constants, Serializable {
     public void delPart(int index) {
         if (index >= 0 && index < partList.size())
             partList.remove(index);
+    }
+    
+    /**
+     * Clear all melody parts in the score
+     * @param index     the index of the Part to delete
+     */
+    public void clearParts() {
+      int numberParts = partList.size();
+      partList = new PartList(numberParts);
+      addParts(numberParts);
     }
     
     /**
