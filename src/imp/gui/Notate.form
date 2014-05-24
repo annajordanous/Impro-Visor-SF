@@ -8597,122 +8597,6 @@
             </MenuItem>
           </SubComponents>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="improvMenu">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Improvise"/>
-            <Property name="toolTipText" type="java.lang.String" value="Set the type of auto-improvisation, if any, to be used with play or record. NOTE: The melody may be over-written."/>
-          </Properties>
-          <SubComponents>
-            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="useImproviseButtonCheckBoxMI">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Impro-Visor improvises continuously"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="useImproviseButtonCheckBoxMIActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JToolBar$Separator" name="jSeparator4">
-            </MenuItem>
-            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="trade16IVfirstCheckBoxMI">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Impro-Visor plays first 16 bars"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="trade16IVfirstCheckBoxMIActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="trade12IVfirstCheckBoxMI">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Impro-Visor plays first 12 bars"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="trade12IVfirstCheckBoxMIActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="trade8IVfirstCheckBoxMI">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Impro-Visor plays first 8 bars"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="trade8IVfirstCheckBoxMIActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="trade4IVfirstCheckBoxMI">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Impro-Visor plays first 4 bars"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="trade4IVfirstCheckBoxMIActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="trade2IVfirstCheckBoxMI">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Impro-Visor plays first 2 bars"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="trade2IVfirstCheckBoxMIActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="trade1IVfirstCheckBoxMI">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Impro-Visor plays first bar"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="trade1IVfirstCheckBoxMIActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator10">
-            </MenuItem>
-            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="trade16userFirstCheckBoxMI">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="User plays first 16 bars"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="trade16userFirstCheckBoxMIActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="trade12userFirstCheckBoxMI">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="User plays first 12 bars"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="trade12userFirstCheckBoxMIActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="trade8userFirstCheckBoxMI">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="User plays first 8 bars"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="trade8userFirstCheckBoxMIActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="trade4userFirstCheckBoxMI">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="User plays first 4 bars"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="trade4userFirstCheckBoxMIActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="trade2userFirstCheckBoxMI">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="User plays first 2 bars"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="trade2userFirstCheckBoxMIActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="trade1userFirstCheckBoxMI">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="User plays first bar"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="trade1userFirstCheckBoxMIActionPerformed"/>
-              </Events>
-            </MenuItem>
-          </SubComponents>
-        </Menu>
         <Menu class="javax.swing.JMenu" name="windowMenu">
           <Properties>
             <Property name="mnemonic" type="int" value="87"/>
@@ -8911,8 +8795,8 @@
     <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="formMouseEntered"/>
     <EventHandler event="windowGainedFocus" listener="java.awt.event.WindowFocusListener" parameters="java.awt.event.WindowEvent" handler="formWindowGainedFocus"/>
     <EventHandler event="windowLostFocus" listener="java.awt.event.WindowFocusListener" parameters="java.awt.event.WindowEvent" handler="formWindowLostFocus"/>
-    <EventHandler event="windowClosed" listener="java.awt.event.WindowListener" parameters="java.awt.event.WindowEvent" handler="notateWIndowClosed"/>
     <EventHandler event="windowClosing" listener="java.awt.event.WindowListener" parameters="java.awt.event.WindowEvent" handler="formWindowClosing"/>
+    <EventHandler event="windowClosed" listener="java.awt.event.WindowListener" parameters="java.awt.event.WindowEvent" handler="notateWIndowClosed"/>
     <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="formFocusGained"/>
     <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="formFocusLost"/>
     <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="formKeyPressed"/>
