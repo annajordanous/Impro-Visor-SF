@@ -1206,9 +1206,9 @@ public class Notate
         setUseImproviseCheckBox(); // DEFAULT
       }
 
-    int index = setMenuSelection(improvMenu, improvMenuSelection);
-
-    setTradingByIndex(index);
+//    int index = setMenuSelection(improvMenu, improvMenuSelection);
+//
+//    setTradingByIndex(index);
 
     audioSettings = new AudioSettings(this);
     
@@ -1250,27 +1250,27 @@ public class Notate
    * This is used to initialize the trading mode.
    * @param index
    */
-  private void setTradingByIndex(int index)
-    {
-    switch( index )
-      {
-        case  0:                        break;
-        case  1:                        break;
-        case  2: setTrading(true,  16); break;
-        case  3: setTrading(true,  12); break;
-        case  4: setTrading(true,   8); break;
-        case  5: setTrading(true,   4); break;
-        case  6: setTrading(true,   2); break;
-        case  7: setTrading(true,   1); break;
-        case  8:                        break;
-        case  9: setTrading(false, 16); break;
-        case 10: setTrading(false, 12); break;
-        case 11: setTrading(false,  8); break;
-        case 12: setTrading(false,  4); break;
-        case 13: setTrading(false,  2); break;
-        case 14: setTrading(false,  1); break;
-      }
-    }
+//  private void setTradingByIndex(int index)
+//    {
+//    switch( index )
+//      {
+//        case  0:                        break;
+//        case  1:                        break;
+//        case  2: setTrading(true,  16); break;
+//        case  3: setTrading(true,  12); break;
+//        case  4: setTrading(true,   8); break;
+//        case  5: setTrading(true,   4); break;
+//        case  6: setTrading(true,   2); break;
+//        case  7: setTrading(true,   1); break;
+//        case  8:                        break;
+//        case  9: setTrading(false, 16); break;
+//        case 10: setTrading(false, 12); break;
+//        case 11: setTrading(false,  8); break;
+//        case 12: setTrading(false,  4); break;
+//        case 13: setTrading(false,  2); break;
+//        case 14: setTrading(false,  1); break;
+//      }
+//    }
 
   public boolean getShowConstructionLinesAndBoxes()
     {
@@ -2285,22 +2285,6 @@ public class Notate
         emptyRoadMapMI = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         createRoadMapCheckBox = new javax.swing.JCheckBoxMenuItem();
-        improvMenu = new javax.swing.JMenu();
-        useImproviseButtonCheckBoxMI = new javax.swing.JCheckBoxMenuItem();
-        jSeparator4 = new javax.swing.JToolBar.Separator();
-        trade16IVfirstCheckBoxMI = new javax.swing.JCheckBoxMenuItem();
-        trade12IVfirstCheckBoxMI = new javax.swing.JCheckBoxMenuItem();
-        trade8IVfirstCheckBoxMI = new javax.swing.JCheckBoxMenuItem();
-        trade4IVfirstCheckBoxMI = new javax.swing.JCheckBoxMenuItem();
-        trade2IVfirstCheckBoxMI = new javax.swing.JCheckBoxMenuItem();
-        trade1IVfirstCheckBoxMI = new javax.swing.JCheckBoxMenuItem();
-        jSeparator10 = new javax.swing.JPopupMenu.Separator();
-        trade16userFirstCheckBoxMI = new javax.swing.JCheckBoxMenuItem();
-        trade12userFirstCheckBoxMI = new javax.swing.JCheckBoxMenuItem();
-        trade8userFirstCheckBoxMI = new javax.swing.JCheckBoxMenuItem();
-        trade4userFirstCheckBoxMI = new javax.swing.JCheckBoxMenuItem();
-        trade2userFirstCheckBoxMI = new javax.swing.JCheckBoxMenuItem();
-        trade1userFirstCheckBoxMI = new javax.swing.JCheckBoxMenuItem();
         windowMenu = new javax.swing.JMenu();
         closeWindowMI = new javax.swing.JMenuItem();
         cascadeMI = new javax.swing.JMenuItem();
@@ -7620,13 +7604,13 @@ public class Notate
         });
         addWindowListener(new java.awt.event.WindowAdapter()
         {
-            public void windowClosed(java.awt.event.WindowEvent evt)
-            {
-                notateWIndowClosed(evt);
-            }
             public void windowClosing(java.awt.event.WindowEvent evt)
             {
                 formWindowClosing(evt);
+            }
+            public void windowClosed(java.awt.event.WindowEvent evt)
+            {
+                notateWIndowClosed(evt);
             }
         });
         addFocusListener(new java.awt.event.FocusAdapter()
@@ -10008,143 +9992,6 @@ public class Notate
         roadmapMenu.add(createRoadMapCheckBox);
 
         menuBar.add(roadmapMenu);
-
-        improvMenu.setText("Improvise");
-        improvMenu.setToolTipText("Set the type of auto-improvisation, if any, to be used with play or record. NOTE: The melody may be over-written.");
-
-        useImproviseButtonCheckBoxMI.setText("Impro-Visor improvises continuously");
-        useImproviseButtonCheckBoxMI.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                useImproviseButtonCheckBoxMIActionPerformed(evt);
-            }
-        });
-        improvMenu.add(useImproviseButtonCheckBoxMI);
-        improvMenu.add(jSeparator4);
-
-        trade16IVfirstCheckBoxMI.setText("Impro-Visor plays first 16 bars");
-        trade16IVfirstCheckBoxMI.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                trade16IVfirstCheckBoxMIActionPerformed(evt);
-            }
-        });
-        improvMenu.add(trade16IVfirstCheckBoxMI);
-
-        trade12IVfirstCheckBoxMI.setText("Impro-Visor plays first 12 bars");
-        trade12IVfirstCheckBoxMI.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                trade12IVfirstCheckBoxMIActionPerformed(evt);
-            }
-        });
-        improvMenu.add(trade12IVfirstCheckBoxMI);
-
-        trade8IVfirstCheckBoxMI.setText("Impro-Visor plays first 8 bars");
-        trade8IVfirstCheckBoxMI.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                trade8IVfirstCheckBoxMIActionPerformed(evt);
-            }
-        });
-        improvMenu.add(trade8IVfirstCheckBoxMI);
-
-        trade4IVfirstCheckBoxMI.setText("Impro-Visor plays first 4 bars");
-        trade4IVfirstCheckBoxMI.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                trade4IVfirstCheckBoxMIActionPerformed(evt);
-            }
-        });
-        improvMenu.add(trade4IVfirstCheckBoxMI);
-
-        trade2IVfirstCheckBoxMI.setText("Impro-Visor plays first 2 bars");
-        trade2IVfirstCheckBoxMI.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                trade2IVfirstCheckBoxMIActionPerformed(evt);
-            }
-        });
-        improvMenu.add(trade2IVfirstCheckBoxMI);
-
-        trade1IVfirstCheckBoxMI.setText("Impro-Visor plays first bar");
-        trade1IVfirstCheckBoxMI.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                trade1IVfirstCheckBoxMIActionPerformed(evt);
-            }
-        });
-        improvMenu.add(trade1IVfirstCheckBoxMI);
-        improvMenu.add(jSeparator10);
-
-        trade16userFirstCheckBoxMI.setText("User plays first 16 bars");
-        trade16userFirstCheckBoxMI.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                trade16userFirstCheckBoxMIActionPerformed(evt);
-            }
-        });
-        improvMenu.add(trade16userFirstCheckBoxMI);
-
-        trade12userFirstCheckBoxMI.setText("User plays first 12 bars");
-        trade12userFirstCheckBoxMI.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                trade12userFirstCheckBoxMIActionPerformed(evt);
-            }
-        });
-        improvMenu.add(trade12userFirstCheckBoxMI);
-
-        trade8userFirstCheckBoxMI.setText("User plays first 8 bars");
-        trade8userFirstCheckBoxMI.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                trade8userFirstCheckBoxMIActionPerformed(evt);
-            }
-        });
-        improvMenu.add(trade8userFirstCheckBoxMI);
-
-        trade4userFirstCheckBoxMI.setText("User plays first 4 bars");
-        trade4userFirstCheckBoxMI.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                trade4userFirstCheckBoxMIActionPerformed(evt);
-            }
-        });
-        improvMenu.add(trade4userFirstCheckBoxMI);
-
-        trade2userFirstCheckBoxMI.setText("User plays first 2 bars");
-        trade2userFirstCheckBoxMI.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                trade2userFirstCheckBoxMIActionPerformed(evt);
-            }
-        });
-        improvMenu.add(trade2userFirstCheckBoxMI);
-
-        trade1userFirstCheckBoxMI.setText("User plays first bar");
-        trade1userFirstCheckBoxMI.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                trade1userFirstCheckBoxMIActionPerformed(evt);
-            }
-        });
-        improvMenu.add(trade1userFirstCheckBoxMI);
-
-        menuBar.add(improvMenu);
 
         windowMenu.setMnemonic('W');
         windowMenu.setText("Window");
@@ -23742,79 +23589,39 @@ private void midiRecordSnapChanged(javax.swing.event.ChangeEvent evt)//GEN-FIRST
     }//GEN-LAST:event_usePreviousStyleButtonActionPerformed
 
 
-private void trade16IVfirstCheckBoxMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_trade16IVfirstCheckBoxMIActionPerformed
-  {//GEN-HEADEREND:event_trade16IVfirstCheckBoxMIActionPerformed
-    setTrading(true, 16);
-  }//GEN-LAST:event_trade16IVfirstCheckBoxMIActionPerformed
-
-private void trade12IVfirstCheckBoxMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_trade12IVfirstCheckBoxMIActionPerformed
-  {//GEN-HEADEREND:event_trade12IVfirstCheckBoxMIActionPerformed
-    setTrading(true, 12);
-  }//GEN-LAST:event_trade12IVfirstCheckBoxMIActionPerformed
-
-private void trade8IVfirstCheckBoxMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_trade8IVfirstCheckBoxMIActionPerformed
-  {//GEN-HEADEREND:event_trade8IVfirstCheckBoxMIActionPerformed
-    setTrading(true, 8);
-  }//GEN-LAST:event_trade8IVfirstCheckBoxMIActionPerformed
-
-private void trade4IVfirstCheckBoxMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_trade4IVfirstCheckBoxMIActionPerformed
-  {//GEN-HEADEREND:event_trade4IVfirstCheckBoxMIActionPerformed
-    setTrading(true, 4);
-  }//GEN-LAST:event_trade4IVfirstCheckBoxMIActionPerformed
-
-private void trade2IVfirstCheckBoxMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_trade2IVfirstCheckBoxMIActionPerformed
-  {//GEN-HEADEREND:event_trade2IVfirstCheckBoxMIActionPerformed
-    setTrading(true, 2);
-  }//GEN-LAST:event_trade2IVfirstCheckBoxMIActionPerformed
-
-private void trade1IVfirstCheckBoxMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_trade1IVfirstCheckBoxMIActionPerformed
-  {//GEN-HEADEREND:event_trade1IVfirstCheckBoxMIActionPerformed
-    setTrading(true, 1);
-  }//GEN-LAST:event_trade1IVfirstCheckBoxMIActionPerformed
-
-private void trade16userFirstCheckBoxMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_trade16userFirstCheckBoxMIActionPerformed
-  {//GEN-HEADEREND:event_trade16userFirstCheckBoxMIActionPerformed
-    setTrading(false, 16);
-  }//GEN-LAST:event_trade16userFirstCheckBoxMIActionPerformed
-
-private void resetImprovCheckBoxes()
-  {
-    useImproviseButtonCheckBoxMI.setSelected(false);
-    trade16IVfirstCheckBoxMI.setSelected(false);
-    trade12IVfirstCheckBoxMI.setSelected(false);
-    trade8IVfirstCheckBoxMI.setSelected(false);
-    trade4IVfirstCheckBoxMI.setSelected(false);
-    trade2IVfirstCheckBoxMI.setSelected(false);
-    trade1IVfirstCheckBoxMI.setSelected(false);
-    trade16userFirstCheckBoxMI.setSelected(false);
-    trade12userFirstCheckBoxMI.setSelected(false);
-    trade8userFirstCheckBoxMI.setSelected(false);
-    trade4userFirstCheckBoxMI.setSelected(false);
-    trade2userFirstCheckBoxMI.setSelected(false);
-    trade1userFirstCheckBoxMI.setSelected(false);
-  }
-
-private void useImproviseButtonCheckBoxMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_useImproviseButtonCheckBoxMIActionPerformed
-  {//GEN-HEADEREND:event_useImproviseButtonCheckBoxMIActionPerformed
-   setUseImproviseCheckBox();
-  }//GEN-LAST:event_useImproviseButtonCheckBoxMIActionPerformed
+//private void resetImprovCheckBoxes()
+//  {
+//    useImproviseButtonCheckBoxMI.setSelected(false);
+//    trade16IVfirstCheckBoxMI.setSelected(false);
+//    trade12IVfirstCheckBoxMI.setSelected(false);
+//    trade8IVfirstCheckBoxMI.setSelected(false);
+//    trade4IVfirstCheckBoxMI.setSelected(false);
+//    trade2IVfirstCheckBoxMI.setSelected(false);
+//    trade1IVfirstCheckBoxMI.setSelected(false);
+//    trade16userFirstCheckBoxMI.setSelected(false);
+//    trade12userFirstCheckBoxMI.setSelected(false);
+//    trade8userFirstCheckBoxMI.setSelected(false);
+//    trade4userFirstCheckBoxMI.setSelected(false);
+//    trade2userFirstCheckBoxMI.setSelected(false);
+//    trade1userFirstCheckBoxMI.setSelected(false);
+//  }
 
 private void setUseImproviseCheckBox()
   {
-   if( useImproviseButtonCheckBoxMI.isSelected() )
-     {
-     setContinuousImprovisation(true);
-     resetImprovCheckBoxes();
+//   if( useImproviseButtonCheckBoxMI.isSelected() )
+//     {
+//     setContinuousImprovisation(true);
+//     resetImprovCheckBoxes();
      setAutoImprovisation(false);
-     useImproviseButtonCheckBoxMI.setSelected(true);
-     improvMenuSelection = useImproviseButtonCheckBoxMI.getText();
-     setMenuSelection(improvMenu, improvMenuSelection);
-     Preferences.setPreference(Preferences.IMPROV_MENU_SETTING, "(" + improvMenuSelection + ")");
-     }
-   else
-     {
+ //    useImproviseButtonCheckBoxMI.setSelected(true);
+ //    improvMenuSelection = useImproviseButtonCheckBoxMI.getText();
+ //    setMenuSelection(improvMenu, improvMenuSelection);
+ //    Preferences.setPreference(Preferences.IMPROV_MENU_SETTING, "(" + improvMenuSelection + ")");
+//     }
+//   else
+//     {
      setContinuousImprovisation(false);
-     }
+//     }
   }
 
 private void setContinuousImprovisation(boolean value)
@@ -23822,41 +23629,16 @@ private void setContinuousImprovisation(boolean value)
     continuousImprovisation = value;
   }
 
-private void trade12userFirstCheckBoxMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_trade12userFirstCheckBoxMIActionPerformed
-  {//GEN-HEADEREND:event_trade12userFirstCheckBoxMIActionPerformed
-    setTrading(false, 12);
-  }//GEN-LAST:event_trade12userFirstCheckBoxMIActionPerformed
-
-private void trade8userFirstCheckBoxMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_trade8userFirstCheckBoxMIActionPerformed
-  {//GEN-HEADEREND:event_trade8userFirstCheckBoxMIActionPerformed
-    setTrading(false, 8);
-  }//GEN-LAST:event_trade8userFirstCheckBoxMIActionPerformed
-
-private void trade4userFirstCheckBoxMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_trade4userFirstCheckBoxMIActionPerformed
-  {//GEN-HEADEREND:event_trade4userFirstCheckBoxMIActionPerformed
-    setTrading(false, 4);
-  }//GEN-LAST:event_trade4userFirstCheckBoxMIActionPerformed
-
-private void trade2userFirstCheckBoxMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_trade2userFirstCheckBoxMIActionPerformed
-  {//GEN-HEADEREND:event_trade2userFirstCheckBoxMIActionPerformed
-    setTrading(false, 2);
-  }//GEN-LAST:event_trade2userFirstCheckBoxMIActionPerformed
-
-private void trade1userFirstCheckBoxMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_trade1userFirstCheckBoxMIActionPerformed
-  {//GEN-HEADEREND:event_trade1userFirstCheckBoxMIActionPerformed
-    setTrading(false, 1);
-  }//GEN-LAST:event_trade1userFirstCheckBoxMIActionPerformed
-
 private void setImprovMenu(JMenuItem menuItem, int improInterval, int lead, boolean ivFirst)
   {
-    resetImprovCheckBoxes();
+    //resetImprovCheckBoxes();
     menuItem.setSelected(true);
     setAutoImprovisation(true);
     autoImprovisation.setImproInterval(improInterval);
     autoImprovisation.setGenerationLeadSlots(lead);
     autoImprovisation.setIVfirst(ivFirst);
     improvMenuSelection = menuItem.getText();
-    setMenuSelection(improvMenu, improvMenuSelection);
+    //setMenuSelection(improvMenu, improvMenuSelection);
     Preferences.setPreference(Preferences.IMPROV_MENU_SETTING, "(" + improvMenuSelection + ")");
   }
 
@@ -23879,47 +23661,47 @@ public boolean getAutoImprovisation()
     return !originalGeneration;
 }
 
-public void setTrading(boolean ivFirst, int bars)
-  {
-    setContinuousImprovisation(false);
-    useImproviseButtonCheckBoxMI.setSelected(false);
-    if( ivFirst )
-      {
-        switch( bars )
-          {
-            case  1: setImprovMenu(trade1IVfirstCheckBoxMI,    960, 120, true);
-                     break;
-            case  2: setImprovMenu(trade2IVfirstCheckBoxMI,   1920, 120, true);
-                     break;
-            case  4: setImprovMenu(trade4IVfirstCheckBoxMI,   3840, 240, true);
-                     break;
-            case  8: setImprovMenu(trade8IVfirstCheckBoxMI,   7680, 480, true);
-                     break;
-            case 12: setImprovMenu(trade12IVfirstCheckBoxMI, 11520, 720, true);
-                     break;
-            case 16: setImprovMenu(trade16IVfirstCheckBoxMI, 15360, 960, true);
-                     break;
-          }
-      }
-    else
-      {
-        switch( bars )
-          {
-            case  1: setImprovMenu(trade1userFirstCheckBoxMI,    960, 120, false);
-                     break;
-            case  2: setImprovMenu(trade2userFirstCheckBoxMI,   1920, 120, false);
-                     break;
-            case  4: setImprovMenu(trade4userFirstCheckBoxMI,   3840, 240, false);
-                     break;
-            case  8: setImprovMenu(trade8userFirstCheckBoxMI,   7680, 480, false);
-                     break;
-            case 12: setImprovMenu(trade12userFirstCheckBoxMI, 11520, 720, false);
-                     break;
-            case 16: setImprovMenu(trade16userFirstCheckBoxMI, 15360, 960, false);
-                     break;
-          }
-      }
-  }
+//public void setTrading(boolean ivFirst, int bars)
+//  {
+//    setContinuousImprovisation(false);
+//    useImproviseButtonCheckBoxMI.setSelected(false);
+//    if( ivFirst )
+//      {
+//        switch( bars )
+//          {
+//            case  1: setImprovMenu(trade1IVfirstCheckBoxMI,    960, 120, true);
+//                     break;
+//            case  2: setImprovMenu(trade2IVfirstCheckBoxMI,   1920, 120, true);
+//                     break;
+//            case  4: setImprovMenu(trade4IVfirstCheckBoxMI,   3840, 240, true);
+//                     break;
+//            case  8: setImprovMenu(trade8IVfirstCheckBoxMI,   7680, 480, true);
+//                     break;
+//            case 12: setImprovMenu(trade12IVfirstCheckBoxMI, 11520, 720, true);
+//                     break;
+//            case 16: setImprovMenu(trade16IVfirstCheckBoxMI, 15360, 960, true);
+//                     break;
+//          }
+//      }
+//    else
+//      {
+//        switch( bars )
+//          {
+//            case  1: setImprovMenu(trade1userFirstCheckBoxMI,    960, 120, false);
+//                     break;
+//            case  2: setImprovMenu(trade2userFirstCheckBoxMI,   1920, 120, false);
+//                     break;
+//            case  4: setImprovMenu(trade4userFirstCheckBoxMI,   3840, 240, false);
+//                     break;
+//            case  8: setImprovMenu(trade8userFirstCheckBoxMI,   7680, 480, false);
+//                     break;
+//            case 12: setImprovMenu(trade12userFirstCheckBoxMI, 11520, 720, false);
+//                     break;
+//            case 16: setImprovMenu(trade16userFirstCheckBoxMI, 15360, 960, false);
+//                     break;
+//          }
+//      }
+//  }
 
 /**
  * Enable or disable auto improvisation.
@@ -26178,7 +25960,6 @@ preferencesAcceleratorMI.setEnabled(true);
     private javax.swing.JCheckBox idioms;
     private javax.swing.JButton ignoreDuplicate;
     private javax.swing.JMenuItem importMidiMI;
-    private javax.swing.JMenu improvMenu;
     private javax.swing.JToggleButton improviseButton;
     private javax.swing.JMenuItem insertChorusTabMI;
     private javax.swing.JMenuItem insertPhraseAfterPMI;
@@ -26253,7 +26034,6 @@ preferencesAcceleratorMI.setEnabled(true);
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JPopupMenu.Separator jSeparator1;
-    private javax.swing.JPopupMenu.Separator jSeparator10;
     private javax.swing.JPopupMenu.Separator jSeparator11;
     private javax.swing.JPopupMenu.Separator jSeparator12;
     private javax.swing.JSeparator jSeparator13;
@@ -26270,7 +26050,6 @@ preferencesAcceleratorMI.setEnabled(true);
     private javax.swing.JSeparator jSeparator30;
     private javax.swing.JSeparator jSeparator31;
     private javax.swing.JSeparator jSeparator32;
-    private javax.swing.JToolBar.Separator jSeparator4;
     private javax.swing.JSeparator jSeparator5;
     private javax.swing.JSeparator jSeparator6;
     private javax.swing.JSeparator jSeparator7;
@@ -26557,18 +26336,6 @@ preferencesAcceleratorMI.setEnabled(true);
     private javax.swing.JPanel trackerDelayPanel;
     private javax.swing.JTextField trackerDelayTextField;
     private javax.swing.JTextField trackerDelayTextField2;
-    private javax.swing.JCheckBoxMenuItem trade12IVfirstCheckBoxMI;
-    private javax.swing.JCheckBoxMenuItem trade12userFirstCheckBoxMI;
-    private javax.swing.JCheckBoxMenuItem trade16IVfirstCheckBoxMI;
-    private javax.swing.JCheckBoxMenuItem trade16userFirstCheckBoxMI;
-    private javax.swing.JCheckBoxMenuItem trade1IVfirstCheckBoxMI;
-    private javax.swing.JCheckBoxMenuItem trade1userFirstCheckBoxMI;
-    private javax.swing.JCheckBoxMenuItem trade2IVfirstCheckBoxMI;
-    private javax.swing.JCheckBoxMenuItem trade2userFirstCheckBoxMI;
-    private javax.swing.JCheckBoxMenuItem trade4IVfirstCheckBoxMI;
-    private javax.swing.JCheckBoxMenuItem trade4userFirstCheckBoxMI;
-    private javax.swing.JCheckBoxMenuItem trade8IVfirstCheckBoxMI;
-    private javax.swing.JCheckBoxMenuItem trade8userFirstCheckBoxMI;
     private javax.swing.JMenuItem transposeBothDownSemitone;
     private javax.swing.JMenuItem transposeBothUpSemitone;
     private javax.swing.JMenuItem transposeChordsDownSemitone;
@@ -26590,7 +26357,6 @@ preferencesAcceleratorMI.setEnabled(true);
     private javax.swing.JMenuItem undoPMI;
     private javax.swing.JCheckBoxMenuItem useAudioInputMI;
     private javax.swing.JCheckBoxMenuItem useBeamsMI;
-    private javax.swing.JCheckBoxMenuItem useImproviseButtonCheckBoxMI;
     private javax.swing.JButton usePreviousStyleButton;
     private javax.swing.JCheckBox useSuperColliderCheckbox;
     private javax.swing.JLabel useSuperColliderCheckboxText;
