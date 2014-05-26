@@ -11848,12 +11848,7 @@ private void recordFromMidi()
 
     private void playBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playBtnActionPerformed
 
-        if( keyboard != null && keyboard.isVisible() )
-          {
-            keyboard.setPlayback(true);
-          }
-        firstChorus = true;
-        playScore();
+    playAll();
     }//GEN-LAST:event_playBtnActionPerformed
 
 
@@ -19030,14 +19025,20 @@ public boolean getFirstChorus()
    */
     public void playAllMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playAllMIActionPerformed
 
-        if( keyboard != null )
-          {
-            keyboard.setPlayback(true);
-          }
-        setFirstChorus(true);
-        playScore();
+        playAll();
     }//GEN-LAST:event_playAllMIActionPerformed
 
+ public void playAll()
+  {
+    if( keyboard != null && keyboard.isVisible() )
+      {
+        keyboard.setPlayback(true);
+      }
+    setFirstChorus(true);
+    playScore();
+
+  }
+ 
  public void establishCountIn()
  {
  score.setCountIn(countInCheckBox.isSelected() ? makeCountIn() : null );
@@ -24185,6 +24186,7 @@ public void improvisationOff()
 
 public void improviseContinuously()
   {
+    //System.out.println("Improvise Continuously");
     // Looping is also automatically implied with improvisation.
     loopButton.setSelected(false);
     lickgenFrame.setRecurrent(true);
