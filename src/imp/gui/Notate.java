@@ -8817,14 +8817,6 @@ public class Notate
         scoreTab.setOpaque(true);
         scoreTab.addMouseListener(new java.awt.event.MouseAdapter()
         {
-            public void mouseClicked(java.awt.event.MouseEvent evt)
-            {
-                scoreTabMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt)
-            {
-                mouseEnteredTabPanel(evt);
-            }
             public void mousePressed(java.awt.event.MouseEvent evt)
             {
                 scoreTabMousePressed(evt);
@@ -8832,6 +8824,14 @@ public class Notate
             public void mouseReleased(java.awt.event.MouseEvent evt)
             {
                 scoreTabMouseReleased(evt);
+            }
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
+                scoreTabMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt)
+            {
+                mouseEnteredTabPanel(evt);
             }
         });
         scoreTab.addChangeListener(new javax.swing.event.ChangeListener()
@@ -11847,7 +11847,7 @@ private void recordFromMidi()
   }
 
     private void playBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playBtnActionPerformed
-
+    improvisationOn = false;
     playAll();
     }//GEN-LAST:event_playBtnActionPerformed
 
@@ -19109,6 +19109,7 @@ public void playScore()
       }
     
     setFirstChorus(false);
+    //improvisationOn = false;
   }
 
 
@@ -24166,12 +24167,14 @@ public void improviseButtonToggled()
 
         improviseButton.setBackground(new Color(255, 0, 0));
         improviseButton.setText("<html><center>No Impro</center></html>");
+        
+        playAll();
         }
     else
       {
         improviseButton.setBackground(new Color(0, 255, 0));
         improviseButton.setText("<html><center>Improv</center></html>");
-        //stopPlaying();
+        stopPlaying();
       }
   }
 
