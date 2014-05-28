@@ -7827,14 +7827,14 @@ public class Notate
 
         improviseButton.setBackground(new java.awt.Color(0, 255, 0));
         improviseButton.setText("Improv");
-        improviseButton.setToolTipText("Toggle to turn auto-improvisation on or off");
+        improviseButton.setToolTipText("Press to start improvisation.");
         improviseButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         improviseButton.setFocusable(false);
         improviseButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        improviseButton.setMaximumSize(new java.awt.Dimension(65, 30));
-        improviseButton.setMinimumSize(new java.awt.Dimension(65, 30));
+        improviseButton.setMaximumSize(new java.awt.Dimension(50, 30));
+        improviseButton.setMinimumSize(new java.awt.Dimension(50, 30));
         improviseButton.setOpaque(true);
-        improviseButton.setPreferredSize(new java.awt.Dimension(65, 30));
+        improviseButton.setPreferredSize(new java.awt.Dimension(50, 30));
         improviseButton.setRequestFocusEnabled(false);
         improviseButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         improviseButton.addActionListener(new java.awt.event.ActionListener()
@@ -11810,6 +11810,7 @@ void stopPlaying(String reason)
       {
         stopRecording();
       }
+    improvisationOff();
     setNormalMode();
     setShowConstructionLinesAndBoxes(showConstructionLinesMI.isSelected());
     //System.out.println("stopPlaying()");
@@ -24156,8 +24157,8 @@ boolean improvisationOn = false;
 
 public void improviseButtonToggled()
   {
-    improvisationOn = !improviseButton.isSelected();
-
+    improvisationOn = !improvisationOn; //improviseButton.isSelected();
+    //System.out.println("improvisationOn = " + improvisationOn);
     if( improvisationOn )
       {
         // Trading is not compatible with using this button,
@@ -24166,20 +24167,20 @@ public void improviseButtonToggled()
         //setUseImproviseCheckBox();
 
         improviseButton.setBackground(new Color(255, 0, 0));
-        improviseButton.setText("<html><center>No Impro</center></html>");
+        improviseButton.setText("<html><center>Stop</center></html>");
         
         playAll();
         }
     else
       {
-        improviseButton.setBackground(new Color(0, 255, 0));
-        improviseButton.setText("<html><center>Improv</center></html>");
         stopPlaying();
       }
   }
 
 public void improvisationOff()
   {
+    //System.out.println("improvisationOff");
+    improvisationOn = false;
     improviseButton.setSelected(false);
     lickgenFrame.setRecurrent(false);
     improviseButton.setBackground(new Color(0, 255, 0));
