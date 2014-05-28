@@ -2276,9 +2276,9 @@ public class Notate
         stepKeyboardMI = new javax.swing.JMenuItem();
         openLeadsheetEditorMI = new javax.swing.JMenuItem();
         lickGeneratorMI = new javax.swing.JMenuItem();
-        pianoKeyboardMI = new javax.swing.JMenuItem();
         styleGenerator1 = new javax.swing.JMenuItem();
         voicingTestMI = new javax.swing.JMenuItem();
+        pianoKeyboardMI = new javax.swing.JMenuItem();
         roadmapMenu = new javax.swing.JMenu();
         roadMapThisAnalyze = new javax.swing.JMenuItem();
         reAnalyzeMI = new javax.swing.JMenuItem();
@@ -9867,7 +9867,8 @@ public class Notate
         utilitiesMenu.setMnemonic('U');
         utilitiesMenu.setText("Utilities");
 
-        stepKeyboardMI.setText("Advice Keyboard");
+        stepKeyboardMI.setText("Advising Keyboard");
+        stepKeyboardMI.setToolTipText("Note entry keyboard that can advise on note choices");
         stepKeyboardMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9893,6 +9894,7 @@ public class Notate
         lickGeneratorMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.CTRL_MASK));
         lickGeneratorMI.setMnemonic('g');
         lickGeneratorMI.setText("Lick Generator");
+        lickGeneratorMI.setToolTipText("Control panel for lick generation");
         lickGeneratorMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9902,21 +9904,10 @@ public class Notate
         });
         utilitiesMenu.add(lickGeneratorMI);
 
-        pianoKeyboardMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_K, java.awt.event.InputEvent.CTRL_MASK));
-        pianoKeyboardMI.setMnemonic('K');
-        pianoKeyboardMI.setText("Voicing Keyboard");
-        pianoKeyboardMI.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                pianoKeyboardMIActionPerformed(evt);
-            }
-        });
-        utilitiesMenu.add(pianoKeyboardMI);
-
         styleGenerator1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Y, java.awt.event.InputEvent.CTRL_MASK));
         styleGenerator1.setMnemonic('S');
         styleGenerator1.setText("Style Editor & Extractor");
+        styleGenerator1.setToolTipText("Editor for styles and extractor for styles from MIDI");
         styleGenerator1.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9929,6 +9920,7 @@ public class Notate
         voicingTestMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.CTRL_MASK));
         voicingTestMI.setMnemonic('v');
         voicingTestMI.setText("Voicing Editor");
+        voicingTestMI.setToolTipText("Editor for chord voicings");
         voicingTestMI.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -9937,6 +9929,19 @@ public class Notate
             }
         });
         utilitiesMenu.add(voicingTestMI);
+
+        pianoKeyboardMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_K, java.awt.event.InputEvent.CTRL_MASK));
+        pianoKeyboardMI.setMnemonic('K');
+        pianoKeyboardMI.setText("Voicing Keyboard");
+        pianoKeyboardMI.setToolTipText("Keyboard for viewing and creating voicings");
+        pianoKeyboardMI.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                pianoKeyboardMIActionPerformed(evt);
+            }
+        });
+        utilitiesMenu.add(pianoKeyboardMI);
 
         menuBar.add(utilitiesMenu);
 

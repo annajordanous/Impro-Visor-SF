@@ -1147,7 +1147,7 @@ public Unit getPrevUnit(int slotIndex)
 
 public int getPrevIndex(int slotIndex)
   {
-    if( slotIndex < 0 )
+    if( slotIndex < 0 || slotIndex >= slots.size() )
       {
         return -1;
       }
