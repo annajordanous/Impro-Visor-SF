@@ -903,7 +903,6 @@ public class Score implements Constants, Serializable {
         // Handle count-in render
 
         int len = getCountInOffset();
-
         if( endLimitIndex != ENDSCORE )
           {
             endLimitIndex += len;

@@ -9902,7 +9902,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/imp/gui/graphics/toolbar/record.gif"/>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" value="Record from audio or MIDI source. Caution: This is UNDER CONSTRUCTION. Your patience is appreciated."/>
+                <Property name="toolTipText" type="java.lang.String" value="Record from MIDI source."/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                     <BevelBorder/>

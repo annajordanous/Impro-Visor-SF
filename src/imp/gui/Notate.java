@@ -8284,7 +8284,7 @@ public class Notate
         playToolBar.add(stopBtn);
 
         recordBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/record.gif"))); // NOI18N
-        recordBtn.setToolTipText("Record from audio or MIDI source. Caution: This is UNDER CONSTRUCTION. Your patience is appreciated.");
+        recordBtn.setToolTipText("Record from MIDI source.");
         recordBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         recordBtn.setMaximumSize(new java.awt.Dimension(30, 30));
         recordBtn.setMinimumSize(new java.awt.Dimension(30, 30));
@@ -11674,43 +11674,48 @@ public AudioSettings getAudioSettings(){
  */
 
 private void startRecording()
-  {    
+  {
+    setFirstChorus(true);
     //Take care of first time recording audio preferences
-    if(!audioLatencyRegistered){
+    if( !audioLatencyRegistered )
+      {
         Preferences.setAudioInLatency(1.0);
         audioLatencyRegistered = true;//Can also be true from saveAudioLatency()
-    }
-    
+      }
+
     turnStepInputOff();
 
     if( midiManager.getInDevice() == null )
       {
         ErrorLog.log(ErrorLog.COMMENT, "No valid MIDI in devices found.  \n\nPlease check your device connection and the MIDI Preferences. It is possible another program is currently using this device.");
-
-        return;
       }
-    else if (superColliderMode) //User wants to use SuperCollider. Works if checkbox selected
+    else if( superColliderMode ) //User wants to use SuperCollider. Works if checkbox selected
       {
-            //Check for valid Input Device associated with using SuperCollider
-            boolean validSCInDevice = midiManager.getInDevice().getDeviceInfo().getName().equals("IAC Bus 1") ||
-                                      midiManager.getInDevice().getDeviceInfo().getName().equals("Bus 1") ||
-                                      midiManager.getInDevice().getDeviceInfo().getName().equals("LoopBe Internal MIDI") ||
-                                      midiManager.getInDevice().getDeviceInfo().getName().contains("VirMIDI");
-            
-            //If valid device selected, okay to go through with recording. Else,
-            //yell at user. @TODO potential trouble spot for user-defined 
-            //workarounds.            
-          if (validSCInDevice) {
-              SCHandler handler = new SCHandler();
-              handler.openSC();
-              startRecordingHelper();
-          } else {
-              //@TODO Yell at user. Like through a dialog. Then quit.
-              ErrorLog.log(ErrorLog.WARNING, "You need a valid MIDI input device "
-                      + "to do this! See Help->Audio Input for instructions/details.");
+        //Check for valid Input Device associated with using SuperCollider
+        boolean validSCInDevice = midiManager.getInDevice().getDeviceInfo().getName().equals("IAC Bus 1")
+                || midiManager.getInDevice().getDeviceInfo().getName().equals("Bus 1")
+                || midiManager.getInDevice().getDeviceInfo().getName().equals("LoopBe Internal MIDI")
+                || midiManager.getInDevice().getDeviceInfo().getName().contains("VirMIDI");
+
+        //If valid device selected, okay to go through with recording. Else,
+        //yell at user. @TODO potential trouble spot for user-defined 
+        //workarounds.            
+        if( validSCInDevice )
+          {
+            SCHandler handler = new SCHandler();
+            handler.openSC();
+            startRecordingHelper();
           }
-      } else {
-            startRecordingHelper();//below
+        else
+          {
+            //@TODO Yell at user. Like through a dialog. Then quit.
+            ErrorLog.log(ErrorLog.WARNING, "You need a valid MIDI input device "
+                    + "to do this! See Help->Audio Input for instructions/details.");
+          }
+      }
+    else
+      {
+        startRecordingHelper();//below
       }
   }
 
@@ -11720,12 +11725,11 @@ private void startRecording()
  * Called separately from startRecording() so SuperCollider has time to run.
  */
 private void startRecordingHelper(){
-
     playBtn.setEnabled(false);
 
     recordBtn.setIcon(recordActiveImageIcon);
 
-    recordBtn.setBackground(Color.RED);
+    //recordBtn.setBackground(Color.RED);
 
     if( midiRecorder == null )
       {
@@ -11784,6 +11788,7 @@ private void enableRecording()
 
     staveRequestFocus();
 
+    establishCountIn();
     //playScore();
 
     setMode(Mode.RECORDING);
@@ -19042,7 +19047,8 @@ public boolean getFirstChorus()
  
  public void establishCountIn()
  {
- score.setCountIn(countInCheckBox.isSelected() ? makeCountIn() : null );
+ boolean countInSelected = countInCheckBox.isSelected();
+ score.setCountIn(countInSelected ? makeCountIn() : null );
  }
 
  public void noCountIn()
@@ -19065,7 +19071,6 @@ public void playScore()
 
     totalSlotsElapsed = 0;
     previousSynthSlot = 0;
-    MelodyPart improLick = null;
 
     improvMelodyIndex = 0;
 
@@ -19085,7 +19090,7 @@ public void playScore()
             // but pasting the improLick is deferred to after the main Score
             // starts, so that the latter does not try to play improLick also.
 
-            improLick = autoImprovisation.createAndPlayInitialLick(getImprovMelodyPart());
+            MelodyPart improLick = autoImprovisation.createAndPlayInitialLick(getImprovMelodyPart());
 
             establishCountIn();
             playScoreBody(0);
