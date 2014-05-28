@@ -8470,7 +8470,8 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="stepKeyboardMI">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Advice Keyboard"/>
+                <Property name="text" type="java.lang.String" value="Advising Keyboard"/>
+                <Property name="toolTipText" type="java.lang.String" value="Note entry keyboard that can advise on note choices"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="stepKeyboardMIActionPerformed"/>
@@ -8499,21 +8500,10 @@
                 </Property>
                 <Property name="mnemonic" type="int" value="103"/>
                 <Property name="text" type="java.lang.String" value="Lick Generator"/>
+                <Property name="toolTipText" type="java.lang.String" value="Control panel for lick generation"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="lickGeneratorMIActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="pianoKeyboardMI">
-              <Properties>
-                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="Ctrl+K"/>
-                </Property>
-                <Property name="mnemonic" type="int" value="75"/>
-                <Property name="text" type="java.lang.String" value="Voicing Keyboard"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="pianoKeyboardMIActionPerformed"/>
               </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="styleGenerator1">
@@ -8523,6 +8513,7 @@
                 </Property>
                 <Property name="mnemonic" type="int" value="83"/>
                 <Property name="text" type="java.lang.String" value="Style Editor &amp; Extractor"/>
+                <Property name="toolTipText" type="java.lang.String" value="Editor for styles and extractor for styles from MIDI"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="styleGenerator1ActionPerformed"/>
@@ -8535,9 +8526,23 @@
                 </Property>
                 <Property name="mnemonic" type="int" value="118"/>
                 <Property name="text" type="java.lang.String" value="Voicing Editor"/>
+                <Property name="toolTipText" type="java.lang.String" value="Editor for chord voicings"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="voicingTestMIActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="pianoKeyboardMI">
+              <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+K"/>
+                </Property>
+                <Property name="mnemonic" type="int" value="75"/>
+                <Property name="text" type="java.lang.String" value="Voicing Keyboard"/>
+                <Property name="toolTipText" type="java.lang.String" value="Keyboard for viewing and creating voicings"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="pianoKeyboardMIActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>
