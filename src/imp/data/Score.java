@@ -241,6 +241,7 @@ public class Score implements Constants, Serializable {
 
     public void setCountIn(ChordPart countInProg)
     {
+      //System.out.println("countiInProg = " + countInProg);
         this.countInProg = countInProg;
     }
 
