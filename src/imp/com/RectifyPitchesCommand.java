@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2014 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -206,7 +206,6 @@ public void execute()
     catch( Exception ex )
       {
         //ErrorLog.log(ErrorLog.WARNING, "*** Warning: pitch resolution failed.");
-        return;
       }
   //playIt();
   }
@@ -215,7 +214,7 @@ public void execute()
   {
     if( ImproVisor.getPlay() )
       {
-      ImproVisor.playCurrentSelection(false, 0, PlayScoreCommand.NODRUMS);
+      ImproVisor.playCurrentSelection(false, 0, PlayScoreCommand.USEDRUMS);
 
       //new PlayPartCommand(part.extract(startIndex, stopIndex)).execute();
       }

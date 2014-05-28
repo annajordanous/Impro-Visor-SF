@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2014 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -5177,7 +5177,7 @@ void transposeMelodyHarmonically()
     Trace.log(2, "applying smart transpose");
     rectifySelection(getSelectionStart(),
                  getSelectionEnd(), false, false);
-    playSelection(false, 0, PlayScoreCommand.NODRUMS, "transpose harmonically");
+    playSelection(false, 0, PlayScoreCommand.USEDRUMS, "transpose harmonically");
   }
 
 void transposeMelodyUpHarmonically()
@@ -5185,7 +5185,7 @@ void transposeMelodyUpHarmonically()
     Trace.log(2, "applying harmonic transpose up");
     rectifySelection(getSelectionStart(), getSelectionEndNote(), true, true);
     notate.noCountIn();
-    playSelection(false, 0, PlayScoreCommand.NODRUMS, "transpose up harmonically");
+    playSelection(false, 0, PlayScoreCommand.USEDRUMS, "transpose up harmonically");
   }
 
 void transposeMelodyDownHarmonically()
@@ -5194,7 +5194,7 @@ void transposeMelodyDownHarmonically()
     rectifySelection(getSelectionStart(),
                  getSelectionEndNote(), true, false);
     notate.noCountIn();
-    playSelection(false, 0, PlayScoreCommand.NODRUMS, "transpose down harmonically");
+    playSelection(false, 0, PlayScoreCommand.USEDRUMS, "transpose down harmonically");
   }
 
 void transposeMelodyUpSemitone()
@@ -5205,7 +5205,7 @@ void transposeMelodyUpSemitone()
                true, // up
                false); // not octave
     notate.noCountIn();
-    playSelection(false, 0, PlayScoreCommand.NODRUMS, "transpose up semitone");
+    playSelection(false, 0, PlayScoreCommand.USEDRUMS, "transpose up semitone");
   }
 
 void transposeMelodyDownSemitone()
@@ -5216,7 +5216,7 @@ void transposeMelodyDownSemitone()
                false, // down
                false); // not octave
     notate.noCountIn();
-    playSelection(false, 0, PlayScoreCommand.NODRUMS, "transpose down semitone");
+    playSelection(false, 0, PlayScoreCommand.USEDRUMS, "transpose down semitone");
   }
 
 void transposeMelodyUpOctave()
@@ -5227,7 +5227,7 @@ void transposeMelodyUpOctave()
                true, // up
                true); // octave
     notate.noCountIn();
-    playSelection(false, 0, PlayScoreCommand.NODRUMS, "transpose up octave");
+    playSelection(false, 0, PlayScoreCommand.USEDRUMS, "transpose up octave");
   }
 
 void transposeMelodyDownOctave()
@@ -5238,7 +5238,7 @@ void transposeMelodyDownOctave()
                false, // down
                true); // octave
     notate.noCountIn();
-    playSelection(false, 0, PlayScoreCommand.NODRUMS, "transpose down octave");
+    playSelection(false, 0, PlayScoreCommand.USEDRUMS, "transpose down octave");
   }
 
 void transposeChordsUpSemitone()
