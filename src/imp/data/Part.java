@@ -1704,11 +1704,12 @@ public void saveLeadsheet(BufferedWriter out, String type) throws IOException
         out.write("    (stave " + staveType.toString().toLowerCase() + ")");
         out.newLine();
       }
-    else
-    {
-        out.write(Formatting.prettyFormat(4, ((ChordPart)this).getRoadMap() == null ? "" : ((ChordPart)this).getRoadmapPoly()));
-        out.newLine();
-    }
+// For now, saving roadmaps is disabled
+//    else
+//    {
+//        out.write(Formatting.prettyFormat(4, ((ChordPart)this).getRoadMap() == null ? "" : ((ChordPart)this).getRoadmapPoly()));
+//        out.newLine();
+//    }
 
     out.write(")");
     out.newLine();

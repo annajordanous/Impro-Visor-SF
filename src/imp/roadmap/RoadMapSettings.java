@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2011 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2011-2014 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,8 +41,11 @@ public class RoadMapSettings {
     /** Horizontal margin of roadmap */
     public int xOffset = 50;
     
-    /** Vertical offset of roadmap */
-    public int yOffset = 70;
+    /** 
+     * Vertical offset of roadmap. This needs to be large enough that
+     * printing does not cut off the title.
+     */
+    public int yOffset = 100;
     
     /** Number of measures allowed per line */
     public int barsPerLine = 8;
