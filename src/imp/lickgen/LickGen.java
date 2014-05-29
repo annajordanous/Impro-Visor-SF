@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2014 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,6 +41,10 @@ import polya.PolylistEnum;
 /**
  @author David Morrison
  * Includes additions by Ryan Wieghard to support Outside playing.
+ * Includes additions by Jack Davison for triadic grammar elements, 
+ * and by David Halpern for expectancy, although the latter produce errors
+ * at the moment.
+ * Includes additions by Hayden Blauzvern for neural network critic.
  */
 
 public class LickGen implements Constants 
@@ -109,7 +113,8 @@ public Integer integer;
     private static int QUARTER_NOTE = 120;
     private static int BASE_WEIGHT = 15;
     private static int QUARTER_WEIGHT = 5;
-    public static final double REPEAT_PROB = 1.0 / 512.0;    //used in chooseNote - should be able to be varied
+    //used in chooseNote - should be able to be varied
+    public static final double REPEAT_PROB = 1.0 / 512.0;
     public static final int PERCENT_REPEATED_NOTES_TO_REMOVE = 98;
     public static final int MIN_JUMP_UPPER_BOUND = 6;
     //probability to make a random note a goal note
@@ -120,9 +125,7 @@ public Integer integer;
     public static final int NINTH_THIRTHEENTH = 7;
     public static final int SHARP11_11 = 5;
     public static final int FLAT9_SHARP9_FLAT13 = 3;
-    public int[] typeMap = {
-        CHORD, COLOR, RANDOM, SCALE
-    };
+    public int[] typeMap = {CHORD, COLOR, RANDOM, SCALE};
     public static final String NOTE_SYMBOL = "N";
     public static final String REST_SYMBOL = "R";
     private static final int MAX_EXPECTANCY = 216;
@@ -134,7 +137,8 @@ public Integer integer;
     private double[] pitchUsed = new double[TOTALPITCHES];
     private Polylist preferredScale = Polylist.nil;
     ArrayList<String> chordUsed = new ArrayList<String>();
-    ArrayList<Integer> chordUsedSection = new ArrayList<Integer>();    // Indices that are global to an instance
+    // Indices that are global to an instance
+    ArrayList<Integer> chordUsedSection = new ArrayList<Integer>();    
     int position = 0;
     int oldPitch = 0;
     int oldOldPitch = 0;
@@ -197,7 +201,8 @@ public Integer integer;
         chordUsed.clear();
         chordUsedSection.clear();
         
-        loadHeadData(ImproVisor.getGrammarDirectory().getAbsolutePath() + File.separator + "HeadData.data");
+        loadHeadData(ImproVisor.getGrammarDirectory().getAbsolutePath() 
+                + File.separator + "HeadData.data");
         
         String soloistFileName = grammarFile.replace(".grammar", ".soloist"); 
         File soloistFile = new File(soloistFileName);
@@ -224,8 +229,8 @@ public Integer integer;
     //load the Score objects of the transcriptions with heads into memory
     public void loadHeadData(String file) {
     //System.out.println("loadHeadData" + file);
-        FileInputStream fis = null;
-        ObjectInputStream in = null;
+        FileInputStream fis;
+        ObjectInputStream in;
         
         try {
             fis = new FileInputStream(file);
