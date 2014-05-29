@@ -19809,7 +19809,7 @@ public void openLeadsheet(boolean openCorpus)
 
                     UnsavedChanges dialog =
                         new UnsavedChanges(this,
-                                           "Save modifications before opening " + lsOpenPreview.getTitle() + "?",
+                                           "Save modifications?",
                                            options);
 
                     dialog.setVisible(true);
@@ -24293,7 +24293,7 @@ public void fileStepForward()
 
                 UnsavedChanges dialog =
                     new UnsavedChanges(this,
-                                       "Save modifications before opening " + getTitle() + "?",
+                                       "Save modifications?",
                                        options);
 
                 dialog.setVisible(true);
@@ -24374,7 +24374,7 @@ public void fileStepBackward()
 
                 UnsavedChanges dialog =
                     new UnsavedChanges(this,
-                                       "Save modifications before opening " + getTitle() + "?",
+                                       "Save modifications?",
                                        options);
 
                 dialog.setVisible(true);
