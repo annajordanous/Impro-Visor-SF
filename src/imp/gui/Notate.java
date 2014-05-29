@@ -11782,7 +11782,7 @@ private void enableRecording()
 
     recordBtn.setIcon(recordActiveImageIcon);
 
-    recordBtn.setBackground(Color.RED);
+    //recordBtn.setBackground(Color.RED);
 
     if( midiRecorder == null )
       {
