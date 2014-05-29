@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2014 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -340,6 +340,7 @@ public class Style
    * Returns the name.
    * @return the name of this Style
    */
+  @Override
   public String toString()
     {
     return getName();
@@ -503,9 +504,9 @@ public class Style
             case CHORD_PATTERN:
               {
               ChordPattern cp = ChordPattern.makeChordPattern(item);
-              cp.setStyle(style);
               if( cp != null )
                 {
+                cp.setStyle(style);
                 style.chordPatterns.add(cp);
                 }
               else
@@ -517,9 +518,9 @@ public class Style
             case DRUM_PATTERN:
               {
               DrumPattern dp = DrumPattern.makeDrumPattern(item);
-              dp.setStyle(style);
               if( dp != null )
                 {
+                dp.setStyle(style);
                 style.drumPatterns.add(dp);
                 }
               else
@@ -1182,7 +1183,7 @@ static Polylist filterOutVolumes(Polylist L)
 
       // Find the last non-rest in the segment.
       
-      Iterator it = basslineSegment.descendingIterator();
+      Iterator<Object> it = basslineSegment.descendingIterator();
       while( it.hasNext() )
         {
            Object ob = it.next();
@@ -1425,9 +1426,9 @@ public long render(MidiSequence seq,
 
             // Sets previousBassNote to last NoteSymbol in bassline
  
-            for( Iterator it = bassline.descendingIterator(); it.hasNext(); )
+            for( Iterator<MelodySymbol> it = bassline.descendingIterator(); it.hasNext(); )
               {
-                Object ob = it.next();
+                MelodySymbol ob = it.next();
                 if( ob instanceof NoteSymbol )
                   {
                     NoteSymbol ns = (NoteSymbol)ob;
