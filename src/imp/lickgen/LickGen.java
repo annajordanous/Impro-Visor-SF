@@ -2089,7 +2089,8 @@ public boolean fillMelody(MelodyPart lick,
                      int lengthInSlots = Duration.getDuration(inner.second().toString());
                      Note noteIn = prevNote;
                      if (prevNote != null) {
-                     System.out.println("prevNote = " + prevNote.toLeadsheet()); }
+                     //System.out.println("prevNote = " + prevNote.toLeadsheet()); 
+                     }
                      if (noteIn == null || noteIn.isRest() || noteIn.getPitch() > mMaxPitch || noteIn.getPitch() < mMinPitch) {
                          noteIn = new Note((mMinPitch + (mMaxPitch - mMinPitch)/2),60);
                      } 
@@ -2143,21 +2144,21 @@ public boolean fillMelody(MelodyPart lick,
                         addNote(newtriad[0], lick, Polylist.nil, avoidRepeats, "triadic", item);
                         addNote(newtriad[1], lick, Polylist.nil, avoidRepeats, "triadic", item);
                         addNote(newtriad[2], lick, Polylist.nil, avoidRepeats, "triadic", item);
-                        System.out.println("triad: {" + newtriad[0].toLeadsheet() + ", " + newtriad[1].toLeadsheet() + ", " + newtriad[2].toLeadsheet() + "}");
+                        //System.out.println("triad: {" + newtriad[0].toLeadsheet() + ", " + newtriad[1].toLeadsheet() + ", " + newtriad[2].toLeadsheet() + "}");
                         base = getBase(newtriad[2]);
                      }
                      if (remainder == 1) {
                          newtriad = makeTriad(base,lastInversion);
                          addNote(newtriad[0], lick, Polylist.nil, avoidRepeats, "triadic", item);
-                        System.out.println("triad: {" + newtriad[0].toLeadsheet() + "}");                         
+                        //System.out.println("triad: {" + newtriad[0].toLeadsheet() + "}");                         
                      } else if (remainder == 2) {
                          newtriad = makeTriad(base,lastInversion);
                          addNote(newtriad[0], lick, Polylist.nil, avoidRepeats, "triadic", item);
                          addNote(newtriad[1], lick, Polylist.nil, avoidRepeats, "triadic", item);
-                        System.out.println("triad: {" + newtriad[0].toLeadsheet() + ", " + newtriad[1].toLeadsheet() + "}");
+                        //System.out.println("triad: {" + newtriad[0].toLeadsheet() + ", " + newtriad[1].toLeadsheet() + "}");
                      }
                      } else {
-                         System.out.println("Aborted: Faulty inputs");
+                         //System.out.println("Aborted: Faulty inputs");
                      }
                      
               }
@@ -2428,7 +2429,7 @@ public boolean fillMelody(MelodyPart lick,
                     }
                     if( note.getPitch() > 127 )
                         {
-                            System.out.println("Bad note in fillMelody " + note);
+                            //System.out.println("Bad note in fillMelody " + note);
                             note = new Rest(note.getRhythmValue());
                         }
                     addNote(note, lick, rhythmString, avoidRepeats, "expectancy", item);
