@@ -485,7 +485,7 @@ public class Style
     {
     Style style = new Style();
 
-    while( L.nonEmpty() )
+    while( L != null && L.nonEmpty() )
       {
 
       if( (L.first() instanceof Polylist) )
