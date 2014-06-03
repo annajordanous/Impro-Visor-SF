@@ -4594,7 +4594,9 @@ public class Notate
         adviceFrame.setTitle("Advice Directory");
         adviceFrame.setAlwaysOnTop(true);
         adviceFrame.setFocusCycleRoot(false);
+        adviceFrame.setMinimumSize(new java.awt.Dimension(600, 400));
         adviceFrame.setName("adviceFrame"); // NOI18N
+        adviceFrame.setPreferredSize(new java.awt.Dimension(600, 400));
         adviceFrame.addWindowListener(new java.awt.event.WindowAdapter()
         {
             public void windowClosing(java.awt.event.WindowEvent evt)
