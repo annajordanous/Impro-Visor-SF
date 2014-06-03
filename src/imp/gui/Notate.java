@@ -4596,7 +4596,6 @@ public class Notate
         adviceFrame.setFocusCycleRoot(false);
         adviceFrame.setMinimumSize(new java.awt.Dimension(600, 400));
         adviceFrame.setName("adviceFrame"); // NOI18N
-        adviceFrame.setPreferredSize(new java.awt.Dimension(600, 400));
         adviceFrame.addWindowListener(new java.awt.event.WindowAdapter()
         {
             public void windowClosing(java.awt.event.WindowEvent evt)
@@ -9869,6 +9868,7 @@ public class Notate
         utilitiesMenu.setMnemonic('U');
         utilitiesMenu.setText("Utilities");
 
+        stepKeyboardMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_K, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         stepKeyboardMI.setText("Advising Keyboard");
         stepKeyboardMI.setToolTipText("Note entry keyboard that can advise on note choices");
         stepKeyboardMI.addActionListener(new java.awt.event.ActionListener()
