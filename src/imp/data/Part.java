@@ -763,56 +763,57 @@ public void addUnit(Unit unit)
     
 public void setUnit(int unitIndex, Unit unit)
   {
-  if( unit != null )
-  //System.out.println("setUnit " + unitIndex + " to " + unit);
-    if( unitIndex >= size || unitIndex < 0 )
-      {
-        return; // shouldn't happen, but can.
-      }
-
-    //Trace.log(0, "setting Unit at " + unitIndex + " to " + (unit == null ? null : unit.toLeadsheet()));
-    // if we want to set it to empty, we are effectively deleting it
-    if( unit == null )
-      {
-        delUnit(unitIndex);	// Tracing this produces too much output
-        return;
-      }
-
-    //Trace.log(3, "setting Unit at " + unitIndex + " to " + unit.toLeadsheet());
-
-    //rk: I really do not follow the logic having to do with old note values.
-
-    Unit oldUnit = slots.get(unitIndex);
-
-    int rv = getUnitRhythmValue(unitIndex);
-
-    // if the slot is empty, we need to find what the rhythm value should be
-
-    if( oldUnit == null )
-      {
-        // Note: When next unit is a rest, the above may had the effect of cutting the inserted note short!!
-        // See compensating code below.
-
-        int nextIndex = getNextIndex(unitIndex);
-
-        unitCount++;
-        Unit prevUnit = getPrevUnit(unitIndex);
-        if( prevUnit != null )
-          {
-            //Trace.log(3, "in setUnit - A, setting rhythmValue");
-            // we also need to change the rv of the previous Unit
-            prevUnit.setRhythmValue(prevUnit.getRhythmValue() - rv);
-          }
-      }
-    else
-      {
-        // if there was already a Unit there, we already know the rv
-        rv = oldUnit.getRhythmValue();
-      }
-
-    //Trace.log(3, "in setUnit - B, setting rhythmValue");
-    unit.setRhythmValue(rv);
-    slots.set(unitIndex, unit);
+    newSetUnit(unitIndex, unit);
+//  if( unit != null )
+//  System.out.println("setUnit " + unitIndex + " to " + unit);
+//    if( unitIndex >= size || unitIndex < 0 )
+//      {
+//        return; // shouldn't happen, but can.
+//      }
+//
+//    //Trace.log(0, "setting Unit at " + unitIndex + " to " + (unit == null ? null : unit.toLeadsheet()));
+//    // if we want to set it to empty, we are effectively deleting it
+//    if( unit == null )
+//      {
+//        delUnit(unitIndex);	// Tracing this produces too much output
+//        return;
+//      }
+//
+//    //Trace.log(3, "setting Unit at " + unitIndex + " to " + unit.toLeadsheet());
+//
+//    //rk: I really do not follow the logic having to do with old note values.
+//
+//    Unit oldUnit = slots.get(unitIndex);
+//
+//    int rv = getUnitRhythmValue(unitIndex);
+//
+//    // if the slot is empty, we need to find what the rhythm value should be
+//
+//    if( oldUnit == null )
+//      {
+//        // Note: When next unit is a rest, the above may had the effect of cutting the inserted note short!!
+//        // See compensating code below.
+//
+//        int nextIndex = getNextIndex(unitIndex);
+//
+//        unitCount++;
+//        Unit prevUnit = getPrevUnit(unitIndex);
+//        if( prevUnit != null )
+//          {
+//            //Trace.log(3, "in setUnit - A, setting rhythmValue");
+//            // we also need to change the rv of the previous Unit
+//            prevUnit.setRhythmValue(prevUnit.getRhythmValue() - rv);
+//          }
+//      }
+//    else
+//      {
+//        // if there was already a Unit there, we already know the rv
+//        rv = oldUnit.getRhythmValue();
+//      }
+//
+//    //Trace.log(3, "in setUnit - B, setting rhythmValue");
+//    unit.setRhythmValue(rv);
+//    slots.set(unitIndex, unit);
   }
 
 
@@ -854,6 +855,7 @@ public void newSetUnit(int unitIndex, Unit unit)
       {
         unit = unit.copy();
         unit.setRhythmValue(size - unitIndex);
+        nextUnitStart = size;
       }
 
     // If this unit overlays one or more units, set them to null.
