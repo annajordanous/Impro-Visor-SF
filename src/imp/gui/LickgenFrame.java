@@ -3772,27 +3772,28 @@ public String addMeasureToAbstractMelody(int selStart, int measureWindow,
         part.setNote(current, currNote);
       }
 
-
-    //untie notes at end of measure and beginning of next measure
-    if( part.getPrevNote(selEnd).getRhythmValue() > selEnd - part.getPrevIndex(
-        selEnd) )
+    if( part.getPrevNote(selEnd) != null )
       {
-        tiedAtEnd = true;
-        //System.out.println("Untying notes at end.");
-        int tracker = part.getPrevIndex(selEnd);
-        Note untiedNote = part.getNote(tracker).copy();
-        int originalRhythmVal = untiedNote.getRhythmValue();
-        int rhythmVal = slotsPerSection - (tracker % slotsPerSection);
-        untiedNote.setRhythmValue(rhythmVal);
-        part.setNote(tracker, untiedNote);
-        int secondRhythmVal = originalRhythmVal - rhythmVal;
-        untiedNote = part.getNote(tracker).copy();
-        untiedNote.setRhythmValue(secondRhythmVal);
-        part.setNote(selEnd, untiedNote);
+        //untie notes at end of measure and beginning of next measure
+        if( part.getPrevNote(selEnd).getRhythmValue() > selEnd - part.getPrevIndex(
+            selEnd) )
+          {
+            tiedAtEnd = true;
+            //System.out.println("Untying notes at end.");
+            int tracker = part.getPrevIndex(selEnd);
+            Note untiedNote = part.getNote(tracker).copy();
+            int originalRhythmVal = untiedNote.getRhythmValue();
+            int rhythmVal = slotsPerSection - (tracker % slotsPerSection);
+            untiedNote.setRhythmValue(rhythmVal);
+            part.setNote(tracker, untiedNote);
+            int secondRhythmVal = originalRhythmVal - rhythmVal;
+            untiedNote = part.getNote(tracker).copy();
+            untiedNote.setRhythmValue(secondRhythmVal);
+            part.setNote(selEnd, untiedNote);
+      }
       }
 
-
-    if( !part.getPrevNote(selStart + 1).equals(null) )
+    if( part.getPrevNote(selStart + 1) != null )
       {
         if( (part.getPrevIndex(selStart + 1) != selStart) && !(part.getPrevNote(
             selStart + 1).isRest()) )
