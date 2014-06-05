@@ -19121,7 +19121,6 @@ public void playScore()
         playScoreBody(0);
       }
     
-    setFirstChorus(false);
     //improvisationOn = false;
   }
 
@@ -24213,7 +24212,7 @@ public void improviseContinuously()
 
     recurrentIteration = 1;
    originalGenerate(lickgen, improviseStartSlot, improviseEndSlot);
-    //System.out.println("*** return from mproviseContinuously");
+    //System.out.println("*** return from improviseContinuously");
   }
 
 
@@ -27221,6 +27220,8 @@ private void handleAutoImprov(int slotInPlayback)
                 && (slotInPlayback >= stopPlaybackAtSlot - gap) ) // was totalSlots - gap) )
           {
             recurrentIteration++;
+            // firstChorus indicator is used by MidiRecorder to deal with countin
+            setFirstChorus(false); 
 
 //     debug    System.out.println("Continue improvising: " + improviseStartSlot
 //                             + " to " + improviseEndSlot
