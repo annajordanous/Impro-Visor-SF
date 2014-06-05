@@ -118,6 +118,11 @@ void start(int countInOffset)
     this.countInOffset = countInOffset;
   }
 
+int getCountInBias()
+  {
+    //System.out.println("firstChorus = " + notate.getFirstChorus());
+    return notate.getFirstChorus()?countInOffset : 0;
+  }
 
 /**
  * This function is called by others to send a MIDI message to this object for
@@ -195,7 +200,7 @@ void handleNoteOn(int note, int velocity, int channel)
         // this try is here because a function a few steps up in the call hierarchy tends to capture error messages
         try
           {
-            index = snapSlots(tickToSlots(noteOff)) - countInOffset;
+            index = snapSlots(tickToSlots(noteOff)) - getCountInBias();
 
             // add rests since nothing was played between now and the previous note
             if( duration > 0 && index >= 0 )
@@ -217,7 +222,7 @@ void handleNoteOn(int note, int velocity, int channel)
       }
 
     noteOn = lastEvent;
-    index = snapSlots(tickToSlots(noteOn)) - countInOffset;
+    index = snapSlots(tickToSlots(noteOn)) - getCountInBias();
 
     // add current note
     Note noteToAdd = new Note(note, snapTo);
@@ -272,7 +277,7 @@ private void setNote(int index, Note noteToAdd)
     noteOff = lastEvent;
     notePlaying = false;
 
-    int index = snapSlots(tickToSlots(noteOn)) - countInOffset;
+    int index = snapSlots(tickToSlots(noteOn)) - getCountInBias();
 
     if( index < 0 )
       {
