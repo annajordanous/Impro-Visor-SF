@@ -2055,8 +2055,6 @@ void redoAdvice(int selectedIndex)
       lastAdviceNext.getName())))) || ((lastAdviceNote == null)
       || (currentNote != null /* && !(lastAdviceNote.equals(currentNote) ) */)) )
      {
-
-
       int row = notate.adviceTree.getMaxSelectionRow();
 
       notate.displayAdviceTree(selectedIndex, 0, currentNote);
@@ -2229,7 +2227,6 @@ private void fitUnfiredNotes()
    }
   else
    {
-
     MelodyPart part = stave.getMelodyPart();
 
     /*
@@ -2402,15 +2399,16 @@ public void keyPressed(KeyEvent e)
            }
           return;
         case KeyEvent.VK_R:
-          notate.cm.execute(new SetRestCommand(stave.getSelectionStart(),
-                                               stave.getMelodyPart()));
-          int index = notate.getCurrentSelectionStart();
-          int next = stave.getNextCstrLine(index);
-        
-          if (next >= 0)
-            stave.setSelection(next, next);
-
-          stave.repaint();
+//      Notate handles all of this, due to key accelerator
+//          notate.cm.execute(new SetRestCommand(stave.getSelectionStart(),
+//                                               stave.getMelodyPart()));
+//          int index = notate.getCurrentSelectionStart();
+//          int next = stave.getNextCstrLine(index);
+//        
+//          if (next >= 0)
+//            stave.setSelection(next, next);
+//
+//          stave.repaint();
 
           return;
           
@@ -2521,7 +2519,6 @@ public void handleGridLineSpacing(KeyEvent e)
 void setSubDivs(int subDivs)
  {
   setSubDivs(subDivs, stave.getSelectionStart(), stave.getSelectionEnd());
-  return;
  }
 
 /**
@@ -2544,7 +2541,6 @@ void setSubDivs(int subDivs, int start, int end)
   {
       stepKeyboard.setSubDivComboBox();
   }
-  return;
  }
 
 /**
@@ -2561,9 +2557,6 @@ public void keyReleased(KeyEvent e)
        {
         aPressed = false;
        }
-      return;
-    default:
-      return;
    }
  }
 
@@ -2670,8 +2663,8 @@ boolean inNoteArea(MouseEvent e)
 @SuppressWarnings("static-access")
 private int searchForCstrLine(int x, int y)
  {
-  int tempX = 0;
-  int tempY = 0;
+  int tempX;
+  int tempY;
 
   // cycle throught the array of construction lines
   for( int i = 0; i < stave.cstrLines.length; i++ )
@@ -2721,8 +2714,8 @@ private int searchForCstrLine(int x, int y)
  */
 private int searchForBracket(MouseEvent e)
  {
-  int tempX = 0;
-  int tempY = 0;
+  int tempX;
+  int tempY;
 
   // cycle through the array of construction lines
   for( int i = 0; i < stave.cstrLines.length; i++ )
@@ -2951,14 +2944,12 @@ private Note yPosToRectifiedPitch(int yPos, Chord chord, int staveLine, boolean 
 
     // Are approaches user-enabled?
     boolean approachEnabled = (aPressed && shiftDown);
-    boolean apprch = false; // Is this particular note going to be an
-    // approach tone?
 
     /* Is this index the one right before a chord change?  If it is, and
     * if we've enabled approaching with Shift-A, tag this as an
     * approach tone.
     */
-    apprch =
+    boolean apprch =
         ((selectedIndex + stave.getMelodyPart().getUnitRhythmValue(selectedIndex)
         == prog.getNextUniqueChordIndex(selectedIndex)) && approachEnabled);
 
