@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2013 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2014 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 package imp.data;
 
 import imp.Constants;
+import static imp.data.Part.isRest;
 import imp.util.ErrorLog;
 import imp.util.Preferences;
 import imp.util.Trace;
@@ -30,8 +31,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.ListIterator;
-import polya.Formatting;
-import polya.Polylist;
 
 /**
  * The Part class is representative of an arbitrarily long melody or chord part, 
@@ -172,7 +171,7 @@ public int DEFAULT_KEYSIG = 0;
 public static final double DEFAULT_SWING = 0.67; // Don't use 2./3
 
 
-protected StaveType staveType = Preferences.getStaveTypeFromPreferences();
+protected Constants.StaveType staveType = Preferences.getStaveTypeFromPreferences();
 
 /**
  * Creates a Part with the specified number of slots and a rest in the first
@@ -215,7 +214,7 @@ public Part(int size)
   }
 
 
-StaveType getPreferredStaveType()
+Constants.StaveType getPreferredStaveType()
   {
     return staveType;
   }
@@ -322,7 +321,7 @@ public String getComposer()
  * @param staveType a String representing the staveType of the Part
  */
 
-public void setStaveType(StaveType staveType)
+public void setStaveType(Constants.StaveType staveType)
   {
     this.staveType = staveType;
   }
@@ -334,7 +333,7 @@ public void setStaveType(StaveType staveType)
  * @return staveType the staveType of the Part
  */
 
-public StaveType getStaveType()
+public Constants.StaveType getStaveType()
   {
     return staveType;
   }
@@ -541,7 +540,7 @@ public int getInstrument()
 public ArrayList<Unit> getUnitList()
   {
     ArrayList<Unit> unitList = new ArrayList<Unit>(unitCount);
-    PartIterator i = iterator();
+    Part.PartIterator i = iterator();
     while( i.hasNext() )
       {
         unitList.add(i.next());
@@ -676,7 +675,7 @@ public String toString()
     partData.append("\nPart with unitCount = ");
     partData.append(unitCount);
     partData.append(": ");
-    PartIterator i = iterator();
+    Part.PartIterator i = iterator();
     while( i.hasNext() )
       {
         int index = i.nextIndex();
@@ -763,57 +762,56 @@ public void addUnit(Unit unit)
     
 public void setUnit(int unitIndex, Unit unit)
   {
-    newSetUnit(unitIndex, unit);
-//  if( unit != null )
-//  System.out.println("setUnit " + unitIndex + " to " + unit);
-//    if( unitIndex >= size || unitIndex < 0 )
-//      {
-//        return; // shouldn't happen, but can.
-//      }
-//
-//    //Trace.log(0, "setting Unit at " + unitIndex + " to " + (unit == null ? null : unit.toLeadsheet()));
-//    // if we want to set it to empty, we are effectively deleting it
-//    if( unit == null )
-//      {
-//        delUnit(unitIndex);	// Tracing this produces too much output
-//        return;
-//      }
-//
-//    //Trace.log(3, "setting Unit at " + unitIndex + " to " + unit.toLeadsheet());
-//
-//    //rk: I really do not follow the logic having to do with old note values.
-//
-//    Unit oldUnit = slots.get(unitIndex);
-//
-//    int rv = getUnitRhythmValue(unitIndex);
-//
-//    // if the slot is empty, we need to find what the rhythm value should be
-//
-//    if( oldUnit == null )
-//      {
-//        // Note: When next unit is a rest, the above may had the effect of cutting the inserted note short!!
-//        // See compensating code below.
-//
-//        int nextIndex = getNextIndex(unitIndex);
-//
-//        unitCount++;
-//        Unit prevUnit = getPrevUnit(unitIndex);
-//        if( prevUnit != null )
-//          {
-//            //Trace.log(3, "in setUnit - A, setting rhythmValue");
-//            // we also need to change the rv of the previous Unit
-//            prevUnit.setRhythmValue(prevUnit.getRhythmValue() - rv);
-//          }
-//      }
-//    else
-//      {
-//        // if there was already a Unit there, we already know the rv
-//        rv = oldUnit.getRhythmValue();
-//      }
-//
-//    //Trace.log(3, "in setUnit - B, setting rhythmValue");
-//    unit.setRhythmValue(rv);
-//    slots.set(unitIndex, unit);
+  if( unit != null )
+  //System.out.println("setUnit " + unitIndex + " to " + unit);
+    if( unitIndex >= size || unitIndex < 0 )
+      {
+        return; // shouldn't happen, but can.
+      }
+
+    //Trace.log(0, "setting Unit at " + unitIndex + " to " + (unit == null ? null : unit.toLeadsheet()));
+    // if we want to set it to empty, we are effectively deleting it
+    if( unit == null )
+      {
+        delUnit(unitIndex);	// Tracing this produces too much output
+        return;
+      }
+
+    //Trace.log(3, "setting Unit at " + unitIndex + " to " + unit.toLeadsheet());
+
+    //rk: I really do not follow the logic having to do with old note values.
+
+    Unit oldUnit = slots.get(unitIndex);
+
+    int rv = getUnitRhythmValue(unitIndex);
+
+    // if the slot is empty, we need to find what the rhythm value should be
+
+    if( oldUnit == null )
+      {
+        // Note: When next unit is a rest, the above may had the effect of cutting the inserted note short!!
+        // See compensating code below.
+
+        int nextIndex = getNextIndex(unitIndex);
+
+        unitCount++;
+        Unit prevUnit = getPrevUnit(unitIndex);
+        if( prevUnit != null )
+          {
+            //Trace.log(3, "in setUnit - A, setting rhythmValue");
+            // we also need to change the rv of the previous Unit
+            prevUnit.setRhythmValue(prevUnit.getRhythmValue() - rv);
+          }
+      }
+    else
+      {
+        // if there was already a Unit there, we already know the rv
+        rv = oldUnit.getRhythmValue();
+      }
+
+    //Trace.log(3, "in setUnit - B, setting rhythmValue");
+    unit.setRhythmValue(rv);
+    slots.set(unitIndex, unit);
   }
 
 
@@ -855,7 +853,6 @@ public void newSetUnit(int unitIndex, Unit unit)
       {
         unit = unit.copy();
         unit.setRhythmValue(size - unitIndex);
-        nextUnitStart = size;
       }
 
     // If this unit overlays one or more units, set them to null.
@@ -1322,7 +1319,7 @@ public int getUnitRhythmValue(int unitIndex)
         Part fitPart = this.copy();
         while(fitPart.size() > freeSlots) {
             Part scaledPart = new Part();
-            PartIterator i = fitPart.iterator();
+            Part.PartIterator i = fitPart.iterator();
             while(i.hasNext()) {
                 Unit unit = i.next();
                 if(unit.getRhythmValue() != 1) {
@@ -1405,7 +1402,7 @@ public int getUnitRhythmValue(int unitIndex)
         try
           {
           // After the Units are shifted, go through and reset each rhythm value
-          PartIterator i = iterator();
+          Part.PartIterator i = iterator();
           while(i.hasNext()) {
             int index = i.nextIndex();
             slots.get(index).setRhythmValue(getUnitRhythmValue(index));
@@ -1468,7 +1465,7 @@ public int getUnitRhythmValue(int unitIndex)
         }
 
         // After the Units are shifted, go through and reset each rhythm value
-        PartIterator i = iterator();
+        Part.PartIterator i = iterator();
         while(i.hasNext()) {
             int index = i.nextIndex();
             slots.get(index).setRhythmValue(getUnitRhythmValue(index));
@@ -1674,7 +1671,7 @@ public int getUnitRhythmValue(int unitIndex)
         out.write(Integer.toString(volume));
         out.newLine();
         
-    	PartIterator i = iterator();
+    	Part.PartIterator i = iterator();
     	while(i.hasNext())
     		i.next().save(out);
     }
@@ -1718,7 +1715,7 @@ public void saveLeadsheet(BufferedWriter out, String type) throws IOException
 
     Note.initializeSaveLeadsheet();
 
-    PartIterator i = iterator();
+    Part.PartIterator i = iterator();
 
     // Should be refactored into separate methods for each derived class
     
@@ -1745,7 +1742,7 @@ public void saveLeadsheet(BufferedWriter out, String type) throws IOException
         
         int slotLimit = size();
         
-        int nextSectionStart = slotLimit;
+        int nextSectionStart;
         
         //iSystem.out.println("slotLimit = " + slotLimit);
         
@@ -1787,6 +1784,7 @@ public void saveLeadsheet(BufferedWriter out, String type) throws IOException
                   }
                 // Otherwise use the residue of previous chord
                 
+                assert chord != null;
                 // Where the next slot would normally be
                 int nextSlot = slot + chord.getRhythmValue();
                 
@@ -1852,7 +1850,7 @@ private void saveSectionInfo(BufferedWriter out, SectionRecord record) throws IO
      * can iterate over the entire Part
      * @return PartIterator   iterator pointing to the start of this Part
      */
-    public PartIterator iterator() {
+    public Part.PartIterator iterator() {
         return iterator(0);
     }
 
@@ -1862,8 +1860,8 @@ private void saveSectionInfo(BufferedWriter out, SectionRecord record) throws IO
      * @param index             the index to start iterating at
      * @return PartIterator     iterator pointing to the indicated index
      */
-    public PartIterator iterator(int index) {
-        return new PartIterator(slots, unitCount, index);
+    public Part.PartIterator iterator(int index) {
+        return new Part.PartIterator(slots, unitCount, index);
     }
 
     /**
