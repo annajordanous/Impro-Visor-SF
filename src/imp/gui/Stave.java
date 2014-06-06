@@ -847,10 +847,10 @@ public Stave(MelodyPart part, StaveType type, Notate notate,
     setSelection(0);
     
     this.add(noteCursorLabel);
-    noteCursorLabel.setForeground(Color.RED);
+    noteCursorLabel.setForeground(Color.DARK_GRAY);
     Font font = noteCursorLabel.getFont();
-    noteCursorLabel.setFont(new Font(font.getName(), font.getStyle(), 15));
-    noteCursorLabel.setSize(18, 18);
+    noteCursorLabel.setFont(new Font(font.getName(), font.getStyle(), 24));
+    noteCursorLabel.setSize(30, 30);
     
   }
 
@@ -2403,7 +2403,7 @@ protected void paintComponent(Graphics g)
 public void setNoteCursorLabel(String str, int x, int y)
 {
     
-    noteCursorLabel.setLocation(0, y - 50);
+    noteCursorLabel.setLocation(x-24, y-24);
     noteCursorLabel.setText(str);
 
 }
