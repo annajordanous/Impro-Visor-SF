@@ -557,7 +557,10 @@ private void updateNoteCursorLabel(MouseEvent e)
         note = new Note(pitch);
     }
     
-    stave.setNoteCursorLabel(noteNameFromMidi(note), x, y);
+    if( notate.getShowNoteNamesAboveCursor() )
+      {
+      stave.setNoteCursorLabel(noteNameFromMidi(note), x, y);
+      }
     
     if (currentChord != null && !currentChord.getName().equals(NOCHORD))
         stave.updateTempLegerLines(pitch, x,  curLine, stave.getGraphics());
@@ -675,7 +678,6 @@ private void chooseAndSetNoteCursor(MouseEvent e)
             else
                 noteCursor = makeCursor(redNoteCursorImg, "Note", true); 
         }
-
     }
 
     else
@@ -687,7 +689,10 @@ private void chooseAndSetNoteCursor(MouseEvent e)
     }
 
     stave.updateTempLegerLines(pitch, x,  curLine, stave.getGraphics());
-    stave.setNoteCursorLabel(noteNameFromMidi(note), x, y);
+    if( notate.getShowNoteNamesAboveCursor() )
+      {
+      stave.setNoteCursorLabel(noteNameFromMidi(note), x, y);
+      }
     setCursor(noteCursor);
 }
 

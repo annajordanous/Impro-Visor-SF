@@ -2261,6 +2261,7 @@ public class Notate
         showBracketsCurrentMeasureMI = new javax.swing.JCheckBoxMenuItem();
         showBracketsAllMeasuresMI = new javax.swing.JCheckBoxMenuItem();
         showConstructionLinesMI = new javax.swing.JCheckBoxMenuItem();
+        showNoteNameAboveCursorMI = new javax.swing.JCheckBoxMenuItem();
         useBeamsMI = new javax.swing.JCheckBoxMenuItem();
         replaceWithPhi = new javax.swing.JCheckBoxMenuItem();
         replaceWithDelta = new javax.swing.JCheckBoxMenuItem();
@@ -9742,6 +9743,17 @@ public class Notate
             }
         });
         viewMenu.add(showConstructionLinesMI);
+
+        showNoteNameAboveCursorMI.setSelected(true);
+        showNoteNameAboveCursorMI.setText("Show Note Names above Cursor");
+        showNoteNameAboveCursorMI.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                showNoteNameAboveCursorMIActionPerformed(evt);
+            }
+        });
+        viewMenu.add(showNoteNameAboveCursorMI);
 
         useBeamsMI.setSelected(true);
         useBeamsMI.setText("Use Beams");
@@ -24105,6 +24117,11 @@ public void setKconstantSlider(double value)
         //Pull up help menu
         openHelpDialog();
     }//GEN-LAST:event_OpenHelpTextMouseClicked
+
+    private void showNoteNameAboveCursorMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_showNoteNameAboveCursorMIActionPerformed
+    {//GEN-HEADEREND:event_showNoteNameAboveCursorMIActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_showNoteNameAboveCursorMIActionPerformed
     
     private void updateDottedAndTriplet() {
         isDotted = noteLenDottedCheckBox.isSelected();
@@ -26312,6 +26329,7 @@ preferencesAcceleratorMI.setEnabled(true);
     private javax.swing.JCheckBoxMenuItem showBracketsCurrentMeasureMI;
     private javax.swing.JCheckBoxMenuItem showConstructionLinesMI;
     private javax.swing.JCheckBoxMenuItem showEmptyTitlesMI;
+    private javax.swing.JCheckBoxMenuItem showNoteNameAboveCursorMI;
     private javax.swing.JCheckBoxMenuItem showTitlesMI;
     private javax.swing.JToggleButton smartEntryButton;
     private javax.swing.JToolBar standardToolbar;
@@ -27048,6 +27066,11 @@ public void setUseNoteCursor(boolean on)
     Cursor noteCursor = getCurrentStaveActionHandler().getNoteCursor();
     getCurrentStaveActionHandler().setCursor(noteCursor);
 }
+
+public boolean getShowNoteNamesAboveCursor()
+  {
+    return showNoteNameAboveCursorMI.isSelected();
+  }
 
 public String getDefaultGrammarName()
   {
