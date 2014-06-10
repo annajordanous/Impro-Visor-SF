@@ -953,7 +953,7 @@ public ArrayList<double[]> fillProbs(ChordPart chordProg,
                 p[i] = 0.0;
               }
 
-            Polylist scaleTones = Polylist.nil;
+            Polylist scaleTones;
 
             // Get the preferred scale type if it is present.
 
@@ -3281,6 +3281,91 @@ private boolean checkNote(int pos, int pitch, String pitchString,
     return false;
   }
 
+/**
+ * Classify note relative to chord.
+ * @param note
+ * @param chord
+ * @return BASS, CHORD, COLOR, SCALE, or NOTE
+ * in order of specificity
+ */
+
+public int classifyNote(Note note, Chord chord)
+  {
+    if( chord == null
+     || chord.getName().equals(NOCHORD)
+     || chord.getScales().isEmpty() )
+      {
+        return NOTE;
+      }
+    
+    // Get pitch class
+    int pitch = note.getPitch() % 12;
+    PitchClass rootClass = chord.getRootPitchClass();
+
+    // May want to drop out this check or return CHORD instead
+    if( rootClass.enharmonic(pitch) )
+      {
+        return BASS;
+      }
+
+    // Check for chord tone
+    Polylist chordTones = chord.getSpell();
+
+    while( chordTones.nonEmpty() )
+      {
+        if( pitch == ((NoteSymbol) chordTones.first()).getSemitones() )
+          {
+            return CHORD;
+          }
+        chordTones = chordTones.rest();
+      }
+
+    // Not a chord tone. Check for color
+    Polylist colorTones = chord.getColor();
+
+    while( colorTones.nonEmpty() )
+      {
+        if( pitch == ((NoteSymbol) colorTones.first()).getSemitones() )
+          {
+            return COLOR;
+          }
+        colorTones = colorTones.rest();
+      }
+
+    // Not a chord nor color tone. 
+    // Check for scale tone. May want to drop this as well
+    Polylist scaleTones;
+
+    if( preferredScale.isEmpty()
+            || ((String) preferredScale.second()).equals(NONE) )
+      {
+        return NOTE;
+      }
+
+    if( ((String) preferredScale.second()).equals(FIRST_SCALE) )
+      {
+        scaleTones = chord.getFirstScale();
+      }
+    else
+      {
+        scaleTones = Advisor.getScale(
+                (String) preferredScale.first(),
+                (String) preferredScale.second());
+      }
+
+    while( scaleTones.nonEmpty() )
+      {
+        if( pitch == ((NoteSymbol) scaleTones.first()).getSemitones() )
+          {
+            return SCALE;
+          }
+        scaleTones = scaleTones.rest();
+      }
+
+    return NOTE;
+  }
+
+    
 // Returns a note corresponding to the correct terminal value.
 // If the terminal dictates a rest, the pitch of the note will be
 // set to REST.  Otherwise, the pitch is set to 0.  We're assuming
