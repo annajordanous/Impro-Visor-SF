@@ -11710,11 +11710,13 @@ private void startRecording()
       }
     else if( superColliderMode ) //User wants to use SuperCollider. Works if checkbox selected
       {
+        
+        String devName = midiManager.getInDeviceInfo().getName();
         //Check for valid Input Device associated with using SuperCollider
-        boolean validSCInDevice = midiManager.getInDevice().getDeviceInfo().getName().equals("IAC Bus 1")
-                || midiManager.getInDevice().getDeviceInfo().getName().equals("Bus 1")
-                || midiManager.getInDevice().getDeviceInfo().getName().equals("LoopBe Internal MIDI")
-                || midiManager.getInDevice().getDeviceInfo().getName().contains("VirMIDI");
+        boolean validSCInDevice = devName.equals("IAC Bus 1")
+                || devName.equals("Bus 1")
+                || devName.equals("LoopBe Internal MIDI")
+                || devName.contains("VirMIDI");
 
         //If valid device selected, okay to go through with recording. Else,
         //yell at user. @TODO potential trouble spot for user-defined 
@@ -14243,6 +14245,10 @@ public boolean putLickWithoutRectify(MelodyPart lick)
 
     getMelodyPart(stave).newPasteOver(lick, getCurrentSelectionStart(stave));
 
+    while( midiSynth.getSlot() < chordProg.getSize() )
+      {
+        
+      }
     playCurrentSelection(false, 0, PlayScoreCommand.USEDRUMS, "putLick " + start + " - " + stop);
     ImproVisor.setPlayEntrySounds(true);
     return true;
