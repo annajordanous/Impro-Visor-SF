@@ -28,7 +28,7 @@ import imp.Directories;
 import imp.ImproVisor;
 import imp.RecentFiles;
 import imp.audio.AudioSettings;
-import imp.audio.CaptureTimerTask;
+//import imp.audio.CaptureTimerTask;
 import imp.audio.PitchExtractor;
 import imp.audio.SCDelayOffsetter;
 import imp.audio.SCHandler;
@@ -105,8 +105,8 @@ public class Notate
 
   PitchExtractor extractor; 
   private int captureInterval;//# of slots per audio capture interval
-  java.util.Timer captureTimer;
-  CaptureTimerTask task;
+  //java.util.Timer captureTimer;
+  //CaptureTimerTask task;
   
   //SuperCollider and Audio Input
   private boolean superColliderMode;
@@ -12558,7 +12558,6 @@ public void refreshMidiStatus()
 public class VoicingTableModel
     extends AbstractTableModel
 {
-
 private String[] columnNames =
   {
     "Chord", "Name", "Type", "Voicing", "Extension"
@@ -12748,53 +12747,7 @@ public Object getElementAt(int index)
   {
     return sectionInfo.getInfo(index);
   }
-/*
-public void reset()
-  {
-    sectionInfo = score.getChordProg().getSectionInfo().copy();
 
-    refresh();
-  }
-*/
-/**
- * Called when the Section List state changes
- */
-/*
-public void refresh()
-  {
-    fireContentsChanged(this, 0, sectionInfo.size());
-
-    int index = sectionList.getSelectedIndex();
-
-    if( index >= 0 )
-      {
-        SectionRecord record = sectionInfo.getSectionRecordByIndex(index);
-
-        //System.out.println("index = " + index + ", selected record = " + record);
-
-        //measureTF.setText(String.valueOf(record.getSectionMeasure(chordProg)));
-
-        //phraseCheckBox.setSelected(record.getIsPhrase());
-
-        if( record.getUsePreviousStyle() )
-          {
-          usePreviousStyleCheckBox.setSelected(true);
-          styleList.clearSelection();
-          }
-        else
-          {
-          usePreviousStyleCheckBox.setSelected(false);
-          styleList.setSelectedValue(record.getStyle(), true);
-          }
-
-      addRecentStyle(record.getStyle());
-      }
-
-    delSectionButton.setEnabled(sectionInfo.size() > 1);
-
-    setNewSectionEnabled();
-  }
-*/
 }
 
 //row gets sectionInfo's sectionRecord, column gets within sectionRecord
@@ -12998,7 +12951,7 @@ public class SectionTableModel extends DefaultTableModel
             return;
         boolean isPhrase = (Boolean)getValueAt(index, 0);
         sectionInfo.deleteSection(index);
-        setValueAt(new Boolean(isPhrase),index - 1,0);
+        setValueAt(isPhrase, index - 1, 0);
         tableRefresh();
     }
   }
@@ -13085,9 +13038,7 @@ public Object getSelectedItem()
   {
     return selectedItem;
   }
-
 }
-
 
 
 /**
@@ -13174,7 +13125,6 @@ private void showFileStepDialog()
         updateTempoFromTextField();
 
         staveRequestFocus();
-
     }//GEN-LAST:event_tempoSetFocusLost
 
 
@@ -13205,7 +13155,6 @@ private void updateTempoFromTextField()
     private void tempoSetMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tempoSetMousePressed
 
       tempoSet.requestFocusInWindow();
-
     }//GEN-LAST:event_tempoSetMousePressed
 
   private void updateLoopFromTextField()
@@ -13286,7 +13235,6 @@ private void updateTempoFromTextField()
     private void addTabBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addTabBtnActionPerformed
 
 // TODO add your handling code here:
-
     }//GEN-LAST:event_addTabBtnActionPerformed
 
 
@@ -13320,7 +13268,6 @@ private void updateTempoFromTextField()
           {
             closeAdviceFrame();
           }
-
     }//GEN-LAST:event_showAdviceButtonActionPerformed
 
 
@@ -13331,7 +13278,6 @@ private void updateTempoFromTextField()
         imp.ImproVisor.windowHasFocus(this);
 
         checkFakeModalDialog();
-
     }//GEN-LAST:event_formWindowGainedFocus
 
 
@@ -13343,7 +13289,6 @@ private void updateTempoFromTextField()
         int measureStart = (getCurrentSelectionStart() / measureLength) * measureLength;
 
         cm.execute(new InsertPartCommand(this, getCurrentMelodyPart(), measureStart, singleMeasure));
-
     }//GEN-LAST:event_insertRestMeasureActionPerformed
 
 
@@ -13387,7 +13332,6 @@ private void updateTempoFromTextField()
     private void advicePMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_advicePMIActionPerformed
 
         adviceMIActionPerformed(null);
-
     }//GEN-LAST:event_advicePMIActionPerformed
 
 
@@ -13402,28 +13346,18 @@ private void updateTempoFromTextField()
     }//GEN-LAST:event_newBtnActionPerformed
 
 
-
-
-
-
     private void adviceWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_adviceWindowClosing
 
         showAdviceButton.setSelected(false);
 
         showAdviceButtonActionPerformed(null);
-
     }//GEN-LAST:event_adviceWindowClosing
 
 
     private void adviceFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_adviceFocusGained
 
         setMode(Mode.ADVICE);
-
     }//GEN-LAST:event_adviceFocusGained
-
-
-
-
 
 
     private void exportAllToMidiActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_exportAllToMidiActionPerformed
@@ -13459,7 +13393,6 @@ private void updateTempoFromTextField()
     private void enterLickTitleAction(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enterLickTitleAction
 
         okSaveButtonActionPerformed(evt);
-
     }//GEN-LAST:event_enterLickTitleAction
 
 
@@ -13467,7 +13400,6 @@ private void updateTempoFromTextField()
     private void cellRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cellRadioButtonActionPerformed
 
         saveSelectionMode = ExtractMode.CELL;
-
     }//GEN-LAST:event_cellRadioButtonActionPerformed
 
 
@@ -13475,7 +13407,6 @@ private void updateTempoFromTextField()
     private void idiomRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idiomRadioButtonActionPerformed
 
         saveSelectionMode = ExtractMode.IDIOM;
-
     }//GEN-LAST:event_idiomRadioButtonActionPerformed
 
 
@@ -13483,7 +13414,6 @@ private void updateTempoFromTextField()
     private void quoteRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quoteRadioButtonActionPerformed
 
         saveSelectionMode = ExtractMode.QUOTE;
-
     }//GEN-LAST:event_quoteRadioButtonActionPerformed
 
 
@@ -13491,7 +13421,6 @@ private void updateTempoFromTextField()
     private void lickRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lickRadioButtonActionPerformed
 
         saveSelectionMode = ExtractMode.LICK;
-
     }//GEN-LAST:event_lickRadioButtonActionPerformed
 
 
@@ -13501,7 +13430,6 @@ private void updateTempoFromTextField()
         ignoreDuplicateLick = SAVE;
 
         duplicateLickDialog.setVisible(false);
-
     }//GEN-LAST:event_saveDuplicateActionPerformed
 
 
@@ -13523,7 +13451,6 @@ private void updateTempoFromTextField()
         ignoreDuplicateLick = IGNORE;
 
         duplicateLickDialog.setVisible(false);
-
     }//GEN-LAST:event_ignoreDuplicateActionPerformed
 
 
@@ -13541,7 +13468,6 @@ private void updateTempoFromTextField()
     {//GEN-HEADEREND:event_purgeCacheActionPerformed
 
         Advisor.purgeCache();
-
     }//GEN-LAST:event_purgeCacheActionPerformed
 
 
@@ -13564,7 +13490,6 @@ private void updateTempoFromTextField()
         Trace.log(2, "enter measures Ok pressed");
 
         enterMeasuresCore();
-
     }//GEN-LAST:event_okMeasBtnActionPerformed
 
 
@@ -13586,7 +13511,6 @@ private void updateTempoFromTextField()
     {//GEN-HEADEREND:event_lickGeneratorMIActionPerformed
     openLickGenerator();
     }//GEN-LAST:event_lickGeneratorMIActionPerformed
-
 
 
     /**
@@ -13625,7 +13549,6 @@ private void updateTempoFromTextField()
     private void revertLeadsheetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_revertLeadsheetActionPerformed
 
         revertLeadsheet(evt);
-
     }//GEN-LAST:event_revertLeadsheetActionPerformed
 
 
@@ -13633,7 +13556,6 @@ private void updateTempoFromTextField()
     private void contractMelodyBy3ActionPerformed11(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contractMelodyBy3ActionPerformed11
 
         timeWarpMelody(1, 3);
-
     }//GEN-LAST:event_contractMelodyBy3ActionPerformed11
 
 
@@ -13641,7 +13563,6 @@ private void updateTempoFromTextField()
     private void expandMelodyBy3ActionPerformed1(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_expandMelodyBy3ActionPerformed1
 
         timeWarpMelody(3, 1);
-
     }//GEN-LAST:event_expandMelodyBy3ActionPerformed1
 
 
@@ -13649,7 +13570,6 @@ private void updateTempoFromTextField()
     private void contractMelodyBy2ActionPerformed1(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contractMelodyBy2ActionPerformed1
 
         timeWarpMelody(1, 2);
-
     }//GEN-LAST:event_contractMelodyBy2ActionPerformed1
 
 
@@ -13657,7 +13577,6 @@ private void updateTempoFromTextField()
     private void expandMelodyBy2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_expandMelodyBy2ActionPerformed
 
         timeWarpMelody(2, 1);
-
     }//GEN-LAST:event_expandMelodyBy2ActionPerformed
 
 
@@ -13665,7 +13584,6 @@ private void updateTempoFromTextField()
     private void invertMelodyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_invertMelodyActionPerformed
 
         invertMelody();
-
     }//GEN-LAST:event_invertMelodyActionPerformed
 
 
@@ -13673,7 +13591,6 @@ private void updateTempoFromTextField()
     private void reverseMelodyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reverseMelodyActionPerformed
 
         reverseMelody();
-
     }//GEN-LAST:event_reverseMelodyActionPerformed
 
 
@@ -13681,7 +13598,6 @@ private void updateTempoFromTextField()
     private void saveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBtnActionPerformed
 
 // TODO add your handling code here:
-
     }//GEN-LAST:event_saveBtnActionPerformed
 
 
@@ -13866,15 +13782,14 @@ private void verifyAndFill()
  * Save the lick in the vocabulary.
  * @param saveSelection
  */
+
 private void saveLick(String saveSelection)
   {
     saveLickFrame.setVisible(false);
 
     if( saveSelection != null )
       {
-//
-          Polylist selectionAsList = parseListFromString(saveSelection);
-//          System.out.println(selectionAsList);
+        Polylist selectionAsList = parseListFromString(saveSelection);
 
         if( Advisor.addUserRule(selectionAsList) )
           {
@@ -14092,17 +14007,11 @@ public boolean putLickWithoutRectify(MelodyPart lick)
 
     Stave stave = getCurrentStave();
 
-    // Ideally, would wait here
-
     // Formerly used SafePasteCommand, then DynamicPasteCommand, both of which
     // carry unnecessary baggage.
 
     getMelodyPart(stave).newPasteOver(lick, getCurrentSelectionStart(stave));
 
-    while( midiSynth.getSlot() < chordProg.getSize() )
-      {
-        
-      }
     playCurrentSelection(false, 0, PlayScoreCommand.USEDRUMS, "putLick " + start + " - " + stop);
     ImproVisor.setPlayEntrySounds(true);
     return true;
@@ -14226,9 +14135,7 @@ private void adjustLickToHead(MelodyPart lick)
           }
         oldpitch = n.getPitch();
         position += n.getRhythmValue() - 1;
-
       }
-
     //System.out.println(numChanged + " pitches changed out of " + (numChanged + numSame));
   }
 
@@ -14257,14 +14164,11 @@ private void setLickEnharmonics(MelodyPart lick)
       }
   }
 
-
-
     private void cancelLickTitleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelLickTitleActionPerformed
 
         saveLickFrame.setVisible(false);
 
         staveRequestFocus();
-
     }//GEN-LAST:event_cancelLickTitleActionPerformed
 
 
@@ -14370,7 +14274,6 @@ public String getLickTitle()
 
     private void setNormalStatus()
       {
-
         setMode(Mode.NORMAL);
       }
 
@@ -14445,30 +14348,6 @@ private void openAdviceFrame()
       return adviceFrame.isVisible();
     }
 
-  /*
-  public void redoScales()
-    {
-    DefaultComboBoxModel dcbm = (DefaultComboBoxModel)scaleComboBox.getModel();
-
-    dcbm.removeAllElements();
-
-    Polylist scales = Advisor.getAllScales();
-
-    dcbm.addElement("None");
-
-    dcbm.addElement("Use First Scale");
-
-    while( scales.nonEmpty() )
-      {
-      Polylist scale = (Polylist)scales.first();
-
-      dcbm.addElement(scale.first());
-
-      scales = scales.rest();
-      }
-    }
- */
-
 
   public void updateSelection()
     {
@@ -14496,7 +14375,6 @@ private void openAdviceFrame()
     private void staveTypeMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_staveTypeMenuActionPerformed
 
 // TODO add your handling code here:
-
     }//GEN-LAST:event_staveTypeMenuActionPerformed
 
 
@@ -14504,7 +14382,6 @@ private void openAdviceFrame()
     public void transposeMelodyUpOctaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transposeMelodyUpOctaveActionPerformed
 
         getCurrentStave().transposeMelodyUpOctave();
-
     }//GEN-LAST:event_transposeMelodyUpOctaveActionPerformed
 
 
@@ -14512,7 +14389,6 @@ private void openAdviceFrame()
     private void textEntryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textEntryActionPerformed
 
         staveRequestFocus();
-
     }//GEN-LAST:event_textEntryActionPerformed
 
 
@@ -14520,7 +14396,6 @@ private void openAdviceFrame()
     private void openBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openBtnActionPerformed
 
         openLeadsheet(false);
-
     }//GEN-LAST:event_openBtnActionPerformed
 
 
@@ -14528,7 +14403,6 @@ private void openAdviceFrame()
     public void enterChordsMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enterChordsMIActionPerformed
 
         enterChords();
-
     }//GEN-LAST:event_enterChordsMIActionPerformed
 
 
@@ -14538,7 +14412,6 @@ private void openAdviceFrame()
         getCurrentStave().transposeChordsDownSemitone();
 
         getCurrentStave().transposeMelodyDownSemitone();
-
     }//GEN-LAST:event_transposeBothDownSemitoneActionPerformed
 
 
@@ -14546,7 +14419,6 @@ private void openAdviceFrame()
     public void transposeChordsDownSemitoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transposeChordsDownSemitoneActionPerformed
 
         getCurrentStave().transposeChordsDownSemitone();
-
     }//GEN-LAST:event_transposeChordsDownSemitoneActionPerformed
 
 
@@ -14554,7 +14426,6 @@ private void openAdviceFrame()
     public void transposeChordsUpSemitoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transposeChordsUpSemitoneActionPerformed
 
         getCurrentStave().transposeChordsUpSemitone();
-
     }//GEN-LAST:event_transposeChordsUpSemitoneActionPerformed
 
 
@@ -14564,7 +14435,6 @@ private void openAdviceFrame()
         getCurrentStave().transposeChordsUpSemitone();
 
         getCurrentStave().transposeMelodyUpSemitone();
-
     }//GEN-LAST:event_transposeBothUpSemitoneActionPerformed
 
 
@@ -14572,7 +14442,6 @@ private void openAdviceFrame()
     public void transposeMelodyDownOctaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transposeMelodyDownOctaveActionPerformed
 
         getCurrentStave().transposeMelodyDownOctave();
-
     }//GEN-LAST:event_transposeMelodyDownOctaveActionPerformed
 
 
@@ -14580,7 +14449,6 @@ private void openAdviceFrame()
     public void transposeMelodyDownSemitoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transposeMelodyDownSemitoneActionPerformed
 
         getCurrentStave().transposeMelodyDownSemitone();
-
     }//GEN-LAST:event_transposeMelodyDownSemitoneActionPerformed
 
 
@@ -14588,7 +14456,6 @@ private void openAdviceFrame()
     public void transposeMelodyUpSemitoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transposeMelodyUpSemitoneActionPerformed
 
         getCurrentStave().transposeMelodyUpSemitone();
-
     }//GEN-LAST:event_transposeMelodyUpSemitoneActionPerformed
 
 
@@ -14598,7 +14465,6 @@ private void openAdviceFrame()
         pasteMelody();
 
         pasteChords();
-
     }//GEN-LAST:event_pasteBothMIActionPerformed
 
 
@@ -14608,7 +14474,6 @@ private void openAdviceFrame()
         copyMelody();
 
         copyChords();
-
     }//GEN-LAST:event_copyBothMIActionPerformed
 
 
@@ -14618,7 +14483,6 @@ private void openAdviceFrame()
         cutChords();
 
         cutMelody();
-
     }//GEN-LAST:event_cutBothMIActionPerformed
 
 
@@ -14626,7 +14490,6 @@ private void openAdviceFrame()
     public void enterMelodyMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enterMelodyMIActionPerformed
 
         enterMelody();
-
     }//GEN-LAST:event_enterMelodyMIActionPerformed
 
 
@@ -14634,7 +14497,6 @@ private void openAdviceFrame()
     public void enterBothMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enterBothMIActionPerformed
 
         enterBoth();
-
     }//GEN-LAST:event_enterBothMIActionPerformed
 
 
@@ -14840,7 +14702,6 @@ private void exportToMusicXML()
     private void pasteOverMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasteOverMIActionPerformed
 
         alwaysPasteOver = !alwaysPasteOver;
-
     }//GEN-LAST:event_pasteOverMIActionPerformed
 
 
@@ -14853,7 +14714,6 @@ private void exportToMusicXML()
     private void playToolBarComponentMoved(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_playToolBarComponentMoved
 
         //calcToolBarSize();
-
     }//GEN-LAST:event_playToolBarComponentMoved
 
 /**
@@ -15021,6 +14881,7 @@ private boolean slotIsSelected()
  * Indicate whether a unique slot is current selected or not.
  *
  */
+
 private boolean oneSlotSelected()
   {
     return getCurrentStave().oneSlotSelected();
@@ -15089,6 +14950,7 @@ public void incrementMelodyPartIndex()
   /**
    * Select all without redoing advice, or requesting
    */
+  
   public void selectAll2()
     {
     Stave stave = getCurrentStave();
@@ -15105,7 +14967,6 @@ public void incrementMelodyPartIndex()
     public void copyChordsMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyChordsMIActionPerformed
 
       copyChords();
-
     }//GEN-LAST:event_copyChordsMIActionPerformed
 
 
@@ -15146,7 +15007,6 @@ public void incrementMelodyPartIndex()
     }//GEN-LAST:event_cutChordsMIActionPerformed
 
 
-
   void cutChords()
     {
     Trace.log(2, "cut chords");
@@ -15182,7 +15042,6 @@ public void incrementMelodyPartIndex()
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
 
         closeWindow();
-
     }//GEN-LAST:event_formWindowClosing
 
 
@@ -15616,6 +15475,7 @@ private void savePrefs()
 /*
  * Midi latency is constant. Audio latency is not on top of midi latency.
  */
+
 private boolean saveMidiLatency()
   {
     double latency = doubleFromTextField(midiLatencyTF, 0, Double.POSITIVE_INFINITY, 0);
@@ -15635,6 +15495,7 @@ private boolean saveMidiLatency()
  * 
  * @return 
  */
+
 private boolean saveAudioLatency()
   {
     System.out.println("Saved audio latency");
@@ -15770,7 +15631,6 @@ private boolean saveGlobalPreferences()
       {
         Preferences.setPreference(Preferences.ADV_CACHE_ENABLED, "false");
       }
-
 
     try
       {
@@ -16359,7 +16219,6 @@ private boolean saveGlobalPreferences()
       }
 
 
-
     switch( Integer.parseInt(new String(coloring.substring(1, 2))) )
       {
       default:
@@ -16386,7 +16245,6 @@ private boolean saveGlobalPreferences()
       }
 
 
-
     switch( Integer.parseInt(new String(coloring.substring(2, 3))) )
       {
       default:
@@ -16411,7 +16269,6 @@ private boolean saveGlobalPreferences()
         blueApproachBtn.setSelected(true);
         break;
       }
-
 
 
     switch( Integer.parseInt(new String(coloring.substring(3, 4))) )
@@ -16613,37 +16470,7 @@ private boolean saveGlobalPreferences()
     {
     return score.getBreakpoint();
     }
-/*
-  private void setNewSectionEnabled() //connected only to the method refresh()
-                                      //in the class SectionListModel
-                                      //no longer needed
-    {
-    int measureLength = score.getChordProg().getMeasureLength();
 
-    int sectionIndex = sectionList.getSelectedIndex();
-
-                     //sectionTable.getSelectionModel().getLeadSelectionIndex()
-
-    if( sectionIndex == -1 )
-      {
-      newSectionButton.setEnabled(false);
-
-      return;
-      }
-
-    int m1 = sectionInfo.getSectionMeasure(sectionIndex);
-
-    int m2 = sectionInfo.measures();
-
-    if( sectionIndex + 1 < sectionInfo.size() )
-      {
-      m2 = sectionInfo.getSectionMeasure(sectionIndex + 1) - 1;
-      }
-
-    newSectionButton.setEnabled((m2 - m1) > 0);
-
-    }
-*/
 
   private void setFreezeLayout(Boolean frozen)
     {
@@ -16880,6 +16707,7 @@ private boolean saveGlobalPreferences()
    * @param defaultInstNumber
    * @return
    */
+  
   public static int midiInstFromText(String text, int defaultInstNumber)
     {
     // External MIDI numbers are 1 greater than the values used here.
@@ -16919,6 +16747,7 @@ private boolean saveGlobalPreferences()
    * @param defaultInstNumber
    * @return
    */
+  
   public static int keyNumberFromText(String text, int defaultKey)
     {
     // External MIDI numbers are 1 greater than the values used here.
@@ -16956,7 +16785,6 @@ private boolean saveGlobalPreferences()
 
      }
    }
-
 
 
 /**
@@ -17167,7 +16995,6 @@ public void setLockedMeasures(int[] _lockedMeasures, String msg)
     lockedMeasures = _lockedMeasures;
   }
 
-
 public int[] getLockedMeasures()
   {
     return lockedMeasures;
@@ -17346,7 +17173,6 @@ private void setLayoutPreference(Polylist layout)
         setItemStates();
 
         }
-
     }//GEN-LAST:event_scoreTabStateChanged
 
 
@@ -17354,7 +17180,6 @@ private void setLayoutPreference(Polylist layout)
     public Rectangle getCurrentScrollPosition() {
 
         return staveScrollPane[currTabIndex].getViewport().getViewRect();
-
     }
 
 
@@ -17433,7 +17258,6 @@ public void addTab()
     private void prefsMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prefsMIActionPerformed
 
         showPreferencesDialog();
-
     }//GEN-LAST:event_prefsMIActionPerformed
 
 
@@ -17490,7 +17314,6 @@ public void addTab()
     private void adviceFrameComponentHidden(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_adviceFrameComponentHidden
 
         staveRequestFocus();
-
     }//GEN-LAST:event_adviceFrameComponentHidden
 
 
@@ -17504,7 +17327,6 @@ public void addTab()
      */
 
     private boolean adviceUsed = false;
-
 
 
     /**
@@ -18020,7 +17842,6 @@ public void setAdviceUsed()
     }
 
 
-
   /**
    *
    * Add a rest at the current selection start.
@@ -18125,7 +17946,7 @@ public void setAdviceUsed()
 
       ((Advice)object).insertInPart(score.getPart(currTabIndex),
               getCurrentSelectionStart(), cm, this);
-//causes double hits: rectifySelection(getCurrentStave(), getCurrentSelectionStart(), getCurrentSelectionEnd());
+
       if( ImproVisor.getPlay() )
         {
         ImproVisor.playCurrentSelection(false, 0, PlayScoreCommand.USEDRUMS);
@@ -18200,9 +18021,6 @@ public void setAdviceUsed()
     }//GEN-LAST:event_oneAutoMIActionPerformed
 
 
-
-
-
     public static Polylist parseListFromString(String input) {
 
         Tokenizer in = new Tokenizer(new StringReader(input));
@@ -18216,12 +18034,7 @@ public void setAdviceUsed()
         }
 
         return result.reverse();
-
     }
-
-
-
-
 
 /**
  *
@@ -18866,7 +18679,6 @@ private void setCurrentStaveType(StaveType t)
     if (useNoteCursor)
         handler.setCursor(handler.getNoteCursor());
     setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-
   }
 
 
@@ -18965,42 +18777,9 @@ public void playScore()
     previousSynthSlot = 0;
 
     improvMelodyIndex = 0;
-
-//    autoImprovisation.reset();
-//
     if( improvisationOn )
       {
-//        System.out.println("improvisationOn");
-////        score.clearParts();
-//        if( continuousImprovisation )
-//          {
-            //System.out.println("continousImprovisation");
-            improviseContinuously();
-//          }
-//        else if( autoImprovisation.improviseAtStart() )
-//          {
-//            // This creates and starts the initial improvisation, if Impro-Visor
-//            // goes first,
-//            // but pasting the improLick is deferred to after the main Score
-//            // starts, so that the latter does not try to play improLick also.
-//
-//            MelodyPart improLick = autoImprovisation.createAndPlayInitialLick(getImprovMelodyPart());
-//
-//            establishCountIn();
-//            playScoreBody(0);
-//
-//            if( improLick != null )
-//              {
-//                // Paste, after the main Score is started.
-//
-//                getImprovMelodyPart().newPasteOver(improLick, 0);
-//              }
-//          }
-//        else
-//          {
-//            establishCountIn();
-//            playScoreBody(0);
-//          }
+        improviseContinuously();
       }
     else
       {
@@ -19031,6 +18810,7 @@ public void playScore()
  * The midiSynth is obtained from this Notate using getMidiSynth().
  * @param startAt 
  */
+ 
 public void playScoreBody(int startAt)
     {
       if( playingPaused() )
@@ -19065,8 +18845,8 @@ public void playScoreBody(int startAt)
       if (useAudioInputMI.isSelected())
         {
             setMode(Mode.RECORDING);
-            startAudioTimer();
-            System.out.println("Capture timer started.");
+//            startAudioTimer();
+//            System.out.println("Capture timer started.");
         }
 
         getStaveAtTab(0).playSelection(startAt, score.getTotalLength() - 1, getLoopCount(), true, "playScoreBody");
@@ -19075,17 +18855,17 @@ public void playScoreBody(int startAt)
     setMode(Mode.PLAYING);
     }
 
-public void startAudioTimer()
-    {
-        task = new CaptureTimerTask(extractor);
-        captureTimer = new Timer();
-        //convert captureInterval to milliseconds
-        int interval = (int) (score.getMetre()[0] * 60000.0
-                / score.getTempo() * captureInterval / 480.0);
-        captureTimer.scheduleAtFixedRate(task,
-                score.getCountInTime() * 1000,
-                interval);
-    }
+//public void startAudioTimer()
+//    {
+//        task = new CaptureTimerTask(extractor);
+//        captureTimer = new Timer();
+//        //convert captureInterval to milliseconds
+//        int interval = (int) (score.getMetre()[0] * 60000.0
+//                / score.getTempo() * captureInterval / 480.0);
+//        captureTimer.scheduleAtFixedRate(task,
+//                score.getCountInTime() * 1000,
+//                interval);
+//    }
 
 /**
  * Play a score, not necessarily the one in this Notate window.
