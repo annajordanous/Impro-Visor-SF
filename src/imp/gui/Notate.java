@@ -14067,6 +14067,7 @@ boolean isPowerOf2(int x)
 
 private MelodyPart makeLick(Polylist rhythm, int start, int stop)
   {
+    //System.out.println("makeLick for " + start + " to " + stop);
     //verifyAndFill();
 
     if( rhythm == null || rhythm.isEmpty() )
@@ -14127,10 +14128,15 @@ private MelodyPart makeLick(Polylist rhythm)
     return lick;
   }
 
-
+/**
+ * putLick puts the lick into the MelodyPart at the current selection
+ * @param lick
+ * @return 
+ */
 public boolean putLick(MelodyPart lick)
   {
     //System.out.println("putLick " + lick);
+    
     if( lick == null )
       {
         // redundant ErrorLog.log(ErrorLog.WARNING, "No lick was generated.");
@@ -14150,6 +14156,8 @@ public boolean putLick(MelodyPart lick)
     int start = getCurrentSelectionStart();
 
     int stop = getCurrentSelectionEnd();
+    
+    //System.out.println("putLick into " + start + " " + stop);
 
     int chorusSize = getChordProg().getSize();
 
@@ -14257,11 +14265,14 @@ public boolean putLickWithoutRectify(MelodyPart lick)
 
 public int getSlotInPlayback()
   {
-   int slotDelay = 0;
-       //(int) (midiSynth.getTotalSlots() * (1e6 * trackerDelay / midiSynth.getTotalMicroseconds()));
-
-    return midiSynth.getSlot() - slotDelay;
+    return midiSynth.getSlot();
   }
+
+/**
+ * generateLick returns a lick generated from a rhythm
+ * @param rhythm
+ * @return 
+ */
 
 public MelodyPart generateLick(Polylist rhythm)
   {
@@ -14274,10 +14285,16 @@ public MelodyPart generateLick(Polylist rhythm)
     return lick;
   }
 
+/**
+ * generateLick returns a lick generated from a rhythm to fit start to end
+ * @param rhythm
+ * @return 
+ */
+
 public MelodyPart generateLick(Polylist rhythm, int start, int end)
   {
+    //System.out.println("generateLick for " + start + " to " + end);
     MelodyPart lick = makeLick(rhythm, start, end);
-    //debug System.out.println("generateLick");
     if( lickgenFrame.useHeadSelected() )
       {
         adjustLickToHead(lick);
@@ -19085,6 +19102,10 @@ int slotDelay;
 
 boolean continuousImprovisation = true; // Box is initially checked.
 
+/**
+ * playScore() calls either improviseContinuously() or playScoreBody(0)
+ * depending on whether improvisation is on.
+ */
 public void playScore()
   {
     slotDelay =
@@ -19099,49 +19120,54 @@ public void playScore()
 
     improvMelodyIndex = 0;
 
-    autoImprovisation.reset();
-
+//    autoImprovisation.reset();
+//
     if( improvisationOn )
       {
-//        score.clearParts();
-        if( continuousImprovisation )
-          {
+//        System.out.println("improvisationOn");
+////        score.clearParts();
+//        if( continuousImprovisation )
+//          {
+            //System.out.println("continousImprovisation");
             improviseContinuously();
-          }
-        else if( autoImprovisation.improviseAtStart() )
-          {
-            // This creates and starts the initial improvisation, if Impro-Visor
-            // goes first,
-            // but pasting the improLick is deferred to after the main Score
-            // starts, so that the latter does not try to play improLick also.
-
-            MelodyPart improLick = autoImprovisation.createAndPlayInitialLick(getImprovMelodyPart());
-
-            establishCountIn();
-            playScoreBody(0);
-
-            if( improLick != null )
-              {
-                // Paste, after the main Score is started.
-
-                getImprovMelodyPart().newPasteOver(improLick, 0);
-              }
-          }
-        else
-          {
-            establishCountIn();
-            playScoreBody(0);
-          }
+//          }
+//        else if( autoImprovisation.improviseAtStart() )
+//          {
+//            // This creates and starts the initial improvisation, if Impro-Visor
+//            // goes first,
+//            // but pasting the improLick is deferred to after the main Score
+//            // starts, so that the latter does not try to play improLick also.
+//
+//            MelodyPart improLick = autoImprovisation.createAndPlayInitialLick(getImprovMelodyPart());
+//
+//            establishCountIn();
+//            playScoreBody(0);
+//
+//            if( improLick != null )
+//              {
+//                // Paste, after the main Score is started.
+//
+//                getImprovMelodyPart().newPasteOver(improLick, 0);
+//              }
+//          }
+//        else
+//          {
+//            establishCountIn();
+//            playScoreBody(0);
+//          }
       }
     else
       {
         establishCountIn();
         playScoreBody(0);
       }
-    
-    //improvisationOn = false;
-  }
+    }
+  
 
+/**
+ * playScore plays the Score at a designated starting point, without a countin
+ * @param startAt 
+ */
 
  public void playScore(int startAt)
     {
@@ -19150,6 +19176,15 @@ public void playScore()
     }
 
 
+/**
+ * playScoreBody plays the Score at a designated starting point.
+ * It calls playSelection in the current Stave. which executes a PlayScore
+ * command.
+ * The PlayScore command calls the play method on a MidiSynth that is passed
+ * to the command constructor.
+ * The midiSynth is obtained from this Notate using getMidiSynth().
+ * @param startAt 
+ */
 public void playScoreBody(int startAt)
     {
       if( playingPaused() )
@@ -19160,7 +19195,6 @@ public void playScoreBody(int startAt)
       }
     else
       {
-
       Trace.log(2, "Notate: playScore() - starting or restarting playback");
 
       // makes playback indicator always visible
@@ -19182,7 +19216,7 @@ public void playScoreBody(int startAt)
 
       initCurrentPlaybackTab(0, 0);
         //sets up a Timer to handle audio capture
-        if (useAudioInputMI.isSelected())
+      if (useAudioInputMI.isSelected())
         {
             setMode(Mode.RECORDING);
             startAudioTimer();
@@ -22349,6 +22383,7 @@ private void adjustSelection()
  */
 public void originalGenerate(LickGen lickgen, int improviseStartSlot, int improviseEndSlot)
 {
+    //System.out.println("originalGenerate from " + improviseStartSlot + " to " + improviseEndSlot);
     saveConstructionLineState = showConstructionLinesMI.isSelected();
     // Don't construction show lines while generating
     setShowConstructionLinesAndBoxes(false);
@@ -22359,7 +22394,7 @@ public void originalGenerate(LickGen lickgen, int improviseStartSlot, int improv
 
     Stave stave = getCurrentStave();
 
-    getCurrentStave().setSelection(improviseStartSlot, improviseEndSlot);
+    stave.setSelection(improviseStartSlot, improviseEndSlot);
 
     totalSlots = improviseEndSlot - improviseStartSlot + 1;
 
@@ -22385,6 +22420,7 @@ public void originalGenerate(LickGen lickgen, int improviseStartSlot, int improv
     long currTime = System.currentTimeMillis();
     long totalTime = currTime + 20000;
 
+    // outLines is the same as soloist
     if( useOutlines )
       {
         // was new lickgenFrame.fillMelody(BEAT, rhythm, chordProg, 0);
@@ -22485,7 +22521,6 @@ public void originalGenerate(LickGen lickgen, int improviseStartSlot, int improv
 
     else if( rhythm == null || !useOutlines  )
       {
-
         if( lickgenFrame.getUseGrammar() )
           {
             rhythm = lickgen.generateRhythmFromGrammar(improviseStartSlot, totalSlots);
@@ -22512,6 +22547,7 @@ public void originalGenerate(LickGen lickgen, int improviseStartSlot, int improv
               }
 
             putLick(lick);
+            //System.out.println("lick = " + lick);
           }
         else
           {
@@ -22525,11 +22561,6 @@ public void originalGenerate(LickGen lickgen, int improviseStartSlot, int improv
       {
         lickgenFrame.setRhythmFieldText(Formatting.prettyFormat(rhythm));
       }
-//
-//    if( oneSlotWasSelected )
-//      {
-//        stave.setSelection(selectionStart);
-//      }
 
     setMode(Mode.GENERATED);
 
@@ -22537,128 +22568,135 @@ public void originalGenerate(LickGen lickgen, int improviseStartSlot, int improv
         enableRecording(); // TRIAL
   }
 
-public MelodyPart generate(int improviseStartSlot, int improviseEndSlot)
-  {
-    return generate(lickgen, improviseStartSlot, improviseEndSlot);
-  }
+//public MelodyPart generate(int improviseStartSlot, int improviseEndSlot)
+//  {
+//    return generate(lickgen, improviseStartSlot, improviseEndSlot);
+//  }
 
-/**
- * New version of generate
- * @param lickgen
- * @param improviseStartSlot
- * @param improviseEndSlot
- * @return
- */
-
-public MelodyPart generate(LickGen lickgen, int improviseStartSlot, int improviseEndSlot)
-{
-    MelodyPart lick = null;
-
-    saveConstructionLineState = showConstructionLinesMI.isSelected();
-    // Don't construction show lines while generating
-    setShowConstructionLinesAndBoxes(false);
-
-    setMode(Mode.GENERATING);
+///**
+// * New version of generate
+// * @param lickgen
+// * @param improviseStartSlot
+// * @param improviseEndSlot
+// * @return
+// */
 //
-//    adjustSelection();
+//public MelodyPart generate(LickGen lickgen, int improviseStartSlot, int improviseEndSlot)
+//{
+//    //System.out.println("generate for " + improviseStartSlot + " to " + improviseEndSlot);
+//    MelodyPart lick = null;
 //
-//    Stave stave = getCurrentStave();
-
-//    getCurrentStave().setSelection(improviseStartSlot, improviseEndSlot);
-
-    totalSlots = improviseEndSlot - improviseStartSlot + 1;
-
-    int beatsRequested = totalSlots/BEAT;
-
-    //System.out.println("\ngenerate: " + improviseStartSlot + " to " + improviseEndSlot + ", requesting " + beatsRequested + " beats");
-
-    //verifyTriageFields();
-
-    Polylist rhythm = null;
-
-    boolean useOutlines = lickgenFrame.useSoloistSelected();
-
-    if( useOutlines )
-      {
-        // was new lickgenFrame.fillMelody(BEAT, rhythm, chordProg, 0);
-        // was commented out:
-        lickgen.getFillMelodyParameters(minPitch,
-                                        maxPitch,
-                                        minInterval,
-                                        maxInterval,
-                                        BEAT,
-                                        leapProb,
-                                        chordProg,
-                                        0,
-                                        avoidRepeats);
-
-        lick = lickgen.generateSoloFromOutline(totalSlots);
-        if( lick != null )
-          {
-            rhythm = lickgen.getRhythmFromSoloist(); //get the abstract melody for display
-            if( lickgenFrame.useHeadSelected() )
-              {
-                adjustLickToHead(lick);
-              }
-            putLick(lick);
-          }
-      }
-
-    // If the outline is unable to generate a solo, which might
-    // happen if there are no outlines of the correct length or the soloist
-    // file was not correctly loaded, use the grammar.
-
-    if( rhythm == null || !useOutlines )
-      {
-
-        if( lickgenFrame.getUseGrammar() )
-          {
-            rhythm = lickgen.generateRhythmFromGrammar(improviseStartSlot, totalSlots);
-          }
-        else
-          {
-            rhythm = lickgen.generateRandomRhythm(totalSlots,
-                                                  lickgenFrame.getMinDuration(),
-                                                  lickgenFrame.getMaxDuration(),
-                                                  lickgenFrame.getRestProb());
-          }
-
-        //System.out.println("\nrhythm at " + improviseStartSlot + " to " + improviseEndSlot + " = " + rhythm);
-
-        lick = generateLick(rhythm, improviseStartSlot, improviseEndSlot);
-        //System.out.println("generated lick at " + improviseStartSlot + " to " + improviseEndSlot + " = " + lick);
-        //playCurrentSelection(false, 0, PlayScoreCommand.USEDRUMS, "putLick " + improviseStartSlot + " - " + improviseEndSlot);
-
-        // Critical point for recurrent generation
-        if( lick != null )
-          {
-          // duplicates other functionality getCurrentMelodyPart().pasteOver(lick, improviseStartSlot);
-          repaint();
-          }
-        else
-          {
-            //debug System.out.println("panic: generated null improLick");
-            setMode(Mode.GENERATION_FAILED);
-            return lick;
-          }
-     }
-
-    if( rhythm != null )
-      {
-        lickgenFrame.setRhythmFieldText(Formatting.prettyFormat(rhythm));
-      }
+//    saveConstructionLineState = showConstructionLinesMI.isSelected();
+//    // Don't construction show lines while generating
+//    setShowConstructionLinesAndBoxes(false);
 //
-//    if( oneSlotWasSelected )
+//    setMode(Mode.GENERATING);
+////
+////    adjustSelection();
+////
+////    Stave stave = getCurrentStave();
+//
+////    getCurrentStave().setSelection(improviseStartSlot, improviseEndSlot);
+//
+//    totalSlots = improviseEndSlot - improviseStartSlot + 1;
+//
+//    //int beatsRequested = totalSlots/BEAT;
+//
+//    //System.out.println("\ngenerate: " + improviseStartSlot + " to " + improviseEndSlot + ", requesting " + beatsRequested + " beats");
+//
+//    //verifyTriageFields();
+//
+//    Polylist rhythm = null;
+//
+//    boolean useOutlines = lickgenFrame.useSoloistSelected();
+//
+//    if( useOutlines )
 //      {
-//        stave.setSelection(selectionStart);
+//        // Probably not used much, because outlines/soloist only apply
+//        // to specail case when a soloist file is present.
+//        // This should be checked for and disabled if not present.
+//        
+//        // was new lickgenFrame.fillMelody(BEAT, rhythm, chordProg, 0);
+//        // was commented out:
+//        lickgen.getFillMelodyParameters(minPitch,
+//                                        maxPitch,
+//                                        minInterval,
+//                                        maxInterval,
+//                                        BEAT,
+//                                        leapProb,
+//                                        chordProg,
+//                                        0,
+//                                        avoidRepeats);
+//
+//        lick = lickgen.generateSoloFromOutline(totalSlots);
+//        if( lick != null )
+//          {
+//            rhythm = lickgen.getRhythmFromSoloist(); //get the abstract melody for display
+//            if( lickgenFrame.useHeadSelected() )
+//              {
+//                adjustLickToHead(lick);
+//              }
+//            putLick(lick);
+//          }
 //      }
-
-    setMode(Mode.GENERATED);
-
-    //enableRecording(); // TRIAL Commented out for autoImprovisation, reconsider
-
-    return lick;
-  }
+//
+//    // If the outline is unable to generate a solo, which might
+//    // happen if there are no outlines of the correct length or the soloist
+//    // file was not correctly loaded, use the grammar.
+//
+//    if( rhythm == null || !useOutlines )
+//      {
+//        // useOutlines is typically false, so this will be called
+//        
+//        if( lickgenFrame.getUseGrammar() )
+//          {
+//            //System.out.append("generate " + totalSlots + " from " + improviseStartSlot);
+//            rhythm = lickgen.generateRhythmFromGrammar(improviseStartSlot, totalSlots);
+//          }
+//        else
+//          {
+//            rhythm = lickgen.generateRandomRhythm(totalSlots,
+//                                                  lickgenFrame.getMinDuration(),
+//                                                  lickgenFrame.getMaxDuration(),
+//                                                  lickgenFrame.getRestProb());
+//          }
+//
+//        //System.out.println("\nrhythm at " + improviseStartSlot + " to " + improviseEndSlot + " = " + rhythm);
+//
+//        lick = generateLick(rhythm, improviseStartSlot, improviseEndSlot);
+//        //System.out.println("generated lick at " + improviseStartSlot + " to " + improviseEndSlot + " = " + lick);
+//        //playCurrentSelection(false, 0, PlayScoreCommand.USEDRUMS, "putLick " + improviseStartSlot + " - " + improviseEndSlot);
+//
+//        // Critical point for recurrent generation
+//        if( lick != null )
+//          {
+//          // duplicates other functionality getCurrentMelodyPart().pasteOver(lick, improviseStartSlot);
+//          repaint();
+//          }
+//        else
+//          {
+//            //debug System.out.println("panic: generated null improLick");
+//            setMode(Mode.GENERATION_FAILED);
+//            return lick;
+//          }
+//     }
+//
+//    if( rhythm != null )
+//      {
+//        lickgenFrame.setRhythmFieldText(Formatting.prettyFormat(rhythm));
+//      }
+////
+////    if( oneSlotWasSelected )
+////      {
+////        stave.setSelection(selectionStart);
+////      }
+//
+//    setMode(Mode.GENERATED);
+//
+//    //enableRecording(); // TRIAL Commented out for autoImprovisation, reconsider
+//
+//    return lick;
+//  }
 
 
 /**
@@ -23661,18 +23699,18 @@ private void setContinuousImprovisation(boolean value)
     continuousImprovisation = value;
   }
 
-private void setImprovMenu(JMenuItem menuItem, int improInterval, int lead, boolean ivFirst)
-  {
-    //resetImprovCheckBoxes();
-    menuItem.setSelected(true);
-    setAutoImprovisation(true);
-    autoImprovisation.setImproInterval(improInterval);
-    autoImprovisation.setGenerationLeadSlots(lead);
-    autoImprovisation.setIVfirst(ivFirst);
-    improvMenuSelection = menuItem.getText();
-    //setMenuSelection(improvMenu, improvMenuSelection);
-    Preferences.setPreference(Preferences.IMPROV_MENU_SETTING, "(" + improvMenuSelection + ")");
-  }
+//private void setImprovMenu(JMenuItem menuItem, int improInterval, int lead, boolean ivFirst)
+//  {
+//    //resetImprovCheckBoxes();
+//    menuItem.setSelected(true);
+//    setAutoImprovisation(true);
+//    autoImprovisation.setImproInterval(improInterval);
+//    autoImprovisation.setGenerationLeadSlots(lead);
+//    autoImprovisation.setIVfirst(ivFirst);
+//    improvMenuSelection = menuItem.getText();
+//    //setMenuSelection(improvMenu, improvMenuSelection);
+//    Preferences.setPreference(Preferences.IMPROV_MENU_SETTING, "(" + improvMenuSelection + ")");
+//  }
 
 /**
  * Returns the length of trading
@@ -23745,7 +23783,7 @@ public boolean getAutoImprovisation()
  */
 public void setAutoImprovisation(boolean value)
   {
-    originalGeneration = !value;
+    //originalGeneration = !value;
     autoImprovisation.setSelected(value);
     if( value )
       {
@@ -24191,15 +24229,9 @@ boolean improvisationOn = false;
 
 public void improviseButtonToggled()
   {
-    improvisationOn = !improvisationOn; //improviseButton.isSelected();
-    //System.out.println("improvisationOn = " + improvisationOn);
+    improvisationOn = improviseButton.isSelected();
     if( improvisationOn )
       {
-        // Trading is not compatible with using this button,
-        // so the checkboxes are reverted to using the button.
-
-        //setUseImproviseCheckBox();
-
         improviseButton.setBackground(new Color(255, 0, 0));
         improviseButton.setText("<html><center>Stop</center></html>");
         
@@ -24224,7 +24256,7 @@ public void improvisationOff()
 
 public void improviseContinuously()
   {
-    //System.out.println("Improvise Continuously");
+    //System.out.println("\nImprovise Continuously");
     // Looping is also automatically implied with improvisation.
     loopButton.setSelected(false);
     lickgenFrame.setRecurrent(true);
@@ -24234,7 +24266,7 @@ public void improviseContinuously()
     improviseEndSlot = getCurrentStave().getSelectionEnd();
 
     recurrentIteration = 1;
-   originalGenerate(lickgen, improviseStartSlot, improviseEndSlot);
+    originalGenerate(lickgen, improviseStartSlot, improviseEndSlot);
     //System.out.println("*** return from improviseContinuously");
   }
 
@@ -27229,6 +27261,7 @@ public void actionPerformed(ActionEvent evt)
 
 /**
  * Handle automatic improvisation
+ * This is called at practically every slot
  * @param slotInPlayback
  */
 
@@ -27244,6 +27277,7 @@ private void handleAutoImprov(int slotInPlayback)
 
     if( originalGeneration )
       {
+        //System.out.println("\nhandleAutoImprov at " + slotInPlayback + " with originalGenerate");
         // Original form of improvisation
         if( lickgenFrame.getRecurrent() // recurrentCheckbox.isSelected()
                 && (slotInPlayback >= stopPlaybackAtSlot - gap) ) // was totalSlots - gap) )

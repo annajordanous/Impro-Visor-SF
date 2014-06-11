@@ -19,6 +19,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+// NOTE: Currently not active. If used, uncomment calls to notate.generate.
+
 package imp.gui;
 
 import imp.com.Command;
@@ -208,6 +210,7 @@ public void autoImprovCycle(int slotInPlayback)
 
 public MelodyPart createAndPlayInitialLick(MelodyPart melodyPart)
   {
+  System.out.println("createAndPlayInitialLick");
   int countInOffset = notate.getScore().getCountInOffset();
     if( improLick != null && improLick.size() > 0 )
       {
@@ -274,7 +277,7 @@ public void maybeCreateInitialLick(int melodyStart)
                            + ", chords from " + notate.bar(chordStartSlot) + " to " + notate.bar(chordStopSlot));
           }
         
-        improLick = notate.generate(chordStartSlot, chordStopSlot);
+        //improLick = notate.generate(chordStartSlot, chordStopSlot);
 
         generated = improLick != null && improLick.size() > 0;
 
@@ -401,7 +404,7 @@ public void maybeCreateLick(int slotInPlayback)
                            + ", chords from " + notate.bar(chordStartSlot) + " to " + notate.bar(chordStopSlot));
           }
         
-        improLick = notate.generate(chordStartSlot, chordStopSlot);
+        //improLick = notate.generate(chordStartSlot, chordStopSlot);
 
         generated = improLick != null && improLick.size() > 0;
 
