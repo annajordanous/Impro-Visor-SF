@@ -22148,7 +22148,6 @@ public void rectifySelection(Stave stave, int selectionStart, int selectionEnd)
 {
     ///System.out.println("rectifying from  " + selectionStart + " to " + selectionEnd);
     stave.rectifySelection(selectionStart, selectionEnd, false, false);
-
 }
 
 private void lowRangeTF2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lowRangeTF2ActionPerformed
@@ -22176,8 +22175,6 @@ private void lowRangeTF2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     String name = keyboard.findBassName(root);
     keyboard.setBass(name, root);
     buildVoicingTable();
-
-
 }
 
 private void highRangeTF2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_highRangeTF2ActionPerformed
@@ -22206,7 +22203,6 @@ private void highRangeTF2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
     String name = keyboard.findBassName(root);
     keyboard.setBass(name, root);
     buildVoicingTable();
-
 }//GEN-LAST:event_highRangeTF2ActionPerformed
 
 private void chordSearchTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chordSearchTFActionPerformed
@@ -22339,7 +22335,6 @@ private void exportChorusToMusicXMLActionPerformed(java.awt.event.ActionEvent ev
     musicxmlfc.setDialogTitle("Export Leadsheet to MusicXML:");
 
     exportToMusicXML();
-
 }//GEN-LAST:event_exportChorusToMusicXMLActionPerformed
 
 private void countInCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_countInCheckBoxActionPerformed
@@ -22518,7 +22513,7 @@ private void mostRecentLeadsheetNewWindowMIActionPerformed(java.awt.event.Action
 
 private void populateRecentLeadsheetNewWindow(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_populateRecentLeadsheetNewWindow
       RecentFiles recFiles = new RecentFiles();
-      String filenames[] = {"No Recent Leadsheets to Open"};;
+      String filenames[] = {"No Recent Leadsheets to Open"};
       if(recFiles.getSize() == 0 || recFiles.getSize() == 1)
       {
           openRecentLeadsheetNewWindowMenu.removeAll();
@@ -22527,8 +22522,7 @@ private void populateRecentLeadsheetNewWindow(javax.swing.event.MenuEvent evt) {
        {
          final JMenuItem item = new JMenuItem(name);
 
-
-            openRecentLeadsheetNewWindowMenu.add(item);
+         openRecentLeadsheetNewWindowMenu.add(item);
         }
       }
       else
@@ -22598,11 +22592,11 @@ private boolean skippedBack = false;
     }
 
 private void chordStepForwardButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chordStepForwardButtonActionPerformed
-        int currIndex = 0;
+        int currIndex;
         int nextChordIndex =0;
         int indexOfChordToPlay = 0;
         int modedIndex=0;
-        int increment=0;
+        int increment;
         autoScrollOnPlayback = true;
         if(skippedBack)
         {
@@ -22754,7 +22748,7 @@ private void chordStepForwardButtonActionPerformed(java.awt.event.ActionEvent ev
 }//GEN-LAST:event_chordStepForwardButtonActionPerformed
 
 private void chordStepBackButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chordStepBackButtonActionPerformed
-        int currChordIndex = 0;
+        int currChordIndex;
         autoScrollOnPlayback = true;
         skippedBack = true;
         currChordIndex = midiSynth.getSlot();
@@ -23079,8 +23073,6 @@ private void midiRecordSnapChanged(javax.swing.event.ChangeEvent evt)//GEN-FIRST
 
         midiSynth.setSlot(indexOfLastChordPlayed);
         playAndCaptureChordAtIndex(indexOfLastChordPlayed);
-
-
     }//GEN-LAST:event_chordReplayButtonActionPerformed
 
     private void usePreviousStyleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usePreviousStyleButtonActionPerformed
@@ -23097,39 +23089,10 @@ private void midiRecordSnapChanged(javax.swing.event.ChangeEvent evt)//GEN-FIRST
     }//GEN-LAST:event_usePreviousStyleButtonActionPerformed
 
 
-//private void resetImprovCheckBoxes()
-//  {
-//    useImproviseButtonCheckBoxMI.setSelected(false);
-//    trade16IVfirstCheckBoxMI.setSelected(false);
-//    trade12IVfirstCheckBoxMI.setSelected(false);
-//    trade8IVfirstCheckBoxMI.setSelected(false);
-//    trade4IVfirstCheckBoxMI.setSelected(false);
-//    trade2IVfirstCheckBoxMI.setSelected(false);
-//    trade1IVfirstCheckBoxMI.setSelected(false);
-//    trade16userFirstCheckBoxMI.setSelected(false);
-//    trade12userFirstCheckBoxMI.setSelected(false);
-//    trade8userFirstCheckBoxMI.setSelected(false);
-//    trade4userFirstCheckBoxMI.setSelected(false);
-//    trade2userFirstCheckBoxMI.setSelected(false);
-//    trade1userFirstCheckBoxMI.setSelected(false);
-//  }
-
 private void setUseImproviseCheckBox()
   {
-//   if( useImproviseButtonCheckBoxMI.isSelected() )
-//     {
-//     setContinuousImprovisation(true);
-//     resetImprovCheckBoxes();
      setAutoImprovisation(false);
- //    useImproviseButtonCheckBoxMI.setSelected(true);
- //    improvMenuSelection = useImproviseButtonCheckBoxMI.getText();
- //    setMenuSelection(improvMenu, improvMenuSelection);
- //    Preferences.setPreference(Preferences.IMPROV_MENU_SETTING, "(" + improvMenuSelection + ")");
-//     }
-//   else
-//     {
      setContinuousImprovisation(false);
-//     }
   }
 
 private void setContinuousImprovisation(boolean value)
@@ -23137,18 +23100,6 @@ private void setContinuousImprovisation(boolean value)
     continuousImprovisation = value;
   }
 
-//private void setImprovMenu(JMenuItem menuItem, int improInterval, int lead, boolean ivFirst)
-//  {
-//    //resetImprovCheckBoxes();
-//    menuItem.setSelected(true);
-//    setAutoImprovisation(true);
-//    autoImprovisation.setImproInterval(improInterval);
-//    autoImprovisation.setGenerationLeadSlots(lead);
-//    autoImprovisation.setIVfirst(ivFirst);
-//    improvMenuSelection = menuItem.getText();
-//    //setMenuSelection(improvMenu, improvMenuSelection);
-//    Preferences.setPreference(Preferences.IMPROV_MENU_SETTING, "(" + improvMenuSelection + ")");
-//  }
 
 /**
  * Returns the length of trading
@@ -23169,47 +23120,6 @@ public boolean getAutoImprovisation()
     return !originalGeneration;
 }
 
-//public void setTrading(boolean ivFirst, int bars)
-//  {
-//    setContinuousImprovisation(false);
-//    useImproviseButtonCheckBoxMI.setSelected(false);
-//    if( ivFirst )
-//      {
-//        switch( bars )
-//          {
-//            case  1: setImprovMenu(trade1IVfirstCheckBoxMI,    960, 120, true);
-//                     break;
-//            case  2: setImprovMenu(trade2IVfirstCheckBoxMI,   1920, 120, true);
-//                     break;
-//            case  4: setImprovMenu(trade4IVfirstCheckBoxMI,   3840, 240, true);
-//                     break;
-//            case  8: setImprovMenu(trade8IVfirstCheckBoxMI,   7680, 480, true);
-//                     break;
-//            case 12: setImprovMenu(trade12IVfirstCheckBoxMI, 11520, 720, true);
-//                     break;
-//            case 16: setImprovMenu(trade16IVfirstCheckBoxMI, 15360, 960, true);
-//                     break;
-//          }
-//      }
-//    else
-//      {
-//        switch( bars )
-//          {
-//            case  1: setImprovMenu(trade1userFirstCheckBoxMI,    960, 120, false);
-//                     break;
-//            case  2: setImprovMenu(trade2userFirstCheckBoxMI,   1920, 120, false);
-//                     break;
-//            case  4: setImprovMenu(trade4userFirstCheckBoxMI,   3840, 240, false);
-//                     break;
-//            case  8: setImprovMenu(trade8userFirstCheckBoxMI,   7680, 480, false);
-//                     break;
-//            case 12: setImprovMenu(trade12userFirstCheckBoxMI, 11520, 720, false);
-//                     break;
-//            case 16: setImprovMenu(trade16userFirstCheckBoxMI, 15360, 960, false);
-//                     break;
-//          }
-//      }
-//  }
 
 /**
  * Enable or disable auto improvisation.
@@ -23219,6 +23129,7 @@ public boolean getAutoImprovisation()
  * trading in a manner specified in the menu.
  * @param value
  */
+
 public void setAutoImprovisation(boolean value)
   {
     //originalGeneration = !value;
@@ -23235,6 +23146,7 @@ public void setFrameSize(int value)
   {
     //frameSizeComboBox.setSelectedItem(new Integer(value));
   }
+
 public void setPollRate(int value)
   {
     //pollRateComboBox.setSelectedItem(new Integer(value));
@@ -23646,9 +23558,10 @@ public void setConfidenceThreshold(double value)
 }
 
 /**
-    * Focus on input from textEntry field, until return is pressed, at which
-    * point staveRequestFocus() will be called (in textEntryActionHandler).
-    */
+ * Focus on input from textEntry field, until return is pressed, at which
+ * point staveRequestFocus() will be called (in textEntryActionHandler).
+ */
+
 public void textRequestFocus()
 {
     String text = textEntry.getText();
@@ -23700,8 +23613,9 @@ public void improviseContinuously()
     lickgenFrame.setRecurrent(true);
 
     adjustSelection();
-    improviseStartSlot = getCurrentStave().getSelectionStart();
-    improviseEndSlot = getCurrentStave().getSelectionEnd();
+    Stave stave = getCurrentStave();
+    improviseStartSlot = stave.getSelectionStart();
+    improviseEndSlot = stave.getSelectionEnd();
 
     recurrentIteration = 1;
     originalGenerate(lickgen, improviseStartSlot, improviseEndSlot);
@@ -24326,12 +24240,10 @@ public void showNewVoicingDialog()
 
   public void updateAllStaves()
     {
-
     // cycle through the array and update all of the staves
 
     for( int i = 0; i < staveScrollPane.length; i++ )
       {
-
       StaveScrollPane pane = staveScrollPane[i];
 
       // clear the panel area of the previous stave image
@@ -24546,7 +24458,6 @@ public void showNewVoicingDialog()
         }
 
       });
-
     }
 
   /**
@@ -24634,7 +24545,6 @@ public void showNewVoicingDialog()
           }
         adviceList = adviceList.rest();
         }
-
       }
 
     if( row == OUT_OF_BOUNDS )
@@ -24710,11 +24620,9 @@ public void showNewVoicingDialog()
    * as a line of 4 measures and a line of 2 measures.
    *
    *
-   *
    * @param measures          number of measures to set the current line to
    *
    * @param currLine          the current line to set the measures on
-   *
    */
 
   public void measureOverride(int measures, int currLine)
@@ -24833,96 +24741,60 @@ public void showNewVoicingDialog()
    */
   protected void setItemStates()
     {
-
     playAllMI.setEnabled(true);
 
     stopPlayMI.setEnabled(true);
     pausePlayMI.setEnabled(true);
-preferencesAcceleratorMI.setEnabled(true);
-
+    preferencesAcceleratorMI.setEnabled(true);
 
     // check to see if undo & redo can be enabled
 
     if( cm.canUndo() )
       {
-
       undoMI.setEnabled(true);
-
       undoPMI.setEnabled(true);
-
       undoBtn.setEnabled(true);
-
       }
     else
       {
-
       undoMI.setEnabled(false);
-
       undoPMI.setEnabled(false);
-
       undoBtn.setEnabled(false);
-
       }
-
-
 
     if( cm.canRedo() )
       {
-
       redoMI.setEnabled(true);
-
       redoPMI.setEnabled(true);
-
       redoBtn.setEnabled(true);
-
       }
     else
       {
-
       redoMI.setEnabled(false);
-
       redoPMI.setEnabled(false);
-
       redoBtn.setEnabled(false);
-
       }
-
-
 
     // checks if a construction line is selected
 
-
-
     if( slotIsSelected() )
       {
-
       cutChordsMI.setEnabled(true);
-
       copyChordsMI.setEnabled(true);
 
       // cut enabled
 
       cutMelodyMI.setEnabled(true);
-
       cutBothMI.setEnabled(true);
-
       cutBothPMI.setEnabled(true);
-
       cutBothBtn.setEnabled(true);
 
       // copy enabled
 
       copyMelodyMI.setEnabled(true);
-
-
-
       copyBothMI.setEnabled(true);
-
       copyBothPMI.setEnabled(true);
-
       copyBothBtn.setEnabled(true);
-
-
 
       boolean melodyClipboardNonEmpty = impro.melodyClipboardNonEmpty();
 
@@ -24932,155 +24804,96 @@ preferencesAcceleratorMI.setEnabled(true);
               melodyClipboardNonEmpty || chordsClipboardNonEmpty;
 
 
-
       pasteMelodyMI.setEnabled(melodyClipboardNonEmpty);
-
       pasteChordsMI.setEnabled(chordsClipboardNonEmpty);
-
       pasteBothMI.setEnabled(eitherNonEmpty);
 
-
-
       pasteBothPMI.setEnabled(eitherNonEmpty);
-
       pasteBothBtn.setEnabled(eitherNonEmpty);
 
-
-
       enterMelodyMI.setEnabled(true);
-
       enterChordsMI.setEnabled(true);
-
       enterBothMI.setEnabled(true);
 
-
-
       addRestMI.setEnabled(true);
-
       selectAllMI.setEnabled(true);
 
-
-
       transposeBothDownSemitone.setEnabled(true);
-
       transposeBothUpSemitone.setEnabled(true);
-
       transposeChordsUpSemitone.setEnabled(true);
-
       transposeChordsDownSemitone.setEnabled(true);
-
       transposeMelodyDownOctave.setEnabled(true);
-
       transposeMelodyDownSemitone.setEnabled(true);
-
       transposeMelodyUpOctave.setEnabled(true);
-
       transposeMelodyUpSemitone.setEnabled(true);
-
       transposeMelodyUpHarmonically.setEnabled(true);
-
       transposeMelodyDownHarmonically.setEnabled(true);
 
 
       copyMelodySelectionToTextWindow.setEnabled(true);
-
       copyChordSelectionToTextWindow.setEnabled(true);
-
       copyBothSelectionToTextWindow.setEnabled(true);
 
       resolvePitches.setEnabled(true);
 
-
       // REVISIT generateLickButton.setEnabled(true);
 
-
       saveSelectionAsLick.setEnabled(true);
-
 
       // advice enabled
 
       advicePMI.setEnabled(true);
 
-
       reverseMelody.setEnabled(true);
 
       invertMelody.setEnabled(true);
-    expandMelodyBy2.setEnabled(true);
-    expandMelodyBy3.setEnabled(true);
-    contractMelodyBy2.setEnabled(true);
-    contractMelodyBy3.setEnabled(true);
+      expandMelodyBy2.setEnabled(true);
+      expandMelodyBy3.setEnabled(true);
+      contractMelodyBy2.setEnabled(true);
+      contractMelodyBy3.setEnabled(true);
       }
     else
       {
       // No slot selected
 
       cutMelodyMI.setEnabled(false);
-
       cutBothMI.setEnabled(false);
-
       cutBothPMI.setEnabled(false);
-
       cutBothBtn.setEnabled(false);
 
-
-
       copyMelodyMI.setEnabled(false);
-
       copyBothMI.setEnabled(false);
-
       copyBothPMI.setEnabled(false);
-
       copyBothBtn.setEnabled(false);
 
-
-
       pasteBothMI.setEnabled(false);
-
       pasteBothPMI.setEnabled(false);
-
       pasteBothBtn.setEnabled(false);
 
-
-
       enterMelodyMI.setEnabled(false);
-
       enterChordsMI.setEnabled(false);
-
       enterBothMI.setEnabled(false);
 
-
-
       transposeBothDownSemitone.setEnabled(false);
-
       transposeBothUpSemitone.setEnabled(false);
-
       transposeChordsUpSemitone.setEnabled(false);
-
       transposeChordsDownSemitone.setEnabled(false);
-
       transposeMelodyDownOctave.setEnabled(false);
-
       transposeMelodyDownSemitone.setEnabled(false);
-
       transposeMelodyUpOctave.setEnabled(false);
-
       transposeMelodyUpSemitone.setEnabled(false);
-
       transposeMelodyUpHarmonically.setEnabled(false);
-
       transposeMelodyDownHarmonically.setEnabled(false);
 
-
       advicePMI.setEnabled(false);
-
 
       reverseMelody.setEnabled(false);
 
       invertMelody.setEnabled(false);
-    expandMelodyBy2.setEnabled(true);
-    expandMelodyBy3.setEnabled(true);
-    contractMelodyBy2.setEnabled(true);
-    contractMelodyBy3.setEnabled(true);
+      expandMelodyBy2.setEnabled(true);
+      expandMelodyBy3.setEnabled(true);
+      contractMelodyBy2.setEnabled(true);
+      contractMelodyBy3.setEnabled(true);
       }
 
     // checks if "delete tab" should be enabled
@@ -25901,42 +25714,36 @@ preferencesAcceleratorMI.setEnabled(true);
     {
 
     return ignoreDuplicateLick;
-
     }
 
   public JPanel getToolbarPanel()
     {
 
     return toolbarPanel;
-
     }
 
   public JTextField getTextEntry()
     {
 
     return textEntry;
-
     }
 
   public boolean getScaleTonesSelected()
     {
 
     return drawScaleTonesCheckBox.isSelected();
-
     }
 
   public boolean getChordTonesSelected()
     {
 
     return drawChordTonesCheckBox.isSelected();
-
     }
 
   public boolean getColorTonesSelected()
     {
 
     return drawColorTonesCheckBox.isSelected();
-
     }
 
   public String getGrammarFileName()
@@ -25956,49 +25763,38 @@ preferencesAcceleratorMI.setEnabled(true);
 
   void playbackGoToTab(int tab)
     {
-
     if( tab >= scoreTab.getTabCount() )
       {
       return;
       }
-
-
 
     currTabIndex = tab;
 
     scoreTab.setSelectedIndex(tab);
 
     staveRequestFocus();
-
     }
 
   public void checkFakeModalDialog()
     {
-
     Trace.log(2, "Notate: focusing fakeModalDialog");
 
     ((CapturingGlassPane)getRootPane().getGlassPane()).focus();
-
     }
 
   public void showFakeModalDialog(JDialog d)
     {
-
     Trace.log(2, "Notate: showFakeModalDialog() - " + d);
 
     CapturingGlassPane gp = (CapturingGlassPane)getRootPane().getGlassPane();
 
-
-
     gp.setFocusOn(d);
 
     d.setVisible(true);
-
     }
 
   public void hideFakeModalDialog(JDialog d)
     {
-
     Trace.log(2, "Notate: hideFakeModalDialog() - " + d);
 
     CapturingGlassPane gp = (CapturingGlassPane)getRootPane().getGlassPane();
@@ -26006,7 +25802,6 @@ preferencesAcceleratorMI.setEnabled(true);
     gp.setFocusOn(null);
 
     d.setVisible(false);
-
     }
 
   public static boolean bernoulli(double prob)
@@ -26024,20 +25819,15 @@ preferencesAcceleratorMI.setEnabled(true);
       {
 
       addMouseListener(this);
-
       addMouseMotionListener(this);
-
       addFocusListener(this);
-
       }
 
     public void setFocusOn(JDialog c)
       {
-
       focusItem = c;
 
       setVisible(c != null);
-
       }
 
     public void focus()
@@ -26051,7 +25841,6 @@ preferencesAcceleratorMI.setEnabled(true);
         {
         setFocusOn(null);
         }
-
       }
 
     public void mouseClicked(MouseEvent e)
@@ -26154,7 +25943,7 @@ preferencesAcceleratorMI.setEnabled(true);
 
   public StyleEditor getStyleEditor()
   {
-      if( styleEditor == null )
+    if( styleEditor == null )
       {
         File styleFile = ImproVisor.getRecentStyleFile();
 
@@ -26450,7 +26239,6 @@ public void establishRoadMapFrame()
         roadmapFrame.selectAllBricks();
         roadmapFrame.deleteSelection();
       }
-
   }
 
 
@@ -26604,7 +26392,6 @@ private int previousSynthSlot = 0;
 
 class PlayActionListener implements ActionListener
 {
-
 /**
  * This is called repeatedly as play of the leadsheet progresses.
  * @param evt
@@ -26649,7 +26436,7 @@ public void actionPerformed(ActionEvent evt)
     //handleAudioInput(slotInPlayback);
     if( improvisationOn )
       {
-      handleAutoImprov(synthSlot); //midiSynth.getSlot());
+      handleAutoImprov(synthSlot);
       }
     
     // The following variant was originally added to stop playback at the end of a selection
@@ -26709,75 +26496,23 @@ private void handleAutoImprov(int slotInPlayback)
 
     int gap = lickgenFrame.getGap();
 
+    // System.out.println("\nhandleAutoImprov at " + slotInPlayback);
     // Recurrent generation option
     // There are two separate branches for the time being, reflecting
     // an intended change
 
-    if( originalGeneration )
-      {
-        //System.out.println("\nhandleAutoImprov at " + slotInPlayback + " with originalGenerate");
-        // Original form of improvisation
-        if( lickgenFrame.getRecurrent() // recurrentCheckbox.isSelected()
-                && (slotInPlayback >= stopPlaybackAtSlot - gap) ) // was totalSlots - gap) )
+    if( lickgenFrame.getRecurrent() // recurrentCheckbox.isSelected()
+        && (slotInPlayback >= stopPlaybackAtSlot - gap) ) // was totalSlots - gap) )
           {
             recurrentIteration++;
             // firstChorus indicator is used by MidiRecorder to deal with countin
             setFirstChorus(false); 
-
-//     debug    System.out.println("Continue improvising: " + improviseStartSlot
-//                             + " to " + improviseEndSlot
-//                             + " chorus # " + recurrentIteration);
             setStatus("Chorus " + recurrentIteration);
             int start = improviseStartSlot;
             originalGenerate(lickgen, start, improviseEndSlot);
           }
-      }
-    else
-      {
-        // New form of improvisation
-        // Caution: LickGenerator control should be opened first
-        // so that parameters are set.
-        if( autoImprovisation.isSelected() && (slotInPlayback < stopPlaybackAtSlot) )
-          {
-//System.out.println("slotInPlayback = " + bar(slotInPlayback) + ", stopPlaybackAtSlot = " + bar(stopPlaybackAtSlot));
-            
-          autoImprovisation.autoImprovCycle(slotInPlayback);
-          }
-      }
   } // handleAutoImprov
 
-
-///**
-// * Handle input from an audio line
-// * @param slot
-// */
-//
-//private void handleAudioInput(int slot)
-//  {
-//    //Poll for audio input every (captureInterval) slots
-////    if (useAudioInputMI.isSelected() && !firstCapture)
-////      {
-////          if (slot % captureInterval == 0 && !extractor.isCapturing)
-////          {
-////              extractor.setThisMeasure(true);
-////              extractor.isCapturing = true;
-////              System.out.println("Notate initialized audio capture at time "
-////                      + System.currentTimeMillis());
-////              synchronized (extractor.captureStart)
-////              {
-////                  extractor.captureStart.notify();
-////              }
-////              captureStopped = false;
-////          } else if (slot % captureInterval >= 478 && !captureStopped)
-////          {
-////              captureStopTime = System.currentTimeMillis();
-////              System.out.println("Notate stopped audio capture at time "
-////                          + captureStopTime);
-////              extractor.setThisMeasure(false);
-////              captureStopped = true;
-////          }
-////      }
-//  } // handleAudioInput
 
 
 /**
