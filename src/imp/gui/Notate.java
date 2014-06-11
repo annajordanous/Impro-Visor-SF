@@ -743,9 +743,6 @@ public class Notate
   // Initializes a network, specific to one leadsheet.
   private Critic critic;
 
-  private String[] langData = (Preferences.getPreference(Preferences.LANGUAGE_LIST)).split(",");
-  private String langPref = Preferences.getPreference(Preferences.LANGUAGE);
-
   /**
    * Constructs a new Notate JFrame.
    *
@@ -884,11 +881,6 @@ public class Notate
     setGrammarFilename(ImproVisor.getGrammarFile().getAbsolutePath());
 
     midiLatencyMeasurement = new MidiLatencyMeasurementTool(this);
-
-    /* No longer used
-    styleEditor = new SourceEditorDialog(null, false, this, cm,
-            SourceEditorDialog.STYLE);
-    */
 
     leadsheetEditor = new SourceEditorDialog(null, false, this, cm,
             SourceEditorDialog.LEADSHEET);
@@ -1054,6 +1046,7 @@ public class Notate
     sectionTable.setModel(sectionTableModel);
     sectionTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     sectionTable.addMouseListener(new MouseAdapter() {
+        @Override
         public void mouseReleased(MouseEvent e) {
             if(e.getClickCount() >= 1) {
                 int row = sectionTable.rowAtPoint(e.getPoint());
@@ -1206,23 +1199,16 @@ public class Notate
         setUseImproviseCheckBox(); // DEFAULT
       }
 
-//    int index = setMenuSelection(improvMenu, improvMenuSelection);
-//
-//    setTradingByIndex(index);
-
-    audioSettings = new AudioSettings(this);
-    
+    audioSettings = new AudioSettings(this); 
     } // end of Notate constructor
 
 
-  boolean showConstructionLinesAndBoxes = true;
-  boolean saveConstructionLineState;
+boolean showConstructionLinesAndBoxes = true;
+boolean saveConstructionLineState;
 
 
   private int setMenuSelection(JMenu jMenu, String string)
     {
-      Component components[] = jMenu.getComponents();
-
       int n = jMenu.getItemCount();
 
       for( int i = 0; i < n; i++ )
@@ -1245,32 +1231,6 @@ public class Notate
         }
       return -1;
     }
-
-  /**
-   * This is used to initialize the trading mode.
-   * @param index
-   */
-//  private void setTradingByIndex(int index)
-//    {
-//    switch( index )
-//      {
-//        case  0:                        break;
-//        case  1:                        break;
-//        case  2: setTrading(true,  16); break;
-//        case  3: setTrading(true,  12); break;
-//        case  4: setTrading(true,   8); break;
-//        case  5: setTrading(true,   4); break;
-//        case  6: setTrading(true,   2); break;
-//        case  7: setTrading(true,   1); break;
-//        case  8:                        break;
-//        case  9: setTrading(false, 16); break;
-//        case 10: setTrading(false, 12); break;
-//        case 11: setTrading(false,  8); break;
-//        case 12: setTrading(false,  4); break;
-//        case 13: setTrading(false,  2); break;
-//        case 14: setTrading(false,  1); break;
-//      }
-//    }
 
   public boolean getShowConstructionLinesAndBoxes()
     {
@@ -1330,7 +1290,6 @@ public class Notate
 
     // resize the frames and make the appropriate frames visible
 
-
     adviceFrame.setSize(400, 500);
 
     adviceFrame.setLocationRelativeTo(this);
@@ -1388,7 +1347,7 @@ public class Notate
   }
   
   @Override
-  public void setTitle(String title)
+  public final void setTitle(String title)
     {
         String setTitle = windowTitlePrefix;
         boolean titleExists = !title.trim().equals("");
@@ -10342,26 +10301,11 @@ public class Notate
       }
   }//GEN-LAST:event_loopButtonActionPerformed
 
-//public void playCurrentSelection()
-//  {
-//    playCurrentSelection(false, 0, PlayScoreCommand.USEDRUMS);
-//  }
-
-//public void playCurrentSelection(boolean playToEndOfChorus)
-//  {
-//    playCurrentSelection(playToEndOfChorus, 0, PlayScoreCommand.USEDRUMS);
-//  }
-
-//public void playCurrentSelection(boolean playToEndOfChorus, int loopCount)
-//  {
-//    playCurrentSelection(playToEndOfChorus, loopCount, PlayScoreCommand.USEDRUMS);
-//  }
 
 public void playCurrentSelection(boolean playToEndOfChorus, int loopCount, boolean useDrums, String message)
   {
     setMode(Mode.PLAYING);
     getCurrentStave().playSelection(playToEndOfChorus, loopCount, useDrums, "Notate playCurrentSelection: " + message);
-
   }
 
   private void setToLoop()
@@ -10384,9 +10328,7 @@ public void playCurrentSelection(boolean playToEndOfChorus, int loopCount, boole
        criticDialog.setVisible(true);
   }
 
-  private boolean initLocationStyleEditor = false;
-
-  public void reloadStyles()
+   public void reloadStyles()
     {
     reCaptureCurrentStyle();
 
@@ -10620,7 +10562,6 @@ private void setStepInputBtn(boolean selected)
 
       for( int i = 0; i < staveScrollPane.length; i++ )
         {
-
         Stave stave = staveScrollPane[i].getStave();
 
         stave.setShowEmptyTitles(showEmptyTitlesMI.isSelected());
@@ -10632,17 +10573,14 @@ private void setStepInputBtn(boolean selected)
     private void preferencesDialogWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_preferencesDialogWindowClosing
 
       hideFakeModalDialog(preferencesDialog);
-
     }//GEN-LAST:event_preferencesDialogWindowClosing
 
     private void overwriteLickButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_overwriteLickButtonActionPerformed
 
     {//GEN-HEADEREND:event_overwriteLickButtonActionPerformed
-
       ignoreDuplicateLick = OVERWRITE;
 
       duplicateLickDialog.setVisible(false);
-
     }//GEN-LAST:event_overwriteLickButtonActionPerformed
 
     private void insertVoicingButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertVoicingButtonActionPerformed
@@ -10740,8 +10678,6 @@ private void setStepInputBtn(boolean selected)
         ChordSymbol c =
                 ChordSymbol.makeChordSymbol(
                 voicingTableModel.getValueAt(row, VoicingTableChordColumn).toString());
-
-        //ChordSymbol c = ChordSymbol.makeChordSymbol(v);
 
         c.setVoicing(voicing);
 
@@ -11241,8 +11177,6 @@ private String getChordRedirectName(int row)
     new SetChordCommand(index, c,
             ImproVisor.getCurrentWindow().score.getChordProg()).execute();
 
-
-
     ImproVisor.getCurrentWindow().getCurrentStaveActionHandler().moveSelectionRight(ImproVisor.getCurrentWindow().getCurrentSelectionStart() + BEAT * 2);
 
     ImproVisor.getCurrentWindow().redoAdvice();
@@ -11253,7 +11187,6 @@ private String getChordRedirectName(int row)
     {
 
     playVoicing(o, true);
-
     }
 
   private void playVoicing(ChordSymbol o, boolean literal)
@@ -11266,7 +11199,6 @@ private String getChordRedirectName(int row)
     s.setNoStyle(true);
 
     // I hope these are overridden subsequently:
-
     s.setChordLow(NoteSymbol.makeNoteSymbol("c-----"));
 
     s.setChordHigh(NoteSymbol.makeNoteSymbol("g+++++"));
@@ -11474,15 +11406,12 @@ private void setPlaybackManagerTime()
     private void closeWindowMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeWindowMIActionPerformed
 
         closeWindow();
-
     }//GEN-LAST:event_closeWindowMIActionPerformed
-
 
 
     private void cascadeMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cascadeMIActionPerformed
 
         WindowRegistry.cascadeWindows(this);
-
     }//GEN-LAST:event_cascadeMIActionPerformed
 
 
@@ -11499,8 +11428,6 @@ public void setStatus(String text)
     statusMenu.setText(text);
     statusMenu.repaint();
   }
-
-
 
 
 /**
@@ -11590,19 +11517,6 @@ public Mode getMode()
    return this.mode;
   }
 
-public void stopAudioCapture()
-    {
-        try
-        {
-            extractor.stopCapture();
-            extractor.closeTargetLine();
-            captureTimer.cancel();
-            task.cancel();
-        } catch (Exception e)
-        {
-            System.out.println("Error stopping audio capture: \n" + e);
-        }
-    }
 
 
 /**
@@ -11613,28 +11527,9 @@ public void stopAudioCapture()
 
 public void stopRecording()
   {
-//    if( mode == Mode.RECORDING )
-//      {
-//        setMode(previousMode);
-//          if (useAudioInputMI.isSelected())
-//          {
-//              stopAudioCapture();
-//          }
-//      } else
-//    {
-//        System.out.println("Stopped. Mode = " + mode);
-//    }
-
-    if (useAudioInputMI.isSelected())
-        {
-            stopAudioCapture();
-        }
-
     playBtn.setEnabled(true);
 
     recordBtn.setIcon(recordImageIcon);
-
-//    recordBtn.setBackground(null);
 
     if( midiRecorder != null )
       {
@@ -11647,17 +11542,10 @@ public void stopRecording()
 
       midiSynth.registerReceiver(midiStepInput);
       }
-
-    if (!useAudioInputMI.isSelected())
-        {
-//    stopPlaying("stop Recording"); // Having this in causes stack overflow when stopping
-        }
   }
 
 private void startAudioCapture()
     {
-        //          if (extractor == null)
-//          {
         captureInterval = score.getMetre()[0] * BEAT;
         int startingPosition = (Math.round(midiSynth.getSlot()
                 / getTradeLength())) * getTradeLength();
@@ -11670,14 +11558,7 @@ private void startAudioCapture()
                                         startingPosition,
                                         captureInterval,
                                         true);
-//          }
-//          extractor.openTargetLine();
         extractor.captureAudio();
-//    extractor.setThisMeasure(true);
-//    synchronized (extractor.captureStart)
-//    {
-//        System.out.println("Audio capture initialized.");
-//        extractor.captureStart.notify();
     }
 
 /*Used by the SCDelayOffsetter*/
@@ -11917,6 +11798,7 @@ private void chordToneWeightFieldFocusLost(java.awt.event.FocusEvent evt)
         openLickGenerator();
     }//GEN-LAST:event_openGeneratorButtonActionPerformed
 
+    
 public void openLickGenerator()
   {
     redrawTriage();
@@ -11960,7 +11842,6 @@ public void openLickGenerator()
     private void contourBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contourBtnActionPerformed
 
         changePrefTab(contourBtn, contourPreferences);
-
     }//GEN-LAST:event_contourBtnActionPerformed
 
 
@@ -11970,7 +11851,6 @@ public void openLickGenerator()
     {//GEN-HEADEREND:event_overrideFrameadviceWindowClosing
 
 // TODO add your handling code here:
-
     }//GEN-LAST:event_overrideFrameadviceWindowClosing
 
 
@@ -11988,7 +11868,6 @@ public void openLickGenerator()
     {//GEN-HEADEREND:event_overrideFrameComponentHidden
 
 // TODO add your handling code here:
-
     }//GEN-LAST:event_overrideFrameComponentHidden
 
 
@@ -12089,7 +11968,6 @@ private void setChannelVolumes(int channel, int volume)
     private void drumMuteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_drumMuteActionPerformed
 
         drumVolumeChanged();
-
     }//GEN-LAST:event_drumMuteActionPerformed
 
 
@@ -12360,7 +12238,6 @@ private void setVolumeDefaults()
     private void preferencesMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_preferencesMenuActionPerformed
 
 // TODO add your handling code here:
-
     }//GEN-LAST:event_preferencesMenuActionPerformed
 
 
@@ -12377,7 +12254,6 @@ private void showMixer()
     private void mixerBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mixerBtnActionPerformed
 
         showMixer();
-
     }//GEN-LAST:event_mixerBtnActionPerformed
 
 
@@ -12429,7 +12305,6 @@ public void volumeSliderChanged(JSlider volumeSlider)
     private void entryVolumeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_entryVolumeStateChanged
 
         ImproVisor.setEntryVolume(entryVolume.getValue());
-
     }//GEN-LAST:event_entryVolumeStateChanged
 
 
@@ -12437,7 +12312,6 @@ public void volumeSliderChanged(JSlider volumeSlider)
     private void chordMuteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chordMuteActionPerformed
 
         chordVolumeChanged();
-
     }//GEN-LAST:event_chordMuteActionPerformed
 
 
@@ -12445,7 +12319,6 @@ public void volumeSliderChanged(JSlider volumeSlider)
     private void chordVolumeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chordVolumeStateChanged
 
         chordVolumeChanged();
-
     }//GEN-LAST:event_chordVolumeStateChanged
 
 
@@ -12453,7 +12326,6 @@ public void volumeSliderChanged(JSlider volumeSlider)
     private void melodyMuteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_melodyMuteActionPerformed
 
         melodyVolumeChanged();
-
     }//GEN-LAST:event_melodyMuteActionPerformed
 
 
@@ -12461,7 +12333,6 @@ public void volumeSliderChanged(JSlider volumeSlider)
     private void melodyVolumeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_melodyVolumeStateChanged
 
         melodyVolumeChanged();
-
     }//GEN-LAST:event_melodyVolumeStateChanged
 
 
@@ -12469,17 +12340,13 @@ public void volumeSliderChanged(JSlider volumeSlider)
     private void bassVolumeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_bassVolumeStateChanged
 
         bassVolumeChanged();
-
     }//GEN-LAST:event_bassVolumeStateChanged
 
 
 
     private void bassMuteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bassMuteActionPerformed
 
-
-
         bassVolumeChanged();
-
     }//GEN-LAST:event_bassMuteActionPerformed
 
 
@@ -12487,7 +12354,6 @@ public void volumeSliderChanged(JSlider volumeSlider)
     private void midiBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_midiBtnActionPerformed
 
         changePrefTab(midiBtn, midiPreferences);
-
     }//GEN-LAST:event_midiBtnActionPerformed
 
 
@@ -12495,7 +12361,6 @@ public void volumeSliderChanged(JSlider volumeSlider)
     private void styleBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_styleBtnActionPerformed
 
         changePrefTab(styleBtn, stylePreferences);
-
     }//GEN-LAST:event_styleBtnActionPerformed
 
 
@@ -12503,9 +12368,7 @@ public void volumeSliderChanged(JSlider volumeSlider)
     private void leadsheetBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_leadsheetBtnActionPerformed
 
         changePrefTab(leadsheetBtn, leadsheetPreferences);
-
     }//GEN-LAST:event_leadsheetBtnActionPerformed
-
 
 
     private void globalBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_globalBtnActionPerformed
@@ -12513,7 +12376,6 @@ public void volumeSliderChanged(JSlider volumeSlider)
         changePrefTab(globalBtn, globalPreferences);
 
     }//GEN-LAST:event_globalBtnActionPerformed
-
 
 
     private void cancelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtnActionPerformed
@@ -12526,26 +12388,18 @@ public void volumeSliderChanged(JSlider volumeSlider)
     }//GEN-LAST:event_cancelBtnActionPerformed
 
 
-
     private void savePrefsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_savePrefsBtnActionPerformed
 
         savePrefs();
-
     }//GEN-LAST:event_savePrefsBtnActionPerformed
 
-
-
-
-
+    
     private Component currentPrefTab = null;
-
     private JToggleButton currentPrefButton = null;
-
     private Component currentGenTab = null;
     private JToggleButton currentGenButton = null;
 
-
-
+    
 /**
  * Used to provide access to switching preferences tabs from another class file
  */
@@ -12556,7 +12410,6 @@ void changePrefTab(JToggleButton button, JPanel tab)
     button.setSelected(true);
 
     currentPrefButton = button;
-
 
     currentPrefTab = tab;
 
@@ -12599,7 +12452,6 @@ void changeGenTab(JToggleButton button, JPanel tab)
 
     lickgenFrame.pack();
     lickgenFrame.repaint();
-
   }
 
 
@@ -12646,7 +12498,6 @@ private void devicesChanged()
 
 public void refreshMidiStatus()
   {
-
     // get midi latency
 
     saveMidiLatency();
@@ -12826,7 +12677,6 @@ public void adjust()
     //System.out.println("adjust");
     fireIntervalAdded(this, 0, getSize());
   }
-
 }
 
 ArrayList<Style> recentStyles = new ArrayList<Style>();
@@ -12870,8 +12720,6 @@ public void adjust()
   {
     fireIntervalAdded(this, 0, getSize());
   }
-
-
 }
 
 /**
@@ -12883,8 +12731,7 @@ public void adjust()
 
 @SuppressWarnings("serial")
 
-public class SectionListModel
-    extends AbstractListModel
+public class SectionListModel extends AbstractListModel
 {
 
 public int getSize()
@@ -12895,7 +12742,6 @@ public int getSize()
       }
 
     return sectionInfo.size();
-
   }
 
 public Object getElementAt(int index)
