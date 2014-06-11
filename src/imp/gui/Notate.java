@@ -18855,17 +18855,6 @@ public void playScoreBody(int startAt)
     setMode(Mode.PLAYING);
     }
 
-//public void startAudioTimer()
-//    {
-//        task = new CaptureTimerTask(extractor);
-//        captureTimer = new Timer();
-//        //convert captureInterval to milliseconds
-//        int interval = (int) (score.getMetre()[0] * 60000.0
-//                / score.getTempo() * captureInterval / 480.0);
-//        captureTimer.scheduleAtFixedRate(task,
-//                score.getCountInTime() * 1000,
-//                interval);
-//    }
 
 /**
  * Play a score, not necessarily the one in this Notate window.
@@ -18939,6 +18928,7 @@ public void playAscore(Score score, String style, int loopCount)
  * @param score
  * @param loopCount
  */
+
 public void playAscoreWithStyle(Score score, int loopCount)
 {
   int volume = allVolumeToolBarSlider.getValue();
@@ -19070,7 +19060,6 @@ public ChordPart makeCountIn()
     {
 
     initCurrentPlaybackTab(offset, currTabIndex);
-
     }
 
   private int playbackOffset = 0;
@@ -19081,7 +19070,6 @@ public ChordPart makeCountIn()
     playbackOffset = tab * getScore().getLength() + offset;
 
     currentPlaybackTab = tab;
-
     }
 
   public void enableStopButton(boolean enabled)
@@ -19097,7 +19085,6 @@ public ChordPart makeCountIn()
     // update the playbackManager
 
     playbackManager.setPlaying(playing, transposition);
-
 
     playingStatus = playing;
 
@@ -19156,7 +19143,6 @@ public ChordPart makeCountIn()
         getCurrentStave().repaint();
 
         break;
-
       }
 
     staveRequestFocus();
@@ -19206,7 +19192,6 @@ public ChordPart makeCountIn()
 
         adv.showMarkedItems();
         System.exit(0);
-
         }
     }//GEN-LAST:event_quitMIActionPerformed
 
@@ -19235,7 +19220,6 @@ public MidiSynth getMidiSynth2()
     public void saveAsLeadsheetMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAsLeadsheetMIActionPerformed
 
       saveAsLeadsheet();
-
     }//GEN-LAST:event_saveAsLeadsheetMIActionPerformed
 
   /** Saves the current leadsheet.
@@ -19365,9 +19349,6 @@ public boolean saveAsLeadsheetSwing()
             setTitle(score.getTitle());
           }
 
-        
-
-
         if( !savedLeadsheet.exists() )
           {
             setSavedLeadsheet(null);
@@ -19448,7 +19429,7 @@ public void openLeadsheet(boolean openCorpus)
             File file = openLSFC.getSelectedFile();
 
             ImproVisor.setLastLeadsheetFileStem(file.getName());
-        nameOfOpenFile = file.getAbsolutePath();
+            nameOfOpenFile = file.getAbsolutePath();
 
             new OpenLeadsheetCommand(file, newScore).execute();
 
@@ -19586,7 +19567,6 @@ public void cmReset()
    */
   public void revertLeadsheet(java.awt.event.ActionEvent evt)
     {
-
     if( !savedLeadsheetExists() )
       {
       return;        // nothing saved
@@ -19718,62 +19698,72 @@ public ArrayList<String> getMelodyData(int chorusNumber)
     return getMelodyData(score, chorusNumber);
   }
 
-    /*Returns an ArrayList of Strings representing a section of the melody of a
-     *chorus and containing the notes in the section     */
-    public ArrayList<String> getMelodyData(Score s, int chorusNumber) {
-        MelodyPart melPart = s.getPart(chorusNumber).copy();
-        ArrayList<String> sections = new ArrayList<String>();
-        int numSlots = melPart.getSize();
-        int slotsPerSection = lickgenFrame.getWindowSize()* BEAT;
-        int windowSlide = lickgenFrame.getWindowSlide() * BEAT;
-        //loop through sections
-        for(int window = 0; window < slotsPerSection; window += windowSlide) {
+/**
+ * Returns an ArrayList of Strings representing a section of the melody of a
+ * chorus and containing the notes in the section
+ */
+
+public ArrayList<String> getMelodyData(Score s, int chorusNumber)
+  {
+    MelodyPart melPart = s.getPart(chorusNumber).copy();
+    ArrayList<String> sections = new ArrayList<String>();
+    int numSlots = melPart.getSize();
+    int slotsPerSection = lickgenFrame.getWindowSize() * BEAT;
+    int windowSlide = lickgenFrame.getWindowSlide() * BEAT;
+    //loop through sections
+    for( int window = 0; window < slotsPerSection; window += windowSlide )
+      {
         //for (int i = 0; (i * slotsPerSection) + (window * BEAT) + slotsPerSection <= melPart.getSize(); i++) {
-            for (int i = 0 + (window); i <= numSlots - slotsPerSection; i += slotsPerSection) {
+        for( int i = 0 + (window); i <= numSlots - slotsPerSection; i += slotsPerSection )
+          {
             String measure = Integer.toString(i) + " ";
             int tracker = 0;
             melPart.truncateEndings(true);
             MelodyPart p = melPart.extract(i, i + slotsPerSection - 1);
             melPart.truncateEndings(false);
             //if note is held from previous section, add that first
-            if(melPart.getPrevNote(i) != null && melPart.getPrevNote(i).getRhythmValue() > i - melPart.getPrevIndex(i)) {
+            if( melPart.getPrevNote(i) != null && melPart.getPrevNote(i).getRhythmValue() > i - melPart.getPrevIndex(i) )
+              {
                 Note currentNote = melPart.getPrevNote(i);
                 measure = measure.concat(Integer.toString(currentNote.getPitch()));
                 measure = measure.concat(" ");
                 int len = currentNote.getRhythmValue();
-                len -= (i-melPart.getPrevIndex(i));
+                len -= (i - melPart.getPrevIndex(i));
                 //measure = measure.concat (Integer.toString(i - melPart.getPrevIndex(i)));
                 measure = measure.concat(Integer.toString(len));
                 measure = measure.concat(" ");
                 tracker = p.getNextIndex(0);
-            }
+              }
             //System.out.println("p.size: " + p.getSize());
             //set tracker to index of first note
-            if (p.getNote(0) == null) {
+            if( p.getNote(0) == null )
+              {
                 tracker = p.getNextIndex(0);
-            //truncate notes tied to next measure
-            }
+                //truncate notes tied to next measure
+              }
             int sumOfRhythmValues = 0;
             //add representations of all notes in measure to a string
-            while (tracker < p.getSize()) {
+            while( tracker < p.getSize() )
+              {
                 //System.out.println("Tracker = " + tracker);
                 Note currentNote = p.getNote(tracker);
                 measure = measure.concat(Integer.toString(currentNote.getPitch()));
                 measure = measure.concat(" ");
                 int length = currentNote.getRhythmValue();
-                if (sumOfRhythmValues + length > slotsPerSection) {
+                if( sumOfRhythmValues + length > slotsPerSection )
+                  {
                     length = slotsPerSection - sumOfRhythmValues;
-                }
+                  }
                 sumOfRhythmValues += length;
                 measure = measure.concat(Integer.toString(length));
                 measure = measure.concat(" ");
                 tracker = p.getNextIndex(tracker);
-            }
+              }
             sections.add(measure);
-        }
-        }
-        return sections;
-    }
+          }
+      }
+    return sections;
+  }
 
 
 
@@ -19797,8 +19787,8 @@ public ArrayList<String> getMelodyData(int chorusNumber)
         File[] files = directory.listFiles();
 
         //set up the output stream and output file
-        FileOutputStream fileOut = null;
-        ObjectOutputStream objOut = null;
+        FileOutputStream fileOut;
+        ObjectOutputStream objOut;
 
         File outFile = new File(ImproVisor.getGrammarDirectory(), "HeadData.data");
 
@@ -19830,12 +19820,13 @@ public ArrayList<String> getMelodyData(int chorusNumber)
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-
     }
 
 
-    /* Takes index and finds last index with note in it
+    /**
+     * Takes index and finds last index with note in it
      */
+    
     public int getLastNoteIndex(int slot, MelodyPart melpart) {
         while (melpart.getNote(slot).isRest()) {
             slot = melpart.getPrevIndex(slot);
@@ -19843,12 +19834,14 @@ public ArrayList<String> getMelodyData(int chorusNumber)
         return slot;
     }
 
-    /* Takes indices of two slots which define a segment
+    /**
+     * Takes indices of two slots which define a segment
      * Gets all intervals in the segment
      * returns an array with the min interval in index 0 and max in index 1
      */
+    
     public int[] getIntervals(int startSlot, int endSlot, MelodyPart melpart) {
-        int interval = 0;
+        int interval;
         int minInt = 0;
         int maxInt = 0;
         boolean firstTimeThrough = true;
@@ -19872,7 +19865,6 @@ public ArrayList<String> getMelodyData(int chorusNumber)
             if (interval > maxInt) {
                 maxInt = interval;
             }
-
         }
 
         intervals[0] = minInt;
@@ -19951,6 +19943,7 @@ public ArrayList<String> getMelodyData(int chorusNumber)
    * transferring contents from editor.
    *
    */
+    
   public void setupScore(Score score)
     {
     this.score = score;
@@ -20535,7 +20528,6 @@ private void newVoicingSaveButtonActionPerformed(java.awt.event.ActionEvent evt)
     String high = highRangeTF.getText();
 
 
-
     PitchClass rootClass = PitchClass.getPitchClass(root);
 
     if(root.equals("")) {
@@ -20543,7 +20535,6 @@ private void newVoicingSaveButtonActionPerformed(java.awt.event.ActionEvent evt)
         ErrorLog.log(ErrorLog.WARNING, "No chord root entered.");
 
         return;
-
     }
 
     else if(rootClass == null) {
@@ -20551,7 +20542,6 @@ private void newVoicingSaveButtonActionPerformed(java.awt.event.ActionEvent evt)
     ErrorLog.log(ErrorLog.WARNING, "Invalid chord root: " + root);
 
         return;
-
     }
 
     PitchClass bassClass = PitchClass.getPitchClass(bass);
@@ -20561,7 +20551,6 @@ private void newVoicingSaveButtonActionPerformed(java.awt.event.ActionEvent evt)
         ErrorLog.log(ErrorLog.WARNING, "Invalid bass note: " + bass);
 
         return;
-
     }
 
     NoteSymbol lowNote = NoteSymbol.makeNoteSymbol(low);
@@ -20571,7 +20560,6 @@ private void newVoicingSaveButtonActionPerformed(java.awt.event.ActionEvent evt)
         ErrorLog.log(ErrorLog.WARNING, "No lower range entered.");
 
         return;
-
     }
 
     else if(lowNote == null) {
@@ -20579,7 +20567,6 @@ private void newVoicingSaveButtonActionPerformed(java.awt.event.ActionEvent evt)
         ErrorLog.log(ErrorLog.WARNING, "Invalid lower range: " + low);
 
         return;
-
     }
 
     NoteSymbol highNote = NoteSymbol.makeNoteSymbol(high);
@@ -20589,7 +20576,6 @@ private void newVoicingSaveButtonActionPerformed(java.awt.event.ActionEvent evt)
        ErrorLog.log(ErrorLog.WARNING, "No higher range entered.");
 
         return;
-
     }
 
     else if(highNote == null) {
@@ -20597,12 +20583,9 @@ private void newVoicingSaveButtonActionPerformed(java.awt.event.ActionEvent evt)
         ErrorLog.log(ErrorLog.WARNING, "Invalid higher range: " + high);
 
         return;
-
     }
 
     voicingTableModel.setChordRoot(root,bass,lowNote,highNote);
-
-
 }//GEN-LAST:event_newVoicingSaveButtonActionPerformed
 
 private void newVoicingButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newVoicingButtonActionPerformed
@@ -20615,7 +20598,6 @@ private void newVoicingButtonActionPerformed(java.awt.event.ActionEvent evt) {//
         }
 
     showNewVoicingDialog();
-
 }//GEN-LAST:event_newVoicingButtonActionPerformed
 
 private void newVoicingTypeCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newVoicingTypeCBActionPerformed
@@ -20633,7 +20615,6 @@ private void voicingDeleteButtonActionPerformed(java.awt.event.ActionEvent evt) 
     }
 
     showDeleteVoicingDialog();
-
 }//GEN-LAST:event_voicingDeleteButtonActionPerformed
 
 private void deleteVoicingOKButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteVoicingOKButtonActionPerformed
@@ -20668,7 +20649,6 @@ private void deleteVoicingOKButtonActionPerformed(java.awt.event.ActionEvent evt
     saveAdviceActionPerformed(null);
     buildVoicingTable();
     deleteVoicingDialog.setVisible(false);
-
 }//GEN-LAST:event_deleteVoicingOKButtonActionPerformed
 
 private void deleteVoicingCancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteVoicingCancelButtonActionPerformed
@@ -20794,6 +20774,7 @@ public void populateChordSelMenu()
 
         JMenuItem leaf = new JMenuItem(chord);
         subMenu.add(leaf);
+        
         leaf.addActionListener(new java.awt.event.ActionListener()
           {
           public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -21009,15 +20990,6 @@ public void keyboardPlayback(Chord currentChord, int tab, int slotInPlayback, in
             setPresentChordDisplay(currentChordName);
             setFutureChordDisplay(future);
         }
-
-        // the current slot number never seems to EXACTLY equal the total
-        // slot number, but is usually (experimentally determined) within 20
-//        if (totalSlots - slot < 20 )
-//        {
-//            keyboard.setPlayback(false);
-//            buildVoicingTable();
-//        }
-
     }
     // End code for keyboard playback.
 }
@@ -21045,9 +21017,7 @@ public int findChordinTable(String currentChord)
             selectedRow = i;
             break;
         }
-
     }
-
     return selectedRow;
 }
 
@@ -21061,7 +21031,7 @@ public int findChordinTable(String currentChord)
  */
 public int findVoicinginTable(int chordRow, String voicing, String currentChord)
 {
-    int selectedRow = chordRow;
+    int selectedRow;
 
     for (int i=chordRow; i<voicingTable.getRowCount(); i++)
     {
@@ -21080,9 +21050,7 @@ public int findVoicinginTable(int chordRow, String voicing, String currentChord)
             PitchClass v2Pitch = PitchClass.getPitchClass(v2.first().toString());
 
             String pitch1 = v1Pitch.toString();
-            pitch1 = keyboard.nameToBass(pitch1);
             String pitch2 = v2Pitch.toString();
-            pitch2 = keyboard.nameToBass(pitch2);
 
             String uCell = cell;
             String dCell = cell;
@@ -21119,7 +21087,6 @@ public int findVoicinginTable(int chordRow, String voicing, String currentChord)
     ErrorLog.log(ErrorLog.WARNING, "Voicing not found in table!");
     selectedRow = chordRow;
     return selectedRow;
-
 }
 
 
@@ -21224,7 +21191,6 @@ public void openKeyboard()
 
     midiSynth.registerReceiver(voicingInput);
     keyboard.setVisible(true);
-
 }
 
 public void closeKeyboard(){
@@ -21296,7 +21262,6 @@ public Polylist voicingToList(String v)
     Polylist L = selVoicing;
 
     return L;
-
 }
 
 /**
@@ -21405,8 +21370,6 @@ private void voicingSequenceRemoveButtonActionPerformed(java.awt.event.ActionEve
         voicingSequenceList.setSelectedIndex(newindex);
         voicingSequenceListModel.remove(index);
     }
-
-
 }//GEN-LAST:event_voicingSequenceRemoveButtonActionPerformed
 
 /**
@@ -21435,7 +21398,6 @@ private void voicingSequenceUpArrowMouseClicked(java.awt.event.MouseEvent evt) {
     voicingSequenceListModel.add(index, j);
 
     voicingSequenceList.setSelectedIndex(newindex);
-
 }
 
 /**
@@ -21463,7 +21425,6 @@ private void voicingSequenceDownArrowMouseClicked(java.awt.event.MouseEvent evt)
     voicingSequenceListModel.add(newindex, i);
 
     voicingSequenceList.setSelectedIndex(newindex);
-
 }//GEN-LAST:event_voicingSequenceDownArrowMouseClicked
 
 /**
@@ -21609,7 +21570,6 @@ private void displayVoicingfromList()
 private void voicingSequenceListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_voicingSequenceListValueChanged
 
     displayVoicingfromList();
-
 }//GEN-LAST:event_voicingSequenceListValueChanged
 
 public void setFutureChordDisplay(String chords)
@@ -21718,13 +21678,11 @@ private void chordRootTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     }
     keyboard.setBass(note,bass);
     buildVoicingTable();
-
 }//GEN-LAST:event_chordRootTFActionPerformed
 
 private void voicingEntryTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_voicingEntryTFActionPerformed
 
     keyboard.showVoicingOnKeyboard(voicingEntryTF.getText());
-
 }//GEN-LAST:event_voicingEntryTFActionPerformed
 
 private void buildTableButtonKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_buildTableButtonKeyPressed
@@ -21738,7 +21696,6 @@ private void buildTableButtonKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRS
             voicingFrameKeyPressed(evt);
             break;
     }
-
 }//GEN-LAST:event_buildTableButtonKeyPressed
 
 private void pianoKeyboardButtonKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_pianoKeyboardButtonKeyPressed
@@ -21752,7 +21709,6 @@ private void pianoKeyboardButtonKeyPressed(java.awt.event.KeyEvent evt) {//GEN-F
             voicingFrameKeyPressed(evt);
             break;
     }
-
 }//GEN-LAST:event_pianoKeyboardButtonKeyPressed
 
 private void playVoicingButtonKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_playVoicingButtonKeyPressed
@@ -21766,7 +21722,6 @@ private void playVoicingButtonKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIR
             voicingFrameKeyPressed(evt);
             break;
     }
-
 }//GEN-LAST:event_playVoicingButtonKeyPressed
 
 private void insertVoicingButtonKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_insertVoicingButtonKeyPressed
@@ -21780,7 +21735,6 @@ private void insertVoicingButtonKeyPressed(java.awt.event.KeyEvent evt) {//GEN-F
             voicingFrameKeyPressed(evt);
             break;
     }
-
 }//GEN-LAST:event_insertVoicingButtonKeyPressed
 
 private void newVoicingButtonKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_newVoicingButtonKeyPressed
@@ -21794,7 +21748,6 @@ private void newVoicingButtonKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRS
             voicingFrameKeyPressed(evt);
             break;
     }
-
 }//GEN-LAST:event_newVoicingButtonKeyPressed
 
 private void voicingDeleteButtonKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_voicingDeleteButtonKeyPressed
@@ -21808,7 +21761,6 @@ private void voicingDeleteButtonKeyPressed(java.awt.event.KeyEvent evt) {//GEN-F
             voicingFrameKeyPressed(evt);
             break;
     }
-
 }
 
 private void voicingSequenceAddButtonKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_voicingSequenceAddButtonKeyPressed
@@ -21822,7 +21774,6 @@ private void voicingSequenceAddButtonKeyPressed(java.awt.event.KeyEvent evt) {//
             voicingFrameKeyPressed(evt);
             break;
     }
-
 }//GEN-LAST:event_voicingSequenceAddButtonKeyPressed
 
 private void voicingSequenceRemoveButtonKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_voicingSequenceRemoveButtonKeyPressed
@@ -21836,7 +21787,6 @@ private void voicingSequenceRemoveButtonKeyPressed(java.awt.event.KeyEvent evt) 
             voicingFrameKeyPressed(evt);
             break;
     }
-
 }//GEN-LAST:event_voicingSequenceRemoveButtonKeyPressed
 
 private void voicingSequencePlayButtonKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_voicingSequencePlayButtonKeyPressed
@@ -21850,7 +21800,6 @@ private void voicingSequencePlayButtonKeyPressed(java.awt.event.KeyEvent evt) {/
             voicingFrameKeyPressed(evt);
             break;
     }
-
 }//GEN-LAST:event_voicingSequencePlayButtonKeyPressed
 
 private void voicingSequenceListKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_voicingSequenceListKeyPressed
@@ -21861,7 +21810,6 @@ private void voicingSequenceListKeyPressed(java.awt.event.KeyEvent evt) {//GEN-F
             voicingFrameKeyPressed(evt);
             break;
     }
-
 }//GEN-LAST:event_voicingSequenceListKeyPressed
 
 private void voicingTableKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_voicingTableKeyPressed
@@ -21872,7 +21820,6 @@ private void voicingTableKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:ev
             voicingFrameKeyPressed(evt);
             break;
     }
-
 }//GEN-LAST:event_voicingTableKeyPressed
 
 private void bassNoteTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bassNoteTFActionPerformed
@@ -21904,7 +21851,6 @@ private void bassNoteTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
 
     keyboard.setBass(note, bass);
     buildVoicingTable();
-
 }//GEN-LAST:event_bassNoteTFActionPerformed
 
 private void rootEqualBassCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rootEqualBassCheckboxActionPerformed
@@ -21915,7 +21861,6 @@ private void rootEqualBassCheckboxActionPerformed(java.awt.event.ActionEvent evt
         chordRootTF.setText(bass);
         buildVoicingTable();
     }
-
 }//GEN-LAST:event_rootEqualBassCheckboxActionPerformed
 
 private void rootEqualBassCheckboxKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_rootEqualBassCheckboxKeyPressed
@@ -21926,7 +21871,6 @@ private void rootEqualBassCheckboxKeyPressed(java.awt.event.KeyEvent evt) {//GEN
             voicingFrameKeyPressed(evt);
             break;
     }
-
 }//GEN-LAST:event_rootEqualBassCheckboxKeyPressed
 
 private void pianoKeyboardMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pianoKeyboardMIActionPerformed
@@ -21970,7 +21914,6 @@ public void revertGrammarToBackup()
     }
 
     refreshGrammarEditor();
-
 }
 
 public void refreshGrammarEditor()
@@ -21998,7 +21941,6 @@ private void adjustSelection()
         stave.setSelectionEnd(BEAT*(1 + stave.getSelectionEnd()/BEAT) - 1);
       }
   }
-
 
 
 /**
@@ -22193,136 +22135,6 @@ public void originalGenerate(LickGen lickgen, int improviseStartSlot, int improv
     if ( enableRecording )
         enableRecording(); // TRIAL
   }
-
-//public MelodyPart generate(int improviseStartSlot, int improviseEndSlot)
-//  {
-//    return generate(lickgen, improviseStartSlot, improviseEndSlot);
-//  }
-
-///**
-// * New version of generate
-// * @param lickgen
-// * @param improviseStartSlot
-// * @param improviseEndSlot
-// * @return
-// */
-//
-//public MelodyPart generate(LickGen lickgen, int improviseStartSlot, int improviseEndSlot)
-//{
-//    //System.out.println("generate for " + improviseStartSlot + " to " + improviseEndSlot);
-//    MelodyPart lick = null;
-//
-//    saveConstructionLineState = showConstructionLinesMI.isSelected();
-//    // Don't construction show lines while generating
-//    setShowConstructionLinesAndBoxes(false);
-//
-//    setMode(Mode.GENERATING);
-////
-////    adjustSelection();
-////
-////    Stave stave = getCurrentStave();
-//
-////    getCurrentStave().setSelection(improviseStartSlot, improviseEndSlot);
-//
-//    totalSlots = improviseEndSlot - improviseStartSlot + 1;
-//
-//    //int beatsRequested = totalSlots/BEAT;
-//
-//    //System.out.println("\ngenerate: " + improviseStartSlot + " to " + improviseEndSlot + ", requesting " + beatsRequested + " beats");
-//
-//    //verifyTriageFields();
-//
-//    Polylist rhythm = null;
-//
-//    boolean useOutlines = lickgenFrame.useSoloistSelected();
-//
-//    if( useOutlines )
-//      {
-//        // Probably not used much, because outlines/soloist only apply
-//        // to specail case when a soloist file is present.
-//        // This should be checked for and disabled if not present.
-//        
-//        // was new lickgenFrame.fillMelody(BEAT, rhythm, chordProg, 0);
-//        // was commented out:
-//        lickgen.getFillMelodyParameters(minPitch,
-//                                        maxPitch,
-//                                        minInterval,
-//                                        maxInterval,
-//                                        BEAT,
-//                                        leapProb,
-//                                        chordProg,
-//                                        0,
-//                                        avoidRepeats);
-//
-//        lick = lickgen.generateSoloFromOutline(totalSlots);
-//        if( lick != null )
-//          {
-//            rhythm = lickgen.getRhythmFromSoloist(); //get the abstract melody for display
-//            if( lickgenFrame.useHeadSelected() )
-//              {
-//                adjustLickToHead(lick);
-//              }
-//            putLick(lick);
-//          }
-//      }
-//
-//    // If the outline is unable to generate a solo, which might
-//    // happen if there are no outlines of the correct length or the soloist
-//    // file was not correctly loaded, use the grammar.
-//
-//    if( rhythm == null || !useOutlines )
-//      {
-//        // useOutlines is typically false, so this will be called
-//        
-//        if( lickgenFrame.getUseGrammar() )
-//          {
-//            //System.out.append("generate " + totalSlots + " from " + improviseStartSlot);
-//            rhythm = lickgen.generateRhythmFromGrammar(improviseStartSlot, totalSlots);
-//          }
-//        else
-//          {
-//            rhythm = lickgen.generateRandomRhythm(totalSlots,
-//                                                  lickgenFrame.getMinDuration(),
-//                                                  lickgenFrame.getMaxDuration(),
-//                                                  lickgenFrame.getRestProb());
-//          }
-//
-//        //System.out.println("\nrhythm at " + improviseStartSlot + " to " + improviseEndSlot + " = " + rhythm);
-//
-//        lick = generateLick(rhythm, improviseStartSlot, improviseEndSlot);
-//        //System.out.println("generated lick at " + improviseStartSlot + " to " + improviseEndSlot + " = " + lick);
-//        //playCurrentSelection(false, 0, PlayScoreCommand.USEDRUMS, "putLick " + improviseStartSlot + " - " + improviseEndSlot);
-//
-//        // Critical point for recurrent generation
-//        if( lick != null )
-//          {
-//          // duplicates other functionality getCurrentMelodyPart().pasteOver(lick, improviseStartSlot);
-//          repaint();
-//          }
-//        else
-//          {
-//            //debug System.out.println("panic: generated null improLick");
-//            setMode(Mode.GENERATION_FAILED);
-//            return lick;
-//          }
-//     }
-//
-//    if( rhythm != null )
-//      {
-//        lickgenFrame.setRhythmFieldText(Formatting.prettyFormat(rhythm));
-//      }
-////
-////    if( oneSlotWasSelected )
-////      {
-////        stave.setSelection(selectionStart);
-////      }
-//
-//    setMode(Mode.GENERATED);
-//
-//    //enableRecording(); // TRIAL Commented out for autoImprovisation, reconsider
-//
-//    return lick;
-//  }
 
 
 /**
