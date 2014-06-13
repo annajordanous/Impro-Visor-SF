@@ -493,6 +493,25 @@
     (substitute)
     )
 (chord
+    (name CNote)
+    (pronounce C note)
+    (key c)
+    (family note)
+    (spell c8)
+    (color)
+    (priority c8)
+    (approach )
+    (voicings
+        (all (type closed)(notes c8)(extension))
+        (all (type open)(notes c8)(extension))
+        )
+    (extensions)
+    (scales
+        )
+    (avoid)
+    (substitute)
+    )
+(chord
     (name CM)
     (pronounce C major)
     (key c)
