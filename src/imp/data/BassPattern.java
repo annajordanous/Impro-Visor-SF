@@ -653,12 +653,15 @@ public LinkedList<Object> applyRules(ChordSymbol chord, ChordSymbol nextChord,
    * @param notes     a Polylist of NoteSymbol objects
    * @return a NoteSymbol at the proper index interval
    */
-  public static NoteSymbol getInterval(int interval, Polylist notes)
+public static NoteSymbol getInterval(int interval, Polylist notes)
     {
+    if( interval > 7 )
+        {
+        interval = interval - 7;
+        }
     interval = (interval % 8 - 1) % notes.length();// FIX!
     return (NoteSymbol)notes.nth(interval);
     }
-
   
   /**
    * Returns the notes that are a certaing index interval away from a given
