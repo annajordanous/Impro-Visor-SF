@@ -56,16 +56,15 @@ private ArrayList<String> durations;
  */
 private static String ruleTypes[] =
   {
-  "X", "1", "2", "3", "4", "5", "6", "7",  "R", "9", "V", "11"
+  "X", "R", "V"
   };
-
 
 // indices into the ruleTypes array
 private static final int STRIKE = 0;
 
-private static final int REST = 8;
+private static final int REST = 1;
 
-private static final int VOLUME = 10;
+private static final int VOLUME = 2;
 
 /**
  * array containing ChordPattern keywords
@@ -104,12 +103,6 @@ private ChordPattern()
  * @return the ChordPattern created from the Polylist, or null if there
  *         was a problem
  */
-/**
- * A factory for creating a ChordPattern from a Polylist.
- * @param L         a Polylist containing ChordPattern information
- * @return the ChordPattern created from the Polylist, or null if there
- *         was a problem
- */
 public static ChordPattern makeChordPattern(Polylist L)
   {
     // Example of L:
@@ -136,36 +129,9 @@ public static ChordPattern makeChordPattern(Polylist L)
         {
         while( item.nonEmpty() )
           {
-              Object entry = item.first();
-              item = item.rest();
-              
-              // check to see if it is an S-expression
-              if( entry instanceof Polylist )
-              {
-                  //e.g. (X 5 4)
-                  Polylist plist = (Polylist)entry;
-                  int len = plist.length();
-                  
-                  // make sure it has 3 or more elements for a valid expression
-                  if( len >= 3 && plist.first().equals(ruleTypes[STRIKE]) )
-                  {
-                      String rule = plist.second().toString();
-                      //System.out.println(rule);
-                      String duration = plist.third().toString();
-                      //System.out.println(duration);
-                      cp.addRule(rule, duration);
-                  }
-                  else
-                  {
-                      cp.setError("unrecognized " + entry + " in chord pattern: " + original);
-                      return cp;
-                  }
-              }
-          
-          // for the rest of the rules
-          else if( entry instanceof String )
+          if( item.first() instanceof String )
             {
-          String s = (String)entry;
+          String s = (String)item.first();
 
           String rule = s.substring(0, 1);
           String dur = s.substring(1);
@@ -186,7 +152,7 @@ public static ChordPattern makeChordPattern(Polylist L)
                   return cp;
             }
           
-          //item = item.rest(); commented out because it is now done earlier
+          item = item.rest();
           }
           else
             {
@@ -276,7 +242,7 @@ public int getDuration()
 
 
 /**
- * Realizes the Pattern into a sequenceable Polylist.
+ * Realizes the Pattern into a sequencable Polylist.
  * @param chord     the ChordSymbol to voice
  * @param lastChord a Polylist containing the last chord voicing
  * @return A Polylist that can be sequenced.  This Polylist has two elements.
@@ -354,68 +320,14 @@ public ChordPatternVoiced applyRules(ChordSymbol chord, Polylist lastChord)
         volume = Integer.parseInt(duration);
         break;
         }
-      
-      // default case handles if the rule is an interval from the root
-      default:
-        {
-        if( rule > 0 && rule < 8 || rule == 9 || rule == 11 ) 
-            {
-                
-            durationMelody.addNote(new Rest(Duration.getDuration(duration)));
-            
-            // first, get the note that is the interval from the root
-            Polylist scales = chordForm.getScales();
-            
-            Polylist scale = (Polylist) scales.first();
-            NoteSymbol tonic = NoteSymbol.makeNoteSymbol( (String) scale.first() );
-            String scaleType = Advisor.concatListWithSpaces(scale.rest());
-            ScaleForm scaleForm = Advisor.getScale(scaleType);
-            
-            Polylist tones = scaleForm.getSpell(tonic);
-            tones = NoteSymbol.transposeNoteSymbolList(tones, rise);
-
-            tones = tones.reverse().rest().reverse();
-            //System.out.println("The transposed notes are: " + tones);
-            
-            // with the note symbol, we can get the chord base, which will
-            // be used for the chord
-            NoteSymbol noteSymbol = BassPattern.getInterval(rule, tones);
-            PitchClass pitchClass = noteSymbol.getPitchClass();
-            String noteBass = pitchClass.getChordBase();
-            
-            String chordName = (String)noteBass.concat("Note");
-            Chord newChord = new Chord(chordName);
-            
-            //System.out.println("The new chord is " + newChord);
-            
-            Polylist voicing = findVoicing(newChord.getChordSymbol(), lastChord, style);
-            
-            // then add the voicing of the chord to the chord line
-            if( voicing == null )
-                {
-                voicing = Polylist.nil;
-                }
-            
-            //System.out.println("The voicing for this chord is: " + voicing);
-                        
-            chordLine.add(voicing.cons(new VolumeSymbol(volume)));
-            lastChord = voicing;
-            
-            //System.out.println("The duration melody is: " + durationMelody);
-            //System.out.println("The chord line is: " + chordLine);
-            }
-        break;
-        }
       }
     }
-  //System.out.println("The chord line is: " + chordLine.toString() );
-  //System.out.println("The duration melody is " + durationMelody.toString() );
+
   ChordPatternVoiced result = new ChordPatternVoiced(chordLine, durationMelody);
 
   //System.out.println("applyRules: Chord = " + chord + ", rules = " + rules + ", durations = " + durations + ", result (chordline, durations) = " + result);
   return result;
   }
-
 
 
 /**
@@ -905,25 +817,14 @@ public String forGenerator()
   
   for( int i = 0; i < durations.size(); i++ )
     {
-        if( rules.get(i) > 0 && rules.get(i) < 8 || rules.get(i) == 9 || rules.get(i) == 11 )
-        {
-            String nextNote = ruleTypes[rules.get(i)];
-            rule.append("(X ");
-            rule.append(nextNote);
-            rule.append(" ");
-            rule.append(durations.get(i));
-            rule.append(") ");
-        }
-        else
-        {
-            String nextNote = ruleTypes[rules.get(i)];
-            rule.append(nextNote);
-            rule.append(durations.get(i));
-            rule.append(" ");
-        }
+    String nextNote = ruleTypes[rules.get(i)];
+    rule.append(nextNote);
+    rule.append(durations.get(i));
+    rule.append(" ");
     }
   return rule.toString();
   }
+
 
 /**
  * Get the "push" amount for this pattern, in slots
