@@ -270,10 +270,13 @@ public Integer integer;
             in.close();
         } catch (IOException ex) {
            notate.setLickGenStatus("There was an IO exception reading the soloist file: " + soloistFile + " " + ex);
+           soloistLoaded = false;
         } catch (ClassNotFoundException ex) {
            notate.setLickGenStatus("There was a class-not-found exception reading the soloist file: " + soloistFile + " " + ex);
+           soloistLoaded = false;
         } catch (Exception ex) {
            notate.setLickGenStatus("There was an exception reading the soloist file: " + soloistFile + " " + ex);
+           soloistLoaded = false;
         }
     }
     
@@ -3562,4 +3565,9 @@ private int getRandomNote(int pitch,
     public ArrayList<Score> getHeadData() {
         return headData;
     }
+    
+    public boolean soloistIsLoaded()
+      {
+        return soloistLoaded;
+      }
 }

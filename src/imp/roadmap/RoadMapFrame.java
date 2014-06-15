@@ -3264,6 +3264,8 @@ public void setVolumeSlider(int volume)
                         Rectangle viewport = getRoadMapScrollPane().getViewport().getViewRect();
                         //System.out.println("checkpoint 22222");
                         
+                        if( viewport != null )
+                        {
                         Boolean temp = viewport.contains(playline);
                         //System.out.println(temp + "");
                         
@@ -3307,6 +3309,7 @@ public void setVolumeSlider(int volume)
                         {
                             setCurrentScrollPosition(viewport);
                             //System.out.println("checkpoint finale");
+                        }
                         }
                         //*/
                         roadMapPanel.draw();

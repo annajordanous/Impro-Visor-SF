@@ -98,7 +98,7 @@ void start(int countInOffset)
   {
     snapTo = BEAT/notate.getRecordSnapValue();
     this.sequencer = notate.getSequencer();
-    if( sequencer.getSequence() == null )
+    if( sequencer == null || sequencer.getSequence() == null )
       {
         return;
       }
