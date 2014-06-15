@@ -7,7 +7,7 @@
 (key 0)
 (tempo 162.0)
 (volume 80)
-(playback-transpose -2)
+(playback-transpose 0)
 (chord-font-size 16)
 (bass-instrument 33)
 (bass-volume 46)

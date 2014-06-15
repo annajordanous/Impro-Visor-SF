@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<install4j version="5.1.6" transformSequenceNumber="4">
+<install4j version="5.1.11" transformSequenceNumber="4">
   <directoryPresets config="." />
   <application name="Impro-Visor" distributionSourceDir="" applicationId="6140-2535-4985-4395" mediaDir="../../Desktop/Impro-Visor Release6.0" mediaFilePattern="${compiler:sys.shortName}_${compiler:sys.platform}_${compiler:sys.version}" compression="6" lzmaCompression="false" pack200Compression="false" excludeSignedFromPacking="true" commonExternalFiles="false" createMd5Sums="true" shrinkRuntime="true" shortName="Impro-Visor" publisher="Robert Keller" publisherWeb="http://www.cs.hmc.edu/~keller/jazz/improvisor" version="6.0" allPathsRelative="true" backupOnSave="false" autoSave="false" convertDotsToUnderscores="true" macSignature="????" installerName="" javaMinVersion="1.6" javaMaxVersion="" allowBetaVM="true" jdkMode="runtimeJre" jdkName="">
     <languages skipLanguageSelection="false" languageSelectionInPrincipalLanguage="false">
-      <principalLanguage id="en" customLocalizationFile="" />
+      <principalLanguage id="en" customLocalizationFile="../impro-visor-aug-08-2013/src/imp/lang/Lang_en.properties" />
       <additionalLanguages />
     </languages>
     <searchSequence>
@@ -19,18 +19,18 @@
     <filesets />
     <roots />
     <mountPoints>
-      <mountPoint id="31" root="" location="" mode="755" />
+      <mountPoint id="87" root="" location="" mode="755" />
     </mountPoints>
     <entries>
-      <dirEntry mountPoint="31" file="./improvisor600" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" entryMode="direct" subDirectory="improvisor600" excludeSuffixes="" dirMode="755" overrideDirMode="false">
+      <dirEntry mountPoint="87" file="./improvisor600" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" entryMode="direct" subDirectory="improvisor600" excludeSuffixes="" dirMode="755" overrideDirMode="false">
         <exclude />
       </dirEntry>
     </entries>
     <components />
   </files>
   <launchers>
-    <launcher name="impro-visor" id="22" customizedId="" external="false" excludeFromMenu="false" unixMode="755" menuName="" icnsFile="../impro-visor-aug-06b-2013/packaging/ImproVisor.icns" customMacBundleIdentifier="false" macBundleIdentifier="" swtApp="false" fileset="" macBundleBinary="JavaApplicationStub" addMacEntitlements="false" macEntitlementsFile="">
-      <executable name="impro-visor" type="1" iconSet="true" iconFile="../impro-visor-aug-06b-2013/packaging/ImproVisor.ico" executableDir="." redirectStderr="true" stderrFile="error.log" stderrMode="overwrite" redirectStdout="false" stdoutFile="output.log" stdoutMode="overwrite" failOnStderrOutput="true" executableMode="1" changeWorkingDirectory="true" workingDirectory="." singleInstance="false" serviceStartType="2" serviceDependencies="" serviceDescription="" jreLocation="" executionLevel="asInvoker" checkConsoleParameter="false" globalSingleInstance="false">
+    <launcher name="impro-visor" id="22" customizedId="" external="false" excludeFromMenu="false" unixMode="755" menuName="" icnsFile="../impro-visor-aug-08-2013/packaging/ImproVisor.icns" customMacBundleIdentifier="false" macBundleIdentifier="" swtApp="false" fileset="" macBundleBinary="JavaApplicationStub" addMacEntitlements="false" macEntitlementsFile="">
+      <executable name="impro-visor" type="1" iconSet="true" iconFile="../impro-visor-aug-08-2013/packaging/ImproVisor.ico" executableDir="." redirectStderr="true" stderrFile="error.log" stderrMode="overwrite" redirectStdout="false" stdoutFile="output.log" stdoutMode="overwrite" failOnStderrOutput="true" executableMode="1" changeWorkingDirectory="true" workingDirectory="." singleInstance="false" serviceStartType="2" serviceDependencies="" serviceDescription="" jreLocation="" executionLevel="asInvoker" checkConsoleParameter="false" globalSingleInstance="false">
         <versionInfo include="false" fileVersion="" fileDescription="" legalCopyright="" internalName="" productName="" />
       </executable>
       <splashScreen show="false" autoOff="true" alwaysOnTop="true" width="0" height="0" bitmapFile="" java6SplashScreen="false">
@@ -47,8 +47,8 @@
       </java>
       <includedFiles />
       <unextractableFiles />
-      <vmOptionsFile mode="template" overwriteMode="0" fileMode="644">
-        <content />
+      <vmOptionsFile mode="content" overwriteMode="0" fileMode="644">
+        <content>-Duser.language=en # en for english, fr for french</content>
       </vmOptionsFile>
       <customScript mode="1" file="">
         <content />
@@ -57,7 +57,7 @@
         <content />
       </infoPlist>
       <iconImageFiles>
-        <file path="../impro-visor-aug-06b-2013/packaging/Impro-Visor32.png" />
+        <file path="../impro-visor-aug-08-2013/packaging/Impro-Visor32.png" />
       </iconImageFiles>
     </launcher>
   </launchers>
@@ -352,7 +352,7 @@
     </applications>
   </installerGui>
   <mediaSets>
-    <macosFolder name="Mac OS X Folder" id="24" customizedId="" mediaFileName="" installDir="Impro-Visor6.0" overridePrincipalLanguage="false" jreBitType="all" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" useLegacyMediaFileIds="false" legacyMediaFileIds="" includedJRE="" manualJREEntry="false" bundleType="1" jreURL="" jreShared="false" directDownload="false" installOnlyIfNecessary="false" appleJre="true" customInstallBaseDir="" contentFilesType="1" downloadURL="" signLaunchers="false">
+    <macosFolder name="Mac OS X Folder" id="24" customizedId="" mediaFileName="" installDir="Impro-Visor6.0" overridePrincipalLanguage="false" jreBitType="all" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" useLegacyMediaFileIds="false" legacyMediaFileIds="" includedJRE="" manualJREEntry="false" bundleType="1" jreURL="" jreShared="false" directDownload="false" installOnlyIfNecessary="false" appleJre="true" requiredVmIdPrefix="" customInstallBaseDir="" contentFilesType="1" downloadURL="" signLaunchers="false">
       <excludedLaunchers />
       <excludedBeans />
       <overriddenPrincipalLanguage id="en" customLocalizationFile="" />
