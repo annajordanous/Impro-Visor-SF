@@ -3481,6 +3481,7 @@ getAbstractMelody();
           }
 
         lickgen.loadGrammar(notate.getGrammarFileName());
+        updateUseSoloist();
         Grammar g = lickgen.getGrammar();
         Polylist rules = g.getRules();
 
@@ -4952,6 +4953,7 @@ private void triageAndGenerate(int number)
 
                         private void reloadGrammarMI1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reloadGrammarMI1ActionPerformed
                             notate.loadGrammar();
+                            updateUseSoloist();
                         }//GEN-LAST:event_reloadGrammarMI1ActionPerformed
 
                         private void toCriticMI1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toCriticMI1ActionPerformed
@@ -5050,9 +5052,21 @@ public boolean getUseGrammar()
 
 private void useSoloistCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_useSoloistCheckBoxActionPerformed
   {//GEN-HEADEREND:event_useSoloistCheckBoxActionPerformed
-    // TODO add your handling code here:
+      updateUseSoloist();
   }//GEN-LAST:event_useSoloistCheckBoxActionPerformed
 
+private void updateUseSoloist()
+  {
+    if( useSoloistCheckBox.isSelected() && lickgen.soloistIsLoaded() )
+      {
+        notate.setLickGenStatus("Using Soloist file");
+      }
+    else
+      {
+        useSoloistCheckBox.setSelected(false);
+        notate.setLickGenStatus("Non-Matching Soloist file or No Soloist file exists");        
+      }    
+  }
     private void criticGradeTextFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_criticGradeTextFieldFocusLost
         // Set lower limit for criticGrade filter
         String gradeField = criticGradeTextField.getText();

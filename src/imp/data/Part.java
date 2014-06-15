@@ -853,6 +853,7 @@ public void newSetUnit(int unitIndex, Unit unit)
       {
         unit = unit.copy();
         unit.setRhythmValue(size - unitIndex);
+        nextUnitStart = size;
       }
 
     // If this unit overlays one or more units, set them to null.
