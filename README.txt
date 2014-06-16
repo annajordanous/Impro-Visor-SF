@@ -79,7 +79,7 @@ I am pleased to acknowledge contributions from the following developers:
  Zachary Merritt, Xanda Schofield, August Toman-Yih, David Halpern,
  Jack Davison, Audrey Musselman-Brown, Kevin Choi, Brian Howell, 
  Caitlin Chen, Nicolas Chung, Anna Turner, Hayden Blauzvern, 
- Nate Tarrh, Brian Kwak, Willem Engen, Eric Chicot
+ Nate Tarrh, Brian Kwak, Kelly Lee, Willem Engen, Eric Chicot
 
 We hope you enjoy using the program. 
 
