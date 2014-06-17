@@ -35,12 +35,12 @@ import polya.Polylist;
  * Impro-Visor main class
  *
  * @author Stephen Jones, Aaron Wolin, Robert Keller
- * @version 6.0
+ * @version 6.1
  */
 
 public class ImproVisor implements Constants {
     
-    public static final String version = "6.0";
+    public static final String version = "6.1";
     
     private static boolean firstTime = false;
     
