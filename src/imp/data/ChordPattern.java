@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2014 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,7 +34,7 @@ import polya.PolylistEnum;
  * needed to realize that rhythmic pattern with voice leading according
  * to a chord progression.
  * @see Style
- * @author Stephen Jones
+ * @author Stephen Jones, Robert Keller, Carli Lessard
  */
 
 public class ChordPattern
@@ -43,7 +43,7 @@ public class ChordPattern
 /**
  * the rules for the pattern, stored as indices into the ruleTypes array
  */
-private ArrayList<Integer> rules;
+private ArrayList<String> rules;
 
 /**
  * the durations for the pattern, stored as leadsheet representation of
@@ -56,7 +56,7 @@ private ArrayList<String> durations;
  */
 private static String ruleTypes[] =
   {
-  "X", "R", "V"
+  "X", "R", "V", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"
   };
 
 // indices into the ruleTypes array
@@ -65,6 +65,12 @@ private static final int STRIKE = 0;
 private static final int REST = 1;
 
 private static final int VOLUME = 2;
+
+private static final String STRIKE_STRING = ruleTypes[STRIKE];
+
+private static final String REST_STRING = ruleTypes[REST];
+
+private static final String VOLUME_STRING = ruleTypes[VOLUME];
 
 /**
  * array containing ChordPattern keywords
@@ -92,7 +98,7 @@ private int pushAmount = 0; // push amount, in slots
  */
 private ChordPattern()
   {
-  rules = new ArrayList<Integer>();
+  rules = new ArrayList<String>();
   durations = new ArrayList<String>();
   }
 
@@ -129,9 +135,12 @@ public static ChordPattern makeChordPattern(Polylist L)
         {
         while( item.nonEmpty() )
           {
-          if( item.first() instanceof String )
+          Object entry = item.first();
+          item = item.rest();
+          
+          if( entry instanceof String )
             {
-          String s = (String)item.first();
+          String s = (String)entry;
 
           String rule = s.substring(0, 1);
           String dur = s.substring(1);
@@ -152,8 +161,32 @@ public static ChordPattern makeChordPattern(Polylist L)
                   return cp;
             }
           
-          item = item.rest();
+          //item = item.rest();
           }
+          
+                        // check to see if it is an S-expression
+          else if( entry instanceof Polylist )
+          {
+              //e.g. (X 5 4)
+              Polylist plist = (Polylist)entry;
+              int len = plist.length();
+                  
+              // make sure it has 3 or more elements for a valid expression
+              if( len >= 3 && plist.first().equals(ruleTypes[STRIKE]) )
+              {
+                  String rule = plist.second().toString();
+                  //System.out.println(rule);
+                  String duration = plist.third().toString();
+                  //System.out.println(duration);
+                  cp.addRule(rule, duration);
+              }
+              else
+              {
+                  cp.setError("unrecognized " + entry + " in chord pattern: " + original);
+                  return cp;
+              }
+          }
+          
           else
             {
                   cp.setError("Unrecognized " + item.first()
@@ -209,7 +242,7 @@ public static ChordPattern makeChordPattern(Polylist L)
 private void addRule(String rule, String duration)
   {
 
-    rules.add(Leadsheet.lookup(rule, ruleTypes));
+    rules.add(rule);
     durations.add(duration);
   }
 
@@ -223,14 +256,14 @@ public int getDuration()
   {
     int duration = 0;
     
-    Iterator<Integer> r = rules.iterator();
+    Iterator<String> r = rules.iterator();
     Iterator<String> d = durations.iterator();
     
     while( r.hasNext() )
       {
-        Integer rule = r.next();
+        String rule = r.next();
         String dur = d.next();
-        if( rule.intValue() != 2 )
+        if( !rule.equals(VOLUME_STRING) )
           {
             // Ignore volume in computing duration
             duration += Duration.getDuration(dur);
@@ -258,7 +291,7 @@ public int getDuration()
 
 public ChordPatternVoiced applyRules(ChordSymbol chord, Polylist lastChord)
   {
-  Iterator<Integer> i = rules.iterator();
+  Iterator<String> i = rules.iterator();
   Iterator<String> j = durations.iterator();
   
   lastChord = BassPattern.filterOutStrings(lastChord);
@@ -280,18 +313,15 @@ public ChordPatternVoiced applyRules(ChordSymbol chord, Polylist lastChord)
 
   while( i.hasNext() )
     {
-    int rule = i.next();
+    String rule = i.next();
     String duration = j.next();
 
     //System.out.println("     rule = " + rule + ", duration = " + duration);
     // Process the symbols in the pattern into notes and rests,
     // inserting volume indication when the volume changes.
     
-    switch( rule )
-      {
-      case STRIKE:
-        {
-        // Add the volume indicator to the front of the voicing.
+    if( rule.equals(STRIKE_STRING) )
+    {
         durationMelody.addNote(new Rest(Duration.getDuration(duration)));
          
         Polylist voicing = findVoicing(chord, lastChord, style);
@@ -303,24 +333,68 @@ public ChordPatternVoiced applyRules(ChordSymbol chord, Polylist lastChord)
           }
 
         chordLine.add(voicing.cons(new VolumeSymbol(volume)));
-        lastChord = voicing;
-        break;
-        }
-          
-      case REST:
-        {
+        lastChord = voicing; 
+    }
+    
+    else if( rule.equals(REST_STRING) )
+    {
         durationMelody.addNote(new Rest(Duration.getDuration(duration)));
         chordLine.add(Polylist.nil); // was NoteSymbol.makeNoteSymbol("r" + duration));
-        break;
-        }
-          
-      case VOLUME:
-        {
+    }
+    
+    else if( rule.equals(VOLUME_STRING) )
+    {
         // Volume will take effect when next chord voicing is appended.
         volume = Integer.parseInt(duration);
-        break;
+    }
+    
+    else
+    {
+        int interval = Integer.parseInt(rule);
+         
+        durationMelody.addNote(new Rest(Duration.getDuration(duration)));
+            
+        // first, get the note that is the interval from the root
+        Polylist scales = chordForm.getScales();
+            
+        Polylist scale = (Polylist) scales.first();
+        NoteSymbol tonic = NoteSymbol.makeNoteSymbol( (String) scale.first() );
+        String scaleType = Advisor.concatListWithSpaces(scale.rest());
+        ScaleForm scaleForm = Advisor.getScale(scaleType);
+            
+        Polylist tones = scaleForm.getSpell(tonic);
+        tones = NoteSymbol.transposeNoteSymbolList(tones, rise);
+
+        tones = tones.reverse().rest().reverse();
+        //System.out.println("The transposed notes are: " + tones);
+            
+        // with the note symbol, we can get the chord base, which will
+        // be used for the chord
+        NoteSymbol noteSymbol = BassPattern.getInterval(interval, tones);
+        PitchClass pitchClass = noteSymbol.getPitchClass();
+        String noteBass = pitchClass.getChordBase();
+            
+        String chordName = (String)noteBass.concat("Note");
+        Chord newChord = new Chord(chordName);
+            
+        //System.out.println("The new chord is " + newChord);
+            
+        Polylist voicing = findVoicing(newChord.getChordSymbol(), lastChord, style);
+            
+        // then add the voicing of the chord to the chord line
+        if( voicing == null )
+        {
+            voicing = Polylist.nil;
         }
-      }
+            
+        //System.out.println("The voicing for this chord is: " + voicing);
+                        
+        chordLine.add(voicing.cons(new VolumeSymbol(volume)));
+        lastChord = voicing;
+            
+        //System.out.println("The duration melody is: " + durationMelody);
+        //System.out.println("The chord line is: " + chordLine);
+    }
     }
 
   ChordPatternVoiced result = new ChordPatternVoiced(chordLine, durationMelody);
@@ -817,10 +891,22 @@ public String forGenerator()
   
   for( int i = 0; i < durations.size(); i++ )
     {
-    String nextNote = ruleTypes[rules.get(i)];
-    rule.append(nextNote);
-    rule.append(durations.get(i));
-    rule.append(" ");
+        if( rules.get(i).equals(STRIKE_STRING) || rules.get(i).equals(REST_STRING) || rules.get(i).equals(VOLUME_STRING) )
+        {
+            String nextNote = rules.get(i);
+            rule.append(nextNote);
+            rule.append(durations.get(i));
+            rule.append(" "); 
+        }
+        else
+        {
+            String nextNote = rules.get(i);
+            rule.append("(X ");
+            rule.append(nextNote);
+            rule.append(" ");
+            rule.append(durations.get(i));
+            rule.append(") ");
+        }
     }
   return rule.toString();
   }
