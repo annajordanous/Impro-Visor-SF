@@ -1,7 +1,7 @@
 /**
  * Polya library: Implements Lisp-like structures in Java.
  *
- * Copyright (C) 2009-2012 Robert Keller
+ * Copyright (C) 2009-2014 Robert Keller
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -209,7 +209,7 @@ public String toString()
     }
   else if( nonEmpty() )
     {
-    buff.append(first());
+    buff.append(first().toString());
     Polylist L = rest();
 
     // print the rest of the items
@@ -753,7 +753,29 @@ public Polylist prefix(long n)
     }
   }
 
+/**
+ *   flatten nesting Polylists
+ */
+private static Polylist flatten(Object l)
+  {
+  if( l instanceof Polylist && ((Polylist)l).isEmpty() )
+    {
+    return nil;
+    }
+  else if(!(l instanceof Polylist))
+    {
+    return new Polylist(l, new Polylist());
+    }
+  else
+  {
+      return Polylist.flatten(((Polylist)l).first()).append(Polylist.flatten(((Polylist)l).rest()));
+  }
+  }
 
+public Polylist flatten()
+  {
+  return flatten(this);
+  }
 /**
  *   coprefix creates the Polylist with all but the length-n prefix of 
  *   a Polylist
