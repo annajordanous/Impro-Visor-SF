@@ -524,6 +524,22 @@ public ArrayList<Integer> getChordDurations()
     return result;
   }
 
+/**
+ * Get all the chords in the progression
+ * @author Mark Heimann
+ * @return ArrayList of all chords
+ */
+public ArrayList<Chord> getChords() {
+    ArrayList<Chord> allChords = new ArrayList<Chord>();
+
+    PartIterator chordIter = iterator();
+    while (chordIter.hasNext()) {
+        allChords.add((Chord) chordIter.next());
+    }
+    
+    return allChords;
+}
+
 
 public ArrayList<imp.brickdictionary.Block> toBlockList()
 {

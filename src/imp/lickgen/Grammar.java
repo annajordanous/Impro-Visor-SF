@@ -89,7 +89,7 @@ public static final String LOW = "low";
 
 ArrayList<String> terminals = new ArrayList<String>();
 
-Polylist rules = new Polylist();
+Polylist rules = Polylist.nil;
 
 String startSymbol = null; // to be set
 
@@ -606,16 +606,16 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
       // If any base cases exist, we ignore all rules.
       if( !baseWeights.isEmpty() )
         {
-        rulesList = new ArrayList(baseArray);
-        weightArray = new ArrayList(baseWeights);
+        rulesList = new ArrayList<Polylist>(baseArray);
+        weightArray = new ArrayList<Double>(baseWeights);
         }
       else
         {
-        rulesList = new ArrayList(ruleArray);
-        weightArray = new ArrayList(ruleWeights);
+        rulesList = new ArrayList<Polylist>(ruleArray);
+        weightArray = new ArrayList<Double>(ruleWeights);
         }
 
-      // System.out.println("rules = " + rules);
+      //System.out.println("rules = " + rules);
 
       // Sum up all the weights to use in a weighted average.	    
       for( int i = 0; i < weightArray.size(); ++i )
@@ -707,7 +707,7 @@ public ArrayList<String> getTerms()
 
 public void clearParams()
   {
-  Polylist newRules = new Polylist();
+  Polylist newRules = Polylist.nil;
 
   while( rules.nonEmpty() )
     {
@@ -753,6 +753,7 @@ public int loadGrammar(String filename)
 
     while( (ob = in.nextSexp()) != Tokenizer.eof )
       {
+      //System.out.println("ob = " + ob);
       if( ob instanceof Polylist )
         {
         rules = rules.cons((Polylist)ob);

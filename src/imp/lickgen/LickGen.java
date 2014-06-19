@@ -1890,6 +1890,18 @@ public boolean fillMelody(MelodyPart lick,
                         
            Note note = makeRelativeNote(item, chord);
                         
+           //adjust so that pitch jump from previous note isn't more than an octave
+           //unless that would make you exceed the minimum/maximum allowed pitches
+           //note: if the interval is too small, it's possible octave transposing won't be able
+           //to compress the pitches sufficiently (e.g. F to C from above or below is still more than a third)
+           while (note.getPitch() - oldPitch > maxInterval && note.getPitch() - 12 >= minPitch) {
+               note.setPitch(note.getPitch() - 12);
+           }
+           
+           while (oldPitch - note.getPitch() > maxInterval && note.getPitch() + 12 <= maxPitch) {
+               note.setPitch(note.getPitch() + 12);
+           }
+                        
            //System.out.println("generated note is " + note.toLeadsheet());
                         
            addNote(note, lick, rhythmString, avoidRepeats, "relative", item);

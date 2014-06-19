@@ -41,7 +41,7 @@ public class DataPoint implements Serializable{
     private double vWeight = 1.2, wWeight = 1, xWeight = 1.0, yWeight = 1.3, zWeight = 1.1;
     private double mT, mU, mV,  mW,   mX,  mY,   mZ;
     private int mSegLength;
-    private String mObjName, mObjData;
+    private String mObjName, mObjData, relativePitchMelody;
     private Cluster mCluster;
     private double mEuDt;
     private String clusterName;
@@ -107,6 +107,35 @@ public class DataPoint implements Serializable{
         this.tiedAtStart = startTied;
         this.tiedAtEnd = endTied;
     }
+    
+    //updated version of above constructor that also initializes relative pitch melody
+    //above version left for now so as not to break anything that already exists
+    public DataPoint(double t, double u, double v, double w, double x, double y,double z, 
+            String name, String data, int segLength, boolean start, 
+            IndexedMelodyPart exactMelody, String relativePitchMelody, boolean isHead, int chorusNumber, 
+            Vector<String> chords, boolean startTied, boolean endTied) {
+        this.mT = t;
+        this.mU = u;
+        this.mV = v;
+        this.mW = w;
+        this.mX = x;
+        this.mY = y;
+        this.mZ = z;
+        this.mObjName = name;
+        this.mObjData = data;
+        this.mCluster = null;
+        this.mSegLength = segLength;
+        this.starter = start;
+        this.melody = exactMelody;
+        this.relativePitchMelody = relativePitchMelody;
+        this.head = isHead;
+        this.chorusNumber = chorusNumber;
+        this.chordList = chords;
+        this.tiedAtStart = startTied;
+        this.tiedAtEnd = endTied;
+    }
+    
+    
 
     public void setCluster(Cluster cluster) {
         this.mCluster = cluster;
@@ -302,6 +331,10 @@ public class DataPoint implements Serializable{
         //int startIndex = mObjData.indexOf("slope") - 1;
         //int endIndex = mObjData.lastIndexOf(")");
         return mObjData;//.substring(1, mObjData.length()-2);//.substring(startIndex);
+    }
+    
+    public String getRelativePitchMelody() {
+        return relativePitchMelody;
     }
     
     public Vector<String> getChords() {

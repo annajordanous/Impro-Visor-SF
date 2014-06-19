@@ -41,6 +41,7 @@ import polya.Polylist;
 
 public class CreateGrammar implements imp.Constants {
     private static final int SEG_LENGTH = 3;  //length of the word SEG
+    private static final int XNOTATIONSPACE_LENGTH = 10;
     public static double MIN_PROB = 5.0; //include phrase transitions of greater than this probability
     public static int REPS_PER_CLUSTER = 5;
     private static DataPoint averagePoint; //keeps track of average point in cluster
@@ -51,13 +52,9 @@ public class CreateGrammar implements imp.Constants {
      * into the grammar
      */
     public static void create(ChordPart chordProg, String inFile, String outFile,
-            int repsPerCluster, boolean Markov, int markovLength, Notate notate) {
+            int repsPerCluster, boolean Markov, int markovLength, boolean useRelative, Notate notate) {
 
-          notate.setLickGenStatus("Writing grammar rules: " + outFile);
-        
-        //notate.setLickGenStatus("Writing grammar: " + outFile);
-        //parenCheck(inFile);
-        //System.exit(0);
+        notate.setLickGenStatus("Writing grammar rules: " + outFile);
         
         //if useHead is true, we will add datapoints from the head into
         //a separate vector, and we will not use them in clustering
@@ -73,12 +70,10 @@ public class CreateGrammar implements imp.Constants {
 
         //put data into vectors
         for (int i = 0; i < rules.length; i++) {
-            //System.out.println("=====DATA NUMBER=====: " + Integer.toString(i));
             DataPoint temp = processRule(rules[i], ruleStrings[i], Integer.toString(i));
-
+                    
             if (useHead) {
                 if (temp.isHead()) {
-                    //System.out.println("Head: " + i);
                     headData.add(temp);
                 } else {
                     dataPoints.add(temp);
@@ -86,17 +81,8 @@ public class CreateGrammar implements imp.Constants {
             } else {
                 dataPoints.add(temp);
             }
-            //System.out.println("wrote rule " + i);
-
         }
-        notate.setLickGenStatus("Wrote " + rules.length + " grammar rules.");
-
-        
-        //Vector<Double> closeNess = getSimilaritiesToHead(dataPoints, headData);
-        //arrangeClosenessValues(closeNess);
-        //graphCloseness(dataPoints);
-        //writeClosenessForR(closeNess);        
-
+        notate.setLickGenStatus("Wrote " + rules.length + " grammar rules.");       
         
         double[] averages = calcAverage(dataPoints);
         averageVector(dataPoints, averages);
@@ -141,7 +127,15 @@ public class CreateGrammar implements imp.Constants {
             ngrams = getChains(orders, clusters, markovLength);
             DataPoint[] reps = getClusterReps(clusters, repsPerCluster);
             Vector<float[]> chains = getChainProbabilitiesForGrammar(ngrams);
-            writeGrammarWithChains(ngrams, chains, reps, clusters, outFile, chordProg);
+            
+            if( useRelative )
+              {
+              writeRelativePitchGrammarWithChains(ngrams, chains, reps, clusters, outFile, chordProg); //write grammar using X notation
+              }
+            else
+              {
+              writeGrammarWithChains(ngrams, chains, reps, clusters, outFile, chordProg); //write grammar using abstract melody
+              }
             notate.setLickGenStatus("Done creating .soloist File with " + outlines.size() + " outlines: " + soloistFileName);
 
         } 
@@ -416,7 +410,172 @@ public class CreateGrammar implements imp.Constants {
                 //int start = rule.indexOf("((");
                 //rule = rule.substring(start + 1, rule.length() - 1);
                 out.write("(rule (Q" + clusterNumber + ")(" + rule + ") " + df.format(numAppearances / REPS_PER_CLUSTER) + ")\n");
-            //System.out.println("(rule (Q" + clusterNumber + ")(" + rule + " " + df.format(1.0 / REPS_PER_CLUSTER) + ")");
+     //System.out.println("(rule (Q" + clusterNumber + ")(" + rule + " " + df.format(1.0 / REPS_PER_CLUSTER) + ")");
+            }
+
+            out.close();
+
+        } catch (IOException e) {
+            System.out.println("IO EXCEPTION!" + e.toString());
+        }
+
+
+    }
+    
+    /**
+     * writing a grammar using relative pitch notation instead of abstract melodies
+     * based off writeGrammarWithChains()
+     */
+    public static void writeRelativePitchGrammarWithChains(Vector<NGram> ngrams, Vector<float[]> chains, DataPoint[] reps, 
+            Cluster[] clusters, String outFile, ChordPart chordProg) {
+        
+        Vector<Integer> segLengths = new Vector<Integer>();
+        for (int i = 0; i < reps.length; i++) {
+            Integer length = new Integer(reps[i].getSegLength());
+            if (!segLengths.contains(length)) {
+                segLengths.add(length);
+            }
+        }
+
+        int chainLength = chains.get(0).length - 3;
+
+        try {
+            BufferedWriter out = new BufferedWriter(new FileWriter(outFile, true));
+
+            //get total data points
+            float totalPoints = 0;
+            for (int i = 0; i < clusters.length; i++) {
+                totalPoints += clusters[i].getNumDataPoints();
+            }
+
+            //put in start symbols for markov chains
+            for (int i = 0; i < segLengths.size(); i++) {
+                String top = "";
+                int counter = 0;
+                for(int j = 1; j <= 64; j=(int) Math.pow(2,counter)) {
+                    top = top.concat("\n(rule (P Y) ((START " + j + ") (P (- Y " 
+                            + segLengths.get(i) * 120 * j + "))) " + Math.pow(10, counter) + ")");
+                    counter++;
+                }
+                
+                out.write(top);
+            
+            }
+
+            //write start symbols
+            for (int j = 0; j < clusters.length; j++) {
+                out.write("\n(rule (START Z) ((Cluster" + j + " Z)) " + df.format(clusters[j].getNumDataPoints() / totalPoints) + ")");
+            }
+            out.write("\n");
+
+            //write base cases       
+            Vector<String> addedBases = new Vector<String>();
+            for (int k = 1; k < chainLength; k++) {        //k loops through chains of length up to chainLength
+                for (int j = 0; j < chains.size(); j++) {       //j loops through all chains
+                    float[] chain = chains.get(j);
+
+                    String rule = "(base (Cluster";
+                    for (int q = 0; q < k; q++) {
+                        rule = rule.concat((new Integer((int) chain[q]).toString()));
+                        if (q != k - 1) {
+                            rule = rule.concat("to");
+                        }
+                    }
+                    rule = rule.concat(" 0) ()" + " 1)\n");
+                    if (!addedBases.contains(rule)) {
+                        out.write(rule);
+                        addedBases.add(rule);
+                    }
+                }
+            }
+
+            
+            //write rules
+            Vector<String> addedRules = new Vector<String>();
+            for (int k = 1; k < chainLength; k++) {        //k loops through chains of length up to chainLength
+                for (int j = 0; j < chains.size(); j++) {       //j loops through all chains
+                    float[] chain = chains.get(j).clone();
+                    NGram ngram = ngrams.get(j);
+                    
+                    String rule = "(rule (Cluster";
+                    for (int q = 0; q < k; q++) {
+                        rule = rule.concat((new Integer((int) chain[q]).toString()));
+                        if (q != k - 1) {
+                            rule = rule.concat("to");
+                        }
+                    }
+                    rule = rule.concat(" Z) " + "(Q" + new Integer((int) chain[k - 1]).toString());
+                    rule = rule.concat(" (Cluster");
+                    /* here we handle the case, for ex, if you are using a trigram but are only on the
+                    second measure, you can only use the previous states that you have */
+                    if (k < chainLength - 1) {  
+                        
+                        int numOccurrences = 0;
+                        int numPreviousState = 0;
+                        for (int p = 0; p < chains.size(); p++) {
+                            float[] tempChain = chains.get(p);
+                            //check for chains matching the current one up to the first k+1 places
+                            boolean match = true;
+                            boolean previousStateMatch = true;
+                            for (int q = 0; q < k+1; q++) {
+                               if(chain[q] != tempChain[q]) {
+                                match = false;
+                                if(q < k) previousStateMatch = false;
+                               }                                                         
+                            }
+                            if (match == true) 
+                                numOccurrences += tempChain[chainLength];
+                            if (previousStateMatch == true)
+                                numPreviousState += tempChain[chainLength];
+                        }
+          
+                        chain[chainLength+1] = (float) 100.0 * numOccurrences / numPreviousState;
+                        
+                        for (int q = 0; q < k + 1; q++) {
+                            rule = rule.concat((new Integer((int) chain[q]).toString()));
+                            if (q != k) {
+                                rule = rule.concat("to");
+                            }
+                        }
+                    } 
+                    //here we handle the case when there are enough previous states to use the full chainlength
+                    else {
+                        
+                        if(chain[chainLength+2] < 0) {
+                            rule = rule.concat(Integer.toString(ngram.getLast()));
+                        }
+                        else {
+                            for (int q = 1; q <= k; q++) {
+                                rule = rule.concat((new Integer((int) chain[q]).toString()));
+                                if (chainLength > 2 && q != k) {
+                                    rule = rule.concat("to");
+                                }
+                            }
+                        }
+                    }
+
+                    rule = rule.concat(" (- Z 1))) ");
+                    //rule = rule.concat(new Float(chain[chainLength + 1]).toString());
+                    rule = rule.concat(df.format(chain[chainLength+1]/100));
+                    rule = rule.concat(")\n");
+                    if (!addedRules.contains(rule)) {
+                        out.write(rule);
+                        addedRules.add(rule);
+                    }
+                }
+            }
+
+
+            //write expansions to cluster representatives using relative pitch melody
+            for (int i = 0; i < reps.length; i++) {
+                String name = reps[i].getClusterName();
+                float numAppearances = reps[i].getNumber();
+                int clusterNumber = Integer.parseInt(name.substring(7));  //chop off the word cluster
+                String rule = reps[i].getRelativePitchMelody();
+                //cut off the opening part of the string leaving only the slope data
+                //int start = rule.indexOf("((");
+                //rule = rule.substring(start + 1, rule.length() - 1);
+                out.write("(rule (Q" + clusterNumber + ")(" + rule + ") " + df.format(numAppearances / REPS_PER_CLUSTER) + ")\n");
             }
 
             out.close();
@@ -633,7 +792,16 @@ public class CreateGrammar implements imp.Constants {
         }
 
         //remove the exact melody from the string now that we've extracted it
-        ruleString = ruleString.substring(0, stopIndex-1);
+        ruleString = ruleString.substring(0, stopIndex-1); 
+        ruleString = removeTrailingSpaces(ruleString);
+        
+        //extract X notation melody data
+        //string "Xnotation" denotes start of the X notation.  
+        stopIndex = ruleString.indexOf("Xnotation"); //find "Xnotation" delimiter
+        String relativePitchMelodyString = ruleString.substring(stopIndex + XNOTATIONSPACE_LENGTH, ruleString.length());
+        
+        //remove the X notation from the string now that we've extracted it
+        ruleString = ruleString.substring(0, stopIndex - 1);
         ruleString = removeTrailingSpaces(ruleString);
         
         //determine if a measure is tied at start or end
@@ -675,7 +843,6 @@ public class CreateGrammar implements imp.Constants {
                 } else {
                     maxslope = Integer.parseInt(inner.third().toString());
                 }
-                //System.out.println("Added max slope: " + maxslope);
                 averageMaxSlope += Math.abs(maxslope);
                 //get rid of slopes
                 inner = inner.rest().rest().rest();
@@ -698,7 +865,6 @@ public class CreateGrammar implements imp.Constants {
                 numSegments++;
                 //loop through terminals of segments
                 while (inner.nonEmpty()) {
-                    //System.out.println(inner.first());
                     String terminal = inner.first().toString();
                     if (terminal.charAt(0) != 'R') {
                         noteCount++;
@@ -714,22 +880,14 @@ public class CreateGrammar implements imp.Constants {
         }
         
         
-        int exactStartBeat = getStartBeat(exactMelody);
-        
-        
-        //System.out.println("Seg length: " + segLength);
-        //System.out.println("Number of Notes: " + noteCount);  //V
-        //System.out.println("Rest duration: " + restDuration);  //W
-        //System.out.println("Average max slope: " + averageMaxSlope / (numSegments));  //X
-        //System.out.println("Startbeat: " + startBeat);  //Y
-        //System.out.println("Number of Segments: " + numSegments);  //Z
-        //System.out.println("Data: " + ruleString);
-        
-        
+        int exactStartBeat = getStartBeat(exactMelody);       
+        //old construction without relative pitch melody info
+//        DataPoint d =  new DataPoint(exactStartBeat, consonance, noteCount, restDuration, averageMaxSlope / (numSegments), 
+//                startBeat, numSegments, i, ruleString, segLength, 
+//                starter, exactMelody, head, chorusNumber, chords, startTied, endTied);
         DataPoint d =  new DataPoint(exactStartBeat, consonance, noteCount, restDuration, averageMaxSlope / (numSegments), 
                 startBeat, numSegments, i, ruleString, segLength, 
-                starter, exactMelody, head, chorusNumber, chords, startTied, endTied);
-        //System.out.println(d.toString());
+                starter, exactMelody, relativePitchMelodyString, head, chorusNumber, chords, startTied, endTied);
         return d;
     }
 

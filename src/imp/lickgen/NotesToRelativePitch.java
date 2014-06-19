@@ -115,7 +115,7 @@ public class NotesToRelativePitch {
         }
         
         //Part 3 of the note construction: add the rhythm amount
-        String noteLength = Integer.toString(note.getRhythmValue());
+        String noteLength = note.getDurationString(note.getRhythmValue());
         relativeNote = relativeNote.addToEnd(noteLength);
         return relativeNote;
     }
