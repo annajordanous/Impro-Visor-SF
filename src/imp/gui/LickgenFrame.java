@@ -95,6 +95,8 @@ private double totalBeats = 8;
 
 private int totalSlots = (int) (BEAT * totalBeats);
 
+private int slotsPerBeat = 120;
+
 private double restProb = 0.1;
 
 private double leapProb = 0.2;
@@ -231,7 +233,8 @@ private void initCompFileChoosers() {
  */
 @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
         java.awt.GridBagConstraints gridBagConstraints;
 
         generatorPane = new javax.swing.JTabbedPane();
@@ -349,6 +352,7 @@ private void initCompFileChoosers() {
         numClusterRepsLabel = new javax.swing.JLabel();
         windowSizeField = new javax.swing.JTextField();
         windowSlideField = new javax.swing.JTextField();
+        useRelativeCheckbox = new javax.swing.JCheckBox();
         numClusterRepsField = new javax.swing.JTextField();
         useMarkovCheckbox = new javax.swing.JCheckBox();
         MarkovLengthField = new javax.swing.JTextField();
@@ -435,8 +439,10 @@ private void initCompFileChoosers() {
         setTitle("Lick Generator Controls");
         setMinimumSize(new java.awt.Dimension(1000, 800));
         setPreferredSize(new java.awt.Dimension(1000, 800));
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosed(java.awt.event.WindowEvent evt) {
+        addWindowListener(new java.awt.event.WindowAdapter()
+        {
+            public void windowClosed(java.awt.event.WindowEvent evt)
+            {
                 closeWindow(evt);
             }
         });
@@ -493,8 +499,10 @@ private void initCompFileChoosers() {
         generateLickButton.setMinimumSize(new java.awt.Dimension(135, 29));
         generateLickButton.setOpaque(true);
         generateLickButton.setPreferredSize(new java.awt.Dimension(135, 29));
-        generateLickButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        generateLickButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 generateLickButtonActionPerformed(evt);
             }
         });
@@ -508,8 +516,10 @@ private void initCompFileChoosers() {
 
         genRhythmButton.setText("Generate Abstract Melody Only");
         genRhythmButton.setToolTipText("Generate the rhythm pattern for a lick, without the actual notes.");
-        genRhythmButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        genRhythmButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 genRhythmButtonActionPerformed(evt);
             }
         });
@@ -523,8 +533,10 @@ private void initCompFileChoosers() {
 
         fillMelodyButton.setText("Fill Abstract Melody");
         fillMelodyButton.setToolTipText("Fill the notes for the given pattern.");
-        fillMelodyButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        fillMelodyButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 fillMelodyButtonActionPerformed(evt);
             }
         });
@@ -538,8 +550,10 @@ private void initCompFileChoosers() {
 
         getAbstractMelodyButton.setText("Extract Abstract Melody");
         getAbstractMelodyButton.setToolTipText("Extract the rhythm from the leadsheet.");
-        getAbstractMelodyButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        getAbstractMelodyButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 getAbstractMelodyButtonActionPerformed(evt);
             }
         });
@@ -553,8 +567,10 @@ private void initCompFileChoosers() {
 
         getSelRhythmButton.setText("Extract Rhythm");
         getSelRhythmButton.setToolTipText("Extract the rhythm from the leadsheet.");
-        getSelRhythmButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        getSelRhythmButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 getSelRhythmButtonActionPerformed(evt);
             }
         });
@@ -568,8 +584,10 @@ private void initCompFileChoosers() {
 
         playLickButton.setText("Play");
         playLickButton.setToolTipText("Play the lick again.");
-        playLickButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        playLickButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 playLickButtonActionPerformed(evt);
             }
         });
@@ -582,8 +600,10 @@ private void initCompFileChoosers() {
 
         stopLickButton.setText("Stop");
         stopLickButton.setToolTipText("Stop playing.");
-        stopLickButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        stopLickButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 stopLickButtonActionPerformed(evt);
             }
         });
@@ -596,8 +616,10 @@ private void initCompFileChoosers() {
 
         saveLickButton.setText("Save");
         saveLickButton.setToolTipText("Save the lick in the vocabulary.");
-        saveLickButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        saveLickButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 saveLickButtonActionPerformed(evt);
             }
         });
@@ -651,21 +673,28 @@ private void initCompFileChoosers() {
         maxPitchField.setToolTipText("The maximum pitch in a generated lick.");
         maxPitchField.setMinimumSize(new java.awt.Dimension(60, 24));
         maxPitchField.setPreferredSize(new java.awt.Dimension(60, 24));
-        maxPitchField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        maxPitchField.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 maxPitchFieldActionPerformed(evt);
             }
         });
-        maxPitchField.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
+        maxPitchField.addFocusListener(new java.awt.event.FocusAdapter()
+        {
+            public void focusGained(java.awt.event.FocusEvent evt)
+            {
                 maxPitchFieldGetsFocus(evt);
             }
-            public void focusLost(java.awt.event.FocusEvent evt) {
+            public void focusLost(java.awt.event.FocusEvent evt)
+            {
                 maxPitchFieldFocusLost(evt);
             }
         });
-        maxPitchField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
+        maxPitchField.addKeyListener(new java.awt.event.KeyAdapter()
+        {
+            public void keyPressed(java.awt.event.KeyEvent evt)
+            {
                 maxPitchFieldenterLickKeyPressed(evt);
             }
         });
@@ -694,21 +723,28 @@ private void initCompFileChoosers() {
         minPitchField.setToolTipText("The minimum pitch in a generated lick.");
         minPitchField.setMinimumSize(new java.awt.Dimension(60, 24));
         minPitchField.setPreferredSize(new java.awt.Dimension(60, 24));
-        minPitchField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        minPitchField.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 minPitchFieldActionPerformed(evt);
             }
         });
-        minPitchField.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
+        minPitchField.addFocusListener(new java.awt.event.FocusAdapter()
+        {
+            public void focusGained(java.awt.event.FocusEvent evt)
+            {
                 minPitchFieldGetsFocus(evt);
             }
-            public void focusLost(java.awt.event.FocusEvent evt) {
+            public void focusLost(java.awt.event.FocusEvent evt)
+            {
                 minPitchFieldFocusLost(evt);
             }
         });
-        minPitchField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
+        minPitchField.addKeyListener(new java.awt.event.KeyAdapter()
+        {
+            public void keyPressed(java.awt.event.KeyEvent evt)
+            {
                 minPitchFieldenterLickKeyPressed(evt);
             }
         });
@@ -736,21 +772,28 @@ private void initCompFileChoosers() {
         minIntervalField.setToolTipText("The minimum interval from one note to the next, if not a leap.");
         minIntervalField.setMinimumSize(new java.awt.Dimension(60, 24));
         minIntervalField.setPreferredSize(new java.awt.Dimension(60, 24));
-        minIntervalField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        minIntervalField.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 minIntervalFieldActionPerformed(evt);
             }
         });
-        minIntervalField.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
+        minIntervalField.addFocusListener(new java.awt.event.FocusAdapter()
+        {
+            public void focusGained(java.awt.event.FocusEvent evt)
+            {
                 minIntervalFieldGetsFocus(evt);
             }
-            public void focusLost(java.awt.event.FocusEvent evt) {
+            public void focusLost(java.awt.event.FocusEvent evt)
+            {
                 minIntervalFieldFocusLost(evt);
             }
         });
-        minIntervalField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
+        minIntervalField.addKeyListener(new java.awt.event.KeyAdapter()
+        {
+            public void keyPressed(java.awt.event.KeyEvent evt)
+            {
                 minIntervalFieldenterLickKeyPressed(evt);
             }
         });
@@ -766,21 +809,28 @@ private void initCompFileChoosers() {
         maxIntervalField.setToolTipText("The maximum interval from one note to the next, if not a leap.");
         maxIntervalField.setMinimumSize(new java.awt.Dimension(60, 24));
         maxIntervalField.setPreferredSize(new java.awt.Dimension(60, 24));
-        maxIntervalField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        maxIntervalField.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 maxIntervalFieldActionPerformed(evt);
             }
         });
-        maxIntervalField.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
+        maxIntervalField.addFocusListener(new java.awt.event.FocusAdapter()
+        {
+            public void focusGained(java.awt.event.FocusEvent evt)
+            {
                 maxIntervalFieldGetsFocus(evt);
             }
-            public void focusLost(java.awt.event.FocusEvent evt) {
+            public void focusLost(java.awt.event.FocusEvent evt)
+            {
                 maxIntervalFieldFocusLost(evt);
             }
         });
-        maxIntervalField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
+        maxIntervalField.addKeyListener(new java.awt.event.KeyAdapter()
+        {
+            public void keyPressed(java.awt.event.KeyEvent evt)
+            {
                 maxIntervalFieldenterLickKeyPressed(evt);
             }
         });
@@ -809,21 +859,28 @@ private void initCompFileChoosers() {
         minDurationField.setEnabled(false);
         minDurationField.setMinimumSize(new java.awt.Dimension(60, 24));
         minDurationField.setPreferredSize(new java.awt.Dimension(60, 24));
-        minDurationField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        minDurationField.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 minDurationFieldActionPerformed(evt);
             }
         });
-        minDurationField.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
+        minDurationField.addFocusListener(new java.awt.event.FocusAdapter()
+        {
+            public void focusGained(java.awt.event.FocusEvent evt)
+            {
                 minDurationFieldGetsFocus(evt);
             }
-            public void focusLost(java.awt.event.FocusEvent evt) {
+            public void focusLost(java.awt.event.FocusEvent evt)
+            {
                 minDurationFieldFocusLost(evt);
             }
         });
-        minDurationField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
+        minDurationField.addKeyListener(new java.awt.event.KeyAdapter()
+        {
+            public void keyPressed(java.awt.event.KeyEvent evt)
+            {
                 minDurationFieldenterLickKeyPressed(evt);
             }
         });
@@ -840,21 +897,28 @@ private void initCompFileChoosers() {
         maxDurationField.setEnabled(false);
         maxDurationField.setMinimumSize(new java.awt.Dimension(60, 24));
         maxDurationField.setPreferredSize(new java.awt.Dimension(60, 24));
-        maxDurationField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        maxDurationField.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 maxDurationFieldActionPerformed(evt);
             }
         });
-        maxDurationField.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
+        maxDurationField.addFocusListener(new java.awt.event.FocusAdapter()
+        {
+            public void focusGained(java.awt.event.FocusEvent evt)
+            {
                 maxDurationFieldGetsFocus(evt);
             }
-            public void focusLost(java.awt.event.FocusEvent evt) {
+            public void focusLost(java.awt.event.FocusEvent evt)
+            {
                 maxDurationFieldFocusLost(evt);
             }
         });
-        maxDurationField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
+        maxDurationField.addKeyListener(new java.awt.event.KeyAdapter()
+        {
+            public void keyPressed(java.awt.event.KeyEvent evt)
+            {
                 maxDurationFieldenterLickKeyPressed(evt);
             }
         });
@@ -870,21 +934,28 @@ private void initCompFileChoosers() {
         totalBeatsField.setToolTipText("The number of beats in the lick.");
         totalBeatsField.setMinimumSize(new java.awt.Dimension(60, 24));
         totalBeatsField.setPreferredSize(new java.awt.Dimension(60, 24));
-        totalBeatsField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        totalBeatsField.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 totalBeatsFieldActionPerformed(evt);
             }
         });
-        totalBeatsField.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
+        totalBeatsField.addFocusListener(new java.awt.event.FocusAdapter()
+        {
+            public void focusGained(java.awt.event.FocusEvent evt)
+            {
                 totalBeatsFieldGetsFocus(evt);
             }
-            public void focusLost(java.awt.event.FocusEvent evt) {
+            public void focusLost(java.awt.event.FocusEvent evt)
+            {
                 totalBeatsFieldFocusLost(evt);
             }
         });
-        totalBeatsField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
+        totalBeatsField.addKeyListener(new java.awt.event.KeyAdapter()
+        {
+            public void keyPressed(java.awt.event.KeyEvent evt)
+            {
                 totalBeatsFieldenterLickKeyPressed(evt);
             }
         });
@@ -930,21 +1001,28 @@ private void initCompFileChoosers() {
         restProbField.setEnabled(false);
         restProbField.setMinimumSize(new java.awt.Dimension(60, 24));
         restProbField.setPreferredSize(new java.awt.Dimension(60, 24));
-        restProbField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        restProbField.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 restProbFieldActionPerformed(evt);
             }
         });
-        restProbField.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
+        restProbField.addFocusListener(new java.awt.event.FocusAdapter()
+        {
+            public void focusGained(java.awt.event.FocusEvent evt)
+            {
                 restProbFieldGetsFocus(evt);
             }
-            public void focusLost(java.awt.event.FocusEvent evt) {
+            public void focusLost(java.awt.event.FocusEvent evt)
+            {
                 restProbFieldFocusLost(evt);
             }
         });
-        restProbField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
+        restProbField.addKeyListener(new java.awt.event.KeyAdapter()
+        {
+            public void keyPressed(java.awt.event.KeyEvent evt)
+            {
                 restProbFieldenterLickKeyPressed(evt);
             }
         });
@@ -971,13 +1049,17 @@ private void initCompFileChoosers() {
         leapProbField.setMaximumSize(new java.awt.Dimension(60, 2147483647));
         leapProbField.setMinimumSize(new java.awt.Dimension(60, 24));
         leapProbField.setPreferredSize(new java.awt.Dimension(60, 24));
-        leapProbField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        leapProbField.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 leapProbFieldActionPerformed(evt);
             }
         });
-        leapProbField.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
+        leapProbField.addFocusListener(new java.awt.event.FocusAdapter()
+        {
+            public void focusLost(java.awt.event.FocusEvent evt)
+            {
                 leapProbFieldFocusLost(evt);
             }
         });
@@ -994,8 +1076,10 @@ private void initCompFileChoosers() {
         avoidRepeatsCheckbox.setMaximumSize(new java.awt.Dimension(220, 22));
         avoidRepeatsCheckbox.setMinimumSize(new java.awt.Dimension(220, 22));
         avoidRepeatsCheckbox.setPreferredSize(new java.awt.Dimension(220, 22));
-        avoidRepeatsCheckbox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        avoidRepeatsCheckbox.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 avoidRepeatsCheckboxActionPerformed(evt);
             }
         });
@@ -1012,8 +1096,10 @@ private void initCompFileChoosers() {
         recurrentCheckbox.setMaximumSize(new java.awt.Dimension(150, 23));
         recurrentCheckbox.setMinimumSize(new java.awt.Dimension(150, 23));
         recurrentCheckbox.setPreferredSize(new java.awt.Dimension(150, 23));
-        recurrentCheckbox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        recurrentCheckbox.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 recurrentCheckboxActionPerformed(evt);
             }
         });
@@ -1045,13 +1131,15 @@ private void initCompFileChoosers() {
         generationGapLabel.getAccessibleContext().setAccessibleDescription("");
 
         gapField.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        gapField.setText("1.05");
+        gapField.setText("0.99");
         gapField.setToolTipText("Sets the leading gap between when the next lick is generated and the previous one ends.");
         gapField.setMaximumSize(new java.awt.Dimension(45, 24));
         gapField.setMinimumSize(new java.awt.Dimension(45, 24));
         gapField.setPreferredSize(new java.awt.Dimension(45, 24));
-        gapField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        gapField.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 gapFieldActionPerformed(evt);
             }
         });
@@ -1069,8 +1157,10 @@ private void initCompFileChoosers() {
         rectifyCheckBox.setMaximumSize(new java.awt.Dimension(160, 23));
         rectifyCheckBox.setMinimumSize(new java.awt.Dimension(160, 23));
         rectifyCheckBox.setPreferredSize(new java.awt.Dimension(160, 23));
-        rectifyCheckBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        rectifyCheckBox.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 rectifyCheckBoxActionPerformed(evt);
             }
         });
@@ -1086,8 +1176,10 @@ private void initCompFileChoosers() {
         useSoloistCheckBox.setMaximumSize(new java.awt.Dimension(150, 23));
         useSoloistCheckBox.setMinimumSize(new java.awt.Dimension(150, 23));
         useSoloistCheckBox.setPreferredSize(new java.awt.Dimension(150, 23));
-        useSoloistCheckBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        useSoloistCheckBox.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 useSoloistCheckBoxActionPerformed(evt);
             }
         });
@@ -1112,8 +1204,10 @@ private void initCompFileChoosers() {
         regenerateHeadDataBtn.setMaximumSize(new java.awt.Dimension(180, 29));
         regenerateHeadDataBtn.setMinimumSize(new java.awt.Dimension(180, 29));
         regenerateHeadDataBtn.setPreferredSize(new java.awt.Dimension(180, 29));
-        regenerateHeadDataBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        regenerateHeadDataBtn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 regenerateHeadDataBtnActionPerformed(evt);
             }
         });
@@ -1129,8 +1223,10 @@ private void initCompFileChoosers() {
         continuallyGenerateCheckBox.setSelected(true);
         continuallyGenerateCheckBox.setText("Continually Generate ");
         continuallyGenerateCheckBox.setToolTipText("After grading, continually generate new licks.");
-        continuallyGenerateCheckBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        continuallyGenerateCheckBox.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 continuallyGenerateCheckBoxActionPerformed(evt);
             }
         });
@@ -1144,8 +1240,10 @@ private void initCompFileChoosers() {
 
         generationSelectionButton.setText("Size of Selection");
         generationSelectionButton.setToolTipText("Lock the selection for lick generation.");
-        generationSelectionButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        generationSelectionButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 generationSelectionButtonActionPerformed(evt);
             }
         });
@@ -1156,8 +1254,10 @@ private void initCompFileChoosers() {
 
         styleRecognitionButton.setText("Prepare Critics");
         styleRecognitionButton.setToolTipText("Attempts to guess the musician of the selection based off parellel trained networks.");
-        styleRecognitionButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        styleRecognitionButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 styleRecognitionButtonActionPerformed(evt);
             }
         });
@@ -1220,13 +1320,17 @@ private void initCompFileChoosers() {
         chordToneWeightField.setToolTipText("The amount of weight to give to chord tones (vs. scale or color tones).");
         chordToneWeightField.setMinimumSize(new java.awt.Dimension(40, 24));
         chordToneWeightField.setPreferredSize(new java.awt.Dimension(40, 24));
-        chordToneWeightField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        chordToneWeightField.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 chordToneWeightFieldActionPerformed(evt);
             }
         });
-        chordToneWeightField.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
+        chordToneWeightField.addFocusListener(new java.awt.event.FocusAdapter()
+        {
+            public void focusLost(java.awt.event.FocusEvent evt)
+            {
                 chordToneWeightFieldFocusLost(evt);
             }
         });
@@ -1239,13 +1343,17 @@ private void initCompFileChoosers() {
         colorToneWeightField.setToolTipText("The amount of weight to give to color tones (vs. chord or scale tones).");
         colorToneWeightField.setMinimumSize(new java.awt.Dimension(40, 24));
         colorToneWeightField.setPreferredSize(new java.awt.Dimension(40, 24));
-        colorToneWeightField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        colorToneWeightField.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 colorToneWeightFieldActionPerformed(evt);
             }
         });
-        colorToneWeightField.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
+        colorToneWeightField.addFocusListener(new java.awt.event.FocusAdapter()
+        {
+            public void focusLost(java.awt.event.FocusEvent evt)
+            {
                 colorToneWeightFieldFocusLost(evt);
             }
         });
@@ -1258,13 +1366,17 @@ private void initCompFileChoosers() {
         scaleToneWeightField.setToolTipText("The amount of weight to give to scale tones (vs. chord or color tones).");
         scaleToneWeightField.setMinimumSize(new java.awt.Dimension(40, 24));
         scaleToneWeightField.setPreferredSize(new java.awt.Dimension(40, 24));
-        scaleToneWeightField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        scaleToneWeightField.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 scaleToneWeightFieldActionPerformed(evt);
             }
         });
-        scaleToneWeightField.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
+        scaleToneWeightField.addFocusListener(new java.awt.event.FocusAdapter()
+        {
+            public void focusLost(java.awt.event.FocusEvent evt)
+            {
                 scaleToneWeightFieldFocusLost(evt);
             }
         });
@@ -1277,13 +1389,17 @@ private void initCompFileChoosers() {
         chordToneDecayField.setToolTipText("Decrease chord tone probability by this amount for each tone.");
         chordToneDecayField.setMinimumSize(new java.awt.Dimension(40, 24));
         chordToneDecayField.setPreferredSize(new java.awt.Dimension(40, 24));
-        chordToneDecayField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        chordToneDecayField.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 chordToneDecayFieldActionPerformed(evt);
             }
         });
-        chordToneDecayField.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
+        chordToneDecayField.addFocusListener(new java.awt.event.FocusAdapter()
+        {
+            public void focusLost(java.awt.event.FocusEvent evt)
+            {
                 chordToneDecayFieldFocusLost(evt);
             }
         });
@@ -1323,8 +1439,10 @@ private void initCompFileChoosers() {
         scaleChoicePanel.add(typeLabel, gridBagConstraints);
 
         scaleComboBox.setToolTipText("The type of scale to use in scale tones. The default is the first scale associated with the chord.\n");
-        scaleComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        scaleComboBox.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 scaleComboBoxActionPerformed(evt);
             }
         });
@@ -1345,8 +1463,10 @@ private void initCompFileChoosers() {
         scaleChoicePanel.add(rootLabel, gridBagConstraints);
 
         rootComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "C", "C#/Db", "D", "D#/Eb", "E", "F", "F#", "Gb", "G", "G#/Ab", "A", "A#/Bb", "B" }));
-        rootComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        rootComboBox.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 rootComboBoxActionPerformed(evt);
             }
         });
@@ -1426,8 +1546,10 @@ private void initCompFileChoosers() {
         grade1Btn.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         grade1Btn.setMargin(new java.awt.Insets(2, 2, 2, 2));
         grade1Btn.setPreferredSize(new java.awt.Dimension(23, 21));
-        grade1Btn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        grade1Btn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 grade1BtnActionPerformed(evt);
             }
         });
@@ -1441,8 +1563,10 @@ private void initCompFileChoosers() {
         grade2Btn.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         grade2Btn.setMargin(new java.awt.Insets(2, 2, 2, 2));
         grade2Btn.setPreferredSize(new java.awt.Dimension(23, 21));
-        grade2Btn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        grade2Btn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 grade2BtnActionPerformed(evt);
             }
         });
@@ -1455,8 +1579,10 @@ private void initCompFileChoosers() {
         grade3Btn.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         grade3Btn.setMargin(new java.awt.Insets(2, 2, 2, 2));
         grade3Btn.setPreferredSize(new java.awt.Dimension(23, 21));
-        grade3Btn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        grade3Btn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 grade3BtnActionPerformed(evt);
             }
         });
@@ -1469,8 +1595,10 @@ private void initCompFileChoosers() {
         grade4Btn.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         grade4Btn.setMargin(new java.awt.Insets(2, 2, 2, 2));
         grade4Btn.setPreferredSize(new java.awt.Dimension(23, 21));
-        grade4Btn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        grade4Btn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 grade4BtnActionPerformed(evt);
             }
         });
@@ -1483,8 +1611,10 @@ private void initCompFileChoosers() {
         grade5Btn.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         grade5Btn.setMargin(new java.awt.Insets(2, 2, 2, 2));
         grade5Btn.setPreferredSize(new java.awt.Dimension(23, 21));
-        grade5Btn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        grade5Btn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 grade5BtnActionPerformed(evt);
             }
         });
@@ -1497,8 +1627,10 @@ private void initCompFileChoosers() {
         grade6Btn.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         grade6Btn.setMargin(new java.awt.Insets(2, 2, 2, 2));
         grade6Btn.setPreferredSize(new java.awt.Dimension(23, 21));
-        grade6Btn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        grade6Btn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 grade6BtnActionPerformed(evt);
             }
         });
@@ -1511,8 +1643,10 @@ private void initCompFileChoosers() {
         grade7Btn.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         grade7Btn.setMargin(new java.awt.Insets(2, 2, 2, 2));
         grade7Btn.setPreferredSize(new java.awt.Dimension(23, 21));
-        grade7Btn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        grade7Btn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 grade7BtnActionPerformed(evt);
             }
         });
@@ -1525,8 +1659,10 @@ private void initCompFileChoosers() {
         grade8Btn.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         grade8Btn.setMargin(new java.awt.Insets(2, 2, 2, 2));
         grade8Btn.setPreferredSize(new java.awt.Dimension(23, 21));
-        grade8Btn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        grade8Btn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 grade8BtnActionPerformed(evt);
             }
         });
@@ -1539,8 +1675,10 @@ private void initCompFileChoosers() {
         grade9Btn.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         grade9Btn.setMargin(new java.awt.Insets(2, 2, 2, 2));
         grade9Btn.setPreferredSize(new java.awt.Dimension(23, 21));
-        grade9Btn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        grade9Btn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 grade9BtnActionPerformed(evt);
             }
         });
@@ -1553,8 +1691,10 @@ private void initCompFileChoosers() {
         grade10Btn.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         grade10Btn.setMargin(new java.awt.Insets(2, 2, 2, 2));
         grade10Btn.setPreferredSize(new java.awt.Dimension(23, 21));
-        grade10Btn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        grade10Btn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 grade10BtnActionPerformed(evt);
             }
         });
@@ -1567,8 +1707,10 @@ private void initCompFileChoosers() {
         gradeBadBtn.setText("Bad");
         gradeBadBtn.setToolTipText("Grade for a bad jazz lick.");
         gradeBadBtn.setVisible(false);
-        gradeBadBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        gradeBadBtn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 gradeBadBtnActionPerformed(evt);
             }
         });
@@ -1581,8 +1723,10 @@ private void initCompFileChoosers() {
         gradeAverageBtn.setText("Average");
         gradeAverageBtn.setToolTipText("Grade for an average jazz lick.");
         gradeAverageBtn.setVisible(false);
-        gradeAverageBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        gradeAverageBtn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 gradeAverageBtnActionPerformed(evt);
             }
         });
@@ -1595,8 +1739,10 @@ private void initCompFileChoosers() {
         gradeGoodBtn.setText("Good");
         gradeGoodBtn.setToolTipText("Grade for a good jazz lick.");
         gradeGoodBtn.setVisible(false);
-        gradeGoodBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        gradeGoodBtn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 gradeGoodBtnActionPerformed(evt);
             }
         });
@@ -1619,8 +1765,10 @@ private void initCompFileChoosers() {
 
         clearProbsButton.setToolTipText("Clear all pitch probabilities.");
         clearProbsButton.setLabel("Clear All Probabilities");
-        clearProbsButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        clearProbsButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 clearProbsButtonActionPerformed(evt);
             }
         });
@@ -1635,8 +1783,10 @@ private void initCompFileChoosers() {
 
         FillProbsButton.setText("Fill");
         FillProbsButton.setToolTipText("Fill pitch probabilities from chords.\n");
-        FillProbsButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        FillProbsButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 FillProbsButtonActionPerformed(evt);
             }
         });
@@ -1650,8 +1800,10 @@ private void initCompFileChoosers() {
 
         autoFillCheckBox.setSelected(true);
         autoFillCheckBox.setText("Auto-Fill");
-        autoFillCheckBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        autoFillCheckBox.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 autoFillCheckBoxActionPerformed(evt);
             }
         });
@@ -1699,8 +1851,10 @@ private void initCompFileChoosers() {
 
         offsetByMeasureGradeSoloButton.setText("Offset By Measure");
         offsetByMeasureGradeSoloButton.setToolTipText("Moves the selection one measure forward. To be used with automated correction if there is an odd number of measures.");
-        offsetByMeasureGradeSoloButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        offsetByMeasureGradeSoloButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 offsetByMeasureGradeSoloButtonActionPerformed(evt);
             }
         });
@@ -1712,8 +1866,10 @@ private void initCompFileChoosers() {
 
         forwardGradeSoloButton.setText("Step Forward");
         forwardGradeSoloButton.setToolTipText("Move the selection two measures forward.");
-        forwardGradeSoloButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        forwardGradeSoloButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 forwardGradeSoloButtonActionPerformed(evt);
             }
         });
@@ -1725,8 +1881,10 @@ private void initCompFileChoosers() {
 
         backwardGradeSoloButton.setText("Step Backward");
         backwardGradeSoloButton.setToolTipText("Move the selection two measures back.");
-        backwardGradeSoloButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        backwardGradeSoloButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 backwardGradeSoloButtonActionPerformed(evt);
             }
         });
@@ -1738,8 +1896,10 @@ private void initCompFileChoosers() {
 
         resetSelectionButton.setText("Reset Selection");
         resetSelectionButton.setToolTipText("Undo a change.");
-        resetSelectionButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        resetSelectionButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 resetSelectionButtonActionPerformed(evt);
             }
         });
@@ -1754,8 +1914,10 @@ private void initCompFileChoosers() {
         gradeAllMeasuresButton.setMaximumSize(new java.awt.Dimension(117, 29));
         gradeAllMeasuresButton.setMinimumSize(new java.awt.Dimension(117, 29));
         gradeAllMeasuresButton.setPreferredSize(new java.awt.Dimension(117, 29));
-        gradeAllMeasuresButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        gradeAllMeasuresButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 gradeAllMeasuresButtonActionPerformed(evt);
             }
         });
@@ -1767,8 +1929,10 @@ private void initCompFileChoosers() {
 
         regenerateLickForSoloButton.setText("Generate Better Lick");
         regenerateLickForSoloButton.setToolTipText("Generate a lick that passes through the filter, with a grade that is high enough..");
-        regenerateLickForSoloButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        regenerateLickForSoloButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 regenerateLickForSoloButtonActionPerformed(evt);
             }
         });
@@ -1780,8 +1944,10 @@ private void initCompFileChoosers() {
 
         gradeLickFromStaveButton.setText("Grade Selected Lick");
         gradeLickFromStaveButton.setToolTipText("Use the critic to grade the current two measure selection.");
-        gradeLickFromStaveButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        gradeLickFromStaveButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 gradeLickFromStaveButtonActionPerformed(evt);
             }
         });
@@ -1808,8 +1974,10 @@ private void initCompFileChoosers() {
         useCriticCheckBox.setMaximumSize(new java.awt.Dimension(110, 23));
         useCriticCheckBox.setMinimumSize(new java.awt.Dimension(110, 23));
         useCriticCheckBox.setPreferredSize(new java.awt.Dimension(110, 23));
-        useCriticCheckBox.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+        useCriticCheckBox.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
                 useCriticCheckBoxMouseClicked(evt);
             }
         });
@@ -1826,11 +1994,14 @@ private void initCompFileChoosers() {
         criticGradeTextField.setEnabled(false);
         criticGradeTextField.setMinimumSize(new java.awt.Dimension(60, 24));
         criticGradeTextField.setPreferredSize(new java.awt.Dimension(60, 24));
-        criticGradeTextField.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
+        criticGradeTextField.addFocusListener(new java.awt.event.FocusAdapter()
+        {
+            public void focusGained(java.awt.event.FocusEvent evt)
+            {
                 criticGradeTextFieldFocusGained(evt);
             }
-            public void focusLost(java.awt.event.FocusEvent evt) {
+            public void focusLost(java.awt.event.FocusEvent evt)
+            {
                 criticGradeTextFieldFocusLost(evt);
             }
         });
@@ -1876,8 +2047,10 @@ private void initCompFileChoosers() {
 
         loadRandomGrammarButton.setText("Load Random");
         loadRandomGrammarButton.setToolTipText("Loads the random grammar for lick generation.");
-        loadRandomGrammarButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        loadRandomGrammarButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 loadRandomGrammarButtonActionPerformed(evt);
             }
         });
@@ -1986,17 +2159,45 @@ private void initCompFileChoosers() {
 
         windowSlideField.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
         windowSlideField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        windowSlideField.setText("2");
+        windowSlideField.setText("4");
         windowSlideField.setToolTipText("The number of beats to slide window by");
         windowSlideField.setMaximumSize(null);
         windowSlideField.setMinimumSize(new java.awt.Dimension(60, 30));
         windowSlideField.setPreferredSize(new java.awt.Dimension(60, 30));
+        windowSlideField.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                windowSlideFieldActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 0.5;
         windowParametersPanel.add(windowSlideField, gridBagConstraints);
+
+        useRelativeCheckbox.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
+        useRelativeCheckbox.setSelected(true);
+        useRelativeCheckbox.setToolTipText("Use Markov chains when adding productions to Grammar");
+        useRelativeCheckbox.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        useRelativeCheckbox.setLabel("Use relative pitches");
+        useRelativeCheckbox.setMaximumSize(new java.awt.Dimension(9999, 9999));
+        useRelativeCheckbox.setMinimumSize(new java.awt.Dimension(435, 30));
+        useRelativeCheckbox.setPreferredSize(new java.awt.Dimension(435, 30));
+        useRelativeCheckbox.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                useRelativeCheckboxActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        windowParametersPanel.add(useRelativeCheckbox, gridBagConstraints);
 
         numClusterRepsField.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
         numClusterRepsField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
@@ -2014,21 +2215,24 @@ private void initCompFileChoosers() {
 
         useMarkovCheckbox.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
         useMarkovCheckbox.setSelected(true);
-        useMarkovCheckbox.setText("Use Markov (ordered connection of phrases) Chain length:");
         useMarkovCheckbox.setToolTipText("Use Markov chains when adding productions to Grammar");
         useMarkovCheckbox.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        useMarkovCheckbox.setLabel("Use Markov (ordered connection of phrases)             Markov chain length");
         useMarkovCheckbox.setMaximumSize(new java.awt.Dimension(9999, 9999));
         useMarkovCheckbox.setMinimumSize(new java.awt.Dimension(435, 30));
         useMarkovCheckbox.setPreferredSize(new java.awt.Dimension(435, 30));
-        useMarkovCheckbox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        useMarkovCheckbox.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 useMarkovCheckboxActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         windowParametersPanel.add(useMarkovCheckbox, gridBagConstraints);
 
         MarkovLengthField.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
@@ -2038,8 +2242,10 @@ private void initCompFileChoosers() {
         MarkovLengthField.setMaximumSize(new java.awt.Dimension(9999, 9999));
         MarkovLengthField.setMinimumSize(new java.awt.Dimension(100, 30));
         MarkovLengthField.setPreferredSize(new java.awt.Dimension(60, 30));
-        MarkovLengthField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        MarkovLengthField.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 MarkovLengthFieldActionPerformed(evt);
             }
         });
@@ -2067,8 +2273,10 @@ private void initCompFileChoosers() {
         loadBaseGrammarBtn.setMinimumSize(new java.awt.Dimension(105, 60));
         loadBaseGrammarBtn.setOpaque(true);
         loadBaseGrammarBtn.setPreferredSize(new java.awt.Dimension(173, 60));
-        loadBaseGrammarBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        loadBaseGrammarBtn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 loadBaseGrammarBtnActionPerformed(evt);
             }
         });
@@ -2089,8 +2297,10 @@ private void initCompFileChoosers() {
         saveGrammarAsButton.setMaximumSize(new java.awt.Dimension(9999, 9999));
         saveGrammarAsButton.setOpaque(true);
         saveGrammarAsButton.setPreferredSize(new java.awt.Dimension(173, 60));
-        saveGrammarAsButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        saveGrammarAsButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 saveGrammarAsButtonActionPerformed(evt);
             }
         });
@@ -2112,8 +2322,10 @@ private void initCompFileChoosers() {
         openCorpusBtn.setMinimumSize(new java.awt.Dimension(240, 75));
         openCorpusBtn.setOpaque(true);
         openCorpusBtn.setPreferredSize(new java.awt.Dimension(240, 75));
-        openCorpusBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        openCorpusBtn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 openCorpusBtnActionPerformed(evt);
             }
         });
@@ -2134,8 +2346,10 @@ private void initCompFileChoosers() {
         toGrammarBtn.setMinimumSize(new java.awt.Dimension(240, 75));
         toGrammarBtn.setOpaque(true);
         toGrammarBtn.setPreferredSize(new java.awt.Dimension(240, 75));
-        toGrammarBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        toGrammarBtn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 toGrammarBtnActionPerformed(evt);
             }
         });
@@ -2172,8 +2386,10 @@ private void initCompFileChoosers() {
         testGeneration.setMinimumSize(new java.awt.Dimension(240, 29));
         testGeneration.setOpaque(true);
         testGeneration.setPreferredSize(new java.awt.Dimension(240, 29));
-        testGeneration.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        testGeneration.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 testGenerationActionPerformed(evt);
             }
         });
@@ -2193,8 +2409,10 @@ private void initCompFileChoosers() {
         generateSoloButton.setMaximumSize(new java.awt.Dimension(100, 30));
         generateSoloButton.setMinimumSize(new java.awt.Dimension(100, 30));
         generateSoloButton.setPreferredSize(new java.awt.Dimension(100, 30));
-        generateSoloButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        generateSoloButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 generateSoloButtonActionPerformed(evt);
             }
         });
@@ -2211,8 +2429,10 @@ private void initCompFileChoosers() {
         generateThemeButton.setMaximumSize(new java.awt.Dimension(100, 30));
         generateThemeButton.setMinimumSize(new java.awt.Dimension(100, 30));
         generateThemeButton.setPreferredSize(new java.awt.Dimension(100, 30));
-        generateThemeButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        generateThemeButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 generateThemeButtonActionPerformed(evt);
             }
         });
@@ -2281,8 +2501,10 @@ private void initCompFileChoosers() {
         genSoloThemeBtn.setMaximumSize(new java.awt.Dimension(100, 30));
         genSoloThemeBtn.setMinimumSize(new java.awt.Dimension(100, 30));
         genSoloThemeBtn.setPreferredSize(new java.awt.Dimension(100, 30));
-        genSoloThemeBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        genSoloThemeBtn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 genSoloThemeBtnActionPerformed(evt);
             }
         });
@@ -2326,8 +2548,10 @@ private void initCompFileChoosers() {
         pasteThemeBtn.setMaximumSize(new java.awt.Dimension(100, 30));
         pasteThemeBtn.setMinimumSize(new java.awt.Dimension(100, 30));
         pasteThemeBtn.setPreferredSize(new java.awt.Dimension(100, 30));
-        pasteThemeBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        pasteThemeBtn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 pasteThemeBtnActionPerformed(evt);
             }
         });
@@ -2344,8 +2568,10 @@ private void initCompFileChoosers() {
         playSoloBtn.setMaximumSize(new java.awt.Dimension(100, 30));
         playSoloBtn.setMinimumSize(new java.awt.Dimension(100, 30));
         playSoloBtn.setPreferredSize(new java.awt.Dimension(100, 30));
-        playSoloBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        playSoloBtn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 playSoloBtnActionPerformed(evt);
             }
         });
@@ -2362,8 +2588,10 @@ private void initCompFileChoosers() {
         stopSoloPlayBtn.setMaximumSize(new java.awt.Dimension(100, 30));
         stopSoloPlayBtn.setMinimumSize(new java.awt.Dimension(100, 30));
         stopSoloPlayBtn.setPreferredSize(new java.awt.Dimension(100, 30));
-        stopSoloPlayBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        stopSoloPlayBtn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 stopSoloPlayBtnActionPerformed(evt);
             }
         });
@@ -2444,30 +2672,36 @@ private void initCompFileChoosers() {
         gridBagConstraints.weighty = 0.2;
         nnetOutputPanel.add(nnetScrollPane, gridBagConstraints);
 
-        layerInfoScrollPane.setBorder(null);
         layerInfoScrollPane.setMinimumSize(new java.awt.Dimension(469, 402));
 
         layerDataTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+            new Object [][]
+            {
                 { new Integer(1),  new Integer(64), "Logsig"},
                 { new Integer(2),  new Integer(1), "Logsig"}
             },
-            new String [] {
+            new String []
+            {
                 "Layer Index", "Layer Size", "Layer Type"
             }
-        ) {
-            Class[] types = new Class [] {
+        )
+        {
+            Class[] types = new Class []
+            {
                 java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class
             };
-            boolean[] canEdit = new boolean [] {
+            boolean[] canEdit = new boolean []
+            {
                 false, true, true
             };
 
-            public Class getColumnClass(int columnIndex) {
+            public Class getColumnClass(int columnIndex)
+            {
                 return types [columnIndex];
             }
 
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
+            public boolean isCellEditable(int rowIndex, int columnIndex)
+            {
                 if (columnIndex == 1
                     && rowIndex == layerDataTable.getRowCount() - 1)
                 {
@@ -2480,8 +2714,10 @@ private void initCompFileChoosers() {
         layerDataTable.setMinimumSize(new java.awt.Dimension(150, 900));
         layerDataTable.setPreferredSize(new java.awt.Dimension(150, 900));
         layerDataTable.getTableHeader().setReorderingAllowed(false);
-        layerDataTable.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+        layerDataTable.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
                 layerDataTableMouseClicked(evt);
             }
         });
@@ -2527,8 +2763,10 @@ private void initCompFileChoosers() {
         generateWeightFileButton.setMinimumSize(new java.awt.Dimension(300, 29));
         generateWeightFileButton.setOpaque(true);
         generateWeightFileButton.setPreferredSize(new java.awt.Dimension(300, 29));
-        generateWeightFileButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        generateWeightFileButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 generateWeightFileButtonActionPerformed(evt);
             }
         });
@@ -2543,8 +2781,10 @@ private void initCompFileChoosers() {
         getNetworkStatsButton.setMaximumSize(new java.awt.Dimension(300, 29));
         getNetworkStatsButton.setMinimumSize(new java.awt.Dimension(300, 29));
         getNetworkStatsButton.setPreferredSize(new java.awt.Dimension(300, 29));
-        getNetworkStatsButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        getNetworkStatsButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 getNetworkStatsButtonActionPerformed(evt);
             }
         });
@@ -2559,8 +2799,10 @@ private void initCompFileChoosers() {
         clearWeightFileButton.setMaximumSize(new java.awt.Dimension(300, 29));
         clearWeightFileButton.setMinimumSize(new java.awt.Dimension(300, 29));
         clearWeightFileButton.setPreferredSize(new java.awt.Dimension(300, 29));
-        clearWeightFileButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        clearWeightFileButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 clearWeightFileButtonActionPerformed(evt);
             }
         });
@@ -2575,8 +2817,10 @@ private void initCompFileChoosers() {
         loadWeightFileButton.setMaximumSize(new java.awt.Dimension(300, 29));
         loadWeightFileButton.setMinimumSize(new java.awt.Dimension(300, 29));
         loadWeightFileButton.setPreferredSize(new java.awt.Dimension(300, 29));
-        loadWeightFileButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        loadWeightFileButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 loadWeightFileButtonActionPerformed(evt);
             }
         });
@@ -2591,8 +2835,10 @@ private void initCompFileChoosers() {
         resetNnetInstructionsButton.setMaximumSize(new java.awt.Dimension(300, 29));
         resetNnetInstructionsButton.setMinimumSize(new java.awt.Dimension(300, 29));
         resetNnetInstructionsButton.setPreferredSize(new java.awt.Dimension(300, 29));
-        resetNnetInstructionsButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        resetNnetInstructionsButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 resetNnetInstructionsButtonActionPerformed(evt);
             }
         });
@@ -2607,8 +2853,10 @@ private void initCompFileChoosers() {
         resetDefaultValuesButton.setMaximumSize(new java.awt.Dimension(300, 29));
         resetDefaultValuesButton.setMinimumSize(new java.awt.Dimension(300, 29));
         resetDefaultValuesButton.setPreferredSize(new java.awt.Dimension(300, 29));
-        resetDefaultValuesButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        resetDefaultValuesButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 resetDefaultValuesButtonActionPerformed(evt);
             }
         });
@@ -2623,8 +2871,10 @@ private void initCompFileChoosers() {
         resetNetworkButton.setMaximumSize(new java.awt.Dimension(300, 29));
         resetNetworkButton.setMinimumSize(new java.awt.Dimension(300, 29));
         resetNetworkButton.setPreferredSize(new java.awt.Dimension(300, 29));
-        resetNetworkButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        resetNetworkButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 resetNetworkButtonActionPerformed(evt);
             }
         });
@@ -2649,8 +2899,10 @@ private void initCompFileChoosers() {
 
         trainingFileButton.setText("Training File");
         trainingFileButton.setToolTipText("Select the training file for the network.");
-        trainingFileButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        trainingFileButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 trainingFileButtonActionPerformed(evt);
             }
         });
@@ -2798,8 +3050,10 @@ private void initCompFileChoosers() {
 
         addLayerToTableButton.setText("Add Layer");
         addLayerToTableButton.setToolTipText("Add a layer to the end of the network. If a layer is selected, add it below that one.");
-        addLayerToTableButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        addLayerToTableButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 addLayerToTableButtonActionPerformed(evt);
             }
         });
@@ -2814,8 +3068,10 @@ private void initCompFileChoosers() {
 
         removeLayerFromTableButton.setText("Remove Layer");
         removeLayerFromTableButton.setToolTipText("Delete the selected layer.");
-        removeLayerFromTableButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        removeLayerFromTableButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 removeLayerFromTableButtonActionPerformed(evt);
             }
         });
@@ -2832,8 +3088,10 @@ private void initCompFileChoosers() {
         moveLayerUpTableButton.setMaximumSize(new java.awt.Dimension(100, 29));
         moveLayerUpTableButton.setMinimumSize(new java.awt.Dimension(100, 29));
         moveLayerUpTableButton.setPreferredSize(new java.awt.Dimension(100, 29));
-        moveLayerUpTableButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        moveLayerUpTableButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 moveLayerUpTableButtonActionPerformed(evt);
             }
         });
@@ -2851,8 +3109,10 @@ private void initCompFileChoosers() {
         moveLayerDownTableButton.setMaximumSize(new java.awt.Dimension(120, 29));
         moveLayerDownTableButton.setMinimumSize(new java.awt.Dimension(120, 29));
         moveLayerDownTableButton.setPreferredSize(new java.awt.Dimension(120, 29));
-        moveLayerDownTableButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        moveLayerDownTableButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 moveLayerDownTableButtonActionPerformed(evt);
             }
         });
@@ -2866,8 +3126,10 @@ private void initCompFileChoosers() {
 
         weightFileButton.setText("Weight File");
         weightFileButton.setToolTipText("Name automatically set from Training File. If you are only loading weights into the critic, use this.");
-        weightFileButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        weightFileButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 weightFileButtonActionPerformed(evt);
             }
         });
@@ -2905,24 +3167,30 @@ private void initCompFileChoosers() {
         grammarMenu1.setMnemonic('G');
         grammarMenu1.setText("Grammar Options");
         grammarMenu1.setToolTipText("Edit or change the current grammar file.");
-        grammarMenu1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        grammarMenu1.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 grammarMenu1ActionPerformed(evt);
             }
         });
 
         openGrammarMI1.setText("Load Grammar");
         openGrammarMI1.setToolTipText("Selects which grammar file to used.");
-        openGrammarMI1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        openGrammarMI1.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 openGrammarMI1ActionPerformed(evt);
             }
         });
         grammarMenu1.add(openGrammarMI1);
 
         showLogMI1.setText("Show Log");
-        showLogMI1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        showLogMI1.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 showLogMI1ActionPerformed(evt);
             }
         });
@@ -2930,8 +3198,10 @@ private void initCompFileChoosers() {
 
         saveGrammarMI1.setText("Save Grammar As ...");
         saveGrammarMI1.setToolTipText("Saves the grammar file under a specified name.");
-        saveGrammarMI1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        saveGrammarMI1.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 saveGrammarMI1ActionPerformed(evt);
             }
         });
@@ -2939,8 +3209,10 @@ private void initCompFileChoosers() {
 
         editGrammarMI1.setText("Edit Grammar");
         editGrammarMI1.setToolTipText("Edit the current grammar using a text editor.");
-        editGrammarMI1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        editGrammarMI1.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 editGrammarMI1ActionPerformed(evt);
             }
         });
@@ -2948,8 +3220,10 @@ private void initCompFileChoosers() {
 
         reloadGrammarMI1.setText("Reload Grammar");
         reloadGrammarMI1.setToolTipText("Reloads the grammar file.");
-        reloadGrammarMI1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        reloadGrammarMI1.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 reloadGrammarMI1ActionPerformed(evt);
             }
         });
@@ -2957,16 +3231,20 @@ private void initCompFileChoosers() {
 
         toCriticMI1.setText("Send Licks to Critic");
         toCriticMI1.setToolTipText("Copies licks in a special format for learning by critic (a separate tool).");
-        toCriticMI1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        toCriticMI1.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 toCriticMI1ActionPerformed(evt);
             }
         });
         grammarMenu1.add(toCriticMI1);
 
         showCriticMI1.setText("Show Critic Exporter");
-        showCriticMI1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        showCriticMI1.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 showCriticMI1ActionPerformed(evt);
             }
         });
@@ -2975,8 +3253,10 @@ private void initCompFileChoosers() {
         useGrammarMI1.setSelected(true);
         useGrammarMI1.setText("Use Grammar");
         useGrammarMI1.setToolTipText("Indicates whether or not a grammar should be used in lick generation. Without this, generation will be governed only by probabilities set in the fields below.");
-        useGrammarMI1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        useGrammarMI1.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 useGrammarMI1ActionPerformed(evt);
             }
         });
@@ -2985,21 +3265,27 @@ private void initCompFileChoosers() {
         generatorMenuBar1.add(grammarMenu1);
 
         generatorWindowMenu1.setLabel("Window");
-        generatorWindowMenu1.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
-            }
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
+        generatorWindowMenu1.addMenuListener(new javax.swing.event.MenuListener()
+        {
+            public void menuSelected(javax.swing.event.MenuEvent evt)
+            {
                 generatorWindowMenu1MenuSelected(evt);
             }
-            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            public void menuDeselected(javax.swing.event.MenuEvent evt)
+            {
+            }
+            public void menuCanceled(javax.swing.event.MenuEvent evt)
+            {
             }
         });
 
         closeWindowMI2.setMnemonic('C');
         closeWindowMI2.setText("Close Window");
         closeWindowMI2.setToolTipText("Closes the current window (exits program if there are no other windows)");
-        closeWindowMI2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        closeWindowMI2.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 closeWindowMI2ActionPerformed(evt);
             }
         });
@@ -3007,8 +3293,10 @@ private void initCompFileChoosers() {
 
         cascadeMI2.setMnemonic('A');
         cascadeMI2.setText("Cascade Windows");
-        cascadeMI2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        cascadeMI2.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 cascadeMI2ActionPerformed(evt);
             }
         });
@@ -3611,7 +3899,7 @@ getAbstractMelody();
  * add the production to file
  */
 
-private void writeProduction(String production, int measureWindow, int location,
+public void writeProduction(String production, int measureWindow, int location,
                              boolean writeExactMelody)
   {
 
@@ -3645,6 +3933,7 @@ private void writeProduction(String production, int measureWindow, int location,
             //check that index of exact melody matches index of abstract melody
             //then concatenate the two and write them to the file
             String melodyToWrite;
+            String relativePitchMelody = "";
             String exactMelody = null; //= melodyData.get(location);
             String[] splitMel; // = exactMelody.split(" ");
             //if(!splitMel[0].equals(Integer.toString(location))) {
@@ -3673,11 +3962,51 @@ private void writeProduction(String production, int measureWindow, int location,
                 melodyToWrite = "Chorus" + (notate.getSelectedIndex() + 1) + " " + exactMelody;
               }
 
+            //this section converts a slice of melody to relative pitch notation (X notation)
+            //get the chords for the section we want to convert to X notation
+            int slotsPerSection = measureWindow*slotsPerBeat;
+            ChordPart chordProg = notate.getChordProg().extract(location,
+                                                         location + slotsPerSection - 1);
+            ArrayList<Chord> allChords = chordProg.getChords();
+            
+            //split up the string containing melody info
+            String[] exactMelodyData = exactMelody.split(" ");
+            
+            //first item is tells us the starting slot of this section of melody
+            int startSlot = Integer.parseInt(exactMelodyData[0]);
+            
+            int chordNumber = 0; //index of the i-th chord in this measure we've looked at as a possible match for this note
+            int totalChordDurationInMeasure = allChords.get(0).getRhythmValue(); //total number of slots belonging to chords we've looked at as a possible match for this note
+            int totalNoteDurationInMeasure = 0; //total number of slots that have gone by in this measure up to this note
+            for (int i = 1; i < exactMelodyData.length; i += 2) {
+                int pitch = Integer.parseInt(exactMelodyData[i]); //every odd index item is a note
+                int duration = Integer.parseInt(exactMelodyData[i + 1]); //every even index item (after 0) is a duration
+                while (totalNoteDurationInMeasure >= totalChordDurationInMeasure) { //we need to move on to the next chord
+                    chordNumber++;
+                    totalChordDurationInMeasure += allChords.get(chordNumber).getRhythmValue();
+                }
+                try {
+                    if (pitch >= 0) { //pitch is a note
+                        Note note = new Note(pitch, duration);
+                        Polylist relativePitch = imp.lickgen.NotesToRelativePitch.noteToRelativePitch(note, allChords.get(chordNumber));
+                        relativePitchMelody = relativePitchMelody.concat(relativePitch.toString());
+                    } else { //"pitch" is a rest
+                        String rest = "R" + imp.data.Note.getDurationString(duration) + " ";
+                        relativePitchMelody = relativePitchMelody.concat(rest.toString());
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                totalNoteDurationInMeasure += duration;
+            }
+            //System.out.println("Relative pitch melody: " + relativePitchMelody);
+
             out.write("(rule (Seg" + measureWindow + ") " + production + " ) "
-                + melodyToWrite + " " + chords + "\n");
+                + "Xnotation " + relativePitchMelody + " " + melodyToWrite + " " + chords + "\n");
           }
         out.close();
       }
+     
     catch( IOException e )
       {
         System.out.println("IO EXCEPTION!");
@@ -3685,7 +4014,7 @@ private void writeProduction(String production, int measureWindow, int location,
   }
 
 //add the production to the grammar file
-private void addProduction(String production, int measureWindow, double prob)
+public void addProduction(String production, int measureWindow, double prob) //formerly private
   {
     try
       {
@@ -5851,6 +6180,16 @@ private void updateUseSoloist()
                           "Alert", JOptionPane.PLAIN_MESSAGE);
         }
     }//GEN-LAST:event_styleRecognitionButtonActionPerformed
+
+    private void useRelativeCheckboxActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_useRelativeCheckboxActionPerformed
+    {//GEN-HEADEREND:event_useRelativeCheckboxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_useRelativeCheckboxActionPerformed
+
+    private void windowSlideFieldActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_windowSlideFieldActionPerformed
+    {//GEN-HEADEREND:event_windowSlideFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_windowSlideFieldActionPerformed
   
     public void showCriticGrades()
     {
@@ -6194,6 +6533,7 @@ private void updateUseSoloist()
     private javax.swing.JCheckBoxMenuItem useGrammarMI1;
     private javax.swing.JCheckBox useHeadCheckBox;
     private javax.swing.JCheckBox useMarkovCheckbox;
+    private javax.swing.JCheckBox useRelativeCheckbox;
     private javax.swing.JCheckBox useSoloistCheckBox;
     private javax.swing.JButton weightFileButton;
     private javax.swing.JTextField weightFileTextField;
@@ -6294,6 +6634,11 @@ public int getMarkovFieldLength()
   {
     return Integer.parseInt(MarkovLengthField.getText());
 }
+
+public boolean getUseRelativePitches()
+  {
+    return useRelativeCheckbox.isSelected();
+  }
 
   public void redoScales()
     {

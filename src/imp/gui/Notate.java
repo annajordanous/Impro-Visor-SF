@@ -26045,6 +26045,7 @@ public void toGrammar()
                          lickgenFrame.getNumClusterReps(),
                          lickgenFrame.useMarkovSelected(),
                          lickgenFrame.getMarkovFieldLength(),
+                         lickgenFrame.getUseRelativePitches(),
                          this);
     //System.out.println("Done writing productions to grammar file: " + outFile);
     setLickGenStatus("Done writing productions to grammar file: " + outFile);

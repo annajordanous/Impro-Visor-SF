@@ -760,6 +760,14 @@ public Note copy()
   return newNote;
   }
 
+/**
+ * Converts a note, given the chord the note is over, to a relative pitch
+ * @param chord the chord the note is played over
+ * @return Polylist a polylist representing the corresponding relative pitch
+ */
+public Polylist toRelativePitch(Chord chord) {
+    return imp.lickgen.NotesToRelativePitch.noteToRelativePitch(this, chord);
+}
 
 /**
  * Returns a String representation of the Note
