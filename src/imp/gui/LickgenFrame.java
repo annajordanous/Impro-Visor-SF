@@ -2237,7 +2237,7 @@ private void initCompFileChoosers() {
 
         MarkovLengthField.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
         MarkovLengthField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        MarkovLengthField.setText("3");
+        MarkovLengthField.setText("4");
         MarkovLengthField.setToolTipText("The number of previous states on which the Markov chain depends.");
         MarkovLengthField.setMaximumSize(new java.awt.Dimension(9999, 9999));
         MarkovLengthField.setMinimumSize(new java.awt.Dimension(100, 30));
@@ -2266,7 +2266,7 @@ private void initCompFileChoosers() {
         loadBaseGrammarBtn.setBackground(Color.yellow
         );
         loadBaseGrammarBtn.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
-        loadBaseGrammarBtn.setText("<html><b>Step 1</b>: Load the grammar on which you wish to build, such as Bare.grammar.  <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If you do nothing, Impro-Visor will build on whatever grammar is current.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This step also clears any accumulated productions from prior use of the learning tool.</html>  ");
+        loadBaseGrammarBtn.setText("<html><b>Step 1</b>: Load the grammar on which you wish to build, such as _Empty.grammar.  <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If you do nothing, Impro-Visor will build on whatever grammar is current.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This step also clears any accumulated productions from prior use of the learning tool.</html>  ");
         loadBaseGrammarBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         loadBaseGrammarBtn.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         loadBaseGrammarBtn.setMaximumSize(new java.awt.Dimension(9999, 9999));
@@ -2291,9 +2291,9 @@ private void initCompFileChoosers() {
         saveGrammarAsButton.setBackground(Color.yellow
         );
         saveGrammarAsButton.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
+        saveGrammarAsButton.setText("<html><b>Step 2</b>: <b>IMPORTANT</b>: This step will use <b>Save as . . .</b> in the Grammar menu to save your new grammar under a new name, <br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; in case you want to return to the old grammar.\n<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; It will also ask you to save your leadsheet if you need it, as the leadsheet window will be used as a workspace.</html>  ");
         saveGrammarAsButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         saveGrammarAsButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        saveGrammarAsButton.setLabel("<html><b>Step 2</b>: <b>IMPORTANT</b>: This step will use <b>Save as ...</b> in the Grammar menu to save your new grammar under a new name, <br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; in case you want to return to the old grammar.\n<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; It will also ask you to save your leadsheet if you need it, as the leadsheet window will be used as a workspace.</html>  ");
         saveGrammarAsButton.setMaximumSize(new java.awt.Dimension(9999, 9999));
         saveGrammarAsButton.setOpaque(true);
         saveGrammarAsButton.setPreferredSize(new java.awt.Dimension(173, 60));
@@ -2314,7 +2314,7 @@ private void initCompFileChoosers() {
 
         openCorpusBtn.setBackground(Color.orange);
         openCorpusBtn.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
-        openCorpusBtn.setText("<html><b>Step 4</b>: Select a corpus of solos from which to learn. Each solo is a leadsheet file.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>Note: Selecting any leadsheet file in a folder is equivalent to selecting the entire folder. </b><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The leadsheet you selected will be left in the window at the end.  <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>The process is over when the last chorus of that leadsheet appears</b>.</html>");
+        openCorpusBtn.setText("<html><b>Step 4</b>: Select a corpus of solos from which to learn. Each solo is a leadsheet file.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>Note: Selecting any leadsheet file in a folder is equivalent to selecting the entire folder. </b><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The leadsheet you selected will be left in the window at the end.  <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>The process is complete when the last chorus of that leadsheet appears</b>.</html>");
         openCorpusBtn.setActionCommand("<html><b>Step 5</b>: Next select a corpus of solos from which to learn. Each solo is a leadsheet file.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Selecting any file any a folder is equivalent to selecting the entire folder.  <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The leadsheet you selected will be left in the window at the end. The process is over when the last chorus appears.</html>");
         openCorpusBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         openCorpusBtn.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);

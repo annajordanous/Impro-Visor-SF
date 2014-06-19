@@ -2385,7 +2385,7 @@
                       <Font name="Lucida Grande" size="14" style="0"/>
                     </Property>
                     <Property name="horizontalAlignment" type="int" value="4"/>
-                    <Property name="text" type="java.lang.String" value="3"/>
+                    <Property name="text" type="java.lang.String" value="4"/>
                     <Property name="toolTipText" type="java.lang.String" value="The number of previous states on which the Markov chain depends."/>
                     <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[9999, 9999]"/>
@@ -2416,7 +2416,7 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Lucida Grande" size="14" style="0"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;b&gt;Step 1&lt;/b&gt;: Load the grammar on which you wish to build, such as Bare.grammar.  &lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;If you do nothing, Impro-Visor will build on whatever grammar is current.&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;This step also clears any accumulated productions from prior use of the learning tool.&lt;/html&gt;  "/>
+                <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;b&gt;Step 1&lt;/b&gt;: Load the grammar on which you wish to build, such as _Empty.grammar.  &lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;If you do nothing, Impro-Visor will build on whatever grammar is current.&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;This step also clears any accumulated productions from prior use of the learning tool.&lt;/html&gt;  "/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                     <BevelBorder/>
@@ -2451,13 +2451,13 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Lucida Grande" size="14" style="0"/>
                 </Property>
+                <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;b&gt;Step 2&lt;/b&gt;: &lt;b&gt;IMPORTANT&lt;/b&gt;: This step will use &lt;b&gt;Save as . . .&lt;/b&gt; in the Grammar menu to save your new grammar under a new name, &lt;br&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; in case you want to return to the old grammar.&#xa;&lt;br&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; It will also ask you to save your leadsheet if you need it, as the leadsheet window will be used as a workspace.&lt;/html&gt;  "/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                     <BevelBorder/>
                   </Border>
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="2"/>
-                <Property name="label" type="java.lang.String" value="&lt;html&gt;&lt;b&gt;Step 2&lt;/b&gt;: &lt;b&gt;IMPORTANT&lt;/b&gt;: This step will use &lt;b&gt;Save as ...&lt;/b&gt; in the Grammar menu to save your new grammar under a new name, &lt;br&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; in case you want to return to the old grammar.&#xa;&lt;br&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; It will also ask you to save your leadsheet if you need it, as the leadsheet window will be used as a workspace.&lt;/html&gt;  "/>
                 <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                   <Dimension value="[9999, 9999]"/>
                 </Property>
@@ -2483,7 +2483,7 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Lucida Grande" size="14" style="0"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;b&gt;Step 4&lt;/b&gt;: Select a corpus of solos from which to learn. Each solo is a leadsheet file.&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;b&gt;Note: Selecting any leadsheet file in a folder is equivalent to selecting the entire folder. &lt;/b&gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;The leadsheet you selected will be left in the window at the end.  &lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;b&gt;The process is over when the last chorus of that leadsheet appears&lt;/b&gt;.&lt;/html&gt;"/>
+                <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;b&gt;Step 4&lt;/b&gt;: Select a corpus of solos from which to learn. Each solo is a leadsheet file.&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;b&gt;Note: Selecting any leadsheet file in a folder is equivalent to selecting the entire folder. &lt;/b&gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;The leadsheet you selected will be left in the window at the end.  &lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;b&gt;The process is complete when the last chorus of that leadsheet appears&lt;/b&gt;.&lt;/html&gt;"/>
                 <Property name="actionCommand" type="java.lang.String" value="&lt;html&gt;&lt;b&gt;Step 5&lt;/b&gt;: Next select a corpus of solos from which to learn. Each solo is a leadsheet file.&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Selecting any file any a folder is equivalent to selecting the entire folder.  &lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;The leadsheet you selected will be left in the window at the end. The process is over when the last chorus appears.&lt;/html&gt;"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
