@@ -387,6 +387,7 @@ private ImproVisor(String leadsheet)
         advisor.listChords(System.out);	// option to list all chord types
       }
     
+    //System.out.println("roadmap blocks = " + notate.getRoadMapBlocks());
     //System.out.println(getChordNames());
   }
        
