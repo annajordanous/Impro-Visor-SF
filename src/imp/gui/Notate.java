@@ -32,6 +32,7 @@ import imp.audio.AudioSettings;
 import imp.audio.PitchExtractor;
 import imp.audio.SCDelayOffsetter;
 import imp.audio.SCHandler;
+import imp.brickdictionary.Block;
 import imp.cluster.CreateGrammar;
 import imp.com.*;
 import imp.data.*;
@@ -45,7 +46,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.util.*;
-import java.util.Timer;
+//import java.util.Timer;
 import javax.sound.midi.MidiDevice;
 import javax.sound.midi.Sequencer;
 import javax.swing.*;
@@ -26184,6 +26185,12 @@ public void roadMapThisAnalyze()
     roadmapFrame.makeVisible(true);
     setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     staveRequestFocus();
+  }
+
+public ArrayList<Block> getRoadMapBlocks()
+  {
+    roadMapThisAnalyze();
+    return roadmapFrame.getFullRoadMap();
   }
 
 // currently disconnected

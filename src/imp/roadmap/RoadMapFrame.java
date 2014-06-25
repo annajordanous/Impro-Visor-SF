@@ -4647,6 +4647,11 @@ public void analyze(boolean showJoinsOnCompletion)
   //notate.getScore().getChordProg().setRoadmapPoly(roadMapPanel.getRoadmapPoly());
   }
 
+public ArrayList<Block> getFullRoadMap()
+  {
+    roadMapPanel.selectAll();
+    return analyze(roadMapPanel.getSelection());
+  }
 
 public String getDictionaryFilename()
   {
