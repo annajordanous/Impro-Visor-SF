@@ -26223,10 +26223,12 @@ public void reAnalyze()
 public void openEmptyRoadmap()
   {
     setMode(Mode.ROADMAP);
-    establishRoadMapFrame();
+    roadmapFrame = new RoadMapFrame(this);
+    roadmapFrame.setRoadMapFrameHeight();
     roadmapFrame.setRoadMapTitle("Untitled");
     roadmapFrame.updatePhiAndDelta(getPhiStatus(),getDeltaStatus());
     roadmapFrame.makeVisible(false);
+    roadmapFrame.setVisible(true);
   }
 
 
