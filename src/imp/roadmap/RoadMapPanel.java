@@ -868,6 +868,11 @@ protected void addBlocks(ArrayList<Block> blocks, Boolean selectBlocks)
     /** Draw all elements of the roadmap*/
     protected void draw()
     { 
+      if( buffer == null )
+        {
+          return;
+        }
+ 
        view.setBackground(buffer);
        drawGrid();
        drawText();
@@ -943,7 +948,7 @@ protected void addBlocks(ArrayList<Block> blocks, Boolean selectBlocks)
     /** Draws the grid */
     private void drawGrid()
     {
-        Graphics g = buffer.getGraphics();
+      Graphics g = buffer.getGraphics();
 
         for(int i = 0; i < numLines; i++) {
             g.setColor(settings.gridBGColor);
