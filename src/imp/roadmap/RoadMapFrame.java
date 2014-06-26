@@ -4368,10 +4368,22 @@ public void setParent(Notate notate)
      * Analyze in the background by creating Analyzer Thread.
      */
     
-    public void analyzeInBackground(boolean showJoinsOnCompletion)
+public void analyzeInBackground(boolean showJoinsOnCompletion)
+  {
+    final Analyzer analyzer = new Analyzer(this, showJoinsOnCompletion);
+    analyzer.start();
+    synchronized(analyzer)
       {
-        new Analyzer(this, showJoinsOnCompletion).start();
+        try
+          {
+            analyzer.wait();
+          }
+        catch( Exception e )
+          {
+            System.out.println("Exception waiting for analyzer: " + e);
+          }
       }
+  }
 
     /** Sets the time signature of the roadmap for Americans
      * @param meter
