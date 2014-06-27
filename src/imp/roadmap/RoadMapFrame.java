@@ -535,8 +535,10 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         addBrickDialog.getContentPane().add(dialogVariantField, gridBagConstraints);
 
         chordChangeDialog.setTitle("Settings"); // NOI18N
+        chordChangeDialog.setMinimumSize(new java.awt.Dimension(300, 100));
         chordChangeDialog.setModal(true);
         chordChangeDialog.setName("chordChangeDialog"); // NOI18N
+        chordChangeDialog.setPreferredSize(new java.awt.Dimension(300, 100));
         chordChangeDialog.setResizable(false);
         chordChangeDialog.getContentPane().setLayout(new java.awt.GridBagLayout());
 
@@ -874,13 +876,13 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         setName("Form"); // NOI18N
         addWindowListener(new java.awt.event.WindowAdapter()
         {
-            public void windowActivated(java.awt.event.WindowEvent evt)
-            {
-                formWindowActivated(evt);
-            }
             public void windowClosing(java.awt.event.WindowEvent evt)
             {
                 roadMapWindowClosing(evt);
+            }
+            public void windowActivated(java.awt.event.WindowEvent evt)
+            {
+                formWindowActivated(evt);
             }
         });
         addComponentListener(new java.awt.event.ComponentAdapter()
