@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2014 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -13,6 +13,7 @@
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
  *
+
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -24,8 +25,11 @@ import imp.data.Chord;
 import imp.data.ChordPart;
 import imp.data.MelodyPart;
 import imp.data.Note;
+import imp.data.NoteSymbol;
+import imp.data.Unit;
 import imp.lickgen.LickGen;
 import polya.*;
+import java.util.*;
 /**
  *
  * @author Alex Putman
@@ -35,7 +39,8 @@ public class Transformation {
 private Polylist sourceNotes;
 private Polylist conditionGuard;
 private Polylist targetNotes;
-public int weight;
+private int weight;
+private boolean enabled;
 private String description;
 private LickGen lickGen;
 public boolean debug;
@@ -46,8 +51,9 @@ public Transformation(LickGen lickGen)
     description = (String) "new-transformation"; 
     sourceNotes = Polylist.PolylistFromString("n1");
     targetNotes = Polylist.PolylistFromString("n1");
-    conditionGuard = Polylist.PolylistFromString("(duration>= n1 128)");
+    conditionGuard = Polylist.PolylistFromString("duration>= n1 128");
     weight = 1;
+    enabled = true;
 }
 public Transformation(LickGen lickGen, String transString)
 {
@@ -69,6 +75,15 @@ public void setTransformation(Polylist trans)
     targetNotes = (Polylist) trans.assoc("target-notes").rest();
     conditionGuard = (Polylist) trans.assoc("guard-condition").second();
     weight = ((Long) trans.assoc("weight").second()).intValue();
+    if(trans.assoc("enabled") != null)
+    {
+        enabled = Boolean.parseBoolean(trans.assoc("enabled").second().toString());
+    }
+    else
+    {
+        enabled = true;
+    }
+    enabled = true;
 }
 
 public MelodyPart apply(MelodyPart notes, ChordPart chords, int startingSlot)
@@ -167,9 +182,24 @@ public int numSourceNotes()
     return sourceNotes.length();
 }
 
-public double getWeight()
+public int getWeight()
 {
     return weight;
+}
+
+public void setWeight(int weight)
+{
+    this.weight = weight;
+}
+
+public boolean getEnabled()
+{
+    return enabled;
+}
+
+public void setEnabled(boolean en)
+{
+    enabled = en;
 }
 
 public String getDescription()
@@ -180,22 +210,21 @@ public String getDescription()
 public String toString()
 {
     StringBuilder buf = new StringBuilder();
-    buf.append("(\n");
-    buf.append("description = "+description);
-    buf.append("\nweight = "+weight);
-    buf.append("\nsource-notes = "+sourceNotes.toString());
-    buf.append("\ncondition-guard = "+conditionGuard.toString());
-    buf.append("\ntarget-notes = "+targetNotes.toString());
-    buf.append("\n)\n");
+    buf.append(description);
+    buf.append("       weight = ");
+    buf.append(weight);
     
     return buf.toString();
 }
 
 public void toFile(StringBuilder buf, String tabs)
 {
-    buf.append("\n").append(tabs).append("(transformation");
+    if(tabs.length()>0)
+        buf.append("\n");
+    buf.append(tabs).append("(transformation");
     buf.append("\n").append(tabs).append("\t(description ").append(description).append(")");
     buf.append("\n").append(tabs).append("\t(weight ").append(weight).append(")");
+    buf.append("\n").append(tabs).append("\t(enabled ").append(enabled).append(")");
     buf.append("\n").append(tabs).append("\t");
     Polylist printSourceNotes = new Polylist("source-notes",sourceNotes);
     printPrettyPolylist("", tabs+"\t", buf, printSourceNotes);
@@ -214,6 +243,7 @@ public void printPrettyPolylist(String leftSide, String tabs, StringBuilder buf,
     String newLeftSide = "(" + first.toString();
     
     buf.append(newLeftSide);
+    newLeftSide += "_";
     boolean separate = false;
     list = list.rest();
     int size = list.length();
@@ -225,9 +255,12 @@ public void printPrettyPolylist(String leftSide, String tabs, StringBuilder buf,
                 separate = true;
     }
     if(separate)
-        newLeftSide = newLeftSide + "\t";
+    {   
+        while((newLeftSide.length() + (leftSide.length() % 8)) % 8 != 0)
+            newLeftSide = newLeftSide + "_";
+    }
     else
-        newLeftSide = newLeftSide + " ";
+        newLeftSide = newLeftSide + "_";
     int numTabs = (leftSide + newLeftSide).length()/8;
     String addTabs = "";
     while(numTabs > 0)
@@ -236,12 +269,16 @@ public void printPrettyPolylist(String leftSide, String tabs, StringBuilder buf,
         numTabs--;
     }
     elements = list.elements();
+    
+    if(separate)
+        buf.append("\t");
+    else
+        buf.append(" ");
+    
     while(elements.hasMoreElements())
     {
         
-        if(separate)
-            buf.append("\t");
-        else
+        if(!separate)
             buf.append(" ");
         Object elem = elements.nextElement();
         if(elem instanceof Polylist)

@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2014 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -13,6 +13,7 @@
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
  *
+
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -32,11 +33,12 @@ import java.util.*;
  */
 public class Substitution {
     
-public int weight;
-public String type;
-public String name;
+private int weight;
+private String type;
+private String name;
 public ArrayList<Transformation> transformations;
 public boolean debug;
+private boolean enabled;
 private LickGen lickGen;
 
 public Substitution (LickGen lickGen)
@@ -47,6 +49,7 @@ public Substitution (LickGen lickGen)
     name = "new-substitution";
     type = "embellishment";
     weight = 1;
+    enabled = true;
 }
 
 public Substitution (LickGen lickGen, Polylist sub)
@@ -57,6 +60,14 @@ public Substitution (LickGen lickGen, Polylist sub)
     name = (String) sub.assoc("name").second();
     type = (String) sub.assoc("type").second();
     weight = ((Long)sub.assoc("weight").second()).intValue();
+    if(sub.assoc("enabled") != null)
+    {
+        enabled = Boolean.parseBoolean(sub.assoc("enabled").second().toString());
+    }
+    else
+    {
+        enabled = true;
+    }
     PolylistEnum transbuilder = sub.rest().elements();
     while(transbuilder.hasMoreElements())
     {
@@ -79,9 +90,14 @@ public MelodyPart apply(MelodyPart notes, ChordPart chords, int[] startingSlot)
     ArrayList<Transformation> full = new ArrayList<Transformation>();
     for(Transformation trans: transformations)
     {
-        for(int i = 0; i < trans.getWeight(); i++)
-            full.add(trans);
+        if(trans.getEnabled())
+        {
+            for(int i = 0; i < trans.getWeight(); i++)
+                full.add(trans);
+        }
     }
+    if (full.size() < 1)
+        return null;
     Collections.shuffle(full);
     
     ArrayList<Transformation> sortedTrans = new ArrayList<Transformation>();
@@ -122,9 +138,14 @@ public MelodyPart apply(MelodyPart notes, ChordPart chords, int[] startingSlot)
     return null;
 }
 
-public double getWeight()
+public int getWeight()
 {
     return weight;
+}
+
+public void setWeight(int weight)
+{
+    this.weight = weight;
 }
 
 public String getName()
@@ -142,6 +163,21 @@ public String getType()
     return type;
 }
 
+public void setType(String str)
+{
+    type = str;
+}
+
+public boolean getEnabled()
+{
+    return enabled;
+}
+
+public void setEnabled(boolean en)
+{
+    enabled = en;
+}
+
 public Polylist newNoteList(Polylist notelst)
 {
     if(notelst.length()==1)
@@ -153,13 +189,11 @@ public Polylist newNoteList(Polylist notelst)
 public String toString()
 {
     StringBuilder buf = new StringBuilder();
-    buf.append("(\n");
-    buf.append("name = ").append(name);
-    buf.append("\nweight = ").append(weight);
-    buf.append("\ntype = ").append(type);
-    buf.append(transformations.toString());
-    buf.append("\n)\n");
-    
+    buf.append(name);
+    buf.append("       type = ");
+    buf.append(type);
+    buf.append("       weight = ");
+    buf.append(weight);
     return buf.toString();
 }
 
@@ -168,6 +202,7 @@ public void toFile(StringBuilder buf)
     buf.append("(substitution");
     buf.append("\n\t(name ").append(name).append(")");
     buf.append("\n\t(type ").append(type).append(")");
+    buf.append("\n\t(enabled ").append(enabled).append(")");
     buf.append("\n\t(weight ").append(weight).append(")");
     for(Transformation trans: transformations)
         trans.toFile(buf, "\t");
