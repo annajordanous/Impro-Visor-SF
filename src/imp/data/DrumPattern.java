@@ -76,13 +76,16 @@ public static final int VOLUME = 2;
 
 private static String keyword[] =
   {
-    "drum", "weight", "volume"
+    "drum", "weight", "volume", "name"
   };
 
 
 // indices into the keyword array
 private static final int DRUM = 0;
 private static final int WEIGHT = 1;
+private static final int NAME = 3;
+
+private String patternName = "";
 
 
 /**
@@ -113,6 +116,23 @@ public static DrumPattern makeDrumPattern(Polylist L)
         
         switch( Leadsheet.lookup(dispatcher, keyword) )
           {
+            case NAME:
+            {
+                if( item == null || item.isEmpty() || item.first().equals("") )
+                {
+                    break;
+                }
+                else if( item.first() instanceof String )
+                {
+                    dp.patternName = (String) item.first();
+                }
+                else 
+                {
+                    dp.setError("Unrecognized name type in drum pattern: " + item.first());
+                    return dp;
+                }
+                break;
+            }
             case DRUM: // a single drum "rule" in the pattern
               {
                 dp.addRule(new DrumRuleRep(item));
@@ -259,5 +279,10 @@ public DrumLine applyRules()
 
     return drumline;
   }
+
+public String getName()
+    {
+    return patternName;
+    }
 
 }

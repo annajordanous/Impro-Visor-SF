@@ -129,12 +129,16 @@ public class BassPattern
  /**
    * array containing BassPattern keywords
    */
-  private static String keyword[] = {"rules", "weight"};
+  private static String keyword[] = {"rules", "weight", "name"};
 
   // indices into the keyword array
   private static final int RULES = 0;
 
   private static final int WEIGHT = 1;
+  
+  private static final int NAME = 2;
+  
+  private String patternName = "";
   
   /**
    * Creates a new BassPatern (only used by the factory).
@@ -177,6 +181,23 @@ public class BassPattern
 
           switch( Leadsheet.lookup(dispatcher, keyword) )
             {
+            case NAME:
+              {
+                  if(item == null || item.isEmpty() || item.first().equals("")) 
+                  {
+                    break; 
+                  }
+                  else if(item.first() instanceof String)
+                  {
+                    bp.patternName = (String) item.first();
+                  }
+                  else
+                  {
+                    bp.setError("Unrecognized name type in bass pattern: " + item.first());
+                    return bp;
+                  }
+                  break;
+              }
             case RULES:
               while( item.nonEmpty() )
                 {
@@ -897,4 +918,10 @@ public static NoteSymbol placePitchAbove(NoteSymbol pitch,
     {
       return "BassPattern rules = " + rules + ", durations = " + durations + ", totalDuration = " + getDuration();
     }
+  
+    public String getName()
+    {
+      return patternName;
+    }
+  
   }

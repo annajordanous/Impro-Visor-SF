@@ -169,6 +169,8 @@ public class StyleEditor
   private int[] recentRows = new int[numRecentRules];
 
   private int[] recentColumns = new int[numRecentRules];
+  
+  private String[] recentNames = new String[numRecentRules];
 
   private int currentRow = -1;
 
@@ -352,6 +354,7 @@ public void enterFromCell(int rowIndex,
         {
           ((Playable)ob).playMe();
         }
+      //System.out.println("The contents are: " + ob);
     }
   
   
@@ -485,10 +488,13 @@ void playBassColumn(int colIndex)
             }
           rowField0.setText("" + rowHeaderLabels.get(recentRows[0]));
           columnField0.setText("" + styleTable.getColumnName(recentColumns[0]));
+          nameField0.setText("" + ((PatternDisplay)contents).getName());
           setTextFieldColor(contents, beatsField0);
           setTextFieldColor(contents, styleTextField0);
           setTextFieldColor(contents, rowField0);
           setTextFieldColor(contents, columnField0);
+          setTextFieldColor(contents, nameField0);
+          //System.out.println("The pattern name is: " + ((PatternDisplay)contents).getName());
       }
 
         if( recentRules[1] != null )
@@ -501,10 +507,12 @@ void playBassColumn(int colIndex)
             }
           rowField1.setText("" + rowHeaderLabels.get(recentRows[1]));
           columnField1.setText("" + styleTable.getColumnName(recentColumns[1]));
+          nameField1.setText("" + ((PatternDisplay)contents).getName());
           setTextFieldColor(contents, beatsField1);
           setTextFieldColor(contents, styleTextField1);
           setTextFieldColor(contents, rowField1);
           setTextFieldColor(contents, columnField1);
+          setTextFieldColor(contents, nameField1);
         }
       
         if( recentRules[2] != null )
@@ -517,10 +525,12 @@ void playBassColumn(int colIndex)
             }
           rowField2.setText("" + rowHeaderLabels.get(recentRows[2]));
           columnField2.setText("" + styleTable.getColumnName(recentColumns[2]));
+          nameField2.setText("" + ((PatternDisplay)contents).getName());
           setTextFieldColor(contents, beatsField2);
           setTextFieldColor(contents, styleTextField2);
           setTextFieldColor(contents, rowField2);
           setTextFieldColor(contents, columnField2);
+          setTextFieldColor(contents, nameField2);
         }      
     }
 
@@ -1272,11 +1282,21 @@ void playBassColumn(int colIndex)
       RepresentativeDrumRules.DrumPattern aDrumPattern = d.makeDrumPattern();
       DrumPattern curPat = dp.get(i);
       
+      String name = curPat.getName();
+      if( name != null )
+      {
+        aDrumPattern.setName(name); 
+      }
+
       for( DrumRuleRep drumPat : curPat.getDrums() )
         { 
         RepresentativeDrumRules.DrumRule aDrumRule = d.makeDrumRule();
         
         aDrumRule.setInstrumentNumber(drumPat.getInstrument());
+        if( name != null )
+        {
+          aDrumRule.setName(name);  
+        }
         
         // This syntax checking should be done in the DrumRule constructor.
         
@@ -1309,7 +1329,16 @@ void playBassColumn(int colIndex)
       {
       String rule = bp.get(i).forGenerator();
       float weight = bp.get(i).getWeight();
-      bassP.add(r.makeBassPatternObj(rule, weight));
+      String name = bp.get(i).getName();
+      RepresentativeBassRules.BassPattern newPat = r.makeBassPatternObj(rule, weight);
+      if( name != null )
+      {
+      bassP.add(r.makeBassPatternObj(rule, weight, name));          
+      }
+      else
+      {
+          bassP.add(newPat);
+      }
       }
     
     // Change chords
@@ -1319,8 +1348,16 @@ void playBassColumn(int colIndex)
       ChordPattern cpi = cp.get(i);
       String rule = cpi.forGenerator();
       float weight = cpi.getWeight();
+      String name = cpi.getName();
+      if( name != null )
+      {
+          chordP.add(c.makeChordPattern(rule, weight, name));
+      }
+      else
+      {
+          chordP.add(c.makeChordPattern(rule, weight));
+      }
       //chordP.add(c.makeChordPattern(rule, weight));
-      chordP.add(c.makeChordPattern(cpi));
       }
 
     // Set up for loading patterns into table
@@ -1587,9 +1624,18 @@ void playBassColumn(int colIndex)
     for( int i = 0; i < bassPatterns.size(); i++ )
       {
       float weight = bassPatterns.get(i).getWeight();
+      String name = bassPatterns.get(i).getName();
+      //System.out.println("the name is: " + name);
+      String rule = bassPatterns.get(i).getRule();
       BassPatternDisplay b =
-              new BassPatternDisplay(bassPatterns.get(i).getRule(), weight,
+              new BassPatternDisplay(rule, weight, name, 
               notate, cm, this);
+      
+      //if( name != null || !name.equals("null") )
+      //{
+          //b = new BassPatternDisplay(rule, weight, name, notate, cm, this);
+      //}
+      //System.out.println("The bass pattern's display text is: " + b.getDisplayText());
       b.setTitleNumber((i + 1));
       bassHolderPane.add(b);
 
@@ -1626,9 +1672,16 @@ void playBassColumn(int colIndex)
       {
       RepresentativeChordRules.ChordPattern cp = chordPatterns.get(i);
       float weight = cp.getWeight();
+      String name = cp.getName();
+      String push = cp.getPush();
       ChordPatternDisplay c =
-              new ChordPatternDisplay(cp.getRule(), weight, cp.getPush(),
+              new ChordPatternDisplay(chordPatterns.get(i).getRule(), weight, push, name, 
               notate, cm, this);
+      //if( name!= null )
+     // {
+          //c = new ChordPatternDisplay(chordPatterns.get(i).getRule(), weight, push, name,
+                 // notate, cm, this);
+     // }
       c.setTitleNumber((i + 1));
       chordHolderPane.add(c);
 
@@ -1666,8 +1719,9 @@ void playBassColumn(int colIndex)
       //Want to change information from curPat into DrumPatternDisplay newPat
       RepresentativeDrumRules.DrumPattern curPat = drumPatterns.get(i);
       float weight = curPat.getWeight();
+      String name = curPat.getName();
       DrumPatternDisplay newPat =
-              new DrumPatternDisplay(weight, notate, cm, this);
+              new DrumPatternDisplay(weight, name, notate, cm, this);
 
       //Add the curPat rules into newPat as DrumRuleDisplay objects
 
@@ -1685,6 +1739,7 @@ void playBassColumn(int colIndex)
         String instrument = MIDIBeast.spacelessDrumNameFromNumber(instrumentNumber);
         
         DrumRuleDisplay newRule = new DrumRuleDisplay(rule, 
+                                                      name,
                                                       instrument,
                                                       notate, 
                                                       cm,  
@@ -2204,6 +2259,16 @@ void playBassColumn(int colIndex)
     allChordPatterns.set(column, display);
     return display;
     }
+  
+  public ChordPatternDisplay newChordPatternDisplay(int column, String contents, String name)
+  {
+      ChordPatternDisplay display = new ChordPatternDisplay(notate, cm, this);
+      chordHolderPane.add(display);
+      display.setDisplayText(contents, name);
+      display.setTitleNumber(0);
+      allChordPatterns.set(column, display);
+      return display;
+  }
 
   public BassPatternDisplay newBassPatternDisplay(int column, String contents)
     {
@@ -2214,6 +2279,23 @@ void playBassColumn(int colIndex)
     allBassPatterns.set(column, display);
     return display;
     }
+  
+  /**
+   * Alternative method for when there is a name for the pattern
+   * @param column
+   * @param contents
+   * @param name
+   * @return BassPatternDisplay
+   */
+  public BassPatternDisplay newBassPatternDisplay(int column, String contents, String name)
+  {
+    BassPatternDisplay display = new BassPatternDisplay(notate, cm, this);
+    bassHolderPane.add(display);
+    display.setDisplayText(contents, name);
+    display.setTitleNumber(0);
+    allBassPatterns.set(column, display);
+    return display;
+  }
 
   public DrumPatternDisplay newDrumPatternDisplay()
     {
@@ -2268,6 +2350,49 @@ void playBassColumn(int colIndex)
     return display;
     }
   
+  public DrumRuleDisplay newDrumRuleDisplay(int row, int column, String contents, String name)
+  {
+    // Get instrument from first column
+
+    String instrument = getRowHeaderLabels().get(row);
+
+    // How to create DrumPattern when none exists?
+
+    DrumPatternDisplay curDrum;
+
+    if( column >= allDrumPatterns.size() )
+      {
+      allDrumPatterns.add(newDrumPatternDisplay());
+      }
+
+    PatternDisplay curPattern = allDrumPatterns.get(column);
+
+    // Use existing drum pattern display, or create new one.
+
+    if( curPattern != null && curPattern instanceof DrumPatternDisplay )
+      {
+      curDrum = (DrumPatternDisplay)curPattern;
+      Object oldContents = styleTable.getValueAt(row, column);
+      if( oldContents != null && oldContents instanceof DrumRuleDisplay )
+        {
+        DrumRuleDisplay oldRule = (DrumRuleDisplay)oldContents;
+        curDrum.cutRule(oldRule);
+        }
+      }
+    else
+      {
+      curDrum = newDrumPatternDisplay();
+      }
+
+    DrumRuleDisplay display = new DrumRuleDisplay("", instrument,
+            notate, cm, this);
+    display.setDisplayText(contents, name);
+    curDrum.addRule(display);
+
+    //System.out.println("The display text is: " + display);
+    allDrumPatterns.set(column, curDrum);
+    return display;      
+  }
 
   /**
    * Copy DrumRuleDisplay copyMe
@@ -2556,10 +2681,16 @@ void playBassColumn(int colIndex)
     else if( isDrumCell(row, column) )
       {
       DrumRuleDisplay contents = newDrumRuleDisplay(row, column, text);
-      beingSet = contents;
 
       DrumPatternDisplay pattern =
               (DrumPatternDisplay)getDrumPattern(column);
+      if( !pattern.getName().isEmpty() || !pattern.getName().equals("") )
+      {
+          contents = newDrumRuleDisplay(row, column, text, pattern.getName());
+          contents.setName(pattern.getName());
+      }
+      beingSet = contents;
+            
       double beats = pattern.getBeats();
       Object weightCell =
               styleTable.getValueAt(StyleTableModel.CHORD_PATTERN_WEIGHT_ROW,
@@ -2574,6 +2705,183 @@ void playBassColumn(int colIndex)
         }
 
       pattern.setWeight(weight.floatValue());
+
+      if( play )
+        {
+          maybePlay(contents);
+        }
+
+      styleTable.setValueAt(beats, StyleTableModel.DRUM_PATTERN_BEATS_ROW,
+              column);
+      }
+    else
+      {
+      beingSet = text;
+      }
+
+    styleTable.setValueAt(beingSet, row, column);
+    updateMirror(row, column, beingSet); // styleTable.getValueAt(row, column));
+    return beingSet;
+    }
+  
+  /**
+   * General interface for setting values in cells
+  @param text used to determine the contents of the cell
+  @param row row of the cell
+  @param column column of the cell
+  @param play whether or not to play the contents, if playable
+  @param textName the name that will be given to the pattern
+  @return the object actually put in the cell
+   */
+    public Object setCell(String text, int row, int column, boolean play, String textName)
+    {
+    changedSinceLastSave = true;
+    
+    Object oldContents = styleTable.getValueAt(row, column);
+
+    // The actual value set in the cell depends on the indices of the cell
+    // and the kind of value expected.
+    if( isIncludeCell(row, column) )
+      {
+      Boolean value;
+      try
+        {
+        value = new Boolean(text);
+        }
+      catch( Exception e )
+        {
+        value = false;
+        }
+      styleTable.setValueAt(value, row, column);
+      return value;
+      }
+
+    if( oldContents instanceof DrumRuleDisplay )
+      {
+      DrumRuleDisplay drumRule = (DrumRuleDisplay)oldContents;
+      DrumPatternDisplay drumPattern =
+              (DrumPatternDisplay)allDrumPatterns.get(column);
+      drumPattern.removeRule(drumRule);
+      //System.out.println("removing rule, count becomes: " + drumPattern.getRuleCount());
+      if( drumPattern.getRuleCount() == 0 )
+        {
+        allDrumPatterns.removePattern(drumPattern);
+        getTableModel().setDrumPatternBeats(0, column);
+        }
+      }
+    else if( oldContents instanceof ChordPatternDisplay )
+      {
+      allChordPatterns.removePattern((ChordPatternDisplay)oldContents);
+      getTableModel().setChordPatternBeats(0, column);
+      }
+    else if( oldContents instanceof BassPatternDisplay )
+      {
+      allBassPatterns.removePattern((BassPatternDisplay)oldContents);
+      getTableModel().setBassPatternBeats(0, column);
+      }
+
+    if( text == null || text.trim().equals(EMPTY) )
+      {
+      Object newValue = StyleCellRenderer.NULL_DATA_RENDERING;
+      styleTable.setValueAt(newValue, row, column);
+      return newValue;
+      }
+
+    Object beingSet;
+    Float weight;
+    // FIX: This replicates stuff in StyleCellEditor.java. The latter should be changed to use this code.
+    // Also, some of the branches below can be collapsed into one.
+    
+    if( isChordCell(row, column) )
+      {
+      ChordPatternDisplay contents = newChordPatternDisplay(column, text, textName);
+      beingSet = contents;
+      Object weightCell =
+              styleTable.getValueAt(StyleTableModel.CHORD_PATTERN_WEIGHT_ROW,
+              column);
+      try
+        {
+      weight = new Float(weightCell.toString());  // FIX: Check that it is the right type of value
+
+      contents.setWeight(weight.floatValue());
+      double beats = contents.getBeats();
+      contents.setName(textName);
+      styleTable.setValueAt(beats, StyleTableModel.CHORD_PATTERN_BEATS_ROW,
+              column);
+
+      if( play )
+        {
+          maybePlay(contents);
+        }
+        }
+      catch( Exception e )
+        {
+        }
+
+      }
+    
+    else if( isBassCell(row, column) )
+      {
+      BassPatternDisplay contents = newBassPatternDisplay(column, text, textName);
+      beingSet = contents;
+      Object weightCell =
+              styleTable.getValueAt(StyleTableModel.BASS_PATTERN_WEIGHT_ROW,
+              column);
+     try
+        {
+      weight = new Float(weightCell.toString());  // FIX: Check that it is the right type of value
+      contents.setWeight(weight.floatValue());
+      double beats = contents.getBeats();
+      contents.setName(textName);
+      styleTable.setValueAt(beats, StyleTableModel.BASS_PATTERN_BEATS_ROW,
+              column);
+
+      if( play )
+        {
+          maybePlay(contents);
+        }
+        }
+      catch( Exception e )
+        {
+        }
+      }
+    
+    else if( isDrumCell(row, column) )
+      {
+      
+      DrumRuleDisplay contents = newDrumRuleDisplay(row, column, text, textName);
+      contents.setName(textName);
+
+      DrumPatternDisplay pattern =
+              (DrumPatternDisplay)getDrumPattern(column);
+      pattern.setName(textName);
+      
+      if( !pattern.getName().isEmpty() || !pattern.getName().equals("") )
+      {
+        contents = newDrumRuleDisplay(row, column, text, pattern.getName());
+        contents.setName(pattern.getName()); 
+      }
+
+      
+      beingSet = contents;
+      //System.out.println("the object being set is: " + beingSet);
+      double beats = pattern.getBeats();
+      
+      Object weightCell =
+              styleTable.getValueAt(StyleTableModel.CHORD_PATTERN_WEIGHT_ROW,
+              column);
+      try
+        {
+        weight = new Float(weightCell.toString());  // FIX: Check that it is the right type of value
+        }
+      catch( Exception e )
+        {
+        weight = new Float(0);
+        }
+
+      pattern.setWeight(weight.floatValue());
+      
+      //System.out.println("The pattern's new name is: " + pattern.getName());
 
       if( play )
         {
@@ -2937,6 +3245,10 @@ void playBassColumn(int colIndex)
         styleTable = new javax.swing.JTable();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextPane1 = new javax.swing.JTextPane();
+        nameField2 = new javax.swing.JTextField();
+        nameField1 = new javax.swing.JTextField();
+        nameField0 = new javax.swing.JTextField();
+        nameLabel = new javax.swing.JLabel();
         closeButtonPanel = new javax.swing.JPanel();
         stopPlaying = new javax.swing.JButton();
         closeBtn = new javax.swing.JButton();
@@ -3143,7 +3455,7 @@ void playBassColumn(int colIndex)
 
         importInstrumentsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Extract Patterns from MIDI File", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
         importInstrumentsPanel.setMinimumSize(new java.awt.Dimension(300, 275));
-        importInstrumentsPanel.setName("");
+        importInstrumentsPanel.setName(""); // NOI18N
         importInstrumentsPanel.setPreferredSize(new java.awt.Dimension(350, 300));
         importInstrumentsPanel.setLayout(new java.awt.GridBagLayout());
 
@@ -4356,7 +4668,10 @@ void playBassColumn(int colIndex)
         contentLabel.setMaximumSize(new java.awt.Dimension(900, 14));
         contentLabel.setMinimumSize(new java.awt.Dimension(900, 14));
         contentLabel.setPreferredSize(new java.awt.Dimension(900, 14));
-        stylePanel.add(contentLabel, new java.awt.GridBagConstraints());
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 0;
+        stylePanel.add(contentLabel, gridBagConstraints);
 
         beatsField2.setEditable(false);
         beatsField2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -4419,7 +4734,7 @@ void playBassColumn(int colIndex)
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
@@ -4478,7 +4793,7 @@ void playBassColumn(int colIndex)
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
@@ -4542,7 +4857,7 @@ void playBassColumn(int colIndex)
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
@@ -4557,7 +4872,7 @@ void playBassColumn(int colIndex)
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
-        gridBagConstraints.gridwidth = 4;
+        gridBagConstraints.gridwidth = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         stylePanel.add(editInstructionsPanel, gridBagConstraints);
@@ -4592,11 +4907,73 @@ void playBassColumn(int colIndex)
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 5;
-        gridBagConstraints.gridwidth = 4;
+        gridBagConstraints.gridwidth = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         stylePanel.add(styleScrollpane, gridBagConstraints);
+
+        nameField2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        nameField2.setMaximumSize(new java.awt.Dimension(100, 2147483647));
+        nameField2.setMinimumSize(new java.awt.Dimension(100, 22));
+        nameField2.setPreferredSize(new java.awt.Dimension(100, 22));
+        nameField2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nameField2ActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        stylePanel.add(nameField2, gridBagConstraints);
+
+        nameField1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        nameField1.setMaximumSize(new java.awt.Dimension(100, 2147483647));
+        nameField1.setMinimumSize(new java.awt.Dimension(100, 22));
+        nameField1.setPreferredSize(new java.awt.Dimension(100, 22));
+        nameField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nameField1ActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        stylePanel.add(nameField1, gridBagConstraints);
+
+        nameField0.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        nameField0.setMaximumSize(new java.awt.Dimension(100, 2147483647));
+        nameField0.setMinimumSize(new java.awt.Dimension(100, 22));
+        nameField0.setPreferredSize(new java.awt.Dimension(100, 22));
+        nameField0.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nameField0ActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        stylePanel.add(nameField0, gridBagConstraints);
+
+        nameLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        nameLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        nameLabel.setText("Name");
+        nameLabel.setToolTipText("Computed number of beats\n");
+        nameLabel.setMaximumSize(new java.awt.Dimension(100, 14));
+        nameLabel.setMinimumSize(new java.awt.Dimension(100, 14));
+        nameLabel.setPreferredSize(new java.awt.Dimension(100, 14));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        stylePanel.add(nameLabel, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -4915,12 +5292,12 @@ void playBassColumn(int colIndex)
         windowMenu.setMnemonic('W');
         windowMenu.setText("Window");
         windowMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
-            }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 windowMenuMenuSelected(evt);
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -4949,12 +5326,12 @@ void playBassColumn(int colIndex)
         styleMixerMenu.setMnemonic('W');
         styleMixerMenu.setText("Style Mixer");
         styleMixerMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
-            }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 styleMixerMenuMenuSelected(evt);
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -5362,7 +5739,7 @@ void playBassColumn(int colIndex)
    * If there is no piano roll yet, create one.
    @param cols
    */
-  public void styleEditorColumnToPianoRoll(int cols[])
+ public void styleEditorColumnToPianoRoll(int cols[])
   {
     if( cols.length <= 0 )
       {
@@ -5401,14 +5778,14 @@ void playBassColumn(int colIndex)
 
     // Extract the chord into the Piano Roll
     int chordRow = StyleTableModel.CHORD_PATTERN_ROW;
-    styleEditorChordAndDrumsToPianoRoll(col, pianoRoll, chordRow, pianoRollRow);
+    styleEditorChordToPianoRoll(col, pianoRoll, chordRow, pianoRollRow);
     pianoRollRow += 1;
     
     // Extract the drums into the Piano Roll
     int drumStartRow = StyleTableModel.FIRST_PERCUSSION_INSTRUMENT_ROW;
     for( int row = drumStartRow; row < styleTable.getRowCount(); row++ )
       {
-      styleEditorChordAndDrumsToPianoRoll(col, pianoRoll, row, pianoRollRow);
+      styleEditorDrumsToPianoRoll(col, pianoRoll, row, pianoRollRow);
       pianoRollRow += 1;
       }  
 
@@ -5433,7 +5810,7 @@ void playBassColumn(int colIndex)
    * @param pianoRollRow - the row in the PianoRoll into which the extracted
    *                       pattern's bar representation should be added
    */
-  private void styleEditorChordAndDrumsToPianoRoll(int col, PianoRoll pianoRoll, int styleEditorRow, int pianoRollRow)
+  private void styleEditorDrumsToPianoRoll(int col, PianoRoll pianoRoll, int styleEditorRow, int pianoRollRow)
     {
     Color barColor, borderColor;
     int slots = 0;
@@ -5441,12 +5818,12 @@ void playBassColumn(int colIndex)
     
     Object contents = styleTable.getValueAt(styleEditorRow, col); 
     
-    if(contents instanceof ChordPatternDisplay)
-      {
-      barColor = PianoRoll.CHORDCOLOR;
-      borderColor = PianoRoll.BARBORDERCOLOR;
-      }
-    else if(contents instanceof DrumRuleDisplay)
+    //if(contents instanceof ChordPatternDisplay)
+      //{
+      //barColor = PianoRoll.CHORDCOLOR;
+      //borderColor = PianoRoll.BARBORDERCOLOR;
+      //}
+    if(contents instanceof DrumRuleDisplay)
       {
       barColor = PianoRoll.DRUMSCOLOR;
       borderColor = PianoRoll.BARBORDERCOLOR;        
@@ -5511,6 +5888,73 @@ void playBassColumn(int colIndex)
     }
   
   /**
+   * New method to convert chord to piano roll
+   * @param col - column number from the Style Editor from which to extract
+   * @param pianoRoll - the PianoRoll into which we want to extract column vals
+   * @param styleEditorRow - the row in the StyleEditor from which to extract
+   *                            the pattern
+   * @param pianoRollRow - the row in the PianoRoll into which the extracted 
+   *                        pattern's bar representation should be added
+   */
+  private void styleEditorChordToPianoRoll( int col,
+                                            PianoRoll pianoRoll,
+                                            int styleEditorRow,
+                                            int pianoRollRow )
+  {
+      Object contents = styleTable.getValueAt(styleEditorRow, col);
+      
+      StringReader patternReader = new StringReader(contents.toString());
+      
+      Tokenizer in = new Tokenizer(patternReader);
+      
+      Object ob;
+      
+      int slots = 0;
+      
+      boolean patternExists = false;
+      
+      int volume = 127;
+      boolean volumeImplied = true;
+      
+      while( (ob = in.nextSexp()) != Tokenizer.eof )
+      {
+          ChordPatternElement element = ChordPatternElement.makeChordPatternElement(ob);
+          
+          if( element != null )
+          {
+              if( element.nonRest() )
+              {
+                  if( element.getNoteType() == ChordPatternElement.ChordNoteType.VOLUME )
+                  {
+                      volume = Integer.parseInt(element.getDurationString());
+                      volumeImplied = false;
+                  }
+                  else
+                  {
+                      PianoRollChordBar bar = new PianoRollChordBar(slots,
+                                                                    element,
+                                                                    volume,
+                                                                    volumeImplied,
+                                                                    pianoRoll);
+                      volumeImplied = true;
+                      pianoRoll.addBar(bar);
+                      patternExists = true;
+                      slots += element.getSlots();
+                  }
+              }
+              else
+              {
+                  slots += element.getSlots();
+              }
+          }
+      }
+      if( patternExists )
+      {
+          pianoRoll.placeEndBlock(PianoRoll.CHORD_ROW, slots);
+      }
+  }
+  
+  /**
    * The bass is separated because it uses a different notation for the hits
    * in the pattern.
    * @param col - column number from the Style Editor from which to extract
@@ -5520,7 +5964,7 @@ void playBassColumn(int colIndex)
    * @param pianoRollRow - the row in the PianoRoll into which the extracted
    *                       pattern's bar representation should be added
    */
-private void styleEditorBassToPianoRoll(int col, 
+ private void styleEditorBassToPianoRoll(int col, 
                                         PianoRoll pianoRoll, 
                                         int styleEditorRow,
                                         int pianoRollRow)
@@ -6208,6 +6652,39 @@ private void openStyleMixer()
         MIDIBeast.useLeadsheet = useLeadsheetCheckBox.isSelected();
     }//GEN-LAST:event_useLeadsheetCheckBoxActionPerformed
 
+    private void nameField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameField2ActionPerformed
+        // TODO add your handling code here:
+      if( recentRows[2] >= 0 && recentColumns[2] >= 0 )
+      {
+      String revisedContent = styleTextField2.getText(); //.toUpperCase();
+      String revisedName = nameField2.getText();
+      setCell(revisedContent, recentRows[2], recentColumns[2], PLAY, revisedName);
+      updateMirror(recentRows[2], recentColumns[2], revisedContent);
+      }
+    }//GEN-LAST:event_nameField2ActionPerformed
+
+    private void nameField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameField1ActionPerformed
+        // TODO add your handling code here:
+      if( recentRows[1] >= 0 && recentColumns[1] >= 0 )
+      {
+      String revisedContent = styleTextField1.getText(); //.toUpperCase();
+      String revisedName = nameField1.getText();
+      setCell(revisedContent, recentRows[1], recentColumns[1], PLAY, revisedName);
+      updateMirror(recentRows[1], recentColumns[1], revisedContent);
+      }
+    }//GEN-LAST:event_nameField1ActionPerformed
+
+    private void nameField0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameField0ActionPerformed
+        // TODO add your handling code here:
+      if( recentRows[0] >= 0 && recentColumns[0] >= 0 )
+      {
+      String revisedContent = styleTextField0.getText(); //.toUpperCase();
+      String revisedName = nameField0.getText();
+      setCell(revisedContent, recentRows[0], recentColumns[0], PLAY, revisedName);
+      updateMirror(recentRows[0], recentColumns[0], revisedContent);
+      }
+    }//GEN-LAST:event_nameField0ActionPerformed
+
 private void usePianoRoll()
 {
   int selectedColumns[] = columnModel.getSelectedColumns();
@@ -6351,6 +6828,10 @@ public void unusePianoRoll()
     private javax.swing.JTextArea menuList1;
     private javax.swing.JCheckBox mergeBassRestsCheckBox;
     private javax.swing.JToggleButton muteChordToggle;
+    private javax.swing.JTextField nameField0;
+    private javax.swing.JTextField nameField1;
+    private javax.swing.JTextField nameField2;
+    private javax.swing.JLabel nameLabel;
     private javax.swing.JButton newButton;
     private javax.swing.JButton newRowButton;
     private javax.swing.JMenuItem newStyleMI;

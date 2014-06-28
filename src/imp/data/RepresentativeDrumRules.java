@@ -788,6 +788,7 @@ public class DrumPattern implements RepPattern
 
 private ArrayList<DrumRule> drumRules;
 private float weight;
+private String patternName;
 
 public DrumPattern()
   {
@@ -819,10 +820,20 @@ public int getDuration()
     return MIDIBeast.drumMeasureSize;
   }
 
+public String getName()
+{
+    return patternName;
+}
+
+public void setName(String n)
+{
+    patternName = n;
+}
+
 @Override
 public String toString()
   {
-    String s = "(drum-pattern\n";
+    String s = "(drum-pattern (name " + patternName + ")\n";
     for( int i = 0; i < drumRules.size(); i++ )
       {
         s += drumRules.get(i) + " ";
@@ -853,6 +864,7 @@ public class DrumRule
 
 int drumInstrumentNumber = 35; //default
 ArrayList<String> elements = new ArrayList<String>();
+String ruleName;
 
 public DrumRule()
   {
@@ -878,6 +890,16 @@ public String getElement(int i)
   {
     return elements.get(i);
   }
+
+public String getName()
+{
+    return ruleName;
+}
+
+public void setName(String name)
+{
+    ruleName = name;
+}
 
 @Override
 public String toString()

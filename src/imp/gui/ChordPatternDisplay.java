@@ -47,7 +47,8 @@ public class ChordPatternDisplay
 
     String pushString = "";
     
-    private String chordPatternText;
+    private String chordPatternText = "";
+    private String chordDisplayText = "";
     
     private ChordPattern chordPattern;
     
@@ -67,6 +68,12 @@ public class ChordPatternDisplay
         initialize(rule, weight, pushString);
     }
     
+    public ChordPatternDisplay(String rule, float weight, String pushString, String name, Notate parent, CommandManager cm, StyleEditor styleParent)
+    {
+        super(parent, cm, styleParent);
+        initialize(rule, weight, pushString, name);
+    }
+    
     /**
      * Initializes all elements and components for the BassPatternDisplay GUI and collapses the pane.
      **/
@@ -76,6 +83,14 @@ public class ChordPatternDisplay
         setDisplayText(rule);
         
         this.pushString = pushString;   
+    }
+    
+    private void initialize(String rule, float weight, String pushString, String name)
+    {
+        setWeight(weight);
+        setDisplayText(rule, name);
+        setName(name);
+        this.pushString = pushString;
     }
     
     //Accessors:
@@ -90,7 +105,13 @@ public class ChordPatternDisplay
    /**
      * @return the actual text displpayed in the text field
      **/       
-    public String getDisplayText() {
+    public String getDisplayText() 
+    {
+        return chordDisplayText.trim();
+    }
+    
+    public String getPatternText()
+    {
         return chordPatternText.trim();
     }
     
@@ -100,8 +121,10 @@ public class ChordPatternDisplay
      **/        
     public String getPattern() {
         StringBuilder buffer = new StringBuilder();
-        buffer.append("(chord-pattern (rules " );
-        buffer.append(getDisplayText());
+        buffer.append("(chord-pattern (name " );
+        buffer.append(getName());
+        buffer.append(")(rules ");
+        buffer.append(getPatternText());
         buffer.append(")(weight ");
         buffer.append(getWeight());
         String trimmed = pushString.trim();
@@ -163,6 +186,7 @@ public class ChordPatternDisplay
     public void setDisplayText(String text) 
         {
     chordPatternText = text.trim();
+    chordDisplayText = text.trim();
     if( chordPatternText.equals("") )
       {
         return;
@@ -174,6 +198,36 @@ public class ChordPatternDisplay
         cannotPlay(chordPattern.getErrorMessage());
       }
   }
+    
+    public void setDisplayText(String text, String name)
+   {
+    //System.out.println("The name is: " + name);
+    //System.out.println("The text is: " + text);
+    chordPatternText = text.trim();
+    if( chordPatternText.equals("") )
+    {
+        return;
+    }
+    if( name == null || name.equals("null") || name.equals("") )
+    {
+        chordDisplayText = text.trim();
+        String textPattern = "(rules " + chordPatternText + ")";
+        Polylist list = Polylist.PolylistFromString(textPattern);
+        chordPattern = ChordPattern.makeChordPattern(list);
+    }
+    else
+    {
+        chordDisplayText = name.trim(); 
+        String textPattern = "(name " + chordDisplayText + ")(rules "+ chordPatternText + ")";
+        Polylist list = Polylist.PolylistFromString(textPattern);
+        chordPattern = ChordPattern.makeChordPattern(list);  
+    }
+    //System.out.println("The bass pattern's display text is: " + bassDisplayText);
+    if( !chordPattern.getStatus() )
+    {
+        cannotPlay(chordPattern.getErrorMessage());
+    }       
+   }
     
    public Color getPlayableColor()
     {
@@ -263,7 +317,7 @@ public boolean playMe(double swingVal, int loopCount, double tempo, Score score)
      **/    
     @Override
     public String toString() {
-        return chordPatternText;
+        return chordPatternText.trim();
     }
            
 }

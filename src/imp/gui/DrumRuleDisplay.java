@@ -44,6 +44,7 @@ public static Color unplayableColor = Color.red;
 private String instrumentName;
 private int instrumentNumber = -1;
 private String ruleText = "";
+private String displayText = "";
 
 DrumRuleRep ruleRep;
 
@@ -74,6 +75,17 @@ public DrumRuleDisplay(String rule,
     initialize(rule, instrument);
   }
 
+public DrumRuleDisplay(String rule,
+                       String name,
+                       String instrument,
+                       Notate parent,
+                       CommandManager cm,
+                       StyleEditor styleParent)
+{
+    super(parent, cm, styleParent);
+    initialize(rule, name, instrument);
+}
+
 /**
  * Initializes all elements and components for the DrumRuleDisplay GUI
  *
@@ -87,6 +99,15 @@ private void initialize(String rule, String instrument)
     setRuleText(rule);
   }
 
+private void initialize(String rule, String name, String instrument)
+  {    
+//System.out.println("making DrumRuleRep for " + instrument + " from " + rule);
+
+    setInstrument(instrument);
+    setName(name);
+    setRuleText(rule, name);
+  }
+
 //Accessors:
 /**
  * @return the actual text displpayed in the text field
@@ -94,8 +115,13 @@ private void initialize(String rule, String instrument)
  */
 public String getDisplayText()
   {
-    return ruleText.trim();
+    return displayText.trim();
   }
+
+public String getRuleText()
+{
+    return ruleText.trim();
+}
 
 /**
  * @return the text formatted with drum-rule syntax to be included with the
@@ -105,7 +131,7 @@ public String getDisplayText()
 public String getRule()
   {
     instrumentName = MIDIBeast.spacelessDrumNameFromNumber(instrumentNumber);
-    String rule = "(drum " + instrumentName + " " + getDisplayText() + ")";
+    String rule = "(drum " + instrumentName + " " + getRuleText() + ")";
 
     //System.out.println("rule = " + rule);
 
@@ -118,6 +144,7 @@ public void setRuleText(String text)
   {
     //System.out.println("setting rule text to " + text);
     ruleText = text.trim();
+    displayText = text.trim();
     ruleRep = new DrumRuleRep(instrumentName + " " + ruleText);
 
     if( !ruleRep.getStatus() )
@@ -127,6 +154,26 @@ public void setRuleText(String text)
       }
   }
 
+public void setRuleText(String text, String name)
+{
+    ruleText = text.trim();
+    ruleRep = new DrumRuleRep(instrumentName + " " + ruleText);
+    if( name.isEmpty() || name.equals("null") || name.equals("") )
+    {
+        displayText = text.trim();
+    }
+    else
+    {
+        displayText = name.trim();
+    }
+    
+    if( !ruleRep.getStatus() )
+    {
+        ErrorNonModal.log("Error in drum pattern text: " + ruleRep.getErrorMessage());
+        cannotPlay(ruleRep.getErrorMessage());
+    }  
+}
+
 /**
  * @return the text formatted as if it were the only rule in a drum-pattern.
  * Used to play the rule. Note that the weight is arbitrary.
@@ -134,7 +181,7 @@ public void setRuleText(String text)
 
 public String getFullPattern()
   {
-    return "(drum-pattern " + getRule() + "(weight 10))";
+    return "(drum-pattern (name " + patternName + ")" + getRule() + "(weight 10))";
   }
 
 
@@ -163,6 +210,12 @@ public void setDisplayText(String rule)
     setRuleText(rule);
     checkStatus();
   }
+
+public void setDisplayText(String rule, String name)
+{
+    setRuleText(rule, name);
+    checkStatus();
+}
 
 /**
  * Sets the selected instrument to parameter instrument if it exists in the
