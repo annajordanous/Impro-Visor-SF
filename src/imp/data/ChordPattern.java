@@ -77,7 +77,7 @@ private static final String VOLUME_STRING = ruleTypes[VOLUME];
  */
 private static String keyword[] =
   {
-  "rules", "weight", "push"
+  "rules", "weight", "push", "name"
   };
 
 // indices into the keyword array
@@ -87,6 +87,9 @@ private static final int WEIGHT = 1;
 
 private static final int PUSH = 2;
 
+private static final int NAME = 3;
+
+private String patternName = "";
 
 private String pushString = "";
 
@@ -131,6 +134,23 @@ public static ChordPattern makeChordPattern(Polylist L)
     item = item.rest();
     switch( Leadsheet.lookup(dispatcher, keyword) )
       {
+      case NAME:
+        {
+           if( item == null || item.isEmpty() || item.first().equals("") )
+           {
+               break;
+           }
+           else if(item.first() instanceof String) 
+           {
+               cp.patternName = (String) item.first();
+           }
+           else
+           {
+               cp.setError("Unrecognized name type in chord pattern: " + item.first());
+               return cp;
+           }
+           break;
+        }
       case RULES:
         {
         while( item.nonEmpty() )
@@ -932,4 +952,9 @@ public String toString()
   {
     return "ChordPattern: " + rules + " " + durations;
   }
+
+public String getName()
+    {
+    return patternName;
+    }
 }

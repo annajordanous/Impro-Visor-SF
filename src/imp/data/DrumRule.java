@@ -36,6 +36,7 @@ public class DrumRule
 {
   String pattern;
   int instrument;
+  String name;
       
       
   /** Creates a new instance of DrumRule */
@@ -53,6 +54,16 @@ public class DrumRule
   public int getInstrument()
   {
     return instrument;
+  }
+  
+  public String getName()
+  {
+      return name;
+  }
+  
+  public void setName(String ruleName)
+  {
+      name = ruleName;
   }
   
 }

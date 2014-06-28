@@ -43,6 +43,7 @@ public static Color unplayableColor = Color.red;
 private int titleNumber = 0;
 
 String bassPatternText = "";
+String bassDisplayText = "";
 BassPattern bassPattern;
 
 /**
@@ -55,6 +56,12 @@ public BassPatternDisplay(Notate notate, CommandManager cm, StyleEditor styleEdi
     super(notate, cm, styleEditor);
     initialize("", 10);
   }
+
+public BassPatternDisplay(String rule, float weight, String name, Notate notate, CommandManager cm, StyleEditor styleEditor)
+{
+    super(notate, cm, styleEditor);
+    initialize(rule, weight, name);
+}
 
 /**
  * Constructs a new BassPatternDisplay JPanel with weight and rule parameters.
@@ -76,6 +83,14 @@ private void initialize(String rule, float weight)
     setWeight(weight);
     setDisplayText(rule);
   }
+
+private void initialize(String rule, float weight, String name)
+{
+    setWeight(weight);
+    setDisplayText(rule, name);
+    //System.out.println("The bass pattern's display text is: " + bassDisplayText);
+    setName(name);
+}
 
 @Override
 public boolean playMe(double swingVal)
@@ -152,10 +167,15 @@ public boolean playMe(double swingVal, int loopCount, double tempo, Score s)
  * @return the actual text displpayed in the text field
  *
  */
-public String getDisplayText()
+public String getPatternText()
   {
     return bassPatternText.trim();
   }
+
+public String getDisplayText()
+{
+    return bassDisplayText.trim();
+}
 
 /**
  * @return the text and weight formatted with bass-pattern syntax used by the
@@ -164,7 +184,7 @@ public String getDisplayText()
  */
 public String getPattern()
   {
-    return "(bass-pattern (rules " + getDisplayText() + ")(weight " + getWeight() + "))";
+    return "(bass-pattern (name " + getName() + ")(rules " + getPatternText() + ")(weight " + getWeight() + "))";
   }
 
 
@@ -214,6 +234,7 @@ public void setTitleNumber(int num)
 public void setDisplayText(String text)
   {
     bassPatternText = text.trim();
+    bassDisplayText = text.trim();
     if( bassPatternText.equals("") )
       {
         return;
@@ -225,6 +246,41 @@ public void setDisplayText(String text)
         cannotPlay(bassPattern.getErrorMessage());
       }
   }
+
+/**
+ * Alternative method to set the display text if there is a name
+ * @param text
+ * @param name 
+ */
+public void setDisplayText(String text, String name)
+{
+    //System.out.println("The name is: " + name);
+    //System.out.println("The text is: " + text);
+    bassPatternText = text.trim();
+    if( bassPatternText.equals("") )
+    {
+        return;
+    }
+    if( name == null || name.equals("null") || name.equals("") )
+    {
+        bassDisplayText = text.trim();
+        String textPattern = "(rules " + bassPatternText + ")";
+        Polylist list = Polylist.PolylistFromString(textPattern);
+        bassPattern = BassPattern.makeBassPattern(list);
+    }
+    else
+    {
+        bassDisplayText = name.trim(); 
+        String textPattern = "(name " + bassDisplayText + ")(rules "+ bassPatternText + ")";
+        Polylist list = Polylist.PolylistFromString(textPattern);
+        bassPattern = BassPattern.makeBassPattern(list);  
+    }
+    //System.out.println("The bass pattern's display text is: " + bassDisplayText);
+    if( !bassPattern.getStatus() )
+    {
+        cannotPlay(bassPattern.getErrorMessage());
+    }
+}
 
 
 public Color getPlayableColor()

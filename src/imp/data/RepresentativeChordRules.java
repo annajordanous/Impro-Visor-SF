@@ -769,9 +769,14 @@ public ChordPattern makeChordPattern(String r, float w)
     return new ChordPattern(r, w, "");
   }
 
+public ChordPattern makeChordPattern(String r, float w, String n)
+{
+    return new ChordPattern(r, w, "", n);
+}
+
 public ChordPattern makeChordPattern(imp.data.ChordPattern cp)
   {
-    return new ChordPattern(cp.forGenerator(), cp.getWeight(), cp.getPushString());
+    return new ChordPattern(cp.forGenerator(), cp.getWeight(), cp.getPushString(), cp.getName());
   }
 
 /**
@@ -785,6 +790,7 @@ String rule;
 float weight;
 int duration;
 String push;
+String patternName;
 
 /**
  * @param r - rule
@@ -796,7 +802,17 @@ public ChordPattern(String r, float w, String push)
     weight = w;
     duration = new Double(MIDIBeast.numBeatsInRule(rule)).intValue();
     this.push = push;
+    patternName = "";
   }
+
+public ChordPattern(String r, float w, String push, String name)
+{
+    rule = r;
+    weight = w;
+    duration = new Double(MIDIBeast.numBeatsInRule(rule)).intValue();
+    this.push = push;
+    patternName = name;
+}
 
 /**
  * Allows for the printing of the chord-pattern in the format that Impro-Visor
@@ -806,7 +822,7 @@ public ChordPattern(String r, float w, String push)
 @Override
 public String toString()
   {
-    return "(chord-pattern (rules " + rule + ")(weight " + weight + ")(push " + push + ")";
+    return "(chord-pattern (name " + patternName + ")(rules " + rule + ")(weight " + weight + ")(push " + push + ")";
   }
 
 public String getRule()
@@ -828,6 +844,11 @@ public String getPush()
   {
     return push;
   }
+
+public String getName()
+{
+    return patternName;
+}
 
 }
 

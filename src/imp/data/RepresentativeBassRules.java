@@ -994,6 +994,11 @@ public BassPattern makeBassPatternObj(String r, float w)
     return new BassPattern(r, w);
   }
 
+public BassPattern makeBassPatternObj(String r, float w, String n)
+  {
+    return new BassPattern(r, w, n);
+  }
+
 public class RawRule
 {
 
@@ -1065,12 +1070,14 @@ public class BassPattern implements RepPattern
 private String rule;
 private float weight;
 private int duration;
+private String patternName;
 
 public BassPattern(String r, float w)
   {
     rule = r.trim();
     weight = w;
     duration = getBassRuleLength(rule);
+    patternName = "";
   }
 
 public void setDuration(int duration)
@@ -1083,12 +1090,21 @@ public BassPattern(String r, float w, int d)
     rule = r.trim();
     weight = w;
     duration = d;
+    patternName = "";
   }
+
+public BassPattern(String r, float w, String n)
+{
+    rule = r.trim();
+    weight = w;
+    duration = getBassRuleLength(rule);
+    patternName = n;
+}
 
 @Override
 public String toString()
   {
-    return "(bass-pattern (rules " + rule + ")(weight " + weight + "))";
+    return "(bass-pattern (name " + patternName + ")(rules " + rule + ")(weight " + weight + "))";
   }
 
 public String getBareRule()
@@ -1115,6 +1131,11 @@ public int getNewDuration()
   {
     return getBassRuleLength(rule);
   }
+
+public String getName()
+{
+    return patternName;
+}
 
 }
 

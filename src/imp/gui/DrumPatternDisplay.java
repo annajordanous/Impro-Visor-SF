@@ -81,6 +81,12 @@ public DrumPatternDisplay(float weight, Notate parent, CommandManager cm, StyleE
     initialize(weight);
   }
 
+public DrumPatternDisplay(float weight, String name, Notate parent, CommandManager cm, StyleEditor styleParent)
+{
+    super(parent, cm, styleParent);
+    initialize(weight, name);
+}
+
 /**
  * Constructs a new DrumPatternDisplay JPanel with weight and rule parameters.
      *
@@ -91,6 +97,12 @@ public DrumPatternDisplay(Polylist rules, float weight, Notate parent, CommandMa
     initialize(weight);
     // Unfinished
   }
+
+public DrumPatternDisplay(Polylist rules, float weight, String name, Notate parent, CommandManager cm, StyleEditor styleParent)
+{
+    super(parent, cm, styleParent);
+    initialize(weight, name);
+}
 
 /**
  * Initializes all elements and components for the DrumPatternDisplay GUI and
@@ -103,6 +115,13 @@ private void initialize(float weight)
 
     checkStatus();
   }
+
+private void initialize(float weight, String name)
+{
+    setWeight(weight);
+    setName(name);
+    checkStatus();
+}
 
 
 /**
@@ -127,7 +146,9 @@ public String getPattern(boolean requireChecked)
   {
     StringBuilder buffer = new StringBuilder();
     
-    buffer.append("(drum-pattern ");
+    buffer.append("(drum-pattern (name ");
+    buffer.append(patternName);
+    buffer.append(") ");
 
     for( Iterator<DrumRuleDisplay> e = rules.iterator(); e.hasNext(); )
       {
@@ -553,5 +574,15 @@ public Color getUnplayableColor()
   {
     return null;
   }
+
+@Override
+public void setName(String name)
+{
+    for( DrumRuleDisplay d: rules )
+    {
+        d.setName(name);
+    }
+    patternName = name;
+}
 
 }
