@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2014 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -13,6 +13,7 @@
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
  *
+
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -20,9 +21,11 @@
 
 package imp.lickgen.transformations;
 
+import imp.data.Chord;
 import imp.data.ChordPart;
 import imp.data.MelodyPart;
 import imp.data.Note;
+import imp.data.NoteSymbol;
 import imp.gui.Notate;
 import imp.lickgen.LickGen;
 import polya.*;
@@ -56,8 +59,11 @@ public Transform(LickGen lickGen, String subs)
     
     while(polysubs.nonEmpty())
     {
-        Substitution sub = new Substitution(lickGen, (Polylist) polysubs.first());
-        substitutions.add(sub);
+        if(polysubs.first() instanceof Polylist)
+        {
+            Substitution sub = new Substitution(lickGen, (Polylist) polysubs.first());
+            substitutions.add(sub);
+        }
         polysubs=polysubs.rest();
     }
 }
@@ -90,9 +96,6 @@ public MelodyPart applySubstitutionsToMelodyPart(MelodyPart melody, Notate notat
         if(subs.size()>0)
         {
             transformed = applySubstitutionType(subs, transMelody);
-
-            System.out.println("\nANSWER FOR TYPE = " + transformed.toString());
-            
             transMelody = transformed.copy();
         }
         
@@ -122,9 +125,17 @@ private MelodyPart applySubstitutionType(ArrayList<Substitution> substitutions, 
         ArrayList<Substitution> full = new ArrayList<Substitution>();
         for(Substitution sub : substitutions)
         {
-            for(int i = 0; i < sub.getWeight(); i++)
-                full.add(sub);
+            if(sub.getEnabled())
+            {
+                int weight = sub.getWeight();
+                for(int i = 0; i < weight; i++)
+                    full.add(sub);
+            }
         }
+        
+        if(full.size() < 1)
+            return transNotes;
+        
         Collections.shuffle(full);
 
         ArrayList<Substitution> sortedSubs = new ArrayList<Substitution>();
