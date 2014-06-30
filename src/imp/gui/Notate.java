@@ -19719,9 +19719,7 @@ public ArrayList<String> getMelodyData(Score s, int chorusNumber)
           {
             String measure = Integer.toString(i) + " ";
             int tracker = 0;
-            melPart.truncateEndings(true);
-            MelodyPart p = melPart.extract(i, i + slotsPerSection - 1);
-            melPart.truncateEndings(false);
+            MelodyPart p = melPart.extract(i, i + slotsPerSection - 1, true);
             //if note is held from previous section, add that first
             if( melPart.getPrevNote(i) != null && melPart.getPrevNote(i).getRhythmValue() > i - melPart.getPrevIndex(i) )
               {
