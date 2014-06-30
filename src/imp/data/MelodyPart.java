@@ -75,7 +75,7 @@ public class MelodyPart
   private static int[] knownRestValue =
           {0, 10, 12, 15, 20, 24, 30, 40, 60, 80, 120, 160, 240, 480};
 
-  private boolean fudgeEnding = false;
+  //private boolean fudgeEnding = false;
   
   private int noteLength = 60;
   private boolean autoFill = true;
@@ -1334,16 +1334,16 @@ public MelodyPart copy(int startingIndex, int endingIndex)
     return keySigVector;
     }
 
-  /**
-   * Sets whether in extracting a melodypart, the ending should be truncated
-   * if necessary
-   * @param b   boolean whether or not to truncate the endings
-   */
-  public void truncateEndings(boolean b) {
-      fudgeEnding = b;
-  }
+//  /**
+//   * Sets whether in extracting a melodypart, the ending should be truncated
+//   * if necessary
+//   * @param b   boolean whether or not to truncate the endings
+//   */
+//  public void truncateEndings(boolean b) {
+//      fudgeEnding = b;
+//  }
 
-  /**
+/**
    * Returns a MelodyPart that contains the Units within the slot range specified.
    * @param first     the first slot in the range
    * @param last      the last slot in the range
@@ -1352,6 +1352,18 @@ public MelodyPart copy(int startingIndex, int endingIndex)
 
   @Override
   public MelodyPart extract(int first, int last)
+    {
+    return extract(first, last, false);
+    }
+      
+  /**
+   * Returns a MelodyPart that contains the Units within the slot range specified.
+   * @param first     the first slot in the range
+   * @param last      the last slot in the range
+   * @return MelodyPart     the MelodyPart that contains the extracted chunk
+   */
+
+    public MelodyPart extract(int first, int last, boolean fudgeEnding)
     {
     //System.out.println("extract melody from " + first + " to " + last);
     MelodyPart newPart = new MelodyPart();
