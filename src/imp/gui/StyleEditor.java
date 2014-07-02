@@ -1293,11 +1293,14 @@ void playBassColumn(int colIndex)
         RepresentativeDrumRules.DrumRule aDrumRule = d.makeDrumRule();
         
         aDrumRule.setInstrumentNumber(drumPat.getInstrument());
-        if( name != null )
-        {
-          aDrumRule.setName(name);  
-        }
         
+        String ruleName = drumPat.getName();
+        
+        if( ruleName != null )
+        {
+            aDrumRule.setName(ruleName);
+        }
+       
         // This syntax checking should be done in the DrumRule constructor.
         
         for( DrumRuleRep.Element element: drumPat.getElements() )
@@ -1734,12 +1737,13 @@ void playBassColumn(int colIndex)
         {
         RepresentativeDrumRules.DrumRule curRule = theRules.get(j);
         String rule = curRule.getDisplayRule();
+        String ruleName = curRule.getName();
         int instrumentNumber = curRule.getInstrumentNumber();
         
         String instrument = MIDIBeast.spacelessDrumNameFromNumber(instrumentNumber);
         
         DrumRuleDisplay newRule = new DrumRuleDisplay(rule, 
-                                                      name,
+                                                      ruleName,
                                                       instrument,
                                                       notate, 
                                                       cm,  
@@ -2429,8 +2433,20 @@ void playBassColumn(int colIndex)
       for( int row = rows[rows.length - 1]; row >= rows[0]; row-- )
         {
         Object contents = styleTable.getValueAt(row, col);
-        patternColumn = patternColumn.cons(processCellContents(contents, row,
-                col));
+        if( contents instanceof PatternDisplay )
+        {
+            String patternText = ((PatternDisplay)contents).getPatternText();
+            String patternName = ((PatternDisplay)contents).getName();
+            Polylist patternDisplay = new Polylist(patternText, Polylist.nil);
+            patternDisplay = patternDisplay.cons(patternName);
+            
+            patternColumn = patternColumn.cons(patternDisplay);
+        }
+        else
+        {
+            patternColumn = patternColumn.cons(processCellContents(contents, row,
+                            col));
+        }
         }
       patternArray = patternArray.cons(patternColumn);
       }
@@ -2545,7 +2561,15 @@ void playBassColumn(int colIndex)
           Object first = column.first();
           if( first instanceof Polylist )
             {
-            setCell(((Polylist)first).toStringSansParens(), row, col, SILENT);
+                if( ((Polylist)first).rest().isEmpty() )
+                {
+                    setCell( ((Polylist)first).toStringSansParens(), row, col, SILENT );
+                }
+                else
+                {
+                    setCell((((Polylist)first).rest()).toStringSansParens(), row, 
+                            col, SILENT, (String)((Polylist)first).first());
+                }
             }
           else
             {
@@ -2854,13 +2878,13 @@ void playBassColumn(int colIndex)
 
       DrumPatternDisplay pattern =
               (DrumPatternDisplay)getDrumPattern(column);
-      pattern.setName(textName);
+      //pattern.setName(textName);
       
-      if( !pattern.getName().isEmpty() || !pattern.getName().equals("") )
-      {
-        contents = newDrumRuleDisplay(row, column, text, pattern.getName());
-        contents.setName(pattern.getName()); 
-      }
+      //if( !pattern.getName().isEmpty() || !pattern.getName().equals("") )
+      //{
+        //contents = newDrumRuleDisplay(row, column, text, pattern.getName());
+        //contents.setName(pattern.getName()); 
+      //}
 
       
       beingSet = contents;
@@ -5448,8 +5472,15 @@ void playBassColumn(int colIndex)
           Object first = column.first();
           if( first instanceof Polylist )
             {
-            String contents = ((Polylist)first).toStringSansParens();
-            setCell(contents, row, col, SILENT);
+                if( ((Polylist)first).rest().isEmpty() )
+                {
+                    setCell( ((Polylist)first).toStringSansParens(), row, col, SILENT );
+                }
+                else
+                {
+                    setCell((((Polylist)first).rest()).toStringSansParens(), row, 
+                            col, SILENT, (String)((Polylist)first).first());
+                }
             }
           else
             {
@@ -5487,8 +5518,20 @@ void playBassColumn(int colIndex)
         {
         int row = rows[rowIndex];
         Object contents = styleTable.getValueAt(row, col);
-        patternColumn = patternColumn.cons(processCellContents(contents, row,
-                col));
+        if( contents instanceof PatternDisplay )
+        {
+            String patternText = ((PatternDisplay)contents).getPatternText();
+            String patternName = ((PatternDisplay)contents).getName();
+            Polylist patternDisplay = new Polylist(patternText, Polylist.nil);
+            patternDisplay = patternDisplay.cons(patternName);
+            
+            patternColumn = patternColumn.cons(patternDisplay);
+        }
+        else
+        {
+            patternColumn = patternColumn.cons(processCellContents(contents, row,
+                            col));
+        }
         }
       patternArray = patternArray.cons(patternColumn);
       }
@@ -5721,7 +5764,20 @@ void playBassColumn(int colIndex)
           {
           contents = "";
           }
-        patternColumn = patternColumn.cons(Polylist.list(contents.toString()));
+        else if( contents instanceof PatternDisplay )
+        {
+            String patternText = ((PatternDisplay)contents).getPatternText();
+            String patternName = ((PatternDisplay)contents).getName();
+            Polylist patternDisplay = new Polylist(patternText, Polylist.nil);
+            patternDisplay = patternDisplay.cons(patternName);
+            
+            patternColumn = patternColumn.cons(patternDisplay);
+        }
+        else
+        {
+            patternColumn = patternColumn.cons(processCellContents(contents, row,
+                            col));
+        }
         }
       patternArray = patternArray.cons(patternColumn);
       }
@@ -6305,7 +6361,15 @@ public Playable getPlayablePercussionFromPianoRoll(PianoRoll pianoRoll,
           Object first = column.first();
           if( first instanceof Polylist )
             {
-            setCell(((Polylist)first).toStringSansParens(), row, col, SILENT);
+                if(((Polylist)first).rest().isEmpty())
+                {
+                    setCell( ((Polylist)first).toStringSansParens(), row, col, SILENT );
+                }
+                else
+                {
+                    setCell((((Polylist)first).rest()).toStringSansParens(), row, 
+                            col, SILENT, (String)((Polylist)first).first());
+                }
             }
           else
             {

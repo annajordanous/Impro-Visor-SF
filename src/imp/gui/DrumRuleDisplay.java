@@ -118,7 +118,8 @@ public String getDisplayText()
     return displayText.trim();
   }
 
-public String getRuleText()
+@Override
+public String getPatternText()
 {
     return ruleText.trim();
 }
@@ -131,7 +132,16 @@ public String getRuleText()
 public String getRule()
   {
     instrumentName = MIDIBeast.spacelessDrumNameFromNumber(instrumentNumber);
-    String rule = "(drum " + instrumentName + " " + getRuleText() + ")";
+    StringBuilder buffer = new StringBuilder();
+    buffer.append("(drum ");
+    buffer.append(instrumentName);
+    buffer.append(" (name ");
+    buffer.append(getName());
+    buffer.append(")(rules ");
+    buffer.append(getPatternText());
+    buffer.append("))");
+    String rule = buffer.toString();
+    //String rule = "(drum " + instrumentName + " " + getPatternText() + ")";
 
     //System.out.println("rule = " + rule);
 
@@ -181,7 +191,14 @@ public void setRuleText(String text, String name)
 
 public String getFullPattern()
   {
-    return "(drum-pattern (name " + patternName + ")" + getRule() + "(weight 10))";
+    StringBuilder buffer = new StringBuilder(); 
+    buffer.append("(drum-pattern (pattern-name ");
+    buffer.append(patternName);
+    buffer.append(")");
+    buffer.append("(weight 10))");
+    String pattern = buffer.toString();
+    
+    return pattern;
   }
 
 

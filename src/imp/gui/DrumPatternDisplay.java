@@ -146,7 +146,7 @@ public String getPattern(boolean requireChecked)
   {
     StringBuilder buffer = new StringBuilder();
     
-    buffer.append("(drum-pattern (name ");
+    buffer.append("(drum-pattern (pattern-name ");
     buffer.append(patternName);
     buffer.append(") ");
 
@@ -578,10 +578,6 @@ public Color getUnplayableColor()
 @Override
 public void setName(String name)
 {
-    for( DrumRuleDisplay d: rules )
-    {
-        d.setName(name);
-    }
     patternName = name;
 }
 

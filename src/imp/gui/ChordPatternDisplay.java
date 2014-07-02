@@ -110,6 +110,7 @@ public class ChordPatternDisplay
         return chordDisplayText.trim();
     }
     
+    @Override
     public String getPatternText()
     {
         return chordPatternText.trim();

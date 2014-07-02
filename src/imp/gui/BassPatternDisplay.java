@@ -167,6 +167,7 @@ public boolean playMe(double swingVal, int loopCount, double tempo, Score s)
  * @return the actual text displpayed in the text field
  *
  */
+@Override
 public String getPatternText()
   {
     return bassPatternText.trim();

@@ -76,7 +76,7 @@ public static final int VOLUME = 2;
 
 private static String keyword[] =
   {
-    "drum", "weight", "volume", "name"
+    "drum", "weight", "volume", "pattern-name"
   };
 
 

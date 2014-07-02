@@ -51,6 +51,8 @@ abstract class PatternDisplay
   float weight = 0;
   
   String patternName = "";
+  
+  String patternText = "";
 
   public PatternDisplay(Notate notate,
                         CommandManager cm,
@@ -151,6 +153,11 @@ public boolean playMe(double swingVal, int loopCount, double tempo)
   public void setName(String patternName)
   {
       this.patternName = patternName;
+  }
+  
+  public String getPatternText()
+  {
+      return patternText;
   }
   
   abstract public double getBeats();
