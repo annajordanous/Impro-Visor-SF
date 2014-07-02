@@ -833,7 +833,7 @@ public void setName(String n)
 @Override
 public String toString()
   {
-    String s = "(drum-pattern (name " + patternName + ")\n";
+    String s = "(drum-pattern (pattern-name " + patternName + ")\n";
     for( int i = 0; i < drumRules.size(); i++ )
       {
         s += drumRules.get(i) + " ";
@@ -904,12 +904,20 @@ public void setName(String name)
 @Override
 public String toString()
   {
-    String s = "(drum " + drumInstrumentNumber + " ";
+    StringBuilder buffer = new StringBuilder();
+    buffer.append("drum ");
+    buffer.append(drumInstrumentNumber);
+    buffer.append(" (name ");
+    buffer.append(ruleName);
+    buffer.append(")(rules ");
     for( int i = 0; i < elements.size(); i++ )
       {
-        s += elements.get(i) + " ";
+        buffer.append(elements.get(i));
+        buffer.append(" ");
       }
-    return s + ")\n";
+    buffer.append(")\n");
+    String s = buffer.toString();
+    return s;
   }
 
 public String getDisplayRule()
