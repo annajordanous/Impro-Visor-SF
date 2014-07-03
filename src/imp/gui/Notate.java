@@ -1315,6 +1315,11 @@ boolean saveConstructionLineState;
     {
     return score;
     }
+  
+  public LickGen getLickGen()
+  {
+      return lickgen;
+  }
 
   /**
    * Returns if the staves continuously auto-adjust their layout
