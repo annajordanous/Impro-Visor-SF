@@ -331,8 +331,14 @@ public void enterFromCell(int rowIndex,
       {
         // Control is not down.
         // Play the cell if playable
-
-        maybePlayAt(rowIndex, colIndex);
+        if( rowIndex == StyleTableModel.DRUM_PATTERN_NAME_ROW )
+        {
+            playPercussionColumn(colIndex);
+        }
+        else
+        {
+            maybePlayAt(rowIndex, colIndex);           
+        }
       }
   }
 
@@ -1725,11 +1731,12 @@ void playBassColumn(int colIndex)
       String name = curPat.getName();
       DrumPatternDisplay newPat =
               new DrumPatternDisplay(weight, name, notate, cm, this);
-
+      
       //Add the curPat rules into newPat as DrumRuleDisplay objects
 
       int patternIndex = allDrumPatterns.newPattern();
       StyleTableModel model = getTableModel();
+      model.setDrumPatternName(name, patternIndex);
       model.setDrumPatternWeight(weight, patternIndex);
 
       ArrayList<RepresentativeDrumRules.DrumRule> theRules = curPat.getRules();
@@ -2649,6 +2656,7 @@ void playBassColumn(int colIndex)
 
     Object beingSet;
     Float weight;
+    String patternName;
     // FIX: This replicates stuff in StyleCellEditor.java. The latter should be changed to use this code.
     // Also, some of the branches below can be collapsed into one.
     
@@ -2705,19 +2713,27 @@ void playBassColumn(int colIndex)
     else if( isDrumCell(row, column) )
       {
       DrumRuleDisplay contents = newDrumRuleDisplay(row, column, text);
+      beingSet = contents;
 
       DrumPatternDisplay pattern =
               (DrumPatternDisplay)getDrumPattern(column);
-      if( !pattern.getName().isEmpty() || !pattern.getName().equals("") )
+      
+      Object nameCell = 
+              styleTable.getValueAt(StyleTableModel.DRUM_PATTERN_NAME_ROW,
+              column);
+      try
       {
-          contents = newDrumRuleDisplay(row, column, text, pattern.getName());
-          contents.setName(pattern.getName());
+          patternName = new String(nameCell.toString());
       }
-      beingSet = contents;
+      catch( Exception e )
+      {
+          patternName = new String("");
+      }
+      pattern.setName(patternName);
             
       double beats = pattern.getBeats();
       Object weightCell =
-              styleTable.getValueAt(StyleTableModel.CHORD_PATTERN_WEIGHT_ROW,
+              styleTable.getValueAt(StyleTableModel.DRUM_PATTERN_WEIGHT_ROW,
               column);
       try
         {
@@ -2813,6 +2829,7 @@ void playBassColumn(int colIndex)
 
     Object beingSet;
     Float weight;
+    String patternName;
     // FIX: This replicates stuff in StyleCellEditor.java. The latter should be changed to use this code.
     // Also, some of the branches below can be collapsed into one.
     
@@ -2878,21 +2895,27 @@ void playBassColumn(int colIndex)
 
       DrumPatternDisplay pattern =
               (DrumPatternDisplay)getDrumPattern(column);
-      //pattern.setName(textName);
-      
-      //if( !pattern.getName().isEmpty() || !pattern.getName().equals("") )
-      //{
-        //contents = newDrumRuleDisplay(row, column, text, pattern.getName());
-        //contents.setName(pattern.getName()); 
-      //}
 
-      
       beingSet = contents;
       //System.out.println("the object being set is: " + beingSet);
+      
+       Object nameCell = 
+              styleTable.getValueAt(StyleTableModel.DRUM_PATTERN_NAME_ROW,
+              column);
+      try
+      {
+          patternName = new String(nameCell.toString());
+      }
+      catch( Exception e )
+      {
+          patternName = new String("");
+      }
+      pattern.setName(patternName);
+      
       double beats = pattern.getBeats();
       
       Object weightCell =
-              styleTable.getValueAt(StyleTableModel.CHORD_PATTERN_WEIGHT_ROW,
+              styleTable.getValueAt(StyleTableModel.DRUM_PATTERN_WEIGHT_ROW,
               column);
       try
         {

@@ -93,6 +93,7 @@ public class StyleTableModel extends DefaultTableModel implements TableModel, Co
       CHORD,
       "Drum Beats",
       "Drum Weight",
+      "Pattern Name",
       "Acoustic_Bass_Drum",
       "Acoustic_Snare",
       "Ride_Cymbal_1",
@@ -135,9 +136,10 @@ public class StyleTableModel extends DefaultTableModel implements TableModel, Co
     
     public static final int DRUM_PATTERN_BEATS_ROW          = 7;
     public static final int DRUM_PATTERN_WEIGHT_ROW         = 8;
+    public static final int DRUM_PATTERN_NAME_ROW           = 9;
 
     public static final int FIRST_INSTRUMENT_ROW            = 2;
-    public static final int FIRST_PERCUSSION_INSTRUMENT_ROW = 9;
+    public static final int FIRST_PERCUSSION_INSTRUMENT_ROW = 10;
     
     int lastPatternColumn = PATTERN_COLUMN_BASE;
     int lastPercussionrowUsed = FIRST_PERCUSSION_INSTRUMENT_ROW - 1;
@@ -231,6 +233,7 @@ public void initRowHeaders()
    setValueAt(BLANK,                    CHORD_PATTERN_ROW,         j);
    setValueAt(DEFAULT_PATTERN_BEATS,    DRUM_PATTERN_BEATS_ROW,    j);
    setValueAt(DEFAULT_PATTERN_WEIGHT,   DRUM_PATTERN_WEIGHT_ROW,   j);
+   setValueAt(BLANK,                    DRUM_PATTERN_NAME_ROW,     j);
    int numRows = getRowCount();
    for( int row = FIRST_PERCUSSION_INSTRUMENT_ROW; row < numRows; row ++ )
      {
@@ -286,6 +289,7 @@ public void initRowHeaders()
     // For Drum
     columnContents.add(DEFAULT_PATTERN_BEATS);
     columnContents.add(DEFAULT_PATTERN_WEIGHT);
+    columnContents.add(BLANK);
     
     int numRows = Math.max(minRowCount, getRowCount());
     for( int j = FIRST_PERCUSSION_INSTRUMENT_ROW; j < numRows; j++)
@@ -394,6 +398,7 @@ public int getNumColumns()
                      || row == CHORD_PATTERN_PUSH_ROW 
                      || row == CHORD_PATTERN_ROW 
                      || row == DRUM_PATTERN_WEIGHT_ROW 
+                     || row == DRUM_PATTERN_NAME_ROW
                      || row >= FIRST_PERCUSSION_INSTRUMENT_ROW
                      )
                )
@@ -488,6 +493,11 @@ public void setDrumPatternBeats(double beats, int column)
  {
  setValueAt(beats, DRUM_PATTERN_BEATS_ROW, column);
  }
+
+public void setDrumPatternName(String name, int column)
+{
+    setValueAt(name, DRUM_PATTERN_NAME_ROW, column);
+}
 
 public ArrayList<Long> getInstrumentNumbers()
   {
