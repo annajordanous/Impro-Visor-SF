@@ -2780,6 +2780,11 @@
                         <ListItem value="6"/>
                         <ListItem value="8"/>
                         <ListItem value="12"/>
+                        <ListItem value="24"/>
+                        <ListItem value="48"/>
+                        <ListItem value="60"/>
+                        <ListItem value="96"/>
+                        <ListItem value="120"/>
                       </SpinnerModel>
                     </Property>
                     <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
@@ -3816,6 +3821,7 @@
               </Border>
             </Property>
             <Property name="defaultCapable" type="boolean" value="false"/>
+            <Property name="opaque" type="boolean" value="true"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cancelLickTitleActionPerformed"/>
@@ -3838,6 +3844,7 @@
                 <BevelBorder/>
               </Border>
             </Property>
+            <Property name="opaque" type="boolean" value="true"/>
             <Property name="selected" type="boolean" value="true"/>
           </Properties>
           <Events>

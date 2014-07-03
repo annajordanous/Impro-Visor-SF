@@ -4157,7 +4157,7 @@ boolean saveConstructionLineState;
         gridBagConstraints.insets = new java.awt.Insets(10, 11, 10, 11);
         devicesTab.add(echoMidiCheckBox, gridBagConstraints);
 
-        midiRecordSnapSpinner.setModel(new javax.swing.SpinnerListModel(new String[] {"2", "3", "4", "6", "8", "12"}));
+        midiRecordSnapSpinner.setModel(new javax.swing.SpinnerListModel(new String[] {"2", "3", "4", "6", "8", "12", "24", "48", "60", "96", "120"}));
         midiRecordSnapSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "MIDI Record Beat Sub-Divisions", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
         midiRecordSnapSpinner.setMinimumSize(new java.awt.Dimension(250, 56));
         midiRecordSnapSpinner.setPreferredSize(new java.awt.Dimension(250, 56));
@@ -4883,6 +4883,7 @@ boolean saveConstructionLineState;
         cancelLickTitle.setText("Cancel");
         cancelLickTitle.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         cancelLickTitle.setDefaultCapable(false);
+        cancelLickTitle.setOpaque(true);
         cancelLickTitle.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -4904,6 +4905,7 @@ boolean saveConstructionLineState;
         okSaveButton.setText("Save This");
         okSaveButton.setToolTipText("Saves the item in the vocabulary file.");
         okSaveButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        okSaveButton.setOpaque(true);
         okSaveButton.setSelected(true);
         okSaveButton.addActionListener(new java.awt.event.ActionListener()
         {
