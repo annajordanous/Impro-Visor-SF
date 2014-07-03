@@ -195,6 +195,7 @@ public String getFullPattern()
     buffer.append("(drum-pattern (pattern-name ");
     buffer.append(patternName);
     buffer.append(")");
+    buffer.append(getRule());
     buffer.append("(weight 10))");
     String pattern = buffer.toString();
     

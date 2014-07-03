@@ -240,6 +240,17 @@ public class StyleCellEditor
           return pushString;
           }
       }
+    
+    if( row == StyleTableModel.DRUM_PATTERN_NAME_ROW )
+    {
+        PatternDisplay ob = styleEditor.getDrumPattern(column);
+        if( ob instanceof DrumPatternDisplay )
+        {
+            String patternName = editField.getText().trim();
+            ((DrumPatternDisplay)ob).setName(patternName);
+            return patternName;
+        }
+    }
 
     if( column == StyleTableModel.INSTRUMENT_INCLUDE_COLUMN 
      && row >= StyleTableModel.FIRST_INSTRUMENT_ROW )
