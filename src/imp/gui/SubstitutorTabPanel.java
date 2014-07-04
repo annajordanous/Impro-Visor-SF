@@ -37,7 +37,11 @@ import java.util.logging.Logger;
 import javax.swing.AbstractCellEditor;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -68,8 +72,6 @@ public class SubstitutorTabPanel extends javax.swing.JPanel {
         this.lickgen = lickgen;
         this.notate = notate;
         initComponents();
-        
-        transform = new Transform(lickgen);
 
         editRow = -1; 
         
@@ -217,6 +219,7 @@ public class SubstitutorTabPanel extends javax.swing.JPanel {
         SubstitutorParametersPanel.setPreferredSize(new java.awt.Dimension(180, 60));
         SubstitutorParametersPanel.setLayout(new java.awt.GridBagLayout());
 
+        substitutorRectifyCheckBox.setSelected(true);
         substitutorRectifyCheckBox.setText("Rectify After Applying Substitutions");
         substitutorRectifyCheckBox.setMaximumSize(new java.awt.Dimension(240, 23));
         substitutorRectifyCheckBox.setMinimumSize(new java.awt.Dimension(240, 23));
@@ -314,7 +317,7 @@ public class SubstitutorTabPanel extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridwidth = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 7);
@@ -322,7 +325,7 @@ public class SubstitutorTabPanel extends javax.swing.JPanel {
 
         createNewSubstitutionButton.setText("Create New Substitution");
         createNewSubstitutionButton.setEnabled(false);
-        createNewSubstitutionButton.setMargin(new java.awt.Insets(2, 7, 2, 7));
+        createNewSubstitutionButton.setMargin(new java.awt.Insets(2, 5, 2, 5));
         createNewSubstitutionButton.setMaximumSize(new java.awt.Dimension(164, 26));
         createNewSubstitutionButton.setMinimumSize(new java.awt.Dimension(164, 26));
         createNewSubstitutionButton.setPreferredSize(new java.awt.Dimension(164, 26));
@@ -334,6 +337,7 @@ public class SubstitutorTabPanel extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.weightx = 1.0;
@@ -342,18 +346,19 @@ public class SubstitutorTabPanel extends javax.swing.JPanel {
 
         editSubstitutionNameButton.setText("Edit Substitution Name");
         editSubstitutionNameButton.setEnabled(false);
-        editSubstitutionNameButton.setMargin(new java.awt.Insets(2, 7, 2, 7));
-        editSubstitutionNameButton.setMaximumSize(new java.awt.Dimension(160, 26));
-        editSubstitutionNameButton.setMinimumSize(new java.awt.Dimension(160, 26));
-        editSubstitutionNameButton.setPreferredSize(new java.awt.Dimension(160, 26));
+        editSubstitutionNameButton.setMargin(new java.awt.Insets(2, 4, 2, 4));
+        editSubstitutionNameButton.setMaximumSize(new java.awt.Dimension(158, 26));
+        editSubstitutionNameButton.setMinimumSize(new java.awt.Dimension(158, 26));
+        editSubstitutionNameButton.setPreferredSize(new java.awt.Dimension(158, 26));
         editSubstitutionNameButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 editSubstitutionNameButtonActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.weightx = 1.0;
@@ -362,7 +367,7 @@ public class SubstitutorTabPanel extends javax.swing.JPanel {
 
         deleteSubstitutionButton.setText("Delete Substitution");
         deleteSubstitutionButton.setEnabled(false);
-        deleteSubstitutionButton.setMargin(new java.awt.Insets(2, 7, 2, 7));
+        deleteSubstitutionButton.setMargin(new java.awt.Insets(2, 4, 2, 4));
         deleteSubstitutionButton.setMaximumSize(new java.awt.Dimension(115, 26));
         deleteSubstitutionButton.setMinimumSize(new java.awt.Dimension(115, 26));
         deleteSubstitutionButton.setPreferredSize(new java.awt.Dimension(115, 26));
@@ -372,8 +377,9 @@ public class SubstitutorTabPanel extends javax.swing.JPanel {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.weightx = 1.0;
@@ -387,7 +393,7 @@ public class SubstitutorTabPanel extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.gridwidth = 6;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(2, 6, 0, 0);
@@ -429,8 +435,8 @@ public class SubstitutorTabPanel extends javax.swing.JPanel {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridwidth = 6;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.weighty = 1.0;
@@ -655,25 +661,13 @@ public class SubstitutorTabPanel extends javax.swing.JPanel {
 
     private void applySubstitutionsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_applySubstitutionsButtonActionPerformed
         // TODO add your handling code here:
-        notate.stopPlaying();
-        MelodyPart part = notate.getCurrentMelodyPart();
-        savedMelodies.add(part.copy());
-        MelodyPart transformedPart = transform.applySubstitutionsToMelodyPart(part, notate);
-        if(substitutorRectifyCheckBox.isSelected())
-        {
-            notate.putLick(transformedPart);
-            notate.rectifySelection(notate.getCurrentStave(),notate.getCurrentSelectionStart(),notate.getCurrentSelectionEnd());
-        }
-        else
-        {
-            notate.putLickWithoutRectify(transformedPart);
-        }
-        revertSubstitutionsButton.setEnabled(true);
+        applySubstitutions();
     }//GEN-LAST:event_applySubstitutionsButtonActionPerformed
 
     private void revertSubstitutionsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_revertSubstitutionsButtonActionPerformed
         MelodyPart originalPart = savedMelodies.pop();
-        notate.putLickWithoutRectify(originalPart);
+        notate.stopPlaying();
+        notate.putLickWithoutRectify(originalPart, false);
         if(savedMelodies.size() < 1)
             revertSubstitutionsButton.setEnabled(false);
     }//GEN-LAST:event_revertSubstitutionsButtonActionPerformed
@@ -864,6 +858,37 @@ public class SubstitutorTabPanel extends javax.swing.JPanel {
     private javax.swing.JPanel useSubstitutionsButtonsPanel;
     // End of variables declaration//GEN-END:variables
 
+    public void applySubstitutions()
+    {
+        notate.stopPlaying();
+        MelodyPart part = notate.getCurrentMelodyPart();
+        applySubstitutionsToPart(part);
+    }
+    
+    public void applySubstitutionsToPart(MelodyPart part)
+    {
+        
+        if(transform != null)
+        {
+            savedMelodies.add(part.copy());
+            MelodyPart transformedPart = transform.applySubstitutionsToMelodyPart(part, notate);
+            revertSubstitutionsButton.setEnabled(true);
+            if(substitutorRectifyCheckBox.isSelected())
+            {
+                notate.putLickWithoutRectify(transformedPart);
+                notate.rectifySelection(notate.getCurrentStave(),notate.getCurrentSelectionStart(),notate.getCurrentSelectionEnd());
+            }
+            else
+            {
+                notate.putLickWithoutRectify(transformedPart);
+            }
+        }
+        else
+            notate.putLick(part);
+        
+        
+    }
+    
     private void fillSubstitutionsList()
     {
         
@@ -883,7 +908,6 @@ public class SubstitutorTabPanel extends javax.swing.JPanel {
         subJTable.setModel(new javax.swing.table.AbstractTableModel() {
             ArrayList<Substitution> subs = transform.substitutions;
             
-
             public int getRowCount()
             {
                 return subs.size();
@@ -1284,77 +1308,27 @@ public class SubTypeComboBox extends javax.swing.JComboBox implements ActionList
     }
 }
 
-public class SubTextField extends javax.swing.JTextField implements ActionListener, DocumentListener {
+public class SubTextField extends javax.swing.JSpinner implements ChangeListener {
     private Substitution sub;
     
     public SubTextField(Substitution sub)
     {
         this.sub = sub;
-        super.setText(sub.getWeight()+"");
-        super.setMinimumSize(new Dimension(30, 25));
-        super.setPreferredSize(new Dimension(30, 25));
-        super.setMargin(new Insets(0,2,0,2));
-        super.addActionListener(this);
-        super.getDocument().addDocumentListener(this);
-    }
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        javax.swing.JTextField cb = (javax.swing.JTextField)e.getSource();
-        String strWeight = cb.getText();
-        if(strWeight.matches("\\d+") && sub != null)
-        {
-            sub.setWeight(Integer.parseInt(strWeight));
-        }
+        SpinnerNumberModel model = new SpinnerNumberModel(sub.getWeight(), 0, Integer.MAX_VALUE, 1);
+        super.setModel(model);
+        super.setMinimumSize(new Dimension(60, 25));
+        super.setPreferredSize(new Dimension(60, 25));
+        super.addChangeListener(this);
     }
 
-    public void insertUpdate(DocumentEvent e) {
-        String strWeight = "";
-        try {
-            strWeight = e.getDocument().getText(0, e.getDocument().getLength());
-        } catch (BadLocationException ex) {
-        }
-        if(strWeight.matches("\\d+") && sub != null)
+    public void stateChanged(ChangeEvent e) {
+        SpinnerModel numberModel = super.getModel();
+        if(numberModel instanceof SpinnerNumberModel)
         {
-            sub.setWeight(Integer.parseInt(strWeight));
-        }
-        else if(strWeight.equals("") && sub != null)
-        {
-            sub.setWeight(0);
+            sub.setWeight((Integer)numberModel.getValue());
         }
     }
-
-    public void removeUpdate(DocumentEvent e) {
-        String strWeight = "";
-        try {
-            strWeight = e.getDocument().getText(0, e.getDocument().getLength());
-        } catch (BadLocationException ex) {
-        }
-        if(strWeight.matches("\\d+") && sub != null)
-        {
-            sub.setWeight(Integer.parseInt(strWeight));
-        }
-        else if(strWeight.equals("") && sub != null)
-        {
-            sub.setWeight(0);
-        }
-    }
-
-    public void changedUpdate(DocumentEvent e) {
-        String strWeight = "";
-        try {
-            strWeight = e.getDocument().getText(0, e.getDocument().getLength());
-        } catch (BadLocationException ex) {
-        }
-        if(strWeight.matches("\\d+") && sub != null)
-        {
-            sub.setWeight(Integer.parseInt(strWeight));
-        }
-        else if(strWeight.equals("") && sub != null)
-        {
-            sub.setWeight(0);
-        }
-    }
-    }
+}
 
 public class TransformationCellRenderer implements TableCellRenderer{
     public Component getTableCellRendererComponent(javax.swing.JTable table, Object value,
@@ -1403,7 +1377,7 @@ public class TransformationCellRenderer implements TableCellRenderer{
         }
         return panel;
     }
-    }
+}
 
     /**
      *
@@ -1480,77 +1454,28 @@ public class TransCheckBox extends javax.swing.JCheckBox implements ActionListen
     }
 }
 
-public class TransTextField extends javax.swing.JTextField implements ActionListener, DocumentListener {
+public class TransTextField extends javax.swing.JSpinner implements ChangeListener {
     private Transformation trans;
     
     public TransTextField(Transformation trans)
     {
         this.trans = trans;
-        super.setText(trans.getWeight()+"");
-        super.setMargin(new Insets(0,2,0,2));
-        super.setMinimumSize(new Dimension(30, 25));
-        super.setPreferredSize(new Dimension(30, 25));
-        super.addActionListener(this);
-        super.getDocument().addDocumentListener(this);
+        SpinnerNumberModel model = new SpinnerNumberModel(trans.getWeight(), 0, Integer.MAX_VALUE, 1);
+        super.setModel(model);
+        super.setMinimumSize(new Dimension(60, 25));
+        super.setPreferredSize(new Dimension(60, 25));
+        super.addChangeListener(this);
     }
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        javax.swing.JTextField cb = (javax.swing.JTextField)e.getSource();
-        String strWeight = cb.getText();
-        if(strWeight.matches("\\d+") && trans != null)
-        {
-            trans.setWeight(Integer.parseInt(strWeight));
-        }
-    }
+    
 
-    public void insertUpdate(DocumentEvent e) {
-        String strWeight = "";
-        try {
-            strWeight = e.getDocument().getText(0, e.getDocument().getLength());
-        } catch (BadLocationException ex) {
-        }
-        if(strWeight.matches("\\d+") && trans != null)
+    public void stateChanged(ChangeEvent e) {
+        SpinnerModel numberModel = super.getModel();
+        if(numberModel instanceof SpinnerNumberModel)
         {
-            trans.setWeight(Integer.parseInt(strWeight));
-        }
-        else if(strWeight.equals("") && trans != null)
-        {
-            trans.setWeight(0);
+            trans.setWeight((Integer)numberModel.getValue());
         }
     }
-
-    public void removeUpdate(DocumentEvent e) {
-        String strWeight = "";
-        try {
-            strWeight = e.getDocument().getText(0, e.getDocument().getLength());
-        } catch (BadLocationException ex) {
-        }
-        if(strWeight.matches("\\d+") && trans != null)
-        {
-            trans.setWeight(Integer.parseInt(strWeight));
-        }
-        else if(strWeight.equals("") && trans != null)
-        {
-            trans.setWeight(0);
-        }
-    }
-
-    public void changedUpdate(DocumentEvent e) {
-        String strWeight = "";
-        try {
-            strWeight = e.getDocument().getText(0, e.getDocument().getLength());
-        } catch (BadLocationException ex) {
-        }
-        if(strWeight.matches("\\d+") && trans != null)
-        {
-            trans.setWeight(Integer.parseInt(strWeight));
-        }
-        else if(strWeight.equals("") && trans != null)
-        {
-            trans.setWeight(0);
-        }
-    }
-    }
+}
 
 public class TransformationDialogue extends javax.swing.JDialog implements ActionListener  {
 

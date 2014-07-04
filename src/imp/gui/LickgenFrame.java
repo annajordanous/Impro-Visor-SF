@@ -209,6 +209,10 @@ public LickgenFrame(Notate notate, LickGen lickgen, CommandManager cm)
     substitutorPanel.add(substitutorTab, new GridLayout(1,1,1,1));
    }
 
+public void applySubstitutions(MelodyPart part)
+{
+    substitutorTab.applySubstitutionsToPart(part);
+}
 /**
  * Initializes the solo profile file choosers.
  */
