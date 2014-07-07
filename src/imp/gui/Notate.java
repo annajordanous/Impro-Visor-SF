@@ -10906,7 +10906,7 @@ void stopPlaying(String reason)
     setNormalMode();
     setShowConstructionLinesAndBoxes(showConstructionLinesMI.isSelected());
     //System.out.println("stopPlaying()");
-    requestFocusInWindow();
+    //requestFocusInWindow();
   }
 
 private void setStepInput(boolean active)
