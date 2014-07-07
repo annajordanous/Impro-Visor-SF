@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2014 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
@@ -21,9 +21,7 @@
 package imp.gui;
 
 import imp.Constants;
-import imp.ImproVisor;
 import imp.com.CommandManager;
-import imp.com.PlayScoreCommand;
 import imp.data.ChordPart;
 import imp.data.MIDIBeast;
 import imp.data.Score;
@@ -61,14 +59,14 @@ public java.awt.Color getColor()
   }
 
 /**
- * Constructs a new DrumPatternDisplay JPanel with default weight 3 and an empty
+ * Constructs a new DrumPatternDisplay JPanel with default weight 10 and an empty
  * pattern.
      *
  */
 public DrumPatternDisplay(Notate parent, CommandManager cm, StyleEditor styleParent)
   {
     super(parent, cm, styleParent);
-    initialize(3);
+    initialize(10);
   }
 
 /**
@@ -537,14 +535,8 @@ public boolean playMe(double swingVal, int loopCount, double tempo, Score score)
             notate.setBassVolume(styleEditor.getVolume());
             score.setTempo(tempo);
             //s.setVolumes(notate.getMidiSynth());
-
-            new PlayScoreCommand(score,
-                                 0,
-                                 true,
-                                 notate.getMidiSynth(),
-                                 ImproVisor.getCurrentWindow(),
-                                 loopCount,
-                                 notate.getTransposition()).execute();
+            
+            playScore(notate, score, styleEditor);
           }
         catch( Exception e )
           {

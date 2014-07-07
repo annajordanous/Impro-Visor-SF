@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2014 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
@@ -47,7 +47,7 @@ String bassDisplayText = "";
 BassPattern bassPattern;
 
 /**
- * Constructs a new BassPatternDisplay JPanel with default weight 3 and an empty
+ * Constructs a new BassPatternDisplay JPanel with default weight 10 and an empty
  * pattern.
      *
  */
@@ -65,7 +65,6 @@ public BassPatternDisplay(String rule, float weight, String name, Notate notate,
 
 /**
  * Constructs a new BassPatternDisplay JPanel with weight and rule parameters.
-     *
  */
 public BassPatternDisplay(String rule, float weight, Notate notate, CommandManager cm, StyleEditor styleEditor)
   {
@@ -76,7 +75,6 @@ public BassPatternDisplay(String rule, float weight, Notate notate, CommandManag
 /**
  * Initializes all elements and components for the BassPatternDisplay GUI and
  * collapses the pane.
-     *
  */
 private void initialize(String rule, float weight)
   {
@@ -143,10 +141,7 @@ public boolean playMe(double swingVal, int loopCount, double tempo, Score s)
             notate.setBassVolume(styleEditor.getVolume());
             s.setTempo(tempo);
 
-            MidiSynth synth = notate.getMidiSynth();
-
-            //notate.setVolumes(synth);
-            new PlayScoreCommand(s, 0, true, synth, ImproVisor.getCurrentWindow(), 0, notate.getTransposition()).execute();
+            playScore(notate, s, styleEditor);
           }
         catch( Exception e )
           {

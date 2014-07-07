@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2014 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,9 +21,11 @@
 package imp.gui;
 
 import imp.Constants;
+import imp.ImproVisor;
 import imp.com.CommandManager;
+import imp.com.PlayScoreCommand;
+import imp.data.MidiSynth;
 import imp.data.Score;
-import imp.util.ErrorNonModal;
 import java.awt.Color;
 
 /**
@@ -86,7 +88,7 @@ public boolean playMe(double swingVal, int loopCount)
       
 public boolean playMe(double swingVal, int loopCount, double tempo)
 {
-    return playMe(swingVal, loopCount, tempo, new Score(4));
+    return playMe(swingVal, loopCount, tempo, new Score(960));
 }
 
  abstract public boolean playMe(double swingVal, int loopCount, double tempo, Score s);
@@ -145,11 +147,13 @@ public boolean playMe(double swingVal, int loopCount, double tempo)
       this.weight = weight;
     }
   
+  @Override
   public String getName()
   {
       return patternName;
   }
   
+  @Override
   public void setName(String patternName)
   {
       this.patternName = patternName;
@@ -162,4 +166,28 @@ public boolean playMe(double swingVal, int loopCount, double tempo)
   
   abstract public double getBeats();
 
+  /**
+   * Create PlayScoreCommand, initiate playing, then wait for playing to finish.
+   * Currently uses a busy-wait, which may be unavoidable in this cas.
+   */
+  public void playScore(Notate notate, Score score, StyleEditor styleEditor)
+    {
+    MidiSynth synth = notate.getMidiSynth();
+
+    new PlayScoreCommand(score, 
+                         0, 
+                         true, 
+                         synth, 
+                         ImproVisor.getCurrentWindow(), 
+                         0, 
+                         notate.getTransposition())
+            .execute();
+     
+    while( !synth.finishedPlaying() )
+      {
+      // Busy-wait          
+      }
+    styleEditor.setStatus("OK");   
+    styleEditor.requestFocusInWindow();
+    }
 }
