@@ -639,6 +639,17 @@ public static File getGrammarFile()
   return new File(getGrammarDirectory(), 
           Preferences.getPreference(Preferences.DEFAULT_GRAMMAR_FILE)); 
   }
+
+public static File getTransformFile()
+  {
+    String filename = Preferences.getPreference(Preferences.DEFAULT_TRANSFORM_FILE);
+    if (filename == null)
+    {
+        Preferences.setPreference(Preferences.DEFAULT_TRANSFORM_FILE, Preferences.DVF_TRANSFORM_VAL);
+        filename = Preferences.DVF_TRANSFORM_VAL;
+    }
+    return new File(getGrammarDirectory(), filename); 
+  }
      
 public static File getRecentFilesFile()
   {

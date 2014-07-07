@@ -14,6 +14,7 @@
 (default-tempo 160.0)
 (default-vocab-file My.voc)
 (default-grammar-file chord.grammar)
+(default-transform-file My.transform)
 (default-style-directory styles)
 (visible-advice-components 1023)
 (chord-dist-above-root 10)

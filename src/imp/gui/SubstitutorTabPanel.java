@@ -12,6 +12,7 @@ import imp.lickgen.transformations.Transform;
 import imp.lickgen.transformations.Transformation;
 import imp.util.ErrorLog;
 import imp.util.GrammarFilter;
+import imp.util.Preferences;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -52,7 +53,7 @@ import polya.Polylist;
 
 /**
  *
- * @author Notsoplenk
+ * @author Alex Putman
  */
 public class SubstitutorTabPanel extends javax.swing.JPanel {
 
@@ -113,6 +114,32 @@ public class SubstitutorTabPanel extends javax.swing.JPanel {
         chooser.setFileFilter(filter);
         
         savedMelodies = new Stack();
+        
+        setDefaultTrans();
+    }
+    
+    private void setDefaultTrans()
+    {
+        filename = Preferences.DVF_TRANSFORM_VAL;
+        String transformStr = "";
+        try {
+            transformStr = new Scanner(ImproVisor.getTransformFile()).useDelimiter("\\Z").next();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(SubstitutorTabPanel.class.getName()).log(Level.WARNING, null, ex);
+        }
+        if(transformStr.length() > 0)
+        {
+            transform = new Transform(lickgen, transformStr);
+        }
+        else
+        {
+            transform = new Transform(lickgen);
+        }
+        
+        fillSubstitutionsList();
+        fillTransformationsList();
+        applySubstitutionsButton.setEnabled(true);
+        saveSubstitutionsButton.setEnabled(true);
     }
 
     /**

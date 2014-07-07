@@ -138,6 +138,10 @@ public class Preferences implements imp.Constants
   public static final String DEFAULT_GRAMMAR_FILE = "default-grammar-file";
 
   public static final String DVF_GRAMMAR_VAL = "My.grammar";
+  
+  public static final String DEFAULT_TRANSFORM_FILE = "default-transform-file";
+
+  public static final String DVF_TRANSFORM_VAL = "My.transform";
 
   public static final String DEFAULT_STYLE_DIRECTORY = "default-style-directory";
 
@@ -595,6 +599,7 @@ public static boolean getAlwaysUse(int index)
       out.println("(" + DEFAULT_TEMPO + " " + DT_VAL + ")");
       out.println("(" + DEFAULT_VOCAB_FILE + " " + DVF_VAL + ")");
       out.println("(" + DEFAULT_GRAMMAR_FILE + " " + DVF_GRAMMAR_VAL + ")");
+      out.println("(" + DEFAULT_TRANSFORM_FILE + " " + DVF_TRANSFORM_VAL + ")");
       out.println("(" + DEFAULT_STYLE_DIRECTORY + " " + DSD_VAL + ")");
       out.println("(" + VIS_ADV_COMPONENTS + " " + VAC_VAL + ")");
       out.println("(" + CHORD_DIST_ABOVE_ROOT + " " + CDAR_VAL + ")");
