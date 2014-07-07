@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2014 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
@@ -20,14 +20,10 @@
 
 package imp.gui;
 
-import imp.ImproVisor;
 import imp.com.CommandManager;
-import imp.com.PlayScoreCommand;
 import imp.data.*;
 import imp.util.ErrorNonModal;
 import java.awt.Color;
-import java.util.ArrayList;
-import java.util.StringTokenizer;
 import polya.Polylist;
 
 /**
@@ -295,10 +291,7 @@ public boolean playMe(double swingVal, int loopCount, double tempo, Score score)
               }
             notate.setBassVolume(styleEditor.getVolume());
             score.setTempo(tempo);
-            //s.setVolumes(notate.getMidiSynth());
-
-            new PlayScoreCommand(score, 0, true, notate.getMidiSynth(), ImproVisor.getCurrentWindow(), 0, notate.getTransposition()).execute();
-            styleEditor.setStatus("OK");
+            playScore(notate, score, styleEditor);
           }
         else
           {

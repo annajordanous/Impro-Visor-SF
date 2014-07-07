@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2014 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,13 +21,9 @@
 package imp.gui;
 
 import imp.Constants;
-import imp.ImproVisor;
 import imp.com.CommandManager;
-import imp.com.PlayScoreCommand;
 import imp.data.*;
 import java.awt.Color;
-import java.util.ArrayList;
-import java.util.StringTokenizer;
 import polya.Polylist;
 
 /**
@@ -53,11 +49,11 @@ public class ChordPatternDisplay
     private ChordPattern chordPattern;
     
    /**
-     * Constructs a new ChordPatternDisplay JPanel with default weight 3 and an empty pattern.
+     * Constructs a new ChordPatternDisplay JPanel with default weight 10 and an empty pattern.
      **/
     public ChordPatternDisplay(Notate parent, CommandManager cm, StyleEditor styleParent) {
         super(parent, cm, styleParent);
-        initialize("", 3, "");
+        initialize("", 10, "");
     }
     
    /**
@@ -291,10 +287,9 @@ public boolean playMe(double swingVal, int loopCount, double tempo, Score score)
             score.setChordProg(c);
             notate.setChordVolume(styleEditor.getVolume());
             score.setTempo(tempo);
-            //score.setVolumes(notate.getMidiSynth());
 
-            new PlayScoreCommand(score, 0, true, notate.getMidiSynth(), ImproVisor.getCurrentWindow(), loopCount, notate.getTransposition()).execute();
-            styleEditor.setStatus("OK");
+            playScore(notate, score, styleEditor);
+
           }
         catch( Exception e )
           {
