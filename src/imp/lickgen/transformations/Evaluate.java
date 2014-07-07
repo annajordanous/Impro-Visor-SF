@@ -129,6 +129,10 @@ public enum Operators {
   IF("if"),
   EQUALS("="),
   ABSOLUTE_VALUE("abs"),
+  GR(">"),
+  GR_EQ(">="),
+  LT("<"),
+  LT_EQ("<="),
   MEMBER("member"),
   CHORD_EQUALS("chord="),
   CHORD_FAMILY("chord-family"),
@@ -259,6 +263,22 @@ public Object evaluate(Object sent)
                 
             case ABSOLUTE_VALUE:
                 returnVal = absolute_value(evaledArgs);
+                break;
+                
+            case GR:
+                returnVal = greater_than(evaledArgs);
+                break;
+                
+            case GR_EQ:
+                returnVal = greater_than_equals(evaledArgs);
+                break;
+                
+            case LT:
+                returnVal = less_than(evaledArgs);
+                break;
+                
+            case LT_EQ:
+                returnVal = less_than_equals(evaledArgs);
                 break;
                 
             case MEMBER:
@@ -522,6 +542,34 @@ public double absolute_value(Polylist evaledArgs)
 {
     double firstArg = readNumber(evaledArgs.first().toString());
     return Math.abs(firstArg);
+}
+
+public boolean greater_than(Polylist evaledArgs)
+{
+    double firstArg = readNumber(evaledArgs.first().toString());
+    double secondArg = readNumber(evaledArgs.second().toString());
+    return (firstArg > secondArg);
+}
+
+public boolean greater_than_equals(Polylist evaledArgs)
+{
+    double firstArg = readNumber(evaledArgs.first().toString());
+    double secondArg = readNumber(evaledArgs.second().toString());
+    return (firstArg >= secondArg);
+}
+
+public boolean less_than(Polylist evaledArgs)
+{
+    double firstArg = readNumber(evaledArgs.first().toString());
+    double secondArg = readNumber(evaledArgs.second().toString());
+    return (firstArg < secondArg);
+}
+
+public boolean less_than_equals(Polylist evaledArgs)
+{
+    double firstArg = readNumber(evaledArgs.first().toString());
+    double secondArg = readNumber(evaledArgs.second().toString());
+    return (firstArg <= secondArg);
 }
 /**
  * if the first object is contained in the Polylist second argument, return true
