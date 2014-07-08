@@ -21120,7 +21120,7 @@ public void refreshGrammarEditor()
     grammarEditor.performEditorToSourceButton(null);
 }
 
-private void adjustSelection()
+public void adjustSelection()
   {
     Stave stave = getCurrentStave();
     boolean nothingWasSelected = !stave.somethingSelected();

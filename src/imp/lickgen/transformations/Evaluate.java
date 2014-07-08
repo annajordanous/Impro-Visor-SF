@@ -203,6 +203,8 @@ public Object evaluate(Object sent)
 {
     Polylist statement;
     //System.out.println(sent.toString());
+    if(sent == null)
+        return null;
     if(isConstant(sent) && op == null)
         return sent;
     else if(isVariable(sent) && op == null)
@@ -232,7 +234,10 @@ public Object evaluate(Object sent)
                 "\n\t\t\t\t\tArgs: " + args.toString());
     }
     Polylist evaledArgs = args.map(new Evaluate(lickGen, frame)).flatten();
-    
+    if(evaledArgs.member(null) && 
+            Operators.fromGrammarName(operator.toString()) != Operators.OR && 
+            Operators.fromGrammarName(operator.toString()) != Operators.MEMBER)
+        return null;
     Object returnVal = null;
     
     if(operator instanceof String)
@@ -479,7 +484,7 @@ public Boolean and(Polylist evaledArgs)
  */
 public Boolean or(Polylist evaledArgs)
 {
-    if(evaledArgs.member(true))
+    if(evaledArgs.member(Boolean.TRUE))
         return true;
     return false;
 }
@@ -525,7 +530,7 @@ public Boolean equals(Polylist evaledArgs)
     Object secondArg = evaledArgs.second();
     
     if(firstArg == null || secondArg == null)
-        return null;
+        return false;
     if(firstArg.toString().matches("(-?)([\\d]*)(\\.?)([\\d])*") && secondArg.toString().matches("(-?)([\\d]*)(\\.?)([\\d])*"))
     {
         double firstNum = Double.parseDouble(firstArg.toString());
@@ -577,7 +582,8 @@ public boolean less_than_equals(Polylist evaledArgs)
 public Boolean member(Polylist evaledArgs)
 {
     Object firstArg = evaledArgs.first();
-    
+    if(firstArg == null)
+        return null;
     Polylist secondArg = evaledArgs.rest();
     if(secondArg.member(firstArg))
     {
@@ -788,6 +794,8 @@ public Object relative_pitch(Polylist evaledArgs)
     Chord chord = pair.chord;
 
     Polylist relNoteList = NotesToRelativePitch.noteToRelativePitch(note, chord);
+    if(relNoteList == null)
+        return null;
     String relPitch = relNoteList.second().toString();
     if(relPitch.matches("\\d*"))
         return Integer.parseInt(relPitch);
@@ -800,6 +808,8 @@ public Object relative_pitch(Polylist evaledArgs)
 public String absolute_pitch(Polylist evaledArgs)
 {
     NoteChordPair pair = (NoteChordPair) evaledArgs.first();
+    if(pair == null)
+        return null;
     Note note = pair.note.copy();
     note.setRhythmValue(0);
     return note.toLeadsheet();
@@ -816,6 +826,8 @@ public Object pitch_addition(Polylist evaledArgs)
 {
     Object firstArg = evaledArgs.first();
     Object secondArg = evaledArgs.second();
+    if(firstArg == null || secondArg == null)
+        return null;
     // Choose the first chord of the set of notes incase neither args are notes
     // if the first arg is not a note
     
@@ -826,7 +838,10 @@ public Object pitch_addition(Polylist evaledArgs)
             Note secondNote = ((NoteChordPair)secondArg).note.copy();
             Chord chord = ((NoteChordPair)secondArg).chord;
             Polylist relNote = NotesToRelativePitch.noteToRelativePitch(secondNote, chord);
-            return addRelPitch(relNote.second().toString(), firstArg.toString());
+            if(relNote == null)
+                return null;
+            String relPitch = relNote.second().toString();
+            return addRelPitch(relPitch, firstArg.toString());
         }
         else
         {
@@ -840,7 +855,10 @@ public Object pitch_addition(Polylist evaledArgs)
             Note firstNote = ((NoteChordPair)firstArg).note.copy();
             Chord chord = ((NoteChordPair)firstArg).chord;
             Polylist relNote = NotesToRelativePitch.noteToRelativePitch(firstNote, chord);
-            return addRelPitch(relNote.second().toString(), secondArg.toString());
+            if(relNote == null)
+                return null;
+            String relPitch = relNote.second().toString();
+            return addRelPitch(relPitch, secondArg.toString());
         }
         else
         {
@@ -865,6 +883,8 @@ public Object pitch_subtraction(Polylist evaledArgs)
 {
     Object firstArg = evaledArgs.first();
     Object secondArg = evaledArgs.second();
+    if(firstArg == null || secondArg == null)
+        return null;
     // Choose the first chord of the set of notes incase neither args are notes
     // if the first arg is not a note
     
@@ -875,6 +895,8 @@ public Object pitch_subtraction(Polylist evaledArgs)
             Note secondNote = ((NoteChordPair)secondArg).note.copy();
             Chord chord = ((NoteChordPair)secondArg).chord;
             Polylist relNote = NotesToRelativePitch.noteToRelativePitch(secondNote, chord);
+            if(relNote == null)
+                return null;
             String relPitch = relNote.second().toString();
             StringBuilder minusPitch = new StringBuilder();
             char firstChar = relPitch.charAt(0);
@@ -927,8 +949,9 @@ public Object pitch_subtraction(Polylist evaledArgs)
             Note firstNote = ((NoteChordPair)firstArg).note.copy();
             Chord chord = ((NoteChordPair)firstArg).chord;
             Polylist relNote = NotesToRelativePitch.noteToRelativePitch(firstNote, chord);
-            
-            String relPitch = secondArg.toString();
+            if(relNote == null)
+                return null;
+            String relPitch = relNote.second().toString();
             StringBuilder minusPitch = new StringBuilder();
             char firstChar = relPitch.charAt(0);
             if(firstChar == 'b')
@@ -1114,12 +1137,11 @@ public NoteChordPair transpose_diatonic(NoteChordPair pair, String relPitch)
     if(pair.chord.isNOCHORD())
         return null;
     String returns = relative_pitch(new Polylist(pair, new Polylist())).toString();
-    String relPitchInit;
     if(returns == null)
     {
         return null;
     }
-    relPitchInit = returns;
+    String relPitchInit = returns;
     String initArg = relPitchInit;
     char initAugment = initArg.charAt(0);
     int initNum = 0;

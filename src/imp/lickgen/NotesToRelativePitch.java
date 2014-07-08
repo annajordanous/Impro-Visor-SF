@@ -94,7 +94,7 @@ public class NotesToRelativePitch {
             relativeNote = relativeNote.addToEnd(minor7ScaleDegrees[pitchOffset]);
         } else if (chordFamily.equals("major")) {
             relativeNote = relativeNote.addToEnd(majorScaleDegrees[pitchOffset]);
-        } else if (chordFamily.equals("dominant") || chordFamily.equals("sus4")) { //treat sus4 chords like dominant
+        } else if (chordFamily.equals("dominant") || chordFamily.equals("sus4") || chordFamily.equals("alt")) { //treat sus4 chords like dominant
             relativeNote = relativeNote.addToEnd(dominantScaleDegrees[pitchOffset]);
         } else if (chordFamily.equals("half-diminished")) {
             relativeNote = relativeNote.addToEnd(halfDimScaleDegrees[pitchOffset]);
@@ -103,7 +103,8 @@ public class NotesToRelativePitch {
         } else if (chordFamily.equals("augmented")) {
             relativeNote = relativeNote.addToEnd(augScaleDegrees[pitchOffset]);
         } else {
-            ErrorLog.log(ErrorLog.SEVERE, "Unrecognized chord family");
+            ErrorLog.log(ErrorLog.COMMENT, "Unrecognized chord family");
+            return null;
         }
 
         //Part 3 of the note construction: add the rhythm amount

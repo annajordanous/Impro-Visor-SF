@@ -585,17 +585,22 @@ public Polylist append(Polylist M)
  *  member(A, L) tells whether A is a member of this
  */
 public boolean member(Object A)
-  {
-  for( Enumeration e = elements(); e.hasMoreElements();)
+{
+    for( Enumeration e = elements(); e.hasMoreElements();)
     {
-    Object next = e.nextElement();
-    if( next.equals(A) || Arith.equal(next, A) )
-      {
-      return true;
-      }
+        Object next = e.nextElement();
+        if(A == null)
+        {
+            if(next == null)
+                return true;
+        }
+        else if(next != null && ( A.equals(next) || Arith.equal(next, A) ))
+        {
+          return true;
+        }
     }
-  return false;
-  }
+    return false;
+}
 
 
 /**
