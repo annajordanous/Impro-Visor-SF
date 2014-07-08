@@ -115,7 +115,6 @@ private MelodyPart applySubstitutionType(ArrayList<Substitution> substitutions, 
     
     while(transNotes.size() > transNotes.getNextIndex(startingSlot[0]-1))
     {
-        MelodyPart substituted = new MelodyPart();
         if(debug)
         {
             System.out.println("\tYet to parse: " + transNotes.extract(startingSlot[0], transNotes.getSize())
@@ -144,6 +143,8 @@ private MelodyPart applySubstitutionType(ArrayList<Substitution> substitutions, 
             sortedSubs.add(sub);
             full.removeAll(Collections.singleton(sub));
         } while(!full.isEmpty());
+        
+        MelodyPart substituted = null;
         
         for(Substitution sub: sortedSubs)
         {
