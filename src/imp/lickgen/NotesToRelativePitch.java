@@ -94,7 +94,7 @@ public class NotesToRelativePitch {
             relativeNote = relativeNote.addToEnd(minor7ScaleDegrees[pitchOffset]);
         } else if (chordFamily.equals("major")) {
             relativeNote = relativeNote.addToEnd(majorScaleDegrees[pitchOffset]);
-        } else if (chordFamily.equals("dominant") || chordFamily.equals("sus4") || chordFamily.equals("alt")) { //treat sus4 chords like dominant
+        } else if (chordFamily.equals("dominant") || chordFamily.equals("sus4") || chordFamily.equals("alt")) { //treat sus4, alt chords like dominant
             relativeNote = relativeNote.addToEnd(dominantScaleDegrees[pitchOffset]);
         } else if (chordFamily.equals("half-diminished")) {
             relativeNote = relativeNote.addToEnd(halfDimScaleDegrees[pitchOffset]);
@@ -161,7 +161,7 @@ public class NotesToRelativePitch {
                     Polylist relativePitch = noteToRelativePitch(note, allChords.get(chordNumber));
                     relativePitchMelody = relativePitchMelody.concat(relativePitch.toString());
                 } else { //"pitch" is a rest
-                    String rest = "R" + imp.data.Note.getDurationString(duration) + " ";
+                    String rest = " R" + imp.data.Note.getDurationString(duration) + " ";
                     relativePitchMelody = relativePitchMelody.concat(rest.toString());
                 }
             } catch (Exception e) {
@@ -184,7 +184,7 @@ public class NotesToRelativePitch {
                 Polylist relativePitch = noteToRelativePitch(note, chord);
                 relMel = relMel.concat(relativePitch.toString());
             } else { //"note" is a rest
-                String rest = "R" + imp.data.Note.getDurationString(note.getRhythmValue()) + " ";
+                String rest = " R" + imp.data.Note.getDurationString(note.getRhythmValue()) + " ";
                 relMel = relMel.concat(rest.toString());
             }
             totalDuration += note.getRhythmValue();
@@ -314,8 +314,7 @@ public class NotesToRelativePitch {
             StringBuilder sb = new StringBuilder();
 
 
-            int value = melPart.getNote(current).getDurationString(sb, melPart.getNote(
-                    current).getRhythmValue());
+            int value = melPart.getNote(current).getDurationString(sb, melPart.getNote(current).getRhythmValue());
 
             int pitch = melPart.getNote(current).getPitch();
 
@@ -331,8 +330,7 @@ public class NotesToRelativePitch {
                 notes.add(pitch);
                 //get note type
                 char notetype;
-                int[] notetone = lickgen.getNoteTypes(current, pitch, pitch,
-                        notate.getChordProg());
+                int[] notetone = lickgen.getNoteTypes(current, pitch, pitch, chordPart); 
                 switch (notetone[0]) {
                     case LickGen.CHORD:
                         notetype = 'C';
@@ -419,8 +417,7 @@ public class NotesToRelativePitch {
 
             //handle case of only 1 note
             if (rhythm.equals("")) {
-                char thisPitch = lickgen.getNoteType(0, notes.get(0), notes.get(
-                        0), notate.getChordProg());
+                char thisPitch = lickgen.getNoteType(0, notes.get(0), notes.get(0), chordPart);
                 String len = Note.getDurationString(melPart.getSize());
                 rhythm = thisPitch + len;
             }
@@ -563,8 +560,7 @@ public class NotesToRelativePitch {
             }
             strbuf.append("CHORDS ");
 
-            ChordPart chords = notate.getChordProg().extract(0,
-                    melPart.getSize() - 1);
+            ChordPart chords = chordPart.extract(0, chordPart.getSize());
             ArrayList<Unit> chordList = chords.getUnitList();
             if (chordList.isEmpty()) {
                 System.out.println("No chords");
