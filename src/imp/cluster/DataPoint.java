@@ -45,6 +45,7 @@ public class DataPoint implements Serializable{
     private Cluster mCluster;
     private double mEuDt;
     private String clusterName;
+    private String brickType;
     private int number = 1;
     private boolean starter;
     private IndexedMelodyPart melody;
@@ -108,11 +109,11 @@ public class DataPoint implements Serializable{
         this.tiedAtEnd = endTied;
     }
     
-    //updated version of above constructor that also initializes relative pitch melody
+    //updated version of above constructor that also initializes relative pitch melody and brick type
     //above version left for now so as not to break anything that already exists
     public DataPoint(double t, double u, double v, double w, double x, double y,double z, 
             String name, String data, int segLength, boolean start, 
-            IndexedMelodyPart exactMelody, String relativePitchMelody, boolean isHead, int chorusNumber, 
+            IndexedMelodyPart exactMelody, String relativePitchMelody, String brickType, boolean isHead, int chorusNumber, 
             Vector<String> chords, boolean startTied, boolean endTied) {
         this.mT = t;
         this.mU = u;
@@ -128,6 +129,7 @@ public class DataPoint implements Serializable{
         this.starter = start;
         this.melody = exactMelody;
         this.relativePitchMelody = relativePitchMelody;
+        this.brickType = brickType;
         this.head = isHead;
         this.chorusNumber = chorusNumber;
         this.chordList = chords;
@@ -148,6 +150,14 @@ public class DataPoint implements Serializable{
     
     public void setObjectName(String name) {
         mObjName = name;
+    }
+    
+    public void setRelativePitchMelody(String relativePitchMelody) {
+        this.relativePitchMelody = relativePitchMelody;
+    }
+    
+    public void setBrickType(String brickType) {
+        this.brickType = brickType;
     }
     
     public void calcEuclideanDistance() {
@@ -335,6 +345,10 @@ public class DataPoint implements Serializable{
     
     public String getRelativePitchMelody() {
         return relativePitchMelody;
+    }
+    
+    public String getBrickType() {
+        return brickType;
     }
     
     public Vector<String> getChords() {

@@ -1,22 +1,22 @@
 /**
  * This Java Class is part of the Impro-Visor Application.
  *
- * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
- * XML export code is also Copyright (C) 2009-2010 Nicolas Froment (aka Lasconic).
+ * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College XML export code
+ * is also Copyright (C) 2009-2010 Nicolas Froment (aka Lasconic).
  *
- * Impro-Visor is free software; you can redistribute it and/or modifyc
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
+ * Impro-Visor is free software; you can redistribute it and/or modifyc it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 2 of the License, or (at your option) any later
+ * version.
  *
- * Impro-Visor is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * merchantability or fitness for a particular purpose.  See the
- * GNU General Public License for more details.
+ * Impro-Visor is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of merchantability or fitness
+ * for a particular purpose. See the GNU General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU General Public License
- * along with Impro-Visor; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * You should have received a copy of the GNU General Public License along with
+ * Impro-Visor; if not, write to the Free Software Foundation, Inc., 51 Franklin
+ * St, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
 /*
@@ -24,7 +24,6 @@
  *
  * Created on Jun 24, 2010, 4:57:53 PM
  */
-
 package imp.gui;
 
 import imp.Directories;
@@ -34,6 +33,7 @@ import imp.com.*;
 import imp.data.*;
 import imp.lickgen.Grammar;
 import imp.lickgen.LickGen;
+import imp.lickgen.NotesToRelativePitch;
 import imp.neuralnet.Critic;
 import imp.util.ProfileFilter;
 import java.awt.*;
@@ -51,199 +51,165 @@ import javax.swing.table.DefaultTableModel;
 import polya.Polylist;
 import polya.Tokenizer;
 
-
 /**
  *
  * @author David Morrison, Robert Keller
  */
 public class LickgenFrame
-    extends javax.swing.JFrame
-    implements imp.Constants
-{
+        extends javax.swing.JFrame
+        implements imp.Constants {
 
-private int themeLength = 8;
-
-private double themeProb = 0.4;
-
-private double transposeProb = 0.5;
-
-private double invertProb = 0.1;
-
-private double reverseProb = 0.1;
-
-private Notate notate;
-
-private ArrayList<String> melodyData = new ArrayList<String>();
-
-private double roundTo = BEAT;
-
-private int paddingSlots = BEAT / 2;
-
-private int minPitch = 60;
-
-private int maxPitch = 82;
-
-private int minInterval = 0;
-
-private int maxInterval = 6;
-
-private int minDuration = 8;
-
-private int maxDuration = 8;
-
-private double totalBeats = 8;
-
-private int totalSlots = (int) (BEAT * totalBeats);
-
-private int slotsPerBeat = 120;
-
-private double restProb = 0.1;
-
-private double leapProb = 0.2;
-
-private double chordToneWeight = 0.7;
-
-private double scaleToneWeight = 0.1;
-
-private double colorToneWeight = 0.05;
-
-private double chordToneDecayRate = 0.1;
-
-private boolean avoidRepeats = true;
-
-private boolean useGrammar = true;
-
-private boolean autoFill = true;
-
-private int recurrentIteration = 1;
-
-private LickGen lickgen;
-
-private CommandManager cm;
-
+    private int themeLength = 8;
+    private double themeProb = 0.4;
+    private double transposeProb = 0.5;
+    private double invertProb = 0.1;
+    private double reverseProb = 0.1;
+    private Notate notate;
+    private ArrayList<String> melodyData = new ArrayList<String>();
+    private double roundTo = BEAT;
+    private int paddingSlots = BEAT / 2;
+    private int minPitch = 60;
+    private int maxPitch = 82;
+    private int minInterval = 0;
+    private int maxInterval = 6;
+    private int minDuration = 8;
+    private int maxDuration = 8;
+    private double totalBeats = 8;
+    private int totalSlots = (int) (BEAT * totalBeats);
+    private int slotsPerBeat = 120;
+    private double restProb = 0.1;
+    private double leapProb = 0.2;
+    private double chordToneWeight = 0.7;
+    private double scaleToneWeight = 0.1;
+    private double colorToneWeight = 0.05;
+    private double chordToneDecayRate = 0.1;
+    private boolean avoidRepeats = true;
+    private boolean useGrammar = true;
+    private boolean autoFill = true;
+    private int recurrentIteration = 1;
+    private LickGen lickgen;
+    private CommandManager cm;
+    private String frameFile;
 // Complexity graph variables
-private int numControllers;
-private int curController;
-private ComplexityWindowController[] compControllers;
+    private int numControllers;
+    private int curController;
+    private ComplexityWindowController[] compControllers;
+    /**
+     * Number of beats per measure in the piece
+     */
+    private int beatsPerBar;
+    /**
+     * Total number of beats to represent in the solo curve graph
+     */
+    private int attrTotal;
+    /**
+     * Granularity at which to look at the bars, i.e. how many beats per
+     * division
+     */
+    private int attrGranularity;
+    /**
+     * File extension for solo profiles
+     */
+    private String profileExt;
+    /**
+     * Default profile curve for the reset button
+     */
+    private File defaultProfile;
+    /**
+     * JFile Chooser for saving solo profiles
+     */
+    private JFileChooser saveCWFC;
+    /**
+     * JFile Chooser for opening solo profiles
+     */
+    private JFileChooser openCWFC;
+    private boolean rectify = true;
+    private boolean useCritic = false;
+    private static final int DEFAULT_GRADE = 7; //Default criticGrade for filter
+    private int criticGrade = DEFAULT_GRADE;
+    private boolean continuallyGenerate = true;
+    /**
+     * ArrayList of JTextField arrays, used to display probabilities used in
+     * lick generation
+     */
+    private ArrayList<JTextField[]> lickPrefs = new ArrayList<JTextField[]>();
+    /**
+     * this will be set to true during extraction of all measures in a corpus
+     */
+    private boolean allMeasures = false;
 
-/** Number of beats per measure in the piece */
-private int beatsPerBar;
+    /*
+     * Initialize critic, from Notate leadsheet.
+     */
+    private Critic critic;
+    /*
+     * TreeMap for usage with style recognition
+     */
+    private TreeMap<String, Critic> critics;
+    /*
+     * Number of expected weight files, will be used to encourage users to
+     * download the rest of the weights if they desire style recognition
+     */
+    private static int numCritics = 22;
+    /**
+     * Create the panel for the substitutor
+     */
+    private SubstitutorTabPanel substitutorTab;
 
-/** Total number of beats to represent in the solo curve graph */
-private int attrTotal;
+    /**
+     * Creates new LickgenFrame
+     */
+    public LickgenFrame(Notate notate, LickGen lickgen, CommandManager cm) {
+        this.notate = notate;
+        this.lickgen = lickgen;
+        this.cm = cm;
 
-/** Granularity at which to look at the bars, i.e. how many beats per division */
-private int attrGranularity; 
+        //beatsPerBar = notate.getMelodyPart().getMetre()[0]; //get the top number in the time sig
+        beatsPerBar = 4; //default for now, since it appears there's no way to get the actual time sig at init time
+        attrTotal = 288; //max size of a selection (one chorus)
+        attrGranularity = 1; //default
 
-/** File extension for solo profiles */
-private String profileExt;
+        critic = notate.getCritic();
+        initComponents();
 
-/** Default profile curve for the reset button */
-private File defaultProfile;
+        substitutorTab = new SubstitutorTabPanel(lickgen, notate);
+        substitutorPanel.add(substitutorTab, new GridLayout(1, 1, 1, 1));
+    }
 
-/** JFile Chooser for saving solo profiles */
-private JFileChooser saveCWFC;
+    public void applySubstitutions(MelodyPart part) {
+        substitutorTab.applySubstitutionsToPart(part);
+    }
 
-/** JFile Chooser for opening solo profiles */
-private JFileChooser openCWFC;
+    /**
+     * Initializes the solo profile file choosers.
+     */
+    private void initCompFileChoosers() {
+        ProfileFilter pFilter = new ProfileFilter();
+        profileExt = ProfileFilter.EXTENSION;
+        defaultProfile = new File(ImproVisor.getProfileDirectory(), "default." + profileExt);
 
-private boolean rectify = true;
+        saveCWFC = new JFileChooser();
+        openCWFC = new JFileChooser();
 
-private boolean useCritic = false;
+        saveCWFC.setDialogType(JFileChooser.SAVE_DIALOG);
+        saveCWFC.setDialogTitle("Save Solo Profile");
+        saveCWFC.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        saveCWFC.resetChoosableFileFilters();
+        saveCWFC.addChoosableFileFilter(pFilter);
 
-private static final int DEFAULT_GRADE = 7; //Default criticGrade for filter
-private int criticGrade = DEFAULT_GRADE;
+        openCWFC.setDialogType(JFileChooser.OPEN_DIALOG);
+        openCWFC.setDialogTitle("Open Solo Profile");
+        openCWFC.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        openCWFC.resetChoosableFileFilters();
+        openCWFC.addChoosableFileFilter(pFilter);
+    }
 
-private boolean continuallyGenerate = true;
-
-/**
- * ArrayList of JTextField arrays, used to display probabilities used in lick generation
- */
-
-private ArrayList<JTextField[]> lickPrefs = new ArrayList<JTextField[]>();
-
-/**
- * this will be set to true during extraction of all measures in a corpus
- */
-private boolean allMeasures = false;
-
-/*
- * Initialize critic, from Notate leadsheet.
- */
- private Critic critic;
- 
- /*
-  * TreeMap for usage with style recognition
-  */
- private TreeMap<String, Critic> critics;
- 
- /*
-  * Number of expected weight files, will be used to encourage users to
-  * download the rest of the weights if they desire style recognition
-  */
- private static int numCritics = 22;
- 
-  /**
-  * Create the panel for the substitutor
-  */
- private SubstitutorTabPanel substitutorTab;
-
-/**
- * Creates new LickgenFrame
- */
-public LickgenFrame(Notate notate, LickGen lickgen, CommandManager cm)
-  {
-    this.notate = notate;
-    this.lickgen = lickgen;
-    this.cm = cm;
-
-    //beatsPerBar = notate.getMelodyPart().getMetre()[0]; //get the top number in the time sig
-    beatsPerBar = 4; //default for now, since it appears there's no way to get the actual time sig at init time
-    attrTotal = 288; //max size of a selection (one chorus)
-    attrGranularity = 1; //default
-
-    critic = notate.getCritic();
-    initComponents();
-    
-    substitutorTab = new SubstitutorTabPanel(lickgen, notate);
-    substitutorPanel.add(substitutorTab, new GridLayout(1,1,1,1));
-   }
-
-public void applySubstitutions(MelodyPart part)
-{
-    substitutorTab.applySubstitutionsToPart(part);
-}
-/**
- * Initializes the solo profile file choosers.
- */
-private void initCompFileChoosers() {
-    ProfileFilter pFilter = new ProfileFilter();
-    profileExt = ProfileFilter.EXTENSION;
-    defaultProfile = new File(ImproVisor.getProfileDirectory(), "default." + profileExt);
-
-    saveCWFC = new JFileChooser();
-    openCWFC = new JFileChooser();
-
-    saveCWFC.setDialogType(JFileChooser.SAVE_DIALOG);
-    saveCWFC.setDialogTitle("Save Solo Profile");
-    saveCWFC.setFileSelectionMode(JFileChooser.FILES_ONLY);
-    saveCWFC.resetChoosableFileFilters();
-    saveCWFC.addChoosableFileFilter(pFilter);
-
-    openCWFC.setDialogType(JFileChooser.OPEN_DIALOG);
-    openCWFC.setDialogTitle("Open Solo Profile");
-    openCWFC.setFileSelectionMode(JFileChooser.FILES_ONLY);
-    openCWFC.resetChoosableFileFilters();
-    openCWFC.addChoosableFileFilter(pFilter);
-}
-
-
-/** This method is called from within the constructor to
- * initialize the form.
- * WARNING: Do NOT modify this code. The content of this method is
- * always regenerated by the Form Editor.
- */
-@SuppressWarnings("unchecked")
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
@@ -3060,589 +3026,534 @@ private void initCompFileChoosers() {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-
-/**
- * Get the pitch-class probabilities from array of text fields.
- @return pitch-class probabilities
- */
-
-public ArrayList<double[]> readProbs()
-  {
-    ArrayList<double[]> probs = new ArrayList<double[]>();
-
-    for( int i = 0; i < lickPrefs.size(); ++i )
-      {
-        double[] p = new double[12];
-        
-        JTextField tf[] = lickPrefs.get(i);
-
-        for( int j = 0; j < tf.length; ++j )
-          {
-            p[j] = Notate.quietDoubleFromTextField(tf[j], 0.0,
-                                                Double.POSITIVE_INFINITY, 0.0);
-          }
-        probs.add(p);
-      }
-
-    return probs;
-  }
-
-
-/**
- * Make sure that the values in the probability fields are between 0.0 and 1.0
- */
-
-public void verifyProbs()
-  {
-
-    for( int i = 0; i < lickPrefs.size(); ++i )
-      {
-        JTextField tf[] = lickPrefs.get(i);
-        for( int j = 0; j < tf.length; ++j )
-          {
-            Notate.doubleFromTextField(tf[j], 0.0,
-                                       Double.POSITIVE_INFINITY, 1.0);
-          }
-      }
-  }
-
-
-/**
- * Redraw the triage frame based on where we are and how much of the current 
- * chord progression we're examining.
- */
-
-public void redrawTriage()
-  {
-    lickSavedLabel.setText("");
-
-    chordProbPanel.removeAll();
-
-    GridBagLayout gbl = new GridBagLayout();
-
-    JPanel panel = new JPanel(gbl);
-
-    // We need to keep track of both the chords we've already looked at
-    // and the old probability values.
-
-    ArrayList<String> chordUsed = new ArrayList<String>();
-
-    ArrayList<JTextField[]> oldProbs = (ArrayList<JTextField[]>) lickPrefs.clone();
-
-
-    int start = notate.getCurrentSelectionStart();
-
-    if( start == -1 )
-      {
-        return;
-      }
-
-    int end = notate.getCurrentSelectionEnd(); // start + notate.getTotalSlots();
-
-
-    // Add the locations of every chord change in the section that we're
-    // examining.
-
-    ChordPart chordPart = notate.getChordProg();
-
-    ArrayList<Integer> chordChanges = new ArrayList<Integer>();
-
-    chordChanges.add(start);
-
-
-    int next = chordPart.getNextUniqueChordIndex(start);
-
-    while( next < end && next != -1 )
-      {
-        chordChanges.add(next);
-
-        next = chordPart.getNextUniqueChordIndex(next);
-      }
-
-    // Clear out the old values.
-
-    lickPrefs.clear();
-
-
-    // Loop through every chord
-
-    int numChords = chordChanges.size();
-
-    for( int i = 0; i < numChords; ++i )
-      {
-
-        // If we've added stuff for this chord already, move on; otherwise,
-
-        // add it to the list of chords that we've processed.
-
-        Chord currentChord = chordPart.getCurrentChord(chordChanges.get(i));
-        
-        if( currentChord != null )
-          {
-          String currentChordName = currentChord.getName();
-  
-          if( chordUsed.contains(currentChordName) )
-            {
-            continue;
-            }
-          else
-            {
-            chordUsed.add(currentChordName);
-            }
-
-        // Add in a label specifing which chord these text boxes correspond to.
-
-        GridBagConstraints labelConstraints = new GridBagConstraints();
-
-        labelConstraints.gridx = 0;
-
-        labelConstraints.gridwidth = 4;
-
-        labelConstraints.gridy = (i * 3);
-
-        labelConstraints.fill = GridBagConstraints.HORIZONTAL;
-
-        labelConstraints.ipadx = 5;
-
-        labelConstraints.insets = new Insets(5, 5, 5, 5);
-
-        labelConstraints.weightx = 1.0;
-
-
-        JLabel label = new JLabel(currentChordName + " probabilities:");
-
-        panel.add(label, labelConstraints);
-
-
-
-        // Create a new array of text boxes and note labels
-
-        JTextField[] prefs = new JTextField[12];
-
-        String[] notes = notate.getNoteLabels(chordChanges.get(i));
-
-        // Since there are twelve chromatic pitches we need to consider,
-        // loop through twelve times.
-
-        for( int j = 0; j < 12; ++j )
-          {
-            // First we need to draw the note labels; set up the drawing constraints
-
-            // for them.  They get added to every other row, just above the text
-
-            // boxes we're about to draw.
-
-            GridBagConstraints lbc = new GridBagConstraints();
-
-            lbc.anchor = GridBagConstraints.CENTER;
-
-            lbc.gridx = j;
-
-            lbc.gridy = (i * 3) + 1;
-
-            lbc.fill = GridBagConstraints.NONE;
-
-            lbc.ipadx = 15;
-
-            lbc.weightx = 1.0;
-
-
-
-            JLabel l = new JLabel(notes[j], JLabel.CENTER);
-
-            panel.add(l, lbc);
-
-
-            // Create the text field and set the value to the old value, if
-            // it exists.
-
-            prefs[j] = new JTextField(1);
-
-            prefs[j].setHorizontalAlignment(javax.swing.JTextField.TRAILING);
-
-            if( oldProbs == null || oldProbs.size() > i )
-              {
-                prefs[j].setText(oldProbs.get(i)[j].getText());
-              }
-            else
-              {
-                prefs[j].setText("1.0");
-              }
-
-             prefs[j].setCaretPosition(0);
-
-
-
-            // Add event listeners to watch this field's input; we
-            // need to make sure that we don't allow bad strings to be
-            // input.
-
-            prefs[j].addActionListener(new java.awt.event.ActionListener()
-            {
-
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-              {
-               verifyProbs();
-              }
-
-            });
-
-            prefs[j].addFocusListener(new java.awt.event.FocusAdapter()
-            {
-
-            public void focusLost(java.awt.event.FocusEvent evt)
-              {
-                verifyProbs();
-              }
-            });
-
-
-            // Add the new box just below its corresponding label.
-
-            GridBagConstraints gbc = new GridBagConstraints();
-
-            gbc.gridx = j;
-
-            gbc.gridy = (i * 3) + 2;
-
-            gbc.fill = GridBagConstraints.NONE;
-
-            gbc.ipadx = 25;
-
-            gbc.weightx = 1.0;
-
-            panel.add(prefs[j], gbc);
-          }
-        lickPrefs.add(prefs);
-      }
-      }
-    
-    JScrollPane sp = new JScrollPane(panel);
-
-    sp.getVerticalScrollBar().setUnitIncrement(10);
-
-    chordProbPanel.add(sp);
-
-    chordProbPanel.setPreferredSize(new Dimension(600, 200));
-
-   // We have to call validate before anything will appear on the screen.
-
-    validate();
-
-    // If we have auto-fill turned on, then calculate the new probabilities
-
-    if( autoFill )
-      {
-        FillProbsButtonActionPerformed(null);
-      }
-    // Otherwise, we need to store the old ones and use those instead, but we need
-    // to make sure that we don't try to write into text fields that aren't there.
-    else
-      {
+    /**
+     * Get the pitch-class probabilities from array of text fields.
+     *
+     * @return pitch-class probabilities
+     */
+    public ArrayList<double[]> readProbs() {
         ArrayList<double[]> probs = new ArrayList<double[]>();
 
-        for( int i = 0; i < lickPrefs.size(); ++i )
-          {
-
+        for (int i = 0; i < lickPrefs.size(); ++i) {
             double[] p = new double[12];
 
-            for( int j = 0; j < 12; ++j )
-              {
-                p[j] = Notate.quietDoubleFromTextField(lickPrefs.get(i)[j], 0.0, Double.POSITIVE_INFINITY, 0.0);
-              }
+            JTextField tf[] = lickPrefs.get(i);
+
+            for (int j = 0; j < tf.length; ++j) {
+                p[j] = Notate.quietDoubleFromTextField(tf[j], 0.0,
+                        Double.POSITIVE_INFINITY, 0.0);
+            }
             probs.add(p);
-          }
-         lickgen.setProbs(probs);
-     
-      }
-     // This causes the frame to be resized, which is annoying: generatorFrame.pack();
-  }
+        }
 
-
-
-/**
- * Set the abstract melody field (formerly called "rhythm" field).
-@param string
- */
-
-public void setRhythmFieldText(String string)
-  {
-    rhythmField.setText(string);
-    rhythmField.setCaretPosition(0);
-    rhythmScrollPane.getViewport().setViewPosition(new Point(0, 0));
-  }
-
-    
-public MelodyPart fillMelody(int beatValue,
-                             Polylist rhythmString, 
-                             ChordPart chordProg,
-                             int start)
-  {
-   //debug System.out.println("LickgenFrame: fillMelody");
-
-    MelodyPart result = lickgen.fillMelody(minPitch, 
-                                           maxPitch, 
-                                           minInterval, 
-                                           maxInterval,
-                                           beatValue, 
-                                           leapProb, 
-                                           rhythmString, 
-                                           chordProg,
-                                           start, 
-                                           avoidRepeats);
-
-    //debug System.out.println("fillMelody returns");
-    return result;
-  }
-
- private void playSelection()
-    {
-    notate.getCurrentStave().playSelection(false, notate.getLoopCount(), PlayScoreCommand.USEDRUMS, "LickGenFrame");
+        return probs;
     }
-public void stopPlaying()
-  {
-  notate.stopPlaying();
-  }
 
-/**
- *Make sure the user has entered acceptable values for each of the other fields
- * in the triage frame.
- */
-
-public void verifyTriageFields()
-  {
-    //notate.toCritic();
-
-    minPitch = notate.intFromTextField(minPitchField, LickGen.MIN_PITCH,
-                                       maxPitch, minPitch);
-
-    maxPitch = notate.intFromTextField(maxPitchField, minPitch,
-                                       LickGen.MAX_PITCH, maxPitch);
-
-    minInterval = notate.intFromTextField(minIntervalField,
-                                          LickGen.MIN_INTERVAL_SIZE, maxInterval,
-                                          minInterval);
-
-    maxInterval = notate.intFromTextField(maxIntervalField, minInterval,
-                                          LickGen.MAX_INTERVAL_SIZE, maxInterval);
-
-    minDuration = notate.intFromTextField(minDurationField, maxDuration,
-                                          LickGen.MIN_NOTE_DURATION, minDuration);
-
-    maxDuration = notate.intFromTextField(maxDurationField,
-                                          LickGen.MAX_NOTE_DURATION, minDuration,
-                                          maxDuration);
-
-    restProb = notate.doubleFromTextField(restProbField, 0.0, 1.0, restProb);
-
-    leapProb = notate.doubleFromTextField(leapProbField, 0.0, 1.0, leapProb);
-
-    chordToneWeight = notate.doubleFromTextField(chordToneWeightField, 0.0,
-                                                 Double.POSITIVE_INFINITY,
-                                                 chordToneWeight);
-
-    scaleToneWeight = notate.doubleFromTextField(scaleToneWeightField, 0.0,
-                                                 Double.POSITIVE_INFINITY,
-                                                 scaleToneWeight);
-
-    colorToneWeight = notate.doubleFromTextField(colorToneWeightField, 0.0,
-                                                 Double.POSITIVE_INFINITY,
-                                                 colorToneWeight);
-
-    chordToneDecayRate = notate.doubleFromTextField(chordToneDecayField, 0.0,
-                                                    Double.POSITIVE_INFINITY,
-                                                    chordToneDecayRate);
-
-    totalBeats = notate.doubleFromTextField(totalBeatsField, 0.0,
-                                            Double.POSITIVE_INFINITY, 0.0);
-    /*
-
-    Integer.parseInt(partBarsTF1.getText()) * score.getMetre()[0] - (getCurrentSelectionStart() / beatValue),
-
-    Math.min(totalBeats, Integer.parseInt(partBarsTF1.getText()) * score.getMetre()[0] - (getCurrentSelectionStart() / beatValue)));
+    /**
+     * Make sure that the values in the probability fields are between 0.0 and
+     * 1.0
      */
-    totalBeats = Math.round(totalBeats);
+    public void verifyProbs() {
 
-    totalSlots = (int) (BEAT * totalBeats);
-
-    notate.getCurrentStave().repaint();
-  }
-
-public void resetTriageParameters(boolean menu)
-  {
-  try
-    {
-    minPitchField.setText(lickgen.getParameter(LickGen.MIN_PITCH_STRING));
-
-    minPitch = Integer.parseInt(lickgen.getParameter(LickGen.MIN_PITCH_STRING));
-
-    maxPitchField.setText(lickgen.getParameter(LickGen.MAX_PITCH_STRING));
-
-    maxPitch = Integer.parseInt(lickgen.getParameter(LickGen.MAX_PITCH_STRING));
-
-    minDurationField.setText(lickgen.getParameter(LickGen.MIN_DURATION));
-
-    minDuration = Integer.parseInt(lickgen.getParameter(LickGen.MIN_DURATION));
-
-    maxDurationField.setText(lickgen.getParameter(LickGen.MAX_DURATION));
-
-    maxDuration = Integer.parseInt(lickgen.getParameter(LickGen.MAX_DURATION));
-
-    minIntervalField.setText(lickgen.getParameter(LickGen.MIN_INTERVAL));
-
-    minInterval = Integer.parseInt(lickgen.getParameter(LickGen.MIN_INTERVAL));
-
-    maxIntervalField.setText(lickgen.getParameter(LickGen.MAX_INTERVAL));
-
-    maxInterval = Integer.parseInt(lickgen.getParameter(LickGen.MAX_INTERVAL));
-
-    restProbField.setText(lickgen.getParameter(LickGen.REST_PROB));
-
-    restProb = Double.parseDouble(lickgen.getParameter(LickGen.REST_PROB));
-
-    leapProbField.setText(lickgen.getParameter(LickGen.LEAP_PROB));
-
-    leapProb = Double.parseDouble(lickgen.getParameter(LickGen.LEAP_PROB));
-
-    chordToneWeightField.setText(lickgen.getParameter(LickGen.CHORD_TONE_WEIGHT));
-
-    chordToneWeight = Double.parseDouble(lickgen.getParameter(
-        LickGen.CHORD_TONE_WEIGHT));
-
-    colorToneWeightField.setText(lickgen.getParameter(LickGen.COLOR_TONE_WEIGHT));
-
-    colorToneWeight = Double.parseDouble(lickgen.getParameter(
-        LickGen.COLOR_TONE_WEIGHT));
-
-    scaleToneWeightField.setText(lickgen.getParameter(LickGen.SCALE_TONE_WEIGHT));
-
-    scaleToneWeight = Double.parseDouble(lickgen.getParameter(
-        LickGen.SCALE_TONE_WEIGHT));
-
-    chordToneDecayField.setText(lickgen.getParameter(LickGen.CHORD_TONE_DECAY));
-
-    chordToneDecayRate = Double.parseDouble(lickgen.getParameter(
-        LickGen.CHORD_TONE_DECAY));
-
-    autoFillCheckBox.setSelected(Boolean.parseBoolean(lickgen.getParameter(
-        LickGen.AUTO_FILL)));
-
-    autoFill = Boolean.parseBoolean(lickgen.getParameter(LickGen.AUTO_FILL));
-
-    rectify = Boolean.parseBoolean(lickgen.getParameter(LickGen.RECTIFY));
-
-    rectifyCheckBox.setSelected(rectify);
-
-    useGrammar = true; // Boolean.parseBoolean(lickgen.getParameter(LickGen.USE_GRAMMAR));
-    
-    useGrammarMI1.setSelected(useGrammar);
-    useGrammarAction();
-
-    avoidRepeats = Boolean.parseBoolean(lickgen.getParameter(
-        LickGen.AVOID_REPEATS));
-
-    if( menu )
-      {
-        int rootIndex = ((DefaultComboBoxModel) rootComboBox.getModel()).getIndexOf(
-            lickgen.getParameter(LickGen.SCALE_ROOT));
-
-        int scaleIndex = ((DefaultComboBoxModel) scaleComboBox.getModel()).getIndexOf(
-            lickgen.getParameter(LickGen.SCALE_TYPE));
-
-        rootComboBox.setSelectedIndex(rootIndex);
-
-        scaleComboBox.setSelectedIndex(scaleIndex);
-
-        lickgen.setPreferredScale(lickgen.getParameter(LickGen.SCALE_ROOT),
-                                  lickgen.getParameter(LickGen.SCALE_TYPE));
-      }
+        for (int i = 0; i < lickPrefs.size(); ++i) {
+            JTextField tf[] = lickPrefs.get(i);
+            for (int j = 0; j < tf.length; ++j) {
+                Notate.doubleFromTextField(tf[j], 0.0,
+                        Double.POSITIVE_INFINITY, 1.0);
+            }
+        }
     }
-  catch( Exception e )
-    {
-      
+
+    /**
+     * Redraw the triage frame based on where we are and how much of the current
+     * chord progression we're examining.
+     */
+    public void redrawTriage() {
+        lickSavedLabel.setText("");
+
+        chordProbPanel.removeAll();
+
+        GridBagLayout gbl = new GridBagLayout();
+
+        JPanel panel = new JPanel(gbl);
+
+        // We need to keep track of both the chords we've already looked at
+        // and the old probability values.
+
+        ArrayList<String> chordUsed = new ArrayList<String>();
+
+        ArrayList<JTextField[]> oldProbs = (ArrayList<JTextField[]>) lickPrefs.clone();
+
+
+        int start = notate.getCurrentSelectionStart();
+
+        if (start == -1) {
+            return;
+        }
+
+        int end = notate.getCurrentSelectionEnd(); // start + notate.getTotalSlots();
+
+
+        // Add the locations of every chord change in the section that we're
+        // examining.
+
+        ChordPart chordPart = notate.getChordProg();
+
+        ArrayList<Integer> chordChanges = new ArrayList<Integer>();
+
+        chordChanges.add(start);
+
+
+        int next = chordPart.getNextUniqueChordIndex(start);
+
+        while (next < end && next != -1) {
+            chordChanges.add(next);
+
+            next = chordPart.getNextUniqueChordIndex(next);
+        }
+
+        // Clear out the old values.
+
+        lickPrefs.clear();
+
+
+        // Loop through every chord
+
+        int numChords = chordChanges.size();
+
+        for (int i = 0; i < numChords; ++i) {
+
+            // If we've added stuff for this chord already, move on; otherwise,
+
+            // add it to the list of chords that we've processed.
+
+            Chord currentChord = chordPart.getCurrentChord(chordChanges.get(i));
+
+            if (currentChord != null) {
+                String currentChordName = currentChord.getName();
+
+                if (chordUsed.contains(currentChordName)) {
+                    continue;
+                } else {
+                    chordUsed.add(currentChordName);
+                }
+
+                // Add in a label specifing which chord these text boxes correspond to.
+
+                GridBagConstraints labelConstraints = new GridBagConstraints();
+
+                labelConstraints.gridx = 0;
+
+                labelConstraints.gridwidth = 4;
+
+                labelConstraints.gridy = (i * 3);
+
+                labelConstraints.fill = GridBagConstraints.HORIZONTAL;
+
+                labelConstraints.ipadx = 5;
+
+                labelConstraints.insets = new Insets(5, 5, 5, 5);
+
+                labelConstraints.weightx = 1.0;
+
+
+                JLabel label = new JLabel(currentChordName + " probabilities:");
+
+                panel.add(label, labelConstraints);
+
+
+
+                // Create a new array of text boxes and note labels
+
+                JTextField[] prefs = new JTextField[12];
+
+                String[] notes = notate.getNoteLabels(chordChanges.get(i));
+
+                // Since there are twelve chromatic pitches we need to consider,
+                // loop through twelve times.
+
+                for (int j = 0; j < 12; ++j) {
+                    // First we need to draw the note labels; set up the drawing constraints
+
+                    // for them.  They get added to every other row, just above the text
+
+                    // boxes we're about to draw.
+
+                    GridBagConstraints lbc = new GridBagConstraints();
+
+                    lbc.anchor = GridBagConstraints.CENTER;
+
+                    lbc.gridx = j;
+
+                    lbc.gridy = (i * 3) + 1;
+
+                    lbc.fill = GridBagConstraints.NONE;
+
+                    lbc.ipadx = 15;
+
+                    lbc.weightx = 1.0;
+
+
+
+                    JLabel l = new JLabel(notes[j], JLabel.CENTER);
+
+                    panel.add(l, lbc);
+
+
+                    // Create the text field and set the value to the old value, if
+                    // it exists.
+
+                    prefs[j] = new JTextField(1);
+
+                    prefs[j].setHorizontalAlignment(javax.swing.JTextField.TRAILING);
+
+                    if (oldProbs == null || oldProbs.size() > i) {
+                        prefs[j].setText(oldProbs.get(i)[j].getText());
+                    } else {
+                        prefs[j].setText("1.0");
+                    }
+
+                    prefs[j].setCaretPosition(0);
+
+
+
+                    // Add event listeners to watch this field's input; we
+                    // need to make sure that we don't allow bad strings to be
+                    // input.
+
+                    prefs[j].addActionListener(new java.awt.event.ActionListener() {
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                            verifyProbs();
+                        }
+                    });
+
+                    prefs[j].addFocusListener(new java.awt.event.FocusAdapter() {
+                        public void focusLost(java.awt.event.FocusEvent evt) {
+                            verifyProbs();
+                        }
+                    });
+
+
+                    // Add the new box just below its corresponding label.
+
+                    GridBagConstraints gbc = new GridBagConstraints();
+
+                    gbc.gridx = j;
+
+                    gbc.gridy = (i * 3) + 2;
+
+                    gbc.fill = GridBagConstraints.NONE;
+
+                    gbc.ipadx = 25;
+
+                    gbc.weightx = 1.0;
+
+                    panel.add(prefs[j], gbc);
+                }
+                lickPrefs.add(prefs);
+            }
+        }
+
+        JScrollPane sp = new JScrollPane(panel);
+
+        sp.getVerticalScrollBar().setUnitIncrement(10);
+
+        chordProbPanel.add(sp);
+
+        chordProbPanel.setPreferredSize(new Dimension(600, 200));
+
+        // We have to call validate before anything will appear on the screen.
+
+        validate();
+
+        // If we have auto-fill turned on, then calculate the new probabilities
+
+        if (autoFill) {
+            FillProbsButtonActionPerformed(null);
+        } // Otherwise, we need to store the old ones and use those instead, but we need
+        // to make sure that we don't try to write into text fields that aren't there.
+        else {
+            ArrayList<double[]> probs = new ArrayList<double[]>();
+
+            for (int i = 0; i < lickPrefs.size(); ++i) {
+
+                double[] p = new double[12];
+
+                for (int j = 0; j < 12; ++j) {
+                    p[j] = Notate.quietDoubleFromTextField(lickPrefs.get(i)[j], 0.0, Double.POSITIVE_INFINITY, 0.0);
+                }
+                probs.add(p);
+            }
+            lickgen.setProbs(probs);
+
+        }
+        // This causes the frame to be resized, which is annoying: generatorFrame.pack();
     }
-  }
 
-/**
- * Builds an association list with all of the parameters of the grammar.
- * On saving a file, additional parameters may be added within Lickgen.
- */
-
- 
-public void saveTriageParameters()
-  {
-    lickgen.clearParams();
-
-    lickgen.setParameter(LickGen.MIN_PITCH_STRING, minPitch);
-
-    lickgen.setParameter(LickGen.MAX_PITCH_STRING, maxPitch);
-
-    lickgen.setParameter(LickGen.MIN_DURATION, minDuration);
-
-    lickgen.setParameter(LickGen.MAX_DURATION, maxDuration);
-
-    lickgen.setParameter(LickGen.MIN_INTERVAL, minInterval);
-
-    lickgen.setParameter(LickGen.MAX_INTERVAL, maxInterval);
-
-    lickgen.setParameter(LickGen.REST_PROB, restProb);
-
-    lickgen.setParameter(LickGen.LEAP_PROB, leapProb);
-
-    lickgen.setParameter(LickGen.CHORD_TONE_WEIGHT, chordToneWeight);
-
-    lickgen.setParameter(LickGen.COLOR_TONE_WEIGHT, colorToneWeight);
-
-    lickgen.setParameter(LickGen.SCALE_TONE_WEIGHT, scaleToneWeight);
-
-    lickgen.setParameter(LickGen.CHORD_TONE_DECAY, chordToneDecayRate);
-
-    lickgen.setParameter(LickGen.AUTO_FILL, autoFill);
-
-    lickgen.setParameter(LickGen.RECTIFY, rectifyCheckBox.isSelected());
-    
-    lickgen.setParameter(LickGen.USE_GRAMMAR, useGrammar);
-
-    lickgen.setParameter(LickGen.AVOID_REPEATS, avoidRepeats);
-
-    lickgen.setParameter(LickGen.SCALE_ROOT, rootComboBox.getSelectedItem());
-
-    lickgen.setParameter(LickGen.SCALE_TYPE, scaleComboBox.getSelectedItem());
-    
-    // These should not have to go to Lickgen to set stuff back in Lickgen,
-    // but it's convenient to do it this way for now.
-    
-    lickgen.setParameter(LickGen.USE_SYNCOPATION, lickgen.getUseSyncopation());
-    
-    lickgen.setParameter(LickGen.SYNCOPATION_TYPE, lickgen.getSyncopationType());
-    
-    lickgen.setParameter(LickGen.SYNCOPATION_MULTIPLIER, lickgen.getSyncopationMultiplier());
-    
-    lickgen.setParameter(LickGen.SYNCOPATION_CONSTANT, lickgen.getSyncopationConstant());
-    
-    lickgen.setParameter(LickGen.EXPECTANCY_MULTIPLIER, lickgen.getExpectancyMultiplier());
-    
-    lickgen.setParameter(LickGen.EXPECTANCY_CONSTANT, lickgen.getExpectancyConstant());
-  }
-
-public void verifyAndFill()
-  {
-  verifyTriageFields();
-
-  if( autoFill )
-    {
-    FillProbsButtonActionPerformed(null);
+    /**
+     * Set the abstract melody field (formerly called "rhythm" field).
+     *
+     * @param string
+     */
+    public void setRhythmFieldText(String string) {
+        rhythmField.setText(string);
+        rhythmField.setCaretPosition(0);
+        rhythmScrollPane.getViewport().setViewPosition(new Point(0, 0));
     }
-  }
 
-private void triageAndGenerate(int number)
-{
-    triageLick(saveLickTF.getText(), number);
-    if (continuallyGenerate)
-    {
-       generateLickButtonActionPerformed(null);
+    public MelodyPart fillMelody(int beatValue,
+            Polylist rhythmString,
+            ChordPart chordProg,
+            int start) {
+        //debug System.out.println("LickgenFrame: fillMelody");
+
+        MelodyPart result = lickgen.fillMelody(minPitch,
+                maxPitch,
+                minInterval,
+                maxInterval,
+                beatValue,
+                leapProb,
+                rhythmString,
+                chordProg,
+                start,
+                avoidRepeats);
+
+        //debug System.out.println("fillMelody returns");
+        return result;
     }
-}
+
+    private void playSelection() {
+        notate.getCurrentStave().playSelection(false, notate.getLoopCount(), PlayScoreCommand.USEDRUMS, "LickGenFrame");
+    }
+
+    public void stopPlaying() {
+        notate.stopPlaying();
+    }
+
+    /**
+     * Make sure the user has entered acceptable values for each of the other
+     * fields in the triage frame.
+     */
+    public void verifyTriageFields() {
+        //notate.toCritic();
+
+        minPitch = notate.intFromTextField(minPitchField, LickGen.MIN_PITCH,
+                maxPitch, minPitch);
+
+        maxPitch = notate.intFromTextField(maxPitchField, minPitch,
+                LickGen.MAX_PITCH, maxPitch);
+
+        minInterval = notate.intFromTextField(minIntervalField,
+                LickGen.MIN_INTERVAL_SIZE, maxInterval,
+                minInterval);
+
+        maxInterval = notate.intFromTextField(maxIntervalField, minInterval,
+                LickGen.MAX_INTERVAL_SIZE, maxInterval);
+
+        minDuration = notate.intFromTextField(minDurationField, maxDuration,
+                LickGen.MIN_NOTE_DURATION, minDuration);
+
+        maxDuration = notate.intFromTextField(maxDurationField,
+                LickGen.MAX_NOTE_DURATION, minDuration,
+                maxDuration);
+
+        restProb = notate.doubleFromTextField(restProbField, 0.0, 1.0, restProb);
+
+        leapProb = notate.doubleFromTextField(leapProbField, 0.0, 1.0, leapProb);
+
+        chordToneWeight = notate.doubleFromTextField(chordToneWeightField, 0.0,
+                Double.POSITIVE_INFINITY,
+                chordToneWeight);
+
+        scaleToneWeight = notate.doubleFromTextField(scaleToneWeightField, 0.0,
+                Double.POSITIVE_INFINITY,
+                scaleToneWeight);
+
+        colorToneWeight = notate.doubleFromTextField(colorToneWeightField, 0.0,
+                Double.POSITIVE_INFINITY,
+                colorToneWeight);
+
+        chordToneDecayRate = notate.doubleFromTextField(chordToneDecayField, 0.0,
+                Double.POSITIVE_INFINITY,
+                chordToneDecayRate);
+
+        totalBeats = notate.doubleFromTextField(totalBeatsField, 0.0,
+                Double.POSITIVE_INFINITY, 0.0);
+        /*
+
+         Integer.parseInt(partBarsTF1.getText()) * score.getMetre()[0] - (getCurrentSelectionStart() / beatValue),
+
+         Math.min(totalBeats, Integer.parseInt(partBarsTF1.getText()) * score.getMetre()[0] - (getCurrentSelectionStart() / beatValue)));
+         */
+        totalBeats = Math.round(totalBeats);
+
+        totalSlots = (int) (BEAT * totalBeats);
+
+        notate.getCurrentStave().repaint();
+    }
+
+    public void resetTriageParameters(boolean menu) {
+        try {
+            minPitchField.setText(lickgen.getParameter(LickGen.MIN_PITCH_STRING));
+
+            minPitch = Integer.parseInt(lickgen.getParameter(LickGen.MIN_PITCH_STRING));
+
+            maxPitchField.setText(lickgen.getParameter(LickGen.MAX_PITCH_STRING));
+
+            maxPitch = Integer.parseInt(lickgen.getParameter(LickGen.MAX_PITCH_STRING));
+
+            minDurationField.setText(lickgen.getParameter(LickGen.MIN_DURATION));
+
+            minDuration = Integer.parseInt(lickgen.getParameter(LickGen.MIN_DURATION));
+
+            maxDurationField.setText(lickgen.getParameter(LickGen.MAX_DURATION));
+
+            maxDuration = Integer.parseInt(lickgen.getParameter(LickGen.MAX_DURATION));
+
+            minIntervalField.setText(lickgen.getParameter(LickGen.MIN_INTERVAL));
+
+            minInterval = Integer.parseInt(lickgen.getParameter(LickGen.MIN_INTERVAL));
+
+            maxIntervalField.setText(lickgen.getParameter(LickGen.MAX_INTERVAL));
+
+            maxInterval = Integer.parseInt(lickgen.getParameter(LickGen.MAX_INTERVAL));
+
+            restProbField.setText(lickgen.getParameter(LickGen.REST_PROB));
+
+            restProb = Double.parseDouble(lickgen.getParameter(LickGen.REST_PROB));
+
+            leapProbField.setText(lickgen.getParameter(LickGen.LEAP_PROB));
+
+            leapProb = Double.parseDouble(lickgen.getParameter(LickGen.LEAP_PROB));
+
+            chordToneWeightField.setText(lickgen.getParameter(LickGen.CHORD_TONE_WEIGHT));
+
+            chordToneWeight = Double.parseDouble(lickgen.getParameter(
+                    LickGen.CHORD_TONE_WEIGHT));
+
+            colorToneWeightField.setText(lickgen.getParameter(LickGen.COLOR_TONE_WEIGHT));
+
+            colorToneWeight = Double.parseDouble(lickgen.getParameter(
+                    LickGen.COLOR_TONE_WEIGHT));
+
+            scaleToneWeightField.setText(lickgen.getParameter(LickGen.SCALE_TONE_WEIGHT));
+
+            scaleToneWeight = Double.parseDouble(lickgen.getParameter(
+                    LickGen.SCALE_TONE_WEIGHT));
+
+            chordToneDecayField.setText(lickgen.getParameter(LickGen.CHORD_TONE_DECAY));
+
+            chordToneDecayRate = Double.parseDouble(lickgen.getParameter(
+                    LickGen.CHORD_TONE_DECAY));
+
+            autoFillCheckBox.setSelected(Boolean.parseBoolean(lickgen.getParameter(
+                    LickGen.AUTO_FILL)));
+
+            autoFill = Boolean.parseBoolean(lickgen.getParameter(LickGen.AUTO_FILL));
+
+            rectify = Boolean.parseBoolean(lickgen.getParameter(LickGen.RECTIFY));
+
+            rectifyCheckBox.setSelected(rectify);
+
+            useGrammar = true; // Boolean.parseBoolean(lickgen.getParameter(LickGen.USE_GRAMMAR));
+
+            useGrammarMI1.setSelected(useGrammar);
+            useGrammarAction();
+
+            avoidRepeats = Boolean.parseBoolean(lickgen.getParameter(
+                    LickGen.AVOID_REPEATS));
+
+            if (menu) {
+                int rootIndex = ((DefaultComboBoxModel) rootComboBox.getModel()).getIndexOf(
+                        lickgen.getParameter(LickGen.SCALE_ROOT));
+
+                int scaleIndex = ((DefaultComboBoxModel) scaleComboBox.getModel()).getIndexOf(
+                        lickgen.getParameter(LickGen.SCALE_TYPE));
+
+                rootComboBox.setSelectedIndex(rootIndex);
+
+                scaleComboBox.setSelectedIndex(scaleIndex);
+
+                lickgen.setPreferredScale(lickgen.getParameter(LickGen.SCALE_ROOT),
+                        lickgen.getParameter(LickGen.SCALE_TYPE));
+            }
+        } catch (Exception e) {
+        }
+    }
+
+    /**
+     * Builds an association list with all of the parameters of the grammar. On
+     * saving a file, additional parameters may be added within Lickgen.
+     */
+    public void saveTriageParameters() {
+        lickgen.clearParams();
+
+        lickgen.setParameter(LickGen.MIN_PITCH_STRING, minPitch);
+
+        lickgen.setParameter(LickGen.MAX_PITCH_STRING, maxPitch);
+
+        lickgen.setParameter(LickGen.MIN_DURATION, minDuration);
+
+        lickgen.setParameter(LickGen.MAX_DURATION, maxDuration);
+
+        lickgen.setParameter(LickGen.MIN_INTERVAL, minInterval);
+
+        lickgen.setParameter(LickGen.MAX_INTERVAL, maxInterval);
+
+        lickgen.setParameter(LickGen.REST_PROB, restProb);
+
+        lickgen.setParameter(LickGen.LEAP_PROB, leapProb);
+
+        lickgen.setParameter(LickGen.CHORD_TONE_WEIGHT, chordToneWeight);
+
+        lickgen.setParameter(LickGen.COLOR_TONE_WEIGHT, colorToneWeight);
+
+        lickgen.setParameter(LickGen.SCALE_TONE_WEIGHT, scaleToneWeight);
+
+        lickgen.setParameter(LickGen.CHORD_TONE_DECAY, chordToneDecayRate);
+
+        lickgen.setParameter(LickGen.AUTO_FILL, autoFill);
+
+        lickgen.setParameter(LickGen.RECTIFY, rectifyCheckBox.isSelected());
+
+        lickgen.setParameter(LickGen.USE_GRAMMAR, useGrammar);
+
+        lickgen.setParameter(LickGen.AVOID_REPEATS, avoidRepeats);
+
+        lickgen.setParameter(LickGen.SCALE_ROOT, rootComboBox.getSelectedItem());
+
+        lickgen.setParameter(LickGen.SCALE_TYPE, scaleComboBox.getSelectedItem());
+
+        // These should not have to go to Lickgen to set stuff back in Lickgen,
+        // but it's convenient to do it this way for now.
+
+        lickgen.setParameter(LickGen.USE_SYNCOPATION, lickgen.getUseSyncopation());
+
+        lickgen.setParameter(LickGen.SYNCOPATION_TYPE, lickgen.getSyncopationType());
+
+        lickgen.setParameter(LickGen.SYNCOPATION_MULTIPLIER, lickgen.getSyncopationMultiplier());
+
+        lickgen.setParameter(LickGen.SYNCOPATION_CONSTANT, lickgen.getSyncopationConstant());
+
+        lickgen.setParameter(LickGen.EXPECTANCY_MULTIPLIER, lickgen.getExpectancyMultiplier());
+
+        lickgen.setParameter(LickGen.EXPECTANCY_CONSTANT, lickgen.getExpectancyConstant());
+    }
+
+    public void verifyAndFill() {
+        verifyTriageFields();
+
+        if (autoFill) {
+            FillProbsButtonActionPerformed(null);
+        }
+    }
+
+    private void triageAndGenerate(int number) {
+        triageLick(saveLickTF.getText(), number);
+        if (continuallyGenerate) {
+            generateLickButtonActionPerformed(null);
+        }
+    }
                         private void openGrammarMI1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openGrammarMI1ActionPerformed
                             notate.openGrammar();
                         }//GEN-LAST:event_openGrammarMI1ActionPerformed
@@ -3683,61 +3594,58 @@ private void triageAndGenerate(int number)
                         private void closeWindowMI2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeWindowMI2ActionPerformed
                             closeWindow();
                         }//GEN-LAST:event_closeWindowMI2ActionPerformed
-public void closeWindow()
-  {
-  this.setVisible(false);
-  
-  // Used to prevent the improvise button from using the critic filter
-  // since the Improvise button uses the same lick generation method.
-  useCriticCheckBox.setSelected(false);
-  criticGrade = DEFAULT_GRADE; // Reset default grade
-  useCriticCheckBoxMouseClicked(null);
-  
-  WindowRegistry.unregisterWindow(this);
-  }
+    public void closeWindow() {
+        this.setVisible(false);
 
-private void useGrammarAction()
-  {
-    useGrammar = useGrammarMI1.isSelected();
+        // Used to prevent the improvise button from using the critic filter
+        // since the Improvise button uses the same lick generation method.
+        useCriticCheckBox.setSelected(false);
+        criticGrade = DEFAULT_GRADE; // Reset default grade
+        useCriticCheckBoxMouseClicked(null);
 
-    fillMelodyButton.setEnabled(useGrammar);
+        WindowRegistry.unregisterWindow(this);
+    }
 
-    genRhythmButton.setEnabled(useGrammar);
+    private void useGrammarAction() {
+        useGrammar = useGrammarMI1.isSelected();
 
-    minDurationField.setEnabled(!useGrammar);
+        fillMelodyButton.setEnabled(useGrammar);
 
-    maxDurationField.setEnabled(!useGrammar);
+        genRhythmButton.setEnabled(useGrammar);
 
-    restProbField.setEnabled(!useGrammar);
-  }
+        minDurationField.setEnabled(!useGrammar);
 
-public boolean getUseGrammar()
-  {
-    
-    //System.out.println("useGrammar = " + useGrammar);
-    return useGrammar;
-  }
+        maxDurationField.setEnabled(!useGrammar);
+
+        restProbField.setEnabled(!useGrammar);
+    }
+
+    public boolean getUseGrammar() {
+
+        //System.out.println("useGrammar = " + useGrammar);
+        return useGrammar;
+    }
 
                         private void cascadeMI2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cascadeMI2ActionPerformed
-                                    WindowRegistry.cascadeWindows(this);
+                            WindowRegistry.cascadeWindows(this);
                         }//GEN-LAST:event_cascadeMI2ActionPerformed
 
                         private void generatorWindowMenu1MenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_generatorWindowMenu1MenuSelected
 
-    generatorWindowMenu1.removeAll();
+                            generatorWindowMenu1.removeAll();
 
-        generatorWindowMenu1.add(closeWindowMI2);
+                            generatorWindowMenu1.add(closeWindowMI2);
 
-        generatorWindowMenu1.add(cascadeMI2);
+                            generatorWindowMenu1.add(cascadeMI2);
 
-        generatorWindowMenu1.add(windowMenuSeparator2);
+                            generatorWindowMenu1.add(windowMenuSeparator2);
 
-        for(WindowMenuItem w : WindowRegistry.getWindows()) {
+                            for (WindowMenuItem w : WindowRegistry.getWindows()) {
 
-            generatorWindowMenu1.add(w.getMI(this));      // these are static, and calling getMI updates the name on them too in case the window title changed
-        }
+                                generatorWindowMenu1.add(w.getMI(this));      // these are static, and calling getMI updates the name on them too in case the window title changed
+                            }
 
-        generatorWindowMenu1.repaint();
+                            generatorWindowMenu1.repaint();
 
                         }//GEN-LAST:event_generatorWindowMenu1MenuSelected
 
@@ -3751,8 +3659,9 @@ public boolean getUseGrammar()
         openDialog.setFileFilter(filter);
         openDialog.setDialogType(JFileChooser.OPEN_DIALOG);
 
-        if(openDialog.showDialog(this, "Open") != JFileChooser.APPROVE_OPTION)
-        return;
+        if (openDialog.showDialog(this, "Open") != JFileChooser.APPROVE_OPTION) {
+            return;
+        }
 
         File file = openDialog.getSelectedFile();
         weightFileTextField.setText(file.getName());
@@ -3762,8 +3671,7 @@ public boolean getUseGrammar()
         int row = layerDataTable.getSelectedRow();
         DefaultTableModel model = (DefaultTableModel) layerDataTable.getModel();
         if (row != layerDataTable.getRowCount() - 1 && row != - 1
-            && row != layerDataTable.getRowCount() - 2)
-        {
+                && row != layerDataTable.getRowCount() - 2) {
             model.moveRow(row, row, row + 1);
 
             // Update index values
@@ -3778,8 +3686,7 @@ public boolean getUseGrammar()
     private void moveLayerUpTableButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_moveLayerUpTableButtonActionPerformed
         int row = layerDataTable.getSelectedRow();
         DefaultTableModel model = (DefaultTableModel) layerDataTable.getModel();
-        if (row != 0 && row != - 1 && row != layerDataTable.getRowCount() - 1)
-        {
+        if (row != 0 && row != - 1 && row != layerDataTable.getRowCount() - 1) {
             model.moveRow(row, row, row - 1);
 
             // Update index values
@@ -3792,33 +3699,27 @@ public boolean getUseGrammar()
     }//GEN-LAST:event_moveLayerUpTableButtonActionPerformed
 
     private void removeLayerFromTableButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeLayerFromTableButtonActionPerformed
-        if (layerDataTable.getRowCount() <= 2)
-        {
+        if (layerDataTable.getRowCount() <= 2) {
             JOptionPane.showMessageDialog(null,
-                new JLabel("<html><div style=\"text-align: center;\">"
+                    new JLabel("<html><div style=\"text-align: center;\">"
                     + "Must have at least two layers for network."),
-                "Alert", JOptionPane.PLAIN_MESSAGE);
-        }
-        else
-        {
+                    "Alert", JOptionPane.PLAIN_MESSAGE);
+        } else {
             int[] indices = layerDataTable.getSelectedRows();
             int lastIndex = layerDataTable.getRowCount() - 1;
-            if (indices.length > layerDataTable.getRowCount() - 2)
-            {
+            if (indices.length > layerDataTable.getRowCount() - 2) {
                 JOptionPane.showMessageDialog(null,
-                    new JLabel("<html><div style=\"text-align: center;\">"
+                        new JLabel("<html><div style=\"text-align: center;\">"
                         + "Selected too many layers for deletion,<br/>"
                         + "must have at least two layers for network."),
-                    "Alert", JOptionPane.PLAIN_MESSAGE);
-            }
-            else if (indices.length != 0)
-            {
+                        "Alert", JOptionPane.PLAIN_MESSAGE);
+            } else if (indices.length != 0) {
                 DefaultTableModel model = (DefaultTableModel) layerDataTable.getModel();
-                for (int i = indices.length - 1; i >= 0; i--)
-                {
+                for (int i = indices.length - 1; i >= 0; i--) {
                     int index = indices[i];
-                    if (index != lastIndex)
-                    model.removeRow(index);
+                    if (index != lastIndex) {
+                        model.removeRow(index);
+                    }
                     model.fireTableRowsDeleted(index, index);
                 }
 
@@ -3844,9 +3745,8 @@ public boolean getUseGrammar()
         numberOfLayersTextField.setText(String.valueOf(layerDataTable.getRowCount()));
 
         // Move row up to insert it below currently selected.
-        if (index != -1 && index != layerDataTable.getRowCount() - 2)
-        {
-            model.moveRow(nextIndex -1 , nextIndex - 1, index + 1);
+        if (index != -1 && index != layerDataTable.getRowCount() - 2) {
+            model.moveRow(nextIndex - 1, nextIndex - 1, index + 1);
 
             // Update index values
             resetIndexColumn(model);
@@ -3863,15 +3763,17 @@ public boolean getUseGrammar()
         openDialog.setFileFilter(filter);
         openDialog.setDialogType(JFileChooser.OPEN_DIALOG);
 
-        if(openDialog.showDialog(this, "Open") != JFileChooser.APPROVE_OPTION)
-        return;
+        if (openDialog.showDialog(this, "Open") != JFileChooser.APPROVE_OPTION) {
+            return;
+        }
 
         File file = openDialog.getSelectedFile();
         trainingFileTextField.setText(file.getAbsolutePath());
         String fileName = file.getName();
         int pos = fileName.lastIndexOf(".training.data");
-        if (pos > 0)
-        fileName = fileName.substring(0, pos);
+        if (pos > 0) {
+            fileName = fileName.substring(0, pos);
+        }
         weightFileTextField.setText(fileName + ".weights.save");
     }//GEN-LAST:event_trainingFileButtonActionPerformed
 
@@ -3893,8 +3795,8 @@ public boolean getUseGrammar()
 
         DefaultTableModel model = (DefaultTableModel) layerDataTable.getModel();
         model.setRowCount(0);
-        model.addRow(new Object[]{new Integer(1),  new Integer(64), "Logsig"});
-        model.addRow(new Object[]{new Integer(2),  new Integer(1), "Logsig"});
+        model.addRow(new Object[]{new Integer(1), new Integer(64), "Logsig"});
+        model.addRow(new Object[]{new Integer(2), new Integer(1), "Logsig"});
         numberOfLayersTextField.setText("2");
 
     }//GEN-LAST:event_resetDefaultValuesButtonActionPerformed
@@ -3903,110 +3805,95 @@ public boolean getUseGrammar()
         nnetOutputTextField.setCaretPosition(0);
         nnetScrollPane.getVerticalScrollBar().setValue(0);
         nnetOutputTextField.setText("To generate a weight file:\n"
-            + "-Select training file (File name will end with \".training.data\")\n"
-            + "-Weight file name with automatically be set\n"
-            + "--Weight file will save to personal settings folder, in vocab\n"
-            + "-Change the epoch limit if desired\n"
-            + "-Change the default learning rate if desired\n"
-            + "-Change the default MSE goal if desired\n"
-            + "-Change the default mode if desired\n"
-            + "-In the table to the right:\n"
-            + "--Set the layer size for each layer\n"
-            + "---Input (first) layer size determinted at runtime from input size\n"
-            + "---The last layer, for output, should be of size 1\n"
-            + "--Set the function for each layer\n"
-            + "--Reorder rows as desired. Empty rows will be ignored.\n"
-            + "-Press \"Generate Weight File\"\n\nTo load network:\n"
-            + "-Select the weight file, from the vocab folder, under \"Weight File\"\n"
-            + "-Press \"Load Weight\"\n-Network will be initialized per leadsheet\n\n"
-            + "To clear a weight file:\n-Select the weight file, from the vocab folder, "
-            + "under \"Weight File\"\n-Press \"Clear Weight File\""
-            + "\n\n***There is a sample weight file in impro-visor-version-X.xx-files/vocab\n"
-            + "   for general use. The licks used to create it were subjectively graded,\n"
-            + "   and therefore may not reflect the preferences of the user.");
+                + "-Select training file (File name will end with \".training.data\")\n"
+                + "-Weight file name with automatically be set\n"
+                + "--Weight file will save to personal settings folder, in vocab\n"
+                + "-Change the epoch limit if desired\n"
+                + "-Change the default learning rate if desired\n"
+                + "-Change the default MSE goal if desired\n"
+                + "-Change the default mode if desired\n"
+                + "-In the table to the right:\n"
+                + "--Set the layer size for each layer\n"
+                + "---Input (first) layer size determinted at runtime from input size\n"
+                + "---The last layer, for output, should be of size 1\n"
+                + "--Set the function for each layer\n"
+                + "--Reorder rows as desired. Empty rows will be ignored.\n"
+                + "-Press \"Generate Weight File\"\n\nTo load network:\n"
+                + "-Select the weight file, from the vocab folder, under \"Weight File\"\n"
+                + "-Press \"Load Weight\"\n-Network will be initialized per leadsheet\n\n"
+                + "To clear a weight file:\n-Select the weight file, from the vocab folder, "
+                + "under \"Weight File\"\n-Press \"Clear Weight File\""
+                + "\n\n***There is a sample weight file in impro-visor-version-X.xx-files/vocab\n"
+                + "   for general use. The licks used to create it were subjectively graded,\n"
+                + "   and therefore may not reflect the preferences of the user.");
     }//GEN-LAST:event_resetNnetInstructionsButtonActionPerformed
 
     private void loadWeightFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadWeightFileButtonActionPerformed
         // Attempt to initialize the network if it hasn't been initialize
-        if (critic.getNetwork() == null)
-        {
-            try
-            {
+        if (critic.getNetwork() == null) {
+            try {
                 StringBuilder weightOutput =
-                critic.prepareNetwork(weightFileTextField.getText());
+                        critic.prepareNetwork(weightFileTextField.getText());
 
                 nnetOutputTextField.setText(weightOutput.toString());
                 nnetOutputTextField.setCaretPosition(0);
                 nnetScrollPane.getVerticalScrollBar().setValue(0);
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 JOptionPane.showMessageDialog(null,
-                    new JLabel("<html><div style=\"text-align: center;\">"
+                        new JLabel("<html><div style=\"text-align: center;\">"
                         + "Missing the weight file, <br/>"
                         + "need to train the network offline first<br/>"
                         + "and generate a weight file.<br/>"
                         + "Then enter the name of the file <br/>"
                         + "in the \"Weight File\" text field."),
-                    "Alert", JOptionPane.PLAIN_MESSAGE);
+                        "Alert", JOptionPane.PLAIN_MESSAGE);
             }
         }
 
-        if (critic.getNetwork() != null && soloCorrectionPanel.isVisible())
-        {
+        if (critic.getNetwork() != null && soloCorrectionPanel.isVisible()) {
             JOptionPane.showMessageDialog(null,
-                new JLabel("<html><div style=\"text-align: center;\">"
+                    new JLabel("<html><div style=\"text-align: center;\">"
                     + "Network already initialized.<br/>"
                     + "Reset the network to load a new weight file."),
-                "Alert", JOptionPane.PLAIN_MESSAGE);
+                    "Alert", JOptionPane.PLAIN_MESSAGE);
         }
 
         // If the network has been initialized, allow for critic use
-        if (critic.getNetwork() != null)
-        {
+        if (critic.getNetwork() != null) {
             soloCorrectionPanel.setVisible(true);
         }
     }//GEN-LAST:event_loadWeightFileButtonActionPerformed
 
     private void clearWeightFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearWeightFileButtonActionPerformed
-        if (!weightFileTextField.getText().isEmpty())
-        {
-            try
-            {
+        if (!weightFileTextField.getText().isEmpty()) {
+            try {
                 String text = weightFileTextField.getText();
-                if (text.endsWith(".weights.save"))
-                {
+                if (text.endsWith(".weights.save")) {
                     File file = new File(ImproVisor.getVocabDirectory(), text);
-                    if (file.exists())
-                    file.delete();
-                }
-                else
-                {
+                    if (file.exists()) {
+                        file.delete();
+                    }
+                } else {
                     JOptionPane.showMessageDialog(null,
-                        new JLabel("<html><div style=\"text-align: center;\">"
+                            new JLabel("<html><div style=\"text-align: center;\">"
                             + "Attempting to delete a file<br/>"
                             + "that is not a weight file."),
-                        "Alert", JOptionPane.PLAIN_MESSAGE);
+                            "Alert", JOptionPane.PLAIN_MESSAGE);
                 }
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 // File won't exist
             }
         }
     }//GEN-LAST:event_clearWeightFileButtonActionPerformed
 
     private void getNetworkStatsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getNetworkStatsButtonActionPerformed
-        if (critic.getNetwork() == null)
-        {
+        if (critic.getNetwork() == null) {
             JOptionPane.showMessageDialog(null,
-                new JLabel("<html><div style=\"text-align: center;\">"
+                    new JLabel("<html><div style=\"text-align: center;\">"
                     + "Network not initialized,<br/>"
                     + "need to load the weights file."),
-                "Alert", JOptionPane.PLAIN_MESSAGE);
-        }
-        else
-        {
+                    "Alert", JOptionPane.PLAIN_MESSAGE);
+        } else {
             StringBuilder statOutput = critic.getNetwork().getStatistics();
             nnetOutputTextField.setCaretPosition(0);
             nnetScrollPane.getVerticalScrollBar().setValue(0);
@@ -4020,10 +3907,8 @@ public boolean getUseGrammar()
         ArrayList<Object[]> data = new ArrayList<Object[]>();
         boolean incompleteRows = false;
 
-        for (int i = 0; i < numRows ; i++)
-        {
-            try
-            {
+        for (int i = 0; i < numRows; i++) {
+            try {
                 int size = (Integer) layerDataTable.getValueAt(i, 1);
                 String type = (String) layerDataTable.getValueAt(i, 2);
                 Object[] items = new Object[2];
@@ -4031,69 +3916,68 @@ public boolean getUseGrammar()
                 items[1] = type;
                 data.add(items);
                 count++;
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 incompleteRows = true;
             }
         }
 
         boolean badTextField = false;
-        try
-        {
+        try {
             int i = Integer.parseInt(epochLimitTextField.getText());
             double j = Double.parseDouble(learningRateTextField.getText());
             double k = Double.parseDouble(mseGoalTextField.getText());
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             badTextField = true;
         }
 
         if (trainingFileTextField.getText().isEmpty()
-            || epochLimitTextField.getText().isEmpty()
-            || learningRateTextField.getText().isEmpty()
-            || mseGoalTextField.getText().isEmpty()
-            || weightFileTextField.getText().isEmpty()
-            || data.size() < 2
-            || incompleteRows
-            || badTextField)
-        {
+                || epochLimitTextField.getText().isEmpty()
+                || learningRateTextField.getText().isEmpty()
+                || mseGoalTextField.getText().isEmpty()
+                || weightFileTextField.getText().isEmpty()
+                || data.size() < 2
+                || incompleteRows
+                || badTextField) {
             StringBuilder output = new StringBuilder();
-            if (trainingFileTextField.getText().isEmpty())
-            output.append("    ").append("Training File").append("<br/>");
-            if (epochLimitTextField.getText().isEmpty())
-            output.append("    ").append("Epoch Limit").append("<br/>");
-            if (learningRateTextField.getText().isEmpty())
-            output.append("    ").append("Learning Rate").append("<br/>");
-            if (mseGoalTextField.getText().isEmpty())
-            output.append("    ").append("MSE Goal").append("<br/>");
-            if (weightFileTextField.getText().isEmpty())
-            output.append("    ").append("Weight File").append("<br/>");
-            if (data.size() < 2)
-            output.append("    ").append("Too Few Layers").append("<br/>");
-            if (incompleteRows)
-            output.append("    ").append("Incomplete layer, delete or complete").append("<br/>");
-            if (badTextField)
-            output.append("    ").append("Incorrect value(s) for numeric field(s)").append("<br/>");
+            if (trainingFileTextField.getText().isEmpty()) {
+                output.append("    ").append("Training File").append("<br/>");
+            }
+            if (epochLimitTextField.getText().isEmpty()) {
+                output.append("    ").append("Epoch Limit").append("<br/>");
+            }
+            if (learningRateTextField.getText().isEmpty()) {
+                output.append("    ").append("Learning Rate").append("<br/>");
+            }
+            if (mseGoalTextField.getText().isEmpty()) {
+                output.append("    ").append("MSE Goal").append("<br/>");
+            }
+            if (weightFileTextField.getText().isEmpty()) {
+                output.append("    ").append("Weight File").append("<br/>");
+            }
+            if (data.size() < 2) {
+                output.append("    ").append("Too Few Layers").append("<br/>");
+            }
+            if (incompleteRows) {
+                output.append("    ").append("Incomplete layer, delete or complete").append("<br/>");
+            }
+            if (badTextField) {
+                output.append("    ").append("Incorrect value(s) for numeric field(s)").append("<br/>");
+            }
 
             JOptionPane.showMessageDialog(null,
-                new JLabel("<html><div style=\"text-align: center;\">"
+                    new JLabel("<html><div style=\"text-align: center;\">"
                     + "Missing the following needed values:<br/>"
                     + output.toString()),
-                "Alert", JOptionPane.PLAIN_MESSAGE);
-        }
-
-        else
-        {
+                    "Alert", JOptionPane.PLAIN_MESSAGE);
+        } else {
             critic.trainNetwork(trainingFileTextField.getText(),
-                epochLimitTextField.getText(),
-                learningRateTextField.getText(),
-                mseGoalTextField.getText(),
-                Integer.toString(modeComboBox.getSelectedIndex()),
-                weightFileTextField.getText(),
-                count,
-                data);
+                    epochLimitTextField.getText(),
+                    learningRateTextField.getText(),
+                    mseGoalTextField.getText(),
+                    Integer.toString(modeComboBox.getSelectedIndex()),
+                    weightFileTextField.getText(),
+                    count,
+                    data);
         }
     }//GEN-LAST:event_generateWeightFileButtonActionPerformed
 
@@ -4101,8 +3985,7 @@ public boolean getUseGrammar()
         int row = layerDataTable.rowAtPoint(evt.getPoint());
         int column = layerDataTable.columnAtPoint(evt.getPoint());
 
-        if (row == -1 || column == -1)
-        {
+        if (row == -1 || column == -1) {
             ListSelectionModel model = layerDataTable.getSelectionModel();
             model.removeSelectionInterval(0, layerDataTable.getRowCount());
             model.removeSelectionInterval(0, layerDataTable.getColumnCount());
@@ -4119,13 +4002,12 @@ public boolean getUseGrammar()
 
     private void pasteThemeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasteThemeBtnActionPerformed
         MelodyPart sel =
-        notate.getCurrentStave().getDisplayPart().extract(
-            notate.getCurrentSelectionStart(),
-            notate.getCurrentSelectionEnd());
+                notate.getCurrentStave().getDisplayPart().extract(
+                notate.getCurrentSelectionStart(),
+                notate.getCurrentSelectionEnd());
         Part.PartIterator i = sel.iterator();
         String theme = "";
-        while( i.hasNext() )
-        {
+        while (i.hasNext()) {
             theme += i.next().toLeadsheet() + " ";
         }
 
@@ -4145,14 +4027,11 @@ public boolean getUseGrammar()
 
     private void generateSoloButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateSoloButtonActionPerformed
         MelodyPart theme;
-        if( themeField.getText().equals("") )
-        {
+        if (themeField.getText().equals("")) {
             theme = generateTheme();
-        }
-        else
-        {
+        } else {
             theme = new MelodyPart(
-                themeField.getText().trim());
+                    themeField.getText().trim());
         }
         generateSolo(theme, cm);
         playSelection();
@@ -4185,7 +4064,6 @@ public boolean getUseGrammar()
     }//GEN-LAST:event_MarkovLengthFieldActionPerformed
 
     private void useMarkovCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_useMarkovCheckboxActionPerformed
-
     }//GEN-LAST:event_useMarkovCheckboxActionPerformed
 
     private void useRelativeCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_useRelativeCheckboxActionPerformed
@@ -4204,36 +4082,25 @@ public boolean getUseGrammar()
     private void criticGradeTextFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_criticGradeTextFieldFocusLost
         // Set lower limit for criticGrade filter
         String gradeField = criticGradeTextField.getText();
-        if (!gradeField.equals(""))
-        {
-            try
-            {
+        if (!gradeField.equals("")) {
+            try {
                 int grade = Integer.parseInt(gradeField);
                 // Boundary cases for lick filter
-                if (grade < 1)
-                {
+                if (grade < 1) {
                     criticGrade = 1;
                     criticGradeTextField.setText(String.valueOf(criticGrade));
-                }
-                else if (grade > 9)
-                {
+                } else if (grade > 9) {
                     criticGrade = 9;
                     criticGradeTextField.setText(String.valueOf(criticGrade));
-                }
-                else
-                {
+                } else {
                     criticGrade = grade;
                 }
-            }
-            // Reset if the entry isn't an integer value
-            catch (Exception e)
-            {
+            } // Reset if the entry isn't an integer value
+            catch (Exception e) {
                 criticGradeTextField.setText("Grade");
             }
-        }
-        // Reset if empty entry
-        else
-        {
+        } // Reset if empty entry
+        else {
             criticGrade = DEFAULT_GRADE;
             criticGradeTextField.setText("Grade");
         }
@@ -4248,8 +4115,7 @@ public boolean getUseGrammar()
         criticGradeTextField.setEnabled(useCritic);
         counterForCriticTextField.setEnabled(useCritic);
         // Reset all text fields
-        if (!useCritic)
-        {
+        if (!useCritic) {
             criticGradeTextField.setText("Grade");
             counterForCriticTextField.setText("Counter");
             lickFromStaveGradeTextField.setText("Grade");
@@ -4268,14 +4134,10 @@ public boolean getUseGrammar()
 
         // Grade the lick, passing it through the critic filter
         Double gradeFromFilter = critic.gradeFromCritic(noteList, chordList);
-        if (gradeFromFilter != null)
-        {
+        if (gradeFromFilter != null) {
             String formattedGrade = String.format("%.3f", gradeFromFilter);
             lickFromStaveGradeTextField.setText(formattedGrade);
-        }
-
-        else
-        {
+        } else {
             lickFromStaveGradeTextField.setText("Error");
         }
     }//GEN-LAST:event_gradeLickFromStaveButtonActionPerformed
@@ -4283,23 +4145,23 @@ public boolean getUseGrammar()
     private void regenerateLickForSoloButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regenerateLickForSoloButtonActionPerformed
         gradeLickFromStaveButtonActionPerformed(null);
         double currGrade = Double.parseDouble(lickFromStaveGradeTextField.getText());
-        if (currGrade < criticGrade)
-        generateLickButtonActionPerformed(null);
+        if (currGrade < criticGrade) {
+            generateLickButtonActionPerformed(null);
+        }
     }//GEN-LAST:event_regenerateLickForSoloButtonActionPerformed
 
     private void gradeAllMeasuresButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gradeAllMeasuresButtonActionPerformed
         final int totalMeasures = notate.getCurrentStave().getNumMeasures();
-        if (totalMeasures % 2 == 1)
-        {
+        if (totalMeasures % 2 == 1) {
             offsetByMeasureGradeSoloButtonActionPerformed(null);
             JOptionPane.showMessageDialog(null,
-                new JLabel("<html><div style=\"text-align: center;\">"
+                    new JLabel("<html><div style=\"text-align: center;\">"
                     + "Odd number of measures,<br/>"
                     + "offsetting grading by one measure."),
-                "Alert", JOptionPane.PLAIN_MESSAGE);
+                    "Alert", JOptionPane.PLAIN_MESSAGE);
         }
 
-        new Thread(new Runnable(){
+        new Thread(new Runnable() {
             public void run() {
 
                 // Mute since putlick() will play what it places on the leadsheet
@@ -4315,8 +4177,7 @@ public boolean getUseGrammar()
                 int numSlotsSelected = notate.getCurrentStave().roundToMultiple(end - start, WHOLE);
 
                 // Iterate through all two measure selections
-                while (start < thisTotalSlots && end < thisTotalSlots)
-                {
+                while (start < thisTotalSlots && end < thisTotalSlots) {
                     ArrayList<Note> noteList = new ArrayList<Note>();
                     ArrayList<Chord> chordList = new ArrayList<Chord>();
 
@@ -4329,11 +4190,13 @@ public boolean getUseGrammar()
                     // Default grade guarentees generating a new lick if there
                     // if an error
                     double grade = 0;
-                    if (gradeFromFilter != null)
-                    grade = gradeFromFilter;
+                    if (gradeFromFilter != null) {
+                        grade = gradeFromFilter;
+                    }
 
-                    if (grade < criticGrade)
-                    generateLickButtonActionPerformed(null);
+                    if (grade < criticGrade) {
+                        generateLickButtonActionPerformed(null);
+                    }
 
                     // Move forward by the selection length
                     start += numSlotsSelected;
@@ -4366,8 +4229,7 @@ public boolean getUseGrammar()
         start -= numSlotsSelected;
         end -= numSlotsSelected;
 
-        if (start >= 0)
-        {
+        if (start >= 0) {
             notate.getCurrentStave().setSelection(start, end);
             notate.getCurrentStave().repaint();
         }
@@ -4384,8 +4246,7 @@ public boolean getUseGrammar()
         end += numSlotsSelected;
         int thisTotalSlots = notate.getCurrentStave().getNumMeasures() * WHOLE;
 
-        if (start < thisTotalSlots && end < thisTotalSlots)
-        {
+        if (start < thisTotalSlots && end < thisTotalSlots) {
             notate.getCurrentStave().setSelection(start, end);
             notate.getCurrentStave().repaint();
         }
@@ -4400,8 +4261,7 @@ public boolean getUseGrammar()
         end += 8 * EIGHTH;
         int totalSlotsOffset = (notate.getCurrentStave().getNumMeasures() * WHOLE) - WHOLE;
 
-        if (start < totalSlotsOffset)
-        {
+        if (start < totalSlotsOffset) {
             notate.getCurrentStave().setSelection(start, end);
             notate.getCurrentStave().repaint();
         }
@@ -4410,48 +4270,42 @@ public boolean getUseGrammar()
     private void autoFillCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_autoFillCheckBoxActionPerformed
         autoFill = autoFillCheckBox.isSelected();
 
-        if( autoFill )
-        {
+        if (autoFill) {
             redrawTriage();
         }
     }//GEN-LAST:event_autoFillCheckBoxActionPerformed
 
     private void FillProbsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FillProbsButtonActionPerformed
 
-        if( notate.getCurrentSelectionStart() == -1 )
-        {
+        if (notate.getCurrentSelectionStart() == -1) {
             return;
         }
 
         ArrayList<double[]> probs = lickgen.fillProbs(
-            notate.getChordProg(),
-            chordToneWeight,
-            scaleToneWeight,
-            colorToneWeight,
-            chordToneDecayRate,
-            notate.getCurrentSelectionStart(),
-            notate.getTotalSlots());
+                notate.getChordProg(),
+                chordToneWeight,
+                scaleToneWeight,
+                colorToneWeight,
+                chordToneDecayRate,
+                notate.getCurrentSelectionStart(),
+                notate.getTotalSlots());
 
-        for( int i = 0; i < Math.min(probs.size(), lickPrefs.size()); ++i )
-        {
+        for (int i = 0; i < Math.min(probs.size(), lickPrefs.size()); ++i) {
             double[] pArray = probs.get(i);
             JTextField[] tfArray = lickPrefs.get(i);
-            for( int j = 0; j < Math.max(pArray.length, tfArray.length); ++j )
-            {
+            for (int j = 0; j < Math.max(pArray.length, tfArray.length); ++j) {
                 String p = ((Double) pArray[j]).toString();
                 JTextField field = tfArray[j];
                 field.setText(p);   //.substring(0, Math.min(p.length(), 5)));
-            field.setCaretPosition(0);
-        }
+                field.setCaretPosition(0);
+            }
         }
     }//GEN-LAST:event_FillProbsButtonActionPerformed
 
     private void clearProbsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearProbsButtonActionPerformed
 
-        for( int i = 0; i < lickPrefs.size(); ++i )
-        {
-            for( int j = 0; j < 12; ++j )
-            {
+        for (int i = 0; i < lickPrefs.size(); ++i) {
+            for (int j = 0; j < 12; ++j) {
                 lickPrefs.get(i)[j].setText("0");
             }
         }
@@ -4512,8 +4366,8 @@ public boolean getUseGrammar()
     private void rootComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rootComboBoxActionPerformed
 
         lickgen.setPreferredScale(
-            (String) rootComboBox.getSelectedItem(),
-            (String) scaleComboBox.getSelectedItem());
+                (String) rootComboBox.getSelectedItem(),
+                (String) scaleComboBox.getSelectedItem());
 
         redrawTriage();
     }//GEN-LAST:event_rootComboBoxActionPerformed
@@ -4523,29 +4377,24 @@ public boolean getUseGrammar()
 
         String type = (String) scaleComboBox.getSelectedItem();
 
-        if( root == null || type == null )
-        {
+        if (root == null || type == null) {
             return;
         }
 
-        if( type.equals("None") || type.equals(
-            "Use First Scale") )
-    {
-        rootComboBox.setEnabled(false);
-        }
-        else
-        {
+        if (type.equals("None") || type.equals(
+                "Use First Scale")) {
+            rootComboBox.setEnabled(false);
+        } else {
             rootComboBox.setEnabled(true);
         }
 
         lickgen.setPreferredScale(
-            (String) rootComboBox.getSelectedItem(),
-            (String) scaleComboBox.getSelectedItem());
+                (String) rootComboBox.getSelectedItem(),
+                (String) scaleComboBox.getSelectedItem());
 
         redrawTriage();
 
-        if( autoFill )
-        {
+        if (autoFill) {
             FillProbsButtonActionPerformed(null);
         }
     }//GEN-LAST:event_scaleComboBoxActionPerformed
@@ -4605,23 +4454,19 @@ public boolean getUseGrammar()
                     setRhythmFieldText("Preparing critics for grading...");
 
                     // Prepare all critics, and pair them with a file name
-                    for (File f : files)
-                    {
-                        if (f.getName().endsWith(".weights.save"))
-                        {
-                            try
-                            {
+                    for (File f : files) {
+                        if (f.getName().endsWith(".weights.save")) {
+                            try {
                                 Critic currCritic = new Critic();
                                 currCritic.prepareNetworkFromFile(f);
 
                                 String fileName = f.getName();
                                 int pos = fileName.lastIndexOf(".weights.save");
-                                if (pos > 0)
-                                fileName = fileName.substring(0, pos);
+                                if (pos > 0) {
+                                    fileName = fileName.substring(0, pos);
+                                }
                                 critics.put(fileName, currCritic);
-                            }
-                            catch (Exception e)
-                            {
+                            } catch (Exception e) {
                                 System.out.println("Problem with one file: " + f.getName());
                             }
                         }
@@ -4629,24 +4474,21 @@ public boolean getUseGrammar()
 
                     setRhythmFieldText("");
 
-                    if (critics.size() != numCritics)
-                    {
+                    if (critics.size() != numCritics) {
                         JOptionPane.showMessageDialog(null,
-                            new JLabel("<html><div style=\"text-align: center;\">"
+                                new JLabel("<html><div style=\"text-align: center;\">"
                                 + "This feature works best with the full set of critics.<br/>"
                                 + "You have " + critics.size() + " out of the total " + numCritics + " critics.<br/>"
                                 + "Please download the rest of the critics."),
-                            "Using Critics", JOptionPane.PLAIN_MESSAGE);
+                                "Using Critics", JOptionPane.PLAIN_MESSAGE);
                     }
 
                     styleRecognitionButton.setText("Guess Musician");
 
                 } // End of Runnable
             }).start(); // End of Thread
-        }
-
-        // Do only if there is some selection
-        else if(notate.getCurrentStave().getSelectionLength() != 0) {
+        } // Do only if there is some selection
+        else if (notate.getCurrentStave().getSelectionLength() != 0) {
 
             new Thread(new Runnable() {
                 public void run() {
@@ -4654,8 +4496,7 @@ public boolean getUseGrammar()
                     TreeMap<String, Double> grades = new TreeMap<String, Double>();
 
                     // Use all critics to get all grades for each network
-                    for (String name : critics.keySet())
-                    {
+                    for (String name : critics.keySet()) {
                         Critic thisCritic = critics.get(name);
                         int start = notate.getCurrentStave().getSelectionStart();
                         int end = notate.getCurrentStave().getSelectionEnd();
@@ -4668,13 +4509,9 @@ public boolean getUseGrammar()
 
                         // Grade the lick, passing it through the critic filter
                         Double gradeFromFilter = thisCritic.gradeFromCritic(noteList, chordList);
-                        if (gradeFromFilter != null)
-                        {
+                        if (gradeFromFilter != null) {
                             grades.put(name, gradeFromFilter);
-                        }
-
-                        else
-                        {
+                        } else {
                             System.out.println("Error from grading.");
                         }
                     }
@@ -4685,14 +4522,12 @@ public boolean getUseGrammar()
                     // Guess on stylistic similarity based on highest grade
                     double highestGrade = 0.0;
                     String likelyName = "";
-                    for (String name : grades.keySet())
-                    {
+                    for (String name : grades.keySet()) {
                         double currGrade = grades.get(name);
 
                         criticsOutput.append(fixName(name)).append(": ").append(String.format("%.3f", currGrade)).append("\n\n");
 
-                        if (currGrade > highestGrade)
-                        {
+                        if (currGrade > highestGrade) {
                             highestGrade = currGrade;
                             likelyName = name;
                         }
@@ -4706,58 +4541,52 @@ public boolean getUseGrammar()
 
                     Object[] options = {"Yes, to Neural Network tab",
                         "Cancel"};
-                    String label = "<html><div style=\"text-align: center;\">" +
-                    "The musician whose style is most similar: <br/>" +
-                    cleanName + "<br/><br/>" +
-                    "Grade: " + cleanGrade + "<br/><br/>" +
-                    "Choose \"Yes\" if you want to see more output";
+                    String label = "<html><div style=\"text-align: center;\">"
+                            + "The musician whose style is most similar: <br/>"
+                            + cleanName + "<br/><br/>"
+                            + "Grade: " + cleanGrade + "<br/><br/>"
+                            + "Choose \"Yes\" if you want to see more output";
                     int n = JOptionPane.showOptionDialog(null,
-                        label,
-                        "Style Recogntion",
-                        JOptionPane.YES_NO_OPTION,
-                        JOptionPane.QUESTION_MESSAGE,
-                        null,
-                        options,
-                        options[1]);
+                            label,
+                            "Style Recogntion",
+                            JOptionPane.YES_NO_OPTION,
+                            JOptionPane.QUESTION_MESSAGE,
+                            null,
+                            options,
+                            options[1]);
 
-                    if (n == 0)
-                    {
+                    if (n == 0) {
                         // Avoids using a specific index for setting the tab
                         int index = 0;
-                        for (int i = 0; i < generatorPane.getTabCount(); i++)
-                        if (generatorPane.getTitleAt(i).contains("Network"))
-                        index = i;
+                        for (int i = 0; i < generatorPane.getTabCount(); i++) {
+                            if (generatorPane.getTitleAt(i).contains("Network")) {
+                                index = i;
+                            }
+                        }
                         generatorPane.setSelectedIndex(index);
                     }
 
                 } // End of Runnable
             }).start(); // End of Thread
-        }
-
-        else {
+        } else {
             JOptionPane.showMessageDialog(null,
-                new JLabel("<html><div style=\"text-align: center;\">"
+                    new JLabel("<html><div style=\"text-align: center;\">"
                     + "Choose a selection of measures before guessing."),
-                "Alert", JOptionPane.PLAIN_MESSAGE);
+                    "Alert", JOptionPane.PLAIN_MESSAGE);
         }
     }//GEN-LAST:event_styleRecognitionButtonActionPerformed
 
     private void generationSelectionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generationSelectionButtonActionPerformed
-        if (notate.getCurrentStave().getLockSelectionWidth() == -1)
-        {
+        if (notate.getCurrentStave().getLockSelectionWidth() == -1) {
             String s = JOptionPane.showInputDialog("Select the number of measures\n"
-                + "for the graded licks", 2);
+                    + "for the graded licks", 2);
 
-            if( s != null && s.length() > 0 )
-            {
+            if (s != null && s.length() > 0) {
                 int measureNum;
 
-                try
-                {
+                try {
                     measureNum = Integer.parseInt(s);
-                }
-                catch( Exception e)
-                {
+                } catch (Exception e) {
                     measureNum = 2;
                 }
 
@@ -4767,9 +4596,7 @@ public boolean getUseGrammar()
 
                 generationSelectionButton.setText("Unlock selection");
             }
-        }
-        else
-        {
+        } else {
             notate.getCurrentStave().unlockSelectionWidth();
 
             generationSelectionButton.setText("Size of Selection");
@@ -4815,7 +4642,6 @@ public boolean getUseGrammar()
     }//GEN-LAST:event_leapProbFieldActionPerformed
 
     private void restProbFieldenterLickKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_restProbFieldenterLickKeyPressed
-
     }//GEN-LAST:event_restProbFieldenterLickKeyPressed
 
     private void restProbFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_restProbFieldFocusLost
@@ -4841,7 +4667,7 @@ public boolean getUseGrammar()
         verifyTriageFields();
 
         notate.setCurrentSelectionEnd(
-            notate.getCurrentSelectionStart() + totalSlots - 1);
+                notate.getCurrentSelectionStart() + totalSlots - 1);
 
         redrawTriage();
 
@@ -4857,7 +4683,7 @@ public boolean getUseGrammar()
         verifyTriageFields();
 
         notate.setCurrentSelectionEnd(
-            notate.getCurrentSelectionStart() + totalSlots - 1);
+                notate.getCurrentSelectionStart() + totalSlots - 1);
 
         redrawTriage();
 
@@ -4874,7 +4700,6 @@ public boolean getUseGrammar()
     }//GEN-LAST:event_maxDurationFieldFocusLost
 
     private void maxDurationFieldGetsFocus(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_maxDurationFieldGetsFocus
-
     }//GEN-LAST:event_maxDurationFieldGetsFocus
 
     private void maxDurationFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_maxDurationFieldActionPerformed
@@ -4883,7 +4708,6 @@ public boolean getUseGrammar()
     }//GEN-LAST:event_maxDurationFieldActionPerformed
 
     private void minDurationFieldenterLickKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_minDurationFieldenterLickKeyPressed
-
     }//GEN-LAST:event_minDurationFieldenterLickKeyPressed
 
     private void minDurationFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_minDurationFieldFocusLost
@@ -4892,7 +4716,6 @@ public boolean getUseGrammar()
     }//GEN-LAST:event_minDurationFieldFocusLost
 
     private void minDurationFieldGetsFocus(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_minDurationFieldGetsFocus
-
     }//GEN-LAST:event_minDurationFieldGetsFocus
 
     private void minDurationFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_minDurationFieldActionPerformed
@@ -4901,7 +4724,6 @@ public boolean getUseGrammar()
     }//GEN-LAST:event_minDurationFieldActionPerformed
 
     private void maxIntervalFieldenterLickKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_maxIntervalFieldenterLickKeyPressed
-
     }//GEN-LAST:event_maxIntervalFieldenterLickKeyPressed
 
     private void maxIntervalFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_maxIntervalFieldFocusLost
@@ -4910,7 +4732,6 @@ public boolean getUseGrammar()
     }//GEN-LAST:event_maxIntervalFieldFocusLost
 
     private void maxIntervalFieldGetsFocus(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_maxIntervalFieldGetsFocus
-
     }//GEN-LAST:event_maxIntervalFieldGetsFocus
 
     private void maxIntervalFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_maxIntervalFieldActionPerformed
@@ -4919,7 +4740,6 @@ public boolean getUseGrammar()
     }//GEN-LAST:event_maxIntervalFieldActionPerformed
 
     private void minIntervalFieldenterLickKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_minIntervalFieldenterLickKeyPressed
-
     }//GEN-LAST:event_minIntervalFieldenterLickKeyPressed
 
     private void minIntervalFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_minIntervalFieldFocusLost
@@ -4928,7 +4748,6 @@ public boolean getUseGrammar()
     }//GEN-LAST:event_minIntervalFieldFocusLost
 
     private void minIntervalFieldGetsFocus(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_minIntervalFieldGetsFocus
-
     }//GEN-LAST:event_minIntervalFieldGetsFocus
 
     private void minIntervalFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_minIntervalFieldActionPerformed
@@ -4937,7 +4756,6 @@ public boolean getUseGrammar()
     }//GEN-LAST:event_minIntervalFieldActionPerformed
 
     private void minPitchFieldenterLickKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_minPitchFieldenterLickKeyPressed
-
     }//GEN-LAST:event_minPitchFieldenterLickKeyPressed
 
     private void minPitchFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_minPitchFieldFocusLost
@@ -4946,7 +4764,6 @@ public boolean getUseGrammar()
     }//GEN-LAST:event_minPitchFieldFocusLost
 
     private void minPitchFieldGetsFocus(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_minPitchFieldGetsFocus
-
     }//GEN-LAST:event_minPitchFieldGetsFocus
 
     private void minPitchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_minPitchFieldActionPerformed
@@ -4955,7 +4772,6 @@ public boolean getUseGrammar()
     }//GEN-LAST:event_minPitchFieldActionPerformed
 
     private void maxPitchFieldenterLickKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_maxPitchFieldenterLickKeyPressed
-
     }//GEN-LAST:event_maxPitchFieldenterLickKeyPressed
 
     private void maxPitchFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_maxPitchFieldFocusLost
@@ -4964,7 +4780,6 @@ public boolean getUseGrammar()
     }//GEN-LAST:event_maxPitchFieldFocusLost
 
     private void maxPitchFieldGetsFocus(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_maxPitchFieldGetsFocus
-
     }//GEN-LAST:event_maxPitchFieldGetsFocus
 
     private void maxPitchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_maxPitchFieldActionPerformed
@@ -4999,21 +4814,17 @@ public boolean getUseGrammar()
 
         Polylist rhythmString = new Polylist();
 
-        while( current <= selEnd )
-        {
+        while (current <= selEnd) {
             StringBuilder sb = new StringBuilder();
 
             int value = part.getNote(current).
-            getDurationString(sb, part.getNote(current).getRhythmValue());
+                    getDurationString(sb, part.getNote(current).getRhythmValue());
 
             int rhythm = 0;
 
-            if( part.getNote(current).isRest() )
-            {
+            if (part.getNote(current).isRest()) {
                 rhythmString = rhythmString.cons("R" + sb.substring(1));
-            }
-            else
-            {
+            } else {
                 rhythmString = rhythmString.cons("X" + sb.substring(1));
             }
             current += part.getNote(current).getRhythmValue();
@@ -5028,156 +4839,134 @@ public boolean getUseGrammar()
 
         getAbstractMelody();
 
+    }
+
+    public void getAbstractMelody() {
+
+        if (!allMeasures) {
+            melodyData = notate.getMelodyData(notate.getSelectedIndex());
         }
 
-        public void getAbstractMelody()
-        {
+        int minMeasureWindow = Integer.parseInt(windowSizeField.getText());
+        int maxMeasureWindow = Integer.parseInt(windowSizeField.getText());
 
-            if( !allMeasures )
-            {
-                melodyData = notate.getMelodyData(notate.getSelectedIndex());
-            }
+        int beatsToSlide = Integer.parseInt(windowSlideField.getText());
 
-            int minMeasureWindow = Integer.parseInt(windowSizeField.getText());
-            int maxMeasureWindow = Integer.parseInt(windowSizeField.getText());
+        //int measureWindow = 2;
 
-            int beatsToSlide = Integer.parseInt(windowSlideField.getText());
+        int selStart = notate.getCurrentSelectionStart();
 
-            //int measureWindow = 2;
+        int selEnd = notate.getCurrentSelectionEnd();
 
-            int selStart = notate.getCurrentSelectionStart();
+        for (int measureWindow = minMeasureWindow; measureWindow <= maxMeasureWindow;
+                measureWindow++) {
+            //int slotsPerMeasure = score.getMetre()[0] * BEAT; //assume something/4 time
 
-            int selEnd = notate.getCurrentSelectionEnd();
+            int slotsPerMeasure = BEAT;
 
-            for( int measureWindow = minMeasureWindow; measureWindow <= maxMeasureWindow;
-                measureWindow++ )
-            {
-                //int slotsPerMeasure = score.getMetre()[0] * BEAT; //assume something/4 time
+            int slotsPerSection = slotsPerMeasure * measureWindow;
 
-                int slotsPerMeasure = BEAT;
+            int start = selStart - (selStart % slotsPerMeasure);
 
-                int slotsPerSection = slotsPerMeasure * measureWindow;
+            int end = selEnd - (selEnd % slotsPerMeasure) + slotsPerMeasure - 1;
 
-                int start = selStart - (selStart % slotsPerMeasure);
+            int numMeasures = (end + 1 - start) / slotsPerSection;
 
-                int end = selEnd - (selEnd % slotsPerMeasure) + slotsPerMeasure - 1;
-
-                int numMeasures = (end + 1 - start) / slotsPerSection;
-
-                //writeBeatsToSlide(beatsToSlide);
-                //loop through places to start the measure window
-                for( int window = 0; window < measureWindow; window += beatsToSlide )
-                {
-                    //extract all sections of size measureWindow
-                    for( int i = 0;
+            //writeBeatsToSlide(beatsToSlide);
+            //loop through places to start the measure window
+            for (int window = 0; window < measureWindow; window += beatsToSlide) {
+                //extract all sections of size measureWindow
+                for (int i = 0;
                         (i * slotsPerSection) + (window * BEAT) + slotsPerSection <= (numMeasures) * slotsPerSection;
-                        i++ )
-                    {
-                        //System.out.println("Window: " + window);
-                        //System.out.println("i: " + i);
-                        String production = addMeasureToAbstractMelody(
+                        i++) {
+                    //System.out.println("Window: " + window);
+                    //System.out.println("i: " + i);
+                    String production = addMeasureToAbstractMelody(
                             start + (i * slotsPerSection) + (window * BEAT),
                             measureWindow,
                             i == 0);
-                        if( production != null )
-                        {
-                            writeProduction(production, measureWindow,
+                    if (production != null) {
+                        writeProduction(production, measureWindow,
                                 (i * slotsPerSection) + (window * BEAT),
-                                true);
-                        }
+                                true, null);
                     }
-
                 }
 
-                lickgen.loadGrammar(notate.getGrammarFileName());
-                updateUseSoloist();
-                Grammar g = lickgen.getGrammar();
-                Polylist rules = g.getRules();
+            }
 
-                ArrayList<Polylist> ruleList = new ArrayList<Polylist>();
-                for( Polylist L = rules; L.nonEmpty(); L = L.rest() )
-                {
-                    ruleList.add((Polylist) L.first());
-                }
-                Collections.sort(ruleList, new PolylistComparer());
+            lickgen.loadGrammar(notate.getGrammarFileName());
+            updateUseSoloist();
+            Grammar g = lickgen.getGrammar();
+            Polylist rules = g.getRules();
 
-                ArrayList<Polylist> newRules = new ArrayList<Polylist>();
+            ArrayList<Polylist> ruleList = new ArrayList<Polylist>();
+            for (Polylist L = rules; L.nonEmpty(); L = L.rest()) {
+                ruleList.add((Polylist) L.first());
+            }
+            Collections.sort(ruleList, new PolylistComparer());
 
-                Polylist previous = Polylist.nil;
-                float accumulatedProbability = 0;
+            ArrayList<Polylist> newRules = new ArrayList<Polylist>();
 
-                //Note - rules must have form similar to (rule (V4) (N4) 0.22)
+            Polylist previous = Polylist.nil;
+            float accumulatedProbability = 0;
 
-                for( Iterator<Polylist> e = ruleList.iterator(); e.hasNext(); )
-                {
-                    Polylist current = e.next();
-                    if( current.first().equals("rule") || current.first().equals("base") )
-                    {
-                        if( (!previous.equals(Polylist.nil)) && current.allButLast().equals(
-                            previous.allButLast()) )
-                    {
+            //Note - rules must have form similar to (rule (V4) (N4) 0.22)
+
+            for (Iterator<Polylist> e = ruleList.iterator(); e.hasNext();) {
+                Polylist current = e.next();
+                if (current.first().equals("rule") || current.first().equals("base")) {
+                    if ((!previous.equals(Polylist.nil)) && current.allButLast().equals(
+                            previous.allButLast())) {
                         accumulatedProbability += ((Number) current.last()).floatValue();
                         int round = (int) (accumulatedProbability * 100);
                         accumulatedProbability = (float) (round / 100.0);
-                    }
-                    else
-                    {
-                        if( previous.nonEmpty() )
-                        {
+                    } else {
+                        if (previous.nonEmpty()) {
                             newRules.add(
-                                Polylist.list(previous.first(), previous.second(),
+                                    Polylist.list(previous.first(), previous.second(),
                                     previous.third(),
                                     accumulatedProbability));
                         }
                         accumulatedProbability = ((Number) current.last()).floatValue();
                         previous = current;
                     }
-                }
-                else
-                {
+                } else {
                     newRules.add(current);
                 }
             }
-            if( previous.nonEmpty() )
-            {
+            if (previous.nonEmpty()) {
                 newRules.add(Polylist.list(previous.first(),
-                    previous.second(),
-                    previous.third(),
-                    accumulatedProbability));
-        }
+                        previous.second(),
+                        previous.third(),
+                        accumulatedProbability));
+            }
 
-        try
-        {
-            File f = new File(notate.getGrammarFileName());
-            if( f.exists() )
-            {
-                System.gc();
-                boolean deleted = f.delete();
-                while( !deleted )
-                {
-                    deleted = f.delete();
+            try {
+                File f = new File(notate.getGrammarFileName());
+                if (f.exists()) {
+                    System.gc();
+                    boolean deleted = f.delete();
+                    while (!deleted) {
+                        deleted = f.delete();
+                    }
                 }
+
+                File f_out = new File(notate.getGrammarFileName());
+                FileWriter out = new FileWriter(f_out, true);
+
+                notate.setLickGenStatus(
+                        "Writing " + newRules.size() + " grammar rules to " + notate.getGrammarFileName());
+
+                for (int i = 0; i < newRules.size(); i++) {
+                    out.write(newRules.get(i).toString() + "\n");
+                }
+                out.close();
+
+                notate.refreshGrammarEditor();
+
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
             }
-
-            File f_out = new File(notate.getGrammarFileName());
-            FileWriter out = new FileWriter(f_out, true);
-
-            notate.setLickGenStatus(
-                "Writing " + newRules.size() + " grammar rules to " + notate.getGrammarFileName());
-
-            for( int i = 0; i < newRules.size(); i++ )
-            {
-                out.write(newRules.get(i).toString() + "\n");
-            }
-            out.close();
-
-            notate.refreshGrammarEditor();
-
-        }
-        catch( Exception e )
-        {
-            System.out.println(e.getMessage());
-        }
 
         }
 
@@ -5189,217 +4978,156 @@ public boolean getUseGrammar()
 
         String production = addMeasureToAbstractMelody(start, measureWindow, false);
 
-        if( production != null )
-        {
-            if( production.contains("STARTER") )
-            {
+        if (production != null) {
+            if (production.contains("STARTER")) {
                 production = production.replace("STARTER", "");
             }
-            if( production.contains("ENDTIED") )
-            {
+            if (production.contains("ENDTIED")) {
                 production = production.replace("ENDTIED ", "");
             }
-            if( production.contains("STARTTIED") )
-            {
+            if (production.contains("STARTTIED")) {
                 production = production.replace("STARTTIED ", "");
             }
-            if( production.contains("CHORDS") )
-            {
+            if (production.contains("CHORDS")) {
                 production = production.substring(0, production.indexOf("CHORDS"));
             }
             setRhythmFieldText(production.toString());
         }
 
+    }
+
+    /**
+     * add the production to file
+     */
+    public void writeProduction(String production, int measureWindow, int location,
+            boolean writeExactMelody, String brickType) {
+        //copied from getAbstractMelody() just so getAbstractMelody() is instantiated
+        if (!allMeasures) {
+            melodyData = notate.getMelodyData(notate.getSelectedIndex());
         }
 
-        /**
-        * add the production to file
-        */
+        if (production == null) {
+            return;
+        }
 
-        public void writeProduction(String production, int measureWindow, int location,
-            boolean writeExactMelody)
-        {
+        String chords = "";
 
-            if( production == null )
-            {
-                return;
-            }
+        if (production.contains("CHORDS")) {
+            chords = production.substring(production.indexOf("CHORDS"));
+            production = production.substring(0, production.indexOf("CHORDS"));
+        }
 
-            String chords = "";
+        try {
+            File f = new File(notate.getGrammarFileName());
+            String dir = f.getParentFile().getPath();
+            frameFile = dir + File.separator + Directories.accumulatedProductions;
+            BufferedWriter out = new BufferedWriter(new FileWriter(frameFile, true));
 
-            if( production.contains("CHORDS") )
-            {
-                chords = production.substring(production.indexOf("CHORDS"));
-                production = production.substring(0, production.indexOf("CHORDS"));
-            }
-
-            try
-            {
-                File f = new File(notate.getGrammarFileName());
-                String dir = f.getParentFile().getPath();
-                BufferedWriter out = new BufferedWriter(new FileWriter(
-                    dir + File.separator + Directories.accumulatedProductions, true));
-            if( !writeExactMelody )
-            {
-                out.write(
-                    "(rule (Seg" + measureWindow + ") " + production + " ) " + chords + "\n");
-            }
-            else
-            {
+            if (!writeExactMelody) {
+                out.write("(rule (Seg" + measureWindow + ") " + production + " ) " + chords + "\n");
+            } else {
                 //check that index of exact melody matches index of abstract melody
                 //then concatenate the two and write them to the file
                 String melodyToWrite;
                 String relativePitchMelody = "";
-                String exactMelody = null; //= melodyData.get(location);
+                //String exactMelody = null; //= melodyData.get(location);
+                String exactMelody = production;
                 String[] splitMel; // = exactMelody.split(" ");
                 //if(!splitMel[0].equals(Integer.toString(location))) {
-                    boolean foundMatch = false;
-                    for( int i = 0; i < melodyData.size(); i++ )
-                    {
-                        splitMel = melodyData.get(i).split(" ");
-                        if( splitMel[0].equals(Integer.toString(location)) )
-                        {
-                            exactMelody = melodyData.get(i);
-                            foundMatch = true;
-                            break;
-                        }
+                boolean foundMatch = false;
+                for (int i = 0; i < melodyData.size(); i++) {
+                    splitMel = melodyData.get(i).split(" ");
+                    if (splitMel[0].equals(Integer.toString(location))) {
+                        exactMelody = melodyData.get(i);
+                        foundMatch = true;
+                        break;
                     }
-                    if( foundMatch == false )
-                    {
-                        System.out.println("Weird. This shouldn't happen: " + location);
-                    }
-                    //}
-                if( notate.getSelectedIndex() == 0 ) //head
-                {
-                    melodyToWrite = "Head " + exactMelody;
                 }
-                else
-                {
+                if (foundMatch == false) {
+                    System.out.println("Weird. This shouldn't happen: " + location);
+                    System.out.println("Melody data: " + melodyData);
+                }
+
+                //}
+                if (notate.getSelectedIndex() == 0) /*head*/ {
+                    melodyToWrite = "Head " + exactMelody;
+                } else {
                     melodyToWrite = "Chorus" + (notate.getSelectedIndex() + 1) + " " + exactMelody;
                 }
 
-                //this section converts a slice of melody to relative pitch notation (X notation)
-                //get the chords for the section we want to convert to X notation
-                int slotsPerSection = measureWindow*slotsPerBeat;
-                ChordPart chordProg = notate.getChordProg().extract(location,
-                    location + slotsPerSection - 1);
-                ArrayList<Chord> allChords = chordProg.getChords();
-
-                //split up the string containing melody info
-                String[] exactMelodyData = exactMelody.split(" ");
-
-                //first item is tells us the starting slot of this section of melody
-                int startSlot = Integer.parseInt(exactMelodyData[0]);
-
-                int chordNumber = 0; //index of the i-th chord in this measure we've looked at as a possible match for this note
-                int totalChordDurationInMeasure = allChords.get(0).getRhythmValue(); //total number of slots belonging to chords we've looked at as a possible match for this note
-                int totalNoteDurationInMeasure = 0; //total number of slots that have gone by in this measure up to this note
-                for (int i = 1; i < exactMelodyData.length; i += 2) {
-                    int pitch = Integer.parseInt(exactMelodyData[i]); //every odd index item is a note
-                    int duration = Integer.parseInt(exactMelodyData[i + 1]); //every even index item (after 0) is a duration
-                    while (totalNoteDurationInMeasure >= totalChordDurationInMeasure) { //we need to move on to the next chord
-                        chordNumber++;
-                        totalChordDurationInMeasure += allChords.get(chordNumber).getRhythmValue();
-                    }
-                    try {
-                        if (pitch >= 0) { //pitch is a note
-                            Note note = new Note(pitch, duration);
-                            Polylist relativePitch = imp.lickgen.NotesToRelativePitch.noteToRelativePitch(note, allChords.get(chordNumber));
-                            relativePitchMelody = relativePitchMelody.concat(relativePitch.toString());
-                        } else { //"pitch" is a rest
-                            String rest = "R" + imp.data.Note.getDurationString(duration) + " ";
-                            relativePitchMelody = relativePitchMelody.concat(rest.toString());
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    totalNoteDurationInMeasure += duration;
-                }
-                //System.out.println("Relative pitch melody: " + relativePitchMelody);
-
+                int slotsPerSection = measureWindow * slotsPerBeat;
+                ChordPart chordProg = notate.getChordProg().extract(location, location + slotsPerSection - 1);
+                relativePitchMelody = NotesToRelativePitch.melStringToRelativePitch(slotsPerSection, chordProg, exactMelody);
                 out.write("(rule (Seg" + measureWindow + ") " + production + " ) "
-                    + "Xnotation " + relativePitchMelody + " " + melodyToWrite + " " + chords + "\n");
+                        + "(Xnotation " + relativePitchMelody + ") " + "(Brick type " + brickType + ") " + melodyToWrite + " " + chords + "\n");
             }
             out.close();
-        }
-
-        catch( IOException e )
-        {
+        } catch (IOException e) {
             System.out.println("IO EXCEPTION!");
         }
-        }
+    }
 
-        //add the production to the grammar file
-        public void addProduction(String production, int measureWindow, double prob) //formerly private
-        {
-            try
-            {
-                BufferedWriter out = new BufferedWriter(new FileWriter(
+    //add the production to the grammar file
+    public void addProduction(String production, int measureWindow, double prob) //formerly private
+    {
+        try {
+            BufferedWriter out = new BufferedWriter(new FileWriter(
                     notate.getGrammarFileName(), true));
             out.write(
-                "(rule (Seg" + measureWindow + ") " + production + " " + prob + ") \n");
+                    "(rule (Seg" + measureWindow + ") " + production + " " + prob + ") \n");
             out.close();
-        }
-        catch( IOException e )
-        {
+        } catch (IOException e) {
             System.out.println("IO EXCEPTION!");
         }
+    }
+
+    public String addMeasureToAbstractMelody(int selStart, int measureWindow,
+            boolean isSongStart) {
+        //int slotsPerMeasure = score.getMetre()[0] * BEAT; //assume something/4 time
+        int slotsPerSection = BEAT * measureWindow;
+        //boolean isSongStart = (selStart == 0);
+        int selEnd = selStart + slotsPerSection;
+        MelodyPart part = notate.getCurrentMelodyPart().copy();
+
+        if (part.melodyIsEmpty(selStart, slotsPerSection)) {
+            //if this is empty, the last measure is empty,
+            //and the rest of the chorus is empty, return null
+            if (part.getFreeSlotsFromEnd() >= (part.size() - selEnd)
+                    && part.melodyIsEmpty(selStart - slotsPerSection, slotsPerSection)) {
+                return null;
+            } //otherwise return a section of rests
+            else {
+                StringBuilder sb = new StringBuilder();
+                Note n = new Note(72, 1);
+                n.getDurationString(sb, slotsPerSection);
+                String returnString = "((slope 0 0 R" + sb.substring(1) + "))";
+                if (isSongStart) {
+                    returnString = returnString.concat("STARTER");
+                }
+                return returnString;
+            }
         }
 
-        public String addMeasureToAbstractMelody(int selStart, int measureWindow,
-            boolean isSongStart)
-        {
-            //int slotsPerMeasure = score.getMetre()[0] * BEAT; //assume something/4 time
-            int slotsPerSection = BEAT * measureWindow;
-            //boolean isSongStart = (selStart == 0);
-            int selEnd = selStart + slotsPerSection;
-            MelodyPart part = notate.getCurrentMelodyPart().copy();
+        int current = selStart;
 
-            if( part.melodyIsEmpty(selStart, slotsPerSection) )
-            {
-                //if this is empty, the last measure is empty,
-                //and the rest of the chorus is empty, return null
-                if( part.getFreeSlotsFromEnd() >= (part.size() - selEnd)
-                    && part.melodyIsEmpty(selStart - slotsPerSection, slotsPerSection) )
-                {
-                    return null;
-                }
-                //otherwise return a section of rests
-                else
-                {
-                    StringBuilder sb = new StringBuilder();
-                    Note n = new Note(72, 1);
-                    n.getDurationString(sb, slotsPerSection);
-                    String returnString = "((slope 0 0 R" + sb.substring(1) + "))";
-                    if( isSongStart )
-                    {
-                        returnString = returnString.concat("STARTER");
-                    }
-                    return returnString;
-                }
-            }
+        Polylist rhythmString = new Polylist();
 
-            int current = selStart;
+        //pitches of notes in measure not including rests
+        ArrayList<Integer> notes = new ArrayList<Integer>();
 
-            Polylist rhythmString = new Polylist();
+        //System.out.println("selStart: " + selStart);
+        //System.out.println(part.getPrevNote(current));
+        //System.out.print("rhythm of prevnote: " + part.getPrevNote(current).getRhythmValue());
+        //System.out.println("slots per section: " + slotsPerSection);
+        //System.out.println("Prev index: " + part.getPrevIndex(current));
+        //if(part.getPrevNote(current) != null) System.out.println("not null.");
+        //System.out.println("thing: " + (slotsPerSection - part.getPrevIndex(current) % slotsPerSection));
 
-            //pitches of notes in measure not including rests
-            ArrayList<Integer> notes = new ArrayList<Integer>();
+        boolean tiedAtStart = false, tiedAtEnd = false;
 
-            //System.out.println("selStart: " + selStart);
-            //System.out.println(part.getPrevNote(current));
-            //System.out.print("rhythm of prevnote: " + part.getPrevNote(current).getRhythmValue());
-            //System.out.println("slots per section: " + slotsPerSection);
-            //System.out.println("Prev index: " + part.getPrevIndex(current));
-            //if(part.getPrevNote(current) != null) System.out.println("not null.");
-            //System.out.println("thing: " + (slotsPerSection - part.getPrevIndex(current) % slotsPerSection));
-
-            boolean tiedAtStart = false, tiedAtEnd = false;
-
-            //untie first note if it is tied from last measure
-            if( part.getPrevNote(current) != null && part.getPrevNote(current).getRhythmValue() > current - part.getPrevIndex(
-                current)/*slotsPerSection - part.getPrevIndex(current) % slotsPerSection*/ )
-        {
+        //untie first note if it is tied from last measure
+        if (part.getPrevNote(current) != null && part.getPrevNote(current).getRhythmValue() > current - part.getPrevIndex(
+                current)/*slotsPerSection - part.getPrevIndex(current) % slotsPerSection*/) {
 
             tiedAtStart = true;
             //System.out.println("Got here.");
@@ -5418,46 +5146,40 @@ public boolean getUseGrammar()
             part.setNote(current, currNote);
         }
 
-        if( part.getPrevNote(selEnd) != null )
-        {
+        if (part.getPrevNote(selEnd) != null) {
             //untie notes at end of measure and beginning of next measure
-            if( part.getPrevNote(selEnd).getRhythmValue() > selEnd - part.getPrevIndex(
-                selEnd) )
-        {
-            tiedAtEnd = true;
-            //System.out.println("Untying notes at end.");
-            int tracker = part.getPrevIndex(selEnd);
-            Note untiedNote = part.getNote(tracker).copy();
-            int originalRhythmVal = untiedNote.getRhythmValue();
-            int rhythmVal = slotsPerSection - (tracker % slotsPerSection);
-            untiedNote.setRhythmValue(rhythmVal);
-            part.setNote(tracker, untiedNote);
-            int secondRhythmVal = originalRhythmVal - rhythmVal;
-            untiedNote = part.getNote(tracker).copy();
-            untiedNote.setRhythmValue(secondRhythmVal);
-            part.setNote(selEnd, untiedNote);
-        }
+            if (part.getPrevNote(selEnd).getRhythmValue() > selEnd - part.getPrevIndex(
+                    selEnd)) {
+                tiedAtEnd = true;
+                //System.out.println("Untying notes at end.");
+                int tracker = part.getPrevIndex(selEnd);
+                Note untiedNote = part.getNote(tracker).copy();
+                int originalRhythmVal = untiedNote.getRhythmValue();
+                int rhythmVal = slotsPerSection - (tracker % slotsPerSection);
+                untiedNote.setRhythmValue(rhythmVal);
+                part.setNote(tracker, untiedNote);
+                int secondRhythmVal = originalRhythmVal - rhythmVal;
+                untiedNote = part.getNote(tracker).copy();
+                untiedNote.setRhythmValue(secondRhythmVal);
+                part.setNote(selEnd, untiedNote);
+            }
         }
 
-        if( part.getPrevNote(selStart + 1) != null )
-        {
-            if( (part.getPrevIndex(selStart + 1) != selStart) && !(part.getPrevNote(
-                selStart + 1).isRest()) )
-    {
-        //System.out.println("prev index: " + part.getPrevIndex(selStart + 1) + "note: " + part.getPrevNote(selStart + 1).getPitch());
-        return null;
-        }
+        if (part.getPrevNote(selStart + 1) != null) {
+            if ((part.getPrevIndex(selStart + 1) != selStart) && !(part.getPrevNote(
+                    selStart + 1).isRest())) {
+                //System.out.println("prev index: " + part.getPrevIndex(selStart + 1) + "note: " + part.getPrevNote(selStart + 1).getPitch());
+                return null;
+            }
         }
 
         //if(part.melodyIsEmpty(selStart, slotsPerSection)) {
-            //    if(selStart - slotsPerSection >= slotsPerSection && part.melodyIsEmpty(selStart - slotsPerSection, slotsPerSection))
-            // }
-        while( current < selEnd )
-        {
+        //    if(selStart - slotsPerSection >= slotsPerSection && part.melodyIsEmpty(selStart - slotsPerSection, slotsPerSection))
+        // }
+        while (current < selEnd) {
 
             //if the is a null note, make it a rest
-            if( part.getNote(current) == null )
-            {
+            if (part.getNote(current) == null) {
                 int next = part.getNextIndex(current);
                 Note n = Note.makeRest(next - current);
                 part.setNote(current, n);
@@ -5466,132 +5188,124 @@ public boolean getUseGrammar()
             StringBuilder sb = new StringBuilder();
 
             int value = part.getNote(current).getDurationString(sb, part.getNote(
-                current).getRhythmValue());
+                    current).getRhythmValue());
 
-        int pitch = part.getNote(current).getPitch();
+            int pitch = part.getNote(current).getPitch();
 
-        int rhythm = 0;
+            int rhythm = 0;
 
-        if( part.getNote(current).isRest() )
-        {
-            rhythmString = rhythmString.cons("R" + sb.substring(1));
-        }
-        else
-        {
+            if (part.getNote(current).isRest()) {
+                rhythmString = rhythmString.cons("R" + sb.substring(1));
+            } else {
 
-            //add pitch to notes
-            notes.add(pitch);
-            //get note type
-            char notetype;
-            int[] notetone = lickgen.getNoteTypes(current, pitch, pitch,
-                notate.getChordProg());
-            switch( notetone[0] )
-            {
-                case LickGen.CHORD:
-                notetype = 'C';
-                break;
-                case LickGen.COLOR:
-                notetype = 'L';
-                break;
-                default:
-                notetype = 'X';
-                break;
-            }
-            if( notetype == 'X' && part.getNextNote(current) != null )
-            {
+                //add pitch to notes
+                notes.add(pitch);
+                //get note type
+                char notetype;
+                int[] notetone = lickgen.getNoteTypes(current, pitch, pitch,
+                        notate.getChordProg());
+                switch (notetone[0]) {
+                    case LickGen.CHORD:
+                        notetype = 'C';
+                        break;
+                    case LickGen.COLOR:
+                        notetype = 'L';
+                        break;
+                    default:
+                        notetype = 'X';
+                        break;
+                }
+                if (notetype == 'X' && part.getNextNote(current) != null) {
 
-                int nextPitch = part.getNextNote(current).getPitch();
-                int nextIndex = part.getNextIndex(current);
-                if( nextIndex <= selEnd )
-                {
-                    int pitchdiff = nextPitch - pitch;
-                    if( Math.abs(pitchdiff) == 1 )
-                    {
-                        notetype = 'A';
+                    int nextPitch = part.getNextNote(current).getPitch();
+                    int nextIndex = part.getNextIndex(current);
+                    if (nextIndex <= selEnd) {
+                        int pitchdiff = nextPitch - pitch;
+                        if (Math.abs(pitchdiff) == 1) {
+                            notetype = 'A';
+                        }
                     }
                 }
+                rhythmString = rhythmString.cons(notetype + sb.substring(1));
             }
-            rhythmString = rhythmString.cons(notetype + sb.substring(1));
-        }
 
-        current = part.getNextIndex(current);
+            current = part.getNextIndex(current);
 
         }
 
         rhythmString = rhythmString.reverse();
 
         /*
-        //add in goal notes to the rhythmString
-        Polylist goalString = new Polylist();
-        for (Polylist L = rhythmString; L.length() > 1; L = L.rest()) {
+         //add in goal notes to the rhythmString
+         Polylist goalString = new Polylist();
+         for (Polylist L = rhythmString; L.length() > 1; L = L.rest()) {
 
-            String first = (String) L.first();
-            String duration = first.substring(1);
+         String first = (String) L.first();
+         String duration = first.substring(1);
 
-            //get duration of slots of the first note
-            int slots = Key.getDuration(duration);
+         //get duration of slots of the first note
+         int slots = Key.getDuration(duration);
 
-            String second = (String) L.rest().first();
+         String second = (String) L.rest().first();
 
-            //make chord tone goal note if followed by rest
-            if (second.startsWith("R") && first.startsWith("C")) {
-                first = first.replace('C', 'G');
-            }
+         //make chord tone goal note if followed by rest
+         if (second.startsWith("R") && first.startsWith("C")) {
+         first = first.replace('C', 'G');
+         }
 
-            //make chord tone quarter note or longer a goal note
-            if (first.startsWith("C") && slots >= 120) {
-                first = first.replace('C', 'G');
-            }
+         //make chord tone quarter note or longer a goal note
+         if (first.startsWith("C") && slots >= 120) {
+         first = first.replace('C', 'G');
+         }
 
-            //make color tone quarter note or longer a goal note
-            //if (first.startsWith("L") && slots >= 120) {
-                //    first = first.replace('L', 'G');
-                //}
+         //make color tone quarter note or longer a goal note
+         //if (first.startsWith("L") && slots >= 120) {
+         //    first = first.replace('L', 'G');
+         //}
 
-            //make random quarter note or longer a goal note
-            if(first.startsWith("X") && slots >= 120) {
-                first = first.replace('X', 'G');
-            }
+         //make random quarter note or longer a goal note
+         if(first.startsWith("X") && slots >= 120) {
+         first = first.replace('X', 'G');
+         }
 
-            goalString = goalString.cons(first);
+         goalString = goalString.cons(first);
 
-            //check last note
-            if (L.length() == 2) {
-                String lastDuration = second.substring(1);
+         //check last note
+         if (L.length() == 2) {
+         String lastDuration = second.substring(1);
 
-                //get duration of slots of the first note
-                int lastSlots = Key.getDuration(lastDuration);
+         //get duration of slots of the first note
+         int lastSlots = Key.getDuration(lastDuration);
 
-                //make chord tone quarter note or longer a goal note
-                if (second.startsWith("C") && lastSlots >= 120) {
-                    second = second.replace('C', 'G');
-                }
+         //make chord tone quarter note or longer a goal note
+         if (second.startsWith("C") && lastSlots >= 120) {
+         second = second.replace('C', 'G');
+         }
 
-                //make color tone quarter note or longer a goal note
-                //if (second.startsWith("L") && lastSlots >= 120) {
-                    //    second = second.replace('L', 'G');
-                    //}
-                goalString = goalString.cons(second);
-            }
-        }
+         //make color tone quarter note or longer a goal note
+         //if (second.startsWith("L") && lastSlots >= 120) {
+         //    second = second.replace('L', 'G');
+         //}
+         goalString = goalString.cons(second);
+         }
+         }
 
-        //set rhythm string to have replaced the correct notes with goal notes
-        goalString = goalString.reverse();
-        rhythmString = goalString;
+         //set rhythm string to have replaced the correct notes with goal notes
+         goalString = goalString.reverse();
+         rhythmString = goalString;
 
-        */
+         */
         //process intervals
         ArrayList<Integer> intervals = new ArrayList<Integer>();
         intervals.add(0);
-        for( int i = 1; i < notes.size(); i++ )
-        {
+        for (int i = 1; i < notes.size(); i++) {
             intervals.add(notes.get(i) - notes.get(i - 1));
         }
         //System.out.println("Intervals: " + intervals.size());
         //test intervals
         //for (int i = 0; i < intervals.size(); i++) {
-            //    System.out.println("Interval: " + intervals.get(i));
-            //}
+        //    System.out.println("Interval: " + intervals.get(i));
+        //}
 
         //process slopes
         ArrayList<int[]> slopes = new ArrayList<int[]>();
@@ -5601,96 +5315,75 @@ public boolean getUseGrammar()
         //get the slope from the note before this section to the first note in the measure
         int prevIndex = part.getPrevIndex(selStart);
         Note lastNote = part.getNote(prevIndex);
-        while( lastNote != null && lastNote.isRest() )
-        {
+        while (lastNote != null && lastNote.isRest()) {
             prevIndex = part.getPrevIndex(prevIndex);
             lastNote = part.getNote(prevIndex);
         }
         int lastpitch = 0;
-        if( lastNote != null && !lastNote.isRest() )
-        {
+        if (lastNote != null && !lastNote.isRest()) {
             lastpitch = lastNote.getPitch();
         }
         int pitch = notes.get(0);
         int pitchChange;
-        if( lastpitch == 0 )
-        {
+        if (lastpitch == 0) {
             pitchChange = 0;
-        }
-        else
-        {
+        } else {
             pitchChange = pitch - lastpitch;
         }
         int minPitchChange = 0, maxPitchChange = 0;
         //avoid random notes and repeated notes
-        if( pitchChange != 0 )
-        {
-            if( pitchChange == 1 )
-            {
+        if (pitchChange != 0) {
+            if (pitchChange == 1) {
                 minPitchChange = 1;
                 maxPitchChange = 2;
-            }
-            else if( pitchChange == -1 )
-            {
+            } else if (pitchChange == -1) {
                 minPitchChange = -2;
                 maxPitchChange = -1;
-            }
-            else
-            {
+            } else {
                 minPitchChange = pitchChange - 1;
                 maxPitchChange = pitchChange + 1;
             }
         }
 
         //if there is only 1 note, return it with its slope
-        if( intervals.size() <= 1 )
-        {
+        if (intervals.size() <= 1) {
 
             String rhythm = rhythmString.toString();
             rhythm = rhythm.substring(1, rhythm.length() - 1);
 
             //handle case of only 1 note
-            if( rhythm.equals("") )
-            {
+            if (rhythm.equals("")) {
                 char thisPitch = lickgen.getNoteType(selStart, notes.get(0), notes.get(
-                    0), notate.getChordProg());
-            String len = Note.getDurationString(slotsPerSection);
-            rhythm = thisPitch + len;
-        }
-        String returnString =
-        "((slope " + minPitchChange + " " + maxPitchChange + " " + rhythm + "))";
-        if( isSongStart )
-        {
-            returnString = returnString.concat("STARTER");
-        }
-        if( tiedAtEnd )
-        {
-            returnString = returnString.concat(" ENDTIED");
-        }
-        if( tiedAtStart )
-        {
-            returnString = returnString.concat(" STARTTIED");
-        }
-        return returnString;
+                        0), notate.getChordProg());
+                String len = Note.getDurationString(slotsPerSection);
+                rhythm = thisPitch + len;
+            }
+            String returnString =
+                    "((slope " + minPitchChange + " " + maxPitchChange + " " + rhythm + "))";
+            if (isSongStart) {
+                returnString = returnString.concat("STARTER");
+            }
+            if (tiedAtEnd) {
+                returnString = returnString.concat(" ENDTIED");
+            }
+            if (tiedAtStart) {
+                returnString = returnString.concat(" STARTTIED");
+            }
+            return returnString;
         }
 
-        for( int i = 0; i < intervals.size(); i++ )
-        {
+        for (int i = 0; i < intervals.size(); i++) {
             tracker = i;
-            if( intervals.get(i) != 0 )
-            {
+            if (intervals.get(i) != 0) {
                 i = intervals.size();
             }
         }
 
         //direction is -1 if slope is going down, 0 for repeated note, 1 for up
         int direction = 0;
-        if( intervals.get(tracker) > 0 )
-        {
+        if (intervals.get(tracker) > 0) {
             direction = 1;
-        }
-        else if( intervals.get(tracker) < 0 )
-        {
+        } else if (intervals.get(tracker) < 0) {
             direction = -1;
         }
         //initialize stuff - first note is in its own slope
@@ -5702,21 +5395,15 @@ public boolean getUseGrammar()
         slope[0] = intervals.get(1);
         slope[1] = intervals.get(1);
         slope[2] = 0;
-        for( int i = 1; i < intervals.size(); i++ )
-        {
+        for (int i = 1; i < intervals.size(); i++) {
             //slope was going up but not any more
-            if( direction == 1 && intervals.get(i) <= 0 )
-            {
-                if( intervals.get(i) == 0 )
-                {
+            if (direction == 1 && intervals.get(i) <= 0) {
+                if (intervals.get(i) == 0) {
                     direction = 0;
-                }
-                else
-                {
+                } else {
                     direction = -1;
                 }
-                if( slope[2] != 0 )
-                {
+                if (slope[2] != 0) {
                     slopes.add(slope.clone());
                 }
 
@@ -5724,61 +5411,43 @@ public boolean getUseGrammar()
                 slope[1] = intervals.get(i);
                 slope[2] = 1;
                 //slope was going down but not any more
-            }
-            else if( direction == -1 && intervals.get(i) >= 0 )
-            {
-                if( intervals.get(i) == 0 )
-                {
+            } else if (direction == -1 && intervals.get(i) >= 0) {
+                if (intervals.get(i) == 0) {
                     direction = 0;
-                }
-                else
-                {
+                } else {
                     direction = 1;
                 }
-                if( slope[2] != 0 )
-                {
+                if (slope[2] != 0) {
                     slopes.add(slope.clone());
                 }
                 slope[0] = intervals.get(i);
                 slope[1] = intervals.get(i);
                 slope[2] = 1;
                 //slope was 0 but not any more
-            }
-            else if( direction == 0 && intervals.get(i) != 0 )
-            {
-                if( intervals.get(i) > 0 )
-                {
+            } else if (direction == 0 && intervals.get(i) != 0) {
+                if (intervals.get(i) > 0) {
                     direction = 1;
-                }
-                else
-                {
+                } else {
                     direction = -1;
                 }
-                if( slope[2] != 0 )
-                {
+                if (slope[2] != 0) {
                     slopes.add(slope.clone());
                 }
                 slope[0] = intervals.get(i);
                 slope[1] = intervals.get(i);
                 slope[2] = 1;
-            }
-            else
-            {
+            } else {
                 slope[2]++;
-                if( intervals.get(i) > slope[1] )
-                {
+                if (intervals.get(i) > slope[1]) {
                     slope[1] = intervals.get(i);
                 }
-                if( intervals.get(i) < slope[0] )
-                {
+                if (intervals.get(i) < slope[0]) {
                     slope[0] = intervals.get(i);
                 }
             }
 
-            if( i == intervals.size() - 1 )
-            {
-                if( slope[2] != 0 )
-                {
+            if (i == intervals.size() - 1) {
+                if (slope[2] != 0) {
                     slopes.add(slope.clone());
                 }
             }
@@ -5788,37 +5457,30 @@ public boolean getUseGrammar()
         StringBuilder strbuf = new StringBuilder();
         strbuf.append("(");
         Polylist tempString = rhythmString;
-        for( int i = 0; i < slopes.size(); i++ )
-        {
+        for (int i = 0; i < slopes.size(); i++) {
             slope = slopes.get(i);
             strbuf.append("(slope ");
-            strbuf.append(slope[0] );
+            strbuf.append(slope[0]);
             strbuf.append(" ");
             strbuf.append(slope[1]);
             strbuf.append(" ");
 
             int j = 0;
             //get all of notes if last slope
-            if( i == slopes.size() - 1 )
-            {
-                while( tempString.nonEmpty() )
-                {
+            if (i == slopes.size() - 1) {
+                while (tempString.nonEmpty()) {
                     strbuf.append(tempString.first().toString());
                     strbuf.append(" ");
                     tempString = tempString.rest();
                 }
-            }
-            else
-            {
-                while( j < slope[2] )
-                {
+            } else {
+                while (j < slope[2]) {
                     String temp = tempString.first().toString();
                     strbuf.append(temp);
                     strbuf.append(" ");
                     //System.out.println(strbuf.toString());
                     tempString = tempString.rest();
-                    if( temp.charAt(0) != 'R' )
-                    {
+                    if (temp.charAt(0) != 'R') {
                         j++;
                     }
                 }
@@ -5833,21 +5495,18 @@ public boolean getUseGrammar()
         {
 
             //Mark measure as 'songStarter' if it is the first of a song
-            if( isSongStart )
-            {
+            if (isSongStart) {
                 strbuf.append("STARTER");
             }
             strbuf.append("CHORDS ");
 
             ChordPart chords = notate.getChordProg().extract(selStart,
-                selStart + slotsPerSection - 1);
+                    selStart + slotsPerSection - 1);
             ArrayList<Unit> chordList = chords.getUnitList();
-            if( chordList.isEmpty() )
-            {
+            if (chordList.isEmpty()) {
                 System.out.println("No chords");
             }
-            for( int i = 0; i < chordList.size(); i++ )
-            {
+            for (int i = 0; i < chordList.size(); i++) {
                 String nextChord = ((Chord) chordList.get(i)).toLeadsheet();
                 strbuf.append(nextChord);
                 strbuf.append(" ");
@@ -5860,17 +5519,14 @@ public boolean getUseGrammar()
     private void fillMelodyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fillMelodyButtonActionPerformed
 
         String r = rhythmField.getText().trim();
-        if( r.equals("") )
-        {
+        if (r.equals("")) {
             return; // no text specified
         }
-        if( r.charAt(0) != '(' )
-            {
-                r = "(".concat(r);
-            }
+        if (r.charAt(0) != '(') {
+            r = "(".concat(r);
+        }
 
-            if( r.charAt(r.length() - 1) != ')' )
-        {
+        if (r.charAt(r.length() - 1) != ')') {
             r = r.concat(")");
         }
 
@@ -5881,10 +5537,8 @@ public boolean getUseGrammar()
         Tokenizer in = new Tokenizer(rhythmReader);
         Object ob;
 
-        while( (ob = in.nextSexp()) != Tokenizer.eof )
-        {
-            if( ob instanceof Polylist )
-            {
+        while ((ob = in.nextSexp()) != Tokenizer.eof) {
+            if (ob instanceof Polylist) {
                 rhythm = (Polylist) ob;
             }
         }
@@ -5896,17 +5550,14 @@ public boolean getUseGrammar()
 
         verifyTriageFields();
 
-        if( useGrammar )
-        {
+        if (useGrammar) {
             setRhythmFieldText(
-                lickgen.generateRhythmFromGrammar(0, notate.getTotalSlots()).toString());
-        }
-        else
-        {
+                    lickgen.generateRhythmFromGrammar(0, notate.getTotalSlots()).toString());
+        } else {
             setRhythmFieldText(lickgen.generateRandomRhythm(totalSlots,
-                minDuration,
-                maxDuration,
-                restProb).toString());
+                    minDuration,
+                    maxDuration,
+                    restProb).toString());
         }
     }//GEN-LAST:event_genRhythmButtonActionPerformed
 
@@ -5914,20 +5565,16 @@ public boolean getUseGrammar()
         notate.generateFromButton();
     }//GEN-LAST:event_generateLickButtonActionPerformed
 
-private void updateUseSoloist()
-  {
-    if( useSoloistCheckBox.isSelected() && lickgen.soloistIsLoaded() )
-      {
-        notate.setLickGenStatus("Using Soloist file");
-      }
-    else
-      {
-        useSoloistCheckBox.setSelected(false);
-        notate.setLickGenStatus("Non-Matching Soloist file or No Soloist file exists");        
-      }    
-  }  
-    public void showCriticGrades()
-    {
+    private void updateUseSoloist() {
+        if (useSoloistCheckBox.isSelected() && lickgen.soloistIsLoaded()) {
+            notate.setLickGenStatus("Using Soloist file");
+        } else {
+            useSoloistCheckBox.setSelected(false);
+            notate.setLickGenStatus("Non-Matching Soloist file or No Soloist file exists");
+        }
+    }
+
+    public void showCriticGrades() {
         grade1Btn.setVisible(false);
         grade2Btn.setVisible(false);
         grade3Btn.setVisible(false);
@@ -5938,14 +5585,13 @@ private void updateUseSoloist()
         grade8Btn.setVisible(false);
         grade9Btn.setVisible(false);
         grade10Btn.setVisible(false);
-        
+
         gradeBadBtn.setVisible(true);
         gradeAverageBtn.setVisible(true);
         gradeGoodBtn.setVisible(true);
     }
-    
-    public void showAllGrades()
-    {
+
+    public void showAllGrades() {
         grade1Btn.setVisible(true);
         grade2Btn.setVisible(true);
         grade3Btn.setVisible(true);
@@ -5956,145 +5602,134 @@ private void updateUseSoloist()
         grade8Btn.setVisible(true);
         grade9Btn.setVisible(true);
         grade10Btn.setVisible(true);
-        
+
         gradeBadBtn.setVisible(false);
         gradeAverageBtn.setVisible(false);
         gradeGoodBtn.setVisible(false);
     }
-    
+
     // Return min duration text field
-    public int getMinDuration()
-    {
+    public int getMinDuration() {
         return minDuration;
     }
-    
+
     // Return max duration text field
-    public int getMaxDuration()
-    {
+    public int getMaxDuration() {
         return maxDuration;
     }
-    
+
     // Return rest prob
-    public double getRestProb()
-    {
+    public double getRestProb() {
         return restProb;
     }
- 
+
     // Return critic
-    public Critic getCritic()
-    {
+    public Critic getCritic() {
         return critic;
     }
-    
+
     // Return if the critic is selected and should be used
-    public boolean useCritic()
-    {
+    public boolean useCritic() {
         return useCritic;
     }
-    
+
     // Returns the lower-limit grade for the critic filter
-    public int getCriticGrade()
-    {
+    public int getCriticGrade() {
         return criticGrade;
     }
-    
+
     // Sets the counter for the number of generations of licks
-    public void setCounterForCriticTextField(int count)
-    {
+    public void setCounterForCriticTextField(int count) {
         counterForCriticTextField.setText(String.valueOf(count));
     }
-    
+
     // Sets the name for the lick generator name text field
-    public void setSaveLickTextField(String text)
-    {
+    public void setSaveLickTextField(String text) {
         saveLickTF.setText(text);
     }
-    
+
     // Sets the grade text field with a given grade
-    public void setLickFromStaveGradeTextField(Double grade)
-    {
+    public void setLickFromStaveGradeTextField(Double grade) {
         lickFromStaveGradeTextField.setText(String.format("%.3f", grade));
-    } 
-    
+    }
+
     // Sets the neural network output text field
-    public void setNetworkOutputTextField(String text)
-    {
+    public void setNetworkOutputTextField(String text) {
         nnetOutputTextField.setText(text);
         nnetOutputTextField.setCaretPosition(nnetOutputTextField.getText().length());
     }
-    
+
     // Appends text to the neural network output text field
-    public void appendNetworkOutputTextField(String text)
-    {
+    public void appendNetworkOutputTextField(String text) {
         String currentText = nnetOutputTextField.getText();
         nnetOutputTextField.setText(currentText + text);
         nnetOutputTextField.setCaretPosition(nnetOutputTextField.getText().length());
     }
-    
+
     // Changes if we are sending licks to the critic panel
-    public void setToCriticDialog(boolean bool)
-    {
+    public void setToCriticDialog(boolean bool) {
         toCriticMI1.setSelected(bool);
     }
-    
+
     // Re-number all rows, reseting the index of each row
-    private void resetIndexColumn(DefaultTableModel model)
-    {
-        for (int i = 0; i < layerDataTable.getRowCount(); i++)
-        {
+    private void resetIndexColumn(DefaultTableModel model) {
+        for (int i = 0; i < layerDataTable.getRowCount(); i++) {
             model.setValueAt(new Integer(i + 1), i, 0);
         }
     }
-    
+
     // Cleanly print a musician's name
-    private String fixName(String name)
-    {
+    private String fixName(String name) {
         int pos = 0;
         char[] chars = name.toCharArray();
-        for (int i = chars.length - 1; i >= 0; i--)
+        for (int i = chars.length - 1; i >= 0; i--) {
             pos += Character.isUpperCase(chars[i]) ? i : 0;
+        }
 
         // Display in format "Firstname Lastname"
-        name = name.substring(0, 1).toUpperCase() + 
-                    name.substring(1, pos) + 
-                    " " + 
-                    name.substring(pos);
+        name = name.substring(0, 1).toUpperCase()
+                + name.substring(1, pos)
+                + " "
+                + name.substring(pos);
         return name;
     }
-    
-                        /**
-                         * Generates a melody from the solo profile window. Takes the attribute ranges into account
-                         * and uses the new rule expander paradigm.
-                         */
-                        /**
-                         * If the no compute box is checked for a specific attribute, change the number of attributes to compute.
-                         * @param evt
-                         */                        /**
-                         * Generates an abstract melody from the solo profile window. Takes the attribute ranges into account
-                         * and uses the new rule expander paradigm.
-                         */                        /**
-                         * Fills the abstract melody in the abstract melody rhythm text field.
-                         */
 
-                        /**
-                         * Saves a profile curve.
-                         */                        /**
-                         * Loads a profile curve.
-                         */                        /**
-                         * Resets graphs to flat lines, clears all check boxes and text fields.
-                         */
+    /**
+     * Generates a melody from the solo profile window. Takes the attribute
+     * ranges into account and uses the new rule expander paradigm.
+     */
+    /**
+     * If the no compute box is checked for a specific attribute, change the
+     * number of attributes to compute.
+     *
+     * @param evt
+     */
+    /**
+     * Generates an abstract melody from the solo profile window. Takes the
+     * attribute ranges into account and uses the new rule expander paradigm.
+     */
+    /**
+     * Fills the abstract melody in the abstract melody rhythm text field.
+     */
+    /**
+     * Saves a profile curve.
+     */
+    /**
+     * Loads a profile curve.
+     */
+    /**
+     * Resets graphs to flat lines, clears all check boxes and text fields.
+     */
     /**
      * Checks how many beats are selected in the current leadsheet.
      */
-                        
     public void verifyBeats() {
         totalBeats = notate.doubleFromTextField(totalBeatsField, 0.0,
                 Double.POSITIVE_INFINITY, 0.0);
         totalBeats = Math.round(totalBeats);
         totalSlots = (int) (BEAT * totalBeats);
         notate.getCurrentStave().repaint();
-     }
-
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton FillProbsButton;
     private javax.swing.JLabel InvertProbLabel;
@@ -6281,144 +5916,120 @@ private void updateUseSoloist()
     private javax.swing.JLabel windowSlideLabel;
     // End of variables declaration//GEN-END:variables
 
-private void triageLick(String lickName, int grade)
-  {
-    notate.triageLick(lickName, grade);
-  }
-
-  public boolean getRecurrent()
-  {
-      return recurrentCheckbox.isSelected();
-  }
-
-  public void setRecurrent(boolean value)
-    {
-      recurrentCheckbox.setSelected(value);
-      notate.setRecurrent(value);
+    private void triageLick(String lickName, int grade) {
+        notate.triageLick(lickName, grade);
     }
-  
-  public void setTotalBeats(double beats) {
+
+    public boolean getRecurrent() {
+        return recurrentCheckbox.isSelected();
+    }
+
+    public void setRecurrent(boolean value) {
+        recurrentCheckbox.setSelected(value);
+        notate.setRecurrent(value);
+    }
+
+    public void setTotalBeats(double beats) {
         totalBeats = beats;
         totalBeatsField.setText("" + beats);
         String b = Integer.toString((int) beats);
-        
-  }
 
-  public boolean toCriticSelected()
-  {
-      return toCriticMI1.isSelected();
-  }
-
-  public boolean useGrammarSelected()
-  {
-      return useGrammarMI1.isSelected();
-  }
-
- public boolean rectifySelected()
-  {
-     return rectifyCheckBox.isSelected();
-  }
- 
- public boolean useCriticSelected()
- {
-     return useCriticCheckBox.isSelected();
- }
-
- public boolean useHeadSelected()
-  {
-     return useHeadCheckBox.isSelected();
- }
-
- public boolean useSoloistSelected()
-  {
-     return useSoloistCheckBox.isSelected();
- }
-
-public int getGap()
-  {
-    return (int) (BEAT * Notate.quietDoubleFromTextField(gapField, -Double.MAX_VALUE,
-                                                  +Double.MAX_VALUE, 0));
-  }
-
-public void setGap(double value)
-  {
-    gapField.setText("" + value);
-  }
-
-public int getWindowSize()
-  {
-    return Integer.parseInt(windowSizeField.getText());
-}
-
-public int getWindowSlide()
-  {
-    return Integer.parseInt(windowSlideField.getText());
-}
-
-public int getNumClusterReps()
-  {
-    return Integer.parseInt(numClusterRepsField.getText());
-}
-
-public boolean useMarkovSelected()
-  {
-      return useMarkovCheckbox.isSelected();
-  }
-
-
-public int getMarkovFieldLength()
-  {
-    return Integer.parseInt(MarkovLengthField.getText());
-}
-
-public boolean getUseRelativePitches()
-  {
-    return useRelativeCheckbox.isSelected();
-  }
-
-  public void redoScales()
-    {
-    DefaultComboBoxModel dcbm = (DefaultComboBoxModel)scaleComboBox.getModel();
-
-    dcbm.removeAllElements();
-
-    Polylist scales = Advisor.getAllScales();
-
-    dcbm.addElement("None");
-
-    dcbm.addElement("Use First Scale");
-
-    while( scales.nonEmpty() )
-      {
-      Polylist scale = (Polylist)scales.first();
-
-      dcbm.addElement(scale.first());
-
-      scales = scales.rest();
-      }
     }
 
+    public boolean toCriticSelected() {
+        return toCriticMI1.isSelected();
+    }
 
+    public boolean useGrammarSelected() {
+        return useGrammarMI1.isSelected();
+    }
 
-public MelodyPart generateTheme() {
-        themeLength = BEAT*Notate.intFromTextField(themeLengthField, 0, notate.getScoreLength() / BEAT, themeLength);
+    public boolean rectifySelected() {
+        return rectifyCheckBox.isSelected();
+    }
+
+    public boolean useCriticSelected() {
+        return useCriticCheckBox.isSelected();
+    }
+
+    public boolean useHeadSelected() {
+        return useHeadCheckBox.isSelected();
+    }
+
+    public boolean useSoloistSelected() {
+        return useSoloistCheckBox.isSelected();
+    }
+
+    public int getGap() {
+        return (int) (BEAT * Notate.quietDoubleFromTextField(gapField, -Double.MAX_VALUE,
+                +Double.MAX_VALUE, 0));
+    }
+
+    public void setGap(double value) {
+        gapField.setText("" + value);
+    }
+
+    public int getWindowSize() {
+        return Integer.parseInt(windowSizeField.getText());
+    }
+
+    public int getWindowSlide() {
+        return Integer.parseInt(windowSlideField.getText());
+    }
+
+    public int getNumClusterReps() {
+        return Integer.parseInt(numClusterRepsField.getText());
+    }
+
+    public boolean useMarkovSelected() {
+        return useMarkovCheckbox.isSelected();
+    }
+
+    public int getMarkovFieldLength() {
+        return Integer.parseInt(MarkovLengthField.getText());
+    }
+
+    public boolean getUseRelativePitches() {
+        return useRelativeCheckbox.isSelected();
+    }
+
+    public void redoScales() {
+        DefaultComboBoxModel dcbm = (DefaultComboBoxModel) scaleComboBox.getModel();
+
+        dcbm.removeAllElements();
+
+        Polylist scales = Advisor.getAllScales();
+
+        dcbm.addElement("None");
+
+        dcbm.addElement("Use First Scale");
+
+        while (scales.nonEmpty()) {
+            Polylist scale = (Polylist) scales.first();
+
+            dcbm.addElement(scale.first());
+
+            scales = scales.rest();
+        }
+    }
+
+    public MelodyPart generateTheme() {
+        themeLength = BEAT * Notate.intFromTextField(themeLengthField, 0, notate.getScoreLength() / BEAT, themeLength);
         Polylist rhythm = lickgen.generateRhythmFromGrammar(0, themeLength);
 
         verifyTriageFields();
         MelodyPart lick = fillMelody(BEAT, rhythm, notate.getChordProg(), 0);
 
-            //lickgen.fillMelody(minPitch, maxPitch, minInterval, maxInterval, BEAT,
-            //    leapProb, rhythm, chordProg, 0, avoidRepeats);
+        //lickgen.fillMelody(minPitch, maxPitch, minInterval, maxInterval, BEAT,
+        //    leapProb, rhythm, chordProg, 0, avoidRepeats);
 
         Part.PartIterator i = lick.iterator();
         String theme = "";
-        while (i.hasNext())
-        {
-          Unit unit = i.next();
-          if( unit != null )
-          {
-            theme += unit.toLeadsheet() + " ";
-          }
+        while (i.hasNext()) {
+            Unit unit = i.next();
+            if (unit != null) {
+                theme += unit.toLeadsheet() + " ";
+            }
         }
 
         themeField.setText(theme);
@@ -6449,21 +6060,24 @@ public MelodyPart generateTheme() {
                         index += n.getRhythmValue();
                         n = adjustedTheme.getNote(index);
                     }
-                    if (n.getPitch() >= (minPitch + maxPitch) / 2 && rise > 0)
+                    if (n.getPitch() >= (minPitch + maxPitch) / 2 && rise > 0) {
                         cm.execute(new ShiftPitchesCommand(-1 * (12 - rise), adjustedTheme,
                                 0, length, 0, 128, notate.getScore().getKeySignature()));
-                    else if (n.getPitch() < (minPitch + maxPitch) / 2 && rise < 0)
+                    } else if (n.getPitch() < (minPitch + maxPitch) / 2 && rise < 0) {
                         cm.execute(new ShiftPitchesCommand((12 + rise), adjustedTheme,
                                 0, length, 0, 128, notate.getScore().getKeySignature()));
-                    else
+                    } else {
                         cm.execute(new ShiftPitchesCommand(rise, adjustedTheme, 0, length, 0, 128, notate.getScore().getKeySignature()));
+                    }
                 }
 
-                if (Notate.bernoulli(invertProb))
+                if (Notate.bernoulli(invertProb)) {
                     cm.execute(new InvertCommand(adjustedTheme, 0, length, false));
+                }
 
-                if (Notate.bernoulli(reverseProb))
+                if (Notate.bernoulli(reverseProb)) {
                     cm.execute(new ReverseCommand(adjustedTheme, 0, length, false));
+                }
 
                 ChordPart themeChords = notate.getChordProg().extract(i, i + length);
                 cm.execute(new RectifyPitchesCommand(adjustedTheme, 0, length, themeChords, false, false));
@@ -6475,16 +6089,14 @@ public MelodyPart generateTheme() {
 
                 MelodyPart lick = fillMelody(BEAT, rhythm, notate.getChordProg(), 0);
 
-                    //lickgen.fillMelody(minPitch, maxPitch, minInterval, maxInterval, BEAT,
-                    //    leapProb, rhythm, chordProg, 0, avoidRepeats);
+                //lickgen.fillMelody(minPitch, maxPitch, minInterval, maxInterval, BEAT,
+                //    leapProb, rhythm, chordProg, 0, avoidRepeats);
 
                 Part.PartIterator j = lick.iterator();
-                while (j.hasNext())
-                {
-                  Unit unit = j.next();
-                  if( unit != null )
-                    {
-                    solo.addNote(NoteSymbol.toNote(unit.toLeadsheet()));
+                while (j.hasNext()) {
+                    Unit unit = j.next();
+                    if (unit != null) {
+                        solo.addNote(NoteSymbol.toNote(unit.toLeadsheet()));
                     }
                 }
             }
@@ -6492,14 +6104,15 @@ public MelodyPart generateTheme() {
         if (notate.getScore().getLength() - solo.getSize() != 0) {
             Polylist rhythm = lickgen.generateRhythmFromGrammar(0, notate.getScore().getLength() - solo.getSize());
 
-            MelodyPart lick =  fillMelody(BEAT, rhythm, notate.getChordProg(), 0);
+            MelodyPart lick = fillMelody(BEAT, rhythm, notate.getChordProg(), 0);
 
-                    //lickgen.fillMelody(minPitch, maxPitch, minInterval, maxInterval, BEAT,
-                    //leapProb, rhythm, chordProg, 0, avoidRepeats);
+            //lickgen.fillMelody(minPitch, maxPitch, minInterval, maxInterval, BEAT,
+            //leapProb, rhythm, chordProg, 0, avoidRepeats);
 
-             Part.PartIterator j = lick.iterator();
-            while (j.hasNext())
+            Part.PartIterator j = lick.iterator();
+            while (j.hasNext()) {
                 solo.addNote(NoteSymbol.toNote(j.next().toLeadsheet()));
+            }
         }
         notate.setCurrentSelectionStart(0);
 
@@ -6511,5 +6124,4 @@ public MelodyPart generateTheme() {
 
         imp.ImproVisor.setPlayEntrySounds(true);
     }
-
 }

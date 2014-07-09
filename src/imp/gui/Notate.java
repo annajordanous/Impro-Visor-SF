@@ -25268,6 +25268,7 @@ public void toGrammar()
                          lickgenFrame.getMarkovFieldLength(),
                          lickgenFrame.getUseRelativePitches(),
                          this);
+    //imp.cluster.CreateBrickGrammar.create(chordProg, inFile, outFile, lickgenFrame.getNumClusterReps(), lickgenFrame.getUseRelativePitches(), this);
     //System.out.println("Done writing productions to grammar file: " + outFile);
     setLickGenStatus("Done writing productions to grammar file: " + outFile);
 

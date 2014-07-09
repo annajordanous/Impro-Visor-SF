@@ -3,24 +3,44 @@
  *
  * Copyright (C) 2005-2010 Robert Keller and Harvey Mudd College
  *
- * Impro-Visor is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
+ * Impro-Visor is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 2 of the License, or (at your option) any later
+ * version.
  *
- * Impro-Visor is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * merchantability or fitness for a particular purpose.  See the
- * GNU General Public License for more details.
+ * Impro-Visor is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of merchantability or fitness
+ * for a particular purpose. See the GNU General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU General Public License
- * along with Impro-Visor; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * You should have received a copy of the GNU General Public License along with
+ * Impro-Visor; if not, write to the Free Software Foundation, Inc., 51 Franklin
+ * St, Fifth Floor, Boston, MA 02110-1301 USA
  */
-
 package imp.cluster;
 
-
+import static imp.Constants.BEAT;
+import static imp.cluster.CreateGrammar.REPS_PER_CLUSTER;
+import static imp.cluster.CreateGrammar.averageVector;
+import static imp.cluster.CreateGrammar.calcAverage;
+import static imp.cluster.CreateGrammar.createSoloistFile;
+import static imp.cluster.CreateGrammar.getChainProbabilitiesForGrammar;
+import static imp.cluster.CreateGrammar.getChains;
+import static imp.cluster.CreateGrammar.getClusterOrder;
+import static imp.cluster.CreateGrammar.getClusterReps;
+import static imp.cluster.CreateGrammar.getClusterSets;
+import static imp.cluster.CreateGrammar.getClusters;
+import static imp.cluster.CreateGrammar.getOutlines;
+import static imp.cluster.CreateGrammar.getRuleStringsFromFile;
+import static imp.cluster.CreateGrammar.getRulesFromFile;
+import static imp.cluster.CreateGrammar.mergeDuplicateChains;
+import static imp.cluster.CreateGrammar.normalizePercentage;
+import static imp.cluster.CreateGrammar.processRule;
+import static imp.cluster.CreateGrammar.readRule;
+import static imp.cluster.CreateGrammar.removeTrailingSpaces;
+import static imp.cluster.CreateGrammar.setNGramProbabilities;
+import static imp.cluster.CreateGrammar.writeGrammarWithChains;
+import static imp.cluster.CreateGrammar.writeRelativePitchGrammarWithChains;
 import imp.data.ChordPart;
 import imp.data.Duration;
 import imp.data.Note;
@@ -38,15 +58,16 @@ import polya.Polylist;
  *
  * @author Jon Gillick, Kevin Tang
  */
-
 public class CreateGrammar implements imp.Constants {
+
     private static final int SEG_LENGTH = 3;  //length of the word SEG
-    private static final int XNOTATIONSPACE_LENGTH = 10;
+    private static final int XNOTATIONPARENSPACE_LENGTH = 11;
+    private static final int BRICKTYPEPARENSPACES_LENGTH = 12; //"(Brick type ".length
     public static double MIN_PROB = 5.0; //include phrase transitions of greater than this probability
     public static int REPS_PER_CLUSTER = 5;
     private static DataPoint averagePoint; //keeps track of average point in cluster
     private static DecimalFormat df = new DecimalFormat("0.00");
-    
+
     /* Takes a grammar file containing productions extracted from leadsheets
      * calls clustering algorithm on the productions and writes the results
      * into the grammar
@@ -55,7 +76,7 @@ public class CreateGrammar implements imp.Constants {
             int repsPerCluster, boolean Markov, int markovLength, boolean useRelative, Notate notate) {
 
         notate.setLickGenStatus("Writing grammar rules: " + outFile);
-        
+
         //if useHead is true, we will add datapoints from the head into
         //a separate vector, and we will not use them in clustering
         boolean useHead = false;
@@ -71,7 +92,7 @@ public class CreateGrammar implements imp.Constants {
         //put data into vectors
         for (int i = 0; i < rules.length; i++) {
             DataPoint temp = processRule(rules[i], ruleStrings[i], Integer.toString(i));
-                    
+
             if (useHead) {
                 if (temp.isHead()) {
                     headData.add(temp);
@@ -82,13 +103,13 @@ public class CreateGrammar implements imp.Constants {
                 dataPoints.add(temp);
             }
         }
-        notate.setLickGenStatus("Wrote " + rules.length + " grammar rules.");       
-        
+        notate.setLickGenStatus("Wrote " + rules.length + " grammar rules.");
+
         double[] averages = calcAverage(dataPoints);
         averageVector(dataPoints, averages);
 
         Cluster[] clusters = getClusters(dataPoints, averages, dataPoints.size() / repsPerCluster);
-        
+
         //create grammar with markov chains and create soloist file
         if (Markov) {
 
@@ -117,69 +138,65 @@ public class CreateGrammar implements imp.Constants {
             String soloistFileName = outFile.replace(".grammar", ".soloist");
 
             File soloistFile = new File(soloistFileName);
-            
+
             notate.setLickGenStatus("Creating .soloist File with " + outlines.size() + " outlines: " + soloistFileName);
 
             createSoloistFile(dataPoints, clusters, clusterSets,
                     transitions, reverseTransitions, outlines, soloistFile);
-        
+
             //write grammar
             ngrams = getChains(orders, clusters, markovLength);
             DataPoint[] reps = getClusterReps(clusters, repsPerCluster);
             Vector<float[]> chains = getChainProbabilitiesForGrammar(ngrams);
-            
-            if( useRelative )
-              {
-              writeRelativePitchGrammarWithChains(ngrams, chains, reps, clusters, outFile, chordProg); //write grammar using X notation
-              }
-            else
-              {
-              writeGrammarWithChains(ngrams, chains, reps, clusters, outFile, chordProg); //write grammar using abstract melody
-              }
+
+            if (useRelative) {
+                writeRelativePitchGrammarWithChains(ngrams, chains, reps, clusters, outFile, chordProg); //write grammar using X notation
+            } else {
+                writeGrammarWithChains(ngrams, chains, reps, clusters, outFile, chordProg); //write grammar using abstract melody
+            }
             notate.setLickGenStatus("Done creating .soloist File with " + outlines.size() + " outlines: " + soloistFileName);
 
-        } 
-        
-        //otherwise just add productions to the original grammar
+        } //otherwise just add productions to the original grammar
         else {
             DataPoint[] reps = getClusterReps(clusters, repsPerCluster);
             writeClusterReps(reps, clusters, outFile);
         }
 
     }
-    
+
     public static Vector<NGram> getChains(Vector<Vector<DataPoint>> orders, Cluster[] clusters, int chainLength) {
         Vector<NGram> ngrams = new Vector<NGram>();
         //last marks whether the ngram we are creating ends a chorus
         boolean last = false;
-        for(int i = 0; i < orders.size(); i++) {
+        for (int i = 0; i < orders.size(); i++) {
             Vector<DataPoint> currentSet = orders.get(i);
-            for(int j = 0; j < currentSet.size() - (chainLength-1); j ++) {
+            for (int j = 0; j < currentSet.size() - (chainLength - 1); j++) {
                 int[] chain = new int[chainLength];
-                for(int k = 0; k < chainLength; k++) {
-                    chain[k] = currentSet.get(j+k).getCluster().getNumber();
+                for (int k = 0; k < chainLength; k++) {
+                    chain[k] = currentSet.get(j + k).getCluster().getNumber();
                 }
-                if(j == currentSet.size() - (chainLength)) last = true;
+                if (j == currentSet.size() - (chainLength)) {
+                    last = true;
+                }
                 ngrams.add(new NGram(chain, last));
                 last = false;
             }
         }
-        
+
         //for(int i = 0; i < ngrams.size(); i++) {
         //    System.out.println(i + " " + ngrams.get(i));
         //}
 
         return ngrams;
     }
-    
+
     /* Takes a vector of NGrams, removes duplicates and increments the
      * counters in the remaining copy
-     * Returns the vector */ 
-    
+     * Returns the vector */
     public static Vector<NGram> mergeDuplicateChains(Vector<NGram> ngrams) {
-        for(int i = 0; i < ngrams.size(); i++) {
+        for (int i = 0; i < ngrams.size(); i++) {
             NGram current = ngrams.get(i);
-            for(int j = i + 1; j < ngrams.size(); j++) {
+            for (int j = i + 1; j < ngrams.size(); j++) {
                 NGram other = ngrams.get(j);
                 if (current.equals(other)) {
                     current.addAppearance();
@@ -191,70 +208,74 @@ public class CreateGrammar implements imp.Constants {
 
         return ngrams;
     }
-    
+
     //sets the probability fields within the ngrams by checking which ngrams
     //are equal until the final state
     public static void setNGramProbabilities(Vector<NGram> ngrams) {
-        for(int i = 0; i < ngrams.size(); i++) {
+        for (int i = 0; i < ngrams.size(); i++) {
             NGram current = ngrams.get(i);
             int appearancesUpToLast = 0;
-            for(int j = 0; j < ngrams.size(); j++) {
-                if(current.equalsUpToLast(ngrams.get(j)))
+            for (int j = 0; j < ngrams.size(); j++) {
+                if (current.equalsUpToLast(ngrams.get(j))) {
                     appearancesUpToLast += ngrams.get(j).getNumAppearances();
+                }
             }
             current.setAppearancesUpToLast(appearancesUpToLast);
             current.setProbability();
-        } 
+        }
     }
-    
+
     public static Vector<float[]> getChainProbabilitiesForGrammar(Vector<NGram> ngrams) {
-        for(int i = 0; i < ngrams.size(); i++) {
+        for (int i = 0; i < ngrams.size(); i++) {
             NGram current = ngrams.get(i);
             int appearancesUpToLast = 0;
-            for(int j = 0; j < ngrams.size(); j++) {
-                if(current.equalsUpToLast(ngrams.get(j)))
+            for (int j = 0; j < ngrams.size(); j++) {
+                if (current.equalsUpToLast(ngrams.get(j))) {
                     appearancesUpToLast += ngrams.get(j).getNumAppearances();
+                }
             }
             current.setAppearancesUpToLast(appearancesUpToLast);
             current.setProbability();
-        } 
-        
+        }
+
         //for(int i = 0; i < ngrams.size(); i++) {
         //    System.out.println(i + " " + ngrams.get(i));
         //}
-        
+
         //return float arrays to pass to writeGrammarWithChains
         //last 3 elements of arrays are numAppearances, probability, and boolean for ender
         //if last element is -1, it is an ender, otherwise it should be 0
         //TODO: change writeGrammarWithChains to take n-gram objects
         //and eliminate this method
-        
+
         Vector<float[]> chains = new Vector<float[]>();
-        for(int i = 0; i < ngrams.size(); i++) {
+        for (int i = 0; i < ngrams.size(); i++) {
             NGram current = ngrams.get(i);
             int[] order = current.getChain();
-            float[] chain = new float[order.length+3];
+            float[] chain = new float[order.length + 3];
             //copy chain over
-            for(int j = 0; j < order.length; j++) {
-                chain[j] = (float)order[j];
+            for (int j = 0; j < order.length; j++) {
+                chain[j] = (float) order[j];
             }
             //set numappearances and prob
-            chain[chain.length-3] = (float)current.getNumAppearances();
-            chain[chain.length-2] = current.getProbability()*100;
-            if(current.isEnder()) 
-                chain[chain.length-1] = -1;
-            else chain[chain.length-1] = 0;
+            chain[chain.length - 3] = (float) current.getNumAppearances();
+            chain[chain.length - 2] = current.getProbability() * 100;
+            if (current.isEnder()) {
+                chain[chain.length - 1] = -1;
+            } else {
+                chain[chain.length - 1] = 0;
+            }
             chains.add(chain);
         }
-        
+
         Collections.sort((List) chains, new ChainComparer());
-         
-         return chains;
+
+        return chains;
     }
-    
-    public static void writeGrammarWithChains(Vector<NGram> ngrams, Vector<float[]> chains, DataPoint[] reps, 
+
+    public static void writeGrammarWithChains(Vector<NGram> ngrams, Vector<float[]> chains, DataPoint[] reps,
             Cluster[] clusters, String outFile, ChordPart chordProg) {
-        
+
         Vector<Integer> segLengths = new Vector<Integer>();
         for (int i = 0; i < reps.length; i++) {
             Integer length = new Integer(reps[i].getSegLength());
@@ -279,12 +300,12 @@ public class CreateGrammar implements imp.Constants {
             for (int i = 0; i < segLengths.size(); i++) {
                 String top = "";
                 int counter = 0;
-                for(int j = 1; j <= 64; j=(int) Math.pow(2,counter)) {
-                    top = top.concat("\n(rule (P Y) ((START " + j + ") (P (- Y " 
+                for (int j = 1; j <= 64; j = (int) Math.pow(2, counter)) {
+                    top = top.concat("\n(rule (P Y) ((START " + j + ") (P (- Y "
                             + segLengths.get(i) * 120 * j + "))) " + Math.pow(10, counter) + ")");
                     counter++;
                 }
-                
+
                 //String top = "\n(rule (P Y) ((START 2) (P (- Y " + (segLengths.get(i) * 2 * 120) + "))) 1) " +
                 //        "\n(rule (P Y) ((START 3) (P (- Y " + (segLengths.get(i) * 3 * 120) + "))) 8) " +
                 //        "\n(rule (P Y) ((START 4) (P (- Y " + (segLengths.get(i) * 4 * 120) + "))) 27) " +
@@ -292,7 +313,7 @@ public class CreateGrammar implements imp.Constants {
                 //        "\n(rule (P Y) ((START 6) (P (- Y " + (segLengths.get(i) * 6 * 120) + "))) 125) " +
                 //        "\n(rule (P Y) ((START 7) (P (- Y " + (segLengths.get(i) * 7 * 120) + "))) 216) \n";
                 out.write(top);
-            
+
             }
 
             //write start symbols
@@ -323,14 +344,14 @@ public class CreateGrammar implements imp.Constants {
                 }
             }
 
-            
+
             //write rules
             Vector<String> addedRules = new Vector<String>();
             for (int k = 1; k < chainLength; k++) {        //k loops through chains of length up to chainLength
                 for (int j = 0; j < chains.size(); j++) {       //j loops through all chains
                     float[] chain = chains.get(j).clone();
                     NGram ngram = ngrams.get(j);
-                    
+
                     String rule = "(rule (Cluster";
                     for (int q = 0; q < k; q++) {
                         rule = rule.concat((new Integer((int) chain[q]).toString()));
@@ -341,9 +362,9 @@ public class CreateGrammar implements imp.Constants {
                     rule = rule.concat(" Z) " + "(Q" + new Integer((int) chain[k - 1]).toString());
                     rule = rule.concat(" (Cluster");
                     /* here we handle the case, for ex, if you are using a trigram but are only on the
-                    second measure, you can only use the previous states that you have */
-                    if (k < chainLength - 1) {  
-                        
+                     second measure, you can only use the previous states that you have */
+                    if (k < chainLength - 1) {
+
                         int numOccurrences = 0;
                         int numPreviousState = 0;
                         for (int p = 0; p < chains.size(); p++) {
@@ -351,34 +372,36 @@ public class CreateGrammar implements imp.Constants {
                             //check for chains matching the current one up to the first k+1 places
                             boolean match = true;
                             boolean previousStateMatch = true;
-                            for (int q = 0; q < k+1; q++) {
-                               if(chain[q] != tempChain[q]) {
-                                match = false;
-                                if(q < k) previousStateMatch = false;
-                               }                                                         
+                            for (int q = 0; q < k + 1; q++) {
+                                if (chain[q] != tempChain[q]) {
+                                    match = false;
+                                    if (q < k) {
+                                        previousStateMatch = false;
+                                    }
+                                }
                             }
-                            if (match == true) 
+                            if (match == true) {
                                 numOccurrences += tempChain[chainLength];
-                            if (previousStateMatch == true)
+                            }
+                            if (previousStateMatch == true) {
                                 numPreviousState += tempChain[chainLength];
+                            }
                         }
-          
-                        chain[chainLength+1] = (float) 100.0 * numOccurrences / numPreviousState;
-                        
+
+                        chain[chainLength + 1] = (float) 100.0 * numOccurrences / numPreviousState;
+
                         for (int q = 0; q < k + 1; q++) {
                             rule = rule.concat((new Integer((int) chain[q]).toString()));
                             if (q != k) {
                                 rule = rule.concat("to");
                             }
                         }
-                    } 
-                    //here we handle the case when there are enough previous states to use the full chainlength
+                    } //here we handle the case when there are enough previous states to use the full chainlength
                     else {
-                        
-                        if(chain[chainLength+2] < 0) {
+
+                        if (chain[chainLength + 2] < 0) {
                             rule = rule.concat(Integer.toString(ngram.getLast()));
-                        }
-                        else {
+                        } else {
                             for (int q = 1; q <= k; q++) {
                                 rule = rule.concat((new Integer((int) chain[q]).toString()));
                                 if (chainLength > 2 && q != k) {
@@ -390,7 +413,7 @@ public class CreateGrammar implements imp.Constants {
 
                     rule = rule.concat(" (- Z 1))) ");
                     //rule = rule.concat(new Float(chain[chainLength + 1]).toString());
-                    rule = rule.concat(df.format(chain[chainLength+1]/100));
+                    rule = rule.concat(df.format(chain[chainLength + 1] / 100));
                     rule = rule.concat(")\n");
                     if (!addedRules.contains(rule)) {
                         out.write(rule);
@@ -410,7 +433,7 @@ public class CreateGrammar implements imp.Constants {
                 //int start = rule.indexOf("((");
                 //rule = rule.substring(start + 1, rule.length() - 1);
                 out.write("(rule (Q" + clusterNumber + ")(" + rule + ") " + df.format(numAppearances / REPS_PER_CLUSTER) + ")\n");
-     //System.out.println("(rule (Q" + clusterNumber + ")(" + rule + " " + df.format(1.0 / REPS_PER_CLUSTER) + ")");
+                //System.out.println("(rule (Q" + clusterNumber + ")(" + rule + " " + df.format(1.0 / REPS_PER_CLUSTER) + ")");
             }
 
             out.close();
@@ -421,14 +444,14 @@ public class CreateGrammar implements imp.Constants {
 
 
     }
-    
+
     /**
-     * writing a grammar using relative pitch notation instead of abstract melodies
-     * based off writeGrammarWithChains()
+     * writing a grammar using relative pitch notation instead of abstract
+     * melodies based off writeGrammarWithChains()
      */
-    public static void writeRelativePitchGrammarWithChains(Vector<NGram> ngrams, Vector<float[]> chains, DataPoint[] reps, 
+    public static void writeRelativePitchGrammarWithChains(Vector<NGram> ngrams, Vector<float[]> chains, DataPoint[] reps,
             Cluster[] clusters, String outFile, ChordPart chordProg) {
-        
+
         Vector<Integer> segLengths = new Vector<Integer>();
         for (int i = 0; i < reps.length; i++) {
             Integer length = new Integer(reps[i].getSegLength());
@@ -452,14 +475,14 @@ public class CreateGrammar implements imp.Constants {
             for (int i = 0; i < segLengths.size(); i++) {
                 String top = "";
                 int counter = 0;
-                for(int j = 1; j <= 64; j=(int) Math.pow(2,counter)) {
-                    top = top.concat("\n(rule (P Y) ((START " + j + ") (P (- Y " 
+                for (int j = 1; j <= 64; j = (int) Math.pow(2, counter)) {
+                    top = top.concat("\n(rule (P Y) ((START " + j + ") (P (- Y "
                             + segLengths.get(i) * 120 * j + "))) " + Math.pow(10, counter) + ")");
                     counter++;
                 }
-                
+
                 out.write(top);
-            
+
             }
 
             //write start symbols
@@ -489,14 +512,14 @@ public class CreateGrammar implements imp.Constants {
                 }
             }
 
-            
+
             //write rules
             Vector<String> addedRules = new Vector<String>();
             for (int k = 1; k < chainLength; k++) {        //k loops through chains of length up to chainLength
                 for (int j = 0; j < chains.size(); j++) {       //j loops through all chains
                     float[] chain = chains.get(j).clone();
                     NGram ngram = ngrams.get(j);
-                    
+
                     String rule = "(rule (Cluster";
                     for (int q = 0; q < k; q++) {
                         rule = rule.concat((new Integer((int) chain[q]).toString()));
@@ -507,9 +530,9 @@ public class CreateGrammar implements imp.Constants {
                     rule = rule.concat(" Z) " + "(Q" + new Integer((int) chain[k - 1]).toString());
                     rule = rule.concat(" (Cluster");
                     /* here we handle the case, for ex, if you are using a trigram but are only on the
-                    second measure, you can only use the previous states that you have */
-                    if (k < chainLength - 1) {  
-                        
+                     second measure, you can only use the previous states that you have */
+                    if (k < chainLength - 1) {
+
                         int numOccurrences = 0;
                         int numPreviousState = 0;
                         for (int p = 0; p < chains.size(); p++) {
@@ -517,34 +540,36 @@ public class CreateGrammar implements imp.Constants {
                             //check for chains matching the current one up to the first k+1 places
                             boolean match = true;
                             boolean previousStateMatch = true;
-                            for (int q = 0; q < k+1; q++) {
-                               if(chain[q] != tempChain[q]) {
-                                match = false;
-                                if(q < k) previousStateMatch = false;
-                               }                                                         
+                            for (int q = 0; q < k + 1; q++) {
+                                if (chain[q] != tempChain[q]) {
+                                    match = false;
+                                    if (q < k) {
+                                        previousStateMatch = false;
+                                    }
+                                }
                             }
-                            if (match == true) 
+                            if (match == true) {
                                 numOccurrences += tempChain[chainLength];
-                            if (previousStateMatch == true)
+                            }
+                            if (previousStateMatch == true) {
                                 numPreviousState += tempChain[chainLength];
+                            }
                         }
-          
-                        chain[chainLength+1] = (float) 100.0 * numOccurrences / numPreviousState;
-                        
+
+                        chain[chainLength + 1] = (float) 100.0 * numOccurrences / numPreviousState;
+
                         for (int q = 0; q < k + 1; q++) {
                             rule = rule.concat((new Integer((int) chain[q]).toString()));
                             if (q != k) {
                                 rule = rule.concat("to");
                             }
                         }
-                    } 
-                    //here we handle the case when there are enough previous states to use the full chainlength
+                    } //here we handle the case when there are enough previous states to use the full chainlength
                     else {
-                        
-                        if(chain[chainLength+2] < 0) {
+
+                        if (chain[chainLength + 2] < 0) {
                             rule = rule.concat(Integer.toString(ngram.getLast()));
-                        }
-                        else {
+                        } else {
                             for (int q = 1; q <= k; q++) {
                                 rule = rule.concat((new Integer((int) chain[q]).toString()));
                                 if (chainLength > 2 && q != k) {
@@ -556,7 +581,7 @@ public class CreateGrammar implements imp.Constants {
 
                     rule = rule.concat(" (- Z 1))) ");
                     //rule = rule.concat(new Float(chain[chainLength + 1]).toString());
-                    rule = rule.concat(df.format(chain[chainLength+1]/100));
+                    rule = rule.concat(df.format(chain[chainLength + 1] / 100));
                     rule = rule.concat(")\n");
                     if (!addedRules.contains(rule)) {
                         out.write(rule);
@@ -575,11 +600,12 @@ public class CreateGrammar implements imp.Constants {
                 //cut off the opening part of the string leaving only the slope data
                 //int start = rule.indexOf("((");
                 //rule = rule.substring(start + 1, rule.length() - 1);
-                out.write("(rule (Q" + clusterNumber + ")(" + rule + ") " + df.format(numAppearances / REPS_PER_CLUSTER) + ")\n");
+                
+                
+                //out.write("(rule (Q" + clusterNumber + ")(" + rule + ") " + df.format(numAppearances / REPS_PER_CLUSTER) + ")\n");
+                out.write("(rule " + "(Brick " + reps[i].getBrickType() + ") " + "(Q" + clusterNumber + ")(" + rule + ") " + df.format(numAppearances / REPS_PER_CLUSTER) + ")\n");
             }
-
             out.close();
-
         } catch (IOException e) {
             System.out.println("IO EXCEPTION!" + e.toString());
         }
@@ -587,12 +613,9 @@ public class CreateGrammar implements imp.Constants {
 
     }
 
-    
-
     /**
      * normalize percentages of all elements in a vector
      */
-
     public static void normalizePercentages(Vector<float[]> transitions, Cluster[] clusters) {
         for (int i = 0; i < clusters.length; i++) {
             normalizePercentage(transitions, i);
@@ -602,7 +625,6 @@ public class CreateGrammar implements imp.Constants {
     /**
      * Set percentages of one set of elements in an array to add to 100
      */
-
     public static void normalizePercentage(Vector<float[]> transitions, int index) {
         int indexOfPercentage = transitions.get(index).length - 1;
         float sumOfPercentages = 0;
@@ -621,33 +643,33 @@ public class CreateGrammar implements imp.Constants {
         }
     }
 
-    
     /*  Takes an array of clusters, and a vector of the phrase data in the clusters
-    returns an integer array of which cluster each phrase is in in order
+     returns an integer array of which cluster each phrase is in in order
      */
     public static Vector<Vector<DataPoint>> getClusterOrder(Cluster[] clusters, Vector<DataPoint> phraseData) {
         Vector<Vector<DataPoint>> orders = new Vector<Vector<DataPoint>>();
         Vector<DataPoint> order = new Vector<DataPoint>();
-        
+
         //set names for datapoints to be in order starting from 0
         for (int i = 0; i < phraseData.size(); i++) {
             DataPoint p = phraseData.get(i);
             p.setObjectName(Integer.toString(i));
         }
-        
+
         for (int i = 0; i < phraseData.size(); i++) {
-            if (phraseData.get(i).isStarter()) {          
+            if (phraseData.get(i).isStarter()) {
                 if (!order.isEmpty()) {
                     orders.add(order);
                     order = new Vector<DataPoint>();
-                }               
+                }
             }
             order.add(phraseData.get(i));
         }
         //add last set
-        if (!order.isEmpty()) 
+        if (!order.isEmpty()) {
             orders.add(order);
-        
+        }
+
         //for(int i = 0; i < orders.size(); i++) {
         //    System.out.println(); System.out.println(); System.out.println(); System.out.println();
         //    Vector<DataPoint> o = orders.get(i);
@@ -655,30 +677,30 @@ public class CreateGrammar implements imp.Constants {
         //        System.out.print(o.get(j).getCluster().getNumber() + " ");
         //    }
         //}
-        
+
         return orders;
     }
-    
+
     /*  Takes an array of clusters, and a vector of the phrase data in the clusters
-    returns an integer array of which cluster each phrase is in in order
+     returns an integer array of which cluster each phrase is in in order
      */
     public static Vector<Vector<Integer>> getClusterOrderBad(Cluster[] clusters, Vector<DataPoint> phraseData) {
         Vector<Vector<Integer>> orders = new Vector<Vector<Integer>>();
         Vector<Integer> order = new Vector<Integer>();
-        
+
         //set names for phrases to be in order starting from 0
         for (int i = 0; i < phraseData.size(); i++) {
             DataPoint p = phraseData.get(i);
             p.setObjectName(Integer.toString(i));
             phraseData.set(i, p);
         }
-        
-        
+
+
         for (int i = 0; i < phraseData.size(); i++) {
             for (int j = 0; j < clusters.length; j++) {
                 for (int k = 0; k < clusters[j].getNumDataPoints(); k++) {
                     if (clusters[j].getDataPoint(k).getObjName().equals(Integer.toString(i))) {
-                        
+
                         //System.out.println(i + ": Cluster " + j + ": " + phraseData.get(i).getObjData());
                         if (phraseData.get(i).isStarter()) {
                             //System.out.println(i + ": Cluster " + j + ": " + phraseData.get(i).getObjData());
@@ -698,7 +720,7 @@ public class CreateGrammar implements imp.Constants {
             orders.add((Vector<Integer>) order.clone());
 
             for (int i = 0; i < orders.size(); i++) {
-              //System.out.println("Set " + i + ":");
+                //System.out.println("Set " + i + ":");
                 Vector<Integer> ord = orders.get(i);
                 for (int j = 0; j < ord.size(); j++) {
                     //System.out.println(j + ": " + ord.get(j));
@@ -706,15 +728,15 @@ public class CreateGrammar implements imp.Constants {
             }
 
         }
-        
+
         return orders;
     }
-    
-        public static Vector<Double> getSimilaritiesToHead(Vector<DataPoint> dataPoints,
+
+    public static Vector<Double> getSimilaritiesToHead(Vector<DataPoint> dataPoints,
             Vector<DataPoint> headData) {
         Vector<Double> values = new Vector<Double>();
         for (int i = 0; i < dataPoints.size(); i++) {
-                DataPoint d = dataPoints.get(i);
+            DataPoint d = dataPoints.get(i);
             for (int j = 0; j < headData.size(); j++) {
                 //System.out.println("I = " + i + ", J = " + j);
                 DataPoint h = headData.get(j);
@@ -736,24 +758,26 @@ public class CreateGrammar implements imp.Constants {
         }
         return values;
     }
-    
+
     public static DataPoint processRule(Polylist rule, String ruleString, String i) {
         //data variables
         boolean starter = false;
         boolean head = false;
         boolean startTied = false;
         boolean endTied = false;
-        
+
         double noteCount = 0;
         double restDuration = 0;
         double averageMaxSlope = 0;
         double startBeat = -1;
         double numSegments = 0;
         double consonance = 0;
-        
+
         int segLength = Integer.parseInt(rule.first().toString().substring(SEG_LENGTH));
         int chorusNumber = 0;
         Vector<String> chords = new Vector();
+
+        //we process the rule string, starting at the end and working backward
         
         //extract chord data
         int stopIndex = ruleString.length();
@@ -761,13 +785,13 @@ public class CreateGrammar implements imp.Constants {
             stopIndex = ruleString.indexOf("CHORDS");
             String[] chordStrings = ruleString.substring(stopIndex).split(" ");
             ruleString = ruleString.substring(0, stopIndex);
-            for(int j = 1; j < chordStrings.length; j++) {
+            for (int j = 1; j < chordStrings.length; j++) {
                 chords.add(chordStrings[j]);
             }
         }
-        
+
         ruleString = removeTrailingSpaces(ruleString);
-        
+
         //extract exact melody data
         if (ruleString.contains("Head")) {
             stopIndex = ruleString.indexOf("Head");
@@ -778,67 +802,76 @@ public class CreateGrammar implements imp.Constants {
             int firstSpaceIndex = rest.indexOf(" ");
             chorusNumber = Integer.parseInt(ruleString.substring(stopIndex + 6, stopIndex + firstSpaceIndex));
         }
-        
-        String exactMelodyString = ruleString.substring(stopIndex,ruleString.length());
+
+        String exactMelodyString = ruleString.substring(stopIndex, ruleString.length());
         String[] melody = exactMelodyString.split(" ");
-        
-        
+
+
         //create new melody part with the original melody and the start index
         IndexedMelodyPart exactMelody = new IndexedMelodyPart(melody);
         //make sure there are no merged rests that last too long
         int slots = segLength * BEAT;
-        if(exactMelody.getSize() > slots) {
+        if (exactMelody.getSize() > slots) {
             exactMelody.setSize(slots);
         }
 
         //remove the exact melody from the string now that we've extracted it
-        ruleString = ruleString.substring(0, stopIndex-1); 
-        ruleString = removeTrailingSpaces(ruleString);
-        
-        //extract X notation melody data
-        //string "Xnotation" denotes start of the X notation.  
-        stopIndex = ruleString.indexOf("Xnotation"); //find "Xnotation" delimiter
-        String relativePitchMelodyString = ruleString.substring(stopIndex + XNOTATIONSPACE_LENGTH, ruleString.length());
-        
-        //remove the X notation from the string now that we've extracted it
         ruleString = ruleString.substring(0, stopIndex - 1);
         ruleString = removeTrailingSpaces(ruleString);
         
+        //extract brick type data
+        //string "Brick type" denotes where the brick type information is
+        stopIndex = ruleString.indexOf("(Brick type ");
+        String brickType = ruleString.substring(stopIndex + BRICKTYPEPARENSPACES_LENGTH, ruleString.length() - 1); //-1 to chop off closing parenthesis
+        
+        //remove the brick type data from the string now that we've extracted it
+        ruleString = ruleString.substring(0, stopIndex - 1);
+        ruleString = removeTrailingSpaces(ruleString);
+
+        //extract X notation melody data
+        //string "Xnotation" denotes start of the X notation.  
+        stopIndex = ruleString.indexOf("(Xnotation"); //find "Xnotation" delimiter
+        String relativePitchMelodyString = ruleString.substring(stopIndex + XNOTATIONPARENSPACE_LENGTH, ruleString.length() - 1);
+
+        //remove the X notation from the string now that we've extracted it
+        ruleString = ruleString.substring(0, stopIndex - 1);
+        ruleString = removeTrailingSpaces(ruleString);
+
         //determine if a measure is tied at start or end
-        if(rule.last().equals("STARTTIED")) {
+        if (rule.last().equals("STARTTIED")) {
             startTied = true;
             rule = rule.allButLast();
             ruleString = ruleString.substring(0, ruleString.indexOf("STARTTIED") - 1).concat(" )");
         }
-        
+
         //determine if a measure is tied at start or end
-        if(rule.last().equals("ENDTIED")) {
+        if (rule.last().equals("ENDTIED")) {
             endTied = true;
             rule = rule.allButLast();
             ruleString = ruleString.substring(0, ruleString.indexOf("ENDTIED") - 1).concat(" )");
         }
-        
+
         //determine if a rule is a 'song starter'
-        if(rule.last().equals("STARTER")) {
+        if (rule.last().equals("STARTER")) {
             starter = true;
             rule = rule.allButLast();
             ruleString = ruleString.substring(0, ruleString.length() - 9).concat(" )");
         }
-        
+
         //remove extra junk from the rule string such as "(rule (seg 4)"
-        ruleString = ruleString.substring(ruleString.indexOf("Seg") + 7, ruleString.length()-3);
+        ruleString = ruleString.substring(ruleString.indexOf("Seg") + 7, ruleString.length() - 3);
         //System.out.println("ruleString: " + ruleString);
         consonance = getConsonance(ruleString, exactMelody);
-        
+
         rule = rule.rest();
-        
+
         while (rule.nonEmpty()) {
             if (rule.first() instanceof Polylist) {
                 Polylist inner = (Polylist) rule.first();
                 //get maximum slope
                 int maxslope;
-                if (Math.signum(Integer.parseInt(inner.second().toString())) == -1 ||
-                        Math.signum(Integer.parseInt(inner.third().toString())) == -1) {
+                if (Math.signum(Integer.parseInt(inner.second().toString())) == -1
+                        || Math.signum(Integer.parseInt(inner.third().toString())) == -1) {
                     maxslope = Integer.parseInt(inner.second().toString());
                 } else {
                     maxslope = Integer.parseInt(inner.third().toString());
@@ -878,47 +911,60 @@ public class CreateGrammar implements imp.Constants {
             }
             rule = rule.rest();
         }
-        
-        
-        int exactStartBeat = getStartBeat(exactMelody);       
+
+
+        int exactStartBeat = getStartBeat(exactMelody);
         //old construction without relative pitch melody info
 //        DataPoint d =  new DataPoint(exactStartBeat, consonance, noteCount, restDuration, averageMaxSlope / (numSegments), 
 //                startBeat, numSegments, i, ruleString, segLength, 
 //                starter, exactMelody, head, chorusNumber, chords, startTied, endTied);
-        DataPoint d =  new DataPoint(exactStartBeat, consonance, noteCount, restDuration, averageMaxSlope / (numSegments), 
-                startBeat, numSegments, i, ruleString, segLength, 
-                starter, exactMelody, relativePitchMelodyString, head, chorusNumber, chords, startTied, endTied);
+        DataPoint d = new DataPoint(exactStartBeat, consonance, noteCount, restDuration, averageMaxSlope / (numSegments),
+                startBeat, numSegments, i, ruleString, segLength,
+                starter, exactMelody, relativePitchMelodyString, brickType, head, chorusNumber, chords, startTied, endTied);
         return d;
     }
 
     private static double getConsonance(String ruleString, IndexedMelodyPart p) {
         int consonance = 0;
-        
+
         Vector<Character> noteTypes = new Vector<Character>();
-        
-        for(int i = 0; i < ruleString.length(); i++) {
+
+        for (int i = 0; i < ruleString.length(); i++) {
             char c = ruleString.charAt(i);
-            if (c == 'C' || c == 'L' || c == 'A' || c == 'X' || c == 'R' || c =='G')
+            if (c == 'C' || c == 'L' || c == 'A' || c == 'X' || c == 'R' || c == 'G') {
                 noteTypes.add(c);
-        }
-        
-        //this should only happen for all rests, where rests were not properly merged
-        ArrayList<Unit> units = p.getUnitList();
-        if(units.size() != noteTypes.size()) 
-            return 0;
-           
-        for(int i = 0; i < noteTypes.size(); i++) {
-            int noteLength = units.get(i).getRhythmValue();
-            switch(noteTypes.get(i)) {
-                case 'G': consonance += 1 * noteLength; break;
-                case 'C': consonance += .8 * noteLength; break;
-                case 'A': consonance += .6 * noteLength; break;
-                case 'L': consonance += .4 * noteLength; break;
-                case 'X': consonance += .1 * noteLength; break;
-                default: break;
             }
         }
-        
+
+        //this should only happen for all rests, where rests were not properly merged
+        ArrayList<Unit> units = p.getUnitList();
+        if (units.size() != noteTypes.size()) {
+            return 0;
+        }
+
+        for (int i = 0; i < noteTypes.size(); i++) {
+            int noteLength = units.get(i).getRhythmValue();
+            switch (noteTypes.get(i)) {
+                case 'G':
+                    consonance += 1 * noteLength;
+                    break;
+                case 'C':
+                    consonance += .8 * noteLength;
+                    break;
+                case 'A':
+                    consonance += .6 * noteLength;
+                    break;
+                case 'L':
+                    consonance += .4 * noteLength;
+                    break;
+                case 'X':
+                    consonance += .1 * noteLength;
+                    break;
+                default:
+                    break;
+            }
+        }
+
         return consonance;
     }
 
@@ -927,18 +973,18 @@ public class CreateGrammar implements imp.Constants {
         int slots = 0;
         int tracker = 0;
         Note n = p.getNote(tracker);
-        if(n == null) {
+        if (n == null) {
             System.out.println(p);
             return 0;
         }
-        while(n != null && n.isRest()) {
+        while (n != null && n.isRest()) {
             tracker = p.getNextIndex(tracker);
             slots += n.getRhythmValue();
             n = p.getNote(tracker);
         }
         return slots;
     }
-    
+
     public static Polylist readRule(Polylist rule) {
         Polylist result = new Polylist();
         rule = ((Polylist) rule.first()).rest();
@@ -959,14 +1005,14 @@ public class CreateGrammar implements imp.Constants {
         }
         return result.reverse();
     }
-    
+
     public static String removeTrailingSpaces(String in) {
-        while(in.endsWith(" ")) {
+        while (in.endsWith(" ")) {
             in = in.substring(0, in.length() - 2);
         }
         return in;
     }
-   
+
     // Loads the grammar rules from the file in a polylist
     public static Polylist[] getRulesFromFile(String inFile) {
         Polylist[] grammarRules = null;
@@ -982,10 +1028,11 @@ public class CreateGrammar implements imp.Constants {
             for (int i = 0; i < rules.length; i++) {
                 String rule = rules[i];
                 int stopIndex = rule.length();
-                if(rule.contains("Head"))
-                   stopIndex = rule.indexOf("Head");
-                else if(rule.contains("Chorus"))
-                   stopIndex = rule.indexOf("Chorus");
+                if (rule.contains("Head")) {
+                    stopIndex = rule.indexOf("Head");
+                } else if (rule.contains("Chorus")) {
+                    stopIndex = rule.indexOf("Chorus");
+                }
                 rule = rule.substring(0, stopIndex);
                 grammarRules[i] = Polylist.PolylistFromString(rules[i]);
                 grammarRules[i] = readRule(grammarRules[i]);
@@ -993,11 +1040,12 @@ public class CreateGrammar implements imp.Constants {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        
-    
+
+
         return grammarRules;
     }
     // Loads the grammar rules from in a polylist
+
     public static String[] getRuleStringsFromFile(String inFile) {
         String[] rules;
         String input = "";
@@ -1019,7 +1067,7 @@ public class CreateGrammar implements imp.Constants {
 
         return rules;
     }
-    
+
     //get averages
     public static double[] calcAverage(Vector<DataPoint> seg) {
         double[] averages = new double[7];
@@ -1043,6 +1091,7 @@ public class CreateGrammar implements imp.Constants {
         return averages;
     }
     //normalize vector
+
     public static void averageVector(Vector<DataPoint> seg, double[] averages) {
         for (int i = 0; i < seg.size(); i++) {
             DataPoint temp = seg.get(i);
@@ -1087,7 +1136,7 @@ public class CreateGrammar implements imp.Constants {
         }
 
         //copy good clusters into a new array and return that array
-        
+
         int counter = 0;
         Cluster[] goodClusters = new Cluster[numGoodClusters];
         for (int i = 0; i < clusters.length; i++) {
@@ -1098,12 +1147,10 @@ public class CreateGrammar implements imp.Constants {
             }
         }
 
-        
+
         return goodClusters;
     }
 
-    
-    
     /* Writes all the necessary data for a soloist that we have here in memory
      * Writes in serialized form as objects so that the same objects can be
      * loaded back in memory. Called from notate
@@ -1130,9 +1177,10 @@ public class CreateGrammar implements imp.Constants {
         }
     }
 
-    private static Vector<ClusterSet> getClusterSets(Cluster[] clusters) {
+    //NOTE: was private
+    public static Vector<ClusterSet> getClusterSets(Cluster[] clusters) {
         Vector<ClusterSet> sets = new Vector<ClusterSet>();
-        for(int i = 0; i < clusters.length; i++) {
+        for (int i = 0; i < clusters.length; i++) {
             ClusterSet set = new ClusterSet(clusters, clusters[i]);
             sets.add(set);
         }
@@ -1154,27 +1202,28 @@ public class CreateGrammar implements imp.Constants {
     }
 
     //Takes the numbers of the clusters and returns vectors of ClusterSets
-    private static Vector<Vector<ClusterSet>> getOutlines(Vector<Vector<DataPoint>> orders, 
+    //NOTE: was private
+    public static Vector<Vector<ClusterSet>> getOutlines(Vector<Vector<DataPoint>> orders,
             Cluster[] clusters, Vector<ClusterSet> clusterSets) {
-        Vector<Vector<ClusterSet>> outlines = new Vector<Vector<ClusterSet>> ();
-        
+        Vector<Vector<ClusterSet>> outlines = new Vector<Vector<ClusterSet>>();
+
         for (int i = 0; i < orders.size(); i++) {
-                Vector<DataPoint> order = orders.get(i);
-                Vector<ClusterSet> outline = new Vector<ClusterSet> ();
-                for(int j = 0; j < order.size(); j++) {
-                    Cluster original = order.get(j).getCluster();
-                    ClusterSet next = null;
-                    for(int k = 0; k < clusterSets.size(); k++) {
-                        if(original.equals(clusterSets.get(k).getOriginal()))
-                            next = clusterSets.get(k); 
+            Vector<DataPoint> order = orders.get(i);
+            Vector<ClusterSet> outline = new Vector<ClusterSet>();
+            for (int j = 0; j < order.size(); j++) {
+                Cluster original = order.get(j).getCluster();
+                ClusterSet next = null;
+                for (int k = 0; k < clusterSets.size(); k++) {
+                    if (original.equals(clusterSets.get(k).getOriginal())) {
+                        next = clusterSets.get(k);
                     }
-                    outline.add(next);
                 }
-                if(outline.size() > 2)
-                    {
-                    outlines.add(outline);
-                    //System.out.println("adding outline of size " + outline.size());
-                    }
+                outline.add(next);
+            }
+            if (outline.size() > 2) {
+                outlines.add(outline);
+                //System.out.println("adding outline of size " + outline.size());
+            }
         }
 
         //System.out.println(outlines + " solo outlines created.");
@@ -1184,10 +1233,10 @@ public class CreateGrammar implements imp.Constants {
     //takes an array of bigrams and returns an array of bigrams with
     //the order of each bigram reversed
     private static Vector<NGram> getReverse(Vector<NGram> ngrams) {
-        
-        Vector<NGram> reverseNGrams = new Vector<NGram> ();
-        
-        for(int i = 0; i < ngrams.size(); i++) {
+
+        Vector<NGram> reverseNGrams = new Vector<NGram>();
+
+        for (int i = 0; i < ngrams.size(); i++) {
             NGram ngram = ngrams.get(i);
             int[] reverseChain = {ngram.getLast(), ngram.getFirst()};
             NGram reverse = new NGram(reverseChain);
@@ -1196,11 +1245,11 @@ public class CreateGrammar implements imp.Constants {
         return reverseNGrams;
     }
 
-    private static Vector<NGramWithTransitions> getTransitions(Vector<NGram> ngrams, 
+    private static Vector<NGramWithTransitions> getTransitions(Vector<NGram> ngrams,
             Cluster[] clusters) {
-        
-        Vector<NGramWithTransitions> transitions = new Vector<NGramWithTransitions> ();
-        for(int i = 0; i < clusters.length; i++) {
+
+        Vector<NGramWithTransitions> transitions = new Vector<NGramWithTransitions>();
+        for (int i = 0; i < clusters.length; i++) {
             NGramWithTransitions t = new NGramWithTransitions(i, ngrams);
             transitions.add(t);
         }
@@ -1233,19 +1282,16 @@ public class CreateGrammar implements imp.Constants {
         }
     }
 
-
-    
     /* Takes an array of clusters and a vector of datapoints
      * Looks through the datapoints and finds which cluster each is
      * in and sets the clusterName fields of the datapoints
-     */ 
-    
+     */
     private static Vector<DataPoint> setClusters(Vector<DataPoint> dataPoints, Cluster[] clusters) {
-        for(int i = 0; i < clusters.length; i++) {
+        for (int i = 0; i < clusters.length; i++) {
             Cluster c = clusters[i];
-            for(int j = 0; j < c.getNumDataPoints(); j++) {
+            for (int j = 0; j < c.getNumDataPoints(); j++) {
                 DataPoint p = c.getDataPoint(j);
-                for(int k = 0; k < dataPoints.size(); k++) {
+                for (int k = 0; k < dataPoints.size(); k++) {
                     if (p.equals(dataPoints.get(k))) {
                         p.setClusterName(Integer.toString(i));
                         dataPoints.set(j, p);
@@ -1258,7 +1304,7 @@ public class CreateGrammar implements imp.Constants {
         //}
         return dataPoints;
     }
-    
+
     private static void writeClusterReps(DataPoint[] reps, Cluster[] clusters, String outFile) {
         int totalPoints = 0;
         for (int i = 0; i < clusters.length; i++) {
@@ -1328,9 +1374,9 @@ public class CreateGrammar implements imp.Constants {
             averages[4] /= clusters.length;
             averages[5] /= clusters.length;
             averages[6] /= clusters.length;
-            
+
             //set averagePoint class variable
-            averagePoint = new DataPoint(averages[0], averages[1], averages[2], 
+            averagePoint = new DataPoint(averages[0], averages[1], averages[2],
                     averages[3], averages[4], averages[5], averages[6], "averages");
 
             //sort the points by distance from averagePoint
@@ -1357,7 +1403,7 @@ public class CreateGrammar implements imp.Constants {
             //}
 
             int realRepsPerCluster = tempCluster.getNumDataPoints();
-            
+
             //put the closest REPS_PER_CLUSTER into array
             for (int k = 0; k < realRepsPerCluster; k++) {
                 DataPoint dp = points.get(k);
@@ -1375,7 +1421,4 @@ public class CreateGrammar implements imp.Constants {
     public static DataPoint getAveragePoint() {
         return averagePoint;
     }
-
-  
 }
-

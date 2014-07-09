@@ -21,7 +21,25 @@
 package imp.data;
 
 import imp.Constants;
+import static imp.Constants.ASHARP;
+import static imp.Constants.BEAT;
+import static imp.Constants.CSHARP;
+import static imp.Constants.DEFAULT_METRE;
+import static imp.Constants.DSHARP;
+import static imp.Constants.ENDSCORE;
+import static imp.Constants.FS3;
+import static imp.Constants.FSHARP;
+import static imp.Constants.GSHARP;
+import static imp.Constants.MAX_VOLUME;
+import static imp.Constants.NOCHORD;
 import imp.ImproVisor;
+import static imp.data.Score.DEFAULT_BARS_PER_LINE;
+import static imp.data.Score.DEFAULT_COMPOSER;
+import static imp.data.Score.DEFAULT_KEYSIG;
+import static imp.data.Score.DEFAULT_TEMPO;
+import static imp.data.Score.DEFAULT_TITLE;
+import static imp.data.Score.DEFAULT_VOLUME;
+import imp.roadmap.RoadMap;
 import imp.roadmap.RoadMapFrame;
 import imp.util.Preferences;
 import imp.util.Trace;
@@ -603,6 +621,10 @@ public class Score implements Constants, Serializable {
       {
         return roadmapLayout;
       }
+    
+    public RoadMap getRoadMap() {
+        return chordProg.getRoadMap();
+    }
     
     public void setRoadmapLayout(int barsPerLine)
       {
