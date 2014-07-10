@@ -350,8 +350,6 @@ public class Notate
   private ArrayList<String> melodyData = new ArrayList<String>();
 
 
-  private static LogDialog logDialog = new LogDialog(false);
-
   /**
    * this will be set to true during extraction of all measures in a corpus
    */
@@ -11016,14 +11014,6 @@ public void openLickGenerator()
   }
 
 
-    public void setLickGenStatus(String string)
-    {
-        if( logDialog != null )
-        {
-        logDialog.append(string+"\n");
-        }
-    }
-
     private void contourBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contourBtnActionPerformed
 
         changePrefTab(contourBtn, contourPreferences);
@@ -18819,7 +18809,6 @@ public boolean setupLeadsheet(File file, boolean openCorpus)
         //System.out.println(newNotate.getTitle());
         getAllMeasures(newScore);
         setLickGenStatus("Reading leadsheet from file " + file);
-
       }
     //markermarkermarker
     updatePhiAndDelta(phi, delta);
@@ -23227,7 +23216,6 @@ public void clearAccumulatedProductions()
     }
 
     setLickGenStatus("Accumulated productions cleared.");
-
 }
 
 
@@ -25228,11 +25216,6 @@ public void showNewVoicingDialog()
       lickgenFrame.redrawTriage();
   }
 
-  public void openLog()
-  {
-      logDialog.setVisible(true);
-  }
-
   public int getScoreLength()
   {
       return score.getLength();
@@ -25242,38 +25225,7 @@ public void showNewVoicingDialog()
       return beatValue;
   }
 
-public void toGrammar()
-  {
-    String outFile = getGrammarFileName();
 
-    File f = new File(outFile);
-
-    String inFile = f.getParentFile().getPath() + File.separator + Directories.accumulatedProductions;
-
-    File in = new File(inFile);
-
-    if( !in.exists() )
-      {
-      setLickGenStatus("Can't do this step as " + inFile + " does not exist.");
-      return;
-      }
-
-    //System.out.println("Writing productions to grammar file: " + outFile);
-    setLickGenStatus("Writing productions to grammar file: " + outFile);
-    CreateGrammar.create(chordProg,
-                         inFile,
-                         outFile,
-                         lickgenFrame.getNumClusterReps(),
-                         lickgenFrame.useMarkovSelected(),
-                         lickgenFrame.getMarkovFieldLength(),
-                         lickgenFrame.getUseRelativePitches(),
-                         this);
-    //imp.cluster.CreateBrickGrammar.create(chordProg, inFile, outFile, lickgenFrame.getNumClusterReps(), lickgenFrame.getUseRelativePitches(), this);
-    //System.out.println("Done writing productions to grammar file: " + outFile);
-    setLickGenStatus("Done writing productions to grammar file: " + outFile);
-
-    refreshGrammarEditor();
-  }
 
 
 /**
@@ -25830,4 +25782,11 @@ private void handlePlayline(int slotInChorus)
 
 } // PlayActionListener
 
+    public void setLickGenStatus(String string)
+    {
+      if( lickgenFrame != null )
+        {
+        lickgenFrame.setLickGenStatus(string);
+        }
+    }
 } //Notate
