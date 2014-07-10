@@ -2792,7 +2792,7 @@ public static Note makeRelativeNote(Object ob, Chord chord)
               }
           }
       }
-    ErrorLog.log(ErrorLog.WARNING, "Unrecognized relative note : " + ob);
+    ErrorLog.log(ErrorLog.FATAL, "Unrecognized relative note : " + ob);
     return null;
   }
 
