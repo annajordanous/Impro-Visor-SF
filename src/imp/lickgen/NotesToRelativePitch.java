@@ -72,6 +72,7 @@ public class NotesToRelativePitch {
      * @return the note in relative pitch form
      */
     public static Polylist noteToRelativePitch(Note note, Chord chord) {
+        String noteLength = Note.getDurationString(note.getRhythmValue());
         String chordFamily = chord.getFamily(); //whether chord is major, minor, etc.
         Polylist relativeNote = Polylist.nil; //this will be our relative note
 
@@ -88,13 +89,17 @@ public class NotesToRelativePitch {
 
         //Part 2 of the note construction: add scale degree
         int pitchOffset = pitch - root; //note: this has been normalized to be between 0 and 11
-        if (chordFamily.equals("minor")) {
+        if (chord.isNOCHORD()) {
+            relativeNote = relativeNote.addToEnd(1);                             // FIX: Temporary solution
+        } else if (chordFamily.equals("minor")) {
             relativeNote = relativeNote.addToEnd(minorScaleDegrees[pitchOffset]);
         } else if (chordFamily.equals("minor7")) {
             relativeNote = relativeNote.addToEnd(minor7ScaleDegrees[pitchOffset]);
         } else if (chordFamily.equals("major")) {
             relativeNote = relativeNote.addToEnd(majorScaleDegrees[pitchOffset]);
-        } else if (chordFamily.equals("dominant") || chordFamily.equals("sus4") || chordFamily.equals("alt")) { //treat sus4, alt chords like dominant
+        } else if (chordFamily.equals("dominant") 
+                || chordFamily.equals("sus4") 
+                || chordFamily.equals("alt")) { //treat sus4, alt chords like dominant
             relativeNote = relativeNote.addToEnd(dominantScaleDegrees[pitchOffset]);
         } else if (chordFamily.equals("half-diminished")) {
             relativeNote = relativeNote.addToEnd(halfDimScaleDegrees[pitchOffset]);
@@ -103,12 +108,11 @@ public class NotesToRelativePitch {
         } else if (chordFamily.equals("augmented")) {
             relativeNote = relativeNote.addToEnd(augScaleDegrees[pitchOffset]);
         } else {
-            ErrorLog.log(ErrorLog.COMMENT, "Unrecognized chord family");
-            return null;
+            relativeNote = relativeNote.addToEnd(1);                            // FIX: Temporary solution
+            ErrorLog.log(ErrorLog.COMMENT, "Unrecognized chord family: " + chordFamily);
         }
 
         //Part 3 of the note construction: add the rhythm amount
-        String noteLength = note.getDurationString(note.getRhythmValue());
         relativeNote = relativeNote.addToEnd(noteLength);
         return relativeNote;
     }
@@ -158,8 +162,16 @@ public class NotesToRelativePitch {
             try {
                 if (pitch >= 0) { //pitch is a note
                     Note note = new Note(pitch, duration);
-                    Polylist relativePitch = noteToRelativePitch(note, allChords.get(chordNumber));
-                    relativePitchMelody = relativePitchMelody.concat(relativePitch.toString());
+                    Chord chord = allChords.get(chordNumber);
+                    Polylist relativePitch = noteToRelativePitch(note, chord);
+                    if( relativePitch == null )
+                      {
+                        System.out.println("*** Internal error: relativePitch is null at note = " + note + ", chord = " + chord);
+                      }
+                    else
+                      {
+                      relativePitchMelody = relativePitchMelody.concat(relativePitch.toString());
+                      }
                 } else { //"pitch" is a rest
                     String rest = " R" + imp.data.Note.getDurationString(duration) + " ";
                     relativePitchMelody = relativePitchMelody.concat(rest.toString());

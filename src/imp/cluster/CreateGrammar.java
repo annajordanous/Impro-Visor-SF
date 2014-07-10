@@ -602,8 +602,8 @@ public class CreateGrammar implements imp.Constants {
                 //rule = rule.substring(start + 1, rule.length() - 1);
                 
                 
-                //out.write("(rule (Q" + clusterNumber + ")(" + rule + ") " + df.format(numAppearances / REPS_PER_CLUSTER) + ")\n");
-                out.write("(rule " + "(Brick " + reps[i].getBrickType() + ") " + "(Q" + clusterNumber + ")(" + rule + ") " + df.format(numAppearances / REPS_PER_CLUSTER) + ")\n");
+                out.write("(rule (Q" + clusterNumber + ")(" + rule + ") " + df.format(numAppearances / REPS_PER_CLUSTER) + ")\n");
+                //out.write("(rule " + "(Brick " + reps[i].getBrickType() + ") " + "(Q" + clusterNumber + ")(" + rule + ") " + df.format(numAppearances / REPS_PER_CLUSTER) + ")\n");
             }
             out.close();
         } catch (IOException e) {
