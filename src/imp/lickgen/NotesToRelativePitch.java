@@ -144,7 +144,7 @@ public class NotesToRelativePitch {
         //split up the string containing melody info
         String[] exactMelodyData = exactMelody.split(" ");
 
-        String relativePitchMelody = "";
+        StringBuilder relativePitchMelody = new StringBuilder();
 
         //first item is tells us the starting slot of this section of melody
         int startSlot = Integer.parseInt(exactMelodyData[0]);
@@ -164,29 +164,27 @@ public class NotesToRelativePitch {
                     Note note = new Note(pitch, duration);
                     Chord chord = allChords.get(chordNumber);
                     Polylist relativePitch = noteToRelativePitch(note, chord);
-                    if( relativePitch == null )
-                      {
+                    if (relativePitch == null) {
                         System.out.println("*** Internal error: relativePitch is null at note = " + note + ", chord = " + chord);
                       }
-                    else
-                      {
-                      relativePitchMelody = relativePitchMelody.concat(relativePitch.toString());
+                    else {
+                      relativePitchMelody.append(relativePitch.toString());
                       }
                 } else { //"pitch" is a rest
-                    String rest = " R" + imp.data.Note.getDurationString(duration) + " ";
-                    relativePitchMelody = relativePitchMelody.concat(rest.toString());
+                    String rest = " R" + Note.getDurationString(duration) + " ";
+                    relativePitchMelody.append(rest.toString());
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                System.out.println("Problem processing note");
             }
             totalNoteDurationInMeasure += duration;
         }
-        return relativePitchMelody;
+        return relativePitchMelody.toString();
     }
     
     //given a slice of melody as a MelodyPart, convert it to a series of relative pitches
     public static String melPartToRelativePitch(MelodyPart melPart, ChordPart chordPart) {
-        String relMel = "";
+        StringBuilder relMel = new StringBuilder();
         int totalDuration = 0;
         int melodySize = melPart.getSize();
         while (totalDuration < melodySize) {
@@ -194,20 +192,20 @@ public class NotesToRelativePitch {
             if (note.getPitch() >= 0) { //"note" is actually a note
                 Chord chord = chordPart.getCurrentChord(totalDuration);
                 Polylist relativePitch = noteToRelativePitch(note, chord);
-                relMel = relMel.concat(relativePitch.toString());
+                relMel.append(relativePitch.toString());
             } else { //"note" is a rest
-                String rest = " R" + imp.data.Note.getDurationString(note.getRhythmValue()) + " ";
-                relMel = relMel.concat(rest.toString());
+                String rest = " R" + Note.getDurationString(note.getRhythmValue()) + " ";
+                relMel.append(rest.toString());
             }
             totalDuration += note.getRhythmValue();
         }
-        return relMel;
+        return relMel.toString();
     }
 
     public static Polylist noteToAbstract(int noteIndex, Notate notate) {
         //get type of note
         ChordPart chordProg = notate.getChordProg();
-        imp.lickgen.LickGen lickgen = notate.getLickGen();
+        LickGen lickgen = notate.getLickGen();
         MelodyPart part = notate.getCurrentMelodyPart().copy();
         Note note = part.getNote(noteIndex);
         Polylist rhythmString = Polylist.nil;
@@ -217,7 +215,6 @@ public class NotesToRelativePitch {
         if (note.isRest()) {
             rhythmString = rhythmString.addToEnd("R" + sb.substring(1));
         } else {
-
             //add pitch to notes
             //get note type
             char notetype;
@@ -235,9 +232,10 @@ public class NotesToRelativePitch {
                     notetype = 'X';
                     break;
             }
-            if (notetype == 'X' && part.getNextNote(noteIndex) != null) {
+            Note nextNote = part.getNextNote(noteIndex);
+            if (notetype == 'X' && nextNote != null) {
 
-                int nextPitch = part.getNextNote(noteIndex).getPitch();
+                int nextPitch = nextNote.getPitch();
                 int nextIndex = part.getNextIndex(noteIndex);
                 if (nextIndex <= noteIndex) {
                     int pitchdiff = nextPitch - pitch;
@@ -273,49 +271,55 @@ public class NotesToRelativePitch {
         boolean tiedAtStart = false, tiedAtEnd = false;
 
         //untie first note if it is tied from last measure
-        if (melPart.getPrevNote(current) != null && melPart.getPrevNote(current).getRhythmValue() > current - melPart.getPrevIndex(current)) {
+        Note prevNote = melPart.getPrevNote(current);
+        int prevIndex = melPart.getPrevIndex(current);
+        int melSize = melPart.getSize();
+        if (prevNote != null && prevNote.getRhythmValue() > current - prevIndex) {
 
             tiedAtStart = true;
             //untie and set the previous note
-            Note untiedNote = melPart.getPrevNote(current).copy();
+            Note untiedNote = prevNote.copy();
             int originalRhythmVal = untiedNote.getRhythmValue();
-            int rhythmVal = melPart.getSize() - melPart.getPrevIndex(current) % melPart.getSize();
+            int rhythmVal = melSize - prevIndex % melSize;
             untiedNote.setRhythmValue(rhythmVal);
-            melPart.setNote(melPart.getPrevIndex(current), untiedNote);
+            melPart.setNote(prevIndex, untiedNote);
 
             //set the current note
             rhythmVal = originalRhythmVal - rhythmVal;
-            Note currNote = melPart.getPrevNote(current).copy();
+            Note currNote = prevNote.copy();
             currNote.setRhythmValue(rhythmVal);
             melPart.setNote(current, currNote);
         }
-
-        if (melPart.getPrevNote(melPart.getSize()) != null) {
+        Note lastNote = melPart.getPrevNote(melSize);
+        int lastIndex = melPart.getPrevIndex(melSize);
+        if (lastNote != null) {
             //untie notes at end of measure and beginning of next measure
-            if (melPart.getPrevNote(melPart.getSize()).getRhythmValue() > melPart.getSize() - melPart.getPrevIndex(
-                    melPart.getSize())) {
+            if (lastNote.getRhythmValue() > melSize - lastIndex) {
                 tiedAtEnd = true;
-                int tracker = melPart.getPrevIndex(melPart.getSize());
-                Note untiedNote = melPart.getNote(tracker).copy();
+                int tracker = lastIndex;
+                Note trackerNote = melPart.getNote(tracker);
+                Note untiedNote = trackerNote.copy();
                 int originalRhythmVal = untiedNote.getRhythmValue();
-                int rhythmVal = melPart.getSize() - (tracker % melPart.getSize());
+                int rhythmVal = melSize - (tracker % melSize);
                 untiedNote.setRhythmValue(rhythmVal);
                 melPart.setNote(tracker, untiedNote);
                 int secondRhythmVal = originalRhythmVal - rhythmVal;
-                untiedNote = melPart.getNote(tracker).copy();
+                untiedNote = trackerNote.copy();
                 untiedNote.setRhythmValue(secondRhythmVal);
-                melPart.setNote(melPart.getSize(), untiedNote);
+                melPart.setNote(melSize, untiedNote);
             }
         }
 
-        if (melPart.getPrevNote(1) != null) {
-            if ((melPart.getPrevIndex(1) != 0) && !(melPart.getPrevNote(1).isRest())) {
+        Note firstNote = melPart.getPrevNote(1);
+        int firstIndex = melPart.getPrevIndex(1);
+        if (firstNote != null) {
+            if ((firstIndex != 0) && !(firstNote.isRest())) {
                 return null;
             }
         }
 
         while (current < melPart.getSize()) {
-
+            
             //if null note, make it a rest
             if (melPart.getNote(current) == null) {
                 int next = melPart.getNextIndex(current);
@@ -324,17 +328,18 @@ public class NotesToRelativePitch {
             }
 
             StringBuilder sb = new StringBuilder();
+            Note currentNote = melPart.getNote(current);
 
 
-            int value = melPart.getNote(current).getDurationString(sb, melPart.getNote(current).getRhythmValue());
+            int value = currentNote.getDurationString(sb, currentNote.getRhythmValue());
 
-            int pitch = melPart.getNote(current).getPitch();
+            int pitch = currentNote.getPitch();
 
             int rhythm = 0;
 
 
 
-            if (melPart.getNote(current).isRest()) {
+            if (currentNote.isRest()) {
                 rhythmString = rhythmString.cons("R" + sb.substring(1));
             } else {
 
@@ -354,9 +359,10 @@ public class NotesToRelativePitch {
                         notetype = 'X';
                         break;
                 }
+                Note nextNote = melPart.getNextNote(current);
                 if (notetype == 'X' && melPart.getNextNote(current) != null) {
 
-                    int nextPitch = melPart.getNextNote(current).getPitch();
+                    int nextPitch = nextNote.getPitch();
                     int nextIndex = melPart.getNextIndex(current);
                     if (nextIndex <= melPart.getSize()) {
                         int pitchdiff = nextPitch - pitch;
@@ -389,8 +395,8 @@ public class NotesToRelativePitch {
 
 
         //get the slope from the note before this section to the first note in the measure
-        int prevIndex = melPart.getPrevIndex(0);
-        Note lastNote = melPart.getNote(prevIndex);
+        prevIndex = melPart.getPrevIndex(0);
+        lastNote = melPart.getNote(prevIndex);
         while (lastNote != null && lastNote.isRest()) {
             prevIndex = melPart.getPrevIndex(prevIndex);
             lastNote = melPart.getNote(prevIndex);
@@ -586,5 +592,4 @@ public class NotesToRelativePitch {
             return strbuf.toString();
         }
     }
-    
 }
