@@ -1189,10 +1189,6 @@ public Brick(String brickName,
           }
     }
     
-    public static String dashed(String s) {
-        return s.replace(' ', '-');
-    }
-    
         
     @Override
     public int getLength()
