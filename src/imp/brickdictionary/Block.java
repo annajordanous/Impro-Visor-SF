@@ -110,16 +110,23 @@ abstract public class Block {
      * @return the name (a String)
      */
     public String getName() {
-        String fullName = new String();
-        fullName += name;
-        // in the case of an overlap, we want an indication in the name
-        if (this.isOverlap())
-          {
-            fullName += OVERLAP_STRING;
-          }
-        return fullName;
+        return isOverlap() ? name + OVERLAP_STRING : name;
     }
     
+   /**
+    * Get the block's name with dashes where spaces would have been
+    * @return 
+    */
+   public String getDashedName()
+       {
+         return dashed(name);
+       }
+    
+   public static String dashed(String s) {
+        return s.replace(' ', '-');
+    }
+    
+
     /** getDuration
      * Gets the duration of a block.
      * @return the duration (an int)
