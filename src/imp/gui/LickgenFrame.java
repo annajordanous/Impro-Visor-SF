@@ -5198,9 +5198,20 @@ public class LickgenFrame
                             measureWindow,
                             i == 0);
                     if (production != null) {
-                        writeProduction(production, measureWindow,
-                                (i * slotsPerSection) + (window * BEAT),
-                                true, null);
+//                        writeProduction(production, 
+//                                measureWindow,
+//                                (i * slotsPerSection) + (window * BEAT),
+//                                true, 
+//                                "None");
+                        File f = new File(notate.getGrammarFileName());
+                        String dir = f.getParentFile().getPath();
+                        frameFile = dir + File.separator + Directories.accumulatedProductions;
+                        try { //we just want to create a file to which further productions can be written
+                            BufferedWriter out = new BufferedWriter(new FileWriter(frameFile, true));
+                            out.close();
+                        } catch(Exception e) {
+                            System.out.println("I/O troubles");
+                        }
                     }
                 }
 
@@ -5336,7 +5347,13 @@ public class LickgenFrame
             BufferedWriter out = new BufferedWriter(new FileWriter(frameFile, true));
 
             if (!writeExactMelody) {
-                out.write("(rule (Seg" + measureWindow + ") " + production + " ) " + chords + "\n");
+                out.write("(rule (Seg" 
+                        + measureWindow 
+                        + ") " 
+                        + production
+                        + " ) "
+                        + chords
+                        + "\n");
             } else {
                 //check that index of exact melody matches index of abstract melody
                 //then concatenate the two and write them to the file
@@ -5370,8 +5387,21 @@ public class LickgenFrame
                 int slotsPerSection = measureWindow * slotsPerBeat;
                 ChordPart chordProg = notate.getChordProg().extract(location, location + slotsPerSection - 1);
                 relativePitchMelody = NotesToRelativePitch.melStringToRelativePitch(slotsPerSection, chordProg, exactMelody);
-                out.write("(rule (Seg" + measureWindow + ") " + production + " ) "
-                        + "(Xnotation " + relativePitchMelody + ") " + "(Brick type " + brickType + ") " + melodyToWrite + " " + chords + "\n");
+                out.write("(rule (Seg"
+                        + measureWindow
+                        + ") " 
+                        + production 
+                        + " ) "
+                        + "(Xnotation " 
+                        + relativePitchMelody
+                        + ") "
+                        + "(Brick-type " 
+                        + brickType 
+                        + ") " 
+                        + melodyToWrite 
+                        + " " 
+                        + chords
+                        + "\n");
             }
             out.close();
         } catch (IOException e) {
@@ -5386,7 +5416,13 @@ public class LickgenFrame
             BufferedWriter out = new BufferedWriter(new FileWriter(
                     notate.getGrammarFileName(), true));
             out.write(
-                    "(rule (Seg" + measureWindow + ") " + production + " " + prob + ") \n");
+                    "(rule (Seg" 
+                    + measureWindow
+                    + ") "
+                    + production
+                    + " "
+                    + prob
+                    + ") \n");
             out.close();
         } catch (IOException e) {
             System.out.println("IO EXCEPTION!");
@@ -6456,6 +6492,7 @@ public void toGrammar()
 
     if( !in.exists() )
       {
+      System.out.println("File does not exist");
       setLickGenStatus("Can't do this step as " + inFile + " does not exist.");
       return;
       }

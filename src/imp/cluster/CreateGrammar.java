@@ -62,7 +62,7 @@ public class CreateGrammar implements imp.Constants {
 
     private static final int SEG_LENGTH = 3;  //length of the word SEG
     private static final int XNOTATIONPARENSPACE_LENGTH = 11;
-    private static final int BRICKTYPEPARENSPACES_LENGTH = 12; //"(Brick type ".length
+    private static final int BRICKTYPEPARENSPACES_LENGTH = 12; //"(Brick-type ".length
     public static double MIN_PROB = 5.0; //include phrase transitions of greater than this probability
     public static int REPS_PER_CLUSTER = 5;
     private static DataPoint averagePoint; //keeps track of average point in cluster
@@ -821,7 +821,7 @@ public class CreateGrammar implements imp.Constants {
         
         //extract brick type data
         //string "Brick type" denotes where the brick type information is
-        stopIndex = ruleString.indexOf("(Brick type ");
+        stopIndex = ruleString.indexOf("(Brick-type ");
         String brickType = ruleString.substring(stopIndex + BRICKTYPEPARENSPACES_LENGTH, ruleString.length() - 1); //-1 to chop off closing parenthesis
         
         //remove the brick type data from the string now that we've extracted it
@@ -1115,7 +1115,6 @@ public class CreateGrammar implements imp.Constants {
         } else {
             jca = new JCA(numClusters, data.size(), data);
         }
-
         jca.startAnalysis();
         Cluster[] clusters = jca.getClusterOutput();
 

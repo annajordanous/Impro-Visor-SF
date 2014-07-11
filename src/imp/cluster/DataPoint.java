@@ -45,7 +45,7 @@ public class DataPoint implements Serializable{
     private Cluster mCluster;
     private double mEuDt;
     private String clusterName;
-    private String brickType;
+    private String brickType = "None";
     private int number = 1;
     private boolean starter;
     private IndexedMelodyPart melody;
