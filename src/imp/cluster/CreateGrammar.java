@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2010 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2014 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
@@ -20,27 +20,6 @@
 package imp.cluster;
 
 import static imp.Constants.BEAT;
-import static imp.cluster.CreateGrammar.REPS_PER_CLUSTER;
-import static imp.cluster.CreateGrammar.averageVector;
-import static imp.cluster.CreateGrammar.calcAverage;
-import static imp.cluster.CreateGrammar.createSoloistFile;
-import static imp.cluster.CreateGrammar.getChainProbabilitiesForGrammar;
-import static imp.cluster.CreateGrammar.getChains;
-import static imp.cluster.CreateGrammar.getClusterOrder;
-import static imp.cluster.CreateGrammar.getClusterReps;
-import static imp.cluster.CreateGrammar.getClusterSets;
-import static imp.cluster.CreateGrammar.getClusters;
-import static imp.cluster.CreateGrammar.getOutlines;
-import static imp.cluster.CreateGrammar.getRuleStringsFromFile;
-import static imp.cluster.CreateGrammar.getRulesFromFile;
-import static imp.cluster.CreateGrammar.mergeDuplicateChains;
-import static imp.cluster.CreateGrammar.normalizePercentage;
-import static imp.cluster.CreateGrammar.processRule;
-import static imp.cluster.CreateGrammar.readRule;
-import static imp.cluster.CreateGrammar.removeTrailingSpaces;
-import static imp.cluster.CreateGrammar.setNGramProbabilities;
-import static imp.cluster.CreateGrammar.writeGrammarWithChains;
-import static imp.cluster.CreateGrammar.writeRelativePitchGrammarWithChains;
 import imp.data.ChordPart;
 import imp.data.Duration;
 import imp.data.Note;
@@ -58,6 +37,7 @@ import polya.Polylist;
  *
  * @author Jon Gillick, Kevin Tang
  */
+
 public class CreateGrammar implements imp.Constants {
 
     private static final int SEG_LENGTH = 3;  //length of the word SEG
@@ -72,14 +52,16 @@ public class CreateGrammar implements imp.Constants {
      * calls clustering algorithm on the productions and writes the results
      * into the grammar
      */
-    public static void create(ChordPart chordProg, String inFile, String outFile,
-            int repsPerCluster, boolean Markov, int markovLength, boolean useRelative, Notate notate) {
-
+    public static void create(ChordPart chordProg, 
+                              String inFile, 
+                              String outFile,
+                              int repsPerCluster, 
+                              boolean Markov, 
+                              int markovLength, 
+                              boolean useRelative, 
+                              Notate notate) 
+      {
         notate.setLickGenStatus("Writing grammar rules: " + outFile);
-
-        //if useHead is true, we will add datapoints from the head into
-        //a separate vector, and we will not use them in clustering
-        boolean useHead = false;
 
         //make initial calls to read from the file
         Polylist[] rules = getRulesFromFile(inFile);
@@ -87,21 +69,11 @@ public class CreateGrammar implements imp.Constants {
 
         //initialize vectors
         Vector<DataPoint> dataPoints = new Vector<DataPoint>();
-        Vector<DataPoint> headData = new Vector<DataPoint>();
 
         //put data into vectors
         for (int i = 0; i < rules.length; i++) {
             DataPoint temp = processRule(rules[i], ruleStrings[i], Integer.toString(i));
-
-            if (useHead) {
-                if (temp.isHead()) {
-                    headData.add(temp);
-                } else {
-                    dataPoints.add(temp);
-                }
-            } else {
-                dataPoints.add(temp);
-            }
+            dataPoints.add(temp);
         }
         notate.setLickGenStatus("Wrote " + rules.length + " grammar rules.");
 
@@ -164,7 +136,9 @@ public class CreateGrammar implements imp.Constants {
 
     }
 
-    public static Vector<NGram> getChains(Vector<Vector<DataPoint>> orders, Cluster[] clusters, int chainLength) {
+    public static Vector<NGram> getChains(Vector<Vector<DataPoint>> orders, 
+                                          Cluster[] clusters, 
+                                          int chainLength) {
         Vector<NGram> ngrams = new Vector<NGram>();
         //last marks whether the ngram we are creating ends a chorus
         boolean last = false;
@@ -273,8 +247,12 @@ public class CreateGrammar implements imp.Constants {
         return chains;
     }
 
-    public static void writeGrammarWithChains(Vector<NGram> ngrams, Vector<float[]> chains, DataPoint[] reps,
-            Cluster[] clusters, String outFile, ChordPart chordProg) {
+    public static void writeGrammarWithChains(Vector<NGram> ngrams, 
+                                              Vector<float[]> chains, 
+                                              DataPoint[] reps,
+                                              Cluster[] clusters, 
+                                              String outFile, 
+                                              ChordPart chordProg) {
 
         Vector<Integer> segLengths = new Vector<Integer>();
         for (int i = 0; i < reps.length; i++) {
@@ -306,14 +284,7 @@ public class CreateGrammar implements imp.Constants {
                     counter++;
                 }
 
-                //String top = "\n(rule (P Y) ((START 2) (P (- Y " + (segLengths.get(i) * 2 * 120) + "))) 1) " +
-                //        "\n(rule (P Y) ((START 3) (P (- Y " + (segLengths.get(i) * 3 * 120) + "))) 8) " +
-                //        "\n(rule (P Y) ((START 4) (P (- Y " + (segLengths.get(i) * 4 * 120) + "))) 27) " +
-                //        "\n(rule (P Y) ((START 5) (P (- Y " + (segLengths.get(i) * 5 * 120) + "))) 64) " +
-                //        "\n(rule (P Y) ((START 6) (P (- Y " + (segLengths.get(i) * 6 * 120) + "))) 125) " +
-                //        "\n(rule (P Y) ((START 7) (P (- Y " + (segLengths.get(i) * 7 * 120) + "))) 216) \n";
                 out.write(top);
-
             }
 
             //write start symbols
@@ -422,7 +393,6 @@ public class CreateGrammar implements imp.Constants {
                 }
             }
 
-
             //write expansions to cluster representatives
             for (int i = 0; i < reps.length; i++) {
                 String name = reps[i].getClusterName();
@@ -441,8 +411,6 @@ public class CreateGrammar implements imp.Constants {
         } catch (IOException e) {
             System.out.println("IO EXCEPTION!" + e.toString());
         }
-
-
     }
 
     /**
@@ -482,7 +450,6 @@ public class CreateGrammar implements imp.Constants {
                 }
 
                 out.write(top);
-
             }
 
             //write start symbols
@@ -599,8 +566,7 @@ public class CreateGrammar implements imp.Constants {
                 String rule = reps[i].getRelativePitchMelody();
                 //cut off the opening part of the string leaving only the slope data
                 //int start = rule.indexOf("((");
-                //rule = rule.substring(start + 1, rule.length() - 1);
-                
+                //rule = rule.substring(start + 1, rule.length() - 1);                
                 
                 out.write("(rule (Q" + clusterNumber + ")(" + rule + ") " + df.format(numAppearances / REPS_PER_CLUSTER) + ")\n");
                 //out.write("(rule " + "(Brick " + reps[i].getBrickType() + ") " + "(Q" + clusterNumber + ")(" + rule + ") " + df.format(numAppearances / REPS_PER_CLUSTER) + ")\n");
@@ -771,10 +737,10 @@ public class CreateGrammar implements imp.Constants {
         double averageMaxSlope = 0;
         double startBeat = -1;
         double numSegments = 0;
-        double consonance = 0;
+        double consonance;
         int segLength = Integer.parseInt(rule.first().toString().substring(SEG_LENGTH));
         int chorusNumber = 0;
-        Vector<String> chords = new Vector();
+        Vector<String> chords = new Vector<String>();
 
         //we process the rule string, starting at the end and working backward
         
@@ -917,9 +883,25 @@ public class CreateGrammar implements imp.Constants {
 //        DataPoint d =  new DataPoint(exactStartBeat, consonance, noteCount, restDuration, averageMaxSlope / (numSegments), 
 //                startBeat, numSegments, i, ruleString, segLength, 
 //                starter, exactMelody, head, chorusNumber, chords, startTied, endTied);
-        DataPoint d = new DataPoint(exactStartBeat, consonance, noteCount, restDuration, averageMaxSlope / (numSegments),
-                startBeat, numSegments, i, ruleString, segLength,
-                starter, exactMelody, relativePitchMelodyString, brickType, head, chorusNumber, chords, startTied, endTied);
+        DataPoint d = new DataPoint(exactStartBeat, 
+                                    consonance, 
+                                    noteCount, 
+                                    restDuration, 
+                                    averageMaxSlope / (numSegments),
+                                    startBeat, 
+                                    numSegments, 
+                                    i, 
+                                    ruleString, 
+                                    segLength,
+                                    starter, 
+                                    exactMelody, 
+                                    relativePitchMelodyString, 
+                                    brickType, 
+                                    head, 
+                                    chorusNumber, 
+                                    chords, 
+                                    startTied, 
+                                    endTied);
         return d;
     }
 
@@ -1032,7 +1014,7 @@ public class CreateGrammar implements imp.Constants {
                 } else if (rule.contains("Chorus")) {
                     stopIndex = rule.indexOf("Chorus");
                 }
-                rule = rule.substring(0, stopIndex);
+                //rule = rule.substring(0, stopIndex);
                 grammarRules[i] = Polylist.PolylistFromString(rules[i]);
                 grammarRules[i] = readRule(grammarRules[i]);
             }
@@ -1122,8 +1104,13 @@ public class CreateGrammar implements imp.Constants {
         for (int i = 0; i < clusters.length; i++) {
             totalPoints += clusters[i].getNumDataPoints();
         }
+        
         int averageClusterSize = totalPoints / clusters.length;
 
+        // Note that in the following code, if(true || ...)
+        // makes the averageClusterSize unneeded.
+        // Not sure what is intended here.
+        
         //get number of clusters that are big enough
         //currently we are keeping all clusters
         int numGoodClusters = 0;
@@ -1155,11 +1142,16 @@ public class CreateGrammar implements imp.Constants {
      * Writes 6 objects in order:
      * datapoints, clusters, clusterSets, transitions, reverseTransitions, outlines
      */
-    public static void createSoloistFile(Vector<DataPoint> dataPoints, Cluster[] clusters,
-            Vector<ClusterSet> clusterSets, Vector<NGramWithTransitions> transitions,
-            Vector<NGramWithTransitions> reverseTransitions, Vector<Vector<ClusterSet>> outlines, File outFile) {
-        FileOutputStream fileOut = null;
-        ObjectOutputStream objOut = null;
+    public static void createSoloistFile(Vector<DataPoint> dataPoints, 
+                                         Cluster[] clusters,
+                                         Vector<ClusterSet> clusterSets, 
+                                         Vector<NGramWithTransitions> transitions,
+                                         Vector<NGramWithTransitions> reverseTransitions, 
+                                         Vector<Vector<ClusterSet>> outlines, 
+                                         File outFile) 
+      {
+        FileOutputStream fileOut;
+        ObjectOutputStream objOut;
         try {
             fileOut = new FileOutputStream(outFile);
             objOut = new ObjectOutputStream(fileOut);
