@@ -5198,24 +5198,25 @@ public class LickgenFrame
                             measureWindow,
                             i == 0);
                     if (production != null) {
-//                        writeProduction(production, 
-//                                measureWindow,
-//                                (i * slotsPerSection) + (window * BEAT),
-//                                true, 
-//                                "None");
-                        File f = new File(notate.getGrammarFileName());
-                        String dir = f.getParentFile().getPath();
-                        frameFile = dir + File.separator + Directories.accumulatedProductions;
-                        try { //we just want to create a file to which further productions can be written
-                            BufferedWriter out = new BufferedWriter(new FileWriter(frameFile, true));
-                            out.close();
-                        } catch(Exception e) {
-                            System.out.println("I/O troubles");
-                        }
+                        writeProduction(production, measureWindow,
+                                (i * slotsPerSection) + (window * BEAT),
+                                true, null);
                     }
                 }
 
             }
+            
+// Mark's code            
+//                        File f = new File(notate.getGrammarFileName());
+//                        String dir = f.getParentFile().getPath();
+//                        frameFile = dir + File.separator + Directories.accumulatedProductions;
+//                        try { //we just want to create a file to which further productions can be written
+//                            BufferedWriter out = new BufferedWriter(new FileWriter(frameFile, true));
+//                            out.close();
+//                        } catch(Exception e) {
+//                            System.out.println("I/O troubles");
+//                        }
+
 
             lickgen.loadGrammar(notate.getGrammarFileName());
             updateUseSoloist();
@@ -5265,12 +5266,12 @@ public class LickgenFrame
             }
 
             try {
-                File f = new File(notate.getGrammarFileName());
-                if (f.exists()) {
+                File f1 = new File(notate.getGrammarFileName());
+                if (f1.exists()) {
                     System.gc();
-                    boolean deleted = f.delete();
+                    boolean deleted = f1.delete();
                     while (!deleted) {
-                        deleted = f.delete();
+                        deleted = f1.delete();
                     }
                 }
 
