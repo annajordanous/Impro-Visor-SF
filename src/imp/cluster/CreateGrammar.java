@@ -772,7 +772,6 @@ public class CreateGrammar implements imp.Constants {
         double startBeat = -1;
         double numSegments = 0;
         double consonance = 0;
-
         int segLength = Integer.parseInt(rule.first().toString().substring(SEG_LENGTH));
         int chorusNumber = 0;
         Vector<String> chords = new Vector();
