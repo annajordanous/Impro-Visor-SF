@@ -441,7 +441,7 @@ public Object evaluate(Object sent)
                 break;
             case MAKE_REST:
                 if(evaledArgs.length() != 1)
-                    returnVal = evaledArgs.rest().map(new Evaluate(lickGen, frame, Operators.MAKE_REST.getGrammarName())).flatten();
+                    returnVal = evaledArgs.map(new Evaluate(lickGen, frame, Operators.MAKE_REST.getGrammarName())).flatten();
                 else
                 {
                     returnVal = make_rest((NoteChordPair)evaledArgs.first());
@@ -590,7 +590,13 @@ public Boolean member(Polylist evaledArgs)
         return true;
     }
     else 
+    {
+        if(firstArg.toString().matches("(\\d)*(\\.)?(\\d)*"))
+        {
+            return secondArg.member(Double.parseDouble(firstArg.toString()));
+        }
         return false;
+    }
 }
 /**
  * returns true if the given note or duration string is a triplet
@@ -672,7 +678,7 @@ public String duration(Polylist evaledArgs)
 /**
  * return the string duration of the duration addition of both args
  */ 
-public int duration_addition(Polylist evaledArgs)
+public String duration_addition(Polylist evaledArgs)
 {
     Object firstArg = evaledArgs.first();
     Object secondArg = evaledArgs.second();
@@ -690,12 +696,12 @@ public int duration_addition(Polylist evaledArgs)
     else
         secondDur = Duration.getDuration0(secondArg.toString());
     
-    return firstDur + secondDur;
+    return Note.getDurationString(firstDur + secondDur);
 }
 /**
  * return the string duration of the second arg subtracted from the first arg
  */ 
-public int duration_subtraction(Polylist evaledArgs)
+public String duration_subtraction(Polylist evaledArgs)
 {
     Object firstArg = evaledArgs.first();
     Object secondArg = evaledArgs.second();
@@ -713,14 +719,26 @@ public int duration_subtraction(Polylist evaledArgs)
     else
         secondDur = Duration.getDuration0(secondArg.toString());
     
-    return firstDur - secondDur;
+    int sub = firstDur - secondDur;
+    if (sub < 0)
+        return null;
+    else
+        return Note.getDurationString(sub);
+}
+
+private int getDuration(Object ob)
+{
+    if(ob instanceof NoteChordPair)
+        return ((NoteChordPair)ob).note.getRhythmValue();
+    else
+        return Duration.getDuration0(ob.toString());
 }
 /**
  * return true if the duration of arg1 is greater than the duration of arg2
  */ 
 public Boolean duration_gr(Polylist evaledArgs)
 {
-    int subtraction = duration_subtraction(evaledArgs);
+    int subtraction = getDuration(evaledArgs.first()) - getDuration(evaledArgs.second());
     
     if(subtraction > 0)
         return true;
@@ -733,7 +751,7 @@ public Boolean duration_gr(Polylist evaledArgs)
  */ 
 public Boolean duration_gr_eq(Polylist evaledArgs)
 {
-    int subtraction = duration_subtraction(evaledArgs);
+    int subtraction = getDuration(evaledArgs.first()) - getDuration(evaledArgs.second());
     
     if(subtraction >= 0)
         return true;
@@ -745,7 +763,7 @@ public Boolean duration_gr_eq(Polylist evaledArgs)
  */ 
 public Boolean duration_lt(Polylist evaledArgs)
 {
-    int subtraction = duration_subtraction(evaledArgs);
+    int subtraction = getDuration(evaledArgs.first()) - getDuration(evaledArgs.second());
     
     if(subtraction < 0)
         return true;
@@ -758,7 +776,7 @@ public Boolean duration_lt(Polylist evaledArgs)
  */ 
 public Boolean duration_lt_eq(Polylist evaledArgs)
 {
-    int subtraction = duration_subtraction(evaledArgs);
+    int subtraction = getDuration(evaledArgs.first()) - getDuration(evaledArgs.second());
     
     if(subtraction <= 0)
         return true;
@@ -794,7 +812,7 @@ public Object relative_pitch(Polylist evaledArgs)
     Chord chord = pair.chord;
 
     Polylist relNoteList = NotesToRelativePitch.noteToRelativePitch(note, chord);
-    if(relNoteList == null)
+    if(relNoteList.second().equals("0"))
         return null;
     String relPitch = relNoteList.second().toString();
     if(relPitch.matches("\\d*"))
@@ -838,7 +856,7 @@ public Object pitch_addition(Polylist evaledArgs)
             Note secondNote = ((NoteChordPair)secondArg).note.copy();
             Chord chord = ((NoteChordPair)secondArg).chord;
             Polylist relNote = NotesToRelativePitch.noteToRelativePitch(secondNote, chord);
-            if(relNote == null)
+            if(relNote.second().equals("0"))
                 return null;
             String relPitch = relNote.second().toString();
             return addRelPitch(relPitch, firstArg.toString());
@@ -855,7 +873,7 @@ public Object pitch_addition(Polylist evaledArgs)
             Note firstNote = ((NoteChordPair)firstArg).note.copy();
             Chord chord = ((NoteChordPair)firstArg).chord;
             Polylist relNote = NotesToRelativePitch.noteToRelativePitch(firstNote, chord);
-            if(relNote == null)
+            if(relNote.second().equals("0"))
                 return null;
             String relPitch = relNote.second().toString();
             return addRelPitch(relPitch, secondArg.toString());
@@ -895,7 +913,7 @@ public Object pitch_subtraction(Polylist evaledArgs)
             Note secondNote = ((NoteChordPair)secondArg).note.copy();
             Chord chord = ((NoteChordPair)secondArg).chord;
             Polylist relNote = NotesToRelativePitch.noteToRelativePitch(secondNote, chord);
-            if(relNote == null)
+            if(relNote.second().equals("0"))
                 return null;
             String relPitch = relNote.second().toString();
             StringBuilder minusPitch = new StringBuilder();
@@ -949,7 +967,7 @@ public Object pitch_subtraction(Polylist evaledArgs)
             Note firstNote = ((NoteChordPair)firstArg).note.copy();
             Chord chord = ((NoteChordPair)firstArg).chord;
             Polylist relNote = NotesToRelativePitch.noteToRelativePitch(firstNote, chord);
-            if(relNote == null)
+            if(relNote.second().equals("0"))
                 return null;
             String relPitch = relNote.second().toString();
             StringBuilder minusPitch = new StringBuilder();

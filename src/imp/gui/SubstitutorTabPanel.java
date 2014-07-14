@@ -872,6 +872,7 @@ public class SubstitutorTabPanel extends javax.swing.JPanel {
 
                 saveTransformFile(chooser.getSelectedFile().getAbsolutePath() + EXTENSION);
               }
+            substitutionFromLabel.setText("Substitutions From: " + filename);
           }
     }//GEN-LAST:event_saveSubstitutionsButtonActionPerformed
 
@@ -1650,10 +1651,13 @@ public class TransformationDialogue extends javax.swing.JDialog implements Actio
     }
     
     public void actionPerformed(ActionEvent e) {
-        trans.setTransformation((Polylist)Polylist.PolylistFromString(contents.getText()).first());
-        dispose(); 
-        setVisible(false); 
-        fillTransformationsList();
+        boolean result = trans.setTransformation((Polylist)Polylist.PolylistFromString(contents.getText()).first());
+        if(result)
+        {
+            dispose(); 
+            setVisible(false); 
+            fillTransformationsList();
+        }
     }
 }       
 

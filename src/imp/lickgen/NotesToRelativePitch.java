@@ -108,7 +108,7 @@ public class NotesToRelativePitch {
         } else if (chordFamily.equals("augmented")) {
             relativeNote = relativeNote.addToEnd(augScaleDegrees[pitchOffset]);
         } else {
-            relativeNote = relativeNote.addToEnd(1);                            // FIX: Temporary solution
+            relativeNote = relativeNote.addToEnd("0");                            // FIX: Temporary solution
             ErrorLog.log(ErrorLog.COMMENT, "Unrecognized chord family: " + chordFamily);
         }
 
