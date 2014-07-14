@@ -318,7 +318,7 @@ public static boolean isScaleDegree(Object ob)
  * @param ob
  * @return 
  */
-public int getDuration(Object ob)
+public static int getDuration(Object ob)
   {
     //System.out.print("duration of " + ob + " = ");
     int result = 0;
@@ -351,6 +351,17 @@ public int getDuration(Object ob)
     //System.out.println(result);
     
     return result;
+  }
+
+public static int getDurationAbstractMelody(Polylist L)
+  {
+    int duration = 0;
+    while( L.nonEmpty() )
+      {
+        duration += getDuration(L.first());
+        L = L.rest();
+      }
+    return duration;
   }
 
 
