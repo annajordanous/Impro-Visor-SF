@@ -85,7 +85,7 @@ public class CreateBrickGrammar {
                 String relMel = NotesToRelativePitch.melPartToRelativePitch(blockMelody, blockChords);
                 //System.out.println(relMel);
                 if (blockAbstract != null) {
-                    System.out.println("Writing production for a brick of type " + currentBlock.getDashedName());
+                    //System.out.println("Writing production for a brick of type " + currentBlock.getDashedName());
                     frame.writeProduction(blockAbstract, currentBlock.getDuration()/BEAT, totalDuration, true, currentBlock.getDashedName());
                 }
             }
@@ -145,21 +145,21 @@ public class CreateBrickGrammar {
         for (int i = 0; i < brickListsSize; ++i) {
             brickLists.add(new Vector<DataPoint>());
         }
-        System.out.println("size of brickLists: " + brickLists.size());
+        //System.out.println("size of brickLists: " + brickLists.size());
 
-        System.out.println("Processing rules");
+        //System.out.println("Processing rules");
         //store the data
         //NOTE: vectors are out of date, but we continue to use them to build off cluster methods that use them
         for (int i = 0; i < rules.length; i++) {
-            System.out.printf("Rule number %d of %d\n",(i+1), rules.length);
-            System.out.println("Rule string: " + ruleStrings[i]);
+            //System.out.printf("Rule number %d of %d\n",(i+1), rules.length);
+            //System.out.println("Rule string: " + ruleStrings[i]);
             DataPoint temp = processRule(rules[i], ruleStrings[i], Integer.toString(i));
             String brickName = temp.getBrickType();
             if (useHead && temp.isHead()) { //if we care about separating out the head, AND if rule belongs to the head, store its data separately
                 headData.add(temp);
             } else {
                 //store data in the vector in the list of vectors corresponding to a specific brick type (as indexed in the brick types array)
-                System.out.println("This brick's type: " + temp.getBrickType());
+                //System.out.println("This brick's type: " + temp.getBrickType());
                 if (!brickName.equals("None")) {
                     int brickTypeIndex = java.util.Arrays.asList(brickKindsArray).indexOf(brickName);
                     brickLists.get(brickTypeIndex).add(temp);
@@ -208,7 +208,7 @@ public class CreateBrickGrammar {
     public static void writeBrickGrammar(boolean useRelative, String outfile) {
         try {
             BufferedWriter out = new BufferedWriter(new FileWriter(outfile, true));
-            System.out.println("will be writing grammar");
+            //System.out.println("will be writing grammar");
             
             //boilerplate rules that specify how many duration slots to subtract off for bricks of different durations
             for (int dur = 0; dur < brickDurationsArray.length; ++dur) {
@@ -241,13 +241,16 @@ public class CreateBrickGrammar {
                     } else {
                         rule = rep.getObjData();
                     }
-                    //NOTE: right now we don't make use of the probability (1.0)
+                    
                     out.write("(rule (START"
                             + (rep.getSegLength()*BEAT)
                             + " Brick-type "
                             + rep.getBrickType()
                             + ")("
                             + rule
+//                            + ") (* 0.5 (builtin brick-type (" //evaluates to 1 if brick type is this brick's type; 0 otherwise
+//                            + rep.getBrickType()
+//                            + "))))\n");
                             + ") 1.0)\n");
                 } else { 
                     //TODO: how to deal with parts that could not be classified as bricks
@@ -260,10 +263,10 @@ public class CreateBrickGrammar {
                 
                 totalDuration += currentBlock.getDuration();
             }
-            System.out.println("Successfully completed and closing file");
+            //System.out.println("Successfully completed and closing file");
             out.close();
         } catch (Exception e) {
-            System.out.println("Error writing grammar");
+            System.out.println("Error writing grammar: " + e.toString());
         }
     }
 }
