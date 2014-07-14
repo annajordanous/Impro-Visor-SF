@@ -5186,37 +5186,36 @@ public class LickgenFrame
 
             //writeBeatsToSlide(beatsToSlide);
             //loop through places to start the measure window
-            for (int window = 0; window < measureWindow; window += beatsToSlide) {
-                //extract all sections of size measureWindow
-                for (int i = 0;
-                        (i * slotsPerSection) + (window * BEAT) + slotsPerSection <= (numMeasures) * slotsPerSection;
-                        i++) {
-                    //System.out.println("Window: " + window);
-                    //System.out.println("i: " + i);
-                    String production = addMeasureToAbstractMelody(
-                            start + (i * slotsPerSection) + (window * BEAT),
-                            measureWindow,
-                            i == 0);
-                    if (production != null) {
-                        writeProduction(production, measureWindow,
-                                (i * slotsPerSection) + (window * BEAT),
-                                true, null);
+            if (useBricksCheckbox.isSelected()) {
+                File f = new File(notate.getGrammarFileName());
+                String dir = f.getParentFile().getPath();
+                frameFile = dir + File.separator + Directories.accumulatedProductions;
+                try { //we just want to create a file to which further productions can be written
+                    BufferedWriter out = new BufferedWriter(new FileWriter(frameFile, true));
+                    out.close();
+                } catch (Exception e) {
+                    System.out.println("I/O troubles");
+                }
+            } else {
+                for (int window = 0; window < measureWindow; window += beatsToSlide) {
+                    //extract all sections of size measureWindow
+                    for (int i = 0;
+                            (i * slotsPerSection) + (window * BEAT) + slotsPerSection <= (numMeasures) * slotsPerSection;
+                            i++) {
+                        //System.out.println("Window: " + window);
+                        //System.out.println("i: " + i);
+                        String production = addMeasureToAbstractMelody(
+                                start + (i * slotsPerSection) + (window * BEAT),
+                                measureWindow,
+                                i == 0);
+                        if (production != null) {
+                            writeProduction(production, measureWindow,
+                                    (i * slotsPerSection) + (window * BEAT),
+                                    true, null);
+                        }
                     }
                 }
-
             }
-            
-// Mark's code            
-//                        File f = new File(notate.getGrammarFileName());
-//                        String dir = f.getParentFile().getPath();
-//                        frameFile = dir + File.separator + Directories.accumulatedProductions;
-//                        try { //we just want to create a file to which further productions can be written
-//                            BufferedWriter out = new BufferedWriter(new FileWriter(frameFile, true));
-//                            out.close();
-//                        } catch(Exception e) {
-//                            System.out.println("I/O troubles");
-//                        }
-
 
             lickgen.loadGrammar(notate.getGrammarFileName());
             updateUseSoloist();
@@ -5348,9 +5347,9 @@ public class LickgenFrame
             BufferedWriter out = new BufferedWriter(new FileWriter(frameFile, true));
 
             if (!writeExactMelody) {
-                out.write("(rule (Seg" 
-                        + measureWindow 
-                        + ") " 
+                out.write("(rule (Seg"
+                        + measureWindow
+                        + ") "
                         + production
                         + " ) "
                         + chords
@@ -5390,17 +5389,17 @@ public class LickgenFrame
                 relativePitchMelody = NotesToRelativePitch.melStringToRelativePitch(slotsPerSection, chordProg, exactMelody);
                 out.write("(rule (Seg"
                         + measureWindow
-                        + ") " 
-                        + production 
+                        + ") "
+                        + production
                         + " ) "
-                        + "(Xnotation " 
+                        + "(Xnotation "
                         + relativePitchMelody
                         + ") "
-                        + "(Brick-type " 
-                        + brickType 
-                        + ") " 
-                        + melodyToWrite 
-                        + " " 
+                        + "(Brick-type "
+                        + brickType
+                        + ") "
+                        + melodyToWrite
+                        + " "
                         + chords
                         + "\n");
             }
@@ -5417,7 +5416,7 @@ public class LickgenFrame
             BufferedWriter out = new BufferedWriter(new FileWriter(
                     notate.getGrammarFileName(), true));
             out.write(
-                    "(rule (Seg" 
+                    "(rule (Seg"
                     + measureWindow
                     + ") "
                     + production
@@ -6480,66 +6479,54 @@ public class LickgenFrame
 
         imp.ImproVisor.setPlayEntrySounds(true);
     }
-    
-public void toGrammar()
-  {
-    String outFile = notate.getGrammarFileName();
 
-    File f = new File(outFile);
+    public void toGrammar() {
+        String outFile = notate.getGrammarFileName();
 
-    String inFile = f.getParentFile().getPath() + File.separator + Directories.accumulatedProductions;
+        File f = new File(outFile);
 
-    File in = new File(inFile);
+        String inFile = f.getParentFile().getPath() + File.separator + Directories.accumulatedProductions;
 
-    if( !in.exists() )
-      {
-      System.out.println("File does not exist");
-      setLickGenStatus("Can't do this step as " + inFile + " does not exist.");
-      return;
-      }
+        File in = new File(inFile);
 
-    setLickGenStatus("Writing productions to grammar file: " + outFile);
-    
-    if( useBricksCheckbox.isSelected() )
-      {
-      imp.cluster.CreateBrickGrammar.create(notate.getChordProg(), 
-                                            inFile, 
-                                            outFile, 
-                                            getNumClusterReps(), 
-                                            getUseRelativePitches(), 
-                                            notate);     
-      }
-    else
-      {
-      imp.cluster.CreateGrammar.create(notate.getChordProg(),
-                                       inFile,
-                                       outFile,
-                                       getNumClusterReps(),
-                                       useMarkovSelected(),
-                                       getMarkovFieldLength(),
-                                       getUseRelativePitches(),
-                                       notate);
-      }
-    setLickGenStatus("Done writing productions to grammar file: " + outFile);
-
-    notate.refreshGrammarEditor();
-  }
-    
-    
-  private static LogDialog logDialog = new LogDialog(false);
-
-  public void openLog()
-  {
-      logDialog.setVisible(true);
-  }
-
-    public void setLickGenStatus(String string)
-    {
-        if( logDialog != null )
-        {
-        logDialog.append(string+"\n");
+        if (!in.exists()) {
+            System.out.println("File does not exist");
+            setLickGenStatus("Can't do this step as " + inFile + " does not exist.");
+            return;
         }
+
+        setLickGenStatus("Writing productions to grammar file: " + outFile);
+
+        if (useBricksCheckbox.isSelected()) {
+            imp.cluster.CreateBrickGrammar.create(notate.getChordProg(),
+                    inFile,
+                    outFile,
+                    getNumClusterReps(),
+                    getUseRelativePitches(),
+                    notate);
+        } else {
+            imp.cluster.CreateGrammar.create(notate.getChordProg(),
+                    inFile,
+                    outFile,
+                    getNumClusterReps(),
+                    useMarkovSelected(),
+                    getMarkovFieldLength(),
+                    getUseRelativePitches(),
+                    notate);
+        }
+        setLickGenStatus("Done writing productions to grammar file: " + outFile);
+
+        notate.refreshGrammarEditor();
+    }
+    private static LogDialog logDialog = new LogDialog(false);
+
+    public void openLog() {
+        logDialog.setVisible(true);
     }
 
-
+    public void setLickGenStatus(String string) {
+        if (logDialog != null) {
+            logDialog.append(string + "\n");
+        }
+    }
 }
