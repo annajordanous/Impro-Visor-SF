@@ -112,7 +112,8 @@ public void execute()
         for( int i = startIndex; i < stopIndex; i++ )
           {
             Note currentNote = part.getNote(i);
-
+            Note resolved = currentNote;
+            
             if( currentNote != null )
               {
                //System.out.println("part at " + i + " had " + part.getNote(i));
@@ -126,71 +127,76 @@ public void execute()
                 else
                   {
                     Chord chord = chordProg.getCurrentChord(i);
-                    ChordForm form = chord.getChordSymbol().getChordForm();
-                    String root = chord.getRoot();
-
-                    // usableTones combines chord, color, and scale tones
-                    // This could be done within ChordForm more efficiently
-
-                    Polylist usableTones = Polylist.nil;
-
-                    usableTones = usableTones.append(form.getSpell(root));
-
-                    usableTones = usableTones.append(form.getColor(root));
-
-                    // Not so good: usableTones = usableTones.append(form.getFirstScaleTones(root));
-
-                    Note resolved = null;
-
-                    if( directional )
-                    {
-                        // Directional transposition specified
-                        resolved = Note.getClosestMatchDirectional(currentNote.getPitch(), usableTones, direction);
-                    }
-                    else
-                    {
-                        // Rectification specified
-                    Note nextNote = part.getNextNote(i);
-                    if( NoteSymbol.makeNoteSymbol(currentNote).enhMember(usableTones) )
+                    if( chord.isNOCHORD() )
                       {
-                        // No rectification necessary
-                        resolved = currentNote;
+                      // leave currentNote as resolved
                       }
-                    else if( nextNote != null && nextNote.adjacentPitch(currentNote) && NoteSymbol.makeNoteSymbol(nextNote).enhMember(usableTones) )
-                    {
-                        // Allow approach tones to stand
-                        //System.out.println("allowing approach: " + currentNote.toLeadsheet() + " to " + nextNote.toLeadsheet() );
-                        
-                        resolved = currentNote;
-                    }
                     else
                       {
-                        // Move anything else to a usable tone
-                      resolved =
-                        Note.getClosestMatchDirectional(currentNote.getPitch(), usableTones, direction);
+                        ChordForm form = chord.getChordSymbol().getChordForm();
+                        String root = chord.getRoot();
 
-                      resolved.setRhythmValue(value);
+                        // usableTones combines chord, color, and scale tones
+                        // This could be done within ChordForm more efficiently
+
+                        Polylist usableTones = Polylist.nil;
+
+                        usableTones = usableTones.append(form.getSpell(root));
+
+                        usableTones = usableTones.append(form.getColor(root));
+
+                        // Not so good: usableTones = usableTones.append(form.getFirstScaleTones(root));
+
+                        if( directional )
+                        {
+                            // Directional transposition specified
+                            resolved = Note.getClosestMatchDirectional(currentNote.getPitch(), usableTones, direction);
+                        }
+                        else
+                        {
+                            // Rectification specified
+                        Note nextNote = part.getNextNote(i);
+                        if( NoteSymbol.makeNoteSymbol(currentNote).enhMember(usableTones) )
+                          {
+                            // No rectification necessary
+                            resolved = currentNote;
+                          }
+                        else if( nextNote != null && nextNote.adjacentPitch(currentNote) && NoteSymbol.makeNoteSymbol(nextNote).enhMember(usableTones) )
+                        {
+                            // Allow approach tones to stand
+                            //System.out.println("allowing approach: " + currentNote.toLeadsheet() + " to " + nextNote.toLeadsheet() );
+
+                            resolved = currentNote;
+                        }
+                        else
+                          {
+                            // Move anything else to a usable tone
+                          resolved =
+                            Note.getClosestMatchDirectional(currentNote.getPitch(), usableTones, direction);
+
+                          resolved.setRhythmValue(value);
+                          }
+                        }
+
+                        // If note is a repeat of the previous, try moving it up or down a half step then
+                        // resolving it in the direction moved.
+
+                        if( previouslyResolved != null && previouslyResolved.samePitch(resolved) )
+                          {
+                            // Decide direction randomly
+
+                            boolean dir = Math.random() > 0.5;
+
+                            int offset = dir ? +1 : -1;
+
+                            resolved =
+                                Note.getClosestMatchDirectional(resolved.getPitch()+offset, usableTones, dir);
+
+                            //System.out.println(
+                            //    "repeated pitch at slot " + i + ": " + resolved.toLeadsheet() + " to " + previouslyResolved.toLeadsheet() + ", dir = " + dir);
+                           }
                       }
-                    }
-
-                    // If note is a repeat of the previous, try moving it up or down a half step then
-                    // resolving it in the direction moved.
- 
-                    if( previouslyResolved != null && previouslyResolved.samePitch(resolved) )
-                      {
-                        // Decide direction randomly
-                        
-                        boolean dir = Math.random() > 0.5;
-
-                        int offset = dir ? +1 : -1;
-
-                        resolved =
-                            Note.getClosestMatchDirectional(resolved.getPitch()+offset, usableTones, dir);
-
-                        //System.out.println(
-                        //    "repeated pitch at slot " + i + ": " + resolved.toLeadsheet() + " to " + previouslyResolved.toLeadsheet() + ", dir = " + dir);
-                       }
- 
+                    
                      part.setNote(i, resolved);
 
                      previousNote = currentNote;
