@@ -28,6 +28,7 @@ import imp.data.Note;
 import imp.data.NoteSymbol;
 import imp.data.Unit;
 import imp.lickgen.LickGen;
+import imp.util.ErrorLog;
 import polya.*;
 import java.util.*;
 /**
@@ -57,33 +58,50 @@ public Transformation(LickGen lickGen)
 }
 public Transformation(LickGen lickGen, String transString)
 {
-    debug = false;
-    this.lickGen = lickGen;
+    this(lickGen);
     setTransformation((Polylist)Polylist.PolylistFromString(transString).first());
 }
 public Transformation(LickGen lickGen, Polylist trans)
 {
-    debug = false;
-    this.lickGen = lickGen;
+    this(lickGen);
     setTransformation(trans);
 }
-
-public void setTransformation(Polylist trans)
+public Transformation copy()
 {
-    description = (String) trans.assoc("description").second(); 
-    sourceNotes = (Polylist) trans.assoc("source-notes").rest();
-    targetNotes = (Polylist) trans.assoc("target-notes").rest();
-    conditionGuard = (Polylist) trans.assoc("guard-condition").second();
-    weight = ((Long) trans.assoc("weight").second()).intValue();
-    if(trans.assoc("enabled") != null)
-    {
-        enabled = Boolean.parseBoolean(trans.assoc("enabled").second().toString());
-    }
-    else
-    {
+    StringBuilder copyString = new StringBuilder();
+    toFile(copyString, "");
+    Transformation copy = new Transformation(lickGen, copyString.toString());
+    return copy;
+}
+public boolean setTransformation(Polylist trans)
+{   
+    StringBuilder copyString = new StringBuilder();
+    
+    toFile(copyString, "");
+    String transCopy = copyString.toString();
+    try{
+        description = (String) trans.assoc("description").second(); 
+        sourceNotes = (Polylist) trans.assoc("source-notes").rest();
+        targetNotes = (Polylist) trans.assoc("target-notes").rest();
+        conditionGuard = (Polylist) trans.assoc("guard-condition").second();
+        weight = ((Long) trans.assoc("weight").second()).intValue();
+        if(trans.assoc("enabled") != null)
+        {
+            enabled = Boolean.parseBoolean(trans.assoc("enabled").second().toString());
+        }
+        else
+        {
+            enabled = true;
+        }
         enabled = true;
+        return true;
     }
-    enabled = true;
+    catch( Exception e )
+    {
+        setTransformation((Polylist)Polylist.PolylistFromString(transCopy).first());
+        ErrorLog.log(ErrorLog.SEVERE, "Syntax Error in Transformation File");
+        return false;
+    }
 }
 
 public MelodyPart apply(MelodyPart notes, ChordPart chords, int startingSlot)
