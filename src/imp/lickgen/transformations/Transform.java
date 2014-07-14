@@ -39,7 +39,6 @@ public class Transform
 
 private MelodyPart startingNotes;
 public ArrayList<Substitution> substitutions;
-private ChordPart chords;
 private LickGen lickGen;
 public boolean debug;
 
@@ -68,7 +67,7 @@ public Transform(LickGen lickGen, String subs)
     }
 }
 
-public MelodyPart applySubstitutionsToMelodyPart(MelodyPart melody, Notate notate)
+public MelodyPart applySubstitutionsToMelodyPart(MelodyPart melody, ChordPart chords, Notate notate)
 {
     startingNotes = melody.copy();
     
@@ -87,15 +86,13 @@ public MelodyPart applySubstitutionsToMelodyPart(MelodyPart melody, Notate notat
     subTypes.add(substitutionsMotif);
     subTypes.add(substitutionsEmbellish);
     
-    chords = notate.getChordProg();
-    
     MelodyPart transMelody = melody.copy();
     MelodyPart transformed;
     for(ArrayList<Substitution> subs: subTypes)
     {
         if(subs.size()>0)
         {
-            transformed = applySubstitutionType(subs, transMelody);
+            transformed = applySubstitutionType(subs, transMelody, chords);
             transMelody = transformed.copy();
         }
         
@@ -104,7 +101,9 @@ public MelodyPart applySubstitutionsToMelodyPart(MelodyPart melody, Notate notat
     return transMelody;
 }
 
-private MelodyPart applySubstitutionType(ArrayList<Substitution> substitutions, MelodyPart transNotes)
+private MelodyPart applySubstitutionType(ArrayList<Substitution> substitutions, 
+                                         MelodyPart transNotes, 
+                                         ChordPart chords)
 {
     
     

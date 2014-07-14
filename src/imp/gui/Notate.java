@@ -21201,7 +21201,9 @@ public void originalGenerate(LickGen lickgen, int improviseStartSlot, int improv
             
             if(useSubstitutorCheckBox.isSelected())
             {
-                lickgenFrame.applySubstitutions(solo);
+                ChordPart chords = getChordProg().extract(improviseStartSlot,
+                                                          improviseEndSlot);
+                        lickgenFrame.applySubstitutions(solo, chords);
             }
             else
             {
@@ -21256,7 +21258,9 @@ public void originalGenerate(LickGen lickgen, int improviseStartSlot, int improv
                     
                     if(useSubstitutorCheckBox.isSelected())
                     {
-                        lickgenFrame.applySubstitutions(lick);
+                        ChordPart chords = getChordProg().extract(improviseStartSlot,
+                                                          improviseEndSlot);
+                        lickgenFrame.applySubstitutions(lick, chords);
                     }
                     else
                     {
@@ -21270,7 +21274,16 @@ public void originalGenerate(LickGen lickgen, int improviseStartSlot, int improv
                 // If the grade is high enough, pass it through the filter
                 else if (gradeFromCritic != null && gradeFromCritic >= criticGrade)
                 {
-                    putLick(lick);
+                    if(useSubstitutorCheckBox.isSelected())
+                    {
+                        ChordPart chords = getChordProg().extract(improviseStartSlot,
+                                                          improviseEndSlot);
+                        lickgenFrame.applySubstitutions(lick, chords);
+                    }
+                    else
+                    {
+                        putLick(lick);
+                    }
                     useCritic = false;
                     lickgenFrame.setCounterForCriticTextField(count);
                     lickgenFrame.setLickFromStaveGradeTextField(gradeFromCritic);
@@ -21318,7 +21331,9 @@ public void originalGenerate(LickGen lickgen, int improviseStartSlot, int improv
 
             if(useSubstitutorCheckBox.isSelected())
             {
-                lickgenFrame.applySubstitutions(lick);
+                ChordPart chords = getChordProg().extract(improviseStartSlot,
+                                                          improviseEndSlot);
+                lickgenFrame.applySubstitutions(lick, chords);
             }
             else
             {
