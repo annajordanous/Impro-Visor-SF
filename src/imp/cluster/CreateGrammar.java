@@ -550,6 +550,7 @@ public class CreateGrammar implements imp.Constants {
                     //rule = rule.concat(new Float(chain[chainLength + 1]).toString());
                     rule = rule.concat(df.format(chain[chainLength + 1] / 100));
                     rule = rule.concat(")\n");
+                    
                     if (!addedRules.contains(rule)) {
                         out.write(rule);
                         addedRules.add(rule);
@@ -564,6 +565,12 @@ public class CreateGrammar implements imp.Constants {
                 float numAppearances = reps[i].getNumber();
                 int clusterNumber = Integer.parseInt(name.substring(7));  //chop off the word cluster
                 String rule = reps[i].getRelativePitchMelody();
+                
+// Check rule durations. Note that this is a good example where we should keep
+// rules as polylist for as long as possible, as we here have to convert it back for parsing
+//                System.out.println("rule duration("
+//                        +  Grammar.getDurationAbstractMelody(Polylist.PolylistFromString(rule)) + ")" + rule);
+
                 //cut off the opening part of the string leaving only the slope data
                 //int start = rule.indexOf("((");
                 //rule = rule.substring(start + 1, rule.length() - 1);                
