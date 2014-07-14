@@ -6,6 +6,7 @@ package imp.gui;
 
 import imp.ImproVisor;
 import imp.com.PlayScoreCommand;
+import imp.data.ChordPart;
 import imp.data.MelodyPart;
 import imp.lickgen.LickGen;
 import imp.lickgen.transformations.Substitution;
@@ -963,11 +964,16 @@ public class SubstitutorTabPanel extends javax.swing.JPanel {
     {
         notate.stopPlaying();
         notate.adjustSelection();
-        MelodyPart part = notate.getCurrentMelodyPart().extract(notate.getCurrentSelectionStart(), notate.getCurrentSelectionEnd(),false);
-        applySubstitutionsToPart(part);
+        int start = notate.getCurrentSelectionStart();
+        int stop = notate.getCurrentSelectionEnd();
+        MelodyPart melody = notate.getCurrentMelodyPart().extract(start,
+                                                                  stop,
+                                                                  false);
+        ChordPart chords = notate.getChordProg().extract(start, stop);
+        applySubstitutionsToPart(melody, chords);
     }
     
-    public void applySubstitutionsToPart(MelodyPart part)
+    public void applySubstitutionsToPart(MelodyPart melody, ChordPart chords)
     {
         
         if(transform != null)
@@ -975,9 +981,14 @@ public class SubstitutorTabPanel extends javax.swing.JPanel {
             Stave stave = notate.getCurrentStave();
             int start = notate.getCurrentSelectionStart();
             int stop = notate.getCurrentSelectionEnd();
-            savedMelodies.add(new MelodyInContext(part.copy(), stave, start, stop));
+            savedMelodies.add(new MelodyInContext(melody.copy(), 
+                                                  stave, 
+                                                  start, 
+                                                  stop));
             
-            MelodyPart transformedPart = transform.applySubstitutionsToMelodyPart(part, notate);
+            MelodyPart transformedPart = transform.applySubstitutionsToMelodyPart(melody,
+                                                                                  chords,
+                                                                                  notate);
             
 
             
@@ -994,8 +1005,6 @@ public class SubstitutorTabPanel extends javax.swing.JPanel {
             savedTrans = new Stack();
             reapplySubstitutionsButton.setEnabled(false);
         }
-        else
-            notate.putLick(part);
         
     }
     private class MelodyInContext {

@@ -176,8 +176,8 @@ public class LickgenFrame
         substitutorPanel.add(substitutorTab, new GridLayout(1, 1, 1, 1));
     }
 
-    public void applySubstitutions(MelodyPart part) {
-        substitutorTab.applySubstitutionsToPart(part);
+    public void applySubstitutions(MelodyPart melody, ChordPart chords) {
+        substitutorTab.applySubstitutionsToPart(melody, chords);
     }
 
     /**

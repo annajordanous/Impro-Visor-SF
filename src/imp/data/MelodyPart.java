@@ -360,6 +360,23 @@ public Note getFirstNote()
   }
 
 
+/**
+ * Returns the Note sounding at this index.
+ * @param slotIndex         the index to check at
+ * @return Note            the note sounding at the index
+ */
+public Note getCurrentNote(int slotIndex) {
+    if( slotIndex < 0 || slotIndex >= size )
+    {
+      return null;
+    }
+    if(getNote(slotIndex) != null)
+    {
+        return getNote(slotIndex);
+    }
+    return getPrevNote(slotIndex);
+}
+
   /**
    * Returns the Note after the indicated slot index.
    * @param slotIndex         the index to start searching at
