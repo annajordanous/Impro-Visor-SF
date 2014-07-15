@@ -20,8 +20,8 @@
 
 package imp.data;
 
+import static imp.Constants.BEAT;
 import static imp.data.MidiImport.DRUM_CHANNEL;
-import static imp.data.MidiImport.impMelodyToScore;
 import imp.util.ErrorLog;
 import java.io.File;
 import java.util.*;
@@ -118,13 +118,17 @@ public void scoreToMelodies()
         
         for( int j = 0; j < numTracks; j++ )
           {
-            //System.out.println("---------------------------------------------");
-            //System.out.println("part " + i + " track " + j + " conversion: ");
             MelodyPart partOut = new MelodyPart();
-            importMelody.convertToImpPart(part, j, partOut, resolution);
-            //System.out.println("Score " + j + " from impMelody");
-            //System.out.println(impMelodyToScore(partOut)); //!!!!!!! Temp for debugging impMelodyToScore
-           
+            ImportMelody.convertToImpPart(part, j, partOut, resolution);
+            
+              // For Testing of impMelody2jmPart only
+              
+              // jm.music.data.Part tempPart = impMelody2jmPart(partOut);
+              // MelodyPart echoedPart = new MelodyPart();
+              // ImportMelody.convertToImpPart(tempPart, 0, echoedPart, 1);
+              // System.out.println(echoedPart);
+              // System.out.println();
+            
             String instrumentString = MIDIBeast.getInstrumentForPart(part);
             
             if( channel != DRUM_CHANNEL )
@@ -161,8 +165,26 @@ public void scoreToMelodies()
         return melodies;
     }
     
-    static public jm.music.data.Score impMelodyToScore(MelodyPart melodyPart)
+   /**
+    * Convert an Impro-Visor MelodyPart into a jMusic Score
+    * @param melodyPart
+    * @return 
+    */
+    static public jm.music.data.Score impMelody2jmScore(MelodyPart melodyPart)
       {
-        return ImportMelody.convertToJmusicScore(melodyPart);
+        return ImportMelody.impMelody2jmScore(melodyPart);
       }
+    
+   /**
+    * Convert an Impro-Visor MelodyPart into a jMusic Part
+    * @param melodyPart
+    * @return 
+    */
+   static public jm.music.data.Part impMelody2jmPart(MelodyPart melodyPart)
+      {
+         jm.music.data.Score tempScore = impMelody2jmScore(melodyPart);
+         return tempScore.getPart(0);
+      }
+    
+ 
 }
