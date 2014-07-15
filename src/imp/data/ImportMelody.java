@@ -22,8 +22,6 @@ package imp.data;
 
 import imp.Constants;
 import static imp.Constants.BEAT;
-import static imp.data.ImportMelody.convertToImpPart;
-import static imp.data.ImportMelody.noteArray2ImpPart;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -40,6 +38,7 @@ import java.util.Arrays;
  */
 public class ImportMelody implements Constants
 {
+static int FACTOR = 120;
 
 //private ArrayList<Note> originalMelodyNotes = new ArrayList<Note>();
 
@@ -151,7 +150,7 @@ public static int noteArray2ImpPart(ArrayList<jm.music.data.Note> origNoteArray,
          }
         else
           {
-          int rhythmValue = precision*(int)Math.round((BEAT * note.getRhythmValue()) / precision);
+          int rhythmValue = precision*(int)Math.round((BEAT * note.getRhythmValue())/precision);
           if( rhythmValue > 0 )
             {
             Note newNote = new Note(note.getPitch(), rhythmValue);
@@ -201,7 +200,7 @@ public void mergeRests(ArrayList<jm.music.data.Note> origNoteArray)
 /**
  * Convert an Impro-Visor MelodyPart to a jMusic score
  */
-public static jm.music.data.Score convertToJmusicScore(MelodyPart partIn)
+public static jm.music.data.Score impMelody2jmScore(MelodyPart partIn)
   {
     jm.music.data.Phrase phrase = new jm.music.data.Phrase();
 
@@ -211,10 +210,17 @@ public static jm.music.data.Score convertToJmusicScore(MelodyPart partIn)
       {
         Note impNote = partIn.getNote(slot);
         //System.out.println("note: " + impNote);
-        int pitch;
-        if( impNote != null && (pitch = impNote.getPitch()) >= 0 )
+        if( impNote != null )
           {
-          phrase.addNote(pitch, impNote.getRhythmValue());
+            double duration = ((double)impNote.getRhythmValue())/FACTOR;
+            if( impNote.isRest() )
+              {
+                phrase.addRest(new jm.music.data.Rest(duration));
+              }
+            else
+              {
+              phrase.addNote(impNote.getPitch(), duration);
+              }
           }
       }
 
