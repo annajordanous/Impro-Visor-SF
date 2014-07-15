@@ -165,6 +165,19 @@ public class Style
    * a ArrayList of this Style's ChordPattern objects
    */
   private ArrayList<ChordPattern> chordPatterns = new ArrayList<ChordPattern>();
+  
+  /**
+   * HashMaps for each of the different instruments to save the rules defined
+   * outside the patterns
+   */
+  private LinkedHashMap<String, Polylist> bassDefinedRules = 
+          new LinkedHashMap<String, Polylist>();
+  
+  private LinkedHashMap<String, Polylist> chordDefinedRules = 
+          new LinkedHashMap<String, Polylist>();
+  
+  private LinkedHashMap<String, Polylist> drumDefinedRules = 
+          new LinkedHashMap<String, Polylist>();
 
   /**
    * a String array containing keywords used in Style specifications
@@ -175,7 +188,8 @@ public class Style
                                        "chord-high", "chord-low", "chord-base",
                                        "use-extensions", "no-style",
                                        "voicing-type", "comments",
-                                       "comp-swing"
+                                       "comp-swing", "define-rule", "bass",
+                                       "chord", "drum"
   };
 
   // indices into the keyword array
@@ -210,6 +224,14 @@ public class Style
   private static final int COMMENTS = 14;
 
   private static final int ACCOMPANIMENT_SWING = 15;
+  
+  private static final int DEFINE_RULE = 16;
+  
+  private static final int BASS = 17;
+  
+  private static final int CHORD = 18;
+  
+  private static final int DRUM = 19;
 
 
   public boolean usePreviousStyle()
@@ -419,7 +441,25 @@ public class Style
     {
     return bassInstrument;
     }
-
+  
+  /**
+   * gets the defined rules for each instrument
+   * @return the Linked Hash Map of rules
+   */
+  public LinkedHashMap getBassDefinedRules()
+  {
+      return bassDefinedRules;
+  }
+  
+  public LinkedHashMap getChordDefinedRules()
+  {
+      return chordDefinedRules;
+  }
+  
+  public LinkedHashMap getDrumDefinedRules()
+  {
+      return drumDefinedRules;
+  }
 
 
   /**
@@ -501,12 +541,20 @@ public class Style
 
           switch( Leadsheet.lookup((String)dispatcher, keyword) )
             {
+              case DEFINE_RULE:
+              {
+                  style.makeDefinedRules(item);
+                  break;
+              }
             case CHORD_PATTERN:
               {
-              ChordPattern cp = ChordPattern.makeChordPattern(item);
+                  ChordPattern cp = new ChordPattern();
+                  cp.setStyle(style);
+                  cp.setDefinedRules(cp.getStyle().getChordDefinedRules());
+                  cp.makePattern(item);
               if( cp != null )
                 {
-                cp.setStyle(style);
+                //cp.setStyle(style);
                 style.chordPatterns.add(cp);
                 }
               else
@@ -517,10 +565,13 @@ public class Style
               }
             case DRUM_PATTERN:
               {
-              DrumPattern dp = DrumPattern.makeDrumPattern(item);
+              DrumPattern dp = new DrumPattern();
+              dp.setStyle(style);
+              dp.setDefinedRules(dp.getStyle().getDrumDefinedRules());
+              dp.makePattern(item);
               if( dp != null )
                 {
-                dp.setStyle(style);
+                //dp.setStyle(style);
                 style.drumPatterns.add(dp);
                 }
               else
@@ -531,10 +582,13 @@ public class Style
               }
             case BASS_PATTERN:
               {
-              BassPattern bp = BassPattern.makeBassPattern(item);
+                  BassPattern bp = new BassPattern();
+                  bp.setStyle(style);
+                  bp.setDefinedRules(bp.getStyle().getBassDefinedRules());
+                  bp.makePattern(item);
               if( bp != null )
                 {
-                bp.setStyle(style);
+                //bp.setStyle(style);
                 style.bassPatterns.add(bp);
                 }
               else
@@ -572,7 +626,7 @@ public class Style
         L = L.rest();
         }
       }
-
+    
     return style;
     }
 
@@ -655,6 +709,61 @@ public class Style
         }
       }
     }
+  
+  /**
+   * A method to add defined rules to the hash map that tracks them
+   * @param L 
+   */
+  public void makeDefinedRules(Polylist L)
+  {
+      Polylist original = L;
+      //e.g. (drum name (rules X4 R4 X4 R4))
+      
+      if( L.nonEmpty() )
+      {
+          if( L.first() instanceof String )
+          {
+              String dispatcher = (String) L.first();
+              Polylist item = L.rest();
+              
+              switch( Leadsheet.lookup(dispatcher, keyword) )
+              {
+                  case BASS:
+                  {
+                      if( item.first() instanceof String )
+                      {
+                          String ruleName = (String) item.first();
+                          Polylist rules = (Polylist) item.second();
+                          bassDefinedRules.put(ruleName, rules);
+                      }
+                      break;
+                  }
+                      
+                  case CHORD:
+                  {
+                      if( item.first() instanceof String )
+                      {
+                          String ruleName = (String) item.first();
+                          Polylist rules = (Polylist) item.second();
+                          chordDefinedRules.put(ruleName, rules);
+                      }
+                      break;
+                  }
+                      
+                  case DRUM:
+                  {
+                      if( item.first() instanceof String )
+                      {
+                          String ruleName = (String) item.first();
+                          Polylist rules = (Polylist) item.second();
+                          drumDefinedRules.put(ruleName, rules);
+                      }
+                      break;
+                  }
+              }
+          }
+      }
+  }
 
   /**
    * Saves a Style to text format used in Leadsheets.

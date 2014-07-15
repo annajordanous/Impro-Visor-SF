@@ -23,6 +23,7 @@ package imp.data;
 import imp.Constants;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import polya.Polylist;
 
 /**
@@ -44,6 +45,12 @@ public static int defaultDrumPatternDuration = 480;
  */
 
 private ArrayList<DrumRuleRep> drums;
+
+/**
+ * defined rules for drums
+ */
+private LinkedHashMap<String, Polylist> definedRules = 
+        new LinkedHashMap<String, Polylist>();
 
 /**
  * Symbols used in drum patterns
@@ -91,7 +98,7 @@ private String patternName = "";
 /**
  * Creates a new DrumPattern (only used by the factory).
  */
-private DrumPattern()
+public DrumPattern()
   {
     drums = new ArrayList<DrumRuleRep>();
   }
@@ -135,7 +142,66 @@ public static DrumPattern makeDrumPattern(Polylist L)
             }
             case DRUM: // a single drum "rule" in the pattern
               {
-                dp.addRule(new DrumRuleRep(item));
+                DrumRuleRep rep = new DrumRuleRep(item);
+                rep.setDefinedRules(dp.getDefinedRules());
+                dp.addRule(rep);
+                break;
+              }
+                
+            case WEIGHT: // weight of entire pattern
+              {
+                Number w = (Number) item.first();
+                dp.setWeight(w.floatValue());
+                break;
+              }
+          }
+      }
+    return dp;
+  }
+
+
+/**
+ * A method that adds rules and durations to an existing bass pattern
+ * Used in place of makeDrumPattern when the Style has pre-defined rules
+ * @param L
+ * @return 
+ */
+public DrumPattern makePattern(Polylist L)
+  {
+    DrumPattern dp = this;
+    while( L.nonEmpty() )
+      {
+        Polylist item = (Polylist) L.first();
+        L = L.rest();
+
+        String dispatcher = (String) item.first();
+        item = item.rest();
+        
+        switch( Leadsheet.lookup(dispatcher, keyword) )
+          {
+            case NAME:
+            {
+                if( item == null || item.isEmpty() || item.first().equals("") )
+                {
+                    break;
+                }
+                else if( item.first() instanceof String )
+                {
+                    dp.patternName = (String) item.first();
+                }
+                else 
+                {
+                    dp.setError("Unrecognized name type in drum pattern: " + item.first());
+                    return dp;
+                }
+                break;
+            }
+            case DRUM: // a single drum "rule" in the pattern
+              {
+                DrumRuleRep rep = new DrumRuleRep();
+                rep.setDefinedRules(dp.getDefinedRules());
+                rep.makeDrumRuleRep(item);
+                dp.addRule(rep);
                 break;
               }
                 
@@ -284,5 +350,22 @@ public String getName()
     {
     return patternName;
     }
+
+public LinkedHashMap getDefinedRules()
+{
+    return definedRules;
+}
+
+public void setDefinedRules(LinkedHashMap map)
+{
+    if( map.isEmpty() )
+    {
+        return;
+    }
+    else
+    {
+        definedRules = map;
+    }
+}
 
 }

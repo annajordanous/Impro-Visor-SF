@@ -312,7 +312,7 @@ public void enterFromCell(int rowIndex,
 
     currentRow = rowIndex;
     currentColumn = colIndex;
-
+    
     Object currentContents = styleTable.getValueAt(currentRow, currentColumn);
     //System.out.println("currentContents = " + currentContents + " class " + currentContents.getClass());
     currentCellText = currentContents == null ? " " : currentContents.toString();
@@ -347,9 +347,9 @@ public void enterFromCell(int rowIndex,
     {
         Object rule = styleTable.getValueAt(rowIndex, colIndex);
 
-        maybePlay(rule);
-
-        updateMirror(rowIndex, colIndex, rule);      
+        maybePlay(rule); 
+        
+        updateMirror(rowIndex, colIndex, rule);  
     }
   
   
@@ -389,8 +389,8 @@ void playPercussionColumn(int colIndex)
     if( count != 0 )
       {
         styleTable.setRowSelectionInterval(
-                StyleTableModel.FIRST_PERCUSSION_INSTRUMENT_ROW,
-                count - 1);
+                StyleTableModel.DRUM_PATTERN_NAME_ROW,
+                StyleTableModel.DRUM_PATTERN_NAME_ROW);
       }
     ListSelectionModel selection =
             styleTable.getTableHeader().getColumnModel().getSelectionModel();
@@ -491,10 +491,10 @@ void playBassColumn(int colIndex)
           if( contents instanceof PatternDisplay )
             {
             beatsField0.setText("" + ((PatternDisplay)contents).getBeats());
+            nameField0.setText("" + ((PatternDisplay)contents).getName());
             }
           rowField0.setText("" + rowHeaderLabels.get(recentRows[0]));
           columnField0.setText("" + styleTable.getColumnName(recentColumns[0]));
-          nameField0.setText("" + ((PatternDisplay)contents).getName());
           setTextFieldColor(contents, beatsField0);
           setTextFieldColor(contents, styleTextField0);
           setTextFieldColor(contents, rowField0);
@@ -510,10 +510,10 @@ void playBassColumn(int colIndex)
           if( contents instanceof PatternDisplay )
             {
               beatsField1.setText("" + ((PatternDisplay)contents).getBeats());
+              nameField1.setText("" + ((PatternDisplay)contents).getName());
             }
           rowField1.setText("" + rowHeaderLabels.get(recentRows[1]));
           columnField1.setText("" + styleTable.getColumnName(recentColumns[1]));
-          nameField1.setText("" + ((PatternDisplay)contents).getName());
           setTextFieldColor(contents, beatsField1);
           setTextFieldColor(contents, styleTextField1);
           setTextFieldColor(contents, rowField1);
@@ -528,10 +528,10 @@ void playBassColumn(int colIndex)
           if( contents instanceof PatternDisplay )
             {
               beatsField2.setText("" + ((PatternDisplay)contents).getBeats());
+              nameField2.setText("" + ((PatternDisplay)contents).getName());
             }
           rowField2.setText("" + rowHeaderLabels.get(recentRows[2]));
           columnField2.setText("" + styleTable.getColumnName(recentColumns[2]));
-          nameField2.setText("" + ((PatternDisplay)contents).getName());
           setTextFieldColor(contents, beatsField2);
           setTextFieldColor(contents, styleTextField2);
           setTextFieldColor(contents, rowField2);
@@ -3272,16 +3272,20 @@ void playBassColumn(int colIndex)
         rowLabel = new javax.swing.JLabel();
         columnLabel = new javax.swing.JLabel();
         beatsLabel = new javax.swing.JLabel();
+        nameLabel = new javax.swing.JLabel();
         contentLabel = new javax.swing.JLabel();
         beatsField2 = new javax.swing.JTextField();
+        nameField2 = new javax.swing.JTextField();
         rowField2 = new javax.swing.JTextField();
         columnField2 = new javax.swing.JTextField();
         styleTextField2 = new javax.swing.JTextField();
         beatsField1 = new javax.swing.JTextField();
+        nameField1 = new javax.swing.JTextField();
         rowField1 = new javax.swing.JTextField();
         columnField1 = new javax.swing.JTextField();
         styleTextField1 = new javax.swing.JTextField();
         beatsField0 = new javax.swing.JTextField();
+        nameField0 = new javax.swing.JTextField();
         rowField0 = new javax.swing.JTextField();
         columnField0 = new javax.swing.JTextField();
         styleTextField0 = new javax.swing.JTextField();
@@ -3292,10 +3296,15 @@ void playBassColumn(int colIndex)
         styleTable = new javax.swing.JTable();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextPane1 = new javax.swing.JTextPane();
-        nameField2 = new javax.swing.JTextField();
-        nameField1 = new javax.swing.JTextField();
-        nameField0 = new javax.swing.JTextField();
-        nameLabel = new javax.swing.JLabel();
+        nameField3 = new javax.swing.JTextField();
+        patternField = new javax.swing.JTextField();
+        patternsPanel = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        patternList = new javax.swing.JList();
+        patternButtonPanel = new javax.swing.JPanel();
+        insertPatternButton = new javax.swing.JButton();
+        savePatternButton = new javax.swing.JButton();
+        removePatternButton = new javax.swing.JButton();
         closeButtonPanel = new javax.swing.JPanel();
         stopPlaying = new javax.swing.JButton();
         closeBtn = new javax.swing.JButton();
@@ -4660,7 +4669,7 @@ void playBassColumn(int colIndex)
         gridBagConstraints.weightx = 1.0;
         getContentPane().add(clipboardPanel, gridBagConstraints);
 
-        stylePanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Mirrored patterns, most recent pattern at the bottom\n"));
+        stylePanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Mirrored patterns, most recent pattern at the bottom\n", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
         stylePanel.setToolTipText("The last 3 patterns selected appear here, with the most recent at the bottom.\n");
         stylePanel.setMinimumSize(new java.awt.Dimension(1000, 200));
         stylePanel.setPreferredSize(new java.awt.Dimension(1300, 400));
@@ -4688,7 +4697,7 @@ void playBassColumn(int colIndex)
         columnLabel.setMinimumSize(new java.awt.Dimension(60, 14));
         columnLabel.setPreferredSize(new java.awt.Dimension(60, 14));
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
@@ -4702,11 +4711,26 @@ void playBassColumn(int colIndex)
         beatsLabel.setMinimumSize(new java.awt.Dimension(100, 14));
         beatsLabel.setPreferredSize(new java.awt.Dimension(100, 14));
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         stylePanel.add(beatsLabel, gridBagConstraints);
+
+        nameLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        nameLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        nameLabel.setText("Name");
+        nameLabel.setToolTipText("Computed number of beats\n");
+        nameLabel.setMaximumSize(new java.awt.Dimension(100, 14));
+        nameLabel.setMinimumSize(new java.awt.Dimension(100, 14));
+        nameLabel.setPreferredSize(new java.awt.Dimension(100, 14));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 0.1;
+        stylePanel.add(nameLabel, gridBagConstraints);
 
         contentLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         contentLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -4716,7 +4740,7 @@ void playBassColumn(int colIndex)
         contentLabel.setMinimumSize(new java.awt.Dimension(900, 14));
         contentLabel.setPreferredSize(new java.awt.Dimension(900, 14));
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridx = 5;
         gridBagConstraints.gridy = 0;
         stylePanel.add(contentLabel, gridBagConstraints);
 
@@ -4731,11 +4755,28 @@ void playBassColumn(int colIndex)
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         stylePanel.add(beatsField2, gridBagConstraints);
+
+        nameField2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        nameField2.setMaximumSize(new java.awt.Dimension(200, 2147483647));
+        nameField2.setMinimumSize(new java.awt.Dimension(200, 22));
+        nameField2.setPreferredSize(new java.awt.Dimension(200, 22));
+        nameField2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nameField2ActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 0.1;
+        stylePanel.add(nameField2, gridBagConstraints);
 
         rowField2.setEditable(false);
         rowField2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -4764,7 +4805,7 @@ void playBassColumn(int colIndex)
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
@@ -4781,7 +4822,7 @@ void playBassColumn(int colIndex)
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridx = 5;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
@@ -4800,11 +4841,28 @@ void playBassColumn(int colIndex)
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         stylePanel.add(beatsField1, gridBagConstraints);
+
+        nameField1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        nameField1.setMaximumSize(new java.awt.Dimension(200, 2147483647));
+        nameField1.setMinimumSize(new java.awt.Dimension(200, 22));
+        nameField1.setPreferredSize(new java.awt.Dimension(200, 22));
+        nameField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nameField1ActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 0.1;
+        stylePanel.add(nameField1, gridBagConstraints);
 
         rowField1.setEditable(false);
         rowField1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -4823,7 +4881,7 @@ void playBassColumn(int colIndex)
         columnField1.setMinimumSize(new java.awt.Dimension(60, 22));
         columnField1.setPreferredSize(new java.awt.Dimension(60, 22));
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
@@ -4840,7 +4898,7 @@ void playBassColumn(int colIndex)
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridx = 5;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
@@ -4859,11 +4917,28 @@ void playBassColumn(int colIndex)
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         stylePanel.add(beatsField0, gridBagConstraints);
+
+        nameField0.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        nameField0.setMaximumSize(new java.awt.Dimension(200, 2147483647));
+        nameField0.setMinimumSize(new java.awt.Dimension(200, 22));
+        nameField0.setPreferredSize(new java.awt.Dimension(200, 22));
+        nameField0.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nameField0ActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 0.1;
+        stylePanel.add(nameField0, gridBagConstraints);
 
         rowField0.setEditable(false);
         rowField0.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -4887,7 +4962,7 @@ void playBassColumn(int colIndex)
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
@@ -4904,7 +4979,7 @@ void playBassColumn(int colIndex)
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridx = 5;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
@@ -4917,9 +4992,9 @@ void playBassColumn(int colIndex)
         editInstructionsPanel.add(jLabel1);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.gridwidth = 5;
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridwidth = 6;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         stylePanel.add(editInstructionsPanel, gridBagConstraints);
@@ -4939,6 +5014,7 @@ void playBassColumn(int colIndex)
         styleTable.setPreferredSize(new java.awt.Dimension(7200, 800));
         styleTable.setSurrendersFocusOnKeystroke(true);
         gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
@@ -4952,83 +5028,104 @@ void playBassColumn(int colIndex)
         styleScrollpane.setViewportView(panelInStyleScrollpane);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 5;
-        gridBagConstraints.gridwidth = 5;
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.gridwidth = 6;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         stylePanel.add(styleScrollpane, gridBagConstraints);
 
-        nameField2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        nameField2.setMaximumSize(new java.awt.Dimension(100, 2147483647));
-        nameField2.setMinimumSize(new java.awt.Dimension(100, 22));
-        nameField2.setPreferredSize(new java.awt.Dimension(100, 22));
-        nameField2.addActionListener(new java.awt.event.ActionListener() {
+        nameField3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        nameField3.setMinimumSize(new java.awt.Dimension(200, 22));
+        nameField3.setPreferredSize(new java.awt.Dimension(200, 22));
+        nameField3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nameField2ActionPerformed(evt);
+                nameField3ActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        stylePanel.add(nameField2, gridBagConstraints);
+        stylePanel.add(nameField3, gridBagConstraints);
 
-        nameField1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        nameField1.setMaximumSize(new java.awt.Dimension(100, 2147483647));
-        nameField1.setMinimumSize(new java.awt.Dimension(100, 22));
-        nameField1.setPreferredSize(new java.awt.Dimension(100, 22));
-        nameField1.addActionListener(new java.awt.event.ActionListener() {
+        patternField.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        patternField.setMinimumSize(new java.awt.Dimension(650, 22));
+        patternField.setPreferredSize(new java.awt.Dimension(650, 22));
+        patternField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nameField1ActionPerformed(evt);
+                patternFieldActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridx = 5;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        stylePanel.add(nameField1, gridBagConstraints);
+        stylePanel.add(patternField, gridBagConstraints);
 
-        nameField0.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        nameField0.setMaximumSize(new java.awt.Dimension(100, 2147483647));
-        nameField0.setMinimumSize(new java.awt.Dimension(100, 22));
-        nameField0.setPreferredSize(new java.awt.Dimension(100, 22));
-        nameField0.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nameField0ActionPerformed(evt);
-            }
-        });
+        patternsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Defined Patterns", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+        patternsPanel.setMinimumSize(new java.awt.Dimension(200, 38));
+        patternsPanel.setPreferredSize(new java.awt.Dimension(250, 38));
+        patternsPanel.setLayout(new java.awt.GridBagLayout());
+
+        jScrollPane2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        patternList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane2.setViewportView(patternList);
+
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        stylePanel.add(nameField0, gridBagConstraints);
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.gridheight = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.weighty = 1.0;
+        patternsPanel.add(jScrollPane2, gridBagConstraints);
 
-        nameLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        nameLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        nameLabel.setText("Name");
-        nameLabel.setToolTipText("Computed number of beats\n");
-        nameLabel.setMaximumSize(new java.awt.Dimension(100, 14));
-        nameLabel.setMinimumSize(new java.awt.Dimension(100, 14));
-        nameLabel.setPreferredSize(new java.awt.Dimension(100, 14));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridheight = 7;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        stylePanel.add(patternsPanel, gridBagConstraints);
+
+        patternButtonPanel.setLayout(new java.awt.GridBagLayout());
+
+        insertPatternButton.setText("Insert");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        patternButtonPanel.add(insertPatternButton, gridBagConstraints);
+
+        savePatternButton.setText("Save");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 4;
+        patternButtonPanel.add(savePatternButton, gridBagConstraints);
+
+        removePatternButton.setText("Remove");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        stylePanel.add(nameLabel, gridBagConstraints);
+        gridBagConstraints.gridy = 4;
+        patternButtonPanel.add(removePatternButton, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
-        gridBagConstraints.gridwidth = 12;
+        gridBagConstraints.gridwidth = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        stylePanel.add(patternButtonPanel, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridwidth = 11;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.weightx = 2.0;
+        gridBagConstraints.weighty = 2.0;
         getContentPane().add(stylePanel, gridBagConstraints);
 
         closeButtonPanel.setLayout(new java.awt.GridBagLayout());
@@ -5075,10 +5172,10 @@ void playBassColumn(int colIndex)
         closeButtonPanel.add(jButton1, new java.awt.GridBagConstraints());
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 11;
+        gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridwidth = 12;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTHEAST;
         getContentPane().add(closeButtonPanel, gridBagConstraints);
 
         styleSpecificationPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Style Specification"));
@@ -6738,6 +6835,43 @@ private void openStyleMixer()
     private void useLeadsheetCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_useLeadsheetCheckBoxActionPerformed
         MIDIBeast.useLeadsheet = useLeadsheetCheckBox.isSelected();
     }//GEN-LAST:event_useLeadsheetCheckBoxActionPerformed
+/*
+    private void nameField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_namefield2ActionPerformed
+        // TODO add your handling code here:
+      if( recentRows[2] >= 0 && recentColumns[2] >= 0 )
+      {
+      String revisedContent = styleTextField2.getText(); //.toUpperCase();
+      String revisedName = nameField2.getText();
+      setCell(revisedContent, recentRows[2], recentColumns[2], PLAY, revisedName);
+      updateMirror(recentRows[2], recentColumns[2], revisedContent);
+      }
+    }//GEN-LAST:event_namefield2ActionPerformed
+
+    private void nameField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_namefield1ActionPerformed
+        // TODO add your handling code here:
+      if( recentRows[1] >= 0 && recentColumns[1] >= 0 )
+      {
+      String revisedContent = styleTextField1.getText(); //.toUpperCase();
+      String revisedName = nameField1.getText();
+      setCell(revisedContent, recentRows[1], recentColumns[1], PLAY, revisedName);
+      updateMirror(recentRows[1], recentColumns[1], revisedContent);
+      }
+    }//GEN-LAST:event_namefield1ActionPerformed
+
+    private void nameField0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_namefield0ActionPerformed
+        // TODO add your handling code here:
+      if( recentRows[0] >= 0 && recentColumns[0] >= 0 )
+      {
+      String revisedContent = styleTextField0.getText(); //.toUpperCase();
+      String revisedName = nameField0.getText();
+      setCell(revisedContent, recentRows[0], recentColumns[0], PLAY, revisedName);
+      updateMirror(recentRows[0], recentColumns[0], revisedContent);
+      }
+    }//GEN-LAST:event_namefield0ActionPerformed
+*/
+    private void nameField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameField3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_nameField3ActionPerformed
 
     private void nameField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameField2ActionPerformed
         // TODO add your handling code here:
@@ -6771,6 +6905,10 @@ private void openStyleMixer()
       updateMirror(recentRows[0], recentColumns[0], revisedContent);
       }
     }//GEN-LAST:event_nameField0ActionPerformed
+
+    private void patternFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_patternFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_patternFieldActionPerformed
 
 private void usePianoRoll()
 {
@@ -6898,9 +7036,11 @@ public void unusePianoRoll()
     private javax.swing.JCheckBox importChordCheckBox;
     private javax.swing.JCheckBox importDrumCheckBox;
     private javax.swing.JPanel importInstrumentsPanel;
+    private javax.swing.JButton insertPatternButton;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JTabbedPane jTabbedPane1;
@@ -6918,6 +7058,7 @@ public void unusePianoRoll()
     private javax.swing.JTextField nameField0;
     private javax.swing.JTextField nameField1;
     private javax.swing.JTextField nameField2;
+    private javax.swing.JTextField nameField3;
     private javax.swing.JLabel nameLabel;
     private javax.swing.JButton newButton;
     private javax.swing.JButton newRowButton;
@@ -6932,7 +7073,11 @@ public void unusePianoRoll()
     private javax.swing.JMenuItem pasteCellsMI;
     private javax.swing.JButton pasteColumnButton;
     private javax.swing.JButton pasteRowButton;
+    private javax.swing.JPanel patternButtonPanel;
+    private javax.swing.JTextField patternField;
     private javax.swing.JTextArea patternHelp;
+    private javax.swing.JList patternList;
+    private javax.swing.JPanel patternsPanel;
     private javax.swing.JToggleButton pauseBtn;
     private javax.swing.JScrollPane percussionPane;
     private javax.swing.JTextArea percussionText;
@@ -6941,12 +7086,14 @@ public void unusePianoRoll()
     private javax.swing.JPanel playPanel;
     private javax.swing.JToggleButton playToggle;
     private javax.swing.JPanel remotePanel;
+    private javax.swing.JButton removePatternButton;
     private javax.swing.JTextField rowField0;
     private javax.swing.JTextField rowField1;
     private javax.swing.JTextField rowField2;
     private javax.swing.JLabel rowLabel;
     private javax.swing.JPanel rowPanel;
     private javax.swing.JButton saveButton;
+    private javax.swing.JButton savePatternButton;
     private javax.swing.JMenuItem saveStyleAs;
     private javax.swing.JButton saveStyleBtn;
     private javax.swing.JButton saveStyleBtn1;

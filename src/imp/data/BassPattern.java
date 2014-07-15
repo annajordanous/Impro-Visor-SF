@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Random;
+import java.util.LinkedHashMap;
 import polya.Polylist;
 import polya.PolylistBuffer;
 
@@ -62,6 +63,11 @@ public class BassPattern
    */
 
   private ArrayList<String> modifiers;
+  
+  /**
+   * the rules defined in the style
+   */
+  private LinkedHashMap<String, Polylist> definedRules;
 
   /**
    * array containing the types of rules
@@ -129,7 +135,7 @@ public class BassPattern
  /**
    * array containing BassPattern keywords
    */
-  private static String keyword[] = {"rules", "weight", "name"};
+  private static String keyword[] = {"rules", "weight", "name", "use"};
 
   // indices into the keyword array
   private static final int RULES = 0;
@@ -138,12 +144,14 @@ public class BassPattern
   
   private static final int NAME = 2;
   
+  private static final int USE = 3;
+  
   private String patternName = "";
   
   /**
    * Creates a new BassPatern (only used by the factory).
    */
-  private BassPattern()
+  public BassPattern()
     {
     rules = new ArrayList<Integer>();
     durations = new ArrayList<String>();
@@ -297,6 +305,246 @@ public class BassPattern
     return bp;
     }
 
+  /**
+   * A method that adds rules and durations to an existing bass pattern
+   * Used in place of makeBassPattern when the Style has pre-defined rules
+   * @param L
+   * @return 
+   */
+    public BassPattern makePattern(Polylist L)
+    {
+//System.out.println("makeBassPattern " + L);
+    Polylist original = L;
+    BassPattern bp = this;
+    // Example pattern:
+    //
+    //         (bass-pattern (rules B4+8 (X 5 4) B4 A8) (weight 10))
+    //
+    while( L.nonEmpty() )
+      {
+      Object segment = L.first();
+//System.out.println("segment = " + segment);
+      L = L.rest();
+      if( segment instanceof Polylist && ((Polylist)segment).nonEmpty() ) // e.g. (rules B4+8 (X 5 4) B4 A8)
+        {
+        Polylist item = (Polylist)segment;
+
+        if( item.nonEmpty() && item.first() instanceof String )
+          {
+          String dispatcher = (String)item.first(); // e.g. rules or weight
+          item = item.rest();                       // e.g. (B4+8 (X 5 4) B4 A8)
+
+          switch( Leadsheet.lookup(dispatcher, keyword) )
+            {
+            case NAME:
+              {
+                  if(item == null || item.isEmpty() || item.first().equals("")) 
+                  {
+                    break; 
+                  }
+                  else if(item.first() instanceof String)
+                  {
+                    bp.patternName = (String) item.first();
+                  }
+                  else
+                  {
+                    bp.setError("Unrecognized name type in bass pattern: " + item.first());
+                    return bp;
+                  }
+                  break;
+              }
+                
+            case USE:
+            {
+                if( item.first() instanceof String )
+                {
+                    String name = (String) item.first();
+                    bp.patternName = name;
+                    LinkedHashMap ruleDefinitions = bp.getDefinedRules();
+                    Polylist rules = (Polylist)ruleDefinitions.get( name );
+                    String first = (String)rules.first();
+                    if( Leadsheet.lookup(first, keyword) == RULES )
+                    {
+                        rules = rules.rest();
+                        while( rules.nonEmpty() )
+                {
+                Object entry = rules.first(); // e.g. B4+8
+//System.out.println("\nraw rule = " + entry);
+                rules = rules.rest();          // e.g. ((X 5 4) B4 A8)
+                if( entry instanceof Polylist )
+                  {
+                  // e.g. (X 5 4)
+                  Polylist plist = (Polylist)entry;
+                  int len = plist.length();
+                  if( len >= 3 && plist.first().equals(ruleTypes[PITCH]) )
+                    {
+                    String rule = plist.second().toString();
+                    String duration = plist.third().toString();
+                    String modifier = "";
+                    if( len == 4 )
+                    {
+                        // optional modifier
+                    modifier = plist.fourth().toString();
+                    }
+                    bp.addRule(rule, duration, modifier);
+                    }
+                  else
+                    {
+                    bp.setError("unrecognized " + segment + " in bass pattern: " + original);
+                    return bp;
+                    }
+                  }
+                else if( entry instanceof String )
+                  {
+                  String rule = (String)entry;
+                  
+                  if( rule.equals(NOTEPLUS) || rule.equals(NOTEMINUS) )
+                    {
+                    //System.out.println("entry is " + (String)entry);
+                    bp.addRule(rule, "");
+                    }
+                  
+                  else
+                   {
+                  // e.g. B4+8 or A8
+                  String duration = rule.substring(1);
+                  rule = rule.substring(0, 1);
+                  char c = rule.charAt(0);
+                  switch( c )
+                    {
+                      case 'A':
+                      case 'B':
+                      case 'C':
+                      case 'N':
+                      case 'R':
+                      case 'S':
+                      case 'V':
+                      case 'X':
+                      case '=':
+                          bp.addRule(rule, duration);
+                          break;
+                          
+                      default:
+                          bp.setError("unrecognized " + rule + " in bass pattern: " + original);
+                          return bp;
+                     }
+                   }
+                  }
+                else
+                  {
+                  bp.setError("unrecognized " + entry + " in bass pattern: " + original);
+                  return bp;
+                  }
+                }
+                    }
+                }
+                else
+                {
+                    bp.setError("unrecognized identifier for a defined pattern: "
+                            + item.first());
+                    return bp;
+                }
+                break;
+            }
+            
+            case RULES:
+              while( item.nonEmpty() )
+                {
+                Object entry = item.first(); // e.g. B4+8
+//System.out.println("\nraw rule = " + entry);
+                item = item.rest();          // e.g. ((X 5 4) B4 A8)
+                if( entry instanceof Polylist )
+                  {
+                  // e.g. (X 5 4)
+                  Polylist plist = (Polylist)entry;
+                  int len = plist.length();
+                  if( len >= 3 && plist.first().equals(ruleTypes[PITCH]) )
+                    {
+                    String rule = plist.second().toString();
+                    String duration = plist.third().toString();
+                    String modifier = "";
+                    if( len == 4 )
+                    {
+                        // optional modifier
+                    modifier = plist.fourth().toString();
+                    }
+                    bp.addRule(rule, duration, modifier);
+                    }
+                  else
+                    {
+                    bp.setError("unrecognized " + segment + " in bass pattern: " + original);
+                    return bp;
+                    }
+                  }
+                else if( entry instanceof String )
+                  {
+                  String rule = (String)entry;
+                  
+                  if( rule.equals(NOTEPLUS) || rule.equals(NOTEMINUS) )
+                    {
+                    //System.out.println("entry is " + (String)entry);
+                    bp.addRule(rule, "");
+                    }
+                  
+                  else
+                   {
+                  // e.g. B4+8 or A8
+                  String duration = rule.substring(1);
+                  rule = rule.substring(0, 1);
+                  char c = rule.charAt(0);
+                  switch( c )
+                    {
+                      case 'A':
+                      case 'B':
+                      case 'C':
+                      case 'N':
+                      case 'R':
+                      case 'S':
+                      case 'V':
+                      case 'X':
+                      case '=':
+                          bp.addRule(rule, duration);
+                          break;
+                          
+                      default:
+                          bp.setError("unrecognized " + rule + " in bass pattern: " + original);
+                          return bp;
+                     }
+                   }
+                  }
+                else
+                  {
+                  bp.setError("unrecognized " + entry + " in bass pattern: " + original);
+                  return bp;
+                  }
+                }
+              break;
+
+            case WEIGHT:
+              Number w = (Number)item.first();
+              bp.setWeight(w.floatValue());
+              break;
+
+            default:
+              bp.setError("unrecognized " + dispatcher + " in bass pattern: " + original);
+              return bp;
+            }
+          }
+        else
+          {
+          bp.setError("unrecognized " + segment + " in bass pattern: " + original);
+          return bp;
+          }
+        }
+      else
+        {
+        bp.setError("unrecognized " + segment + " in bass pattern: " + original);
+        return bp;
+        }
+      }
+
+    return bp;
+    }
 
   /**
    * Adds a rule and duration to this BassPattern.
@@ -922,6 +1170,23 @@ public static NoteSymbol placePitchAbove(NoteSymbol pitch,
     public String getName()
     {
       return patternName;
+    }
+    
+    public LinkedHashMap getDefinedRules()
+    {
+        return definedRules;
+    }
+    
+    public void setDefinedRules(LinkedHashMap map)
+    {
+        if( map.isEmpty() )
+        {
+            return;
+        }
+        else
+        {
+            definedRules = map;   
+        }
     }
   
   }
