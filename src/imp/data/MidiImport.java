@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2012 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2012-2014 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
@@ -20,6 +20,8 @@
 
 package imp.data;
 
+import static imp.data.MidiImport.DRUM_CHANNEL;
+import static imp.data.MidiImport.impMelodyToScore;
 import imp.util.ErrorLog;
 import java.io.File;
 import java.util.*;
@@ -92,11 +94,9 @@ public void readMidiFile(String midiFileName)
     
 public void scoreToMelodies()
   {
-    //System.out.println("score from MIDI = " + score);
+  //System.out.println("score from MIDI = " + score);
   if( score != null )
     {
-    //MIDIBeast.setResolution(resolution);
-
     allParts = new ArrayList<jm.music.data.Part>();
 
     allParts.addAll(Arrays.asList(score.getPartArray()));
@@ -122,7 +122,9 @@ public void scoreToMelodies()
             //System.out.println("part " + i + " track " + j + " conversion: ");
             MelodyPart partOut = new MelodyPart();
             importMelody.convertToImpPart(part, j, partOut, resolution);
-            
+            //System.out.println("Score " + j + " from impMelody");
+            //System.out.println(impMelodyToScore(partOut)); //!!!!!!! Temp for debugging impMelodyToScore
+           
             String instrumentString = MIDIBeast.getInstrumentForPart(part);
             
             if( channel != DRUM_CHANNEL )
@@ -131,7 +133,7 @@ public void scoreToMelodies()
                }
             
             MidiImportRecord record = new MidiImportRecord(channel, j, partOut, instrumentString);
-            melodies.add(record);
+            melodies.add(record);            
           }
         }
       catch( java.lang.OutOfMemoryError e )
@@ -146,8 +148,7 @@ public void scoreToMelodies()
 //    for( MidiImportRecord record: melodies )
 //      {
 //        System.out.println(record);
-//      }
-    
+//      }    
     }
   }
     
@@ -159,4 +160,9 @@ public void scoreToMelodies()
     public LinkedList<MidiImportRecord> getMelodies() {
         return melodies;
     }
+    
+    static public jm.music.data.Score impMelodyToScore(MelodyPart melodyPart)
+      {
+        return ImportMelody.convertToJmusicScore(melodyPart);
+      }
 }
