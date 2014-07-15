@@ -25,6 +25,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.LinkedHashMap;
 import polya.Polylist;
 import polya.PolylistBuffer;
 import polya.PolylistEnum;
@@ -52,6 +53,12 @@ private ArrayList<String> rules;
 private ArrayList<String> durations;
 
 /**
+ * the hash map that carries the rules defined in the style
+ */
+private LinkedHashMap<String, Polylist> definedRules = 
+        new LinkedHashMap<String, Polylist>();
+
+/**
  * array containing the types of rules
  */
 private static String ruleTypes[] =
@@ -77,7 +84,7 @@ private static final String VOLUME_STRING = ruleTypes[VOLUME];
  */
 private static String keyword[] =
   {
-  "rules", "weight", "push", "name"
+  "rules", "weight", "push", "name", "use"
   };
 
 // indices into the keyword array
@@ -89,6 +96,8 @@ private static final int PUSH = 2;
 
 private static final int NAME = 3;
 
+private static final int USE = 4;
+
 private String patternName = "";
 
 private String pushString = "";
@@ -99,7 +108,7 @@ private int pushAmount = 0; // push amount, in slots
 /**
  * Creates a new ChordPattern (only used by the factory).
  */
-private ChordPattern()
+public ChordPattern()
   {
   rules = new ArrayList<String>();
   durations = new ArrayList<String>();
@@ -151,6 +160,231 @@ public static ChordPattern makeChordPattern(Polylist L)
            }
            break;
         }
+      case RULES:
+        {
+        while( item.nonEmpty() )
+          {
+          Object entry = item.first();
+          item = item.rest();
+          
+          if( entry instanceof String )
+            {
+          String s = (String)entry;
+
+          String rule = s.substring(0, 1);
+          String dur = s.substring(1);
+          
+          char c = rule.charAt(0);
+          
+          switch( c )
+            {
+              case 'X':
+              case 'R':
+              case 'V':
+                  cp.addRule(rule, dur);
+                  break;
+                  
+              default:
+                  cp.setError("Unrecognized " + rule 
+                            + " in chord pattern " + original);
+                  return cp;
+            }
+          
+          //item = item.rest();
+          }
+          
+                        // check to see if it is an S-expression
+          else if( entry instanceof Polylist )
+          {
+              //e.g. (X 5 4)
+              Polylist plist = (Polylist)entry;
+              int len = plist.length();
+                  
+              // make sure it has 3 or more elements for a valid expression
+              if( len >= 3 && plist.first().equals(ruleTypes[STRIKE]) )
+              {
+                  String rule = plist.second().toString();
+                  //System.out.println(rule);
+                  String duration = plist.third().toString();
+                  //System.out.println(duration);
+                  cp.addRule(rule, duration);
+              }
+              else
+              {
+                  cp.setError("unrecognized " + entry + " in chord pattern: " + original);
+                  return cp;
+              }
+          }
+          
+          else
+            {
+                  cp.setError("Unrecognized " + item.first()
+                            + " in chord pattern " + original);
+                  return cp;              
+            }
+          }
+        break;
+        }
+          
+      case WEIGHT:
+        {
+        try
+          {
+          Number w = (Number)item.first();
+          cp.setWeight(w.intValue());
+          break;
+          }
+        catch( Exception e )
+          {
+            cp.setError("Expected weight value, but found " + item.first()
+                      + " in " + original);
+          }
+        break;
+        }
+          
+      case PUSH:
+        {
+        if( item.nonEmpty() )
+          {
+          cp.pushString = item.first().toString();
+          cp.pushAmount = Duration.getDuration(cp.pushString);
+        //System.out.println("pushAmount " + pushString + " = " + cp.pushAmount + " slots");
+          }
+        break;
+        }
+          
+      default:
+          cp.setError("Error in chord pattern " + original);
+          return cp;
+      }
+    }
+  //System.out.println("makeChordPattern on " + original + " returns " + cp);
+  return cp;
+  }
+
+
+/**
+ * A method that adds rules and durations to an existing bass pattern
+ * Used in place of makeChordPattern when the Style has pre-defined rules
+ * @param L
+ * @return 
+ */
+public ChordPattern makePattern(Polylist L)
+  {
+    // Example of L:
+    // 	(chord-pattern (rules P8 X1 R4 X2 X4)(weight 5)(push 8/3)
+    //
+    // X = "hit", R = "rest"
+    // The notation for push is the same as a duration.
+    // For example, 8/3 is an eighth-note triplet
+    
+  Polylist original = L;
+    
+  ChordPattern cp = this;
+
+  while( L.nonEmpty() )
+    {
+    Polylist item = (Polylist)L.first();
+    L = L.rest();
+
+    String dispatcher = (String)item.first();
+    item = item.rest();
+    switch( Leadsheet.lookup(dispatcher, keyword) )
+      {
+      case NAME:
+        {
+           if( item == null || item.isEmpty() || item.first().equals("") )
+           {
+               break;
+           }
+           else if(item.first() instanceof String) 
+           {
+               cp.patternName = (String) item.first();
+           }
+           else
+           {
+               cp.setError("Unrecognized name type in chord pattern: " + item.first());
+               return cp;
+           }
+           break;
+        }
+      case USE:
+      {
+          if( item.first() instanceof String )
+                {
+                    String name = (String) item.first();
+                    cp.patternName = name;
+                    LinkedHashMap ruleDefinitions = cp.getDefinedRules();
+                    Polylist rules = (Polylist)ruleDefinitions.get( name );
+                    String first = (String)rules.first();
+                    if( Leadsheet.lookup(first, keyword) == RULES )
+                    {
+                        rules = rules.rest();
+                        while( rules.nonEmpty() )
+          {
+          Object entry = rules.first();
+          rules = rules.rest();
+          
+          if( entry instanceof String )
+            {
+          String s = (String)entry;
+
+          String rule = s.substring(0, 1);
+          String dur = s.substring(1);
+          
+          char c = rule.charAt(0);
+          
+          switch( c )
+            {
+              case 'X':
+              case 'R':
+              case 'V':
+                  cp.addRule(rule, dur);
+                  break;
+                  
+              default:
+                  cp.setError("Unrecognized " + rule 
+                            + " in chord pattern " + original);
+                  return cp;
+            }
+          
+          //item = item.rest();
+          }
+          
+                        // check to see if it is an S-expression
+          else if( entry instanceof Polylist )
+          {
+              //e.g. (X 5 4)
+              Polylist plist = (Polylist)entry;
+              int len = plist.length();
+                  
+              // make sure it has 3 or more elements for a valid expression
+              if( len >= 3 && plist.first().equals(ruleTypes[STRIKE]) )
+              {
+                  String rule = plist.second().toString();
+                  //System.out.println(rule);
+                  String duration = plist.third().toString();
+                  //System.out.println(duration);
+                  cp.addRule(rule, duration);
+              }
+              else
+              {
+                  cp.setError("unrecognized " + entry + " in chord pattern: " + original);
+                  return cp;
+              }
+          }
+          
+          else
+            {
+                  cp.setError("Unrecognized " + item.first()
+                            + " in chord pattern " + original);
+                  return cp;              
+            }
+          }
+                    }
+                }
+          break;
+      }
       case RULES:
         {
         while( item.nonEmpty() )
@@ -957,4 +1191,23 @@ public String getName()
     {
     return patternName;
     }
+
+public LinkedHashMap getDefinedRules()
+{
+    return definedRules;
+}
+
+public void setDefinedRules(LinkedHashMap map)
+{
+    if( map.isEmpty() )
+    {
+        return;
+    }
+    else
+    {
+        definedRules = map;
+    //System.out.println("chord defined rules " + getDefinedRules());
+    }
+}
+
 }

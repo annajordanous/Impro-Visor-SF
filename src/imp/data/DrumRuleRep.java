@@ -21,6 +21,7 @@
 package imp.data;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import polya.Polylist;
 
 /**
@@ -65,17 +66,21 @@ private int drumNumber;
 
 private ArrayList<Element> elements;
 
+private LinkedHashMap<String, Polylist> definedRules = 
+        new LinkedHashMap<String, Polylist>();
+
 private Polylist ruleAsList;
 
 private String ruleName = "";
 
 private static String keyword[] = 
 {
-    "name", "rules"
+    "name", "rules", "use"
 };
         
 private static final int NAME = 0;
 private static final int RULES = 1;
+private static final int USE = 2;
 
 /**
  * If the raw Polylist was erroneous, errorMessage will be set.
@@ -83,6 +88,14 @@ private static final int RULES = 1;
 
 private String errorMessage = null;
 
+
+/**
+ * Construct an empty DrumRuleRep
+ */
+public DrumRuleRep()
+{
+    elements = new ArrayList<Element>();
+}
 
 /**
  * Construct a DrumRuleRep from a String
@@ -152,6 +165,67 @@ public DrumRuleRep(Polylist raw)
                     else
                     {
                         setError("Unrecognized name type in drum rule: " + item.first()); 
+                    }
+                    break;
+                }
+                case USE:
+                {
+                    if( item.first() instanceof String )
+                    {
+                        String name = (String)item.first();
+                        ruleName = name;
+                        LinkedHashMap ruleDefinitions = getDefinedRules();
+                        Polylist rules = (Polylist)ruleDefinitions.get(name);
+                        String start = (String)rules.first();
+                        if( Leadsheet.lookup(start, keyword) == RULES )
+                        {
+                            rules = rules.rest();
+                            while( rules.nonEmpty() )
+                            {
+                                Object entry = rules.first();
+                        rules = rules.rest();
+                        
+                        if( entry instanceof String )
+                        {
+                            String s = (String)entry;
+                            
+                            char type = s.charAt(0);
+                            String suffix = s.substring(1);
+            
+                            switch( type )
+                            {
+                                case DrumPattern.DRUM_STRIKE:
+                                case DrumPattern.DRUM_REST:
+                                {
+                                    int duration = Duration.getDuration0(suffix);
+                                    if( duration <= 0 )
+                                    {
+                                        errorMessage = "The duration in " + s
+                                            + " is invalid in " + original;
+                                    }
+                                }
+                                break;
+                    
+                                case DrumPattern.DRUM_VOLUME:
+                                {
+                                    VolumeSymbol vs = new VolumeSymbol(s);
+                                    if( vs == null )
+                                    {
+                                        errorMessage = "Error in volume symbol in"  + original;
+                                        break;
+                                    }
+                                }
+                                    break;
+                    
+                                default:
+                                    errorMessage = "Each pattern element must begin with one "
+                                            + "of 'X', 'R', or 'V', but this one begins with '" 
+                                            + type + "': " + original;                   
+                            }
+                            elements.add(new Element(type, suffix));
+                         }
+                            }
+                        }
                     }
                     break;
                 }
@@ -255,6 +329,228 @@ public DrumRuleRep(Polylist raw)
   }
 
 
+/**
+ * Makes a rule out of a polylist
+ * @param L
+ * @return 
+ */
+public DrumRuleRep makeDrumRuleRep(Polylist L)
+{
+    Polylist original = L;
+    
+     Object first = L.first();
+    
+    if( first instanceof Number )
+      {
+        drumNumber = ((Number) first).intValue();
+      }
+    else if( first instanceof String )
+      {
+        drumNumber = MIDIBeast.numberFromSpacelessDrumName((String)first);
+      }
+    else
+      {
+        errorMessage = "The first element needs to be a drum instrument "
+                     + "number or one of the standard names for the instrument "
+                     + "with _ rather than spaces: " + L;
+      }
+
+    L = L.rest();
+
+    ruleAsList = L;
+    
+    elements = new ArrayList<Element>();
+
+    while( L.nonEmpty() )
+      {
+        Object ob = L.first();
+        
+        if( ob instanceof Polylist )
+        {
+            Polylist item = (Polylist)ob;
+            String dispatcher = (String)item.first();
+            item = item.rest();
+            
+            switch( Leadsheet.lookup(dispatcher, keyword) )
+            {
+                case NAME:
+                {
+                    if( item.isEmpty() || item.first().equals("") )
+                    {
+                        break;
+                    }
+                    else if( item.first() instanceof String )
+                    {
+                        ruleName = (String) item.first();
+                    }
+                    else
+                    {
+                        setError("Unrecognized name type in drum rule: " + item.first()); 
+                    }
+                    break;
+                }
+                case USE:
+                {
+                    if( item.first() instanceof String )
+                    {
+                        String name = (String)item.first();
+                        ruleName = name;
+                        LinkedHashMap ruleDefinitions = getDefinedRules();
+                        Polylist rules = (Polylist)ruleDefinitions.get(name);
+                        String start = (String)rules.first();
+                        if( Leadsheet.lookup(start, keyword) == RULES )
+                        {
+                            rules = rules.rest();
+                            while( rules.nonEmpty() )
+                            {
+                                Object entry = rules.first();
+                        rules = rules.rest();
+                        
+                        if( entry instanceof String )
+                        {
+                            String s = (String)entry;
+                            
+                            char type = s.charAt(0);
+                            String suffix = s.substring(1);
+            
+                            switch( type )
+                            {
+                                case DrumPattern.DRUM_STRIKE:
+                                case DrumPattern.DRUM_REST:
+                                {
+                                    int duration = Duration.getDuration0(suffix);
+                                    if( duration <= 0 )
+                                    {
+                                        errorMessage = "The duration in " + s
+                                            + " is invalid in " + original;
+                                    }
+                                }
+                                break;
+                    
+                                case DrumPattern.DRUM_VOLUME:
+                                {
+                                    VolumeSymbol vs = new VolumeSymbol(s);
+                                    if( vs == null )
+                                    {
+                                        errorMessage = "Error in volume symbol in"  + original;
+                                        break;
+                                    }
+                                }
+                                    break;
+                    
+                                default:
+                                    errorMessage = "Each pattern element must begin with one "
+                                            + "of 'X', 'R', or 'V', but this one begins with '" 
+                                            + type + "': " + original;                   
+                            }
+                            elements.add(new Element(type, suffix));
+                         }
+                            }
+                        }
+                    }
+                    break;
+                }
+                case RULES:
+                {
+                    while( item.nonEmpty() )
+                    {
+                        Object entry = item.first();
+                        item = item.rest();
+                        
+                        if( entry instanceof String )
+                        {
+                            String s = (String)entry;
+                            
+                            char type = s.charAt(0);
+                            String suffix = s.substring(1);
+            
+                            switch( type )
+                            {
+                                case DrumPattern.DRUM_STRIKE:
+                                case DrumPattern.DRUM_REST:
+                                {
+                                    int duration = Duration.getDuration0(suffix);
+                                    if( duration <= 0 )
+                                    {
+                                        errorMessage = "The duration in " + s
+                                            + " is invalid in " + original;
+                                    }
+                                }
+                                break;
+                    
+                                case DrumPattern.DRUM_VOLUME:
+                                {
+                                    VolumeSymbol vs = new VolumeSymbol(s);
+                                    if( vs == null )
+                                    {
+                                        errorMessage = "Error in volume symbol in"  + original;
+                                        break;
+                                    }
+                                }
+                                    break;
+                    
+                                default:
+                                    errorMessage = "Each pattern element must begin with one "
+                                            + "of 'X', 'R', or 'V', but this one begins with '" 
+                                            + type + "': " + original;                   
+                            }
+                            elements.add(new Element(type, suffix));
+                         }
+                    }
+                    
+                 }
+             }    
+        }
+        else if( ob instanceof String )
+          {
+            String s = (String) ob;
+
+            char type = s.charAt(0);
+            String suffix = s.substring(1);
+            
+            switch( type )
+              {
+                case DrumPattern.DRUM_STRIKE:
+                case DrumPattern.DRUM_REST:
+                  {
+                    int duration = Duration.getDuration0(suffix);
+                    if( duration <= 0 )
+                      {
+                        errorMessage = "The duration in " + s
+                                + " is invalid in " + original;
+                      }
+                  }
+                    break;
+                    
+                case DrumPattern.DRUM_VOLUME:
+                  {
+                    VolumeSymbol vs = new VolumeSymbol(s);
+                    if( vs == null )
+                      {
+                        errorMessage = "Error in volume symbol in"  + original;
+                        break;
+                      }
+                  }
+                    break;
+                    
+                default:
+                     errorMessage = "Each pattern element must begin with one "
+                            + "of 'X', 'R', or 'V', but this one begins with '" 
+                            + type + "': " + original;                   
+                }
+          elements.add(new Element(type, suffix));
+          }
+        else
+          {
+            errorMessage = "Pattern does not begin correctly: " + original;
+            
+          }
+        L = L.rest();
+      }
+    return this;
+}
+
+
 public static DrumRuleRep makeDrumRuleRep(String string)
   {
     Polylist L = (Polylist)(Polylist.PolylistFromString(string).first());
@@ -328,6 +624,23 @@ public String getName()
 public void setName(String name)
 {
     ruleName = name;
+}
+
+public LinkedHashMap getDefinedRules()
+{
+    return definedRules;
+}
+
+public void setDefinedRules(LinkedHashMap map)
+{
+    if( map.isEmpty() )
+    {
+        return;
+    }
+    else
+    {
+        definedRules = map;
+    }
 }
 
 }
