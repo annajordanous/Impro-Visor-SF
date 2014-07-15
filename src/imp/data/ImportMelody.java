@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2012 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2012-2014 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
@@ -21,6 +21,9 @@
 package imp.data;
 
 import imp.Constants;
+import static imp.Constants.BEAT;
+import static imp.data.ImportMelody.convertToImpPart;
+import static imp.data.ImportMelody.noteArray2ImpPart;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -195,5 +198,28 @@ public void mergeRests(ArrayList<jm.music.data.Note> origNoteArray)
   }
 
 
+/**
+ * Convert an Impro-Visor MelodyPart to a jMusic score
+ */
+public static jm.music.data.Score convertToJmusicScore(MelodyPart partIn)
+  {
+    jm.music.data.Phrase phrase = new jm.music.data.Phrase();
+
+    int num_slots = partIn.size();
+    
+    for( int slot = 0; slot < num_slots; slot++ )
+      {
+        Note impNote = partIn.getNote(slot);
+        //System.out.println("note: " + impNote);
+        int pitch;
+        if( impNote != null && (pitch = impNote.getPitch()) >= 0 )
+          {
+          phrase.addNote(pitch, impNote.getRhythmValue());
+          }
+      }
+
+   jm.music.data.Part part = new jm.music.data.Part(phrase);
+   return new jm.music.data.Score(part);
+  }
 
 }
