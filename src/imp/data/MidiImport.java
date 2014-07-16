@@ -20,7 +20,6 @@
 
 package imp.data;
 
-import static imp.Constants.BEAT;
 import static imp.data.MidiImport.DRUM_CHANNEL;
 import imp.util.ErrorLog;
 import java.io.File;
@@ -45,6 +44,15 @@ private LinkedList<MidiImportRecord> melodies;
 
 public MidiImport()
   {
+    setResolution(defaultResolution);
+   }
+
+/**
+ * This is weird, and should be redesigned to avoid static.
+ */
+public MidiImport(jm.music.data.Score ascore)
+  {
+    score = ascore;
     setResolution(defaultResolution);
    }
 
@@ -164,6 +172,22 @@ public void scoreToMelodies()
     public LinkedList<MidiImportRecord> getMelodies() {
         return melodies;
     }
+    
+    /**
+     * Get the ith melody from the Import.
+     * @param i
+     * @return 
+     */
+    
+    public MelodyPart getMelody(int i)
+      {
+        MidiImportRecord record = melodies.get(i);
+        if( record == null )
+          {
+            return null;
+          }
+        return record.getPart();
+      }
     
    /**
     * Convert an Impro-Visor MelodyPart into a jMusic Score
