@@ -184,17 +184,17 @@ public class CreateBrickGrammar {
                 Cluster[] clusters = getClusters(brickData, averages, brickData.size() / repsPerCluster);
                 allClusters.add(clusters);
 
-                //get the sets of similar clusters
-                Vector<ClusterSet> clusterSets = getClusterSets(clusters);
-                allClusterSets.add(clusterSets);
-
-                //get the cluster orders so we can get outlines (so we can create soloist files)
-                Vector<Vector<DataPoint>> orders = getClusterOrder(clusters, brickData);
-
-                //get the outlines
-                Vector<Vector<ClusterSet>> outlines = getOutlines(orders, clusters, clusterSets);
-                allOutlines.add(outlines);
-                numberOfOutlines += outlines.size();
+//                //get the sets of similar clusters
+//                Vector<ClusterSet> clusterSets = getClusterSets(clusters);
+//                allClusterSets.add(clusterSets);
+//
+//                //get the cluster orders so we can get outlines (so we can create soloist files)
+//                Vector<Vector<DataPoint>> orders = getClusterOrder(clusters, brickData);
+//
+//                //get the outlines
+//                Vector<Vector<ClusterSet>> outlines = getOutlines(orders, clusters, clusterSets);
+//                allOutlines.add(outlines);
+//                numberOfOutlines += outlines.size();
 
                 DataPoint[] reps = getClusterReps(clusters, repsPerCluster);
                 allReps.add(reps);
@@ -202,7 +202,7 @@ public class CreateBrickGrammar {
         }
 
         //note: no need for a .soloist file
-        writeBrickGrammar(true, outFile);
+        writeBrickGrammar(frame.getUseRelativePitches(), outFile);
     }
 
     public static void writeBrickGrammar(boolean useRelative, String outfile) {
@@ -235,23 +235,29 @@ public class CreateBrickGrammar {
                             break;
                         }
                     }
-                    DataPoint rep = getClusterReps(allClusters.get(brickNumber), 1)[0]; //only need one representative per brick
-                    if (useRelative) {
-                        rule = rep.getRelativePitchMelody();
-                    } else {
-                        rule = rep.getObjData();
+                    //Cluster[] brickCluster = allClusters.get(brickNumber); //cluster to which this brick belongs
+                    //DataPoint[] brickClusterReps = getClusterReps(brickCluster, 1);
+                    DataPoint[] brickClusterReps = allReps.get(brickNumber);
+                    for (int r = 0; r < brickClusterReps.length; r++) {
+                        DataPoint rep = brickClusterReps[r]; 
+                        if (useRelative) {
+                            rule = rep.getRelativePitchMelody();
+                        } else {
+                            rule = rep.getObjData();
+                        }
+
+                        out.write("(rule (START"
+                                + (rep.getSegLength()*BEAT)
+//                                + " Brick-type "
+//                                + rep.getBrickType()
+                                + ")("
+                                + rule
+                                + ") (builtin brick " //evaluates to 1 if brick type is this brick's type; 0 otherwise
+                                + rep.getBrickType()
+                                + "))\n");
+//                                + ") 1.0)\n");
                     }
                     
-                    out.write("(rule (START"
-                            + (rep.getSegLength()*BEAT)
-                            + " Brick-type "
-                            + rep.getBrickType()
-                            + ")("
-                            + rule
-//                            + ") (* 0.5 (builtin brick-type (" //evaluates to 1 if brick type is this brick's type; 0 otherwise
-//                            + rep.getBrickType()
-//                            + "))))\n");
-                            + ") 1.0)\n");
                 } else { 
                     //TODO: how to deal with parts that could not be classified as bricks
                     //IDEA: use grammar (abstract or X notation as user desires)
@@ -266,7 +272,7 @@ public class CreateBrickGrammar {
             //System.out.println("Successfully completed and closing file");
             out.close();
         } catch (Exception e) {
-            System.out.println("Error writing grammar: " + e.toString());
+            System.out.println("Exception writing grammar: " + e.toString());
         }
     }
 }
