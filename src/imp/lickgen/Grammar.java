@@ -20,6 +20,7 @@
 
 package imp.lickgen;
 
+import imp.brickdictionary.Block;
 import imp.data.Chord;
 import imp.data.ChordPart;
 import imp.data.Duration;
@@ -74,6 +75,8 @@ public static final String DIVIDE = "/";
 
 // Builtin variables:
 
+public static final String BRICK = "brick";
+
 public static final String CHORD_FAMILY = "chord-family";
 
 public static final String EXPECTANCY = "expectancy";
@@ -85,6 +88,10 @@ public static final String HIGH = "high";
 public static final String MEDIUM = "medium";
 
 public static final String LOW = "low";
+
+public static final Double ONE = new Double(1);
+
+public static final Double ZERO = new Double(0);
 
 
 ArrayList<String> terminals = new ArrayList<String>();
@@ -997,16 +1004,45 @@ private Object evaluateBuiltin(Object arg1, Object arg2)
         
         if( currentChord == null )
           {
-            return new Double(0);
+            return ZERO;
           }
         
-        Double result = new Double(families.member(currentChord.getFamily()) ? 1 : 0);
-        
-        //System.out.println("currentChord = " + currentChord + " " + currentChord.getFamily());
-        //System.out.println("families = " + families + " " + result);
-        
-        return result;
+        return families.member(currentChord.getFamily()) ? ONE : ZERO;
       }
+    // Is evaluable of the form (builtin brick <brickname>)
+    if( BRICK.equals(arg1) )
+      {
+        //System.out.println("evaluating brick at slot " + chordSlot);
+        if( !(arg2 instanceof String) )
+          {
+            return ZERO;
+          }
+        
+        String brickname = (String)arg2;
+        
+        //Chord currentChord = chords.getCurrentChord(chordSlot);
+        
+        Block currentBlock = chords.getBlockAtSlot(chordSlot);
+        
+        if( currentBlock == null )
+          {
+            return ZERO;
+          }
+        
+        String blockName = currentBlock.getDashedName();
+        
+        if( brickname.equals(blockName) )
+          {
+            System.out.println("At slot " + chordSlot 
+                             + " using brick " + brickname);
+            return ONE;
+          }
+        
+       //System.out.println("At slot " + chordSlot 
+       //           + " brickname " + brickname + " doesn't match " + blockName);
+       
+       return ZERO;
+       }
     MelodyPart melody = notate.getCurrentMelodyPart();    
     MelodyPart currMelody = melody.extract(currentSlot - LENGTH_OF_TRADE, currentSlot);
     if( EXPECTANCY.equals(arg1) )
@@ -1015,7 +1051,7 @@ private Object evaluateBuiltin(Object arg1, Object arg2)
         int secondIndex = currMelody.getNextIndex(firstIndex);
         if(currMelody.getNote(firstIndex) == null || currMelody.getNote(secondIndex) == null)
         {
-            return new Double(1);
+            return ONE;
         }
         PartIterator pi = currMelody.iterator(secondIndex);
         int numPitches = 2;
@@ -1078,9 +1114,9 @@ private Object evaluateBuiltin(Object arg1, Object arg2)
                 return new Double(0.1);
             }
         }
-        return new Double(0);
+        return ZERO;
     }
-    return new Double(0);
+    return ZERO;
 }
 
 // Recursively replace all instances of varName with value in toReplace

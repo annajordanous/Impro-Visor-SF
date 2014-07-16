@@ -20,6 +20,7 @@
 
 package imp.data;
 
+import imp.brickdictionary.Block;
 import imp.brickdictionary.ChordBlock;
 import imp.roadmap.RoadMap;
 import imp.roadmap.RoadMapFrame;
@@ -628,5 +629,23 @@ public void addFromRoadMapFrame(RoadMapFrame roadmap)
         //roadmap = new RoadMap(roadmapPoly);
         //System.out.println("The reconstructed roadmap is " + Formatting.prettyFormat(roadmap.toPolylist()));
         return roadmap;
+      }
+    
+    public Block getBlock(int index)
+      {
+        if( roadmap == null )
+          {
+            return null;
+          }
+        return roadmap.getBlock(index);
+      }
+    
+    public Block getBlockAtSlot(int slot)
+      {
+       if( roadmap == null )
+          {
+            return null;
+          }
+        return roadmap.getBlockAtSlot(slot);
       }
 }
