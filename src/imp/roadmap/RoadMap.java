@@ -27,7 +27,7 @@ import imp.brickdictionary.KeySpan;
 import imp.cykparser.PostProcessor;
 import java.util.ArrayList;
 import java.util.List;
-import polya.Formatting;
+//import polya.Formatting;
 import polya.Polylist;
 import polya.PolylistBuffer;
 
@@ -446,4 +446,21 @@ public class RoadMap {
         return buffer.toPolylist();
       }
    
+    public Block getBlockAtSlot(int slot)
+      {
+        int accumulator = 0;
+        for( Block block:blocks )
+          {
+            if( accumulator == slot )
+              {
+                return block;
+              }
+            if( accumulator > slot )
+              {
+                return null;
+              }
+            accumulator += block.getDuration();
+          }
+        return null;
+      }
 }
