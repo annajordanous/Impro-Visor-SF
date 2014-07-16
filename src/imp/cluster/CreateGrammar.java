@@ -82,7 +82,7 @@ public class CreateGrammar implements imp.Constants {
 
         Cluster[] clusters = getClusters(dataPoints, averages, dataPoints.size() / repsPerCluster);
 
-        //create grammar with markov chains and create soloist file
+        //create grammar with Markov chains and create soloist file
         if (Markov) {
 
             //get the sets of similar clusters
@@ -290,7 +290,6 @@ public class CreateGrammar implements imp.Constants {
             //write start symbols
             for (int j = 0; j < clusters.length; j++) {
                 out.write("\n(rule (START Z) ((Cluster" + j + " Z)) " + df.format(clusters[j].getNumDataPoints() / totalPoints) + ")");
-                //System.out.print("(rule (START Z) ((Cluster" + j + " Z)) " + df.format(clusters[j].getNumDataPoints() / totalPoints) + ")\n");
             }
             out.write("\n");
 
@@ -399,13 +398,8 @@ public class CreateGrammar implements imp.Constants {
                 float numAppearances = reps[i].getNumber();
                 int clusterNumber = Integer.parseInt(name.substring(7));  //chop off the word cluster
                 String rule = reps[i].getObjData();
-                //cut off the opening part of the string leaving only the slope data
-                //int start = rule.indexOf("((");
-                //rule = rule.substring(start + 1, rule.length() - 1);
                 out.write("(rule (Q" + clusterNumber + ")(" + rule + ") " + df.format(numAppearances / REPS_PER_CLUSTER) + ")\n");
-                //System.out.println("(rule (Q" + clusterNumber + ")(" + rule + " " + df.format(1.0 / REPS_PER_CLUSTER) + ")");
             }
-
             out.close();
 
         } catch (IOException e) {
@@ -439,7 +433,7 @@ public class CreateGrammar implements imp.Constants {
                 totalPoints += clusters[i].getNumDataPoints();
             }
 
-            //put in start symbols for markov chains
+            //put in start symbols for Markov chains
             for (int i = 0; i < segLengths.size(); i++) {
                 String top = "";
                 int counter = 0;
@@ -496,8 +490,8 @@ public class CreateGrammar implements imp.Constants {
                     }
                     rule = rule.concat(" Z) " + "(Q" + new Integer((int) chain[k - 1]).toString());
                     rule = rule.concat(" (Cluster");
-                    /* here we handle the case, for ex, if you are using a trigram but are only on the
-                     second measure, you can only use the previous states that you have */
+                    /* here we handle a special case; for example, if you are using a trigram but are only on the
+                     second measure (you can only use the previous states that you have) */
                     if (k < chainLength - 1) {
 
                         int numOccurrences = 0;
@@ -792,7 +786,7 @@ public class CreateGrammar implements imp.Constants {
         ruleString = removeTrailingSpaces(ruleString);
         
         //extract brick type data
-        //string "Brick type" denotes where the brick type information is
+        //string "Brick-type" denotes where the brick type information is
         stopIndex = ruleString.indexOf("(Brick-type ");
         String brickType = ruleString.substring(stopIndex + BRICKTYPEPARENSPACES_LENGTH, ruleString.length() - 1); //-1 to chop off closing parenthesis
         
