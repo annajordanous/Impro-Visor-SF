@@ -8563,6 +8563,15 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="pianoKeyboardMIActionPerformed"/>
               </Events>
             </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="soloGeneratorMI">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Solo Generator"/>
+                <Property name="toolTipText" type="java.lang.String" value="Control panel for solo generation"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="soloGeneratorMIActionPerformed"/>
+              </Events>
+            </MenuItem>
           </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="roadmapMenu">
