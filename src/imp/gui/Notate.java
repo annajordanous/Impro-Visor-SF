@@ -2241,10 +2241,10 @@ boolean saveConstructionLineState;
         stepKeyboardMI = new javax.swing.JMenuItem();
         openLeadsheetEditorMI = new javax.swing.JMenuItem();
         lickGeneratorMI = new javax.swing.JMenuItem();
+        soloGeneratorMI = new javax.swing.JMenuItem();
         styleGenerator1 = new javax.swing.JMenuItem();
         voicingTestMI = new javax.swing.JMenuItem();
         pianoKeyboardMI = new javax.swing.JMenuItem();
-        soloGeneratorMI = new javax.swing.JMenuItem();
         roadmapMenu = new javax.swing.JMenu();
         roadMapThisAnalyze = new javax.swing.JMenuItem();
         reAnalyzeMI = new javax.swing.JMenuItem();
@@ -9887,6 +9887,17 @@ boolean saveConstructionLineState;
         });
         utilitiesMenu.add(lickGeneratorMI);
 
+        soloGeneratorMI.setText("Solo Generator");
+        soloGeneratorMI.setToolTipText("Control panel for solo generation");
+        soloGeneratorMI.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                soloGeneratorMIActionPerformed(evt);
+            }
+        });
+        utilitiesMenu.add(soloGeneratorMI);
+
         styleGenerator1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Y, java.awt.event.InputEvent.CTRL_MASK));
         styleGenerator1.setMnemonic('S');
         styleGenerator1.setText("Style Editor & Extractor");
@@ -9925,17 +9936,6 @@ boolean saveConstructionLineState;
             }
         });
         utilitiesMenu.add(pianoKeyboardMI);
-
-        soloGeneratorMI.setText("Solo Generator");
-        soloGeneratorMI.setToolTipText("Control panel for solo generation");
-        soloGeneratorMI.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                soloGeneratorMIActionPerformed(evt);
-            }
-        });
-        utilitiesMenu.add(soloGeneratorMI);
 
         menuBar.add(utilitiesMenu);
 
@@ -23581,7 +23581,8 @@ public void setKconstantSlider(double value)
 
     private void soloGeneratorMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_soloGeneratorMIActionPerformed
     {//GEN-HEADEREND:event_soloGeneratorMIActionPerformed
-        // TODO add your handling code here:
+        SoloGenerator soloGenerator = new SoloGenerator(lickgen, this, cm);
+        soloGenerator.setVisible(true);
     }//GEN-LAST:event_soloGeneratorMIActionPerformed
     
     private void updateDottedAndTriplet() {
