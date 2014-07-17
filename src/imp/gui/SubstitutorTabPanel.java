@@ -158,15 +158,15 @@ public class SubstitutorTabPanel extends javax.swing.JPanel {
 
         selectSubstitutionsButtonsPanel = new javax.swing.JPanel();
         createNewSubstitutionsFileButton = new javax.swing.JButton();
-        defaultSubstitutionsForStyleButton = new javax.swing.JButton();
         openSubstitutionsFileButton = new javax.swing.JButton();
+        saveSubstitutionsButton = new javax.swing.JButton();
         SubstitutorParametersPanel = new javax.swing.JPanel();
         substitutorRectifyCheckBox = new javax.swing.JCheckBox();
         useSubstitutionsButtonsPanel = new javax.swing.JPanel();
         applySubstitutionsButton = new javax.swing.JButton();
         revertSubstitutionsButton = new javax.swing.JButton();
-        saveSubstitutionsButton = new javax.swing.JButton();
         reapplySubstitutionsButton = new javax.swing.JButton();
+        cleanTransformButton = new javax.swing.JButton();
         substitutionsPanel = new javax.swing.JPanel();
         addSubsFromOtherFileButton = new javax.swing.JButton();
         createNewSubstitutionButton = new javax.swing.JButton();
@@ -204,25 +204,10 @@ public class SubstitutorTabPanel extends javax.swing.JPanel {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(4, 0, 4, 0);
-        selectSubstitutionsButtonsPanel.add(createNewSubstitutionsFileButton, gridBagConstraints);
-
-        defaultSubstitutionsForStyleButton.setText("Default Substitutions for Style");
-        defaultSubstitutionsForStyleButton.setEnabled(false);
-        defaultSubstitutionsForStyleButton.setMaximumSize(new java.awt.Dimension(10000, 23));
-        defaultSubstitutionsForStyleButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                defaultSubstitutionsForStyleButtonActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(4, 0, 4, 0);
-        selectSubstitutionsButtonsPanel.add(defaultSubstitutionsForStyleButton, gridBagConstraints);
+        selectSubstitutionsButtonsPanel.add(createNewSubstitutionsFileButton, gridBagConstraints);
 
         openSubstitutionsFileButton.setText("Open Transform File");
         openSubstitutionsFileButton.setToolTipText("Open transform file from grammars folder");
@@ -241,6 +226,20 @@ public class SubstitutorTabPanel extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(4, 0, 4, 0);
         selectSubstitutionsButtonsPanel.add(openSubstitutionsFileButton, gridBagConstraints);
 
+        saveSubstitutionsButton.setText("Save Current Substitutions");
+        saveSubstitutionsButton.setToolTipText("Save the substitutions below into a transform file");
+        saveSubstitutionsButton.setEnabled(false);
+        saveSubstitutionsButton.setMaximumSize(new java.awt.Dimension(10000, 23));
+        saveSubstitutionsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveSubstitutionsButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        selectSubstitutionsButtonsPanel.add(saveSubstitutionsButton, gridBagConstraints);
+
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
@@ -254,7 +253,6 @@ public class SubstitutorTabPanel extends javax.swing.JPanel {
         SubstitutorParametersPanel.setPreferredSize(new java.awt.Dimension(180, 60));
         SubstitutorParametersPanel.setLayout(new java.awt.GridBagLayout());
 
-        substitutorRectifyCheckBox.setSelected(true);
         substitutorRectifyCheckBox.setText("Rectify");
         substitutorRectifyCheckBox.setToolTipText("rectify selection after applying substitutions");
         substitutorRectifyCheckBox.setMaximumSize(new java.awt.Dimension(240, 23));
@@ -319,23 +317,6 @@ public class SubstitutorTabPanel extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(4, 0, 4, 0);
         useSubstitutionsButtonsPanel.add(revertSubstitutionsButton, gridBagConstraints);
 
-        saveSubstitutionsButton.setText("Save Current Substitutions");
-        saveSubstitutionsButton.setToolTipText("Save the substitutions below into a transform file");
-        saveSubstitutionsButton.setEnabled(false);
-        saveSubstitutionsButton.setMaximumSize(new java.awt.Dimension(10000, 23));
-        saveSubstitutionsButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                saveSubstitutionsButtonActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(4, 0, 4, 0);
-        useSubstitutionsButtonsPanel.add(saveSubstitutionsButton, gridBagConstraints);
-
         reapplySubstitutionsButton.setText("Re-Apply");
         reapplySubstitutionsButton.setToolTipText("Undo Revert Substitutions");
         reapplySubstitutionsButton.setEnabled(false);
@@ -348,6 +329,21 @@ public class SubstitutorTabPanel extends javax.swing.JPanel {
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
         useSubstitutionsButtonsPanel.add(reapplySubstitutionsButton, gridBagConstraints);
+
+        cleanTransformButton.setText("Clean Transform File");
+        cleanTransformButton.setEnabled(false);
+        cleanTransformButton.setMaximumSize(new java.awt.Dimension(10000, 23));
+        cleanTransformButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cleanTransformButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        useSubstitutionsButtonsPanel.add(cleanTransformButton, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -691,9 +687,11 @@ public class SubstitutorTabPanel extends javax.swing.JPanel {
         add(playbackPanel, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void defaultSubstitutionsForStyleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_defaultSubstitutionsForStyleButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_defaultSubstitutionsForStyleButtonActionPerformed
+    private void cleanTransformButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cleanTransformButtonActionPerformed
+        transform.findDuplicatesAndAddToWeight();
+        fillSubstitutionsList();
+        fillTransformationsList();
+    }//GEN-LAST:event_cleanTransformButtonActionPerformed
 
     private void openSubstitutionsFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openSubstitutionsFileButtonActionPerformed
         
@@ -713,14 +711,15 @@ public class SubstitutorTabPanel extends javax.swing.JPanel {
                 fillSubstitutionsList();
                 fillTransformationsList();
             }
+            
+            savedMelodies = new Stack();
+            savedTrans = new Stack();
+            revertSubstitutionsButton.setEnabled(false);
+            reapplySubstitutionsButton.setEnabled(false);
+
+            applySubstitutionsButton.setEnabled(true);
+            saveSubstitutionsButton.setEnabled(true);
         }
-        savedMelodies = new Stack();
-        savedTrans = new Stack();
-        revertSubstitutionsButton.setEnabled(false);
-        reapplySubstitutionsButton.setEnabled(false);
-        
-        applySubstitutionsButton.setEnabled(true);
-        saveSubstitutionsButton.setEnabled(true);
     }//GEN-LAST:event_openSubstitutionsFileButtonActionPerformed
 
     private void substitutorRectifyCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_substitutorRectifyCheckBoxActionPerformed
@@ -733,21 +732,7 @@ public class SubstitutorTabPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_applySubstitutionsButtonActionPerformed
 
     private void revertSubstitutionsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_revertSubstitutionsButtonActionPerformed
-        MelodyInContext originalPart = savedMelodies.pop();
-        notate.stopPlaying();
-        Stave stave = originalPart.getStave();
-        int start = originalPart.getStart();
-        int stop = originalPart.getStop();
-        
-        MelodyPart oldPart = notate.getMelodyPart(stave).extract(start, stop, false);
-        savedTrans.push(new MelodyInContext(oldPart, stave, start, stop));
-        
-        stave.setSelection(start, stop);
-        notate.getMelodyPart(stave).newPasteOver(originalPart.getMelody(), start);
-        
-        reapplySubstitutionsButton.setEnabled(true);
-        if(savedMelodies.size() < 1)
-            revertSubstitutionsButton.setEnabled(false);
+        revertSubs();
     }//GEN-LAST:event_revertSubstitutionsButtonActionPerformed
 
     private void createNewSubstitutionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createNewSubstitutionButtonActionPerformed
@@ -910,31 +895,18 @@ public class SubstitutorTabPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_addSubsFromOtherFileButtonActionPerformed
 
     private void reapplySubstitutionsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reapplySubstitutionsButtonActionPerformed
-        MelodyInContext originalPart = savedTrans.pop();
-        notate.stopPlaying();
-        Stave stave = originalPart.getStave();
-        int start = originalPart.getStart();
-        int stop = originalPart.getStop();
-        
-        MelodyPart oldPart = notate.getMelodyPart(stave).extract(start, stop, false);
-        savedMelodies.push(new MelodyInContext(oldPart, stave, start, stop));
-        
-        stave.setSelection(start, stop);
-        notate.getMelodyPart(stave).newPasteOver(originalPart.getMelody(), start);
-        
-        revertSubstitutionsButton.setEnabled(true);
-        if(savedTrans.size() < 1)
-            reapplySubstitutionsButton.setEnabled(false);
+        revertSubs();
+        applySubstitutions();
     }//GEN-LAST:event_reapplySubstitutionsButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel SubstitutorParametersPanel;
     private javax.swing.JButton addSubsFromOtherFileButton;
     private javax.swing.JButton applySubstitutionsButton;
+    private javax.swing.JButton cleanTransformButton;
     private javax.swing.JButton createNewSubstitutionButton;
     private javax.swing.JButton createNewSubstitutionsFileButton;
     private javax.swing.JButton createNewTransformationButton;
-    private javax.swing.JButton defaultSubstitutionsForStyleButton;
     private javax.swing.JButton deleteSubstitutionButton;
     private javax.swing.JButton deleteTransformationButton;
     private javax.swing.JButton editSelectedTransformationButton;
@@ -960,6 +932,21 @@ public class SubstitutorTabPanel extends javax.swing.JPanel {
     private javax.swing.JPanel useSubstitutionsButtonsPanel;
     // End of variables declaration//GEN-END:variables
 
+    public void setTransform(Transform trans)
+    {
+        transform = trans;
+        fillSubstitutionsList();
+        fillTransformationsList();
+
+
+        savedMelodies = new Stack();
+        savedTrans = new Stack();
+        revertSubstitutionsButton.setEnabled(false);
+        reapplySubstitutionsButton.setEnabled(false);
+
+        applySubstitutionsButton.setEnabled(true);
+        saveSubstitutionsButton.setEnabled(true);
+    }
     public void applySubstitutions()
     {
         notate.stopPlaying();
@@ -1003,9 +990,30 @@ public class SubstitutorTabPanel extends javax.swing.JPanel {
             
             revertSubstitutionsButton.setEnabled(true);
             savedTrans = new Stack();
-            reapplySubstitutionsButton.setEnabled(false);
+            reapplySubstitutionsButton.setEnabled(true);
         }
         
+    }
+    
+    public void revertSubs()
+    {
+        MelodyInContext originalPart = savedMelodies.pop();
+        notate.stopPlaying();
+        Stave stave = originalPart.getStave();
+        int start = originalPart.getStart();
+        int stop = originalPart.getStop();
+        
+        MelodyPart oldPart = notate.getMelodyPart(stave).extract(start, stop, false);
+        savedTrans.push(new MelodyInContext(oldPart, stave, start, stop));
+        
+        stave.setSelection(start, stop);
+        notate.getMelodyPart(stave).newPasteOver(originalPart.getMelody(), start);
+        
+        if(savedMelodies.size() < 1)
+        {
+            revertSubstitutionsButton.setEnabled(false);
+            reapplySubstitutionsButton.setEnabled(false);
+        }
     }
     private class MelodyInContext {
         private MelodyPart melody;

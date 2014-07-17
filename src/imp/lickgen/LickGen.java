@@ -2554,7 +2554,7 @@ public static Note makeRelativeNote(Object ob, Chord chord)
                   {
                     degreeValue = ((Long) listOb.second()).intValue();
 
-                    if( degreeValue < -1 || degreeValue > 13 )
+                    if( degreeValue < -7 || degreeValue > 13 )
                       {
                         ErrorLog.log(ErrorLog.WARNING,
                                      "Scale degree out of range 1 to 7 in grammar note : " + ob);
@@ -2564,8 +2564,26 @@ public static Note makeRelativeNote(Object ob, Chord chord)
                 else if( second instanceof String )
                   {
                     String secondString = (String) second;
-                    String degreeString = secondString.substring(1);
+                    String degreeString = secondString;
 
+                    
+                    while(degreeString.charAt(0) == 'b' || degreeString.charAt(0) == '#' )
+                    {
+                        switch( degreeString.charAt(0) )
+                          {
+                            case 'b':
+                                pitch--;
+                                degreeString = degreeString.substring(1);
+                                break;   // flat
+
+                            case '#':
+                                pitch++;
+                                degreeString = degreeString.substring(1);
+                                break; // sharp
+
+                            default:
+                          }
+                    }
                     try
                       {
                         degreeValue = Integer.parseInt(degreeString);
@@ -2575,19 +2593,6 @@ public static Note makeRelativeNote(Object ob, Chord chord)
                         ErrorLog.log(ErrorLog.WARNING,
                                      "Scale degree is wrong in grammar note : " + ob);
                         return null;
-                      }
-                    
-                      switch( secondString.charAt(0) )
-                      {
-                        case 'b':
-                            pitch--;
-                            break;   // flat
-
-                        case '#':
-                            pitch++;
-                            break; // sharp
-
-                        default:
                       }
                   }
               String chordFamily = chord.getFamily();
@@ -2618,7 +2623,7 @@ public static Note makeRelativeNote(Object ob, Chord chord)
                 {
                   switch(degreeValue)
                       {
-                        case -1:  pitch-=1;  break;
+                        case -1:  pitch-=0;  break;
                         case  1:  pitch+=0;  break;
                         case  2:  pitch+=2;  break;
                         case  3:  pitch+=3;  break;
@@ -2635,21 +2640,21 @@ public static Note makeRelativeNote(Object ob, Chord chord)
                         default:
                       }
                 }
-              else if( chordFamily.equals("minor7") )
+              else if( chordFamily.equals("dominant") )
                 {
                   switch(degreeValue)
                       {
-                        case -1:  pitch-=1;  break;
+                        case -1:  pitch-=2;  break;
                         case  1:  pitch+=0;  break;
                         case  2:  pitch+=2;  break;
-                        case  3:  pitch+=3;  break;
+                        case  3:  pitch+=4;  break;
                         case  4:  pitch+=5;  break;
                         case  5:  pitch+=7;  break;
                         case  6:  pitch+=9;  break;
                         case  7:  pitch+=10; break;
                         case  8:  pitch+=12; break;
                         case  9:  pitch+=14; break;
-                        case 10:  pitch+=15; break;
+                        case 10:  pitch+=16; break;
                         case 11:  pitch+=17; break;
                         case 12:  pitch+=19; break;
                         case 13:  pitch+=21; break;
@@ -2660,7 +2665,7 @@ public static Note makeRelativeNote(Object ob, Chord chord)
                 {
                   switch(degreeValue)
                       {
-                        case -1:  pitch-=1;  break;
+                        case -1:  pitch-=2;  break;
                         case  1:  pitch+=0;  break;
                         case  2:  pitch+=2;  break;
                         case  3:  pitch+=3;  break;
@@ -2681,7 +2686,7 @@ public static Note makeRelativeNote(Object ob, Chord chord)
                 {
                   switch(degreeValue)
                       {
-                        case -1:  pitch-=1;  break;
+                        case -1:  pitch-=3;  break;
                         case  1:  pitch+=0;  break;
                         case  2:  pitch+=2;  break;
                         case  3:  pitch+=3;  break;
@@ -2702,7 +2707,7 @@ public static Note makeRelativeNote(Object ob, Chord chord)
                 {
                   switch(degreeValue)
                       {
-                        case -1:  pitch-=1;  break;
+                        case -1:  pitch-=2;  break;
                         case  1:  pitch+=0;  break;
                         case  2:  pitch+=2;  break;
                         case  3:  pitch+=4;  break;

@@ -178,6 +178,25 @@ public void setEnabled(boolean en)
     enabled = en;
 }
 
+public boolean equals(Object ob)
+{
+    if(!(ob instanceof Substitution))
+        return false;
+    
+    Substitution other = (Substitution)ob;
+    
+    if(!type.equals(other.getType()))
+        return false;
+    
+    if(!transformations.containsAll(other.transformations))
+        return false;
+    
+    if(!other.transformations.containsAll(transformations))
+        return false;
+    
+    return true;
+}
+
 public Polylist newNoteList(Polylist notelst)
 {
     if(notelst.length()==1)

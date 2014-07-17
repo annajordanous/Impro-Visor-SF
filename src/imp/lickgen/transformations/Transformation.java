@@ -225,6 +225,20 @@ public String getDescription()
     return description;
 }
 
+public boolean equals(Object ob)
+{
+    if(!(ob instanceof Transformation))
+        return false;
+    Transformation other = (Transformation) ob;
+    if(!sourceNotes.equals(other.sourceNotes))
+        return false;
+    if(!conditionGuard.equals(other.conditionGuard))
+        return false;
+    if(!targetNotes.equals(other.targetNotes))
+        return false;
+    return true;
+}
+
 public String toString()
 {
     StringBuilder buf = new StringBuilder();

@@ -882,7 +882,7 @@ public Object pitch_addition(Polylist evaledArgs)
         {
             Note firstNote = ((NoteChordPair)firstArg).note.copy();
             Note secondNote = ((NoteChordPair)secondArg).note.copy();
-            return (firstNote.getPitch()+secondNote.getPitch());
+            return (firstNote.getPitch()+secondNote.getPitch())/2.0;
        }
     }
     else
@@ -897,7 +897,7 @@ public Object pitch_addition(Polylist evaledArgs)
  * 
  * Else the result will be both absolute pitches subtracted.
  */ 
-public Object pitch_subtraction(Polylist evaledArgs)
+    public Object pitch_subtraction(Polylist evaledArgs)
 {
     Object firstArg = evaledArgs.first();
     Object secondArg = evaledArgs.second();
@@ -917,21 +917,23 @@ public Object pitch_subtraction(Polylist evaledArgs)
                 return null;
             String relPitch = relNote.second().toString();
             StringBuilder minusPitch = new StringBuilder();
-            char firstChar = relPitch.charAt(0);
-            if(firstChar == 'b')
+            while(relPitch.charAt(0) == 'b' || relPitch.charAt(0) == '#')
             {
-                relPitch = relPitch.substring(1);
-                firstChar = relPitch.charAt(0);
-                minusPitch.append("#");
-            }
-            else if(firstChar == '#')
-            {
-                relPitch = relPitch.substring(1);
-                firstChar = relPitch.charAt(0);
-                minusPitch.append("b");
+                if(relPitch.charAt(0) == 'b')
+                {
+                    relPitch = relPitch.substring(1);
+                    minusPitch.append("#");
+                }
+                else if(relPitch.charAt(0) == '#')
+                {
+                    relPitch = relPitch.substring(1);
+                    minusPitch.append("b");
+                }
             }
             int value = Integer.parseInt(relPitch);
             value = -1*value + 1;
+            if(value == 0)
+                value = 1;
             minusPitch.append(value);
             return addRelPitch(firstArg.toString(), minusPitch.toString());
         }
@@ -939,22 +941,24 @@ public Object pitch_subtraction(Polylist evaledArgs)
         {
             String relPitch = secondArg.toString();
             StringBuilder minusPitch = new StringBuilder();
-            char firstChar = relPitch.charAt(0);
-            if(firstChar == 'b')
+            while(relPitch.charAt(0) == 'b' || relPitch.charAt(0) == '#')
             {
-                relPitch = relPitch.substring(1);
-                firstChar = relPitch.charAt(0);
-                minusPitch.append("#");
-            }
-            else if(firstChar == '#')
-            {
-                relPitch = relPitch.substring(1);
-                firstChar = relPitch.charAt(0);
-                minusPitch.append("b");
+                if(relPitch.charAt(0) == 'b')
+                {
+                    relPitch = relPitch.substring(1);
+                    minusPitch.append("#");
+                }
+                else if(relPitch.charAt(0) == '#')
+                {
+                    relPitch = relPitch.substring(1);
+                    minusPitch.append("b");
+                }
             }
             
             int value = Integer.parseInt(relPitch);
             value = -1*value + 1;
+            if(value == 0)
+                value = 1;
             minusPitch.append(value);
             return addRelPitch(firstArg.toString(), minusPitch.toString());
         }
@@ -969,24 +973,26 @@ public Object pitch_subtraction(Polylist evaledArgs)
             Polylist relNote = NotesToRelativePitch.noteToRelativePitch(firstNote, chord);
             if(relNote.second().equals("0"))
                 return null;
-            String relPitch = relNote.second().toString();
+            String relPitch = secondArg.toString();
             StringBuilder minusPitch = new StringBuilder();
-            char firstChar = relPitch.charAt(0);
-            if(firstChar == 'b')
+            while(relPitch.charAt(0) == 'b' || relPitch.charAt(0) == '#')
             {
-                relPitch = relPitch.substring(1);
-                firstChar = relPitch.charAt(0);
-                minusPitch.append("#");
-            }
-            else if(firstChar == '#')
-            {
-                relPitch = relPitch.substring(1);
-                firstChar = relPitch.charAt(0);
-                minusPitch.append("b");
+                if(relPitch.charAt(0) == 'b')
+                {
+                    relPitch = relPitch.substring(1);
+                    minusPitch.append("#");
+                }
+                else if(relPitch.charAt(0) == '#')
+                {
+                    relPitch = relPitch.substring(1);
+                    minusPitch.append("b");
+                }
             }
             
             int value = Integer.parseInt(relPitch);
             value = -1*value + 1;
+            if(value == 0)
+                value = 1;
             minusPitch.append(value);
             return addRelPitch(relNote.second().toString(), minusPitch.toString());
         }
@@ -1015,7 +1021,7 @@ public Boolean pitch_gr(Polylist evaledArgs)
     String subtraction = pitchSub.toString();
     if(subtraction.indexOf("-") != -1)
         return false;
-    else if(subtraction.indexOf("0") != -1)
+    else if(subtraction.indexOf("1") != -1)
     {
         char firstChar = subtraction.charAt(0);
         if(firstChar == '#')
@@ -1038,7 +1044,7 @@ public Boolean pitch_gr_eq(Polylist evaledArgs)
     String subtraction = pitchSub.toString();
     if(subtraction.indexOf("-") != -1)
         return false;
-    else if(subtraction.indexOf("0") != -1)
+    else if(subtraction.indexOf("1") != -1)
     {
         char firstChar = subtraction.charAt(0);
         if(firstChar == 'b')
@@ -1060,7 +1066,7 @@ public Boolean pitch_lt(Polylist evaledArgs)
     String subtraction = pitchSub.toString();
     if(subtraction.indexOf("-") != -1)
         return true;
-    else if(subtraction.indexOf("0") != -1)
+    else if(subtraction.indexOf("1") != -1)
     {
         char firstChar = subtraction.charAt(0);
         if(firstChar == 'b')
@@ -1083,7 +1089,7 @@ public Boolean pitch_lt_eq(Polylist evaledArgs)
     String subtraction = pitchSub.toString();
     if(subtraction.indexOf("-") != -1)
         return true;
-    else if(subtraction.indexOf("0") != -1)
+    else if(subtraction.indexOf("1") != -1)
     {
         char firstChar = subtraction.charAt(0);
         if(firstChar == '#')
@@ -1144,7 +1150,7 @@ public NoteChordPair set_relative_pitch(NoteChordPair pair, String relPitch)
     Note note = pair.note.copy();
     Polylist transposeNoteList = Polylist.PolylistFromString("X " + relPitch + " " + Note.getDurationString(note.getRhythmValue()));
     Chord chord = pair.chord;
-    Note newNote = lickGen.makeRelativeNote(transposeNoteList, chord);
+    Note newNote = LickGen.makeRelativeNote(transposeNoteList, chord);
     return new NoteChordPair(newNote, chord);
 }
 /**
@@ -1159,65 +1165,36 @@ public NoteChordPair transpose_diatonic(NoteChordPair pair, String relPitch)
     {
         return null;
     }
-    String relPitchInit = returns;
-    String initArg = relPitchInit;
-    char initAugment = initArg.charAt(0);
-    int initNum = 0;
-    if(initAugment == '#' || initAugment == 'b')
-    {
-        initArg = initArg.substring(1);
-    }
-    else
-    {
-        initAugment = 'f';
-    }
-    initNum = Integer.parseInt(initArg.toString());
+    String initArg = returns;
+    
     String totalSum = addRelPitch(returns, relPitch);
     int shiftOctaves = 0;
-    if(initNum < 0)
-        shiftOctaves++;
-    if(!totalSum.substring(0, 1).matches("\\-?[\\d]*"))
+    
+    String insert = "";
+    while(totalSum.charAt(0) == 'b' || totalSum.charAt(0) == '#')
     {
-        char insert = totalSum.charAt(0);
-        int origNumber = Integer.parseInt(totalSum.substring(1));
-        int number = 0;
-        if(origNumber < 0)
-        {
-            shiftOctaves += ((origNumber / 7) - 1);
-            number = origNumber % 7;
-            number += 8;
-        }
-        else
-        {
-            shiftOctaves += ((origNumber - 1) / 7);
-            number = (origNumber - 1)%7 + 1;
-        }
-        totalSum = "" + insert + number; 
+        insert += totalSum.charAt(0);
+        totalSum = totalSum.substring(1);
+    }
+    int origNumber = Integer.parseInt(totalSum);
+    int number = 0;
+    if(origNumber<0)
+    {
+        shiftOctaves += (origNumber / 7);
+        number = origNumber % 7;
     }
     else
     {
-        int origNumber = Integer.parseInt(totalSum);
-        int number = 0;
-        if(origNumber<0)
-        {
-            shiftOctaves += ((origNumber / 7) - 1);
-            number = origNumber % 7;
-            number += 8;
-        }
-        else
-        {
-            shiftOctaves += ((origNumber - 1) / 7);
-            number = (origNumber - 1)%7 + 1;
-        }
-        totalSum = "" + number; 
+        shiftOctaves += ((origNumber - 1) / 7);
+        number = (origNumber - 1)%7 + 1;
     }
+    totalSum = insert + number; 
+    
     Polylist transposeNoteList = Polylist.PolylistFromString("X " + totalSum + " 4");
-    Polylist transposeNoteListInit = Polylist.PolylistFromString("X " + ((initAugment != 'f')?
-            initAugment :
-            "") + initNum + " 4");
+    Polylist transposeNoteListInit = Polylist.PolylistFromString("X " + initArg + " 4");
     Chord chord = pair.chord;
-    Note fakeNote = lickGen.makeRelativeNote(transposeNoteList, chord);
-    Note fakeInitNote = lickGen.makeRelativeNote(transposeNoteListInit, chord);
+    Note fakeNote = LickGen.makeRelativeNote(transposeNoteList, chord);
+    Note fakeInitNote = LickGen.makeRelativeNote(transposeNoteListInit, chord);
     Note note = pair.note.copy();
     int newPitch = fakeNote.getPitch()-fakeInitNote.getPitch();
     newPitch += Note.OCTAVE*shiftOctaves;
@@ -1261,68 +1238,91 @@ public double readNumber(String num)
 }
 public String addRelPitch(String num1, String num2)
 {
-    char augment1 = num1.charAt(0);
-    
-    int numVal1 = 0;
-    if(augment1 == '#' || augment1 == 'b')
+    String augment1 = "";
+    while(num1.charAt(0) == '#' || num1.charAt(0) == 'b')
     {
+        augment1 += num1.charAt(0);
         num1 = num1.substring(1);
     }
-    else
-    {
-        augment1 = 'f';
-    }
-    numVal1 = Integer.parseInt(num1);
+    int numVal1 = Integer.parseInt(num1);
     
-    char augment2 = num2.charAt(0);
-    
-    int numVal2 = 0;
-    if(augment2 == '#')
+    String augment2 = "";
+    while(num2.charAt(0) == '#' || num2.charAt(0) == 'b')
     {
-        if(augment1 == 'b')
-            augment2 = 'f';
-        else if(augment1 == '#')
-        {
-            augment2 = 'f';
-            numVal1 += 1;
-            if(numVal1 == 0)
-                numVal1 += 1;
-        }
-        else
-            augment2 = '#';
-        
+        augment2 += num2.charAt(0);
         num2 = num2.substring(1);
     }
-    else if(augment2 == 'b')
-    {
-        
-        if(augment1 == '#')
-            augment2 = 'f';
-        else if(augment1 == 'b')
-        {
-            augment2 = 'f';
-            numVal1 -= 1;
-            if(numVal1 == 0)
-                numVal1 -= 1;
-        }
-        else
-            augment2 = 'b';
-        
-        num2 = num2.substring(1);
-    }
-    else
-    {
-        augment2 = augment1;
-    }
-    numVal2 = Integer.parseInt(num2);
+    int numVal2 = Integer.parseInt(num2);
+    
     int addTotal = numVal2 + numVal1;
-    if(numVal1 > 0 && numVal2 > 0)
+    if(numVal1 > 0)
+        addTotal --;
+    if(numVal2 > 0)
         addTotal --;
     String returnString;
-    if(addTotal <= 0)
-        addTotal --;
-    returnString = ((augment2=='f')? "" : augment2) + "" + addTotal;
+    if(addTotal >= 0)
+        addTotal ++;
+    returnString = augment1 + augment2 + addTotal;
     return returnString;
+}
+public String modRelPitch(String pitch)
+{
+    if(!pitch.substring(0, 1).matches("\\-?[\\d]*"))
+    {
+        char insert = pitch.charAt(0);
+        int origNumber = Integer.parseInt(pitch.substring(1));
+        int number = 0;
+        if(origNumber < 0)
+        {
+            number = origNumber % 7;
+        }
+        else
+        {
+            number = (origNumber - 1)%7 + 1;
+        }
+        pitch = "" + insert + number; 
+    }
+    else
+    {
+        int origNumber = Integer.parseInt(pitch);
+        int number = 0;
+        if(origNumber<0)
+        {
+            number = origNumber % 7;
+        }
+        else
+        {
+            number = (origNumber - 1)%7 + 1;
+        }
+        pitch = "" + number; 
+    }
+    return pitch;
+}
+
+public String absoluteRelPitchDiff(Note n1, Note n2, Chord chord)
+{
+    
+    String rel1 = NotesToRelativePitch.noteToRelativePitch(n1, chord).second().toString();
+    String rel2 = NotesToRelativePitch.noteToRelativePitch(n2, chord).second().toString();
+    
+    if(pitch_gr_eq(Polylist.PolylistFromString(rel1 + " " + rel2)) == null)
+        return null;
+    while(pitch_gr_eq(Polylist.PolylistFromString(rel1 + " " + rel2)) && !(n1.getPitch() >= n2.getPitch())) 
+    {
+        rel2 = pitch_addition(Polylist.PolylistFromString(rel2 + " 8")).toString();
+    }
+    
+    if(pitch_lt_eq(Polylist.PolylistFromString(rel1 + " " + rel2))  == null)
+    {
+        return null;
+    }
+    while(pitch_lt_eq(Polylist.PolylistFromString(rel1 + " " + rel2)) && !(n1.getPitch() <= n2.getPitch()))
+    {
+        rel1 = pitch_addition(Polylist.PolylistFromString(rel1 + " 8")).toString();
+    }
+    String returning = pitch_subtraction(Polylist.PolylistFromString(rel1 + " " + rel2)).toString();
+            
+    return returning;
 }
 /**
  * A data-structure that holds a note and its chord. 
