@@ -1377,10 +1377,29 @@ public MelodyPart copy(int startingIndex, int endingIndex)
    * Returns a MelodyPart that contains the Units within the slot range specified.
    * @param first     the first slot in the range
    * @param last      the last slot in the range
+   * @param fudgeEnding cut off the last note to fit into size last - first
    * @return MelodyPart     the MelodyPart that contains the extracted chunk
    */
 
     public MelodyPart extract(int first, int last, boolean fudgeEnding)
+    {
+    return extract(first, last, fudgeEnding, false);
+    }
+    
+  /**
+   * Returns a MelodyPart that contains the Units within the slot range specified.
+   * @param first     the first slot in the range
+   * @param last      the last slot in the range
+   * @param fudgeEnding cut off the last note to fit into size last - first
+   * @param fudgeStart  get the first Note previously played and fit it into
+   *                    new melody part
+   * @return MelodyPart     the MelodyPart that contains the extracted chunk
+   */
+
+    public MelodyPart extract(int first, 
+                              int last, 
+                              boolean fudgeEnding, 
+                              boolean fudgeStart)
     {
     //System.out.println("extract melody from " + first + " to " + last);
     MelodyPart newPart = new MelodyPart();
@@ -1388,18 +1407,34 @@ public MelodyPart copy(int startingIndex, int endingIndex)
     int lastUnitIndex = first;
     if( getUnit(first) == null )
       {
-      // Create a rest up to the first non-null unit
-      for( i = first + 1; i <= last; i++ )
-        {
-        if( getUnit(i) != null )
+        // Create a rest up to the first non-null unit
+        for( i = first + 1; i <= last; i++ )
           {
-          break;
+          if( getUnit(i) != null )
+            {
+            break;
+            }
           }
+        // Add the synthetic rest to the new part
+        // equivalent to space before the first actual note
+        if(fudgeStart)    
+        {
+            if(getCurrentNote(first) != null)
+            {
+                Note prevNote = getCurrentNote(first).copy();
+                prevNote.setRhythmValue(i-first);
+                newPart.addNote(prevNote);
+            }
+            else
+            {
+                newPart.addNote(new Rest(i - first));
+            }
         }
-      // Add the synthetic rest to the new part
-      // equivalent to space before the first actual note
-      newPart.addNote(new Rest(i - first));
+        else
+        {
 
+          newPart.addNote(new Rest(i - first));
+        }
       }
 
     // Add other Units

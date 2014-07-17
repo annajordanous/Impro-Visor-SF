@@ -52,7 +52,7 @@ public class NotesToRelativePitch {
     //major (i.e. Ionian)
     private static final String[] majorScaleDegrees = {"1", "b2", "2", "b3", "3", "4", "#4", "5", "#5", "6", "b7", "7"};
     //dominant (i.e. Mixolydian)
-    private static final String[] dominantScaleDegrees = {"1", "b9", "9", "#9", "3", "4", "b5", "5", "b13", "13", "7", "#7"};
+    private static final String[] dominantScaleDegrees = {"1", "b2", "2", "b3", "3", "4", "#4", "5", "#5", "6", "7", "#7"};
     //half diminished
     //note: 6 half steps above the root has to be b5--otherwise, what do you call a perfect 5?
     private static final String[] halfDimScaleDegrees = {"1", "b2", "2", "3", "#3", "4", "b5", "5", "b6", "6", "7", "#7"};

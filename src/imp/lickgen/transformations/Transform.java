@@ -182,6 +182,24 @@ private MelodyPart applySubstitutionType(ArrayList<Substitution> substitutions,
     return subbedMP;
 }
 
+public void findDuplicatesAndAddToWeight()
+{
+    for(int i = 0; i < substitutions.size(); i++)
+    {
+        Substitution sub = substitutions.get(i);
+        substitutions.remove(sub);
+        int newWeight = sub.getWeight();
+        while(substitutions.contains(sub))
+        {
+            int subIndex = substitutions.indexOf(sub);
+            Substitution copy = substitutions.remove(subIndex);
+            newWeight += copy.getWeight();
+        }
+        sub.setWeight(newWeight);
+        substitutions.add(i, sub);
+    }
+}
+
 public Polylist melodyPartToNoteList(MelodyPart melody)
 {
     int slotvalue = 0;
