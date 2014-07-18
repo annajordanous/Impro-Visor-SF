@@ -57,7 +57,7 @@ import polya.Polylist;
  *
  * @author Alex Putman
  */
-public class SubstitutorTabPanel extends javax.swing.JPanel {
+public class TransformTabPanel extends javax.swing.JPanel {
 
     /**
      * Creates new form SubstitutorTabPanel
@@ -72,7 +72,7 @@ public class SubstitutorTabPanel extends javax.swing.JPanel {
     private Stack<MelodyInContext> savedMelodies;
     private Stack<MelodyInContext> savedTrans;
     
-    public SubstitutorTabPanel(LickGen lickgen, Notate notate) {
+    public TransformTabPanel(LickGen lickgen, Notate notate) {
         this.lickgen = lickgen;
         this.notate = notate;
         initComponents();
@@ -129,7 +129,7 @@ public class SubstitutorTabPanel extends javax.swing.JPanel {
         try {
             transformStr = new Scanner(ImproVisor.getTransformFile()).useDelimiter("\\Z").next();
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(SubstitutorTabPanel.class.getName()).log(Level.WARNING, null, ex);
+            Logger.getLogger(TransformTabPanel.class.getName()).log(Level.WARNING, null, ex);
         }
         if(transformStr.length() > 0)
         {
@@ -190,7 +190,7 @@ public class SubstitutorTabPanel extends javax.swing.JPanel {
 
         setLayout(new java.awt.GridBagLayout());
 
-        selectSubstitutionsButtonsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Select Substitution List"));
+        selectSubstitutionsButtonsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Select Substitution List", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
         selectSubstitutionsButtonsPanel.setMinimumSize(new java.awt.Dimension(230, 130));
         selectSubstitutionsButtonsPanel.setPreferredSize(new java.awt.Dimension(230, 130));
         selectSubstitutionsButtonsPanel.setLayout(new java.awt.GridBagLayout());
@@ -239,6 +239,7 @@ public class SubstitutorTabPanel extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         selectSubstitutionsButtonsPanel.add(saveSubstitutionsButton, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -249,7 +250,7 @@ public class SubstitutorTabPanel extends javax.swing.JPanel {
         gridBagConstraints.weightx = 1.0;
         add(selectSubstitutionsButtonsPanel, gridBagConstraints);
 
-        SubstitutorParametersPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Substitution Parameters"));
+        SubstitutorParametersPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Substitution Parameters", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
         SubstitutorParametersPanel.setMinimumSize(new java.awt.Dimension(180, 60));
         SubstitutorParametersPanel.setPreferredSize(new java.awt.Dimension(180, 60));
         SubstitutorParametersPanel.setLayout(new java.awt.GridBagLayout());
@@ -279,7 +280,7 @@ public class SubstitutorTabPanel extends javax.swing.JPanel {
         gridBagConstraints.weightx = 1.0;
         add(SubstitutorParametersPanel, gridBagConstraints);
 
-        useSubstitutionsButtonsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Use and Save Substitutions"));
+        useSubstitutionsButtonsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Use Substitutions", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
         useSubstitutionsButtonsPanel.setMinimumSize(new java.awt.Dimension(230, 130));
         useSubstitutionsButtonsPanel.setPreferredSize(new java.awt.Dimension(230, 130));
         useSubstitutionsButtonsPanel.setLayout(new java.awt.GridBagLayout());
@@ -354,7 +355,7 @@ public class SubstitutorTabPanel extends javax.swing.JPanel {
         gridBagConstraints.weightx = 1.0;
         add(useSubstitutionsButtonsPanel, gridBagConstraints);
 
-        substitutionsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Substitutions"));
+        substitutionsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Substitutions", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
         substitutionsPanel.setMinimumSize(new java.awt.Dimension(490, 500));
         substitutionsPanel.setPreferredSize(new java.awt.Dimension(490, 500));
         substitutionsPanel.setLayout(new java.awt.GridBagLayout());
@@ -450,6 +451,7 @@ public class SubstitutorTabPanel extends javax.swing.JPanel {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridwidth = 6;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(2, 6, 0, 0);
@@ -508,7 +510,7 @@ public class SubstitutorTabPanel extends javax.swing.JPanel {
         gridBagConstraints.weighty = 1.0;
         add(substitutionsPanel, gridBagConstraints);
 
-        transformationsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Transformations"));
+        transformationsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Transformations", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
         transformationsPanel.setMinimumSize(new java.awt.Dimension(490, 500));
         transformationsPanel.setPreferredSize(new java.awt.Dimension(490, 500));
         transformationsPanel.setLayout(new java.awt.GridBagLayout());
@@ -630,7 +632,7 @@ public class SubstitutorTabPanel extends javax.swing.JPanel {
         gridBagConstraints.weighty = 1.0;
         add(transformationsPanel, gridBagConstraints);
 
-        playbackPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("LeadSheet Options"));
+        playbackPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "LeadSheet Options", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
         playbackPanel.setMinimumSize(new java.awt.Dimension(187, 130));
         playbackPanel.setPreferredSize(new java.awt.Dimension(187, 130));
         playbackPanel.setLayout(new java.awt.GridBagLayout());
@@ -665,8 +667,8 @@ public class SubstitutorTabPanel extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(4, 0, 4, 0);
         playbackPanel.add(substitutorStopLeadsheetButton, gridBagConstraints);
 
-        substitutorSaveLeadsheetButton.setText("Save LeadSheet");
-        substitutorSaveLeadsheetButton.setToolTipText("Save current leadsheet");
+        substitutorSaveLeadsheetButton.setText("Save");
+        substitutorSaveLeadsheetButton.setToolTipText("Save current lick");
         substitutorSaveLeadsheetButton.setMaximumSize(new java.awt.Dimension(10000, 23));
         substitutorSaveLeadsheetButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -705,7 +707,7 @@ public class SubstitutorTabPanel extends javax.swing.JPanel {
             try {
                 transformStr = new Scanner(chooser.getSelectedFile()).useDelimiter("\\Z").next();
             } catch (FileNotFoundException ex) {
-                Logger.getLogger(SubstitutorTabPanel.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(TransformTabPanel.class.getName()).log(Level.SEVERE, null, ex);
             }
             if(transformStr.length() > 0)
             {
@@ -881,7 +883,7 @@ public class SubstitutorTabPanel extends javax.swing.JPanel {
             try {
                 transformStr = new Scanner(chooser.getSelectedFile()).useDelimiter("\\Z").next();
             } catch (FileNotFoundException ex) {
-                Logger.getLogger(SubstitutorTabPanel.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(TransformTabPanel.class.getName()).log(Level.SEVERE, null, ex);
             }
             if(transformStr.length() > 0)
             {
@@ -939,8 +941,9 @@ public class SubstitutorTabPanel extends javax.swing.JPanel {
         transform = trans;
         fillSubstitutionsList();
         fillTransformationsList();
-
-
+        
+        substitutionFromLabel.setText("Substitutions From: Flatten Transform Learning");
+        filename = "";
         savedMelodies = new Stack();
         savedTrans = new Stack();
         revertSubstitutionsButton.setEnabled(false);

@@ -20,10 +20,10 @@ import polya.Polylist;
  *
  * @author Alex Putman
  */
-public class FlattenMelody{
+public class TransformLearning{
     
 private LickGen lickgen;
-public FlattenMelody(LickGen lickgen)
+public TransformLearning(LickGen lickgen)
 {
     this.lickgen = lickgen;
 }

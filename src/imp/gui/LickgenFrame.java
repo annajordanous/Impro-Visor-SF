@@ -152,13 +152,13 @@ public class LickgenFrame
      */
     private static int numCritics = 22;
     /**
-     * Create the panel for the substitutor
+     * Create the panel for the transform
      */
-    private SubstitutorTabPanel substitutorTab;
+    private TransformTabPanel transformTab;
     /**
      * Create the panel for flatten
      */
-    private FlattenMelodyPanel flattenTab;
+    private TransformLearningPanel transformLearningTab;
 
     /**
      * Creates new LickgenFrame
@@ -176,15 +176,15 @@ public class LickgenFrame
         critic = notate.getCritic();
         initComponents();
 
-        substitutorTab = new SubstitutorTabPanel(lickgen, notate);
-        substitutorPanel.add(substitutorTab, new GridLayout(1, 1, 1, 1));
+        transformTab = new TransformTabPanel(lickgen, notate);
+        transformPanel.add(transformTab, new GridLayout(1, 1, 1, 1));
         
-        flattenTab = new FlattenMelodyPanel(lickgen, notate, substitutorTab);
-        flattenPanel.add(flattenTab, new GridLayout(1, 1, 1, 1));
+        transformLearningTab = new TransformLearningPanel(lickgen, notate, transformTab);
+        transformLearningPanel.add(transformLearningTab, new GridLayout(1, 1, 1, 1));
     }
 
     public void applySubstitutions(MelodyPart melody, ChordPart chords) {
-        substitutorTab.applySubstitutionsToPart(melody, chords);
+        transformTab.applySubstitutionsToPart(melody, chords);
     }
 
     /**
@@ -328,7 +328,8 @@ public class LickgenFrame
         criticGradeLabel = new javax.swing.JLabel();
         counterForCriticLabel = new javax.swing.JLabel();
         loadRandomGrammarButton = new javax.swing.JButton();
-        substitutorPanel = new javax.swing.JPanel();
+        transformPanel = new javax.swing.JPanel();
+        transformLearningPanel = new javax.swing.JPanel();
         grammarLearningPanel = new javax.swing.JPanel();
         finalLabel = new javax.swing.JLabel();
         windowParametersPanel = new javax.swing.JPanel();
@@ -407,7 +408,6 @@ public class LickgenFrame
         moveLayerUpTableButton = new javax.swing.JButton();
         moveLayerDownTableButton = new javax.swing.JButton();
         weightFileButton = new javax.swing.JButton();
-        flattenPanel = new javax.swing.JPanel();
         generatorMenuBar1 = new javax.swing.JMenuBar();
         grammarMenu1 = new javax.swing.JMenu();
         openGrammarMI1 = new javax.swing.JMenuItem();
@@ -1890,10 +1890,13 @@ public class LickgenFrame
 
         generatorPane.addTab("Lick Generator", lickGenPanel);
 
-        substitutorPanel.setMinimumSize(new java.awt.Dimension(32767, 32767));
-        substitutorPanel.setPreferredSize(new java.awt.Dimension(0, 0));
-        substitutorPanel.setLayout(new java.awt.GridLayout(1, 0));
-        generatorPane.addTab("Transform", substitutorPanel);
+        transformPanel.setMinimumSize(new java.awt.Dimension(32767, 32767));
+        transformPanel.setPreferredSize(new java.awt.Dimension(0, 0));
+        transformPanel.setLayout(new java.awt.GridLayout(1, 0));
+        generatorPane.addTab("Transform", transformPanel);
+
+        transformLearningPanel.setLayout(new java.awt.GridLayout(1, 0));
+        generatorPane.addTab("Transform Learning", transformLearningPanel);
 
         grammarLearningPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Grammar Learning", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
         grammarLearningPanel.setMinimumSize(new java.awt.Dimension(500, 300));
@@ -2946,9 +2949,6 @@ public class LickgenFrame
         neuralNetworkPanel.add(nnetParametersPanel, gridBagConstraints);
 
         generatorPane.addTab("Neural Network", neuralNetworkPanel);
-
-        flattenPanel.setLayout(new java.awt.GridLayout(1, 0));
-        generatorPane.addTab("Flatten", flattenPanel);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -5860,7 +5860,6 @@ public class LickgenFrame
     private javax.swing.JTextField epochLimitTextField;
     private javax.swing.JButton fillMelodyButton;
     private javax.swing.JLabel finalLabel;
-    private javax.swing.JPanel flattenPanel;
     private javax.swing.JButton forwardGradeSoloButton;
     private javax.swing.JTextField gapField;
     private javax.swing.JButton genRhythmButton;
@@ -5981,7 +5980,6 @@ public class LickgenFrame
     private javax.swing.JButton stopLickButton;
     private javax.swing.JButton stopSoloPlayBtn;
     private javax.swing.JButton styleRecognitionButton;
-    private javax.swing.JPanel substitutorPanel;
     private javax.swing.JButton testGeneration;
     private javax.swing.JTextField themeField;
     private javax.swing.JLabel themeLabel;
@@ -5996,6 +5994,8 @@ public class LickgenFrame
     private javax.swing.JLabel totalBeatsLabel;
     private javax.swing.JButton trainingFileButton;
     private javax.swing.JTextField trainingFileTextField;
+    private javax.swing.JPanel transformLearningPanel;
+    private javax.swing.JPanel transformPanel;
     private javax.swing.JLabel transposeProbLabel;
     private javax.swing.JTextField transposeProbabilityField;
     private javax.swing.JLabel typeLabel;
