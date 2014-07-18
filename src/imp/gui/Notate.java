@@ -26212,7 +26212,7 @@ public void roadMapThisAnalyze()
     setMode(Mode.ROADMAP);
     setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
     establishRoadMapFrame();
-    ensureRoadmap(); //score.toRoadMapFrame(roadmapFrame);  // 
+    score.toRoadMapFrame(roadmapFrame);  
     roadmapFrame.setRoadMapTitle(getTitle());
     roadmapFrame.updatePhiAndDelta(getPhiStatus(),getDeltaStatus());
     roadmapFrame.makeVisible(true);
@@ -26230,17 +26230,12 @@ public ArrayList<Block> getRoadMapBlocks()
 public void ensureRoadmap()
   {
     //System.out.println("roadmapPoly is " + chordProg.getRoadmapPoly() );
-    RoadMap roadmap = chordProg.getRoadMap();
-   
-//    if( roadmap != null )
-//      {
-//        System.out.println("Reusing saved roadmap ");
-//        roadmapFrame.rawSetRoadMap(roadmap);
-//      }
-//    else
+    if (chordProg.getRoadMap() == null )
       {
-        score.toRoadMapFrame(roadmapFrame);//reAnalyze();
-       }
+        roadMapThisAnalyze();
+        chordProg.setRoadmap(null);
+        chordProg.setRoadmap(roadmapFrame.getRoadMap());
+      }
   }
     
 public void reAnalyze()
