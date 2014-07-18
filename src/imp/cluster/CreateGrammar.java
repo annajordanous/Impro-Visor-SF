@@ -413,7 +413,6 @@ public class CreateGrammar implements imp.Constants {
      */
     public static void writeRelativePitchGrammarWithChains(Vector<NGram> ngrams, Vector<float[]> chains, DataPoint[] reps,
             Cluster[] clusters, String outFile, ChordPart chordProg) {
-
         Vector<Integer> segLengths = new Vector<Integer>();
         for (int i = 0; i < reps.length; i++) {
             Integer length = new Integer(reps[i].getSegLength());
@@ -824,9 +823,13 @@ public class CreateGrammar implements imp.Constants {
             ruleString = ruleString.substring(0, ruleString.length() - 9).concat(" )");
         }
 
-        //remove extra junk from the rule string such as "(rule (seg 4)"
+        //remove extra junk from the rule string such as "(rule (Seg 4)"
         ruleString = ruleString.substring(ruleString.indexOf("Seg") + 7, ruleString.length() - 3);
-        //System.out.println("ruleString: " + ruleString);
+        //if the Seg number is 2 digits, this will leave an extra parenthesis at the beginning
+        //so we must chop that off too if it exists
+        if (ruleString.startsWith("((")) {
+            ruleString = ruleString.substring(1, ruleString.length());
+        }
         consonance = getConsonance(ruleString, exactMelody);
 
         rule = rule.rest();

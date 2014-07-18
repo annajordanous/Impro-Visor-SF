@@ -81,11 +81,8 @@ public class CreateBrickGrammar {
                 MelodyPart blockMelody = melPart.extract(totalDuration, totalDurationPlusThisBlock, true); 
                 ChordPart blockChords = chordProg.extract(totalDuration, totalDurationPlusThisBlock);
                 String blockAbstract = NotesToRelativePitch.melodyToAbstract(blockMelody, blockChords, (i == 0), notate, notate.getLickGen());
-                //System.out.println(blockAbstract);
                 String relMel = NotesToRelativePitch.melPartToRelativePitch(blockMelody, blockChords);
-                //System.out.println(relMel);
                 if (blockAbstract != null) {
-                    //System.out.println("Writing production for a brick of type " + currentBlock.getDashedName());
                     frame.writeProduction(blockAbstract, currentBlock.getDuration()/BEAT, totalDuration, true, currentBlock.getDashedName());
                 }
             }
@@ -145,21 +142,16 @@ public class CreateBrickGrammar {
         for (int i = 0; i < brickListsSize; ++i) {
             brickLists.add(new Vector<DataPoint>());
         }
-        //System.out.println("size of brickLists: " + brickLists.size());
-
-        //System.out.println("Processing rules");
+        
         //store the data
         //NOTE: vectors are out of date, but we continue to use them to build off cluster methods that use them
         for (int i = 0; i < rules.length; i++) {
-            //System.out.printf("Rule number %d of %d\n",(i+1), rules.length);
-            //System.out.println("Rule string: " + ruleStrings[i]);
             DataPoint temp = processRule(rules[i], ruleStrings[i], Integer.toString(i));
             String brickName = temp.getBrickType();
             if (useHead && temp.isHead()) { //if we care about separating out the head, AND if rule belongs to the head, store its data separately
                 headData.add(temp);
             } else {
                 //store data in the vector in the list of vectors corresponding to a specific brick type (as indexed in the brick types array)
-                //System.out.println("This brick's type: " + temp.getBrickType());
                 if (!brickName.equals("None")) {
                     int brickTypeIndex = java.util.Arrays.asList(brickKindsArray).indexOf(brickName);
                     brickLists.get(brickTypeIndex).add(temp);
@@ -184,42 +176,38 @@ public class CreateBrickGrammar {
                 Cluster[] clusters = getClusters(brickData, averages, brickData.size() / repsPerCluster);
                 allClusters.add(clusters);
 
-//                //get the sets of similar clusters
-//                Vector<ClusterSet> clusterSets = getClusterSets(clusters);
-//                allClusterSets.add(clusterSets);
-//
-//                //get the cluster orders so we can get outlines (so we can create soloist files)
-//                Vector<Vector<DataPoint>> orders = getClusterOrder(clusters, brickData);
-//
-//                //get the outlines
-//                Vector<Vector<ClusterSet>> outlines = getOutlines(orders, clusters, clusterSets);
-//                allOutlines.add(outlines);
-//                numberOfOutlines += outlines.size();
-
                 DataPoint[] reps = getClusterReps(clusters, repsPerCluster);
                 allReps.add(reps);
             }
         }
 
         //note: no need for a .soloist file
-        writeBrickGrammar(frame.getUseRelativePitches(), outFile);
+        writeBrickGrammar(useRelative, outFile);
+//        CreateGrammar.create(chordProg, inFile, outFile, 
+//                repsPerCluster, frame.useMarkovSelected(), frame.getMarkovFieldLength(), 
+//                useRelative, notate);
     }
 
     public static void writeBrickGrammar(boolean useRelative, String outfile) {
         try {
             BufferedWriter out = new BufferedWriter(new FileWriter(outfile, true));
-            //System.out.println("will be writing grammar");
-            
             //boilerplate rules that specify how many duration slots to subtract off for bricks of different durations
             for (int dur = 0; dur < brickDurationsArray.length; ++dur) {
-                out.write("\n(rule (P Y) ((START"
+                out.write("\n(rule (P Y) (START"
                         + brickDurationsArray[dur]
-                        + ") (P (- Y "
+                        + " (P (- Y "
                         + brickDurationsArray[dur]
                         + "))) "
                         + Math.pow(10, dur) + ")");
             }
             out.write("\n");
+            
+            //when writing rules, keep track of how many bricks of each kind we've written rules for
+            int[] brickKindsCount = new int[brickKindsArray.length];
+            for (int i = 0; i < brickKindsCount.length; i++) {
+                brickKindsCount[i] = 0;
+            }
+            
             
             String rule;
             int totalDuration = 0; //so we can keep track of where we are in the tune
@@ -235,28 +223,27 @@ public class CreateBrickGrammar {
                             break;
                         }
                     }
+                    
                     //Cluster[] brickCluster = allClusters.get(brickNumber); //cluster to which this brick belongs
                     //DataPoint[] brickClusterReps = getClusterReps(brickCluster, 1);
                     DataPoint[] brickClusterReps = allReps.get(brickNumber);
-                    for (int r = 0; r < brickClusterReps.length; r++) {
+                    //for (int r = 0; r < brickClusterReps.length; r++) {
+                        int r = brickKindsCount[brickNumber];
                         DataPoint rep = brickClusterReps[r]; 
                         if (useRelative) {
                             rule = rep.getRelativePitchMelody();
                         } else {
                             rule = rep.getObjData();
                         }
-
                         out.write("(rule (START"
                                 + (rep.getSegLength()*BEAT)
-//                                + " Brick-type "
-//                                + rep.getBrickType()
-                                + ")("
+                                + ") ("
                                 + rule
                                 + ") (builtin brick " //evaluates to 1 if brick type is this brick's type; 0 otherwise
                                 + rep.getBrickType()
                                 + "))\n");
-//                                + ") 1.0)\n");
-                    }
+                        ++brickKindsCount[brickNumber]; //we've come across one more occurence of this kind of brick
+                    //}
                     
                 } else { 
                     //TODO: how to deal with parts that could not be classified as bricks
@@ -269,7 +256,6 @@ public class CreateBrickGrammar {
                 
                 totalDuration += currentBlock.getDuration();
             }
-            //System.out.println("Successfully completed and closing file");
             out.close();
         } catch (Exception e) {
             System.out.println("Exception writing grammar: " + e.toString());

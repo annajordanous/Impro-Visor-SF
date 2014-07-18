@@ -175,7 +175,7 @@ public class NotesToRelativePitch {
                     relativePitchMelody.append(rest.toString());
                 }
             } catch (Exception e) {
-                System.out.println("Problem processing note");
+                System.out.println("Problem processing note: " + e.toString());
             }
             totalNoteDurationInMeasure += duration;
         }

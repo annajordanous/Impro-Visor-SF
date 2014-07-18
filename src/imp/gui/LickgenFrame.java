@@ -2123,6 +2123,7 @@ public class LickgenFrame
         loadBaseGrammarBtn.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         loadBaseGrammarBtn.setMaximumSize(new java.awt.Dimension(9999, 9999));
         loadBaseGrammarBtn.setMinimumSize(new java.awt.Dimension(105, 60));
+        loadBaseGrammarBtn.setOpaque(true);
         loadBaseGrammarBtn.setPreferredSize(new java.awt.Dimension(173, 60));
         loadBaseGrammarBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -2144,6 +2145,7 @@ public class LickgenFrame
         saveGrammarAsButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         saveGrammarAsButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         saveGrammarAsButton.setMaximumSize(new java.awt.Dimension(9999, 9999));
+        saveGrammarAsButton.setOpaque(true);
         saveGrammarAsButton.setPreferredSize(new java.awt.Dimension(173, 60));
         saveGrammarAsButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -2166,6 +2168,7 @@ public class LickgenFrame
         openCorpusBtn.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         openCorpusBtn.setMaximumSize(new java.awt.Dimension(9999, 9999));
         openCorpusBtn.setMinimumSize(new java.awt.Dimension(240, 75));
+        openCorpusBtn.setOpaque(true);
         openCorpusBtn.setPreferredSize(new java.awt.Dimension(240, 75));
         openCorpusBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -2187,6 +2190,7 @@ public class LickgenFrame
         toGrammarBtn.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         toGrammarBtn.setMaximumSize(new java.awt.Dimension(9999, 70));
         toGrammarBtn.setMinimumSize(new java.awt.Dimension(240, 75));
+        toGrammarBtn.setOpaque(true);
         toGrammarBtn.setPreferredSize(new java.awt.Dimension(240, 75));
         toGrammarBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -2225,6 +2229,7 @@ public class LickgenFrame
         testGeneration.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         testGeneration.setMaximumSize(new java.awt.Dimension(9999, 9999));
         testGeneration.setMinimumSize(new java.awt.Dimension(240, 29));
+        testGeneration.setOpaque(true);
         testGeneration.setPreferredSize(new java.awt.Dimension(240, 29));
         testGeneration.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -3041,9 +3046,9 @@ public class LickgenFrame
 
         generatorWindowMenu1.setLabel("Window");
         generatorWindowMenu1.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
-            }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 generatorWindowMenu1MenuSelected(evt);
