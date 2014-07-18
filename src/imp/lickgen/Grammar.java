@@ -498,32 +498,32 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
 
       accumulateTerminals();
   
-      // All applicable rules (and their corresponding weights)
-      // get loaded into these arrays, to be selected from at random.
-      ArrayList<Polylist> ruleArray = new ArrayList<Polylist>(5);
-      ArrayList<Polylist> baseArray = new ArrayList<Polylist>(5);
-      ArrayList<Double> ruleWeights = new ArrayList<Double>(5);
-      ArrayList<Double> baseWeights = new ArrayList<Double>(5);
+      // All applicable rhs RHS's (and their corresponding weights)
+      // get loaded into these lists, to be selected from at random.
 
+      ArrayList<WeightedRHS> ruleList = new ArrayList<WeightedRHS>();
+      ArrayList<WeightedRHS> baseList = new ArrayList<WeightedRHS>();
+      
       Polylist search = rules;
 
-      // Now search through and find all rules that apply to the given start symbol.
+      // Search through and find all rules that apply to the given start symbol.
       // Note that a start symbol can be a polylist.
+      
       while( search.nonEmpty() )
         {
-        // Next is the next rule to compare to
+        // Next is the next rhs to compare to
         Polylist next = (Polylist)search.first();
         String type = (String)next.first();
         //System.out.println("\nnext = " + next);
 
         /*
          * RULEs and BASEs have the following S-expression format:
-         * (<keyword> (<symbol>) (<production>) weight)
+         * (<keyword> (<LHS symbol>) (<RHS>) weight)
          * <keyword> can be RULE or BASE
-         * <symbol> can be a string or a polylist of strings
-         * <production> is a polylist of symbols (or if it's a RULE, some expressions
+         * <LHS symbol> can be a string or a polylist of strings
+         * <RHS> is a polylist of symbols (or if it's a RULE, some expressions
          *	to evaluate).
-         * <weight> is a double expressing how "important" the rule is.  More important
+         * <weight> is a double expressing how "important" the rhs is.  More important
          *	rules will be chosen more often than less important ones.
          */
 
@@ -531,6 +531,7 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
         // If a symbol matches both a RULE and a BASE, it will always choose the BASE.
         // This basically short-circuits any computation and provides an easy way
         // to find base cases.
+        
         if( type.equals(BASE) && next.length() == 4 )
           {
           //System.out.println("\nbase = " + next);
@@ -539,9 +540,8 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
 
           if( pop.equals(symbol) )
             {
-            baseArray.add(derivation);
             Number weight = (Number)evaluate(next.fourth());
-            baseWeights.add(weight.doubleValue());
+            baseList.add(new WeightedRHS(derivation, weight.doubleValue()));
             }
           }
         // Most objects will have type RULE.
@@ -554,7 +554,7 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
           //System.out.println(" derivation before evaluation  " + derivation);
 
           // The first symbol can never be a variable, it will give the "name" of the
-          // rule.  All additional symbols will contain information.
+          // rhs.  All additional symbols will contain information.
           //System.out.println("pop = " + pop);
 
           if( pop instanceof Polylist && ((Polylist)pop).first() instanceof String )
@@ -607,9 +607,7 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
                   Double weight = ((Number)wt).doubleValue();
                   if( weight > 0 )
                     {
-                    ruleArray.add(derivation);
-                    ruleWeights.add(weight);
-                    //System.out.println("Adding with weight " + weight + " derivation " + derivation);
+                    ruleList.add(new WeightedRHS(derivation, weight));
                     }
                   }
                 else
@@ -629,9 +627,7 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
               Double weight = ((Number)wt).doubleValue();
               if( weight > 0 )
                 {
-                ruleArray.add(derivation);
-                ruleWeights.add(weight);
-                //System.out.println("Adding with weight " + weight + " derivation " + derivation);
+                ruleList.add(new WeightedRHS(derivation, weight));
                 }
               }
             else
@@ -644,47 +640,49 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
         search = search.rest();
         }
 
-      // Randomly choose a rule to follow.
-      double total = 0.0;
-
-      ArrayList<Polylist> rulesList;
-      ArrayList<Double> weightArray;
-
-      // If any base cases exist, we ignore all rules.
-      if( !baseWeights.isEmpty() )
-        {
-        rulesList = new ArrayList<Polylist>(baseArray);
-        weightArray = new ArrayList<Double>(baseWeights);
-        }
-      else
-        {
-        rulesList = new ArrayList<Polylist>(ruleArray);
-        weightArray = new ArrayList<Double>(ruleWeights);
-        }
-
-      //System.out.println("rules = " + rules);
-
-      // Sum up all the weights to use in a weighted average.	    
-      for( int i = 0; i < weightArray.size(); ++i )
-        {
-        total += weightArray.get(i);
-
-        // Generate a random number to find out which rule to use...
-        }
+      // If any base cases exist, use it and ignore all rules.
+      ArrayList<WeightedRHS> RHStoUse = baseList.isEmpty() ? ruleList : baseList;
+      
+      // Randomly choose an RHS to follow by summing all weights, then
+      // finding the RHS the normalized weight of which spans a random number.
+      
       double rand = Math.random();
       double offset = 0.0;
+      double total = 0.0;
 
-      int weightSize = weightArray.size();
-      // Loop through all rules.
-      for( int i = 0; i < weightSize; ++i )
+      // Compute the total for normalization.
+      for( WeightedRHS wr: RHStoUse )
         {
-        // If the random number falls between the range of the probability 
-        // for that rule, we choose it and break out of the loop.
-        if( rand >= offset && rand < offset + (weightArray.get(i) / total) )
+          total += wr.getWeight();
+        }
+
+      WeightedRHS chosen = null;
+
+      // Find the RHS to use.
+      for( WeightedRHS wr: RHStoUse )
+        {
+          double thisWeight = wr.getWeight();
+          double nextOffset = offset + thisWeight/total;
+          if( rand <= nextOffset )
+            {
+              chosen = wr;
+              //System.out.println("choosing " + wr);
+              break;
+            }
+
+        offset = nextOffset;
+        }
+
+      if( chosen == null )
+        {
+        //System.out.println("nothing chosen");
+        }
+      else
           {
-          Polylist rule = rulesList.get(i);
+          // Move rhs onto gen as a stack.
+          Polylist rhs = chosen.getRHS();
           
-          for( Polylist L = rule; L.nonEmpty(); L = L.rest() )
+          for( Polylist L = rhs; L.nonEmpty(); L = L.rest() )
             {
             Object ob = L.first();
             
@@ -699,10 +697,7 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
             //System.out.println("gen = " + gen);
             }
           return gen;
-          
           }
-        offset += weightArray.get(i) / total;
-        }
       
     return gen; // throw new RuleApplicationException("applyRules, no such rule for " + gen);
   }
@@ -740,8 +735,11 @@ public ArrayList<Object> getAllOfType(String t)
   return elements;
   }
 
+/**
+ * Get all the allowable terminal symbols, as specified in the grammar file.
+ */
 
-public ArrayList<String> getTerms()
+public ArrayList<String> getTerminals()
   {
   Collection terms = (Collection)getAllOfType(TERMINAL);
   if( terminals == null )
@@ -807,7 +805,7 @@ public int loadGrammar(String filename)
         }
       }
     rules = rules.reverse();
-    terminals = getTerms();
+    terminals = getTerminals();
     return 0;
     }
   catch( FileNotFoundException e )
@@ -1175,4 +1173,56 @@ private Polylist replace(String varName, Long value, Polylist toReplace)
   return toReturn.reverse();
   }
 
+/**
+ * Inner clas representation of rhs right-hand sides (RHS)
+ * with weights, for probabilistic evaluation.
+ */
+class WeightedRHS
+  {
+  Object rhs;
+  double weight;
+  
+  WeightedRHS(Object rhs, double weight)
+    {
+     this.rhs = rhs;
+     this.weight = weight;
+}
+
+  Polylist getRHS()
+    {
+      return rhs instanceof Polylist? (Polylist)rhs : Polylist.list(rhs);
+    }
+  
+  double getWeight()
+    {
+      return weight;
+    }
+  
+  @Override
+  public String toString()
+    {
+      StringBuilder buffer = new StringBuilder();
+      buffer.append("weight ");
+      buffer.append(weight);
+      if( rhs instanceof Polylist )
+        {
+          Polylist rhspl = (Polylist)rhs;
+          if( rhspl.isEmpty() )
+            {
+              buffer.append(" ()");
+            }
+          else
+            {
+              buffer.append(" (");
+              buffer.append(rhspl.first());
+              if( !rhspl.rest().isEmpty() )
+                {
+                  buffer.append(" ...");
+                }
+              buffer.append(")");
+            }         
+        }
+      return buffer.toString();
+    }
+  }
 }
