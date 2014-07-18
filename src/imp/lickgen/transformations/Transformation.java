@@ -93,7 +93,6 @@ public boolean setTransformation(Polylist trans)
         {
             enabled = true;
         }
-        enabled = true;
         return true;
     }
     catch( Exception e )
