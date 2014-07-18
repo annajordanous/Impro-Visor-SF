@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2014 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -181,6 +181,11 @@ public Polylist run(int startSlot, int numSlots, Notate myNotate)
             terminalString = Polylist.nil;
             
             Polylist gen = addStart(numSlots);
+            
+            if( gen == null )
+              {
+                return Polylist.nil;    // In case no grammar
+              }
             
             // gen is a list representing the undeveloped frontier of the derivation tree
             // symbols in gen are expanded one at a time, left-to-right
@@ -506,11 +511,10 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
       // Note that a start symbol can be a polylist.
       while( search.nonEmpty() )
         {
-        //System.out.println("search = " + search);
         // Next is the next rule to compare to
         Polylist next = (Polylist)search.first();
         String type = (String)next.first();
-
+        //System.out.println("\nnext = " + next);
 
         /*
          * RULEs and BASEs have the following S-expression format:
@@ -529,6 +533,7 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
         // to find base cases.
         if( type.equals(BASE) && next.length() == 4 )
           {
+          //System.out.println("\nbase = " + next);
           Object symbol = next.second();
           Polylist derivation = (Polylist)next.third();
 
@@ -542,6 +547,7 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
         // Most objects will have type RULE.
         else if( type.equals(RULE) && next.length() == 4 )
           {
+          //System.out.println("\nrule = " + next);
           Object symbol = next.second();
           Polylist derivation = (Polylist)next.third();
           
@@ -594,23 +600,46 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
               } // while
               
               if( valid )
-              {
-              ruleArray.add(derivation);
-              Number weight = (Number)evaluate(next.fourth());
-              ruleWeights.add(weight.doubleValue());
-              }
+                {
+                Object wt = evaluate(next.fourth());
+                if( wt instanceof Number )
+                  {
+                  Double weight = ((Number)wt).doubleValue();
+                  if( weight > 0 )
+                    {
+                    ruleArray.add(derivation);
+                    ruleWeights.add(weight);
+                    //System.out.println("Adding with weight " + weight + " derivation " + derivation);
+                    }
+                  }
+                else
+                  {
+                  ErrorLog.log(ErrorLog.WARNING, "Invalid weight in grammar rule: " + next);
+                  }
+                }
               }
             }
           else
             {
-            // This RHS element is not a string. Just carry it and hope for the best!
-            // It is probably an S-expression such as (slope M N ...)
-            ruleArray.add(derivation);
-            Number weight = (Number)evaluate(next.fourth());
-            ruleWeights.add(weight.doubleValue());
-
+            Object wt = evaluate(next.fourth());
+            if( wt instanceof Number )
+              {
+              // This RHS element is not a string. Just carry it and hope for the best!
+              // It is probably an S-expression such as (slope M N ...)
+              Double weight = ((Number)wt).doubleValue();
+              if( weight > 0 )
+                {
+                ruleArray.add(derivation);
+                ruleWeights.add(weight);
+                //System.out.println("Adding with weight " + weight + " derivation " + derivation);
+                }
+              }
+            else
+              {
+              ErrorLog.log(ErrorLog.WARNING, "Invalid weight in grammar rule: " + next);
+              }
             }
-
+          //Otherwise ignore, as it may be a parameter, etc.
           }
         search = search.rest();
         }
@@ -1020,8 +1049,7 @@ private Object evaluateBuiltin(Object arg1, Object arg2)
         
         String brickname = (String)arg2;
         
-        //Chord currentChord = chords.getCurrentChord(chordSlot);
-        
+        notate.ensureRoadmap();
         Block currentBlock = chords.getBlockAtSlot(chordSlot);
         
         if( currentBlock == null )

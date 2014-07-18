@@ -631,6 +631,11 @@ public void addFromRoadMapFrame(RoadMapFrame roadmap)
         return roadmap;
       }
     
+    public void setRoadmap(RoadMap roadmap)
+      {
+        this.roadmap = roadmap;
+      }
+    
     public Block getBlock(int index)
       {
         if( roadmap == null )
