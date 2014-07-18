@@ -211,9 +211,16 @@ public Polylist createTransform(MelodyPart outline, MelodyPart transformed, Chor
 
 private Polylist createSubstitution(MelodyPart outline, MelodyPart transformed, Chord chord)
 {
+    int numNotes = 0;
+    int slot = 0;
+    while(transformed.getCurrentNote(slot) != null)
+    {
+        numNotes++;
+        slot = transformed.getNextIndex(slot);
+    }
     Polylist substitution = Polylist.PolylistFromString(
             "substitution" + 
-            "(name generated-substitution)" + 
+            "(name " + chord.getFamily() + "-" + numNotes + "-notes)" + 
             "(type motif)" + 
             "(weight 1)");
     Polylist transformation = createTransformation(outline, transformed, chord);
@@ -224,6 +231,7 @@ private Polylist createSubstitution(MelodyPart outline, MelodyPart transformed, 
 
 private Polylist createTransformation(MelodyPart outline, MelodyPart transformed, Chord chord)
 {
+    
     Polylist transformation = Polylist.PolylistFromString(
             "transformation" + 
             "(description generated-transformation)" + 

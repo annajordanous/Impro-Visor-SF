@@ -849,7 +849,7 @@ public Object pitch_addition(Polylist evaledArgs)
     // Choose the first chord of the set of notes incase neither args are notes
     // if the first arg is not a note
     
-    if(firstArg.toString().matches("[b#]?(-?)(\\d|(1[0123]))"))
+    if(firstArg.toString().matches("[b#]?(-?)(\\d)+"))
     {
         if(secondArg instanceof NoteChordPair)
         {
@@ -868,7 +868,7 @@ public Object pitch_addition(Polylist evaledArgs)
     }
     else if(firstArg instanceof NoteChordPair)
     {
-        if(secondArg.toString().matches("[b#]?(-?)(\\d|(1[0123]))"))
+        if(secondArg.toString().matches("[b#]?(-?)(\\d)+"))
         {
             Note firstNote = ((NoteChordPair)firstArg).note.copy();
             Chord chord = ((NoteChordPair)firstArg).chord;
@@ -906,7 +906,7 @@ public Object pitch_addition(Polylist evaledArgs)
     // Choose the first chord of the set of notes incase neither args are notes
     // if the first arg is not a note
     
-    if(firstArg.toString().matches("[b#]?(-?)(\\d|(1[0123]))"))
+    if(firstArg.toString().matches("[b#]?(-?)(\\d)+"))
     {
         if(secondArg instanceof NoteChordPair)
         {
@@ -966,7 +966,7 @@ public Object pitch_addition(Polylist evaledArgs)
     else if(firstArg instanceof NoteChordPair)
     {
         
-        if(secondArg.toString().matches("[b#]?(-?)(\\d|(1[0123]))"))
+        if(secondArg.toString().matches("[b#]?(-?)(\\d)+"))
         {
             Note firstNote = ((NoteChordPair)firstArg).note.copy();
             Chord chord = ((NoteChordPair)firstArg).chord;
@@ -1021,7 +1021,7 @@ public Boolean pitch_gr(Polylist evaledArgs)
     String subtraction = pitchSub.toString();
     if(subtraction.indexOf("-") != -1)
         return false;
-    else if(subtraction.indexOf("1") != -1)
+    else if(subtraction.charAt(subtraction.length()-1) == '1')
     {
         char firstChar = subtraction.charAt(0);
         if(firstChar == '#')
@@ -1044,7 +1044,7 @@ public Boolean pitch_gr_eq(Polylist evaledArgs)
     String subtraction = pitchSub.toString();
     if(subtraction.indexOf("-") != -1)
         return false;
-    else if(subtraction.indexOf("1") != -1)
+    else if(subtraction.charAt(subtraction.length()-1) == '1')
     {
         char firstChar = subtraction.charAt(0);
         if(firstChar == 'b')
@@ -1066,7 +1066,7 @@ public Boolean pitch_lt(Polylist evaledArgs)
     String subtraction = pitchSub.toString();
     if(subtraction.indexOf("-") != -1)
         return true;
-    else if(subtraction.indexOf("1") != -1)
+    else if(subtraction.charAt(subtraction.length()-1) == '1')
     {
         char firstChar = subtraction.charAt(0);
         if(firstChar == 'b')
@@ -1089,7 +1089,7 @@ public Boolean pitch_lt_eq(Polylist evaledArgs)
     String subtraction = pitchSub.toString();
     if(subtraction.indexOf("-") != -1)
         return true;
-    else if(subtraction.indexOf("1") != -1)
+    else if(subtraction.charAt(subtraction.length()-1) == '1')
     {
         char firstChar = subtraction.charAt(0);
         if(firstChar == '#')
@@ -1180,8 +1180,9 @@ public NoteChordPair transpose_diatonic(NoteChordPair pair, String relPitch)
     int number = 0;
     if(origNumber<0)
     {
-        shiftOctaves += (origNumber / 7);
+        shiftOctaves += ((origNumber / 7) - 1);
         number = origNumber % 7;
+        number += 8;
     }
     else
     {
@@ -1262,7 +1263,36 @@ public String addRelPitch(String num1, String num2)
     String returnString;
     if(addTotal >= 0)
         addTotal ++;
-    returnString = augment1 + augment2 + addTotal;
+    int flats = 0;
+    int sharps = 0;
+    for(char c1 : augment1.toCharArray())
+    {
+        if(c1 == 'b')
+            flats++;
+        else if(c1 == '#')
+            sharps++;
+    }
+    for(char c2 : augment2.toCharArray())
+    {
+        if(c2 == 'b')
+            flats++;
+        else if(c2 == '#')
+            sharps++;
+    }
+    int newFlats = flats - sharps;
+    int newSharps = sharps - flats;
+    String augments = "";
+    while(newFlats > 0)
+    {
+        augments+= "b";
+        newFlats--;
+    }
+    while(newSharps > 0)
+    {
+        augments+= "#";
+        newSharps--;
+    }
+    returnString = augments + addTotal;
     return returnString;
 }
 public String modRelPitch(String pitch)

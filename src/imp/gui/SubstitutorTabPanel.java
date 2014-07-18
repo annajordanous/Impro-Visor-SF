@@ -144,6 +144,7 @@ public class SubstitutorTabPanel extends javax.swing.JPanel {
         fillTransformationsList();
         applySubstitutionsButton.setEnabled(true);
         saveSubstitutionsButton.setEnabled(true);
+        cleanTransformButton.setEnabled(true);
     }
 
     /**
@@ -226,7 +227,7 @@ public class SubstitutorTabPanel extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(4, 0, 4, 0);
         selectSubstitutionsButtonsPanel.add(openSubstitutionsFileButton, gridBagConstraints);
 
-        saveSubstitutionsButton.setText("Save Current Substitutions");
+        saveSubstitutionsButton.setText("Save Current Transform");
         saveSubstitutionsButton.setToolTipText("Save the substitutions below into a transform file");
         saveSubstitutionsButton.setEnabled(false);
         saveSubstitutionsButton.setMaximumSize(new java.awt.Dimension(10000, 23));
@@ -331,6 +332,7 @@ public class SubstitutorTabPanel extends javax.swing.JPanel {
         useSubstitutionsButtonsPanel.add(reapplySubstitutionsButton, gridBagConstraints);
 
         cleanTransformButton.setText("Clean Transform File");
+        cleanTransformButton.setToolTipText("remove duplicate substitutions but add their weights together");
         cleanTransformButton.setEnabled(false);
         cleanTransformButton.setMaximumSize(new java.awt.Dimension(10000, 23));
         cleanTransformButton.addActionListener(new java.awt.event.ActionListener() {
@@ -946,6 +948,7 @@ public class SubstitutorTabPanel extends javax.swing.JPanel {
 
         applySubstitutionsButton.setEnabled(true);
         saveSubstitutionsButton.setEnabled(true);
+        cleanTransformButton.setEnabled(true);
     }
     public void applySubstitutions()
     {

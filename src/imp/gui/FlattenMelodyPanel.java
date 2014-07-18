@@ -71,12 +71,14 @@ public class FlattenMelodyPanel extends javax.swing.JPanel {
         showTransformButton = new javax.swing.JButton();
         flattenByChord2Buton = new javax.swing.JButton();
         setTransformButton = new javax.swing.JButton();
+        replaceWithOriginalButton = new javax.swing.JButton();
 
         setLayout(new java.awt.GridBagLayout());
 
         jPanel1.setLayout(new java.awt.GridBagLayout());
 
-        flattenByChord16Buton.setText("Flatten Melody by 16th");
+        flattenByChord16Buton.setText("Flatten Melody by 16th note");
+        flattenByChord16Buton.setToolTipText("flatten with a resolution of 16th note");
         flattenByChord16Buton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 flattenByChord16ButonActionPerformed(evt);
@@ -84,11 +86,12 @@ public class FlattenMelodyPanel extends javax.swing.JPanel {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.insets = new java.awt.Insets(4, 0, 0, 0);
         jPanel1.add(flattenByChord16Buton, gridBagConstraints);
 
-        flattenByChord8Buton.setText("Flatten Melody  by 8th");
+        flattenByChord8Buton.setText("Flatten Melody  by 8th note");
+        flattenByChord8Buton.setToolTipText("flatten with a resolution of 8th note");
         flattenByChord8Buton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 flattenByChord8ButonActionPerformed(evt);
@@ -96,11 +99,12 @@ public class FlattenMelodyPanel extends javax.swing.JPanel {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.insets = new java.awt.Insets(4, 0, 0, 0);
         jPanel1.add(flattenByChord8Buton, gridBagConstraints);
 
-        flattenByChord4Buton.setText("Flatten Melody by 4th");
+        flattenByChord4Buton.setText("Flatten Melody by quarter note");
+        flattenByChord4Buton.setToolTipText("flatten with a resolution of quarter note");
         flattenByChord4Buton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 flattenByChord4ButonActionPerformed(evt);
@@ -108,11 +112,12 @@ public class FlattenMelodyPanel extends javax.swing.JPanel {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.insets = new java.awt.Insets(4, 0, 0, 0);
         jPanel1.add(flattenByChord4Buton, gridBagConstraints);
 
         subFlatFromOrigButton.setText("Subtract Flattening from Original");
+        subFlatFromOrigButton.setToolTipText("show just the transformations in the leadsheet");
         subFlatFromOrigButton.setEnabled(false);
         subFlatFromOrigButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -121,11 +126,12 @@ public class FlattenMelodyPanel extends javax.swing.JPanel {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 6;
         gridBagConstraints.insets = new java.awt.Insets(4, 0, 0, 0);
         jPanel1.add(subFlatFromOrigButton, gridBagConstraints);
 
         saveOriginalButton.setText("Save Original");
+        saveOriginalButton.setToolTipText("Save the currently selected melody");
         saveOriginalButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveOriginalButtonActionPerformed(evt);
@@ -134,6 +140,7 @@ public class FlattenMelodyPanel extends javax.swing.JPanel {
         jPanel1.add(saveOriginalButton, new java.awt.GridBagConstraints());
 
         createTransformButton.setText("Create Transform from Saved and Flattened Melodies");
+        createTransformButton.setToolTipText("create a transform file based on transforming the flattened melody into the original melody");
         createTransformButton.setEnabled(false);
         createTransformButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -142,11 +149,12 @@ public class FlattenMelodyPanel extends javax.swing.JPanel {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 6;
+        gridBagConstraints.gridy = 7;
         gridBagConstraints.insets = new java.awt.Insets(4, 0, 0, 0);
         jPanel1.add(createTransformButton, gridBagConstraints);
 
         showTransformButton.setText("Show Generated Transform");
+        showTransformButton.setToolTipText("show the transform file generated from above");
         showTransformButton.setEnabled(false);
         showTransformButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -155,11 +163,12 @@ public class FlattenMelodyPanel extends javax.swing.JPanel {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 7;
+        gridBagConstraints.gridy = 8;
         gridBagConstraints.insets = new java.awt.Insets(4, 0, 0, 0);
         jPanel1.add(showTransformButton, gridBagConstraints);
 
-        flattenByChord2Buton.setText("Flatten Melody by 2nd");
+        flattenByChord2Buton.setText("Flatten Melody by half note");
+        flattenByChord2Buton.setToolTipText("flatten with a resolution of half note");
         flattenByChord2Buton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 flattenByChord2ButonActionPerformed(evt);
@@ -167,11 +176,12 @@ public class FlattenMelodyPanel extends javax.swing.JPanel {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.insets = new java.awt.Insets(4, 0, 0, 0);
         jPanel1.add(flattenByChord2Buton, gridBagConstraints);
 
-        setTransformButton.setText("Put Transform into Sub Tab");
+        setTransformButton.setText("Put Transform into Transform tab");
+        setTransformButton.setToolTipText("put the transform generated above into the transform tab");
         setTransformButton.setEnabled(false);
         setTransformButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -180,8 +190,23 @@ public class FlattenMelodyPanel extends javax.swing.JPanel {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 8;
+        gridBagConstraints.gridy = 9;
+        gridBagConstraints.insets = new java.awt.Insets(4, 0, 0, 0);
         jPanel1.add(setTransformButton, gridBagConstraints);
+
+        replaceWithOriginalButton.setText("Replace Current Melody with Original");
+        replaceWithOriginalButton.setToolTipText("replace the current melody with the saved melody");
+        replaceWithOriginalButton.setEnabled(false);
+        replaceWithOriginalButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                replaceWithOriginalButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.insets = new java.awt.Insets(4, 0, 0, 0);
+        jPanel1.add(replaceWithOriginalButton, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -206,8 +231,8 @@ public class FlattenMelodyPanel extends javax.swing.JPanel {
         original = notate.getCurrentMelodyPart().copy();
         notate.repaint();
         
+        replaceWithOriginalButton.setEnabled(true);
         subFlatFromOrigButton.setEnabled(true);
-        
         createTransformButton.setEnabled(true);
     }//GEN-LAST:event_saveOriginalButtonActionPerformed
 
@@ -235,7 +260,6 @@ public class FlattenMelodyPanel extends javax.swing.JPanel {
         transform = new Transform(lickgen, transformList.toStringSansParens());
         showTransformButton.setEnabled(true);
         setTransformButton.setEnabled(true);
-        showTransform();
     }//GEN-LAST:event_createTransformButtonActionPerformed
 
     private void showTransformButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showTransformButtonActionPerformed
@@ -251,6 +275,13 @@ public class FlattenMelodyPanel extends javax.swing.JPanel {
         subPanel.setTransform(transform);
     }//GEN-LAST:event_setTransformButtonActionPerformed
 
+    private void replaceWithOriginalButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_replaceWithOriginalButtonActionPerformed
+        notate.adjustSelection();
+        int start = notate.getCurrentSelectionStart();
+        notate.getCurrentMelodyPart().pasteOver(original, start);
+        notate.repaint();
+    }//GEN-LAST:event_replaceWithOriginalButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton createTransformButton;
     private javax.swing.JButton flattenByChord16Buton;
@@ -258,6 +289,7 @@ public class FlattenMelodyPanel extends javax.swing.JPanel {
     private javax.swing.JButton flattenByChord4Buton;
     private javax.swing.JButton flattenByChord8Buton;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JButton replaceWithOriginalButton;
     private javax.swing.JButton saveOriginalButton;
     private javax.swing.JButton setTransformButton;
     private javax.swing.JButton showTransformButton;

@@ -2670,7 +2670,7 @@ public static Note makeRelativeNote(Object ob, Chord chord)
                         case  2:  pitch+=2;  break;
                         case  3:  pitch+=3;  break;
                         case  4:  pitch+=5;  break;
-                        case  5:  pitch+=6;  break;
+                        case  5:  pitch+=7;  break;
                         case  6:  pitch+=9;  break;
                         case  7:  pitch+=10; break;
                         case  8:  pitch+=12; break;

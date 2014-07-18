@@ -75,7 +75,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="saveSubstitutionsButton">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Save Current Substitutions"/>
+            <Property name="text" type="java.lang.String" value="Save Current Transform"/>
             <Property name="toolTipText" type="java.lang.String" value="Save the substitutions below into a transform file"/>
             <Property name="enabled" type="boolean" value="false"/>
             <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -216,6 +216,7 @@
         <Component class="javax.swing.JButton" name="cleanTransformButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Clean Transform File"/>
+            <Property name="toolTipText" type="java.lang.String" value="remove duplicate substitutions but add their weights together"/>
             <Property name="enabled" type="boolean" value="false"/>
             <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[10000, 23]"/>
