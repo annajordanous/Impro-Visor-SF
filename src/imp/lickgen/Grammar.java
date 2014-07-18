@@ -187,7 +187,7 @@ public Polylist run(int startSlot, int numSlots, Notate myNotate)
                 return Polylist.nil;    // In case no grammar
               }
             
-            // gen is a list representing the undeveloped frontier of the derivation tree
+            // gen is a list representing the undeveloped frontier of the rhs tree
             // symbols in gen are expanded one at a time, left-to-right
             // As non-terminal are expanded, the RHS replaces the non-terminal
             // on the left of gen.
@@ -195,24 +195,16 @@ public Polylist run(int startSlot, int numSlots, Notate myNotate)
             // accumulator, and then appended to terminalString.
 
             // So the combination of terminalString and gen represent the total
-            // frontier of the derivation tree.
+            // frontier of the rhs tree.
             // The variable terminalString is modified implicitly within applyRules.
 
-            // This should be a do-while, perhaps.
             while( gen.nonEmpty() )
               {
-                // System.out.println("gen = " + gen);  // Shows derivation.
+                // System.out.println("gen = " + gen);  // Shows rhs.
                 gen = applyRules(gen);
 
-                if( gen == null )
-                  {
-                  throw new RuleApplicationException();
-                  //return null;
-                  }
-                
                 accumulateTerminals();
               }
-            accumulateTerminals();
             return terminalString;
           }
         catch( RuleApplicationException e )
@@ -230,9 +222,7 @@ public Polylist run(int startSlot, int numSlots, Notate myNotate)
 
 
 /**
- * Take the first character off the gen list, and apply the given rules to it.
- * Terminals are added to terminalString as a side-effect.
- * The return value is the rest of the gen list.
+ * Add the Start Symbol to list gen in order to start the grammar expansion.
  */
 
 public Polylist addStart(int numSlots)
@@ -280,6 +270,95 @@ public Polylist addStart(int numSlots)
   // If it didn't find a start symbol in the file, abort.
   ErrorLog.log(ErrorLog.SEVERE, "No start symbol found.  Abort.");
   return null;
+  }
+
+/**
+ * Returns true if ob is considered a terminal in the grammar.
+ * @param ob
+ * @return 
+ */
+public boolean isTerminal(Object ob)
+  {
+    return isScaleDegree(ob) 
+        || isSlope(ob) 
+        || isTriadic(ob) 
+        || isTerminalSpecifiedInFile(ob) 
+        || isWrappedTerminal(ob);
+  }
+
+public boolean isTerminalSpecifiedInFile(Object ob)
+  {
+    if( terminals.contains(ob) )
+      {
+        return true;
+      }
+    return false;
+  }
+
+public boolean isWrappedTerminal(Object ob)
+  {
+    if( !(ob instanceof Polylist) )
+      {
+        return false;
+      }
+    
+    if( isScaleDegree(ob) || isSlope(ob) || isTriadic(ob) )
+      {
+        return false;
+      }
+    
+    Polylist oblist = (Polylist) ob;
+    
+    if( oblist.isEmpty() )
+      {
+        return false;
+      }
+    
+    return isTerminalSpecifiedInFile(oblist.first());
+  }
+
+public static boolean isSlope(Object ob)
+  {
+    if( !(ob instanceof Polylist) )
+      {
+        return false;
+      }
+    
+    Polylist oblist = (Polylist)ob;
+    
+    if( oblist.length() < 4 )
+      {
+        return false;
+      }
+    
+    if( !oblist.first().equals("slope") )
+      {
+        return false;
+      }
+    
+    return true;
+  }
+
+public static boolean isTriadic(Object ob)
+  {
+    if( !(ob instanceof Polylist) )
+      {
+        return false;
+      }
+    
+    Polylist oblist = (Polylist)ob;
+    
+    if( oblist.length() != 3 )
+      {
+        return false;
+      }
+    
+    if( !oblist.first().equals("triadic") )
+      {
+        return false;
+      }
+    
+    return true;
   }
 
 public static boolean isScaleDegree(Object ob)
@@ -377,315 +456,241 @@ public static int getDurationAbstractMelody(Polylist L)
   }
 
 
-public boolean isTerminal(Object ob)
-  {
-    if( terminals.contains(ob) )
-      {
-        return true;
-      }
-    return false;
-  }
-
-public boolean isWrappedTerminal(Object ob)
-  {
-    if( !(ob instanceof Polylist) )
-      {
-        return false;
-      }
-    
-    if( isScaleDegree(ob) || isSlope(ob) || isTriadic(ob) )
-      {
-        return false;
-      }
-    
-    Polylist oblist = (Polylist) ob;
-    
-    if( oblist.isEmpty() )
-      {
-        return false;
-      }
-    
-    return isTerminal(oblist.first());
-  }
-
-public static boolean isSlope(Object ob)
-  {
-    if( !(ob instanceof Polylist) )
-      {
-        return false;
-      }
-    
-    Polylist oblist = (Polylist)ob;
-    
-    if( oblist.length() < 4 )
-      {
-        return false;
-      }
-    
-    if( !oblist.first().equals("slope") )
-      {
-        return false;
-      }
-    
-    return true;
-  }
-
-public static boolean isTriadic(Object ob)
-  {
-    if( !(ob instanceof Polylist) )
-      {
-        return false;
-      }
-    
-    Polylist oblist = (Polylist)ob;
-    
-    if( oblist.length() != 3 )
-      {
-        return false;
-      }
-    
-    if( !oblist.first().equals("triadic") )
-      {
-        return false;
-      }
-    
-    return true;
-  }
 
 
-// Take the first character off the string, and apply the given rules to it.
-// Any lower case values are treated as terminals and outputted.
+/**
+ * Pop tokens off the gen stack.
+ * Any terminal tokens are pushed onto accumulator.
+ * Rules are applied to non-terminals.
+ */
 
 public Polylist applyRules(Polylist gen) throws RuleApplicationException
   {
-  // We need to be given a non-empty polylist.
-  if( gen.isEmpty() )
-    {
-    ErrorLog.log(ErrorLog.SEVERE, "applyRules assed empty polylist.  Abort.");
-    return null;
-    }
- 
-     Object pop = gen.first();
+    // We need to be given a non-empty polylist.
+    if( gen.isEmpty() )
+      {
+        ErrorLog.log(ErrorLog.SEVERE, "applyRules passed empty polylist.  Abort.");
+        return null;
+      }
 
-     gen = gen.rest();
+    Object pop = gen.first();
 
-      // Accumulate any terminal values.
-      // If the user has provided us with a list of terminals, use those; otherwise,
-      // we assume that terminal values are strings that begin with a lowercase letter.
+    gen = gen.rest();
 
-     accumulator = Polylist.nil;
-      
-      while( isScaleDegree(pop) || isSlope(pop) || isTriadic(pop) || isTerminal(pop) || isWrappedTerminal(pop))
-        {
-          if( isWrappedTerminal(pop) )
-            {
-              accumulator = accumulator.cons(((Polylist)pop).first());
-            }
-          else
-            {
-            accumulator = accumulator.cons(pop);
-            }
- 
-           if( gen.isEmpty() )
-            {
-              accumulateTerminals();
-              return gen;
-            }
-           
-          pop = gen.first();
-          gen = gen.rest();
-        }
+    // Accumulate any terminal values.
 
-      accumulateTerminals();
-  
-      // All applicable rhs RHS's (and their corresponding weights)
-      // get loaded into these lists, to be selected from at random.
+    accumulator = Polylist.nil;
 
-      ArrayList<WeightedRHS> ruleList = new ArrayList<WeightedRHS>();
-      ArrayList<WeightedRHS> baseList = new ArrayList<WeightedRHS>();
-      
-      Polylist search = rules;
-
-      // Search through and find all rules that apply to the given start symbol.
-      // Note that a start symbol can be a polylist.
-      
-      while( search.nonEmpty() )
-        {
-        // Next is the next rhs to compare to
-        Polylist next = (Polylist)search.first();
-        String type = (String)next.first();
-        //System.out.println("\nnext = " + next);
-
-        /*
-         * RULEs and BASEs have the following S-expression format:
-         * (<keyword> (<LHS symbol>) (<RHS>) weight)
-         * <keyword> can be RULE or BASE
-         * <LHS symbol> can be a string or a polylist of strings
-         * <RHS> is a polylist of symbols (or if it's a RULE, some expressions
-         *	to evaluate).
-         * <weight> is a double expressing how "important" the rhs is.  More important
-         *	rules will be chosen more often than less important ones.
-         */
-
-        // The BASE keyword stops all evalution and variable substitution.
-        // If a symbol matches both a RULE and a BASE, it will always choose the BASE.
-        // This basically short-circuits any computation and provides an easy way
-        // to find base cases.
-        
-        if( type.equals(BASE) && next.length() == 4 )
+    while( isTerminal(pop) )
+      {
+        if( isWrappedTerminal(pop) )
           {
+            accumulator = accumulator.cons(((Polylist) pop).first());
+          }
+        else
+          {
+            accumulator = accumulator.cons(pop);
+          }
+
+        if( gen.isEmpty() )
+          {
+            accumulateTerminals();
+            return gen;
+          }
+
+        pop = gen.first();
+        gen = gen.rest();
+      }
+
+    accumulateTerminals();
+
+    // All applicable rhs RHS's (and their corresponding weights)
+    // get loaded into these lists, to be selected from at random.
+
+    ArrayList<WeightedRHS> ruleList = new ArrayList<WeightedRHS>();
+    ArrayList<WeightedRHS> baseList = new ArrayList<WeightedRHS>();
+
+    Polylist search = rules;
+
+    // Search through and find all rules that apply to the non-terminal pop.
+ 
+    while( search.nonEmpty() )
+      {
+      // Next is the next rule to which to compare.
+      Polylist next = (Polylist) search.first();
+      String type = (String) next.first();
+
+      /*
+       * RULEs and BASEs have the following S-expression format:
+       * (<keyword> (<LHS symbol>) (<RHS>) weight)
+       * <keyword> can be RULE or BASE
+       * <LHS symbol> can be a string or a polylist of strings
+       * <RHS> is a polylist of symbols (or if it's a RULE, some expressions
+       *	to evaluate).
+       * <weight> is a double expressing how "important" the rhs is.  More important
+       *	rules will be chosen more often than less important ones.
+       */
+
+      // The BASE keyword stops all evalution and variable substitution.
+      // If a symbol matches both a RULE and a BASE, it will always choose the BASE.
+      // This basically short-circuits any computation and provides an easy way
+      // to find base cases.
+
+      if( type.equals(BASE) && next.length() == 4 )
+        {
           //System.out.println("\nbase = " + next);
           Object symbol = next.second();
-          Polylist derivation = (Polylist)next.third();
+          Polylist rhs = (Polylist) next.third();
 
           if( pop.equals(symbol) )
             {
-            Number weight = (Number)evaluate(next.fourth());
-            baseList.add(new WeightedRHS(derivation, weight.doubleValue()));
+              Number weight = (Number) evaluate(next.fourth());
+              baseList.add(new WeightedRHS(rhs, weight.doubleValue()));
             }
-          }
-        // Most objects will have type RULE.
-        else if( type.equals(RULE) && next.length() == 4 )
-          {
+        }
+      // Most objects will have type RULE.
+      else if( type.equals(RULE) && next.length() == 4 )
+        {
           //System.out.println("\nrule = " + next);
           Object symbol = next.second();
-          Polylist derivation = (Polylist)next.third();
-          
-          //System.out.println(" derivation before evaluation  " + derivation);
+          Polylist rhs = (Polylist) next.third();
+
+          //System.out.println(" rhs before evaluation  " + rhs);
 
           // The first symbol can never be a variable, it will give the "name" of the
           // rhs.  All additional symbols will contain information.
           //System.out.println("pop = " + pop);
 
-          if( pop instanceof Polylist && ((Polylist)pop).first() instanceof String )
+          if( pop instanceof Polylist
+                  && ((Polylist) pop).first() instanceof String )
             {
-            if( ((String)((Polylist)pop).first()).equals(((Polylist)symbol).first()) )
-              {
-              // Fill in variables with their given numeric values.
-              derivation = setVars((Polylist)pop, (Polylist)symbol, derivation);
-
-              //System.out.println(" derivation after setVars " + derivation);
-              
-              // Evaluate any expressions that need to be evaluated.
-              derivation = (Polylist)evaluate(derivation);
-              
-              //System.out.println(" derivation after evaluation " + derivation);
-
-              // Check for negative arguments in RHS,
-              // In which case don't use RHS
-              boolean valid = true;
-              PolylistEnum L = derivation.elements();
-              while( L.hasMoreElements() )
-              {
-                Object ob = L.nextElement();
-                if( ob instanceof Polylist )
+              if( ((String) ((Polylist) pop).first())
+                      .equals(((Polylist) symbol).first()) )
                 {
-                  Polylist P = (Polylist)ob;
-                  
-                  if( P.length() == 2 && P.first().equals(startSymbol) ) 
-                  {
-                  // We found the start symbol on the RHS.
-                  // Only pass it if argument is non-negative.
-                  // FIX: Replace this with a more sound mechanism.
-                  
-                    Object arg = P.second();
-                    if( arg instanceof Number && ((Number)arg).intValue() < 0 )
+                  // Fill in variables with their given numeric values.
+                  rhs = setVars((Polylist) pop, (Polylist) symbol, rhs);
+
+                  //System.out.println(" rhs after setVars " + rhs);
+
+                  // Evaluate any expressions that need to be evaluated.
+                  rhs = (Polylist) evaluate(rhs);
+
+                  //System.out.println(" rhs after evaluation " + rhs);
+
+                  // Check for negative arguments in RHS,
+                  // In which case don't use RHS
+                  boolean valid = true;
+                  PolylistEnum L = rhs.elements();
+                  while( L.hasMoreElements() )
                     {
-                      valid = false;
-                      //System.out.println("abandoning: " + derivation);
-                      break;
-                    }
-                  }
-                }
-              } // while
-              
-              if( valid )
-                {
-                Object wt = evaluate(next.fourth());
-                if( wt instanceof Number )
-                  {
-                  Double weight = ((Number)wt).doubleValue();
-                  if( weight > 0 )
+                      Object ob = L.nextElement();
+                      if( ob instanceof Polylist )
+                        {
+                          Polylist P = (Polylist) ob;
+
+                          if( P.length() == 2 && P.first().equals(startSymbol) )
+                            {
+                              // We found the start symbol on the RHS.
+                              // Only pass it if argument is non-negative.
+                              // FIX: Replace this with a more sound mechanism.
+
+                              Object arg = P.second();
+                              if( arg instanceof Number && ((Number) arg).intValue() < 0 )
+                                {
+                                  valid = false;
+                                  //System.out.println("abandoning: " + rhs);
+                                  break;
+                                }
+                            }
+                        }
+                    } // while
+
+                  if( valid )
                     {
-                    ruleList.add(new WeightedRHS(derivation, weight));
+                      Object wt = evaluate(next.fourth());
+                      if( wt instanceof Number )
+                        {
+                          Double weight = ((Number) wt).doubleValue();
+                          if( weight > 0 )
+                            {
+                              ruleList.add(new WeightedRHS(rhs, weight));
+                            }
+                        }
+                      else
+                        {
+                          ErrorLog.log(ErrorLog.WARNING, "Invalid weight in grammar rule: " + next);
+                        }
                     }
-                  }
-                else
-                  {
-                  ErrorLog.log(ErrorLog.WARNING, "Invalid weight in grammar rule: " + next);
-                  }
                 }
-              }
             }
           else
             {
-            Object wt = evaluate(next.fourth());
-            if( wt instanceof Number )
-              {
-              // This RHS element is not a string. Just carry it and hope for the best!
-              // It is probably an S-expression such as (slope M N ...)
-              Double weight = ((Number)wt).doubleValue();
-              if( weight > 0 )
+              Object wt = evaluate(next.fourth());
+              if( wt instanceof Number )
                 {
-                ruleList.add(new WeightedRHS(derivation, weight));
+                  // This RHS element is not a string. Just carry it and hope for the best!
+                  // It is probably an S-expression such as (slope M N ...)
+                  Double weight = ((Number) wt).doubleValue();
+                  if( weight > 0 )
+                    {
+                      ruleList.add(new WeightedRHS(rhs, weight));
+                    }
                 }
-              }
-            else
-              {
-              ErrorLog.log(ErrorLog.WARNING, "Invalid weight in grammar rule: " + next);
-              }
+              else
+                {
+                  ErrorLog.log(ErrorLog.WARNING, "Invalid weight in grammar rule: " + next);
+                }
             }
           //Otherwise ignore, as it may be a parameter, etc.
-          }
-        search = search.rest();
         }
+      search = search.rest();
+    }
 
-      // If any base cases exist, use it and ignore all rules.
-      ArrayList<WeightedRHS> RHStoUse = baseList.isEmpty() ? ruleList : baseList;
-      
-      // Randomly choose an RHS to follow by summing all weights, then
-      // finding the RHS the normalized weight of which spans a random number.
-      
-      double rand = Math.random();
-      double offset = 0.0;
-      double total = 0.0;
+    // If any base case exists, use it and ignore all rules.
+    ArrayList<WeightedRHS> RHStoUse = baseList.isEmpty() ? ruleList : baseList;
 
-      // Compute the total for normalization.
-      for( WeightedRHS wr: RHStoUse )
-        {
-          total += wr.getWeight();
-        }
+    // Randomly choose an RHS to follow by summing all weights, then
+    // finding the RHS the normalized weight of which spans a random number.
 
-      WeightedRHS chosen = null;
+    double rand = Math.random();
+    double offset = 0.0;
+    double total = 0.0;
 
-      // Find the RHS to use.
-      for( WeightedRHS wr: RHStoUse )
-        {
-          double thisWeight = wr.getWeight();
-          double nextOffset = offset + thisWeight/total;
-          if( rand <= nextOffset )
-            {
-              chosen = wr;
-              //System.out.println("choosing " + wr);
-              break;
-            }
+    // Compute the total for normalization.
+    for( WeightedRHS wr : RHStoUse )
+      {
+        total += wr.getWeight();
+      }
 
-        offset = nextOffset;
-        }
+    WeightedRHS chosen = null;
 
-      if( chosen == null )
-        {
-        //System.out.println("nothing chosen");
-        }
-      else
+    // Find the RHS to use.
+    for( WeightedRHS wr : RHStoUse )
+      {
+        double thisWeight = wr.getWeight();
+        double nextOffset = offset + thisWeight / total;
+        if( rand <= nextOffset )
           {
-          // Move rhs onto gen as a stack.
-          Polylist rhs = chosen.getRHS();
-          
-          for( Polylist L = rhs; L.nonEmpty(); L = L.rest() )
-            {
+            chosen = wr;
+            //System.out.println("choosing " + wr);
+            break;
+          }
+        offset = nextOffset;
+      }
+
+    if( chosen == null )
+      {
+        //System.out.println("nothing chosen");
+      }
+    else
+      {
+        // Move rhs onto gen as a stack.
+        Polylist rhs = chosen.getRHS();
+
+        for( Polylist L = rhs; L.nonEmpty(); L = L.rest() )
+          {
             Object ob = L.first();
-            
+
             if( ob instanceof Polylist )
               {
                 gen = gen.cons(ob);
@@ -695,15 +700,17 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
                 gen = gen.cons(Polylist.list(ob));
               }
             //System.out.println("gen = " + gen);
-            }
-          return gen;
           }
-      
+        return gen;
+      }
+
     return gen; // throw new RuleApplicationException("applyRules, no such rule for " + gen);
   }
 
-// Load in any terminal values specified in the user file.  Returns a ArrayList containing
-// all terminal values.
+/**
+ * Load in any terminal values specified in the user file.  Returns a ArrayList containing
+ * all terminal values.
+ */
 
 public ArrayList<Object> getAllOfType(String t)
   {
@@ -843,7 +850,7 @@ public int saveGrammar(String filename)
 public void clear()
   {
   rules = Polylist.nil;
-  terminalString = Polylist.nil;;
+  terminalString = Polylist.nil;
   }
 
 // Set all instances of variables in toSet corresponding value in getValsFrom.
@@ -1174,7 +1181,7 @@ private Polylist replace(String varName, Long value, Polylist toReplace)
   }
 
 /**
- * Inner clas representation of rhs right-hand sides (RHS)
+ * Inner class representation of rhs right-hand sides (RHS)
  * with weights, for probabilistic evaluation.
  */
 class WeightedRHS
