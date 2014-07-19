@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2014 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -77,6 +77,9 @@ public interface Constants {
     public static final int ONETWENTIETH          = 4;                   //   4
     public static final int SIXTIETH              = 8;                   //   8
 
+    //added July 2014
+    public static final int SIXTYFOURTH_TRIPLET = WHOLE/QUARTER_QUINTUPLET; // 5
+   
   /**
    * Note: These must be in ascending order for binary search to work.
    * What about double dotted?
@@ -160,7 +163,31 @@ public interface Constants {
     HALF_TRIPLET               // 160
    };
   
-
+  static int knownResolutionValue [] =
+    {
+    WHOLE,                      //  480
+    
+    DOTTED_HALF,                //  360
+    HALF,                       //  240
+    HALF_TRIPLET,               //  160
+    
+    QUARTER,                    //  120
+    QUARTER_TRIPLET,            //  80
+    
+    EIGHTH,                     //  60
+    EIGHTH_TRIPLET,             //  40
+    
+    SIXTEENTH,                  //  30
+    SIXTEENTH_TRIPLET,          //  20
+    
+    THIRTYSECOND,               //  15
+    THIRTYSECOND_TRIPLET,       //  10
+    
+    SIXTYFOURTH_TRIPLET,        //  5     
+    TWOFORTIETH,                //  2
+    FOUREIGHTIETH               //  1
+  };
+  
   
    // was in MelodyPart.java 
    //  private static int[] knownNoteValue =
