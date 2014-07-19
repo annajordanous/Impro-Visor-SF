@@ -56,6 +56,9 @@ public class CreateBrickGrammar {
     private static ArrayList<Vector<ClusterSet>> allClusterSets = new ArrayList<Vector<ClusterSet>>();
     private static ArrayList<Vector<Vector<ClusterSet>>> allOutlines = new ArrayList<Vector<Vector<ClusterSet>>>();
     private static ArrayList<DataPoint[]> allReps = new ArrayList<DataPoint[]>();
+    
+    private static int MEASURE_LENGTH = 480; //need to have code to make this be whatever the current tune's measure length is
+                                                //probably move to Notate or LickgenFrame or the like
 
     /**
      * processByBrick Scan the tune one brick at a time and write info to an
@@ -73,8 +76,10 @@ public class CreateBrickGrammar {
         for (int i = 0; i < blocks.size(); ++i) {
             Block currentBlock = blocks.get(i);
             int totalDurationPlusThisBlock = totalDuration + currentBlock.getDuration() - 1; //-1 to prevent spillover into next measure
-            if (currentBlock instanceof Brick) { //if we only want to learn based on bricks not general chordBlocks also; 
-                                                 //otherwise leave this condition out
+            if (currentBlock instanceof Brick && (totalDuration % MEASURE_LENGTH == 0)) { //if we only want to learn based on bricks not general chordBlocks also;
+                                                                                            //otherwise leave this condition out
+                                                                                          //note: we only want to use bricks that start at the beginning of measures
+                                                                                          //for the sake of QC (who knows what's up with short little fractional measure bricks)
                 //this will keep track of what kind of bricks we have in the tune
                 brickKinds.add(currentBlock.getDashedName());
                 brickDurations.add(currentBlock.getDuration());
@@ -213,8 +218,10 @@ public class CreateBrickGrammar {
             int totalDuration = 0; //so we can keep track of where we are in the tune
             for (int i = 0; i < blocks.size(); ++i) {
                 Block currentBlock = blocks.get(i);
-                if (currentBlock instanceof Brick) { //if we only want to learn based on bricks not general chordBlocks also; 
-                    //otherwise leave this condition out
+                if (currentBlock instanceof Brick && (totalDuration % MEASURE_LENGTH == 0)) { //if we only want to learn based on bricks
+                                                                                               //not general chordBlocks also; 
+                                                                                                //otherwise leave this condition out
+                                                                                                //also learn only from bricks that start on measures
                     String brickName = currentBlock.getDashedName();
                     int brickNumber = 0; //find which brick this is in our array of bricks
                     for (int j = 0; j < brickKindsArray.length; ++j) {
@@ -245,14 +252,16 @@ public class CreateBrickGrammar {
                         ++brickKindsCount[brickNumber]; //we've come across one more occurence of this kind of brick
                     //}
                     
-                } else { 
-                    //TODO: how to deal with parts that could not be classified as bricks
-                    //IDEA: use grammar (abstract or X notation as user desires)
-                    String production = frame.addMeasureToAbstractMelody(totalDuration, currentBlock.getDuration()/BEAT, i==0);
-                    if (production != null) {
-                        frame.writeProduction(production, currentBlock.getDuration(), totalDuration, true, currentBlock.getDashedName());
-                    }
-                }
+                } 
+//                else { 
+//                    //TODO: how to deal with parts that could not be classified as bricks
+//                    //IDEA: use grammar (abstract or X notation as user desires)
+//                    String production = frame.addMeasureToAbstractMelody(totalDuration, currentBlock.getDuration()/BEAT, i==0);
+//                    if (production != null) {
+//                        System.out.println("Total duration so far is: " + totalDuration);
+//                        frame.writeProduction(production, currentBlock.getDuration(), totalDuration, true, currentBlock.getDashedName());
+//                    }
+//                }
                 
                 totalDuration += currentBlock.getDuration();
             }
