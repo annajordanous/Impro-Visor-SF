@@ -2056,6 +2056,7 @@ boolean saveConstructionLineState;
         freezeLayoutButton = new javax.swing.JToggleButton();
         colorationButton = new javax.swing.JToggleButton();
         smartEntryButton = new javax.swing.JToggleButton();
+        quantizeBtn = new javax.swing.JToggleButton();
         chordFontSizeSpinner = new javax.swing.JSpinner();
         addTabBtn = new javax.swing.JButton();
         addTabBtn.addActionListener(new java.awt.event.ActionListener()
@@ -7907,6 +7908,28 @@ boolean saveConstructionLineState;
             }
         });
         standardToolbar.add(smartEntryButton);
+
+        quantizeBtn.setBackground(new java.awt.Color(51, 255, 255));
+        quantizeBtn.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        quantizeBtn.setSelected(true);
+        quantizeBtn.setText("Quantize");
+        quantizeBtn.setToolTipText("Causes notes to be quantized to a new resolution in a new added chorus.");
+        quantizeBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        quantizeBtn.setFocusable(false);
+        quantizeBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        quantizeBtn.setMaximumSize(new java.awt.Dimension(50, 30));
+        quantizeBtn.setMinimumSize(new java.awt.Dimension(50, 30));
+        quantizeBtn.setOpaque(true);
+        quantizeBtn.setPreferredSize(new java.awt.Dimension(50, 30));
+        quantizeBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        quantizeBtn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                quantizeBtnActionPerformed(evt);
+            }
+        });
+        standardToolbar.add(quantizeBtn);
 
         chordFontSizeSpinner.setToolTipText("Specifies the chord font size.");
         chordFontSizeSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Chord Font", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 10))); // NOI18N
@@ -23584,6 +23607,21 @@ public void setKconstantSlider(double value)
         SoloGenerator soloGenerator = new SoloGenerator(lickgen, this, cm);
         soloGenerator.setVisible(true);
     }//GEN-LAST:event_soloGeneratorMIActionPerformed
+
+    int quantizeResolution = 60;
+
+    private void quantizeBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_quantizeBtnActionPerformed
+    {//GEN-HEADEREND:event_quantizeBtnActionPerformed
+        MelodyPart originalPart = getCurrentMelodyPart();
+        
+        MelodyPart quantizedPart = new MelodyPart();
+        
+        //quantizedPart = MelodyPart.quantize(originalPart);
+        
+        quantizedPart = originalPart.applyResolution(quantizeResolution);
+        
+        addChorus(quantizedPart);
+    }//GEN-LAST:event_quantizeBtnActionPerformed
     
     private void updateDottedAndTriplet() {
         isDotted = noteLenDottedCheckBox.isSelected();
@@ -25614,6 +25652,7 @@ public void showNewVoicingDialog()
     private javax.swing.JMenuItem printMI;
     private javax.swing.ButtonGroup productionBtnGrp;
     private javax.swing.JButton purgeCache;
+    private javax.swing.JToggleButton quantizeBtn;
     private javax.swing.JMenuItem quitMI;
     private javax.swing.JRadioButton quoteRadioButton;
     private javax.swing.JCheckBox quotes;
