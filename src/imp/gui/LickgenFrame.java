@@ -5076,7 +5076,6 @@ public class LickgenFrame
         if (production == null) {
             return;
         }
-
         String chords = "";
 
         if (production.contains("CHORDS")) {
