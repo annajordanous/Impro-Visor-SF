@@ -1977,6 +1977,7 @@ boolean saveConstructionLineState;
         noteLenTripletCheckBox = new javax.swing.JCheckBox();
         noteLenDottedCheckBox = new javax.swing.JCheckBox();
         noteLenBtnGrp = new javax.swing.ButtonGroup();
+        quantizePopupMenu = new javax.swing.JPopupMenu();
         toolbarPanel = new javax.swing.JPanel();
         standardToolbar = new javax.swing.JToolBar();
         newBtn = new javax.swing.JButton();
@@ -2056,7 +2057,7 @@ boolean saveConstructionLineState;
         freezeLayoutButton = new javax.swing.JToggleButton();
         colorationButton = new javax.swing.JToggleButton();
         smartEntryButton = new javax.swing.JToggleButton();
-        quantizeBtn = new javax.swing.JToggleButton();
+        quantizeComboBox = new javax.swing.JComboBox();
         chordFontSizeSpinner = new javax.swing.JSpinner();
         addTabBtn = new javax.swing.JButton();
         addTabBtn.addActionListener(new java.awt.event.ActionListener()
@@ -7896,10 +7897,10 @@ boolean saveConstructionLineState;
         smartEntryButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         smartEntryButton.setFocusable(false);
         smartEntryButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        smartEntryButton.setMaximumSize(new java.awt.Dimension(55, 30));
-        smartEntryButton.setMinimumSize(new java.awt.Dimension(55, 30));
+        smartEntryButton.setMaximumSize(new java.awt.Dimension(45, 30));
+        smartEntryButton.setMinimumSize(new java.awt.Dimension(45, 30));
         smartEntryButton.setOpaque(true);
-        smartEntryButton.setPreferredSize(new java.awt.Dimension(55, 30));
+        smartEntryButton.setPreferredSize(new java.awt.Dimension(45, 30));
         smartEntryButton.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -7909,27 +7910,29 @@ boolean saveConstructionLineState;
         });
         standardToolbar.add(smartEntryButton);
 
-        quantizeBtn.setBackground(new java.awt.Color(51, 255, 255));
-        quantizeBtn.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
-        quantizeBtn.setSelected(true);
-        quantizeBtn.setText("Quantize");
-        quantizeBtn.setToolTipText("Causes notes to be quantized to a new resolution in a new added chorus.");
-        quantizeBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        quantizeBtn.setFocusable(false);
-        quantizeBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        quantizeBtn.setMaximumSize(new java.awt.Dimension(50, 30));
-        quantizeBtn.setMinimumSize(new java.awt.Dimension(50, 30));
-        quantizeBtn.setOpaque(true);
-        quantizeBtn.setPreferredSize(new java.awt.Dimension(50, 30));
-        quantizeBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        quantizeBtn.addActionListener(new java.awt.event.ActionListener()
+        quantizeComboBox.setMaximumRowCount(24);
+        quantizeComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "6", "8", "12", "16", "24", "32", "48", "64", "96", "120" }));
+        quantizeComboBox.setSelectedIndex(13);
+        quantizeComboBox.setToolTipText("Quantize melody to specified number of subdivisions per beat (for MIDI input)."); // NOI18N
+        quantizeComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Quantize", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Dialog", 0, 10))); // NOI18N
+        quantizeComboBox.setMaximumSize(new java.awt.Dimension(90, 45));
+        quantizeComboBox.setMinimumSize(new java.awt.Dimension(90, 45));
+        quantizeComboBox.setPreferredSize(new java.awt.Dimension(90, 45));
+        quantizeComboBox.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseReleased(java.awt.event.MouseEvent evt)
+            {
+                quantizeComboBoxscaleComboReleased(evt);
+            }
+        });
+        quantizeComboBox.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
-                quantizeBtnActionPerformed(evt);
+                quantizeComboBoxscaleChosen(evt);
             }
         });
-        standardToolbar.add(quantizeBtn);
+        standardToolbar.add(quantizeComboBox);
 
         chordFontSizeSpinner.setToolTipText("Specifies the chord font size.");
         chordFontSizeSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Chord Font", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 10))); // NOI18N
@@ -8784,6 +8787,7 @@ boolean saveConstructionLineState;
         clearButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         clearButton.setMaximumSize(new java.awt.Dimension(46, 38));
         clearButton.setMinimumSize(new java.awt.Dimension(46, 38));
+        clearButton.setOpaque(true);
         clearButton.setPreferredSize(new java.awt.Dimension(46, 38));
         clearButton.addActionListener(new java.awt.event.ActionListener()
         {
@@ -23610,18 +23614,27 @@ public void setKconstantSlider(double value)
 
     int quantizeResolution = 60;
 
-    private void quantizeBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_quantizeBtnActionPerformed
-    {//GEN-HEADEREND:event_quantizeBtnActionPerformed
+    private void quantizeComboBoxscaleComboReleased(java.awt.event.MouseEvent evt)//GEN-FIRST:event_quantizeComboBoxscaleComboReleased
+    {//GEN-HEADEREND:event_quantizeComboBoxscaleComboReleased
+
+    }//GEN-LAST:event_quantizeComboBoxscaleComboReleased
+
+    private void quantizeComboBoxscaleChosen(java.awt.event.ActionEvent evt)//GEN-FIRST:event_quantizeComboBoxscaleChosen
+    {//GEN-HEADEREND:event_quantizeComboBoxscaleChosen
         MelodyPart originalPart = getCurrentMelodyPart();
         
         MelodyPart quantizedPart = new MelodyPart();
         
         //quantizedPart = MelodyPart.quantize(originalPart);
         
+        quantizeResolution = 120/Integer.parseInt((String)quantizeComboBox.getSelectedItem());
+        
+        System.out.println("resolution = " + quantizeResolution);
+        
         quantizedPart = originalPart.applyResolution(quantizeResolution);
         
-        addChorus(quantizedPart);
-    }//GEN-LAST:event_quantizeBtnActionPerformed
+        addChorus(quantizedPart);        
+    }//GEN-LAST:event_quantizeComboBoxscaleChosen
     
     private void updateDottedAndTriplet() {
         isDotted = noteLenDottedCheckBox.isSelected();
@@ -25652,7 +25665,8 @@ public void showNewVoicingDialog()
     private javax.swing.JMenuItem printMI;
     private javax.swing.ButtonGroup productionBtnGrp;
     private javax.swing.JButton purgeCache;
-    private javax.swing.JToggleButton quantizeBtn;
+    private javax.swing.JComboBox quantizeComboBox;
+    private javax.swing.JPopupMenu quantizePopupMenu;
     private javax.swing.JMenuItem quitMI;
     private javax.swing.JRadioButton quoteRadioButton;
     private javax.swing.JCheckBox quotes;
