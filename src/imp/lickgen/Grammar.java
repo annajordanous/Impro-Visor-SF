@@ -472,7 +472,6 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
         ErrorLog.log(ErrorLog.SEVERE, "applyRules passed empty polylist.  Abort.");
         return null;
       }
-
     Object pop = gen.first();
 
     gen = gen.rest();
@@ -507,14 +506,52 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
     // All applicable rhs RHS's (and their corresponding weights)
     // get loaded into these lists, to be selected from at random.
 
-    ArrayList<WeightedRHS> ruleList = new ArrayList<WeightedRHS>();
-    ArrayList<WeightedRHS> baseList = new ArrayList<WeightedRHS>();
-
     Polylist search = rules;
+    ArrayList<WeightedRHS> RHStoUse = new ArrayList<WeightedRHS>();
 
     // Search through and find all rules that apply to the non-terminal pop.
- 
+     /*
+      * RULEs and BASEs have the following S-expression format:
+      * (<keyword> (<LHS symbol>) (<RHS>) weight)
+      * <keyword> can be RULE or BASE
+      * <LHS symbol> can be a string or a polylist of strings
+      * <RHS> is a polylist of symbols (or if it's a RULE, some expressions
+      *	to evaluate).
+      * <weight> is a double expressing how "important" the rhs is.  More important
+      *	rules will be chosen more often than less important ones.
+      *
+      * The BASE keyword stops all evalution and variable substitution.
+      * If a symbol matches both a RULE and a BASE, it will always choose the BASE.
+      * This basically short-circuits any computation and provides an easy way
+      * to find base cases.
+      */
+
     while( search.nonEmpty() )
+      {
+      // Next is the next rule to which to compare.
+      Polylist next = (Polylist) search.first();
+      String type = (String) next.first();
+
+      if( type.equals(BASE) && next.length() == 4 )
+        {
+          //System.out.println("\nbase = " + next);
+          Object symbol = next.second();
+          Polylist rhs = (Polylist) next.third();
+
+          if( pop.equals(symbol) )
+            {
+              Number weight = (Number) evaluate(next.fourth());
+              RHStoUse.add(new WeightedRHS(rhs, weight.doubleValue()));
+            }
+        }
+      search = search.rest();
+      }
+ 
+ if( RHStoUse.isEmpty() )
+    {
+     search = rules;
+
+     while( search.nonEmpty() )
       {
       // Next is the next rule to which to compare.
       Polylist next = (Polylist) search.first();
@@ -531,25 +568,7 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
        *	rules will be chosen more often than less important ones.
        */
 
-      // The BASE keyword stops all evalution and variable substitution.
-      // If a symbol matches both a RULE and a BASE, it will always choose the BASE.
-      // This basically short-circuits any computation and provides an easy way
-      // to find base cases.
-
-      if( type.equals(BASE) && next.length() == 4 )
-        {
-          //System.out.println("\nbase = " + next);
-          Object symbol = next.second();
-          Polylist rhs = (Polylist) next.third();
-
-          if( pop.equals(symbol) )
-            {
-              Number weight = (Number) evaluate(next.fourth());
-              baseList.add(new WeightedRHS(rhs, weight.doubleValue()));
-            }
-        }
-      // Most objects will have type RULE.
-      else if( type.equals(RULE) && next.length() == 4 )
+      if( type.equals(RULE) && next.length() == 4 )
         {
           //System.out.println("\nrule = " + next);
           Object symbol = next.second();
@@ -613,7 +632,7 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
                           Double weight = ((Number) wt).doubleValue();
                           if( weight > 0 )
                             {
-                              ruleList.add(new WeightedRHS(rhs, weight));
+                              RHStoUse.add(new WeightedRHS(rhs, weight));
                             }
                         }
                       else
@@ -633,7 +652,7 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
                   Double weight = ((Number) wt).doubleValue();
                   if( weight > 0 )
                     {
-                      ruleList.add(new WeightedRHS(rhs, weight));
+                      RHStoUse.add(new WeightedRHS(rhs, weight));
                     }
                 }
               else
@@ -644,11 +663,8 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
           //Otherwise ignore, as it may be a parameter, etc.
         }
       search = search.rest();
-    }
-
-    // If any base case exists, use it and ignore all rules.
-    ArrayList<WeightedRHS> RHStoUse = baseList.isEmpty() ? ruleList : baseList;
-
+      }
+   }
     // Randomly choose an RHS to follow by summing all weights, then
     // finding the RHS the normalized weight of which spans a random number.
 
