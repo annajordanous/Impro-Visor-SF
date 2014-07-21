@@ -86,6 +86,7 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         setTransformButton = new javax.swing.JButton();
         step4Label1 = new javax.swing.JLabel();
         step4Label2 = new javax.swing.JLabel();
+        step4Label3 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
 
         setAlignmentX(0.0F);
@@ -93,9 +94,9 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         setPreferredSize(new java.awt.Dimension(250, 25));
         setLayout(new java.awt.GridBagLayout());
 
-        step1Panel.setBackground(new java.awt.Color(255, 204, 0));
+        step1Panel.setBackground(new java.awt.Color(252, 91, 63));
         step1Panel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Step 1", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
-        step1Panel.setToolTipText("This is used to compare to the flattened melody in step 3");
+        step1Panel.setToolTipText("");
         step1Panel.setLayout(new java.awt.GridBagLayout());
 
         saveOriginalButton.setText("Save Original");
@@ -163,9 +164,9 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         gridBagConstraints.weighty = 1.0;
         add(step1Panel, gridBagConstraints);
 
-        step2Panel.setBackground(new java.awt.Color(255, 255, 51));
+        step2Panel.setBackground(new java.awt.Color(252, 176, 60));
         step2Panel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Step 2", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
-        step2Panel.setToolTipText("This flattens the melody by blocks of length specified in each button");
+        step2Panel.setToolTipText("");
         step2Panel.setLayout(new java.awt.GridBagLayout());
 
         flattenByChord16Buton.setText("Flatten Melody by sixteenth note");
@@ -261,9 +262,9 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         gridBagConstraints.weighty = 1.0;
         add(step2Panel, gridBagConstraints);
 
-        step3Panel.setBackground(new java.awt.Color(0, 255, 0));
+        step3Panel.setBackground(new java.awt.Color(111, 176, 127));
         step3Panel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Step 3", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
-        step3Panel.setToolTipText("Choosing subtract will not allow you to create good transforms, you will have to restart");
+        step3Panel.setToolTipText("");
         step3Panel.setLayout(new java.awt.GridBagLayout());
 
         subFlatFromOrigButton.setText("Subtract Flattening from Original");
@@ -330,11 +331,11 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         gridBagConstraints.weighty = 1.0;
         add(step3Panel, gridBagConstraints);
 
-        step4Panel.setBackground(new java.awt.Color(102, 204, 255));
+        step4Panel.setBackground(new java.awt.Color(6, 133, 135));
         step4Panel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Step 4", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
-        step4Panel.setToolTipText("This places the transform created in step 3 as the transform open in the transform tab");
-        step4Panel.setMinimumSize(new java.awt.Dimension(690, 134));
-        step4Panel.setPreferredSize(new java.awt.Dimension(1111, 134));
+        step4Panel.setToolTipText("");
+        step4Panel.setMinimumSize(new java.awt.Dimension(690, 150));
+        step4Panel.setPreferredSize(new java.awt.Dimension(1111, 150));
         step4Panel.setLayout(new java.awt.GridBagLayout());
 
         showTransformButton.setText("Show Generated Transform");
@@ -349,7 +350,7 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
         step4Panel.add(showTransformButton, gridBagConstraints);
 
         setTransformButton.setText("Put Transform into Transform tab");
@@ -364,34 +365,44 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 2;
         step4Panel.add(setTransformButton, gridBagConstraints);
 
         step4Label1.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
         step4Label1.setText("Open a window with the generated Transform in grammar form.");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(8, 0, 8, 0);
         step4Panel.add(step4Label1, gridBagConstraints);
 
         step4Label2.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
-        step4Label2.setText("<html><b> Important: </b>To use the generated Transform, click this button to make it the opened transform in the Tranform Tab.");
-        step4Label2.setMaximumSize(new java.awt.Dimension(652, 15));
-        step4Label2.setMinimumSize(new java.awt.Dimension(678, 15));
+        step4Label2.setText("To further use the transformations, go to the Transform Tab and click Apply");
+        step4Label2.setMaximumSize(new java.awt.Dimension(440, 15));
+        step4Label2.setMinimumSize(new java.awt.Dimension(440, 15));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 8, 0);
+        step4Panel.add(step4Label2, gridBagConstraints);
+
+        step4Label3.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
+        step4Label3.setText("<html><b> Important: </b>To use the generated Transform, click this button to make it the opened transform in the Tranform Tab.");
+        step4Label3.setMaximumSize(new java.awt.Dimension(652, 15));
+        step4Label3.setMinimumSize(new java.awt.Dimension(678, 15));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 8, 0);
-        step4Panel.add(step4Label2, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 2, 0);
+        step4Panel.add(step4Label3, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weighty = 1.0;
         add(step4Panel, gridBagConstraints);
 
         jLabel1.setFont(new java.awt.Font("Lucida Grande", 0, 13)); // NOI18N
@@ -497,6 +508,7 @@ public class TransformLearningPanel extends javax.swing.JPanel {
     private javax.swing.JPanel step3Panel;
     private javax.swing.JLabel step4Label1;
     private javax.swing.JLabel step4Label2;
+    private javax.swing.JLabel step4Label3;
     private javax.swing.JPanel step4Panel;
     private javax.swing.JButton subFlatFromOrigButton;
     // End of variables declaration//GEN-END:variables

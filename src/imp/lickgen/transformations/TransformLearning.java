@@ -114,6 +114,8 @@ private MelodyPart flattenByResolution(MelodyPart melody,
         
         ArrayList<Note> notes = getNotesInResolution(melody, resolution, slotIndex);
         bestNote = getBestNote(notes, chord, resolution, startingSlot);
+        flattenedPart.addNote(bestNote);
+        /*
         if(prevNote == null)
         {
             prevNote = bestNote;
@@ -127,8 +129,9 @@ private MelodyPart flattenByResolution(MelodyPart melody,
             flattenedPart.addNote(prevNote);
             prevNote = bestNote;
         }
+        */
     }
-    flattenedPart.addNote(prevNote);
+    //flattenedPart.addNote(prevNote);
     return flattenedPart;
 }
     
