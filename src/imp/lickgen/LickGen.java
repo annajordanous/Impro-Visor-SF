@@ -67,23 +67,40 @@ public class LickGen implements Constants
     // Strings used as labels in the grammar file
     
     public static final String MIN_PITCH_STRING = "min-pitch";
+    public static final String MIN_PITCH_DEFAULT = "54";
     public static final String MAX_PITCH_STRING = "max-pitch";
+    public static final String MAX_PITCH_DEFAULT = "84";
     public static final String MIN_INTERVAL = "min-interval";
+    public static final String MIN_INTERVAL_DEFAULT = "0";
     public static final String MAX_INTERVAL = "max-interval";
+    public static final String MAX_INTERVAL_DEFAULT = "9";
     public static final String MIN_DURATION = "min-duration";
+    public static final String MIN_DURATION_DEFAULT = "8";
     public static final String MAX_DURATION = "max-duration";
+    public static final String MAX_DURATION_DEFAULT = "2";
     public static final String REST_PROB = "rest-prob";
+    public static final String REST_PROB_DEFAULT = "0.1";
     public static final String LEAP_PROB = "leap-prob";
+    public static final String LEAP_PROB_DEFAULT = "0.01";
     public static final String CHORD_TONE_WEIGHT = "chord-tone-weight";
+    public static final String CHORD_TONE_WEIGHT_DEFAULT = "0.7";
     public static final String COLOR_TONE_WEIGHT = "color-tone-weight";
+    public static final String COLOR_TONE_WEIGHT_DEFAULT = "0.2";
     public static final String SCALE_TONE_WEIGHT = "scale-tone-weight";
+    public static final String SCALE_TONE_WEIGHT_DEFAULT = "0.1";
     public static final String CHORD_TONE_DECAY = "chord-tone-decay";
     public static final String SCALE_TYPE = "scale-type";
+    public static final String SCALE_TYPE_DEFAULT = "Use First Scale";
+    public static final String CHORD_TONE_DECAY_DEFAULT = "0.0";
     public static final String SCALE_ROOT = "scale-root";
+    public static final String SCALE_ROOT_DEFAULT = "C";
     public static final String USE_GRAMMAR = "use-grammar";
     public static final String AVOID_REPEATS = "avoid-repeats";
+    public static final String AVOID_REPEATS_DEFAULT = "true";
     public static final String AUTO_FILL = "auto-fill";
+    public static final String AUTO_FILL_DEFAULT = "true";
     public static final String RECTIFY = "rectify";
+    public static final String RECTIFY_DEFAULT = "true";
     public static final String USE_SYNCOPATION       = "use-syncopation";
     public static final String SYNCOPATION_TYPE      = "syncopation-type";
     public static final String SYNCOPATION_MULTIPLIER = "syncopation-multiplier";
@@ -2867,18 +2884,20 @@ public void setParameter(String paramName, Object param)
 
 public String getParameter(String paramName)
   {
-    ArrayList<Polylist> params = grammar.getParams();
-    for( int i = 0; i < params.size(); ++i )
+    try
       {
-        Polylist p = params.get(i);
-        if( ((String) p.first()).equals(paramName) && p.length() >= 2 )
-          {
-            return Advisor.concatListWithSpaces(p.rest());
-          }
+        return getParameterQuietly(paramName);
       }
-
-    ErrorLog.log(ErrorLog.WARNING, paramName + " does not exist.");
-    return null;
+    catch( NonExistentParameterException e )
+      {
+        String defaultParameter = getDefaultParameter(paramName);
+        if( defaultParameter == null )
+          {
+           ErrorLog.log(ErrorLog.WARNING, paramName + " does not exist.");
+           return null;
+          }
+      return defaultParameter;
+      }
   }
 
 /**
@@ -2901,6 +2920,80 @@ public String getParameterQuietly(String paramName) throws NonExistentParameterE
       }
 
     throw new NonExistentParameterException(paramName);
+  }
+
+
+public String getDefaultParameter(String paramName)
+  {
+    if( paramName.equals(MIN_PITCH_STRING) )
+      {
+        return MIN_PITCH_DEFAULT;
+      }
+    if( paramName.equals(MAX_PITCH_STRING) )
+      {
+        return MAX_PITCH_DEFAULT;
+      }
+    if( paramName.equals(MIN_DURATION) )
+      {
+        return MIN_DURATION_DEFAULT;
+      }
+    if( paramName.equals(MAX_DURATION) )
+      {
+        return MAX_DURATION_DEFAULT;
+      }
+    if( paramName.equals(MIN_INTERVAL) )
+      {
+        return MIN_INTERVAL_DEFAULT;
+      }
+    if( paramName.equals(MAX_INTERVAL) )
+      {
+        return MAX_INTERVAL_DEFAULT;
+      }
+    if( paramName.equals(REST_PROB) )
+      {
+        return REST_PROB_DEFAULT;
+      }
+    if( paramName.equals(LEAP_PROB) )
+      {
+        return LEAP_PROB_DEFAULT;
+      }
+    if( paramName.equals(CHORD_TONE_WEIGHT) )
+      {
+        return CHORD_TONE_WEIGHT_DEFAULT;
+      }
+    if( paramName.equals(COLOR_TONE_WEIGHT) )
+      {
+        return COLOR_TONE_WEIGHT_DEFAULT;
+      }
+    if( paramName.equals(SCALE_TONE_WEIGHT) )
+      {
+        return SCALE_TONE_WEIGHT_DEFAULT;
+      }
+    if( paramName.equals(CHORD_TONE_DECAY) )
+      {
+        return CHORD_TONE_DECAY_DEFAULT;
+      } 
+     if( paramName.equals(AUTO_FILL) )
+      {
+        return AUTO_FILL_DEFAULT;
+      }
+     if( paramName.equals(RECTIFY) )
+      {
+        return RECTIFY_DEFAULT;
+      } 
+     if( paramName.equals(AVOID_REPEATS) )
+      {
+        return AVOID_REPEATS_DEFAULT;
+      } 
+     if( paramName.equals(SCALE_TYPE) )
+      {
+        return SCALE_TYPE_DEFAULT;
+      }
+     if( paramName.equals(SCALE_ROOT) )
+      {
+        return SCALE_ROOT_DEFAULT;
+      }
+     return null;
   }
 
 

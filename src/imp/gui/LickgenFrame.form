@@ -466,6 +466,7 @@
                       <Font name="Dialog" size="14" style="0"/>
                     </Property>
                     <Property name="horizontalAlignment" type="int" value="11"/>
+                    <Property name="text" type="java.lang.String" value="84"/>
                     <Property name="toolTipText" type="java.lang.String" value="The maximum pitch in a generated lick."/>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[60, 24]"/>
@@ -514,6 +515,7 @@
                       <Font name="Dialog" size="14" style="0"/>
                     </Property>
                     <Property name="horizontalAlignment" type="int" value="11"/>
+                    <Property name="text" type="java.lang.String" value="54"/>
                     <Property name="toolTipText" type="java.lang.String" value="The minimum pitch in a generated lick."/>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[60, 24]"/>
@@ -556,6 +558,7 @@
                       <Font name="Dialog" size="14" style="0"/>
                     </Property>
                     <Property name="horizontalAlignment" type="int" value="11"/>
+                    <Property name="text" type="java.lang.String" value="0"/>
                     <Property name="toolTipText" type="java.lang.String" value="The minimum interval from one note to the next, if not a leap."/>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[60, 24]"/>
@@ -582,6 +585,7 @@
                       <Font name="Dialog" size="14" style="0"/>
                     </Property>
                     <Property name="horizontalAlignment" type="int" value="11"/>
+                    <Property name="text" type="java.lang.String" value="9"/>
                     <Property name="toolTipText" type="java.lang.String" value="The maximum interval from one note to the next, if not a leap."/>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[60, 24]"/>
@@ -624,6 +628,7 @@
                       <Font name="Dialog" size="14" style="0"/>
                     </Property>
                     <Property name="horizontalAlignment" type="int" value="11"/>
+                    <Property name="text" type="java.lang.String" value="8"/>
                     <Property name="toolTipText" type="java.lang.String" value="The minimum duration of a generated note."/>
                     <Property name="enabled" type="boolean" value="false"/>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -651,6 +656,7 @@
                       <Font name="Dialog" size="14" style="0"/>
                     </Property>
                     <Property name="horizontalAlignment" type="int" value="11"/>
+                    <Property name="text" type="java.lang.String" value="2"/>
                     <Property name="toolTipText" type="java.lang.String" value="The minimum duration of a generated note."/>
                     <Property name="enabled" type="boolean" value="false"/>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -742,6 +748,7 @@
                       <Font name="Dialog" size="14" style="0"/>
                     </Property>
                     <Property name="horizontalAlignment" type="int" value="11"/>
+                    <Property name="text" type="java.lang.String" value="0.1"/>
                     <Property name="toolTipText" type="java.lang.String" value="The probability of a rest vs. a note."/>
                     <Property name="enabled" type="boolean" value="false"/>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -785,6 +792,7 @@
                 </Component>
                 <Component class="javax.swing.JTextField" name="leapProbField">
                   <Properties>
+                    <Property name="text" type="java.lang.String" value="0.05"/>
                     <Property name="toolTipText" type="java.lang.String" value="The probability of making a leap outside the maximum interval."/>
                     <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[60, 2147483647]"/>
