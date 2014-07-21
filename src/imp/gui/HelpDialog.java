@@ -40,8 +40,7 @@ public class HelpDialog extends javax.swing.JDialog {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
         helpTabbedPane = new javax.swing.JTabbedPane();
@@ -59,6 +58,8 @@ public class HelpDialog extends javax.swing.JDialog {
         roadmapHelp = new javax.swing.JTextArea();
         lickGenSettingsPane = new javax.swing.JScrollPane();
         lickGenSettings = new javax.swing.JTextArea();
+        SoloGenerator = new javax.swing.JScrollPane();
+        soloGenInstructions = new javax.swing.JTextArea();
         audioInputPane = new javax.swing.JScrollPane();
         audioInputPaneText = new javax.swing.JTextArea();
         chordListingPane = new javax.swing.JScrollPane();
@@ -158,6 +159,18 @@ public class HelpDialog extends javax.swing.JDialog {
 
         helpTabbedPane.addTab("Lick Generator", lickGenSettingsPane);
 
+        SoloGenerator.setMinimumSize(new java.awt.Dimension(500, 800));
+        SoloGenerator.setPreferredSize(new java.awt.Dimension(600, 900));
+
+        soloGenInstructions.setColumns(20);
+        soloGenInstructions.setFont(new java.awt.Font("Lucida Console", 0, 13)); // NOI18N
+        soloGenInstructions.setRows(5);
+        soloGenInstructions.setText("Help for the Solo Generator \n\nThe Solo Generator is a tool that can be used to generate themes \nand to generate solos from one or multiple themes, all based on the\ngrammar the user has chosen. In addition to generating themes, you \ncan also write your own and save them for later use. It takes in \nfour weighted values that determines whether a theme will be used, \nand if it used, if it will be transposed,inverted, or reversed. If \na theme is not used, the space in the solo will be filled with a \nmelody based on the chosen grammar.\n\n\nHighlighting a Cell\n\nThere are two ways to highlight a cell: \n\t* Click once on the cell \nOr if you have just entered something into the cell: \n\t* Press “Enter” \n\nYou will know your cell is highlighted if it is blue.\n \n\nGenerating a Theme\n\n\t1. Type in an integer for the length of the theme, such as “6”\n\t   or “7” into a cell in the \"Length\" labeled column\n\n\t2. Highlight the cell \n\n\t3. Click the button “Generate Theme.” \n\nA theme in leadsheet notation should appear in the Theme cell to the right \nof the Length cell you chose. \n\n\nGenerating a Solo\n\n \t* Make sure that for every theme in your table, the “Use,” “Transpose,” \n\t  “Invert,” and “Reverse” cells are all filled in with weighted values \n\t  from 0 to 1, representing how much you want the theme to be used, \n\t  transposed, inverted or reversed. \n\n\t* Make sure after every value you type in, you press “Enter” \n\t  or click out of the cell to ensure the value has been entered.\n\n\t* Then click the button “Generate Solo.” \n\nA solo should appear in your open leadsheet and should be played. \n\n\nNaming\n \nTo add a theme you have generated or typed in yourself to the dictionary\nof themes in the Themes scroll box to the right of the table, you have \nto name it! The first column of the table is the “Name Column” as shown \nby the label at the top. \n\n\t1. Double-click the name cell in the row of the theme you want\n\t   to save \n\n\t2. Then type in the name of your choice and then either  \n\t\t*  press “Enter” or\n\t\t*  click out of the cell\n\nThe name should appear in the Themes scroll box at the bottom.  \n\n\nUsing Leadsheet Selections as Themes\n\nIf there is a string of notes already in the leadsheet that you want to use -  \n\n\t1. Click where the section starts then drag over the section until\n\t   all the notes you want are highlighted \n\n\t2. Go to the Solo Generator window and highlight the theme cell you \n\t   want the theme to appear in. \n\n\t3. Click the button “Use Current Selection in Leadsheet Window as Theme.”  \n\n\nEditing\n\nIf you want, you can make your own edits to current themes in your table! \nOnce you press “Enter” or click out of the cell, the theme length integer in \nthe Length cell will change accordingly. \n\n\nDeleting and Resetting\n\n\t* To delete a whole row, highlight any cell in the row you want to delete and press\n\t  the “Delete” button on your keyboard. \n\n\t* To clear the entire table and restore any rows you deleted, click the “Reset” button.\n\n\nPlaying\n\n\t* To stop playing a solo, click the “Stop Playing” button. \n\n\t* To play a solo you have stopped click the “Play Solo” button. \n\n");
+        SoloGenerator.setViewportView(soloGenInstructions);
+        lickGenSettings.setEditable(false);
+
+        helpTabbedPane.addTab("Solo Generator", SoloGenerator);
+
         audioInputPane.setMinimumSize(new java.awt.Dimension(500, 800));
         audioInputPane.setPreferredSize(new java.awt.Dimension(600, 900));
 
@@ -213,6 +226,7 @@ public class HelpDialog extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JScrollPane SoloGenerator;
     private javax.swing.JTextArea alphaCommandList;
     private javax.swing.JScrollPane alphaCommandPane;
     private javax.swing.JScrollPane audioInputPane;
@@ -230,6 +244,7 @@ public class HelpDialog extends javax.swing.JDialog {
     private javax.swing.JTextArea melodyNotationHelp;
     private javax.swing.JTextArea roadmapHelp;
     private javax.swing.JScrollPane roadmapHelpPane;
+    private javax.swing.JTextArea soloGenInstructions;
     private javax.swing.JTextArea styleHelpList1;
     private javax.swing.JScrollPane styleHelpPane;
     // End of variables declaration//GEN-END:variables
