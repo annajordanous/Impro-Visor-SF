@@ -194,7 +194,7 @@ public void setRuleText(String text, String name)
 {
     ruleText = text.trim();
     ruleRep = new DrumRuleRep(instrumentName + " " + ruleText);
-    if( name.isEmpty() || name.equals("null") || name.equals("") )
+    if( name.isEmpty() || name == null || name.equals("") )
     {
         displayText = text.trim();
     }

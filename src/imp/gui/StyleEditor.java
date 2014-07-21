@@ -807,7 +807,7 @@ public void updateDefinePatterns(Color color, String name, String pattern)
             if( d.checkStatus() )
               {
               buffer.append("\t");
-              buffer.append(d.getPattern(true));
+              buffer.append(d.getSavePattern(true));
               buffer.append("\n");
               }
           }
@@ -1419,6 +1419,8 @@ public void updateDefinePatterns(Color color, String name, String pattern)
     {
     reset();
 
+    resetLists();
+    
     this.setTitle("Style Editor: " + file.getName());
 
     // Parse style.
@@ -1617,6 +1619,11 @@ public void updateDefinePatterns(Color color, String name, String pattern)
         RepresentativeDrumRules.DrumRule aDrumRule = d.makeDrumRule();
         
         aDrumRule.setInstrumentNumber(drumPat.getInstrument());
+        
+        // This will need to change if you ever want to put drum patterns with
+        // names into the style mixer. This just fixes the problem of adding a 
+        // pattern from the mixer to the style now
+        aDrumRule.setName("");
         
         // This syntax checking should be done in the DrumRule constructor.
         
@@ -2199,6 +2206,27 @@ public void updateDefinePatterns(Color color, String name, String pattern)
     refreshAll();
     }
 
+  /**
+   * resets the lists that contain defined patterns 
+   */
+  public void resetLists()
+  {
+      if( bassListModel != null )
+      {
+          bassListModel.removeAllElements();
+      }
+          
+      if( chordListModel != null )
+      {
+          chordListModel.removeAllElements();
+      }
+          
+      if( drumListModel != null )
+      {
+          drumListModel.removeAllElements();
+      }
+  }
+  
   /**
    * Updates the UI for every pane
    */
@@ -7264,7 +7292,13 @@ private void openStyleMixer()
         Polylist rules = (Polylist)definedBassRules.get(name);
         String pattern = rules.rest().toStringSansParens();
         updateDefinePatterns(background, name, pattern);
-
+        BassPatternDisplay display = new BassPatternDisplay(pattern,
+                                                            10,
+                                                            name,
+                                                            notate,
+                                                            cm,
+                                                            this);
+        maybePlay(display);
     }//GEN-LAST:event_bassPatternListMouseClicked
 
     private void chordPatternListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_chordPatternListMouseClicked
@@ -7274,6 +7308,15 @@ private void openStyleMixer()
         Polylist rules = (Polylist)definedChordRules.get(name);
         String pattern = rules.rest().toStringSansParens();
         updateDefinePatterns(background, name, pattern);
+        
+        ChordPatternDisplay display = new ChordPatternDisplay(pattern,
+                                                              10,
+                                                              "",
+                                                              name,
+                                                              notate,
+                                                              cm,
+                                                              this);
+        maybePlay(display);
     }//GEN-LAST:event_chordPatternListMouseClicked
 
     private void drumPatternListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_drumPatternListMouseClicked
@@ -7283,6 +7326,14 @@ private void openStyleMixer()
         Polylist rules = (Polylist)definedDrumRules.get(name);
         String pattern = rules.rest().toStringSansParens();
         updateDefinePatterns(background, name, pattern);
+        
+        DrumRuleDisplay display = new DrumRuleDisplay(pattern,
+                                                      name,
+                                                      "Acoustic_Bass_Drum",
+                                                      notate,
+                                                      cm,
+                                                      this);
+        maybePlay(display);
     }//GEN-LAST:event_drumPatternListMouseClicked
 
 private void usePianoRoll()
