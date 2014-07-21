@@ -23,6 +23,7 @@ package imp.gui;
 import imp.Constants;
 import imp.com.CommandManager;
 import imp.data.*;
+import java.util.LinkedHashMap;
 import java.awt.Color;
 import polya.Polylist;
 
@@ -47,6 +48,8 @@ public class ChordPatternDisplay
     private String chordDisplayText = "";
     
     private ChordPattern chordPattern;
+    
+    LinkedHashMap<String, Polylist> definedRules;
     
    /**
      * Constructs a new ChordPatternDisplay JPanel with default weight 10 and an empty pattern.
@@ -116,13 +119,25 @@ public class ChordPatternDisplay
      * This is used for saving the pattern to a file, among possibly other uses.
      * @return the text and weight formatted with bass-pattern syntax used by the style classes 
      **/        
-    public String getPattern() {
+    public String getSavePattern() {
         StringBuilder buffer = new StringBuilder();
-        buffer.append("(chord-pattern (name " );
-        buffer.append(getName());
-        buffer.append(")(rules ");
-        buffer.append(getPatternText());
-        buffer.append(")(weight ");
+        buffer.append("(chord-pattern " );
+        if( getDefinedRules().containsKey(getName()))
+        {
+            buffer.append("(use ");
+            buffer.append(getName());
+            buffer.append(")");
+        }
+        else
+        {
+            buffer.append("(name ");
+            buffer.append(getName());
+            buffer.append(")(rules ");
+            buffer.append(getPatternText());
+            buffer.append(")");
+        }
+        
+        buffer.append("(weight ");
         buffer.append(getWeight());
         String trimmed = pushString.trim();
         if( !trimmed.equals("") )
@@ -133,6 +148,31 @@ public class ChordPatternDisplay
         buffer.append("))");
         return buffer.toString();
     }    
+    
+    /**
+     * used to create a temp style to play the pattern
+     * @param 
+     */
+    public String getPattern()
+    {
+        StringBuilder buffer = new StringBuilder();
+        buffer.append("(chord-pattern (name ");
+        buffer.append(getName());
+        buffer.append(")(rules ");
+        buffer.append(getPatternText());
+        buffer.append(")(weight ");
+        buffer.append(getWeight());
+        
+        String trimmed = pushString.trim();
+        if( !trimmed.equals("") )
+        {
+            buffer.append(")(push ");
+            buffer.append(pushString);
+        }
+        
+        buffer.append("))");
+        return buffer.toString();
+    }
 
     
     public void setPushString(String pushString) {
@@ -153,10 +193,10 @@ public class ChordPatternDisplay
     
     public ChordPattern getChordPattern()
       {
-        Polylist list = Polylist.PolylistFromString(getPattern());
-        Polylist argument = ((Polylist)list.first()).rest();
+        //Polylist list = Polylist.PolylistFromString(getPattern());
+        //Polylist argument = ((Polylist)list.first()).rest();
         
-        ChordPattern chordPattern = ChordPattern.makeChordPattern(argument);
+        //ChordPattern chordPattern = ChordPattern.makeChordPattern(argument);
 //System.out.println("pattern = " + getPattern() + ", list = " + list +", ChordPattern = " + chordPattern);
         return chordPattern;
       }
@@ -235,6 +275,16 @@ public class ChordPatternDisplay
     {
     return unplayableColor;
     }
+   
+   public void setDefinedRules(LinkedHashMap map)
+   {
+       definedRules = map;
+   }
+   
+   public LinkedHashMap getDefinedRules()
+   {
+       return definedRules;
+   }
    
 /**
  * Checks the pattern for correctness for the given time signature. Changes

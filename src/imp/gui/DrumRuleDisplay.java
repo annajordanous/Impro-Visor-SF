@@ -23,6 +23,7 @@ package imp.gui;
 import imp.com.CommandManager;
 import imp.data.*;
 import imp.util.ErrorNonModal;
+import java.util.LinkedHashMap;
 import java.awt.Color;
 import polya.Polylist;
 
@@ -43,6 +44,8 @@ private String ruleText = "";
 private String displayText = "";
 
 DrumRuleRep ruleRep;
+
+LinkedHashMap<String, Polylist> definedRules;
 
 /**
  * Constructs a new DrumRuleDisplay JPanel with default empty rule and
@@ -125,17 +128,27 @@ public String getPatternText()
  * overall drum-pattern
  */
 
-public String getRule()
+public String getSaveRule()
   {
     instrumentName = MIDIBeast.spacelessDrumNameFromNumber(instrumentNumber);
     StringBuilder buffer = new StringBuilder();
     buffer.append("(drum ");
     buffer.append(instrumentName);
-    buffer.append(" (name ");
-    buffer.append(getName());
-    buffer.append(")(rules ");
-    buffer.append(getPatternText());
-    buffer.append("))");
+    if( getDefinedRules().containsKey(getName()))
+    {
+        buffer.append("(use ");
+        buffer.append(getName());
+        buffer.append(")");
+    }
+    else
+    {
+        buffer.append(" (name ");
+        buffer.append(getName());
+        buffer.append(")(rules ");
+        buffer.append(getPatternText());
+        buffer.append(")");
+    }
+    buffer.append(")");
     String rule = buffer.toString();
     //String rule = "(drum " + instrumentName + " " + getPatternText() + ")";
 
@@ -143,6 +156,23 @@ public String getRule()
 
     return rule;
   }
+
+/**
+ * used to create a temp style to play
+ * @return 
+ */
+public String getRule()
+{
+    StringBuilder buffer = new StringBuilder();
+    buffer.append("(drum ");
+    buffer.append(instrumentName);
+    buffer.append("(name ");
+    buffer.append(getName());
+    buffer.append(")(rules ");
+    buffer.append(getPatternText());
+    buffer.append("))");
+    return buffer.toString();
+}
 
 // "(drum " + getInstrument() + " (rules " + ruleText + "))";
 
@@ -264,7 +294,7 @@ public boolean playMe(double swingVal, int loopCount, double tempo, Score score)
                 return false;
               }
             Style tempStyle = Style.makeStyle(rule);
-
+            
             tempStyle.setSwing(swingVal);
             tempStyle.setAccompanimentSwing(swingVal);
             tempStyle.setName("drumRule");
@@ -354,5 +384,15 @@ public double getBeats()
   {
     return getPatternLength() / BEAT;
   }
+
+public LinkedHashMap getDefinedRules()
+{
+    return definedRules;
+}
+
+public void setDefinedRules(LinkedHashMap map)
+{
+    definedRules = map;
+}
 
 }
