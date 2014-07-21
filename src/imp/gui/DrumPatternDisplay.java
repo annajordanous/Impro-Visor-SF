@@ -31,6 +31,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import polya.Polylist;
 
 /**
@@ -50,6 +51,8 @@ private DrumRuleDisplay curSelectedRule = null;
 //True if the pattern information is displayed, false otherwise
 boolean isExpanded = false;
 private ArrayList<DrumRuleDisplay> rules = new ArrayList<DrumRuleDisplay>();
+
+LinkedHashMap<String, Polylist> definedRules;
 
 // To satisfy interface only
 @Override
@@ -153,7 +156,7 @@ public String getPattern(boolean requireChecked)
         try
           {
             DrumRuleDisplay d = e.next();
-            
+            d.setDefinedRules(getDefinedRules());
             // See if instrument is to be included per checkbox in editor
             // FIX: This is round-about, and should be changed to iterate directly over
             // table column, rather than going through drumRuleHolder.
@@ -167,7 +170,7 @@ public String getPattern(boolean requireChecked)
 
             if( !requireChecked || styleEditor.isDrumInstrumentNumberIncluded(instrumentNumber) )
               {
-                String rep = d.getRule();
+                String rep = d.getSaveRule();
                 if( d.checkStatus() )
                   {
                     buffer.append("\n\t\t"); // pretty-printing
@@ -566,6 +569,16 @@ public Color getUnplayableColor()
   {
     return null;
   }
+
+public void setDefinedRules(LinkedHashMap map)
+{
+    definedRules = map;
+}
+
+public LinkedHashMap getDefinedRules()
+{
+    return definedRules;
+}
 
 @Override
 public void setName(String name)

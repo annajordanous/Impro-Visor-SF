@@ -228,7 +228,7 @@ public DrumRuleRep(Polylist raw)
                         }
                     }
                     break;
-                }
+                }                
                 case RULES:
                 {
                     while( item.nonEmpty() )
@@ -388,7 +388,7 @@ public DrumRuleRep makeDrumRuleRep(Polylist L)
                         setError("Unrecognized name type in drum rule: " + item.first()); 
                     }
                     break;
-                }
+                }                   
                 case USE:
                 {
                     if( item.first() instanceof String )
@@ -449,7 +449,7 @@ public DrumRuleRep makeDrumRuleRep(Polylist L)
                         }
                     }
                     break;
-                }
+                }               
                 case RULES:
                 {
                     while( item.nonEmpty() )

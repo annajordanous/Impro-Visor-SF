@@ -25,6 +25,7 @@ import imp.ImproVisor;
 import imp.com.CommandManager;
 import imp.com.PlayScoreCommand;
 import imp.data.*;
+import java.util.LinkedHashMap;
 import java.awt.Color;
 import polya.Polylist;
 
@@ -45,6 +46,8 @@ private int titleNumber = 0;
 String bassPatternText = "";
 String bassDisplayText = "";
 BassPattern bassPattern;
+
+LinkedHashMap<String, Polylist> definedRules;
 
 /**
  * Constructs a new BassPatternDisplay JPanel with default weight 10 and an empty
@@ -110,7 +113,7 @@ public boolean playMe(double swingVal, int loopCount, double tempo, Score s)
           {
             String r = this.getPattern();
             Polylist rule = Notate.parseListFromString(r);
-
+        
             Style tempStyle = Style.makeStyle(rule);
             tempStyle.setSwing(swingVal);
             tempStyle.setAccompanimentSwing(swingVal);
@@ -178,12 +181,47 @@ public String getDisplayText()
  * style classes 
      *
  */
-public String getPattern()
+public String getSavePattern()
   {
-    return "(bass-pattern (name " + getName() + ")(rules " + getPatternText() + ")(weight " + getWeight() + "))";
+      StringBuilder buffer = new StringBuilder();
+      buffer.append("(bass-pattern ");
+      if( getDefinedRules().containsKey(getName()) )
+      {
+          buffer.append("(use ");
+          buffer.append(getName());
+          buffer.append(")");
+      }
+      else
+      {
+          buffer.append("(name ");
+          buffer.append(getName());
+          buffer.append(")(rules ");
+          buffer.append(getPatternText());
+          buffer.append(")");
+      }
+      buffer.append("(weight ");
+      buffer.append(getWeight());
+      buffer.append("))");
+    return buffer.toString();
   }
 
 
+/**
+ * Used to create a temporary style
+ * @return 
+ */
+public String getPattern()
+{
+    StringBuilder buffer = new StringBuilder();
+    buffer.append("(bass-pattern (name ");
+    buffer.append(getName());
+    buffer.append(")(rules ");
+    buffer.append(getPatternText());
+    buffer.append(")(weight ");
+    buffer.append(getWeight());
+    buffer.append("))");
+    return buffer.toString();
+}
 
 public BassPattern getBassPattern()
     {
@@ -289,7 +327,15 @@ public Color getUnplayableColor()
     return unplayableColor;
   }
 
+public void setDefinedRules(LinkedHashMap map)
+{
+    definedRules = map;
+}
 
+public LinkedHashMap getDefinedRules()
+{
+    return definedRules;
+}
 /**
  * Checks the pattern for correctness for the given time signature. 
  *

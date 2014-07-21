@@ -543,7 +543,7 @@ public class Style
             {
               case DEFINE_RULE:
               {
-                  style.makeDefinedRules(item);
+                  style.makeDefinedRules(item); 
                   break;
               }
             case CHORD_PATTERN:
