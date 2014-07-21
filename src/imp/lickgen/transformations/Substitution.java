@@ -40,6 +40,7 @@ public ArrayList<Transformation> transformations;
 public boolean debug;
 private boolean enabled;
 private LickGen lickGen;
+private boolean hasChanged;
 
 public Substitution (LickGen lickGen)
 {
@@ -50,6 +51,7 @@ public Substitution (LickGen lickGen)
     type = "embellishment";
     weight = 1;
     enabled = true;
+    hasChanged = false;
 }
 
 public Substitution (LickGen lickGen, Polylist sub)
@@ -81,6 +83,7 @@ public Substitution (LickGen lickGen, Polylist sub)
             }
         }
     }
+    hasChanged = false;
 }
 
 public MelodyPart apply(MelodyPart notes, ChordPart chords, int[] startingSlot)
@@ -138,6 +141,31 @@ public MelodyPart apply(MelodyPart notes, ChordPart chords, int[] startingSlot)
     return null;
 }
 
+public void addNewTransformation()
+{
+    Transformation trans = new Transformation(lickGen);
+    transformations.add(trans);
+    hasChanged = true;
+}
+public int getTotalWeight()
+{
+    int totalWeight = 0;
+    for(Transformation trans: transformations)
+    {
+        totalWeight += trans.getWeight();
+    }
+    return totalWeight;
+}
+public void scaleTransWeights(double scale)
+{
+    if(scale != 1.0)
+        hasChanged = true;
+    for(Transformation trans: transformations)
+    {
+        double newWeight = trans.getWeight()*scale;
+        trans.setWeight((int)newWeight);
+    }
+}
 public int getWeight()
 {
     return weight;
@@ -145,6 +173,8 @@ public int getWeight()
 
 public void setWeight(int weight)
 {
+    if(this.weight != weight)
+        hasChanged = true;
     this.weight = weight;
 }
 
@@ -155,6 +185,8 @@ public String getName()
 
 public void setName(String name)
 {
+    if(!this.name.equals(name))
+        hasChanged = true;
     this.name = name;
 }
 
@@ -165,6 +197,8 @@ public String getType()
 
 public void setType(String str)
 {
+    if(!type.equals(str))
+        hasChanged = true;
     type = str;
 }
 
@@ -175,7 +209,24 @@ public boolean getEnabled()
 
 public void setEnabled(boolean en)
 {
+    if(enabled != en)
+        hasChanged = true;
     enabled = en;
+}
+
+public boolean hasChanged()
+{
+    if(hasChanged)
+        return true;
+    else
+    {
+        for(Transformation trans: transformations)
+        {
+            if(trans.hasChanged())
+                return true;
+        }
+    }
+    return false;
 }
 
 public boolean equals(Object ob)
@@ -228,9 +279,4 @@ public void toFile(StringBuilder buf)
     buf.append(")");
 }
 
-public void addNewTransformation()
-{
-    Transformation newTrans = new Transformation(lickGen);
-    transformations.add(newTrans);
-}
 }

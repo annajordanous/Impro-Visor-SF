@@ -8,6 +8,9 @@ import imp.ImproVisor;
 import imp.com.PlayScoreCommand;
 import imp.data.ChordPart;
 import imp.data.MelodyPart;
+import static imp.gui.UnsavedChanges.Value.CANCEL;
+import static imp.gui.UnsavedChanges.Value.NO;
+import static imp.gui.UnsavedChanges.Value.YES;
 import imp.lickgen.LickGen;
 import imp.lickgen.transformations.Substitution;
 import imp.lickgen.transformations.Transform;
@@ -27,6 +30,9 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
+import java.awt.event.KeyEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -37,9 +43,13 @@ import java.util.Scanner;
 import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.AbstractAction;
 import javax.swing.AbstractCellEditor;
+import javax.swing.Action;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
@@ -47,6 +57,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
@@ -93,6 +104,8 @@ public class TransformTabPanel extends javax.swing.JPanel {
             @Override
             public void approveSelection(){
                 File f = getSelectedFile();
+                if(!f.getAbsolutePath().endsWith(EXTENSION))
+                    f = new File(f.getAbsolutePath()+EXTENSION);
                 if(f.exists() && getDialogType() == SAVE_DIALOG){
                     int result = JOptionPane.showConfirmDialog(this,"The file exists, overwrite?","Existing file",JOptionPane.YES_NO_CANCEL_OPTION);
                     switch(result){
@@ -111,6 +124,7 @@ public class TransformTabPanel extends javax.swing.JPanel {
                 super.approveSelection();
             }        
         };
+        
         chooser.setCurrentDirectory(ImproVisor.getGrammarDirectory());
         
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Transform Files","transform");
@@ -176,6 +190,14 @@ public class TransformTabPanel extends javax.swing.JPanel {
         substitutionFromLabel = new javax.swing.JLabel();
         subsScrollPane = new javax.swing.JScrollPane();
         subJTable = new javax.swing.JTable();
+        jPanel1 = new javax.swing.JPanel();
+        motifTotalLabel = new javax.swing.JLabel();
+        scaleMotifWeightsButton = new javax.swing.JButton();
+        motifTotalWeightValueLabel = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        scaleEmbWeightsButton = new javax.swing.JButton();
+        embTotalLabel = new javax.swing.JLabel();
+        embTotalWeightValueLabel = new javax.swing.JLabel();
         transformationsPanel = new javax.swing.JPanel();
         transformationSubstitutionNameLabel = new javax.swing.JLabel();
         createNewTransformationButton = new javax.swing.JButton();
@@ -183,6 +205,10 @@ public class TransformTabPanel extends javax.swing.JPanel {
         deleteTransformationButton = new javax.swing.JButton();
         transScrollPane = new javax.swing.JScrollPane();
         transJTable = new javax.swing.JTable();
+        jPanel3 = new javax.swing.JPanel();
+        scaleTransWeightsButton = new javax.swing.JButton();
+        transTotalWeightValueLabel = new javax.swing.JLabel();
+        transTotalLabel = new javax.swing.JLabel();
         playbackPanel = new javax.swing.JPanel();
         substitutorPlayLeadsheetButton = new javax.swing.JButton();
         substitutorStopLeadsheetButton = new javax.swing.JButton();
@@ -255,6 +281,7 @@ public class TransformTabPanel extends javax.swing.JPanel {
         SubstitutorParametersPanel.setPreferredSize(new java.awt.Dimension(180, 60));
         SubstitutorParametersPanel.setLayout(new java.awt.GridBagLayout());
 
+        substitutorRectifyCheckBox.setSelected(true);
         substitutorRectifyCheckBox.setText("Rectify");
         substitutorRectifyCheckBox.setToolTipText("rectify selection after applying substitutions");
         substitutorRectifyCheckBox.setMaximumSize(new java.awt.Dimension(240, 23));
@@ -501,6 +528,85 @@ public class TransformTabPanel extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(8, 6, 0, 6);
         substitutionsPanel.add(subsScrollPane, gridBagConstraints);
 
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Motif Weights", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 12))); // NOI18N
+        jPanel1.setMinimumSize(new java.awt.Dimension(200, 50));
+        jPanel1.setLayout(new java.awt.GridBagLayout());
+
+        motifTotalLabel.setText("Total: ");
+        motifTotalLabel.setMaximumSize(new java.awt.Dimension(35, 14));
+        motifTotalLabel.setMinimumSize(new java.awt.Dimension(35, 20));
+        motifTotalLabel.setPreferredSize(new java.awt.Dimension(35, 20));
+        jPanel1.add(motifTotalLabel, new java.awt.GridBagConstraints());
+
+        scaleMotifWeightsButton.setText("Scale All");
+        scaleMotifWeightsButton.setToolTipText("scale all the weights of substitutions currently labeled as motifs");
+        scaleMotifWeightsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                scaleMotifWeightsButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 1.0;
+        jPanel1.add(scaleMotifWeightsButton, gridBagConstraints);
+
+        motifTotalWeightValueLabel.setMinimumSize(new java.awt.Dimension(70, 20));
+        motifTotalWeightValueLabel.setPreferredSize(new java.awt.Dimension(70, 20));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        jPanel1.add(motifTotalWeightValueLabel, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        substitutionsPanel.add(jPanel1, gridBagConstraints);
+
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Embellishment Weights", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 12))); // NOI18N
+        jPanel2.setMinimumSize(new java.awt.Dimension(200, 50));
+        jPanel2.setLayout(new java.awt.GridBagLayout());
+
+        scaleEmbWeightsButton.setText("Scale All");
+        scaleEmbWeightsButton.setToolTipText("scale all the weights of substitutions currently labeled as embellishments");
+        scaleEmbWeightsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                scaleEmbWeightsButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 1.0;
+        jPanel2.add(scaleEmbWeightsButton, gridBagConstraints);
+
+        embTotalLabel.setText("Total: ");
+        embTotalLabel.setMaximumSize(new java.awt.Dimension(35, 14));
+        embTotalLabel.setMinimumSize(new java.awt.Dimension(35, 20));
+        embTotalLabel.setPreferredSize(new java.awt.Dimension(35, 20));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        jPanel2.add(embTotalLabel, gridBagConstraints);
+
+        embTotalWeightValueLabel.setMinimumSize(new java.awt.Dimension(70, 20));
+        embTotalWeightValueLabel.setPreferredSize(new java.awt.Dimension(70, 20));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        jPanel2.add(embTotalWeightValueLabel, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        substitutionsPanel.add(jPanel2, gridBagConstraints);
+
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
@@ -622,6 +728,47 @@ public class TransformTabPanel extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(8, 6, 0, 6);
         transformationsPanel.add(transScrollPane, gridBagConstraints);
 
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Transformation Weights", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 12))); // NOI18N
+        jPanel3.setMinimumSize(new java.awt.Dimension(200, 50));
+        jPanel3.setLayout(new java.awt.GridBagLayout());
+
+        scaleTransWeightsButton.setText("Scale All");
+        scaleTransWeightsButton.setToolTipText("scale all the weights of transformations in the currently selected substitution");
+        scaleTransWeightsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                scaleTransWeightsButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 1.0;
+        jPanel3.add(scaleTransWeightsButton, gridBagConstraints);
+
+        transTotalWeightValueLabel.setMinimumSize(new java.awt.Dimension(70, 20));
+        transTotalWeightValueLabel.setPreferredSize(new java.awt.Dimension(70, 20));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        jPanel3.add(transTotalWeightValueLabel, gridBagConstraints);
+
+        transTotalLabel.setText("Total: ");
+        transTotalLabel.setMaximumSize(new java.awt.Dimension(35, 14));
+        transTotalLabel.setMinimumSize(new java.awt.Dimension(35, 20));
+        transTotalLabel.setPreferredSize(new java.awt.Dimension(35, 20));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        jPanel3.add(transTotalLabel, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        transformationsPanel.add(jPanel3, gridBagConstraints);
+
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 1;
@@ -699,10 +846,9 @@ public class TransformTabPanel extends javax.swing.JPanel {
 
     private void openSubstitutionsFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openSubstitutionsFileButtonActionPerformed
         
-        
         if( chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION )
         {
-            filename = chooser.getSelectedFile().getName();
+            String newFilename = chooser.getSelectedFile().getName();
             String transformStr = "";
             try {
                 transformStr = new Scanner(chooser.getSelectedFile()).useDelimiter("\\Z").next();
@@ -711,18 +857,9 @@ public class TransformTabPanel extends javax.swing.JPanel {
             }
             if(transformStr.length() > 0)
             {
-                transform = new Transform(lickgen, transformStr);
-                fillSubstitutionsList();
-                fillTransformationsList();
+                Transform newTrans = new Transform(lickgen, transformStr);
+                changeTransform(newTrans, newFilename);
             }
-            
-            savedMelodies = new Stack();
-            savedTrans = new Stack();
-            revertSubstitutionsButton.setEnabled(false);
-            reapplySubstitutionsButton.setEnabled(false);
-
-            applySubstitutionsButton.setEnabled(true);
-            saveSubstitutionsButton.setEnabled(true);
         }
     }//GEN-LAST:event_openSubstitutionsFileButtonActionPerformed
 
@@ -762,10 +899,9 @@ public class TransformTabPanel extends javax.swing.JPanel {
         else
         {
 
-            editRow = -1;
+            resetEditNameButton();
             fillSubstitutionsList();
             fillTransformationsList();
-            editSubstitutionNameButton.setText("Edit Substitution Name");
         }
 
     }//GEN-LAST:event_editSubstitutionNameButtonActionPerformed
@@ -787,12 +923,12 @@ public class TransformTabPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_subJTableFocusGained
 
     private void createNewTransformationButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createNewTransformationButtonActionPerformed
-        Transformation trans = new Transformation(lickgen);
+        
         Object toAddSub = subJTable.getValueAt(subJTable.getSelectedRow(), 0);
         if(toAddSub != null)
         {
             Substitution subToAddTo = (Substitution) toAddSub;
-            subToAddTo.transformations.add(trans);
+            subToAddTo.addNewTransformation();
         }
         fillTransformationsList();
     }//GEN-LAST:event_createNewTransformationButtonActionPerformed
@@ -845,35 +981,13 @@ public class TransformTabPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_substitutorSaveLeadsheetButtonActionPerformed
 
     private void saveSubstitutionsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveSubstitutionsButtonActionPerformed
-        chooser.setSelectedFile(new File(filename));
-        
-        if( chooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION )
-          {
-            if( chooser.getSelectedFile().getName().endsWith(
-                EXTENSION) )
-              {
-                filename = chooser.getSelectedFile().getName();
-
-                saveTransformFile(chooser.getSelectedFile().getAbsolutePath());
-              }
-            else
-              {
-                filename = chooser.getSelectedFile().getName() + EXTENSION;
-
-                saveTransformFile(chooser.getSelectedFile().getAbsolutePath() + EXTENSION);
-              }
-            substitutionFromLabel.setText("Substitutions From: " + filename);
-          }
+        saveCurrentTransform();
     }//GEN-LAST:event_saveSubstitutionsButtonActionPerformed
 
     private void createNewSubstitutionsFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createNewSubstitutionsFileButtonActionPerformed
-        transform = new Transform(lickgen);
-        filename = "newTransformFile.transform";
-        fillSubstitutionsList();
-        fillTransformationsList();
-        
-        applySubstitutionsButton.setEnabled(true);
-        saveSubstitutionsButton.setEnabled(true);
+        Transform newTrans = new Transform(lickgen);
+        String newFilename = "newTransformFile.transform";
+        changeTransform(newTrans, newFilename);
     }//GEN-LAST:event_createNewSubstitutionsFileButtonActionPerformed
 
     private void addSubsFromOtherFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addSubsFromOtherFileButtonActionPerformed
@@ -892,6 +1006,7 @@ public class TransformTabPanel extends javax.swing.JPanel {
                 {
                     transform.substitutions.add(sub);
                 }
+                transform.hasChanged = true;
                 fillSubstitutionsList();
                 fillTransformationsList();
             }
@@ -902,6 +1017,23 @@ public class TransformTabPanel extends javax.swing.JPanel {
         revertSubs();
         applySubstitutions();
     }//GEN-LAST:event_reapplySubstitutionsButtonActionPerformed
+
+    private void scaleMotifWeightsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_scaleMotifWeightsButtonActionPerformed
+        ScaleMotifWeightsDialogue scale = new ScaleMotifWeightsDialogue(notate.lickgenFrame, transform);
+    }//GEN-LAST:event_scaleMotifWeightsButtonActionPerformed
+
+    private void scaleEmbWeightsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_scaleEmbWeightsButtonActionPerformed
+        ScaleEmbWeightsDialogue scale = new ScaleEmbWeightsDialogue(notate.lickgenFrame, transform);
+    }//GEN-LAST:event_scaleEmbWeightsButtonActionPerformed
+
+    private void scaleTransWeightsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_scaleTransWeightsButtonActionPerformed
+        int selectedSubRow = subJTable.getEditingRow();
+        if(selectedSubRow >= 0)
+        {
+            final Substitution selectedSub = (Substitution) subJTable.getValueAt(selectedSubRow, 0);
+            ScaleTransWeightsDialogue scale = new ScaleTransWeightsDialogue(notate.lickgenFrame, selectedSub);
+        }
+    }//GEN-LAST:event_scaleTransWeightsButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel SubstitutorParametersPanel;
@@ -915,11 +1047,21 @@ public class TransformTabPanel extends javax.swing.JPanel {
     private javax.swing.JButton deleteTransformationButton;
     private javax.swing.JButton editSelectedTransformationButton;
     private javax.swing.JButton editSubstitutionNameButton;
+    private javax.swing.JLabel embTotalLabel;
+    private javax.swing.JLabel embTotalWeightValueLabel;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JLabel motifTotalLabel;
+    private javax.swing.JLabel motifTotalWeightValueLabel;
     private javax.swing.JButton openSubstitutionsFileButton;
     private javax.swing.JPanel playbackPanel;
     private javax.swing.JButton reapplySubstitutionsButton;
     private javax.swing.JButton revertSubstitutionsButton;
     private javax.swing.JButton saveSubstitutionsButton;
+    private javax.swing.JButton scaleEmbWeightsButton;
+    private javax.swing.JButton scaleMotifWeightsButton;
+    private javax.swing.JButton scaleTransWeightsButton;
     private javax.swing.JPanel selectSubstitutionsButtonsPanel;
     private javax.swing.JTable subJTable;
     private javax.swing.JScrollPane subsScrollPane;
@@ -931,19 +1073,71 @@ public class TransformTabPanel extends javax.swing.JPanel {
     private javax.swing.JButton substitutorStopLeadsheetButton;
     private javax.swing.JTable transJTable;
     private javax.swing.JScrollPane transScrollPane;
+    private javax.swing.JLabel transTotalLabel;
+    private javax.swing.JLabel transTotalWeightValueLabel;
     private javax.swing.JLabel transformationSubstitutionNameLabel;
     private javax.swing.JPanel transformationsPanel;
     private javax.swing.JPanel useSubstitutionsButtonsPanel;
     // End of variables declaration//GEN-END:variables
 
-    public void setTransform(Transform trans)
+    public void changeTransform(Transform transform, String newFilename)
     {
-        transform = trans;
+      
+
+        boolean redisplay = true;
+
+        while( redisplay )
+          {
+          redisplay = false;
+
+          if( unsavedChanges() )
+            {
+
+            Object[] options =
+              {
+              "<html><b><u>Y</u>es</b>, save modifications.</html>",
+              "<html><b><u>N</u>o</b>, do not save modifications.</html>",
+              "<html><b>Cancel</b>, do not close this transform.</html>"
+              };
+
+            UnsavedChanges dialog = new UnsavedChanges(notate.lickgenFrame,
+                    "Save changes to transform before changing?", options);
+
+            dialog.setVisible(true);
+
+            dialog.dispose();
+
+            UnsavedChanges.Value choice = dialog.getValue();
+
+            switch( choice )
+              {
+              case YES:
+
+                if( !saveCurrentTransform() )
+                  {
+                  redisplay = true;
+                  }
+                break;
+
+              case NO:
+
+                break;
+
+              case CANCEL:
+
+                return;
+              }
+            }
+          }
+
+        this.transform = transform;
+        resetEditNameButton();
         fillSubstitutionsList();
         fillTransformationsList();
         
-        substitutionFromLabel.setText("Substitutions From: Flatten Transform Learning");
-        filename = "";
+        
+        filename = newFilename;
+        substitutionFromLabel.setText("Substitutions From: " + filename);
         savedMelodies = new Stack();
         savedTrans = new Stack();
         revertSubstitutionsButton.setEnabled(false);
@@ -952,6 +1146,47 @@ public class TransformTabPanel extends javax.swing.JPanel {
         applySubstitutionsButton.setEnabled(true);
         saveSubstitutionsButton.setEnabled(true);
         cleanTransformButton.setEnabled(true);
+    }
+    
+    private boolean saveCurrentTransform()
+    {
+        chooser.setSelectedFile(new File(filename));
+        
+        if( chooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION )
+          {
+            if( chooser.getSelectedFile().getName().endsWith(
+                EXTENSION) )
+              {
+                filename = chooser.getSelectedFile().getName();
+
+                saveTransformFile(chooser.getSelectedFile().getAbsolutePath());
+              }
+            else
+              {
+                filename = chooser.getSelectedFile().getName() + EXTENSION;
+
+                saveTransformFile(chooser.getSelectedFile().getAbsolutePath() + EXTENSION);
+              }
+            substitutionFromLabel.setText("Substitutions From: " + filename);
+            return true;
+          }
+        else
+        {
+            return false;
+        }
+    }
+    private boolean unsavedChanges()
+    {
+        return transform.hasChanged();
+    }
+    private void resetEditNameButton()
+    {
+        editRow = -1;
+        editSubstitutionNameButton.setText("Edit Substitution Name");
+    }
+    public void setTransform(Transform trans)
+    {
+        changeTransform(trans, "learnedTransform");
     }
     public void applySubstitutions()
     {
@@ -1070,6 +1305,12 @@ public class TransformTabPanel extends javax.swing.JPanel {
         deleteTransformationButton.setEnabled(false);
         editSelectedTransformationButton.setEnabled(false);
         createNewTransformationButton.setEnabled(false);
+        scaleTransWeightsButton.setEnabled(false);
+        
+        scaleMotifWeightsButton.setEnabled((editRow < 0));
+        scaleEmbWeightsButton.setEnabled((editRow < 0));
+        
+        setTotalSubWeights();
         
         subJTable.setModel(new javax.swing.table.AbstractTableModel() {
             ArrayList<Substitution> subs = transform.substitutions;
@@ -1105,13 +1346,18 @@ public class TransformTabPanel extends javax.swing.JPanel {
     {
         deleteTransformationButton.setEnabled(false);
         editSelectedTransformationButton.setEnabled(false);
+        
+        
         int selectedSubRow = subJTable.getEditingRow();
         String subName = "";
+        int totalSubWeight = 0;
         if(selectedSubRow >= 0)
         {
             final Substitution selectedSub = (Substitution) subJTable.getValueAt(selectedSubRow, 0);
             subName = selectedSub.getName();
 
+            totalSubWeight = selectedSub.getTotalWeight();
+            
             transJTable.setModel(new javax.swing.table.AbstractTableModel() {
                 ArrayList<Transformation> trans = ((Substitution)subJTable.getValueAt(subJTable.getEditingRow(), 0)).transformations;
 
@@ -1166,7 +1412,9 @@ public class TransformTabPanel extends javax.swing.JPanel {
             });
         }
         transformationSubstitutionNameLabel.setText("For Substitution: " + subName);
-        
+        transTotalWeightValueLabel.setText(((totalSubWeight > 0)? 
+                                            (totalSubWeight): 
+                                            "") + "");
         
     }
 
@@ -1178,6 +1426,7 @@ public class TransformTabPanel extends javax.swing.JPanel {
             FileWriter out = new FileWriter(new File(filepath));
             out.write(content.toString());
             out.close();
+            transform.hasChanged = false;
             return 0;
         }
         catch( IOException e )
@@ -1187,6 +1436,35 @@ public class TransformTabPanel extends javax.swing.JPanel {
         }
     }
     
+public void setTotalSubWeights()
+{
+    if(transform != null)
+    {
+        motifTotalWeightValueLabel.setText(transform.getTotalMotifWeight() +"");
+        embTotalWeightValueLabel.setText(transform.getTotalEmbWeight() +"");
+    }
+    else
+    {
+        motifTotalWeightValueLabel.setText("");
+        embTotalWeightValueLabel.setText("");
+    }
+}
+
+public void setTotalTransWeights()
+{
+        int selectedSubRow = subJTable.getEditingRow();
+        int totalSubWeight = 0;
+        if(selectedSubRow >= 0)
+        {
+            final Substitution selectedSub = (Substitution) subJTable.getValueAt(selectedSubRow, 0);
+
+            totalSubWeight = selectedSub.getTotalWeight();
+            
+        }
+        transTotalWeightValueLabel.setText(((totalSubWeight > 0)? 
+                                            (totalSubWeight): 
+                                            "") + "");
+}
     
 public class SubstitutionCellRenderer implements TableCellRenderer{
     public Component getTableCellRendererComponent(javax.swing.JTable table, Object value,
@@ -1242,7 +1520,7 @@ public class SubstitutionCellRenderer implements TableCellRenderer{
                 GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0,20,0,0), 0, 0);
         panel.add(weightLabel, subWeightLabelC);
         
-        SubTextField subWeightField = new SubTextField(sub);
+        SubWeightField subWeightField = new SubWeightField(sub);
         if(editRow >= 0)
         {
             subWeightField.setEnabled(false);
@@ -1279,6 +1557,7 @@ public class SubstitutionCellEditor extends AbstractCellEditor implements TableC
         {
             deleteSubstitutionButton.setEnabled(true);
             createNewTransformationButton.setEnabled(true);
+            scaleTransWeightsButton.setEnabled(true);
         }
         editSubstitutionNameButton.setEnabled(true);
         
@@ -1334,7 +1613,7 @@ public class SubstitutionCellEditor extends AbstractCellEditor implements TableC
                 GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0,20,0,0), 0, 0);
         panel.add(weightLabel, subWeightLabelC);
         
-        SubTextField subWeightField = new SubTextField(sub);
+        SubWeightField subWeightField = new SubWeightField(sub);
         if(editRow >= 0)
         {
             subWeightField.setEnabled(false);
@@ -1395,12 +1674,10 @@ public class SubNameEditField extends javax.swing.JTextField implements ActionLi
     }
     @Override
     public void actionPerformed(ActionEvent e) {
-        javax.swing.JTextField cb = (javax.swing.JTextField)e.getSource();
-        String str = cb.getText();
-        if(sub != null)
-        {
-            sub.setName(str);
-        }
+        editRow = -1;
+        fillSubstitutionsList();
+        fillTransformationsList();
+        editSubstitutionNameButton.setText("Edit Substitution Name");
     }
 
     public void insertUpdate(DocumentEvent e) {
@@ -1466,18 +1743,20 @@ public class SubTypeComboBox extends javax.swing.JComboBox implements ActionList
         if(cb.getSelectedItem() != null && sub != null)
         {
             sub.setType(cb.getSelectedItem().toString());
+            setTotalSubWeights();
         }
     }
     public void itemStateChanged(ItemEvent e) 
     {
         sub.setType(e.getItem().toString());
+        setTotalSubWeights();
     }
 }
 
-public class SubTextField extends javax.swing.JSpinner implements ChangeListener {
+public class SubWeightField extends javax.swing.JSpinner implements ChangeListener {
     private Substitution sub;
     
-    public SubTextField(Substitution sub)
+    public SubWeightField(Substitution sub)
     {
         this.sub = sub;
         SpinnerNumberModel model = new SpinnerNumberModel(sub.getWeight(), 0, Integer.MAX_VALUE, 1);
@@ -1492,9 +1771,10 @@ public class SubTextField extends javax.swing.JSpinner implements ChangeListener
         if(numberModel instanceof SpinnerNumberModel)
         {
             sub.setWeight((Integer)numberModel.getValue());
+            setTotalSubWeights();
         }
     }
-}
+    }
 
 public class TransformationCellRenderer implements TableCellRenderer{
     public Component getTableCellRendererComponent(javax.swing.JTable table, Object value,
@@ -1527,7 +1807,7 @@ public class TransformationCellRenderer implements TableCellRenderer{
                 GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0,0,0,0), 0, 0);
         panel.add(weightLabel, transWeightLabelC);
         
-        TransTextField transWeightField = new TransTextField(trans);
+        TransWeightField transWeightField = new TransWeightField(trans);
         GridBagConstraints transWeightC = new GridBagConstraints(   3, 0,
                                                                     1, 1,
                                                                     0.0, 0.0,
@@ -1581,7 +1861,7 @@ public class TransformationCellEditor extends AbstractCellEditor implements Tabl
                 GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0,0,0,0), 0, 0);
         panel.add(weightLabel, transWeightLabelC);
         
-        TransTextField transWeightField = new TransTextField(trans);
+        TransWeightField transWeightField = new TransWeightField(trans);
         GridBagConstraints transWeightC = new GridBagConstraints(   3, 0,
                                                                     1, 1,
                                                                     0.0, 0.0,
@@ -1620,10 +1900,10 @@ public class TransCheckBox extends javax.swing.JCheckBox implements ActionListen
     }
 }
 
-public class TransTextField extends javax.swing.JSpinner implements ChangeListener {
+public class TransWeightField extends javax.swing.JSpinner implements ChangeListener {
     private Transformation trans;
     
-    public TransTextField(Transformation trans)
+    public TransWeightField(Transformation trans)
     {
         this.trans = trans;
         SpinnerNumberModel model = new SpinnerNumberModel(trans.getWeight(), 0, Integer.MAX_VALUE, 1);
@@ -1639,9 +1919,10 @@ public class TransTextField extends javax.swing.JSpinner implements ChangeListen
         if(numberModel instanceof SpinnerNumberModel)
         {
             trans.setWeight((Integer)numberModel.getValue());
+            setTotalTransWeights();
         }
     }
-}
+    }
 
 public class TransformationDialogue extends javax.swing.JDialog implements ActionListener  {
 
@@ -1656,7 +1937,6 @@ public class TransformationDialogue extends javax.swing.JDialog implements Actio
         StringBuilder transFile = new StringBuilder();
         trans.toFile(transFile, "");
         contents = new javax.swing.JTextArea();
-        contents.setFont(new Font("monospaced", Font.PLAIN, 14));
         contents.setTabSize(8);
         contents.setText(transFile.toString());
         super.setLocationRelativeTo(frame);
@@ -1682,6 +1962,131 @@ public class TransformationDialogue extends javax.swing.JDialog implements Actio
             fillTransformationsList();
         }
     }
-}       
+}    
 
+public class ScaleMotifWeightsDialogue extends javax.swing.JDialog implements ActionListener  {
+
+    private Transform transform;
+    private javax.swing.JTextField contents;
+    
+    public ScaleMotifWeightsDialogue(javax.swing.JFrame frame, Transform trans)
+    {
+        super(frame, "Scale Motif Weights", true);
+        this.transform = trans;
+        contents = new javax.swing.JTextField("1");
+        super.setLocationRelativeTo(frame);
+        contents.setPreferredSize(new Dimension(50,20));
+        contents.addActionListener(this);
+        javax.swing.JLabel scaleLabel = new javax.swing.JLabel("Scale all motif weights by: ");
+        
+        javax.swing.JPanel layout = new javax.swing.JPanel(new FlowLayout());
+        layout.add(scaleLabel);
+        layout.add(contents);
+        getContentPane().add(layout);
+        javax.swing.JButton saveButton = new javax.swing.JButton("Scale"); 
+        saveButton.addActionListener(this);
+        getContentPane().add(saveButton, BorderLayout.SOUTH);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        pack(); 
+        setVisible(true);
+    }
+    
+    public void actionPerformed(ActionEvent e) {
+        try {
+            double scale = Double.parseDouble(contents.getText());
+            transform.scaleMotifWeights(scale);
+            dispose(); 
+            setVisible(false); 
+            fillSubstitutionsList();
+            fillTransformationsList();
+        }
+        catch (Exception ex)
+        {
+            
+        }
+    }
+}    
+public class ScaleEmbWeightsDialogue extends javax.swing.JDialog implements ActionListener  {
+
+    private Transform transform;
+    private javax.swing.JTextField contents;
+    
+    public ScaleEmbWeightsDialogue(javax.swing.JFrame frame, Transform trans)
+    {
+        super(frame, "Scale Embellishment Weights", true);
+        this.transform = trans;
+        contents = new javax.swing.JTextField("1");
+        super.setLocationRelativeTo(frame);
+        contents.setPreferredSize(new Dimension(50,20));
+        contents.addActionListener(this);
+        javax.swing.JLabel scaleLabel = new javax.swing.JLabel("Scale all embellishment weights by: ");
+        
+        javax.swing.JPanel layout = new javax.swing.JPanel(new FlowLayout());
+        layout.add(scaleLabel);
+        layout.add(contents);
+        getContentPane().add(layout);
+        javax.swing.JButton saveButton = new javax.swing.JButton("Scale"); 
+        saveButton.addActionListener(this);
+        getContentPane().add(saveButton, BorderLayout.SOUTH);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        pack(); 
+        setVisible(true);
+    }
+    
+    public void actionPerformed(ActionEvent e) {
+        try {
+            double scale = Double.parseDouble(contents.getText());
+            transform.scaleEmbWeights(scale);
+            dispose(); 
+            setVisible(false); 
+            fillSubstitutionsList();
+            fillTransformationsList();
+        }
+        catch (Exception ex)
+        {
+            
+        }
+    }
+}    
+public class ScaleTransWeightsDialogue extends javax.swing.JDialog implements ActionListener  {
+
+    private Substitution sub;
+    private javax.swing.JTextField contents;
+    
+    public ScaleTransWeightsDialogue(javax.swing.JFrame frame, Substitution sub)
+    {
+        super(frame, "Scale Transformation Weights", true);
+        this.sub = sub;
+        contents = new javax.swing.JTextField("1");
+        super.setLocationRelativeTo(frame);
+        contents.setPreferredSize(new Dimension(50,20));
+        contents.addActionListener(this);
+        javax.swing.JLabel scaleLabel = new javax.swing.JLabel("Scale all transformation weights by: ");
+        
+        javax.swing.JPanel layout = new javax.swing.JPanel(new FlowLayout());
+        layout.add(scaleLabel);
+        layout.add(contents);
+        getContentPane().add(layout);
+        javax.swing.JButton saveButton = new javax.swing.JButton("Scale"); 
+        saveButton.addActionListener(this);
+        getContentPane().add(saveButton, BorderLayout.SOUTH);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        pack(); 
+        setVisible(true);
+    }
+    
+    public void actionPerformed(ActionEvent e) {
+        try {
+            double scale = Double.parseDouble(contents.getText());
+            sub.scaleTransWeights(scale);
+            dispose(); 
+            setVisible(false); 
+            fillTransformationsList();
+        }
+        catch (Exception ex)
+        {
+            
+        }
+    }
+}    
 }
