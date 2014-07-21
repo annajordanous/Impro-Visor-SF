@@ -143,7 +143,7 @@ public int getTitleNumber()
  * syntax used by the style classes
  */
 
-public String getPattern(boolean requireChecked)
+public String getSavePattern(boolean requireChecked)
   {
     StringBuilder buffer = new StringBuilder();
     
@@ -171,6 +171,66 @@ public String getPattern(boolean requireChecked)
             if( !requireChecked || styleEditor.isDrumInstrumentNumberIncluded(instrumentNumber) )
               {
                 String rep = d.getSaveRule();
+                if( d.checkStatus() )
+                  {
+                    buffer.append("\n\t\t"); // pretty-printing
+                    buffer.append(rep);
+                  }
+                else
+                  {
+                    ErrorLog.log(ErrorLog.WARNING, "error in drum rule: " + rep);
+                  }
+              }
+              }
+            else
+              {
+                System.err.println("Ignoring non-GM percusssion # " + instrumentNumber);
+              }
+          }
+        catch( ClassCastException ex )
+          {
+          }
+      }
+    buffer.append("\n\t\t(weight ");
+    buffer.append(getWeight());
+    buffer.append(")\n\t)");
+    
+    return buffer.toString();
+  }
+
+/**
+ * Used to play the pattern
+ * @param requireChecked
+ * @return 
+ */
+public String getPattern(boolean requireChecked)
+  {
+    StringBuilder buffer = new StringBuilder();
+    
+    buffer.append("(drum-pattern (pattern-name ");
+    buffer.append(patternName);
+    buffer.append(") ");
+
+    for( Iterator<DrumRuleDisplay> e = rules.iterator(); e.hasNext(); )
+      {
+        try
+          {
+            DrumRuleDisplay d = e.next();
+            //d.setDefinedRules(getDefinedRules());
+            // See if instrument is to be included per checkbox in editor
+            // FIX: This is round-about, and should be changed to iterate directly over
+            // table column, rather than going through drumRuleHolder.
+
+            int instrumentNumber = d.getInstrumentNumber();
+            
+            if( MIDIBeast.drumInstrumentNumberValid(instrumentNumber) )
+              {
+
+            //System.out.println("drumrule = " + instrumentNumber + " " + d.getRule() + styleEditor.isDrumInstrumentNumberIncluded(instrumentNumber));
+
+            if( !requireChecked || styleEditor.isDrumInstrumentNumberIncluded(instrumentNumber) )
+              {
+                String rep = d.getRule();
                 if( d.checkStatus() )
                   {
                     buffer.append("\n\t\t"); // pretty-printing
