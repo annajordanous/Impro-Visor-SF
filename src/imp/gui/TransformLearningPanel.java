@@ -403,6 +403,7 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weighty = 1.0;
         add(step4Panel, gridBagConstraints);
 
         jLabel1.setFont(new java.awt.Font("Lucida Grande", 0, 13)); // NOI18N
@@ -459,6 +460,7 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         ChordPart chords = notate.getChordProg();
         Polylist transformList = transformLearning.createTransform(outline, original.copy(), chords, resolution, start, stop);
         transform = new Transform(lickgen, transformList.toStringSansParens());
+        transform.hasChanged = true;
         showTransformButton.setEnabled(true);
         setTransformButton.setEnabled(true);
     }//GEN-LAST:event_createTransformButtonActionPerformed

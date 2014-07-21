@@ -44,6 +44,7 @@ private int weight;
 private boolean enabled;
 private String description;
 private LickGen lickGen;
+private boolean hasChanged;
 public boolean debug;
 public Transformation(LickGen lickGen)
 {
@@ -54,17 +55,20 @@ public Transformation(LickGen lickGen)
     targetNotes = Polylist.PolylistFromString("n1");
     conditionGuard = Polylist.PolylistFromString("duration>= n1 128");
     weight = 1;
+    hasChanged = false;
     enabled = true;
 }
 public Transformation(LickGen lickGen, String transString)
 {
     this(lickGen);
     setTransformation((Polylist)Polylist.PolylistFromString(transString).first());
+    hasChanged = false;
 }
 public Transformation(LickGen lickGen, Polylist trans)
 {
     this(lickGen);
     setTransformation(trans);
+    hasChanged = false;
 }
 public Transformation copy()
 {
@@ -76,7 +80,7 @@ public Transformation copy()
 public boolean setTransformation(Polylist trans)
 {   
     StringBuilder copyString = new StringBuilder();
-    
+    hasChanged = true;
     toFile(copyString, "");
     String transCopy = copyString.toString();
     try{
@@ -206,6 +210,8 @@ public int getWeight()
 
 public void setWeight(int weight)
 {
+    if(this.weight != weight)
+        hasChanged = true;
     this.weight = weight;
 }
 
@@ -216,12 +222,19 @@ public boolean getEnabled()
 
 public void setEnabled(boolean en)
 {
+    if(enabled != en)
+        hasChanged = true;
     enabled = en;
 }
 
 public String getDescription()
 {
     return description;
+}
+
+public boolean hasChanged()
+{
+    return hasChanged;
 }
 
 public boolean equals(Object ob)

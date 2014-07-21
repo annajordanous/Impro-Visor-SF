@@ -41,10 +41,12 @@ private MelodyPart startingNotes;
 public ArrayList<Substitution> substitutions;
 private LickGen lickGen;
 public boolean debug;
+public boolean hasChanged;
 
 public Transform(LickGen lickGen)
 {
     debug = false;
+    hasChanged = false;
     this.lickGen = lickGen;
     substitutions = new ArrayList<Substitution>();
 }
@@ -52,6 +54,7 @@ public Transform(LickGen lickGen)
 public Transform(LickGen lickGen, String subs)
 {
     debug = false;
+    hasChanged = false;
     substitutions = new ArrayList<Substitution>();
     this.lickGen = lickGen;
     Polylist polysubs = Polylist.PolylistFromString(subs);
@@ -194,9 +197,57 @@ public void findDuplicatesAndAddToWeight()
             int subIndex = substitutions.indexOf(sub);
             Substitution copy = substitutions.remove(subIndex);
             newWeight += copy.getWeight();
+            hasChanged = true;
         }
         sub.setWeight(newWeight);
         substitutions.add(i, sub);
+    }
+}
+
+public int getTotalMotifWeight()
+{
+    int totalWeight = 0;
+    for(Substitution sub: substitutions)
+    {
+        if(sub.getType().equals("motif"))
+            totalWeight += sub.getWeight();
+    }
+    return totalWeight;
+}
+public int getTotalEmbWeight()
+{
+    int totalWeight = 0;
+    for(Substitution sub: substitutions)
+    {
+        if(sub.getType().equals("embellishment"))
+            totalWeight += sub.getWeight();
+    }
+    return totalWeight;
+}
+public void scaleMotifWeights(double scale)
+{
+    if(scale != 1.0)
+        hasChanged = true;
+    for(Substitution sub: substitutions)
+    {
+        if(sub.getType().equals("motif"))
+        {
+            double newWeight = sub.getWeight()*scale;
+            sub.setWeight((int)newWeight);
+        }
+    }
+}
+public void scaleEmbWeights(double scale)
+{
+    if(scale != 1.0)
+        hasChanged = true;
+    for(Substitution sub: substitutions)
+    {
+        if(sub.getType().equals("embellishment"))
+        {
+            double newWeight = sub.getWeight()*scale;
+            sub.setWeight((int)newWeight);
+        }
     }
 }
 
@@ -231,7 +282,22 @@ public Substitution addNewSubstitution()
 {
     Substitution newSub = new Substitution(lickGen);
     substitutions.add(newSub);
+    hasChanged = true;
     return newSub;
 }
 
+public boolean hasChanged()
+{
+    if(hasChanged)
+        return true;
+    else
+    {
+        for(Substitution sub: substitutions)
+        {
+            if(sub.hasChanged())
+                return true;
+        }
+    }
+    return false;
+}
 }
