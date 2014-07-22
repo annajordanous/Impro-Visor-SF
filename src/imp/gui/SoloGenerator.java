@@ -96,6 +96,8 @@ LickgenFrame lickgenFrame;
         typedWrong = new javax.swing.JLabel();
         tryAgain = new javax.swing.JLabel();
         cellOkbutton = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
         resetCheck = new javax.swing.JDialog();
         Resettable = new javax.swing.JLabel();
         youSure = new javax.swing.JLabel();
@@ -192,22 +194,21 @@ LickgenFrame lickgenFrame;
         enteredIncorrectly.setMinimumSize(new java.awt.Dimension(400, 300));
         enteredIncorrectly.getContentPane().setLayout(new java.awt.GridBagLayout());
 
-        typedWrong.setText("You have typed information into a cell incorrectly.");
+        typedWrong.setText("You have either typed information into a cell incorrectly,");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.gridwidth = 4;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(91, 46, 0, 67);
+        gridBagConstraints.insets = new java.awt.Insets(80, 24, 0, 21);
         enteredIncorrectly.getContentPane().add(typedWrong, gridBagConstraints);
 
         tryAgain.setText("Please try again.");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(6, 155, 0, 0);
+        gridBagConstraints.insets = new java.awt.Insets(6, 6, 0, 0);
         enteredIncorrectly.getContentPane().add(tryAgain, gridBagConstraints);
 
         cellOkbutton.setText("Ok");
@@ -217,11 +218,30 @@ LickgenFrame lickgenFrame;
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(18, 79, 107, 0);
+        enteredIncorrectly.getContentPane().add(cellOkbutton, gridBagConstraints);
+
+        jLabel1.setText("not finished entering contents into a cell, or left a cell");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 4;
+        gridBagConstraints.ipadx = 15;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(12, 24, 0, 21);
+        enteredIncorrectly.getContentPane().add(jLabel1, gridBagConstraints);
+
+        jLabel2.setText("blank.");
+        gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(18, 163, 97, 0);
-        enteredIncorrectly.getContentPane().add(cellOkbutton, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(6, 24, 0, 0);
+        enteredIncorrectly.getContentPane().add(jLabel2, gridBagConstraints);
 
         resetCheck.setMinimumSize(new java.awt.Dimension(500, 300));
         resetCheck.getContentPane().setLayout(new java.awt.GridBagLayout());
@@ -351,7 +371,6 @@ LickgenFrame lickgenFrame;
         gridBagConstraints.insets = new java.awt.Insets(18, 71, 135, 0);
         deleteCheck.getContentPane().add(Nodelete, gridBagConstraints);
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setLocation(new java.awt.Point(10, 10));
         setLocationByPlatform(true);
         getContentPane().setLayout(new java.awt.GridBagLayout());
@@ -577,7 +596,8 @@ private void playSelection()
     }//GEN-LAST:event_soloTableComponentShown
 
     private void generateThemeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateThemeActionPerformed
-    generateTheme();
+    
+       generateTheme();
      
     }//GEN-LAST:event_generateThemeActionPerformed
 
@@ -590,32 +610,42 @@ private void playSelection()
                 themeUsesize += 1; //add one to the size
             }
         }
+        System.out.println(themeUsesize);
         
-        ArrayList<ThemeUse> themeUses = new ArrayList<ThemeUse>(themeUsesize); //create an empty array of themeUses
+        ArrayList<ThemeUse> themeUses = new ArrayList<ThemeUse>(); //create an empty array of themeUses
 
-        for (int i = 0; i < themeUsesize; i++) { //loop through size of themeUses
+        for (int i = 0; i < soloTable.getRowCount(); i++) { //loop through size of themeUses
 
-            if ((soloTable.getValueAt(i, 2) == null) ||  (soloTable.getValueAt(i, 3) == null) || (soloTable.getValueAt(i, 4) == null)
-                    || (soloTable.getValueAt(i, 5) == null) || (soloTable.getValueAt(i, 6) == null)) { //if any cell has incorrect info
-                enteredIncorrectly.setVisible(true); //show error message
-                break;
-             } 
-            else if ((isDouble((String) soloTable.getValueAt(i, 3)) == false) || (isDouble((String) soloTable.getValueAt(i, 4)) == false)
-                    || (isDouble((String) soloTable.getValueAt(i, 5)) == false) || (isDouble((String) soloTable.getValueAt(i, 6)) == false)) {
-                enteredIncorrectly.setVisible(true); //show error message
-                break;
-            }
-            
-            else { //if they are all entered correctly
-                themeUses.add(new ThemeUse(new MelodyPart((String) soloTable.getValueAt(i, 2)))); // add a new ThemeUse to the arraylist with respective elements
-                themeUses.get(i).probUse = Double.valueOf((String) soloTable.getValueAt(i, 3));
-                themeUses.get(i).probTranspose = Double.valueOf((String) soloTable.getValueAt(i, 4));
-                themeUses.get(i).probInvert = Double.valueOf((String) soloTable.getValueAt(i, 5));
-                themeUses.get(i).probReverse = Double.valueOf((String) soloTable.getValueAt(i, 6));
-                generateSolo(themeUses, cm);
-                playSelection();
+//            if ((soloTable.getValueAt(i, 2) == null) &&  ((soloTable.getValueAt(i, 3) == null) || (soloTable.getValueAt(i, 4) == null)
+//                    || (soloTable.getValueAt(i, 5) == null) || (soloTable.getValueAt(i, 6) == null))) { //if any cell has incorrect info
+//                enteredIncorrectly.setVisible(true); //show error message
+//                break;
+//             } 
+//             if ((isDouble((String) soloTable.getValueAt(i, 3)) == false) 
+//              || (isDouble((String) soloTable.getValueAt(i, 4)) == false)
+//              || (isDouble((String) soloTable.getValueAt(i, 5)) == false) 
+//              || (isDouble((String) soloTable.getValueAt(i, 6)) == false)) {
+//                enteredIncorrectly.setVisible(true); //show error message
+//                break;
+//            }
+//            
+//            else 
+            { //if they are all entered correctly
+                System.out.println("list");
+                if (soloTable.getValueAt(i, 2) != null) {
+                ThemeUse use = new ThemeUse(new MelodyPart((String) soloTable.getValueAt(i, 2)));
+                use.probUse = Double.valueOf((String) soloTable.getValueAt(i, 3));
+                use.probTranspose = Double.valueOf((String) soloTable.getValueAt(i, 4));
+                use.probInvert = Double.valueOf((String) soloTable.getValueAt(i, 5));
+                use.probReverse = Double.valueOf((String) soloTable.getValueAt(i, 6));
+                themeUses.add(use); // add a new ThemeUse to the arraylist with respective elements
+                
+                System.out.println(use);
+                }
             }
         }
+        generateSolo(themeUses, cm);
+        playSelection();
 
 
     }//GEN-LAST:event_generateSoloActionPerformed
@@ -945,8 +975,8 @@ public ThemeListModel themeListModel = new ThemeListModel();
   
 private SoloGeneratorTableModel soloTableModel = new SoloGeneratorTableModel (
         new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
+                {null, null, null, "1", "0", "0", "0"},
+                {null, null, null, "1", "0", "0", "0"},
                 {null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null},
@@ -1105,7 +1135,7 @@ public class SoloGeneratorTableModel extends DefaultTableModel
             }
             
             if ((soloTable.isCellSelected(i, 0) == true) && (soloTable.getValueAt(i, 2) != null) 
-                    && (soloTable.getValueAt(i, 0) != null)) 
+                    && (soloTable.getValueAt(i, 0) != null) && (soloTable.getValueAt(i,0) != " ")) 
             { //if name cell is selected, it's not empty and the theme isn't empty
                 MelodyPart melody = new MelodyPart((String) soloTable.getValueAt(i, 2));
                 System.out.println(melody);
@@ -1305,12 +1335,12 @@ public MelodyPart fillMelody(int beatValue,
     public MelodyPart generateTheme() { 
         for (int x = 0; x < soloTable.getRowCount(); x++) { //loop through the rows of the table
             
-            if (isInteger((String) soloTable.getValueAt(x, 1)) == false) {
+            if ((soloTable.isCellSelected(x, 1) == true) && (isInteger((String) soloTable.getValueAt(x, 1)) == false)) {
                 enteredIncorrectly.setVisible(true);
               } 
             else {
                 
-                if ((soloTable.isCellSelected(x, 1) == true) && (soloTable.getValueAt(x, 1) != null)) {
+               if ((soloTable.isCellSelected(x, 1) == true)  && (soloTable.getValueAt(x,1) != null)) {
                     //if the theme length cell is selected and has something in it
                     int Length = notate.intFromStringInRange((String) soloTable.getValueAt(x, 1), 0, 100, themeLength); //get length from table
                     themeLength = BEAT * Length;
@@ -1425,7 +1455,8 @@ Random random;
         
 
     public void generateSolo(ArrayList<ThemeUse> themeUses, CommandManager cm) {
-
+        System.out.println("start");
+        System.out.println(themeUses);
         // create four empty lists to start for all the probabilities
         List<Double> probUselist = new ArrayList(Arrays.asList());
         List<Double> probTransposelist = new ArrayList(Arrays.asList());
@@ -1608,6 +1639,8 @@ Random random;
     private javax.swing.JDialog enteredIncorrectly;
     private java.awt.Button generateSolo;
     private java.awt.Button generateTheme;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JDialog nameErrorMessage;

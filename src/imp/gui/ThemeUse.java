@@ -42,5 +42,13 @@ public ThemeUse(MelodyPart melody)
 {
     theme = new Theme(melody);
 }
-  
+
+public String toString()
+{
+    return "ThemeUse " + theme.melody + " " 
+          + probUse + " " 
+          + probTranspose + " "
+          + probInvert + " " 
+          + probReverse;
+}
 }
