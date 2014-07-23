@@ -1314,6 +1314,10 @@ boolean saveConstructionLineState;
     return score;
     }
   
+  public StaveScrollPane[] getStaveScrollPane() {
+      return staveScrollPane;
+  }
+  
   public LickGen getLickGen()
   {
       return lickgen;
@@ -22003,7 +22007,6 @@ public void adjustSelection()
  */
 public void originalGenerate(LickGen lickgen, int improviseStartSlot, int improviseEndSlot)
 {
-    //System.out.println("originalGenerate from " + improviseStartSlot + " to " + improviseEndSlot);
     saveConstructionLineState = showConstructionLinesMI.isSelected();
     // Don't construction show lines while generating
     setShowConstructionLinesAndBoxes(false);
@@ -22014,8 +22017,16 @@ public void originalGenerate(LickGen lickgen, int improviseStartSlot, int improv
 
     Stave stave = getCurrentStave();
 
-    stave.setSelection(improviseStartSlot, improviseEndSlot);
-
+    //if nothing is selected, the user probably meant to select everything
+    if (improviseStartSlot == OUT_OF_BOUNDS
+            || improviseEndSlot == OUT_OF_BOUNDS
+            || improviseStartSlot == improviseEndSlot) {
+        improviseStartSlot = 0;
+        improviseEndSlot = getChordProg().size();
+    } else {
+        stave.setSelection(improviseStartSlot, improviseEndSlot);
+    }
+    
     totalSlots = improviseEndSlot - improviseStartSlot + 1;
 
     int beatsRequested = totalSlots/BEAT;
@@ -22166,7 +22177,7 @@ public void originalGenerate(LickGen lickgen, int improviseStartSlot, int improv
     // If the outline is unable to generate a solo, which might
     // happen if there are no outlines of the correct length or the soloist
     // file was not correctly loaded, use the grammar.
-
+    
     else if( rhythm == null || !useOutlines  )
       {
         if( lickgenFrame.getUseGrammar() )
@@ -22187,11 +22198,13 @@ public void originalGenerate(LickGen lickgen, int improviseStartSlot, int improv
         if( lick != null )
           {
             int beatsGenerated = lick.size()/BEAT;
+            System.out.println("Beats generated: " + beatsGenerated);
 
             if( beatsGenerated != beatsRequested )
               {
-              //debug System.out.println("generated " + beatsGenerated
-              //              + " beats, but " + beatsRequested + " requested");
+               //debug
+               System.out.println("generated " + beatsGenerated
+                            + " beats, but " + beatsRequested + " requested");
               }
 
             if(useSubstitutorCheckBox.isSelected())

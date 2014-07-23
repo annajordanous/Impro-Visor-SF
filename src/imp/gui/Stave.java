@@ -236,12 +236,12 @@ private boolean doubleBar = false;
 private int keySignature = 0;
 /**
  * Sets the maximum pitch for the Stave.
- * NOTE: Was set to 127, but had to set it lower to reflect leger lines.
+ * NOTE: Was set to 127, but had to set it lower to reflect ledger lines.
  */
 private int maxPitch = 97;
 /**
  * Sets the minimum pitch for the Stave.
- * NOTE: Was set to 0, but had to set it higher to reflect leger lines.
+ * NOTE: Was set to 0, but had to set it higher to reflect ledger lines.
  */
 private int minPitch = 24;
 // Used for setting the key signature
