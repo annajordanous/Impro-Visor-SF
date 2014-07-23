@@ -41,7 +41,40 @@ double probReverse;
 public ThemeUse(MelodyPart melody)
 {
     theme = new Theme(melody);
-}
+} 
+
+  public ThemeUse(Theme theme, double probUse, double probTranspose, double probInvert)
+      {
+        this.theme = theme;
+        this.probUse = probUse;
+        this.probTranspose = probTranspose;
+        this.probInvert = probInvert;
+      }
+
+    public Theme getTheme()
+      {
+        return theme;
+      }
+
+    public double getProbUse()
+      {
+        return probUse;
+      }
+
+    public double getProbTranspose()
+      {
+        return probTranspose;
+      }
+
+    public double getProbInvert()
+      {
+        return probInvert;
+      }
+
+    public double getProbReverse()
+      {
+        return probReverse;
+      }
 
 public String toString()
 {
