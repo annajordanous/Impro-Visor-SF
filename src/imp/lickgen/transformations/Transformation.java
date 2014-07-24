@@ -111,22 +111,35 @@ public MelodyPart apply(MelodyPart notes, ChordPart chords, int startingSlot)
 {
     Evaluate eval = new Evaluate(lickGen, new Polylist());
 
-    MelodyPart.PartIterator transferNotes = notes.iterator(startingSlot);
-    
     PolylistEnum transSourceNotes = new PolylistEnum(sourceNotes);
+    
+    if(!changesFirstNote() && notes.getPrevIndex(startingSlot) > -1)
+        startingSlot = notes.getPrevIndex(startingSlot);
     
     int newStartingSlot = startingSlot;
     int totalDurBefore = 0;
-    while(transSourceNotes.hasMoreElements() && transferNotes.hasNext())
+    while(transSourceNotes.hasMoreElements() && newStartingSlot < notes.getSize())
     {
         
         String varName = (String) transSourceNotes.nextElement();
         
-        Note varNote = (Note) transferNotes.next();
+        Note varNote = notes.getCurrentNote(newStartingSlot);
         
         totalDurBefore += varNote.getRhythmValue();
         
-        Chord varChord = chords.getCurrentChord(startingSlot);
+        Chord varChord = chords.getCurrentChord(newStartingSlot);
+        
+        // Sometimes, the chordpart length is shorter than the melodypart,
+        // so the notes under the last chord can't just use getCurrentChord
+        if(varChord == null)
+        {
+            int lastChordIndex = newStartingSlot;
+            while(varChord == null)
+            {
+                lastChordIndex = notes.getPrevIndex(lastChordIndex);
+                varChord = chords.getCurrentChord(lastChordIndex);
+            }
+        }
         
         eval.setNoteVar(varName, varNote, varChord);
         
@@ -196,6 +209,20 @@ public MelodyPart apply(MelodyPart notes, ChordPart chords, int startingSlot)
         }
         return resultingMP;
     }
+}
+
+public boolean changesFirstNote()
+{
+    if(numSourceNotes() > 1 && sourceNotes.first().equals(targetNotes.first()))
+        return false;
+    return true;
+}
+
+public boolean changesLastNote()
+{
+    if(numSourceNotes() > 1 && sourceNotes.last().equals(targetNotes.last()))
+        return false;
+    return true;
 }
 
 public int numSourceNotes()

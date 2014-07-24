@@ -3418,7 +3418,7 @@ public int classifyNote(Note note, Chord chord)
     // May want to drop out this check or return CHORD instead
     if( rootClass.enharmonic(pitch) )
       {
-        return BASS;
+        //return BASS;
       }
 
     // Check for chord tone

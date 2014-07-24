@@ -24,7 +24,7 @@ import polya.*;
 
 /**
  *
- * @author Notsoplenk
+ * @author Alex Putman
  */
 public class TransformLearningPanel extends javax.swing.JPanel {
 
@@ -68,19 +68,18 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         step1Label3 = new javax.swing.JLabel();
         step1Label2 = new javax.swing.JLabel();
         step2Panel = new javax.swing.JPanel();
-        flattenByChord16Buton = new javax.swing.JButton();
-        flattenByChord8Buton = new javax.swing.JButton();
-        flattenByChord4Buton = new javax.swing.JButton();
-        flattenByChord2Buton = new javax.swing.JButton();
         step2Label1 = new javax.swing.JLabel();
         step2Label2 = new javax.swing.JLabel();
         step2Label3 = new javax.swing.JLabel();
+        flattenValueComboBox = new javax.swing.JComboBox();
+        flattenButton = new javax.swing.JButton();
         step3Panel = new javax.swing.JPanel();
         subFlatFromOrigButton = new javax.swing.JButton();
         createTransformButton = new javax.swing.JButton();
         step3Label1 = new javax.swing.JLabel();
         step3Label2 = new javax.swing.JLabel();
         step3Label3 = new javax.swing.JLabel();
+        generateTransformMethodComboBox = new javax.swing.JComboBox();
         step4Panel = new javax.swing.JPanel();
         showTransformButton = new javax.swing.JButton();
         setTransformButton = new javax.swing.JButton();
@@ -101,8 +100,8 @@ public class TransformLearningPanel extends javax.swing.JPanel {
 
         saveOriginalButton.setText("Save Original");
         saveOriginalButton.setToolTipText("Save the currently selected melody");
-        saveOriginalButton.setMinimumSize(new java.awt.Dimension(250, 25));
-        saveOriginalButton.setPreferredSize(new java.awt.Dimension(250, 25));
+        saveOriginalButton.setMinimumSize(new java.awt.Dimension(300, 25));
+        saveOriginalButton.setPreferredSize(new java.awt.Dimension(300, 25));
         saveOriginalButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveOriginalButtonActionPerformed(evt);
@@ -116,8 +115,8 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         replaceWithOriginalButton.setText("Replace Current Melody with Original");
         replaceWithOriginalButton.setToolTipText("replace the current melody with the saved melody");
         replaceWithOriginalButton.setEnabled(false);
-        replaceWithOriginalButton.setMinimumSize(new java.awt.Dimension(250, 25));
-        replaceWithOriginalButton.setPreferredSize(new java.awt.Dimension(250, 25));
+        replaceWithOriginalButton.setMinimumSize(new java.awt.Dimension(300, 25));
+        replaceWithOriginalButton.setPreferredSize(new java.awt.Dimension(300, 25));
         replaceWithOriginalButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 replaceWithOriginalButtonActionPerformed(evt);
@@ -169,82 +168,25 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         step2Panel.setToolTipText("");
         step2Panel.setLayout(new java.awt.GridBagLayout());
 
-        flattenByChord16Buton.setText("Flatten Melody by sixteenth note");
-        flattenByChord16Buton.setToolTipText("flatten with a resolution of 16th note");
-        flattenByChord16Buton.setMinimumSize(new java.awt.Dimension(250, 25));
-        flattenByChord16Buton.setPreferredSize(new java.awt.Dimension(250, 25));
-        flattenByChord16Buton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                flattenByChord16ButonActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.insets = new java.awt.Insets(4, 0, 0, 0);
-        step2Panel.add(flattenByChord16Buton, gridBagConstraints);
-
-        flattenByChord8Buton.setText("Flatten Melody  by eighth note");
-        flattenByChord8Buton.setToolTipText("flatten with a resolution of 8th note");
-        flattenByChord8Buton.setMinimumSize(new java.awt.Dimension(250, 25));
-        flattenByChord8Buton.setPreferredSize(new java.awt.Dimension(250, 25));
-        flattenByChord8Buton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                flattenByChord8ButonActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.insets = new java.awt.Insets(4, 0, 0, 0);
-        step2Panel.add(flattenByChord8Buton, gridBagConstraints);
-
-        flattenByChord4Buton.setText("Flatten Melody by quarter note");
-        flattenByChord4Buton.setToolTipText("flatten with a resolution of quarter note");
-        flattenByChord4Buton.setMinimumSize(new java.awt.Dimension(250, 25));
-        flattenByChord4Buton.setPreferredSize(new java.awt.Dimension(250, 25));
-        flattenByChord4Buton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                flattenByChord4ButonActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 5;
-        gridBagConstraints.insets = new java.awt.Insets(4, 0, 0, 0);
-        step2Panel.add(flattenByChord4Buton, gridBagConstraints);
-
-        flattenByChord2Buton.setText("Flatten Melody by half note");
-        flattenByChord2Buton.setToolTipText("flatten with a resolution of half note");
-        flattenByChord2Buton.setMinimumSize(new java.awt.Dimension(250, 25));
-        flattenByChord2Buton.setPreferredSize(new java.awt.Dimension(250, 25));
-        flattenByChord2Buton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                flattenByChord2ButonActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 6;
-        gridBagConstraints.insets = new java.awt.Insets(4, 0, 0, 0);
-        step2Panel.add(flattenByChord2Buton, gridBagConstraints);
-
         step2Label1.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
-        step2Label1.setText("<html><b> Important: </b>Next, to make transformations you will need a basic outline from the original melody to transform from.");
+        step2Label1.setText("Next, to make transformations you will need a basic outline from the original melody to transform from.");
         step2Label1.setMaximumSize(new java.awt.Dimension(672, 15));
         step2Label1.setMinimumSize(new java.awt.Dimension(672, 15));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 2, 0);
         step2Panel.add(step2Label1, gridBagConstraints);
 
         step2Label2.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
-        step2Label2.setText("Each button gives an option for the minimum length note in the resulting flattened outline.");
+        step2Label2.setText("<html><b> Important: </b>Select a minimum value each note in the outline must have, then click the Flatten button");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 8, 0);
         step2Panel.add(step2Label2, gridBagConstraints);
 
         step2Label3.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
@@ -252,8 +194,38 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 6, 0);
         step2Panel.add(step2Label3, gridBagConstraints);
+
+        flattenValueComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Whole Note", "Half Note", "Quarter Note", "Eight Note", "Sixteenth Note" }));
+        flattenValueComboBox.setToolTipText("select the resolution to flatten at");
+        flattenValueComboBox.setMinimumSize(new java.awt.Dimension(145, 25));
+        flattenValueComboBox.setPreferredSize(new java.awt.Dimension(145, 25));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
+        step2Panel.add(flattenValueComboBox, gridBagConstraints);
+
+        flattenButton.setText("Flatten");
+        flattenButton.setToolTipText("flatten the currently selected melody with resolution chosen to the left");
+        flattenButton.setMinimumSize(new java.awt.Dimension(145, 25));
+        flattenButton.setPreferredSize(new java.awt.Dimension(145, 25));
+        flattenButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                flattenButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 0);
+        step2Panel.add(flattenButton, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -270,8 +242,8 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         subFlatFromOrigButton.setText("Subtract Flattening from Original");
         subFlatFromOrigButton.setToolTipText("show just the transformations in the leadsheet");
         subFlatFromOrigButton.setEnabled(false);
-        subFlatFromOrigButton.setMinimumSize(new java.awt.Dimension(250, 25));
-        subFlatFromOrigButton.setPreferredSize(new java.awt.Dimension(250, 25));
+        subFlatFromOrigButton.setMinimumSize(new java.awt.Dimension(300, 25));
+        subFlatFromOrigButton.setPreferredSize(new java.awt.Dimension(300, 25));
         subFlatFromOrigButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 subFlatFromOrigButtonActionPerformed(evt);
@@ -279,50 +251,72 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridwidth = 2;
         step3Panel.add(subFlatFromOrigButton, gridBagConstraints);
 
-        createTransformButton.setText("Create Transform");
+        createTransformButton.setText("Generate Transform");
         createTransformButton.setToolTipText("create a transform file based on transforming the flattened melody into the original melody");
         createTransformButton.setEnabled(false);
-        createTransformButton.setMinimumSize(new java.awt.Dimension(250, 25));
-        createTransformButton.setPreferredSize(new java.awt.Dimension(250, 25));
+        createTransformButton.setMargin(new java.awt.Insets(2, 12, 2, 12));
+        createTransformButton.setMaximumSize(new java.awt.Dimension(135, 25));
+        createTransformButton.setMinimumSize(new java.awt.Dimension(145, 25));
+        createTransformButton.setPreferredSize(new java.awt.Dimension(145, 25));
         createTransformButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 createTransformButtonActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 0);
         step3Panel.add(createTransformButton, gridBagConstraints);
 
         step3Label1.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
-        step3Label1.setText("<html><b> Important: </b>To create the transformations, click the Create Transform button.");
+        step3Label1.setText("<html><b> Important: </b>To create the transformations, select a generation method and click the Generate Transform button.");
         step3Label1.setMaximumSize(new java.awt.Dimension(435, 15));
         step3Label1.setMinimumSize(new java.awt.Dimension(452, 15));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 2, 0);
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 8, 0);
         step3Panel.add(step3Label1, gridBagConstraints);
 
         step3Label2.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
         step3Label2.setText("To just get just a visual representation of where to transformations are happening, you can subtract.");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.insets = new java.awt.Insets(8, 0, 8, 0);
         step3Panel.add(step3Label2, gridBagConstraints);
 
         step3Label3.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
-        step3Label3.setText("These transformations will be a possible way the flattened outline could create the original melody.");
+        step3Label3.setText("<html>Methods:<br>&nbsp;&nbsp;&nbsp;&nbsp;Windowing&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Learns transformations by just associating notes in a windowed section<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(sized by the resolution used in flattening) with their flattened note.<br>&nbsp;&nbsp;&nbsp;&nbsp;Trend Detection&nbsp;-&nbsp;Detects groups of notes that follow a trend and generates transfromations<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;that builds the group of notes from important notes in the flattened outline.\n");
+        step3Label3.setMinimumSize(new java.awt.Dimension(600, 75));
+        step3Label3.setPreferredSize(new java.awt.Dimension(600, 75));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 8, 0);
         step3Panel.add(step3Label3, gridBagConstraints);
+
+        generateTransformMethodComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Windowing", "Trend Detection" }));
+        generateTransformMethodComboBox.setMinimumSize(new java.awt.Dimension(145, 25));
+        generateTransformMethodComboBox.setPreferredSize(new java.awt.Dimension(145, 25));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
+        step3Panel.add(generateTransformMethodComboBox, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -341,8 +335,8 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         showTransformButton.setText("Show Generated Transform");
         showTransformButton.setToolTipText("show the transform file generated from above");
         showTransformButton.setEnabled(false);
-        showTransformButton.setMinimumSize(new java.awt.Dimension(250, 25));
-        showTransformButton.setPreferredSize(new java.awt.Dimension(250, 25));
+        showTransformButton.setMinimumSize(new java.awt.Dimension(300, 25));
+        showTransformButton.setPreferredSize(new java.awt.Dimension(300, 25));
         showTransformButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 showTransformButtonActionPerformed(evt);
@@ -356,8 +350,8 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         setTransformButton.setText("Put Transform into Transform tab");
         setTransformButton.setToolTipText("put the transform generated above into the transform tab");
         setTransformButton.setEnabled(false);
-        setTransformButton.setMinimumSize(new java.awt.Dimension(250, 25));
-        setTransformButton.setPreferredSize(new java.awt.Dimension(250, 25));
+        setTransformButton.setMinimumSize(new java.awt.Dimension(300, 25));
+        setTransformButton.setPreferredSize(new java.awt.Dimension(300, 25));
         setTransformButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 setTransformButtonActionPerformed(evt);
@@ -378,9 +372,7 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         step4Panel.add(step4Label1, gridBagConstraints);
 
         step4Label2.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
-        step4Label2.setText("To further use the transformations, go to the Transform Tab and click Apply");
-        step4Label2.setMaximumSize(new java.awt.Dimension(440, 15));
-        step4Label2.setMinimumSize(new java.awt.Dimension(440, 15));
+        step4Label2.setText("<html><b> Important: </b>To further use the transformations, go to the Transform Tab and click Apply");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
@@ -420,16 +412,9 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         add(jLabel1, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void flattenByChord16ButonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flattenByChord16ButonActionPerformed
-        flattenByChord(30);
-        resolution = 30;
-    }//GEN-LAST:event_flattenByChord16ButonActionPerformed
-
     private void saveOriginalButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveOriginalButtonActionPerformed
         
         notate.adjustSelection();
-        int start = notate.getCurrentSelectionStart();
-        int stop = notate.getCurrentSelectionEnd();
         original = notate.getCurrentMelodyPart().copy();
         notate.repaint();
         
@@ -438,41 +423,13 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         createTransformButton.setEnabled(true);
     }//GEN-LAST:event_saveOriginalButtonActionPerformed
 
-    private void flattenByChord8ButonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flattenByChord8ButonActionPerformed
-        flattenByChord(60);
-        resolution = 60;
-    }//GEN-LAST:event_flattenByChord8ButonActionPerformed
-
-    private void flattenByChord4ButonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flattenByChord4ButonActionPerformed
-        flattenByChord(120);
-        resolution = 120;
-    }//GEN-LAST:event_flattenByChord4ButonActionPerformed
-
     private void subFlatFromOrigButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subFlatFromOrigButtonActionPerformed
         subtractOutline();
     }//GEN-LAST:event_subFlatFromOrigButtonActionPerformed
 
-    private void createTransformButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createTransformButtonActionPerformed
-        notate.adjustSelection();
-        int start = notate.getCurrentSelectionStart();
-        int stop = notate.getCurrentSelectionEnd();
-        MelodyPart outline = notate.getCurrentMelodyPart();
-        ChordPart chords = notate.getChordProg();
-        Polylist transformList = transformLearning.createTransform(outline, original.copy(), chords, resolution, start, stop);
-        transform = new Transform(lickgen, transformList.toStringSansParens());
-        transform.hasChanged = true;
-        showTransformButton.setEnabled(true);
-        setTransformButton.setEnabled(true);
-    }//GEN-LAST:event_createTransformButtonActionPerformed
-
     private void showTransformButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showTransformButtonActionPerformed
         showTransform();
     }//GEN-LAST:event_showTransformButtonActionPerformed
-
-    private void flattenByChord2ButonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flattenByChord2ButonActionPerformed
-        flattenByChord(240);
-        resolution = 240;
-    }//GEN-LAST:event_flattenByChord2ButonActionPerformed
 
     private void setTransformButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setTransformButtonActionPerformed
         subPanel.setTransform(transform);
@@ -481,16 +438,60 @@ public class TransformLearningPanel extends javax.swing.JPanel {
     private void replaceWithOriginalButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_replaceWithOriginalButtonActionPerformed
         notate.adjustSelection();
         int start = notate.getCurrentSelectionStart();
-        notate.getCurrentMelodyPart().pasteOver(original, start);
+        int stop  = notate.getCurrentSelectionEnd();
+        MelodyPart replace = original.extract(start, stop, true, true);
+        notate.getCurrentMelodyPart().pasteOver(replace, start);
         notate.repaint();
     }//GEN-LAST:event_replaceWithOriginalButtonActionPerformed
 
+    private void flattenButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flattenButtonActionPerformed
+        String flattenValue = (String)flattenValueComboBox.getSelectedItem();
+        if(flattenValue.equals("Whole Note"))
+        {
+            flatten(480);
+        }
+        else if(flattenValue.equals("Half Note"))
+        {
+            flatten(240);
+        }
+        else if(flattenValue.equals("Quarter Note"))
+        {
+            flatten(120);
+        }
+        else if(flattenValue.equals("Eight Note"))
+        {
+            flatten(60);
+        }
+        else if(flattenValue.equals("Sixteenth Note"))
+        {
+            flatten(30);
+        }
+    }//GEN-LAST:event_flattenButtonActionPerformed
+
+    private void createTransformButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createTransformButtonActionPerformed
+        
+        String method = generateTransformMethodComboBox.getSelectedItem().toString();
+        if(method.equals("Windowing"))
+        {
+            transform = learnByWindowing();
+            transform.hasChanged = true;
+            showTransformButton.setEnabled(true);
+            setTransformButton.setEnabled(true);
+        }
+        else if(method.equals("Trend Detection"))
+        {
+            transform = learnByTrendDetection();
+            transform.hasChanged = true;
+            showTransformButton.setEnabled(true);
+            setTransformButton.setEnabled(true);
+        }
+    }//GEN-LAST:event_createTransformButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton createTransformButton;
-    private javax.swing.JButton flattenByChord16Buton;
-    private javax.swing.JButton flattenByChord2Buton;
-    private javax.swing.JButton flattenByChord4Buton;
-    private javax.swing.JButton flattenByChord8Buton;
+    private javax.swing.JButton flattenButton;
+    private javax.swing.JComboBox flattenValueComboBox;
+    private javax.swing.JComboBox generateTransformMethodComboBox;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JButton replaceWithOriginalButton;
     private javax.swing.JButton saveOriginalButton;
@@ -522,6 +523,12 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         transEditor.toFront();
     }
     
+    private void flatten(int resolution)
+    {
+        this.resolution = resolution;
+        flattenByResolution(resolution);
+    }
+    
     private void flattenByChord(int resolution)
     {
         notate.adjustSelection();
@@ -530,8 +537,44 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         MelodyPart melody = notate.getCurrentMelodyPart();
         ChordPart chords = notate.getChordProg();
         MelodyPart flattenedPart = transformLearning.flattenByChord(melody, chords, resolution, start, stop);
-        notate.getCurrentMelodyPart().pasteOver(flattenedPart, start);
+        MelodyPart replace = flattenedPart.extract(start, stop, true, true);
+        notate.getCurrentMelodyPart().pasteOver(replace, start);
         notate.repaint();
+    }
+    
+    private void flattenByResolution(int resolution)
+    {
+        notate.adjustSelection();
+        int start = notate.getCurrentSelectionStart();
+        int stop = notate.getCurrentSelectionEnd();
+        MelodyPart melody = notate.getCurrentMelodyPart();
+        ChordPart chords = notate.getChordProg();
+        MelodyPart flattenedPart = transformLearning.flattenByResolution(melody, chords, resolution, start, stop);
+        MelodyPart replace = flattenedPart.extract(start, stop, true, true);
+        notate.getCurrentMelodyPart().pasteOver(replace, start);
+        notate.repaint();
+    }
+    
+    private Transform learnByWindowing()
+    {
+        notate.adjustSelection();
+        int start = notate.getCurrentSelectionStart();
+        int stop = notate.getCurrentSelectionEnd();
+        MelodyPart outline = notate.getCurrentMelodyPart();
+        ChordPart chords = notate.getChordProg();
+        Polylist transformList = transformLearning.createBlockTransform(outline, original.copy(), chords, resolution, start, stop);
+        return new Transform(lickgen, transformList.toStringSansParens());
+    }
+    
+    private Transform learnByTrendDetection()
+    {
+        notate.adjustSelection();
+        int start = notate.getCurrentSelectionStart();
+        int stop = notate.getCurrentSelectionEnd();
+        MelodyPart outline = notate.getCurrentMelodyPart();
+        ChordPart chords = notate.getChordProg();
+        Polylist transformList = transformLearning.createTrendTransform(outline, original.copy(), chords, start, stop);
+        return new Transform(lickgen, transformList.toStringSansParens());
     }
     
     private void subtractOutline()

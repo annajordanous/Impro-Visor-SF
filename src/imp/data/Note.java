@@ -212,6 +212,14 @@ public int getVolume()
   }
 
 /**
+ * Checks if the current note has the same pitch and duration as another note.
+ */
+public boolean equalsBasic(Note compare)
+  {
+  return (samePitch(compare) && getRhythmValue() == compare.getRhythmValue());
+  }
+
+/**
  * Creates a rest with the indicated rhythmValue.
  */
 public static Note makeRest(int duration)

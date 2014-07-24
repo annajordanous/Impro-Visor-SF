@@ -147,10 +147,9 @@ private MelodyPart applySubstitutionType(ArrayList<Substitution> substitutions,
         } while(!full.isEmpty());
         
         MelodyPart substituted = null;
-        
+        int initSlot = startingSlot[0];
         for(Substitution sub: sortedSubs)
         {
-
             if(debug)
             {
                 System.out.println("\t\tTrying sub: " + sub.getName());
@@ -167,22 +166,18 @@ private MelodyPart applySubstitutionType(ArrayList<Substitution> substitutions,
         }
         if(substituted == null)
         {
-            Note addNote = transNotes.getNote(startingSlot[0]);
-            subbedMP.addNote(addNote);
-
-            startingSlot[0] = transNotes.getNextIndex(startingSlot[0]);
+            Note addNote = transNotes.getNote(initSlot);
+            MelodyPart temp = new MelodyPart();
+            temp.addNote(addNote);
+            transNotes.pasteOver(temp, initSlot);
+            startingSlot[0] = transNotes.getNextIndex(initSlot);
         }
         else
         {
-            MelodyPart.PartIterator addNotes = substituted.iterator();
-            while(addNotes.hasNext())
-            {
-                subbedMP.addNote((Note)addNotes.next());
-                
-            }
+            transNotes.pasteOver(substituted, initSlot);
         }
     }
-    return subbedMP;
+    return transNotes;
 }
 
 public void findDuplicatesAndAddToWeight()

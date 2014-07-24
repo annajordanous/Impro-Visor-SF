@@ -373,12 +373,24 @@ public Note getCurrentNote(int slotIndex) {
     {
       return null;
     }
-    if(getNote(slotIndex) != null)
-    {
-        return getNote(slotIndex);
-    }
-    return getPrevNote(slotIndex);
+    return getNote(getCurrentNoteIndex(slotIndex));
 }
+
+/**
+     * Returns the index of the Chord sounding at this index.
+     * @param slotIndex         the index to check at
+     * @return int              the index of the sounding chord
+     */
+    public int getCurrentNoteIndex(int slotIndex) {
+        if(getNote(slotIndex) != null)
+          {
+            return slotIndex;
+          }
+        else
+          {
+            return getPrevIndex(slotIndex);
+    }
+    }
 
   /**
    * Returns the Note after the indicated slot index.

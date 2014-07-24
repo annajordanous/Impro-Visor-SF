@@ -1937,6 +1937,7 @@ public class TransformationDialogue extends javax.swing.JDialog implements Actio
         StringBuilder transFile = new StringBuilder();
         trans.toFile(transFile, "");
         contents = new javax.swing.JTextArea();
+        contents.setFont(new Font("monospaced", Font.PLAIN, 14));
         contents.setTabSize(8);
         contents.setText(transFile.toString());
         super.setLocationRelativeTo(frame);
