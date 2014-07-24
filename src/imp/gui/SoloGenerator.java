@@ -48,7 +48,15 @@ import java.util.List;
 import java.util.Random;
 import java.util.Collections;
 import java.util.LinkedHashMap;
+import imp.util.ErrorLog;
 import java.util.Map;
+import imp.ImproVisor;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.io.FileOutputStream;
+import java.io.FileInputStream;
+import polya.Tokenizer;
 /**
  *
  * @author David Morrison, Nava Dallal
@@ -616,17 +624,42 @@ private void playSelection()
 
         for (int i = 0; i < soloTable.getRowCount(); i++) { //loop through size of themeUses
 
+//            if ((soloTable.getValueAt(i, 2) == null) &&  ((soloTable.getValueAt(i, 3) == null) || (soloTable.getValueAt(i, 4) == null)
+//                    || (soloTable.getValueAt(i, 5) == null) || (soloTable.getValueAt(i, 6) == null))) { //if any cell has incorrect info
+//                enteredIncorrectly.setVisible(true); //show error message
+//                break;
+//             } 
+//             if ((isDouble((String) soloTable.getValueAt(i, 3)) == false) 
+//              || (isDouble((String) soloTable.getValueAt(i, 4)) == false)
+//              || (isDouble((String) soloTable.getValueAt(i, 5)) == false) 
+//              || (isDouble((String) soloTable.getValueAt(i, 6)) == false)) {
+//                enteredIncorrectly.setVisible(true); //show error message
+//                break;
+//            }
+//            
+//            else 
+            { 
                 System.out.println("list");
-                if (soloTable.getValueAt(i, THEME_COLUMN) != null) {
+                if (soloTable.getValueAt(i, THEME_COLUMN) != null) { 
+                    if ((isDouble((String) soloTable.getValueAt(i, 3)) == false) 
+              || (isDouble((String) soloTable.getValueAt(i, 4)) == false)
+              || (isDouble((String) soloTable.getValueAt(i, 5)) == false) 
+              || (isDouble((String) soloTable.getValueAt(i, 6)) == false)) {
+                enteredIncorrectly.setVisible(true); //show error message
+                break;
+            }
+               else {
                 ThemeUse use = new ThemeUse(new MelodyPart((String) soloTable.getValueAt(i, THEME_COLUMN)));
-                use.probUse = getDoubleValue(0, soloTable.getValueAt(i, USE_COLUMN));
-                use.probTranspose = getDoubleValue(0, soloTable.getValueAt(i, TRANSPOSE_COLUMN));
-                use.probInvert = getDoubleValue(0, soloTable.getValueAt(i, INVERT_COLUMN));
-                use.probReverse = getDoubleValue(0, soloTable.getValueAt(i, REVERSE_COLUMN));
+                use.probUse = Double.valueOf((String) soloTable.getValueAt(i, USE_COLUMN));
+                use.probTranspose = Double.valueOf((String) soloTable.getValueAt(i, TRANSPOSE_COLUMN));
+                use.probInvert = Double.valueOf((String) soloTable.getValueAt(i, INVERT_COLUMN));
+                use.probReverse = Double.valueOf((String) soloTable.getValueAt(i, REVERSE_COLUMN));
                 themeUses.add(use); // add a new ThemeUse to the arraylist with respective elements
                 
-                //System.out.println(use);
+                System.out.println(use);
                 }
+              }
+           }
         }
         generateSolo(themeUses, cm);
         playSelection();
@@ -1275,7 +1308,55 @@ public void addTheme(String name, String themestring)
         }
         System.out.println(orderedThemes);
         System.out.println(allThemes);
+        System.out.println("here");
+       saveRules(fileName);
     }
+
+File fileName = ImproVisor.getThemesFile();
+
+public void saveRules(File file)
+  {
+   try
+    {
+    java.io.PrintStream out = new PrintStream(new FileOutputStream(file)); 
+  //  .... iterate over your Themes structure calling showForm(out) on each
+     for (Map.Entry pair : allThemes.entrySet()) {
+            Theme key = (Theme)pair.getKey();
+            key.showForm(System.out);
+            key.showForm(out);
+    }
+    }
+  catch( IOException e )
+    {
+    ErrorLog.log(ErrorLog.SEVERE, "Saving themes in file failed: " + file);
+    }
+  } 
+
+public void LoadFromFile(File file) {
+    java.io.FileInputStream themeStream;
+
+        try {
+            themeStream = new FileInputStream(file);
+        } catch(Exception e) {
+            ErrorLog.log(ErrorLog.SEVERE, "Loading themes in file failed: " + file); 
+            return;
+        }
+
+        Tokenizer in = new Tokenizer(themeStream);
+        Object ob;
+
+        while( (ob = in.nextSexp()) != Tokenizer.eof ) {
+            if( ob instanceof Polylist)  {
+                Polylist themePoly = (Polylist)ob;
+                Theme theme = new Theme(themePoly);
+            //     ... put the Theme into your structure ...
+                addTheme(theme.name, theme.melodyToString(theme.melody));
+            }
+        
+        }
+        
+
+}
 
 public class ThemeListModel
     extends AbstractListModel
@@ -1351,18 +1432,21 @@ public MelodyPart fillMelody(int beatValue,
 
     public MelodyPart generateTheme() { 
         for (int x = 0; x < soloTable.getRowCount(); x++) { //loop through the rows of the table
-            
-            if ((soloTable.isCellSelected(x, LENGTH_COLUMN)) 
-            && (!isInteger((String) soloTable.getValueAt(x, LENGTH_COLUMN)))) {
+            if ((soloTable.getValueAt(x, LENGTH_COLUMN) != null)
+           &&  (!isInteger((String) soloTable.getValueAt(x, LENGTH_COLUMN)))) {
+                System.out.println("error");
                 enteredIncorrectly.setVisible(true);
               } 
             else {
                 
-               if ((soloTable.isCellSelected(x, LENGTH_COLUMN))  
-               && (soloTable.getValueAt(x, LENGTH_COLUMN) != null)) {
-                    //if the theme length cell is selected and has something in it
+               if  (((soloTable.isCellSelected(x, LENGTH_COLUMN)) 
+                && (soloTable.getValueAt(x, LENGTH_COLUMN) != null))
+                || ((soloTable.getValueAt(x, LENGTH_COLUMN) != null) 
+                && (soloTable.getValueAt(x,THEME_COLUMN) == null))){
+                    //if the theme length cell is selected and has something in it 
+                   // or if there is something in a length cell and has no theme
                     int Length = notate.intFromStringInRange((String) soloTable.getValueAt(x, LENGTH_COLUMN), 0, 100, themeLength); 
-                    //get length from table
+                    //get length from tablek
                     themeLength = BEAT * Length;
                     Polylist rhythm = lickgen.generateRhythmFromGrammar(0, themeLength); 
                     //get rhythm for theme from grammar
@@ -1389,7 +1473,7 @@ public MelodyPart fillMelody(int beatValue,
                         soloTable.setValueAt(null, x, NAME_COLUMN);
                     }
                     
-                    return lick;
+                   // return lick;
                 }
             }
         }
@@ -1647,35 +1731,7 @@ Random random;
         imp.ImproVisor.setPlayEntrySounds(true); //play solo
     }
 
-    /**
-     * Try to parse Object ob to something that has a value as
-     * a double. If successful, return that value. 
-     * If not, return the defaultValue.
-     * The defaultValue is also returned if ob == null.
-     * @param ob The Object to be parsed
-     * @param defaultValue the double that will be returned if ob can't be parsed
-     * @return 
-     */
-    
-public static double getDoubleValue(double defaultValue, Object ob)
-  {
-    if( ob == null )
-      {
-        return 0;
-      }
-    try
-      {
-        return Double.parseDouble(ob.toString());
-      }
-    catch( ClassCastException e)
-      {
-        return defaultValue;
-      }
-    catch( NumberFormatException e)
-      {
-        return defaultValue;
-      }
-  }
+
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
