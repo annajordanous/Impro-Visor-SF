@@ -59,7 +59,7 @@ public class ImproVisor implements Constants {
     
     private static String recentFilesFilename = "vocab" + File.separator + "recentFiles.txt";
     private static String prefsFileName = "My.prefs";
-
+    private static String themesFileName = "My.themes";
     private static MidiManager midiManager;
     private static MidiSynth midiSynth;
     
@@ -632,6 +632,11 @@ public static File getProfileDirectory()
 public static File getPrefsFile()
   {
   return new File(getVocabDirectory(), prefsFileName); 
+  }
+    
+public static File getThemesFile()
+  {
+  return new File(getVocabDirectory(), themesFileName); 
   }
     
 public static File getGrammarFile()
