@@ -69,10 +69,8 @@ public class CreateBrickGrammar {
     public static void processByBrick(Notate notate) {
         //step 1: roadmap the tune to find out what bricks it uses and where
         blocks = notate.getRoadMapBlocks();
-        int count = 1;
+        int chorusCount = 1;
         for (StaveScrollPane ssp : notate.getStaveScrollPane()) {
-            System.out.println("On chorus " + count);
-            count++;
             Stave s = ssp.getStave();
             MelodyPart melPart = notate.getMelodyPart(s);
             ChordPart chordProg = notate.getChordProg();
@@ -80,8 +78,8 @@ public class CreateBrickGrammar {
             frame = new LickgenFrame(notate, notate.getLickGen(), notate.cm);
             //step 2: scan melodies one brick at a time
             int totalDuration = 0; //so we can keep track of where we are in the tune
+            int brickCount = 1;
             for (int i = 0; i < blocks.size(); ++i) {
-                System.out.println("Processing brick " + (i + 1));
                 Block currentBlock = blocks.get(i);
                 int totalDurationPlusThisBlock = totalDuration + currentBlock.getDuration() - 1; //-1 to prevent spillover into next measure
                 if (currentBlock instanceof Brick
@@ -91,20 +89,20 @@ public class CreateBrickGrammar {
                                                                                   //note: we only want to use bricks that start at the beginning of measures
                                                                                  //for the sake of QC (who knows what's up with short little fractional measure bricks)
                     //this will keep track of what kind of bricks we have in the tune
+                    ++brickCount;
                     brickKinds.add(currentBlock.getDashedName());
                     brickDurations.add(currentBlock.getDuration());
                     MelodyPart blockMelody = melPart.extract(totalDuration, totalDurationPlusThisBlock, true); 
                     ChordPart blockChords = chordProg.extract(totalDuration, totalDurationPlusThisBlock);
                     String blockAbstract = NotesToRelativePitch.melodyToAbstract(blockMelody, blockChords, (i == 0), notate, notate.getLickGen());
                     String relMel = NotesToRelativePitch.melPartToRelativePitch(blockMelody, blockChords);
-                    System.out.println("Block melody: " + blockMelody);
-                    System.out.println("Block duration: " + currentBlock.getDuration());
                     if (blockAbstract != null) {
-                        frame.writeProduction(blockAbstract, currentBlock.getDuration()/BEAT, totalDuration, true, currentBlock.getDashedName());
+                        frame.writeProduction(blockAbstract, currentBlock.getDuration()/BEAT, totalDuration, true, currentBlock.getDashedName(), chorusCount);
                     }
                 }
                 totalDuration += currentBlock.getDuration();
             }
+            chorusCount++;
         }
         
         //for convenience (to make it easier to refer to a specific brick type), store brick types in array
@@ -153,7 +151,7 @@ public class CreateBrickGrammar {
         //make initial calls to read from the file
         Polylist[] rules = getRulesFromFile(inFile);
         String[] ruleStrings = getRuleStringsFromFile(inFile);
-
+        
         //create a list of lists, where each list in the list will hold DataPoints corresponding to a certain type of brick
         ArrayList<DataPoint> headData = new ArrayList<DataPoint>();
         List<Vector<DataPoint>> brickLists = new ArrayList<Vector<DataPoint>>();
@@ -201,11 +199,10 @@ public class CreateBrickGrammar {
         }
 
         //note: no need for a .soloist file
-        writeBrickGrammar(useRelative, outFile);
+        writeBrickGrammar(useRelative, outFile, notate);
         
+        //will probably be rewritten once we restructure the way we let users combine options
         boolean useHybrid = (frame.getUseBricks() && frame.getUseMarkov());
-        System.out.println("Writing brick productions: " + frame.getUseBricks());
-        System.out.println("Writing window productions: " + frame.getUseMarkov());
         if (useHybrid) {
             CreateGrammar.create(chordProg, inFile, outFile, 
                     repsPerCluster, frame.useMarkovSelected(), 
@@ -214,10 +211,10 @@ public class CreateBrickGrammar {
 
     }
 
-    public static void writeBrickGrammar(boolean useRelative, String outfile) {
+    public static void writeBrickGrammar(boolean useRelative, String outfile, Notate notate) {
         try {
             BufferedWriter out = new BufferedWriter(new FileWriter(outfile, true));
-            //boilerplate rules that specify how many duration slots to subtract off for bricks of different durations
+            //overhead rules that specify how many duration slots to subtract off for bricks of different durations
             for (int dur = 0; dur < brickDurationsArray.length; ++dur) {
                 out.write("\n(rule (P Y) (START"
                         + brickDurationsArray[dur]
@@ -228,6 +225,8 @@ public class CreateBrickGrammar {
             }
             out.write("\n");
             
+            
+            
             //when writing rules, keep track of how many bricks of each kind we've written rules for
             int[] brickKindsCount = new int[brickKindsArray.length];
             for (int i = 0; i < brickKindsCount.length; i++) {
@@ -236,35 +235,37 @@ public class CreateBrickGrammar {
             
             
             String rule;
-            int totalDuration = 0; //so we can keep track of where we are in the tune
-            for (int i = 0; i < blocks.size(); ++i) {
-                Block currentBlock = blocks.get(i);
-                if (currentBlock instanceof Brick
-                        && (totalDuration % MEASURE_LENGTH == 0)
-                        && (currentBlock.getDuration() % MEASURE_LENGTH == 0)) { //if we only want to learn based on bricks not general chordBlocks also;
-                                                                                  //otherwise leave this condition out
-                                                                                  //note: we only want to use bricks that start at the beginning of measures
-                                                                                 //for the sake of QC (who knows what's up with short little fractional measure bricks)
-                    String brickName = currentBlock.getDashedName();
-                    int brickNumber = 0; //find which brick this is in our array of bricks
-                    for (int j = 0; j < brickKindsArray.length; ++j) {
-                        if (brickKindsArray[j].equals(brickName)) {
-                            brickNumber = j;
-                            break;
+            for (int s = 0; s < notate.getStaveScrollPane().length; s++) {
+                            int totalDuration = 0; //so we can keep track of where we are in the tune
+                for (int i = 0; i < blocks.size(); ++i) {
+                    Block currentBlock = blocks.get(i);
+                    if (currentBlock instanceof Brick
+                            && (totalDuration % MEASURE_LENGTH == 0)
+                            && (currentBlock.getDuration() % MEASURE_LENGTH == 0)) { //if we only want to learn based on bricks not general chordBlocks also;
+                                                                                      //otherwise leave this condition out
+                                                                                      //note: we only want to use bricks that start at the beginning of measures
+                                                                                     //for the sake of QC (who knows what's up with short little fractional measure bricks)
+                        String brickName = currentBlock.getDashedName();
+                        
+                        int brickNumber = 0; //find which brick this is in our array of bricks
+                        for (int j = 0; j < brickKindsArray.length; ++j) {
+                            if (brickKindsArray[j].equals(brickName)) {
+                                brickNumber = j;
+                                break;
+                            }
                         }
-                    }
-                    
-                    //Cluster[] brickCluster = allClusters.get(brickNumber); //cluster to which this brick belongs
-                    //DataPoint[] brickClusterReps = getClusterReps(brickCluster, 1);
-                    DataPoint[] brickClusterReps = allReps.get(brickNumber);
-                    //for (int r = 0; r < brickClusterReps.length; r++) {
-                        int r = brickKindsCount[brickNumber];
-                        DataPoint rep = brickClusterReps[r]; 
-                        if (useRelative) {
+
+                        DataPoint[] brickClusterReps = allReps.get(brickNumber);
+                        int r = brickKindsCount[brickNumber]; //how many rules we've already written for this kind of brick
+                        DataPoint rep = brickClusterReps[r]; //choose the next representative
+                        
+                        if (useRelative) { //determine how we want to represent melody info
                             rule = rep.getRelativePitchMelody();
                         } else {
                             rule = rep.getObjData();
                         }
+                        
+                        //write rule
                         out.write("(rule (START"
                                 + (rep.getSegLength()*BEAT)
                                 + ") ("
@@ -272,21 +273,12 @@ public class CreateBrickGrammar {
                                 + ") (builtin brick " //evaluates to 1 if brick type is this brick's type; 0 otherwise
                                 + rep.getBrickType()
                                 + "))\n");
+                        
                         ++brickKindsCount[brickNumber]; //we've come across one more occurence of this kind of brick
-                    //}
-                    
-                } 
-//                else { 
-//                    //TODO: how to deal with parts that could not be classified as bricks
-//                    //IDEA: use grammar (abstract or X notation as user desires)
-//                    String production = frame.addMeasureToAbstractMelody(totalDuration, currentBlock.getDuration()/BEAT, i==0);
-//                    if (production != null) {
-//                        System.out.println("Total duration so far is: " + totalDuration);
-//                        frame.writeProduction(production, currentBlock.getDuration(), totalDuration, true, currentBlock.getDashedName());
-//                    }
-//                }
-                
-                totalDuration += currentBlock.getDuration();
+                    } 
+
+                    totalDuration += currentBlock.getDuration();
+                }
             }
             out.close();
         } catch (Exception e) {

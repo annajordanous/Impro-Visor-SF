@@ -5223,7 +5223,7 @@ public class LickgenFrame
                         if (production != null) {
                             writeProduction(production, measureWindow,
                                     (i * slotsPerSection) + (window * BEAT),
-                                    true, null);
+                                    true, null, -1);
                         }
                     }
                 }
@@ -5335,10 +5335,15 @@ public class LickgenFrame
      * add the production to file
      */
     public void writeProduction(String production, int measureWindow, int location,
-            boolean writeExactMelody, String brickType) {
+            boolean writeExactMelody, String brickType, int chorus) {
         //copied from getAbstractMelody() just so getAbstractMelody() is instantiated
+        if (chorus == -1) { //didn't provide any information about what chorus we're on
+            chorus = notate.getSelectedIndex();
+        } else {
+            chorus = chorus - 1; //because indexing in Java starts at zero but we like to think of first, second, etc. choruses
+        }
         if (!allMeasures) {
-            melodyData = notate.getMelodyData(notate.getSelectedIndex());
+            melodyData = notate.getMelodyData(chorus); 
         }
 
         if (production == null) {
@@ -5373,7 +5378,6 @@ public class LickgenFrame
                 String relativePitchMelody = "";
                 //String exactMelody = null; //= melodyData.get(location);
                 String exactMelody = production;
-                System.out.println("Exact melody before modification: " + exactMelody);
                 String[] splitMel; // = exactMelody.split(" ");
                 //if(!splitMel[0].equals(Integer.toString(location))) {
                 boolean foundMatch = false;
@@ -5394,16 +5398,12 @@ public class LickgenFrame
                             String[] splitNextMel = melodyData.get(j+1).split(" ");
                             int nextSlot = Integer.parseInt(splitNextMel[0]);
                             exactMelodyLength += nextSlot - thisSlot; //we're adding another measure's worth of data onto our exact melody
-                            System.out.println("Location: " + location);
-                            System.out.println("Next slot: " + nextSlot);
-                            System.out.println("Exact melody Length: " + exactMelodyLength);
                             for (int k = 1; k < splitNextMel.length; k++) { //tack on the melody data for the next measure-length strip to exact melody
                                 exactMelody = exactMelody.concat(splitNextMel[k] + " ");
                             }
                             thisSlot = nextSlot;
                             j++;
                         }
-                        System.out.println("Modified exact melody: " + exactMelody);
                         foundMatch = true;
                         break;
                     }
@@ -5423,8 +5423,6 @@ public class LickgenFrame
                 
                 ChordPart chordProg = notate.getChordProg().extract(location, location + slotsPerSection - 1);
                 relativePitchMelody = NotesToRelativePitch.melStringToRelativePitch(slotsPerSection, chordProg, exactMelody);
-                System.out.println("Exact melody: " + exactMelody);
-                System.out.println("Relative pitch melody: " + relativePitchMelody);
                 out.write("(rule (Seg"
                         + measureWindow
                         + ") "
