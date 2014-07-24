@@ -23,7 +23,11 @@ import imp.data.MelodyPart;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import static imp.Constants.BEAT;
+import static imp.Constants.LCROOT;
 import imp.data.Note;
+import imp.data.Part;
+import imp.data.Unit;
+import polya.Polylist;
 
 /**
  *
@@ -37,6 +41,17 @@ public class Theme {
  
  int ThemeLength;
  
+ 
+ int serial;
+ 
+ int numDiscriminators = 0;
+ 
+ String discriminator[] = new String[maxDiscriminators];
+ 
+ static int maxDiscriminators = 2;
+ 
+ int discriminatorOffset[] = new int[maxDiscriminators];
+ 
  public Theme(MelodyPart melody)
  {
      this.melody = melody;
@@ -44,48 +59,7 @@ public class Theme {
  private static LinkedHashMap<String, Theme> allThemes = new LinkedHashMap<String, Theme>();
  private static ArrayList<Theme> orderedThemes = null;
  
- 
-//  
-//  public static int numberOfThemes()
-//    {
-//      ensureThemeArray();
-//      return orderedThemes.size(); 
-//    }
-//  
-// public static Theme getTheme(String name)
-//    {
-//      return allThemes.get(name);
-//    }
-//  
-//  public static void setTheme(String name, Theme theme)
-//    {
-//      allThemes.put(name, theme);
-//    }
-//  
-//    public static Theme getNth(int index)
-//      {
-//        ensureThemeArray();
-//        return orderedThemes.get(index);
-//      }
-//    
-//    private static void ensureThemeArray()
-//      {
-//            {
-//                
-//           orderedThemes = new ArrayList<Theme>(allThemes.values());
-//            }       
-//      }
-//     public static boolean add(Theme e) {
-//         return orderedThemes.add(e);
-//     }
-//     
-//     public static boolean contains(Theme e) {
-//         return orderedThemes.contains(e);
-//     }
-//     public static Theme get(String s) {
-//         return allThemes.get(s);
-//     }
-//     
+
      public static Theme makeTheme(String name, MelodyPart theme) {
          Theme newTheme = new Theme(theme);
          newTheme.name = name;
@@ -97,6 +71,48 @@ public class Theme {
          
          
          return newTheme;
+     } 
+     
+     String getName() { return name; } 
+     
+     Polylist getNotes()
+  {
+  return Polylist.list(melodyToString(melody));
+  }
+     
+     public static String melodyToString(MelodyPart melody){
+         Part.PartIterator i = melody.iterator(); //iterate over lick
+                    String theme = ""; //set theme as empty to start
+                    
+                    while (i.hasNext()) //while you can still iterate through the lick
+                    {
+                        Unit unit = i.next();
+                        if (unit != null) //if next isn't empty
+                        {
+                            theme += unit.toLeadsheet() + " "; //add it to the theme
+                        }
+                    }
+                    return theme;
+     } 
+     
+     public Polylist ThemetoPolylist(Theme theme){
+        return Polylist.list("theme", Polylist.list("name", theme.name), Polylist.list("notes", theme.melodyToString(theme.melody)));
+     } 
+     
+     public Theme(Polylist list) {
+         String nameTheme = (String)list.first();
+         MelodyPart melodyTheme = (MelodyPart)list.last();
+         this.name = nameTheme;
+         this.melody = melodyTheme;
      }
+     
+     
+     
+    public void showForm(java.io.PrintStream out) {
+        out.println("(theme "
+                + "(name " + getName()
+                + ")(notes " + melodyToString(melody)
+                + "))");
+    }
  
 }
