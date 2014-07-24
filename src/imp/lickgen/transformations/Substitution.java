@@ -112,11 +112,12 @@ public MelodyPart apply(MelodyPart notes, ChordPart chords, int[] startingSlot)
     
     for(Transformation trans: sortedTrans)
     {
+        int newStartingSlot = startingSlot[0];
         if(debug)
         {
             System.out.println("\t\t\tTrying trans: " + trans.getDescription());
         }
-        MelodyPart result = trans.apply(notes, chords, startingSlot[0]);
+        MelodyPart result = trans.apply(notes, chords, newStartingSlot);
 
         if(!(result == null))
         {
@@ -125,8 +126,15 @@ public MelodyPart apply(MelodyPart notes, ChordPart chords, int[] startingSlot)
                 System.out.println("\t\t\tTrans Worked");
                 System.out.println("\t\tSub Result: " + result.toString());
             }
+            
             for(int i = 0; i < trans.numSourceNotes(); i++)
-                startingSlot[0] = notes.getNextIndex(startingSlot[0]);
+                newStartingSlot = notes.getNextIndex(newStartingSlot);
+            
+            if(!trans.changesLastNote())
+                newStartingSlot = notes.getPrevIndex(newStartingSlot);
+            
+            startingSlot[0] = newStartingSlot;
+            
             return result;
         }
         if(debug)
