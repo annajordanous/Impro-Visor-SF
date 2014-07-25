@@ -41,8 +41,8 @@ import polya.Polylist;
 public class CreateGrammar implements imp.Constants {
 
     private static final int SEG_LENGTH = 3;  //length of the word SEG
-    private static final int XNOTATIONPARENSPACE_LENGTH = 11;
-    private static final int BRICKTYPEPARENSPACES_LENGTH = 12; //"(Brick-type ".length
+    private static final int XNOTATIONDELIMITER_LENGTH = 11;
+    private static final int BRICKTYPEDELIMITER_LENGTH = 12; //"(Brick-type ".length
     public static double MIN_PROB = 5.0; //include phrase transitions of greater than this probability
     public static int REPS_PER_CLUSTER = 5;
     private static DataPoint averagePoint; //keeps track of average point in cluster
@@ -66,7 +66,6 @@ public class CreateGrammar implements imp.Constants {
         //make initial calls to read from the file
         Polylist[] rules = getRulesFromFile(inFile);
         String[] ruleStrings = getRuleStringsFromFile(inFile);
-
         //initialize vectors
         Vector<DataPoint> dataPoints = new Vector<DataPoint>();
 
@@ -113,8 +112,13 @@ public class CreateGrammar implements imp.Constants {
 
             notate.setLickGenStatus("Creating .soloist File with " + outlines.size() + " outlines: " + soloistFileName);
 
-            createSoloistFile(dataPoints, clusters, clusterSets,
-                    transitions, reverseTransitions, outlines, soloistFile);
+            createSoloistFile(dataPoints,
+                    clusters,
+                    clusterSets,
+                    transitions,
+                    reverseTransitions,
+                    outlines,
+                    soloistFile);
 
             //write grammar
             ngrams = getChains(orders, clusters, markovLength);
@@ -122,7 +126,12 @@ public class CreateGrammar implements imp.Constants {
             Vector<float[]> chains = getChainProbabilitiesForGrammar(ngrams);
 
             if (useRelative) {
-                writeRelativePitchGrammarWithChains(ngrams, chains, reps, clusters, outFile, chordProg); //write grammar using X notation
+                writeRelativePitchGrammarWithChains(ngrams,
+                        chains,
+                        reps,
+                        clusters,
+                        outFile,
+                        chordProg); //write grammar using X notation
             } else {
                 writeGrammarWithChains(ngrams, chains, reps, clusters, outFile, chordProg); //write grammar using abstract melody
             }
@@ -787,7 +796,7 @@ public class CreateGrammar implements imp.Constants {
         //extract brick type data
         //string "Brick-type" denotes where the brick type information is
         stopIndex = ruleString.indexOf("(Brick-type ");
-        String brickType = ruleString.substring(stopIndex + BRICKTYPEPARENSPACES_LENGTH, ruleString.length() - 1); //-1 to chop off closing parenthesis
+        String brickType = ruleString.substring(stopIndex + BRICKTYPEDELIMITER_LENGTH, ruleString.length() - 1); //-1 to chop off closing parenthesis
         
         //remove the brick type data from the string now that we've extracted it
         ruleString = ruleString.substring(0, stopIndex - 1);
@@ -796,7 +805,7 @@ public class CreateGrammar implements imp.Constants {
         //extract X notation melody data
         //string "Xnotation" denotes start of the X notation.  
         stopIndex = ruleString.indexOf("(Xnotation"); //find "Xnotation" delimiter
-        String relativePitchMelodyString = ruleString.substring(stopIndex + XNOTATIONPARENSPACE_LENGTH, ruleString.length() - 1);
+        String relativePitchMelodyString = ruleString.substring(stopIndex + XNOTATIONDELIMITER_LENGTH, ruleString.length() - 1);
 
         //remove the X notation from the string now that we've extracted it
         ruleString = ruleString.substring(0, stopIndex - 1);
@@ -1023,7 +1032,8 @@ public class CreateGrammar implements imp.Constants {
                 grammarRules[i] = readRule(grammarRules[i]);
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println("Exception getting rules from file: " + e.toString());
+            e.printStackTrace();
         }
 
 

@@ -18945,7 +18945,7 @@ public ArrayList<String> getMelodyData(Score s, int chorusNumber)
           {
             String measure = Integer.toString(i) + " ";
             int tracker = 0;
-            MelodyPart p = melPart.extract(i, i + slotsPerSection - 1, true);
+            MelodyPart p = melPart.extract(i, i + slotsPerSection - 1, true, true);
             //if note is held from previous section, add that first
             if( melPart.getPrevNote(i) != null && melPart.getPrevNote(i).getRhythmValue() > i - melPart.getPrevIndex(i) )
               {
@@ -21367,7 +21367,6 @@ public void originalGenerate(LickGen lickgen, int improviseStartSlot, int improv
         if( lick != null )
           {
             int beatsGenerated = lick.size()/BEAT;
-            System.out.println("Beats generated: " + beatsGenerated);
 
             if( beatsGenerated != beatsRequested )
               {

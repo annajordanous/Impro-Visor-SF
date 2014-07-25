@@ -12,7 +12,7 @@ import imp.data.Note;
 import imp.data.Part.PartIterator;
 import imp.data.Unit;
 import imp.lickgen.LickGen;
-import imp.lickgen.NotesToRelativePitch;
+import imp.lickgen.NoteConverter;
 import java.util.ArrayList;
 import polya.Polylist;
 import polya.PolylistEnum;
@@ -399,7 +399,7 @@ private Polylist getWindowGuardCondition(MelodyPart outline, Chord chord)
         }
         
         chordFamilyEquals = chordFamilyEquals.addToEnd(chord.getFamily());
-        relPitchEquals = relPitchEquals.addToEnd(NotesToRelativePitch.noteToRelativePitch(origNote, chord).second());
+        relPitchEquals = relPitchEquals.addToEnd(NoteConverter.noteToRelativePitch(origNote, chord).second());
         andEquals = andEquals.addToEnd(categoryEquals).addToEnd(chordFamilyEquals).addToEnd(relPitchEquals);
         guardCondition = guardCondition.addToEnd(andEquals);
         return guardCondition;
@@ -826,7 +826,7 @@ private Polylist getTrendGuardCondition(Polylist importantNotesWithChords,
                                                                   + var + ")");
             
             // fill conditions
-            Object relPitch = NotesToRelativePitch.noteToRelativePitch(note, chord).second();
+            Object relPitch = NoteConverter.noteToRelativePitch(note, chord).second();
             relPitchEquals = relPitchEquals.addToEnd(relPitch);
             int cat = lickgen.classifyNote(note, chord);
             switch (cat){

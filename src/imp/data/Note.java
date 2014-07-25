@@ -774,7 +774,7 @@ public Note copy()
  * @return Polylist a polylist representing the corresponding relative pitch
  */
 public Polylist toRelativePitch(Chord chord) {
-    return imp.lickgen.NotesToRelativePitch.noteToRelativePitch(this, chord);
+    return imp.lickgen.NoteConverter.noteToRelativePitch(this, chord);
 }
 
 /**
