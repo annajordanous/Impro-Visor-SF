@@ -208,7 +208,7 @@
         <Component class="javax.swing.JButton" name="reapplySubstitutionsButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Re-Apply"/>
-            <Property name="toolTipText" type="java.lang.String" value="Undo Revert Substitutions"/>
+            <Property name="toolTipText" type="java.lang.String" value="Revert Substitutions and Apply again"/>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <Events>

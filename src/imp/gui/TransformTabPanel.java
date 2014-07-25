@@ -347,7 +347,7 @@ public class TransformTabPanel extends javax.swing.JPanel {
         useSubstitutionsButtonsPanel.add(revertSubstitutionsButton, gridBagConstraints);
 
         reapplySubstitutionsButton.setText("Re-Apply");
-        reapplySubstitutionsButton.setToolTipText("Undo Revert Substitutions");
+        reapplySubstitutionsButton.setToolTipText("Revert Substitutions and Apply again");
         reapplySubstitutionsButton.setEnabled(false);
         reapplySubstitutionsButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
