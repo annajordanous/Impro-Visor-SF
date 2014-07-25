@@ -16460,8 +16460,10 @@ public void addTab()
           }
         else if( progSize < mp.size() )
           {
-            score.setLength(mp.size());
-            setBars(score.getBarsPerChorus());
+            // Set the size of the inserted part to match other parts.
+            mp.setSize(progSize);
+            //score.setLength(mp.size());
+            //setBars(score.getBarsPerChorus());
           }
         score.addPart(mp);
         partList.add(mp);
