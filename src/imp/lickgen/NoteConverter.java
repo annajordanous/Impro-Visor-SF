@@ -33,7 +33,7 @@ import polya.Polylist;
  *
  * @author Mark Heimann
  */
-public class NotesToRelativePitch {
+public class NoteConverter {
 
     private static final int octave = 12; //number of semitones in an octave
     private static final int rootOffset = 60; //middle C (the MIDI number for middle C is 60, +- n for +- n semitones) for now
@@ -78,7 +78,8 @@ public class NotesToRelativePitch {
 
         //the root offset transposes notes so they're in a "normal" pitch range, though this probably isn't strictly necessary
         int pitch = note.getPitch() % octave + rootOffset;
-        int root = chord.getRootSemitones() + rootOffset; //gives number of semitones the pitch of the root is above a C, plus the offset (which makes it above middle C)
+        //gives number of semitones the pitch of the root is above a C, plus the offset (which makes it above middle C)
+        int root = chord.getRootSemitones() + rootOffset; 
         //make sure the note is at least as high in pitch as the root (otherwise transpose up)
         if (pitch - root < 0) {
             pitch += octave;
@@ -90,7 +91,7 @@ public class NotesToRelativePitch {
         //Part 2 of the note construction: add scale degree
         int pitchOffset = pitch - root; //note: this has been normalized to be between 0 and 11
         if (chord.isNOCHORD()) {
-            relativeNote = relativeNote.addToEnd(1);                             // FIX: Temporary solution
+            relativeNote = relativeNote.addToEnd(1);                            
         } else if (chordFamily.equals("minor")) {
             relativeNote = relativeNote.addToEnd(minorScaleDegrees[pitchOffset]);
         } else if (chordFamily.equals("minor7")) {
@@ -108,7 +109,7 @@ public class NotesToRelativePitch {
         } else if (chordFamily.equals("augmented")) {
             relativeNote = relativeNote.addToEnd(augScaleDegrees[pitchOffset]);
         } else {
-            relativeNote = relativeNote.addToEnd("0");                            // FIX: Temporary solution
+            relativeNote = relativeNote.addToEnd("0");                         
             ErrorLog.log(ErrorLog.COMMENT, "Unrecognized chord family: " + chordFamily);
         }
 
@@ -149,23 +150,38 @@ public class NotesToRelativePitch {
         //first item is tells us the starting slot of this section of melody
         int startSlot = Integer.parseInt(exactMelodyData[0]);
 
-        int chordNumber = 0; //index of the i-th chord in this measure we've looked at as a possible match for this note
-        int totalChordDurationInMeasure = allChords.get(0).getRhythmValue(); //total number of slots belonging to chords we've looked at as a possible match for this note
-        int totalNoteDurationInMeasure = 0; //total number of slots that have gone by in this measure up to this note
+        //index of the i-th chord in this measure we've looked at as a possible match for this note
+        int chordNumber = 0; 
+        //total number of slots belonging to chords we've looked at as a possible match for this note
+        int totalChordDurationInMelody = allChords.get(0).getRhythmValue(); 
+        int totalNoteDurationInMelody = 0; //total number of slots that have gone by in this measure up to this note
         for (int i = 1; i < exactMelodyData.length; i += 2) {
             int pitch = Integer.parseInt(exactMelodyData[i]); //every odd index item is a note
             int duration = Integer.parseInt(exactMelodyData[i + 1]); //every even index item (after 0) is a duration
-            while (totalNoteDurationInMeasure >= totalChordDurationInMeasure) { //we need to move on to the next chord
-                chordNumber++;
-                totalChordDurationInMeasure += allChords.get(chordNumber).getRhythmValue();
+            try {
+                while (totalNoteDurationInMelody >= totalChordDurationInMelody) { //we need to move on to the next chord
+                    chordNumber++;
+                    totalChordDurationInMelody += allChords.get(chordNumber).getRhythmValue();
+                } 
+            } catch (Exception e) {
+                System.out.println("Exception when matching notes to chords: " + e.toString());
+                System.out.println("Exact melody: " + exactMelody);
+                System.out.print("Chord part: " + chordProg);
+                System.out.println("At note: " + (i/2 + 1));
+                System.out.println("Total chord duration: " + totalChordDurationInMelody);
+                System.out.println("Total note duration: " + totalNoteDurationInMelody);
+                System.out.println("Total number of chords: " + allChords.size());
+                System.out.println("\n");
             }
+            
             try {
                 if (pitch >= 0) { //pitch is a note
                     Note note = new Note(pitch, duration);
                     Chord chord = allChords.get(chordNumber);
                     Polylist relativePitch = noteToRelativePitch(note, chord);
                     if (relativePitch == null) {
-                        System.out.println("*** Internal error: relativePitch is null at note = " + note + ", chord = " + chord);
+                        System.out.println("*** Internal error: relativePitch is null at note = "
+                                + note + ", chord = " + chord);
                       }
                     else {
                       relativePitchMelody.append(relativePitch.toString());
@@ -177,7 +193,7 @@ public class NotesToRelativePitch {
             } catch (Exception e) {
                 System.out.println("Problem processing note: " + e.toString());
             }
-            totalNoteDurationInMeasure += duration;
+            totalNoteDurationInMelody += duration;
         }
         return relativePitchMelody.toString();
     }

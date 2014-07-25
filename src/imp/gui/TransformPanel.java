@@ -68,7 +68,7 @@ import polya.Polylist;
  *
  * @author Alex Putman
  */
-public class TransformTabPanel extends javax.swing.JPanel {
+public class TransformPanel extends javax.swing.JPanel {
 
     /**
      * Creates new form SubstitutorTabPanel
@@ -83,7 +83,7 @@ public class TransformTabPanel extends javax.swing.JPanel {
     private Stack<MelodyInContext> savedMelodies;
     private Stack<MelodyInContext> savedTrans;
     
-    public TransformTabPanel(LickGen lickgen, Notate notate) {
+    public TransformPanel(LickGen lickgen, Notate notate) {
         this.lickgen = lickgen;
         this.notate = notate;
         initComponents();
@@ -143,7 +143,7 @@ public class TransformTabPanel extends javax.swing.JPanel {
         try {
             transformStr = new Scanner(ImproVisor.getTransformFile()).useDelimiter("\\Z").next();
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(TransformTabPanel.class.getName()).log(Level.WARNING, null, ex);
+            Logger.getLogger(TransformPanel.class.getName()).log(Level.WARNING, null, ex);
         }
         if(transformStr.length() > 0)
         {
@@ -853,7 +853,7 @@ public class TransformTabPanel extends javax.swing.JPanel {
             try {
                 transformStr = new Scanner(chooser.getSelectedFile()).useDelimiter("\\Z").next();
             } catch (FileNotFoundException ex) {
-                Logger.getLogger(TransformTabPanel.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(TransformPanel.class.getName()).log(Level.SEVERE, null, ex);
             }
             if(transformStr.length() > 0)
             {
@@ -997,7 +997,7 @@ public class TransformTabPanel extends javax.swing.JPanel {
             try {
                 transformStr = new Scanner(chooser.getSelectedFile()).useDelimiter("\\Z").next();
             } catch (FileNotFoundException ex) {
-                Logger.getLogger(TransformTabPanel.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(TransformPanel.class.getName()).log(Level.SEVERE, null, ex);
             }
             if(transformStr.length() > 0)
             {

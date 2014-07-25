@@ -1549,34 +1549,16 @@ public MelodyPart fillMelody(int minPitch,
           }
         else
           {
-// The "if" branch could not possible be executed
-//            if( false && first.toString().startsWith("(slope 0 0") )
-//              {
-//                //System.out.println("3 first: " + first);
-//                if( !section.isEmpty() )
-//                  {
-//                    newRhythmString = newRhythmString.addToEnd(section);
-//                    section = new Polylist();
-//                    section = section.addToEnd(first);
-//                  }
-//                else
-//                  {
-//                    section = section.addToEnd(first);
-//                  }
-//              }
-//            else
-              {
-                if( isPolylistStartingWith("slope", first) 
-                 || isPolylistStartingWith("triadic", first)
-                 || isPolylistStartingWith("X", first) )
-                 {
-                    section = section.addToEnd(first);
-                  }
-                else
-                  {
-                    section = section.append(first);
-                  }
-              }
+              if( isPolylistStartingWith("slope", first) 
+               || isPolylistStartingWith("triadic", first)
+               || isPolylistStartingWith("X", first) )
+               {
+                  section = section.addToEnd(first);
+                }
+              else
+                {
+                  section = section.append(first);
+                }
           }
       }
     

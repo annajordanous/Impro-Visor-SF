@@ -59,17 +59,17 @@ public class TransformLearningPanel extends javax.swing.JPanel {
     private Transform transform;
     
     /**
-     * the TransformTabPanel in LickgenFrame that is to put the learned 
+     * the TransformPanel in LickgenFrame that is to put the learned 
      * transform
      */
-    TransformTabPanel subPanel;
+    TransformPanel subPanel;
     
     /**
      * Creates new form TransformLearningPanel
      */
     public TransformLearningPanel(LickGen lickgen, 
                                   Notate notate, 
-                                  TransformTabPanel subPanel) {
+                                  TransformPanel subPanel) {
         initComponents();
         this.lickgen = lickgen;
         this.notate = notate;

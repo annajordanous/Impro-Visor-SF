@@ -27,7 +27,7 @@ import imp.data.Duration;
 import imp.data.Note;
 import imp.data.NoteSymbol;
 import imp.lickgen.LickGen;
-import imp.lickgen.NotesToRelativePitch;
+import imp.lickgen.NoteConverter;
 import imp.util.ErrorLog;
 import polya.*;
 import java.util.*;
@@ -811,7 +811,7 @@ public Object relative_pitch(Polylist evaledArgs)
     Note note = pair.note;
     Chord chord = pair.chord;
 
-    Polylist relNoteList = NotesToRelativePitch.noteToRelativePitch(note, chord);
+    Polylist relNoteList = NoteConverter.noteToRelativePitch(note, chord);
     if(relNoteList.second().equals("0"))
         return null;
     String relPitch = relNoteList.second().toString();
@@ -855,7 +855,7 @@ public Object pitch_addition(Polylist evaledArgs)
         {
             Note secondNote = ((NoteChordPair)secondArg).note.copy();
             Chord chord = ((NoteChordPair)secondArg).chord;
-            Polylist relNote = NotesToRelativePitch.noteToRelativePitch(secondNote, chord);
+            Polylist relNote = NoteConverter.noteToRelativePitch(secondNote, chord);
             if(relNote.second().equals("0"))
                 return null;
             String relPitch = relNote.second().toString();
@@ -872,7 +872,7 @@ public Object pitch_addition(Polylist evaledArgs)
         {
             Note firstNote = ((NoteChordPair)firstArg).note.copy();
             Chord chord = ((NoteChordPair)firstArg).chord;
-            Polylist relNote = NotesToRelativePitch.noteToRelativePitch(firstNote, chord);
+            Polylist relNote = NoteConverter.noteToRelativePitch(firstNote, chord);
             if(relNote.second().equals("0"))
                 return null;
             String relPitch = relNote.second().toString();
@@ -912,7 +912,7 @@ public Object pitch_addition(Polylist evaledArgs)
         {
             Note secondNote = ((NoteChordPair)secondArg).note.copy();
             Chord chord = ((NoteChordPair)secondArg).chord;
-            Polylist relNote = NotesToRelativePitch.noteToRelativePitch(secondNote, chord);
+            Polylist relNote = NoteConverter.noteToRelativePitch(secondNote, chord);
             if(relNote.second().equals("0"))
                 return null;
             String relPitch = relNote.second().toString();
@@ -970,7 +970,7 @@ public Object pitch_addition(Polylist evaledArgs)
         {
             Note firstNote = ((NoteChordPair)firstArg).note.copy();
             Chord chord = ((NoteChordPair)firstArg).chord;
-            Polylist relNote = NotesToRelativePitch.noteToRelativePitch(firstNote, chord);
+            Polylist relNote = NoteConverter.noteToRelativePitch(firstNote, chord);
             if(relNote.second().equals("0"))
                 return null;
             String relPitch = secondArg.toString();
@@ -1332,8 +1332,8 @@ public String modRelPitch(String pitch)
 public String absoluteRelPitchDiff(Note n1, Note n2, Chord chord)
 {
     
-    String rel1 = NotesToRelativePitch.noteToRelativePitch(n1, chord).second().toString();
-    String rel2 = NotesToRelativePitch.noteToRelativePitch(n2, chord).second().toString();
+    String rel1 = NoteConverter.noteToRelativePitch(n1, chord).second().toString();
+    String rel2 = NoteConverter.noteToRelativePitch(n2, chord).second().toString();
     
     if(pitch_gr_eq(Polylist.PolylistFromString(rel1 + " " + rel2)) == null)
         return null;
