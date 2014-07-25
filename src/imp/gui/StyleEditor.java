@@ -1612,13 +1612,14 @@ public void updateDefinePatterns(Color color, String name, String pattern)
       String rule = cpi.forGenerator();
       float weight = cpi.getWeight();
       String name = cpi.getName();
+      String push = cpi.getPushString();
       if( name != null )
       {
-          chordP.add(c.makeChordPattern(rule, weight, name));
+          chordP.add(c.makeChordPattern(rule, weight, push, name));
       }
       else
       {
-          chordP.add(c.makeChordPattern(rule, weight));
+          chordP.add(c.makeChordPattern(cpi));
       }
       //chordP.add(c.makeChordPattern(rule, weight));
       }
@@ -5092,7 +5093,7 @@ public void updateDefinePatterns(Color color, String name, String pattern)
 
         nameField2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         nameField2.setMaximumSize(new java.awt.Dimension(200, 2147483647));
-        nameField2.setMinimumSize(new java.awt.Dimension(200, 22));
+        nameField2.setMinimumSize(new java.awt.Dimension(250, 22));
         nameField2.setPreferredSize(new java.awt.Dimension(200, 22));
         nameField2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -5210,7 +5211,7 @@ public void updateDefinePatterns(Color color, String name, String pattern)
 
         nameField1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         nameField1.setMaximumSize(new java.awt.Dimension(200, 2147483647));
-        nameField1.setMinimumSize(new java.awt.Dimension(200, 22));
+        nameField1.setMinimumSize(new java.awt.Dimension(250, 22));
         nameField1.setPreferredSize(new java.awt.Dimension(200, 22));
         nameField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -5318,7 +5319,7 @@ public void updateDefinePatterns(Color color, String name, String pattern)
 
         nameField0.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         nameField0.setMaximumSize(new java.awt.Dimension(200, 2147483647));
-        nameField0.setMinimumSize(new java.awt.Dimension(200, 22));
+        nameField0.setMinimumSize(new java.awt.Dimension(250, 22));
         nameField0.setPreferredSize(new java.awt.Dimension(200, 22));
         nameField0.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -5462,7 +5463,7 @@ public void updateDefinePatterns(Color color, String name, String pattern)
         stylePanel.add(styleScrollpane, gridBagConstraints);
 
         nameField3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        nameField3.setMinimumSize(new java.awt.Dimension(200, 22));
+        nameField3.setMinimumSize(new java.awt.Dimension(250, 22));
         nameField3.setPreferredSize(new java.awt.Dimension(200, 22));
         nameField3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -6001,12 +6002,20 @@ public void updateDefinePatterns(Color color, String name, String pattern)
       String revisedContent = styleTextField0.getText(); //.toUpperCase();
       String name = nameField0.getText();
       setCell(revisedContent, recentRows[0], recentColumns[0], PLAY, name);
-      if( styleTextField0.getBackground() == CHORD_COLOR )
-      {
-          ChordPatternDisplay display = (ChordPatternDisplay)getChordPattern(recentColumns[0]);
-          display.setPushString(pushField0.getText());
-      }
-      updateMirror(recentRows[0], recentColumns[0], revisedContent);
+        if( styleTextField0.getBackground() == CHORD_COLOR )
+        {
+            String push = (String)styleTable.getValueAt(StyleTableModel.CHORD_PATTERN_PUSH_ROW,
+                                                        recentColumns[0]);
+            
+            ChordPatternDisplay display = (ChordPatternDisplay)getChordPattern(recentColumns[0]);
+            display.setPushString(push);
+            updateMirror(recentRows[0], recentColumns[0], display);
+        }
+        else
+        {
+          updateMirror(recentRows[0], recentColumns[0], revisedContent);
+        }
+        System.out.println("push: " + pushField0.getText());
       }
 }//GEN-LAST:event_styleTextField0ActionPerformed
 
@@ -6019,10 +6028,17 @@ public void updateDefinePatterns(Color color, String name, String pattern)
       setCell(revisedContent, recentRows[1], recentColumns[1], PLAY, name);
       if( pushField1.getBackground() == CHORD_COLOR )
           {
-          String push = pushField1.getText();
-          setCell(push, StyleTableModel.CHORD_PATTERN_PUSH_ROW, recentColumns[1], SILENT);
+            String push = (String)styleTable.getValueAt(StyleTableModel.CHORD_PATTERN_PUSH_ROW,
+                                                        recentColumns[1]);
+            
+            ChordPatternDisplay display = (ChordPatternDisplay)getChordPattern(recentColumns[1]);
+            display.setPushString(push);
+            updateMirror(recentRows[1], recentColumns[1], display);
           }
-      updateMirror(recentRows[1], recentColumns[1], revisedContent);
+      else
+        {
+        updateMirror(recentRows[1], recentColumns[1], revisedContent);
+        }
     }
 }//GEN-LAST:event_styleTextField1ActionPerformed
 
@@ -6035,10 +6051,17 @@ public void updateDefinePatterns(Color color, String name, String pattern)
       setCell(revisedContent, recentRows[2], recentColumns[2], PLAY, name);
       if( pushField2.getBackground() == CHORD_COLOR )
           {
-          String push = pushField2.getText();
-          setCell(push, StyleTableModel.CHORD_PATTERN_PUSH_ROW, recentColumns[2], SILENT);
+            String push = (String)styleTable.getValueAt(StyleTableModel.CHORD_PATTERN_PUSH_ROW,
+                                                        recentColumns[2]);
+            
+            ChordPatternDisplay display = (ChordPatternDisplay)getChordPattern(recentColumns[2]);
+            display.setPushString(push);
+            updateMirror(recentRows[2], recentColumns[2], display);
           }
-      updateMirror(recentRows[2], recentColumns[2], revisedContent);
+      else
+        {
+        updateMirror(recentRows[2], recentColumns[2], revisedContent);
+        }
       }
 }//GEN-LAST:event_styleTextField2ActionPerformed
 
@@ -7391,12 +7414,19 @@ private void openStyleMixer()
       String revisedContent = styleTextField2.getText(); //.toUpperCase();
       String revisedName = nameField2.getText();
       setCell(revisedContent, recentRows[2], recentColumns[2], PLAY, revisedName);
-      if( pushField2.getBackground() == CHORD_COLOR )
-          {
-          String push = pushField2.getText();
-          setCell(push, StyleTableModel.CHORD_PATTERN_PUSH_ROW, recentColumns[2], SILENT);
-          }
-      updateMirror(recentRows[2], recentColumns[2], revisedContent);
+      if( styleTextField0.getBackground() == CHORD_COLOR )
+        {
+            String push = (String)styleTable.getValueAt(StyleTableModel.CHORD_PATTERN_PUSH_ROW,
+                                                        recentColumns[2]);
+            
+            ChordPatternDisplay display = (ChordPatternDisplay)getChordPattern(recentColumns[2]);
+            display.setPushString(push);
+            updateMirror(recentRows[2], recentColumns[2], display);
+        }
+        else
+        {
+          updateMirror(recentRows[2], recentColumns[2], revisedContent);
+        }
       }     
     }//GEN-LAST:event_nameField2ActionPerformed
 
@@ -7407,12 +7437,19 @@ private void openStyleMixer()
       String revisedContent = styleTextField1.getText(); //.toUpperCase();
       String revisedName = nameField1.getText();
       setCell(revisedContent, recentRows[1], recentColumns[1], PLAY, revisedName);
-      if( pushField1.getBackground() == CHORD_COLOR )
-          {
-          String push = pushField1.getText();
-          setCell(push, StyleTableModel.CHORD_PATTERN_PUSH_ROW, recentColumns[1], SILENT);
-          }
-      updateMirror(recentRows[1], recentColumns[1], revisedContent);
+      if( styleTextField0.getBackground() == CHORD_COLOR )
+        {
+            String push = (String)styleTable.getValueAt(StyleTableModel.CHORD_PATTERN_PUSH_ROW,
+                                                        recentColumns[1]);
+            
+            ChordPatternDisplay display = (ChordPatternDisplay)getChordPattern(recentColumns[1]);
+            display.setPushString(push);
+            updateMirror(recentRows[1], recentColumns[1], display);
+        }
+        else
+        {
+          updateMirror(recentRows[1], recentColumns[1], revisedContent);
+        }
       }
     }//GEN-LAST:event_nameField1ActionPerformed
 
@@ -7423,12 +7460,19 @@ private void openStyleMixer()
       String revisedContent = styleTextField0.getText(); //.toUpperCase();
       String revisedName = nameField0.getText();
       setCell(revisedContent, recentRows[0], recentColumns[0], PLAY, revisedName);
-      if( pushField0.getBackground() == CHORD_COLOR )
-          {
-          String push = pushField0.getText();
-          setCell(push, StyleTableModel.CHORD_PATTERN_PUSH_ROW, recentColumns[0], SILENT);
-          }
-      updateMirror(recentRows[0], recentColumns[0], revisedContent);
+      if( styleTextField0.getBackground() == CHORD_COLOR )
+        {
+            String push = (String)styleTable.getValueAt(StyleTableModel.CHORD_PATTERN_PUSH_ROW,
+                                                        recentColumns[0]);
+            
+            ChordPatternDisplay display = (ChordPatternDisplay)getChordPattern(recentColumns[0]);
+            display.setPushString(push);
+            updateMirror(recentRows[0], recentColumns[0], display);
+        }
+        else
+        {
+          updateMirror(recentRows[0], recentColumns[0], revisedContent);
+        }
       }   
     }//GEN-LAST:event_nameField0ActionPerformed
 
@@ -7537,36 +7581,37 @@ private void openStyleMixer()
     }//GEN-LAST:event_drumPatternListMouseClicked
 
     private void pushField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pushField2ActionPerformed
-      /*if( pushField2.getBackground() == CHORD_COLOR )
+      if( pushField2.getBackground() == CHORD_COLOR )
       {
           String push = pushField2.getText();
+          setCell(push, StyleTableModel.CHORD_PATTERN_PUSH_ROW, recentColumns[2], SILENT);
           ChordPatternDisplay pattern = (ChordPatternDisplay)getChordPattern(recentColumns[2]);
-          pattern.setPushString(push);
-          setCell(push, StyleTableModel.CHORD_PATTERN_PUSH_ROW, recentColumns[2], PLAY);
-          updateMirror(recentRows[2], recentColumns[2], pattern.toString());
-      }*/
+          pattern.setPushString(push);          
+          updateMirror(recentRows[2], recentColumns[2], pattern);
+      }
     }//GEN-LAST:event_pushField2ActionPerformed
 
     private void pushField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pushField1ActionPerformed
-      /*if( pushField1.getBackground() == CHORD_COLOR )
+      if( pushField1.getBackground() == CHORD_COLOR )
       {
           String push = pushField1.getText();
-          setCell(push, StyleTableModel.CHORD_PATTERN_PUSH_ROW, recentColumns[1], PLAY);
+          setCell(push, StyleTableModel.CHORD_PATTERN_PUSH_ROW, recentColumns[1], SILENT);
           ChordPatternDisplay pattern = (ChordPatternDisplay)getChordPattern(recentColumns[1]);
           pattern.setPushString(push);         
-          updateMirror(recentRows[1], recentColumns[1], pattern.toString());
-      }*/
+          updateMirror(recentRows[1], recentColumns[1], pattern);
+      }
     }//GEN-LAST:event_pushField1ActionPerformed
 
     private void pushField0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pushField0ActionPerformed
-      /*if( pushField0.getBackground() == CHORD_COLOR )
+      if( pushField0.getBackground() == CHORD_COLOR )
       {
           String push = pushField0.getText();
+          setCell(push, StyleTableModel.CHORD_PATTERN_PUSH_ROW, recentColumns[0], SILENT);
           ChordPatternDisplay pattern = (ChordPatternDisplay)getChordPattern(recentColumns[0]);
           pattern.setPushString(push);
-          setCell(push, StyleTableModel.CHORD_PATTERN_PUSH_ROW, recentColumns[0], PLAY);
           updateMirror(recentRows[0], recentColumns[0], pattern);
-      }*/
+          //System.out.println("push: " + pattern.getPushString());
+      }
     }//GEN-LAST:event_pushField0ActionPerformed
 
     private void weightField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_weightField2ActionPerformed

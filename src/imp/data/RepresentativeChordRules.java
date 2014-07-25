@@ -774,6 +774,11 @@ public ChordPattern makeChordPattern(String r, float w, String n)
     return new ChordPattern(r, w, "", n);
 }
 
+public ChordPattern makeChordPattern(String r, float w, String p, String n)
+{
+    return new ChordPattern(r, w, p, n);
+}
+
 public ChordPattern makeChordPattern(imp.data.ChordPattern cp)
   {
     return new ChordPattern(cp.forGenerator(), cp.getWeight(), cp.getPushString(), cp.getName());

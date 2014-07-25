@@ -81,7 +81,7 @@ public class ChordPatternDisplay
         setWeight(weight);
         setDisplayText(rule);
         
-        this.pushString = pushString;   
+        setPushString(pushString);   
     }
     
     private void initialize(String rule, float weight, String pushString, String name)
@@ -89,7 +89,7 @@ public class ChordPatternDisplay
         setWeight(weight);
         setDisplayText(rule, name);
         setName(name);
-        this.pushString = pushString;
+        setPushString(pushString);
     }
     
     //Accessors:
