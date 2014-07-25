@@ -13,10 +13,10 @@
           <Properties>
             <Property name="toolTipText" type="java.lang.String" value="Style Editor &amp; Extractor Help"/>
             <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[500, 700]"/>
+              <Dimension value="[800, 500]"/>
             </Property>
             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[600, 800]"/>
+              <Dimension value="[800, 500]"/>
             </Property>
           </Properties>
           <Constraints>
@@ -148,7 +148,7 @@
                       <Font name="Lucida Console" size="13" style="0"/>
                     </Property>
                     <Property name="rows" type="int" value="5"/>
-                    <Property name="text" type="java.lang.String" value="Bass Patterns&#xa;&#xa;Bass patterns determine both the rhythm of the bassline and the type of&#xa;notes that are chosen.&#xa;&#xa;Bass patterns use the following rules, where d is a duration, such as&#xa;4 for a quarter-note, 8 for an eighth-note, etc.&#xa;&#xa;Bd      The bass note (either the root of the chord, or the note specified&#xa;        as part of a slash chord)&#xa;&#xa;Cd      A note from the current chord&#xa;&#xa;Sd      A note from the first scale associated with the current chord&#xa;&#xa;Ad      A tone that approaches the bass note of the next chord&#xa;&#xa;Nd      The bass note of the next chord (if at the end of a pattern&#xa;        it will tie over to the next pattern)&#xa;&#xa;Rd      A rest of duration d&#xa;&#xa;(X n d) A specific note from the first scale given for a chord in&#xa;        the vocabulary. For example (X 5 4) will give a quarter-note&#xa;        on the fifth-degree of the scale.&#xa;"/>
+                    <Property name="text" type="java.lang.String" value="Bass Patterns&#xa;&#xa;Bass patterns determine both the rhythm of the bassline and the type of&#xa;notes that are chosen.&#xa;&#xa;Bass patterns use the following rules, where d is a duration, such as&#xa;4 for a quarter-note, 8 for an eighth-note, etc.&#xa;&#xa;Bd      The bass note (either the root of the chord, or the note specified&#xa;        as part of a slash chord)&#xa;&#xa;Cd      A note from the current chord&#xa;&#xa;Sd      A note from the first scale associated with the current chord&#xa;&#xa;Ad      A tone that approaches the bass note of the next chord&#xa;&#xa;Nd      The bass note of the next chord (if at the end of a pattern&#xa;        it will tie over to the next pattern)&#xa;&#xa;Rd      A rest of duration d&#xa;&#xa;(X n d) A specific note from the first scale given for a chord in&#xa;        the vocabulary. For example (X 5 4) will give a quarter-note&#xa;        on the fifth-degree of the scale.&#xa;&#xa;(X n d m) Same as above, but you can specify whether to move the note up &#xa;&#x9;  or down from the one before it using U or D in place of the m.&#xa;&#x9;  For example, (X 5 4 U) will give a quarter note on the fifth-&#xa;&#x9;  degree of the scale in the octave that will make the note higher&#xa;&#x9;  than the one before it.&#xa;"/>
                   </Properties>
                 </Component>
               </SubComponents>
@@ -180,7 +180,7 @@
                       <Font name="Lucida Console" size="13" style="0"/>
                     </Property>
                     <Property name="rows" type="int" value="5"/>
-                    <Property name="text" type="java.lang.String" value="&#xa;**Chord Patterns&#xa;&#xa;Chord patterns determine only the rhythm of the chord accompaniment. (The &#xa;voicings to use are decided based on a voice-leading algorithm.)&#xa;&#xa;Chord patterns use the following rules:&#xa;&#xa;X       Strike the chord&#xa;R       A rest&#xa;"/>
+                    <Property name="text" type="java.lang.String" value="&#xa;**Chord Patterns&#xa;&#xa;Chord patterns determine only the rhythm of the chord accompaniment. (The &#xa;voicings to use are decided based on a voice-leading algorithm.)&#xa;&#xa;Chord patterns use the following rules:&#xa;&#xa;Xd      Strike the whole chord for duration, d&#xa;&#xa;Rd      A rest for duration, d&#xa;&#xa;(X n d) A specific note from the first scale given for a chord in&#xa;        the vocabulary. For example (X 5 4) will give a quarter-note&#xa;        on the fifth-degree of the scale. Degrees can range from&#xa;&#x9;1 to 13.&#xa;"/>
                   </Properties>
                 </Component>
               </SubComponents>
@@ -212,7 +212,7 @@
                       <Font name="Lucida Console" size="13" style="0"/>
                     </Property>
                     <Property name="rows" type="int" value="5"/>
-                    <Property name="text" type="java.lang.String" value="**Percussion Patterns&#xa;&#xa;Percussion patterns are a bit more complicated in that for one pattern you must&#xa;specify a drumline for each drum you want in the pattern.  Here is the&#xa;format for a drumline specification:&#xa;&#xa;(drum DRUM-MIDI-NUMBER RULE RULE ...)&#xa;&#xa;Drum patterns use the following rules:&#xa;&#xa;X       Strike the drum&#xa;R       A rest&#xa;&#xa;General MIDI Percussion Numbers:&#xa;&#xa;35      Acoustic Bass Drum      59      Ride Cymbal 2&#xa;36      Bass Drum 1             60      Hi Bongo&#xa;37      Side Stick              61      Low Bongo&#xa;38      Acoustic Snare          62      Mute Hi Conga&#xa;39      Hand Clap               63      Open Hi Conga&#xa;40      Electric Snare          64      Low Conga&#xa;41      Low Floor Tom           65      High Timbale&#xa;42      Closed Hi-Hat           66      Low Timbale&#xa;43      High Floor Tom          67      High Agogo&#xa;44      Pedal Hi-Hat            68      Low Agogo&#xa;45      Low Tom                 69      Cabasa&#xa;46      Open Hi-Hat             70      Maracas&#xa;47      Low-Mid Tom             71      Short Whistle&#xa;48      Hi-Mid Tom              72      Long Whistle&#xa;49      Crash Cymbal 1          73      Short Guiro&#xa;50      High Tom                74      Long Guiro&#xa;51      Ride Cymbal 1           75      Claves&#xa;52      Chinese Cymbal          76      Hi Wood Block&#xa;53      Ride Bell               77      Low Wood Block&#xa;54      Tambourine              78      Mute Cuica&#xa;55      Splash Cymbal           79      Open Cuica&#xa;56      Cowbell                 80      Mute Triangle&#xa;57      Crash Cymbal 2          81      Open Triangle&#xa;58      Vibraslap&#xa;"/>
+                    <Property name="text" type="java.lang.String" value="**Percussion Patterns&#xa;&#xa;Percussion patterns are a bit more complicated in that for one pattern you must&#xa;specify a drumline for each drum you want in the pattern.  Here is the&#xa;format for a drumline specification:&#xa;&#xa;(drum DRUM-MIDI-NUMBER RULE RULE ...)&#xa;&#xa;You can also specify the drum by using the name with underscores instead of&#xa;spaces. Example:&#xa;&#xa;(drum Acoustic_Bass_Drum RULE RULE ...)&#xa;&#xa;Drum patterns use the following rules:&#xa;&#xa;Xd       Strike the drum for duration, d&#xa;Rd       A rest for duration, d&#xa;&#xa;General MIDI Percussion Numbers:&#xa;&#xa;35      Acoustic Bass Drum      59      Ride Cymbal 2&#xa;36      Bass Drum 1             60      Hi Bongo&#xa;37      Side Stick              61      Low Bongo&#xa;38      Acoustic Snare          62      Mute Hi Conga&#xa;39      Hand Clap               63      Open Hi Conga&#xa;40      Electric Snare          64      Low Conga&#xa;41      Low Floor Tom           65      High Timbale&#xa;42      Closed Hi-Hat           66      Low Timbale&#xa;43      High Floor Tom          67      High Agogo&#xa;44      Pedal Hi-Hat            68      Low Agogo&#xa;45      Low Tom                 69      Cabasa&#xa;46      Open Hi-Hat             70      Maracas&#xa;47      Low-Mid Tom             71      Short Whistle&#xa;48      Hi-Mid Tom              72      Long Whistle&#xa;49      Crash Cymbal 1          73      Short Guiro&#xa;50      High Tom                74      Long Guiro&#xa;51      Ride Cymbal 1           75      Claves&#xa;52      Chinese Cymbal          76      Hi Wood Block&#xa;53      Ride Bell               77      Low Wood Block&#xa;54      Tambourine              78      Mute Cuica&#xa;55      Splash Cymbal           79      Open Cuica&#xa;56      Cowbell                 80      Mute Triangle&#xa;57      Crash Cymbal 2          81      Open Triangle&#xa;58      Vibraslap&#xa;"/>
                   </Properties>
                 </Component>
               </SubComponents>
@@ -243,7 +243,7 @@
                       <Font name="Lucida Console" size="13" style="0"/>
                     </Property>
                     <Property name="rows" type="int" value="5"/>
-                    <Property name="text" type="java.lang.String" value="Help for Style Notation&#xa;&#xa;Styles are responsible for Impro-Visor&apos;s playback accompaniment.  Styles &#xa;are specified in the vocabulary file as a set of patterns for each instrument&#xa;of the accompaniment.  There are also style parameters that determine how&#xa;the patterns are used.&#xa;&#xa;These parameters are found in the Attributes tab in &#xa;Impro-Visor&apos;s Style Editor &amp; Extractor.&#xa;&#xa;Style Parameters&#xa;&#xa;name            The name of the style&#xa;swing           The swing value for the style&#xa;comp-swing&#x9;The swing value of the accompaniment part for the style&#xa;bass-high       The highest note in the bass&apos;s range&#xa;bass-low        The lowest note in the bass&apos;s range&#xa;bass-base       A note that specifies the starting area for the bassline&#xa;chord-high      The highest note in the chord&apos;s range&#xa;chord-low       The lowest note in the chord&apos;s range&#xa;voicing-type    Sets the voicing type to be used&#xa;&#xa;Example Style&#xa;&#xa;(style&#xa;    (name swing)&#xa;    (swing 0.67)&#xa;    (comp-swing 0.67)&#xa;    &#xa;    (bass-high g-)&#xa;    (bass-low g---)&#xa;    (bass-base c--)&#xa;    &#xa;    (bass-pattern (rules B4 S4 C4 A4) (weight 10))&#xa;    (bass-pattern (rules B4 C4 C4 A4) (weight 5))&#xa;    (bass-pattern (rules B4 S4 C4 S4) (weight 3))&#xa;    (bass-pattern (rules B4 S4 C4 A8 A8) (weight 3))&#xa;    (bass-pattern (rules B4 S4 C4 S8 A8) (weight 3))&#xa;    (bass-pattern (rules B4 C4) (weight 5))&#xa;    (bass-pattern (rules B4 C8 A8) (weight 5))&#xa;    (bass-pattern (rules B4 S4) (weight 3))&#xa;    (bass-pattern (rules B4) (weight 5))&#xa;    (bass-pattern (rules B4 A4) (weight 2))&#xa;    &#xa;    (drum-pattern&#xa;        (drum 51 X4 X8 X8 X4 X8 X8)&#xa;        (weight 10)&#xa;        )&#xa;    (drum-pattern&#xa;        (drum 51 X4 X8 X8)&#xa;        (weight 10)&#xa;        )&#xa;    (drum-pattern&#xa;        (drum 51 X4)&#xa;        (weight 10)&#xa;        )&#xa;        &#xa;    (voicing-type closed)&#xa;    (chord-high a)&#xa;    (chord-low c-)&#xa;    &#xa;    (chord-pattern (rules X1) (weight 7))&#xa;    (chord-pattern (rules X2) (weight 7))&#xa;    (chord-pattern (rules X4) (weight 7))&#xa;    (chord-pattern (rules X2+4 X4) (weight 5))&#xa;    (chord-pattern (rules X4 R2+4) (weight 5))&#xa;    (chord-pattern (rules X2 R2) (weight 7))&#xa;    (chord-pattern (rules R4) (weight 1))&#xa;    (chord-pattern (rules R8 X8+4 X4 R4) (weight 3))&#xa;    (chord-pattern (rules R4 X8+4 X8 R4) (weight 5))&#xa;    (chord-pattern (rules X8+2 X4 X8) (weight 2))&#xa;    )&#xa;&#xa;Style Tips&#xa;&#xa;   * The lengths of the patterns are important.  The software will attempt&#xa;     to fill space with the largest pattern it can.  Try to correspond pattern&#xa;     lengths to the probable chord durations.  If chords will mostly last for&#xa;     4 beats, then have a 4 beat pattern.  If chords will last for 8 beats,&#xa;     the software can fill that in with two 4 beat patterns.  Having a 1 beat&#xa;     pattern for each accompaniment instrument is a good idea as a failsafe&#xa;     for unconventional chord durations.&#xa;     (Note that the length of the pattern, or number of beats, is displayed&#xa;       in the bar of each pattern.)&#xa;&#xa;   * Adding the parameter (no-style) to your style will cause the software&#xa;     to leave out any bassline or drum part and play chords exactly where &#xa;     they are specified on the leadsheet.&#xa;&#xa;   * Look to the styles included in the vocabulary file as a guide to&#xa;     creating your own styles.&#xa;&#xa;   * Don&apos;t be afraid to experiment, but also don&apos;t be afraid to keep &#xa;     things simple.&#xa;"/>
+                    <Property name="text" type="java.lang.String" value="Help for Style Notation&#xa;&#xa;Styles are responsible for Impro-Visor&apos;s playback accompaniment.  Styles &#xa;are specified in the vocabulary file as a set of patterns for each instrument&#xa;of the accompaniment.  There are also style parameters that determine how&#xa;the patterns are used.&#xa;&#xa;These parameters are found in the Attributes tab in &#xa;Impro-Visor&apos;s Style Editor &amp; Extractor.&#xa;&#xa;Style Parameters&#xa;&#xa;name            The name of the style&#xa;swing           The swing value for the style&#xa;comp-swing&#x9;The swing value of the accompaniment part for the style&#xa;bass-high       The highest note in the bass&apos;s range&#xa;bass-low        The lowest note in the bass&apos;s range&#xa;bass-base       A note that specifies the starting area for the bassline&#xa;chord-high      The highest note in the chord&apos;s range&#xa;chord-low       The lowest note in the chord&apos;s range&#xa;voicing-type    Sets the voicing type to be used&#xa;&#xa;Example Style&#xa;&#xa;(style&#xa;    (name swing)&#xa;    (bass-high g-)&#xa;    (bass-low g---)&#xa;    (bass-base c--)&#xa;    (swing 0.67)&#xa;    (comp-swing 0.67)&#xa;    (voicing-type closed)&#xa;    (chord-high a)&#xa;    (chord-low c-)    &#xa;    (comments )&#xa;    (define-rule bass NAME (rules B4 S4 C4 A4))&#xa;    (bass-pattern (use NAME) (weight 10))&#xa;    (bass-pattern (rules B4 C4 C4 A4) (weight 5))&#xa;    (bass-pattern (rules B4 S4 C4 S4) (weight 3))&#xa;    (bass-pattern (rules B4 S4 C4 A8 A8) (weight 3))&#xa;    (bass-pattern (rules B4 S4 C4 S8 A8) (weight 3))&#xa;    (bass-pattern (rules B4 C4) (weight 5))&#xa;    (bass-pattern (rules B4 C8 A8) (weight 5))&#xa;    (bass-pattern (rules B4 S4) (weight 3))&#xa;    (bass-pattern (rules B4) (weight 5))&#xa;    (bass-pattern (rules B4 A4) (weight 2))   &#xa;    (drum-pattern (pattern-name PATTERN_NAME)&#xa;        (drum 51 (name NEW_NAME) (rules X4 X8 X8 X4 X8 X8))&#xa;        (weight 10)&#xa;        )&#xa;    (drum-pattern&#xa;        (drum Acoustic_Snare (name NEW_NAME) (rules X4 X8 X8))&#xa;        (weight 10)&#xa;        )&#xa;    (drum-pattern&#xa;        (drum 51 X4)&#xa;        (weight 10)&#xa;        )   &#xa;    (chord-pattern (name CREATE_NAME) (rules X1) (weight 7))&#xa;    (chord-pattern (rules X2) (weight 7))&#xa;    (chord-pattern (rules X4) (weight 7))&#xa;    (chord-pattern (rules X2+4 X4) (weight 5))&#xa;    (chord-pattern (rules X4 R2+4) (weight 5))&#xa;    (chord-pattern (rules X2 R2) (weight 7))&#xa;    (chord-pattern (rules R4) (weight 1))&#xa;    (chord-pattern (rules R8 X8+4 X4 R4) (weight 3))&#xa;    (chord-pattern (rules R4 X8+4 X8 R4) (weight 5))&#xa;    (chord-pattern (rules X8+2 X4 X8) (weight 2))&#xa;    )&#xa;&#xa;Style Tips&#xa;&#xa;   * The lengths of the patterns are important.  The software will attempt&#xa;     to fill space with the largest pattern it can.  Try to correspond pattern&#xa;     lengths to the probable chord durations.  If chords will mostly last for&#xa;     4 beats, then have a 4 beat pattern.  If chords will last for 8 beats,&#xa;     the software can fill that in with two 4 beat patterns.  Having a 1 beat&#xa;     pattern for each accompaniment instrument is a good idea as a failsafe&#xa;     for unconventional chord durations.&#xa;     (Note that the length of the pattern, or number of beats, is displayed&#xa;       in the bar of each pattern.)&#xa;&#xa;   * Adding the parameter (no-style) to your style will cause the software&#xa;     to leave out any bassline or drum part and play chords exactly where &#xa;     they are specified on the leadsheet.&#xa;&#xa;   * Look to the styles included in the vocabulary file as a guide to&#xa;     creating your own styles.&#xa;&#xa;   * Don&apos;t be afraid to experiment, but also don&apos;t be afraid to keep &#xa;     things simple.&#xa;"/>
                   </Properties>
                 </Component>
               </SubComponents>
@@ -2798,6 +2798,30 @@
               <Dimension value="[100, 14]"/>
             </Property>
             <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[60, 14]"/>
+            </Property>
+            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[60, 14]"/>
+            </Property>
+          </Properties>
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
+              <GridBagConstraints gridX="3" gridY="0" gridWidth="1" gridHeight="1" fill="1" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="18" weightX="0.0" weightY="0.0"/>
+            </Constraint>
+          </Constraints>
+        </Component>
+        <Component class="javax.swing.JLabel" name="weightLabel">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Tahoma" size="11" style="1"/>
+            </Property>
+            <Property name="horizontalAlignment" type="int" value="0"/>
+            <Property name="text" type="java.lang.String" value="Weight"/>
+            <Property name="toolTipText" type="java.lang.String" value="Computed number of beats&#xa;"/>
+            <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[100, 14]"/>
+            </Property>
+            <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[100, 14]"/>
             </Property>
             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -2806,7 +2830,31 @@
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
-              <GridBagConstraints gridX="3" gridY="0" gridWidth="1" gridHeight="1" fill="1" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="18" weightX="0.0" weightY="0.0"/>
+              <GridBagConstraints gridX="4" gridY="0" gridWidth="1" gridHeight="1" fill="1" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="18" weightX="0.0" weightY="0.0"/>
+            </Constraint>
+          </Constraints>
+        </Component>
+        <Component class="javax.swing.JLabel" name="pushLabel">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Tahoma" size="11" style="1"/>
+            </Property>
+            <Property name="horizontalAlignment" type="int" value="0"/>
+            <Property name="text" type="java.lang.String" value="Push"/>
+            <Property name="toolTipText" type="java.lang.String" value="Computed number of beats&#xa;"/>
+            <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[100, 14]"/>
+            </Property>
+            <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[80, 14]"/>
+            </Property>
+            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[80, 14]"/>
+            </Property>
+          </Properties>
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
+              <GridBagConstraints gridX="5" gridY="0" gridWidth="1" gridHeight="1" fill="1" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="18" weightX="0.0" weightY="0.0"/>
             </Constraint>
           </Constraints>
         </Component>
@@ -2830,7 +2878,7 @@
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
-              <GridBagConstraints gridX="4" gridY="0" gridWidth="1" gridHeight="1" fill="1" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="18" weightX="0.1" weightY="0.0"/>
+              <GridBagConstraints gridX="6" gridY="0" gridWidth="1" gridHeight="1" fill="1" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="18" weightX="0.1" weightY="0.0"/>
             </Constraint>
           </Constraints>
         </Component>
@@ -2854,7 +2902,7 @@
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
-              <GridBagConstraints gridX="5" gridY="0" gridWidth="1" gridHeight="1" fill="0" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="10" weightX="0.0" weightY="0.0"/>
+              <GridBagConstraints gridX="7" gridY="0" gridWidth="1" gridHeight="1" fill="0" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="10" weightX="0.0" weightY="0.0"/>
             </Constraint>
           </Constraints>
         </Component>
@@ -2870,10 +2918,10 @@
               <Dimension value="[100, 2147483647]"/>
             </Property>
             <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[100, 22]"/>
+              <Dimension value="[60, 22]"/>
             </Property>
             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[100, 22]"/>
+              <Dimension value="[60, 22]"/>
             </Property>
           </Properties>
           <Events>
@@ -2907,7 +2955,33 @@
           </Events>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
-              <GridBagConstraints gridX="4" gridY="1" gridWidth="1" gridHeight="1" fill="2" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="17" weightX="0.1" weightY="0.0"/>
+              <GridBagConstraints gridX="6" gridY="1" gridWidth="1" gridHeight="1" fill="2" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="17" weightX="0.1" weightY="0.0"/>
+            </Constraint>
+          </Constraints>
+        </Component>
+        <Component class="javax.swing.JTextField" name="pushField2">
+          <Properties>
+            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+              <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
+                <EtchetBorder/>
+              </Border>
+            </Property>
+            <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[200, 2147483647]"/>
+            </Property>
+            <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[80, 22]"/>
+            </Property>
+            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[80, 22]"/>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="pushField2ActionPerformed"/>
+          </Events>
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
+              <GridBagConstraints gridX="5" gridY="1" gridWidth="1" gridHeight="1" fill="2" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="17" weightX="0.0" weightY="0.0"/>
             </Constraint>
           </Constraints>
         </Component>
@@ -2962,6 +3036,32 @@
             </Constraint>
           </Constraints>
         </Component>
+        <Component class="javax.swing.JTextField" name="weightField2">
+          <Properties>
+            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+              <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
+                <EtchetBorder/>
+              </Border>
+            </Property>
+            <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[200, 2147483647]"/>
+            </Property>
+            <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[100, 22]"/>
+            </Property>
+            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[100, 22]"/>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="weightField2ActionPerformed"/>
+          </Events>
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
+              <GridBagConstraints gridX="4" gridY="1" gridWidth="1" gridHeight="1" fill="2" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="17" weightX="0.0" weightY="0.0"/>
+            </Constraint>
+          </Constraints>
+        </Component>
         <Component class="javax.swing.JTextField" name="styleTextField2">
           <Properties>
             <Property name="toolTipText" type="java.lang.String" value="Edit the cell indicated on the left."/>
@@ -2982,7 +3082,7 @@
           </Events>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
-              <GridBagConstraints gridX="5" gridY="1" gridWidth="1" gridHeight="1" fill="2" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="1" insetsBottom="0" insetsRight="0" anchor="17" weightX="1.0" weightY="0.0"/>
+              <GridBagConstraints gridX="7" gridY="1" gridWidth="1" gridHeight="1" fill="2" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="1" insetsBottom="0" insetsRight="0" anchor="17" weightX="1.0" weightY="0.0"/>
             </Constraint>
           </Constraints>
         </Component>
@@ -2998,10 +3098,10 @@
               <Dimension value="[100, 2147483647]"/>
             </Property>
             <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[100, 22]"/>
+              <Dimension value="[60, 22]"/>
             </Property>
             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[100, 22]"/>
+              <Dimension value="[60, 22]"/>
             </Property>
           </Properties>
           <Events>
@@ -3035,7 +3135,33 @@
           </Events>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
-              <GridBagConstraints gridX="4" gridY="2" gridWidth="1" gridHeight="1" fill="2" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="17" weightX="0.1" weightY="0.0"/>
+              <GridBagConstraints gridX="6" gridY="2" gridWidth="1" gridHeight="1" fill="2" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="17" weightX="0.1" weightY="0.0"/>
+            </Constraint>
+          </Constraints>
+        </Component>
+        <Component class="javax.swing.JTextField" name="pushField1">
+          <Properties>
+            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+              <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
+                <EtchetBorder/>
+              </Border>
+            </Property>
+            <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[200, 2147483647]"/>
+            </Property>
+            <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[80, 22]"/>
+            </Property>
+            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[80, 22]"/>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="pushField1ActionPerformed"/>
+          </Events>
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
+              <GridBagConstraints gridX="5" gridY="2" gridWidth="1" gridHeight="1" fill="2" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="17" weightX="0.0" weightY="0.0"/>
             </Constraint>
           </Constraints>
         </Component>
@@ -3084,6 +3210,32 @@
             </Constraint>
           </Constraints>
         </Component>
+        <Component class="javax.swing.JTextField" name="weightField1">
+          <Properties>
+            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+              <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
+                <EtchetBorder/>
+              </Border>
+            </Property>
+            <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[200, 2147483647]"/>
+            </Property>
+            <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[100, 22]"/>
+            </Property>
+            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[100, 22]"/>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="weightField1ActionPerformed"/>
+          </Events>
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
+              <GridBagConstraints gridX="4" gridY="2" gridWidth="1" gridHeight="1" fill="2" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="17" weightX="0.0" weightY="0.0"/>
+            </Constraint>
+          </Constraints>
+        </Component>
         <Component class="javax.swing.JTextField" name="styleTextField1">
           <Properties>
             <Property name="toolTipText" type="java.lang.String" value="Edit the cell indicated on the left."/>
@@ -3104,7 +3256,7 @@
           </Events>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
-              <GridBagConstraints gridX="5" gridY="2" gridWidth="1" gridHeight="1" fill="2" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="1" insetsBottom="0" insetsRight="0" anchor="17" weightX="1.0" weightY="0.0"/>
+              <GridBagConstraints gridX="7" gridY="2" gridWidth="1" gridHeight="1" fill="2" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="1" insetsBottom="0" insetsRight="0" anchor="17" weightX="1.0" weightY="0.0"/>
             </Constraint>
           </Constraints>
         </Component>
@@ -3120,10 +3272,10 @@
               <Dimension value="[100, 2147483647]"/>
             </Property>
             <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[100, 22]"/>
+              <Dimension value="[60, 22]"/>
             </Property>
             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[100, 22]"/>
+              <Dimension value="[60, 22]"/>
             </Property>
           </Properties>
           <Events>
@@ -3157,7 +3309,33 @@
           </Events>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
-              <GridBagConstraints gridX="4" gridY="3" gridWidth="1" gridHeight="1" fill="2" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="17" weightX="0.1" weightY="0.0"/>
+              <GridBagConstraints gridX="6" gridY="3" gridWidth="1" gridHeight="1" fill="2" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="17" weightX="0.1" weightY="0.0"/>
+            </Constraint>
+          </Constraints>
+        </Component>
+        <Component class="javax.swing.JTextField" name="pushField0">
+          <Properties>
+            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+              <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
+                <EtchetBorder/>
+              </Border>
+            </Property>
+            <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[200, 2147483647]"/>
+            </Property>
+            <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[80, 22]"/>
+            </Property>
+            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[80, 22]"/>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="pushField0ActionPerformed"/>
+          </Events>
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
+              <GridBagConstraints gridX="5" gridY="3" gridWidth="1" gridHeight="1" fill="2" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="17" weightX="0.0" weightY="0.0"/>
             </Constraint>
           </Constraints>
         </Component>
@@ -3209,6 +3387,32 @@
             </Constraint>
           </Constraints>
         </Component>
+        <Component class="javax.swing.JTextField" name="weightField0">
+          <Properties>
+            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+              <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
+                <EtchetBorder/>
+              </Border>
+            </Property>
+            <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[200, 2147483647]"/>
+            </Property>
+            <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[100, 22]"/>
+            </Property>
+            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[100, 22]"/>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="weightField0ActionPerformed"/>
+          </Events>
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
+              <GridBagConstraints gridX="4" gridY="3" gridWidth="1" gridHeight="1" fill="2" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="17" weightX="0.0" weightY="0.0"/>
+            </Constraint>
+          </Constraints>
+        </Component>
         <Component class="javax.swing.JTextField" name="styleTextField0">
           <Properties>
             <Property name="toolTipText" type="java.lang.String" value="Edit the cell indicated on the left."/>
@@ -3229,14 +3433,14 @@
           </Events>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
-              <GridBagConstraints gridX="5" gridY="3" gridWidth="1" gridHeight="1" fill="2" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="1" insetsBottom="0" insetsRight="0" anchor="17" weightX="1.0" weightY="0.0"/>
+              <GridBagConstraints gridX="7" gridY="3" gridWidth="1" gridHeight="1" fill="2" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="1" insetsBottom="0" insetsRight="0" anchor="17" weightX="1.0" weightY="0.0"/>
             </Constraint>
           </Constraints>
         </Component>
         <Container class="javax.swing.JPanel" name="editInstructionsPanel">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
-              <GridBagConstraints gridX="1" gridY="5" gridWidth="6" gridHeight="1" fill="2" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="17" weightX="0.0" weightY="0.0"/>
+              <GridBagConstraints gridX="1" gridY="5" gridWidth="7" gridHeight="1" fill="2" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="17" weightX="0.0" weightY="0.0"/>
             </Constraint>
           </Constraints>
 
@@ -3260,7 +3464,7 @@
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
-              <GridBagConstraints gridX="1" gridY="6" gridWidth="6" gridHeight="1" fill="1" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="10" weightX="1.0" weightY="1.0"/>
+              <GridBagConstraints gridX="1" gridY="6" gridWidth="7" gridHeight="1" fill="1" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="10" weightX="1.0" weightY="1.0"/>
             </Constraint>
           </Constraints>
 
@@ -3346,7 +3550,7 @@
           </Events>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
-              <GridBagConstraints gridX="4" gridY="4" gridWidth="1" gridHeight="1" fill="2" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="10" weightX="0.0" weightY="0.0"/>
+              <GridBagConstraints gridX="6" gridY="4" gridWidth="1" gridHeight="1" fill="2" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="10" weightX="0.0" weightY="0.0"/>
             </Constraint>
           </Constraints>
         </Component>
@@ -3369,7 +3573,7 @@
           </Events>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
-              <GridBagConstraints gridX="5" gridY="4" gridWidth="1" gridHeight="1" fill="2" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="10" weightX="0.0" weightY="0.0"/>
+              <GridBagConstraints gridX="7" gridY="4" gridWidth="1" gridHeight="1" fill="2" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="10" weightX="0.0" weightY="0.0"/>
             </Constraint>
           </Constraints>
         </Component>
@@ -3381,7 +3585,7 @@
               </Border>
             </Property>
             <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[200, 38]"/>
+              <Dimension value="[250, 38]"/>
             </Property>
             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[250, 38]"/>
@@ -3420,6 +3624,7 @@
                       <Connection code="new javax.swing.DefaultListModel()" type="code"/>
                     </Property>
                     <Property name="selectionMode" type="int" value="0"/>
+                    <Property name="toolTipText" type="java.lang.String" value="The bass patterns that are defined with the style"/>
                   </Properties>
                   <Events>
                     <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="bassPatternListMouseClicked"/>
@@ -3452,6 +3657,7 @@
                       <Connection code="new javax.swing.DefaultListModel()" type="code"/>
                     </Property>
                     <Property name="selectionMode" type="int" value="0"/>
+                    <Property name="toolTipText" type="java.lang.String" value="The chord patterns that are defined with the style"/>
                   </Properties>
                   <Events>
                     <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="chordPatternListMouseClicked"/>
@@ -3484,6 +3690,7 @@
                       <Connection code="new javax.swing.DefaultListModel()" type="code"/>
                     </Property>
                     <Property name="selectionMode" type="int" value="0"/>
+                    <Property name="toolTipText" type="java.lang.String" value="The drum patterns that are defined with the style"/>
                     <Property name="visibleRowCount" type="int" value="20"/>
                   </Properties>
                   <Events>
@@ -3497,18 +3704,19 @@
         <Container class="javax.swing.JPanel" name="patternButtonPanel">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
-              <GridBagConstraints gridX="1" gridY="4" gridWidth="3" gridHeight="1" fill="2" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="10" weightX="0.0" weightY="0.0"/>
+              <GridBagConstraints gridX="3" gridY="4" gridWidth="3" gridHeight="1" fill="2" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="10" weightX="0.0" weightY="0.0"/>
             </Constraint>
           </Constraints>
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout"/>
           <SubComponents>
-            <Component class="javax.swing.JButton" name="insertPatternButton">
+            <Component class="javax.swing.JButton" name="savePatternButton">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Insert"/>
+                <Property name="text" type="java.lang.String" value="Define"/>
+                <Property name="toolTipText" type="java.lang.String" value="Click to add what is in the define fields to the list of defined patterns"/>
               </Properties>
               <Events>
-                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="insertPatternButtonMouseClicked"/>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="savePatternButtonMouseClicked"/>
               </Events>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -3516,29 +3724,17 @@
                 </Constraint>
               </Constraints>
             </Component>
-            <Component class="javax.swing.JButton" name="savePatternButton">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Save"/>
-              </Properties>
-              <Events>
-                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="savePatternButtonMouseClicked"/>
-              </Events>
-              <Constraints>
-                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
-                  <GridBagConstraints gridX="2" gridY="4" gridWidth="1" gridHeight="1" fill="0" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="10" weightX="0.0" weightY="0.0"/>
-                </Constraint>
-              </Constraints>
-            </Component>
             <Component class="javax.swing.JButton" name="removePatternButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Remove"/>
+                <Property name="toolTipText" type="java.lang.String" value="Click to remove this pattern from the defined patterns list"/>
               </Properties>
               <Events>
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="removePatternButtonMouseClicked"/>
               </Events>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
-                  <GridBagConstraints gridX="3" gridY="4" gridWidth="1" gridHeight="1" fill="0" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="10" weightX="0.0" weightY="0.0"/>
+                  <GridBagConstraints gridX="2" gridY="4" gridWidth="1" gridHeight="1" fill="0" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="10" weightX="0.0" weightY="0.0"/>
                 </Constraint>
               </Constraints>
             </Component>
