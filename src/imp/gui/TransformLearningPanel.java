@@ -27,22 +27,53 @@ import polya.*;
  * @author Alex Putman
  */
 public class TransformLearningPanel extends javax.swing.JPanel {
-
+    
     /**
-     * Creates new form FlattenMelodyPanel
+     * The class that contains the methods used to learn and flatten
      */
     private TransformLearning transformLearning;
+    
     private LickGen lickgen;
     private Notate notate;
+    
+    /**
+     * The melody that is saved and is used to compare against when flattening,
+     * subtracting and learning
+     */
     private MelodyPart original;
+    
+    /**
+     * The melody result after flattening that is used in subtracting and 
+     * learning
+     */
     private MelodyPart flattened;
+    
+    /**
+     * The latest resolution used to flatten a melody 
+     */
     private int resolution;
+    
+    /**
+     * The transform created after learning
+     */
     private Transform transform;
+    
+    /**
+     * the TransformTabPanel in LickgenFrame that is to put the learned 
+     * transform
+     */
     TransformTabPanel subPanel;
-    public TransformLearningPanel(LickGen lickgen, Notate notate, TransformTabPanel subPanel) {
+    
+    /**
+     * Creates new form TransformLearningPanel
+     */
+    public TransformLearningPanel(LickGen lickgen, 
+                                  Notate notate, 
+                                  TransformTabPanel subPanel) {
         initComponents();
         this.lickgen = lickgen;
         this.notate = notate;
+        // the class that contains the actual flattening and learning methods
         transformLearning = new TransformLearning(lickgen);
         original = new MelodyPart();
         flattened = new MelodyPart();
@@ -73,6 +104,8 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         step2Label3 = new javax.swing.JLabel();
         flattenValueComboBox = new javax.swing.JComboBox();
         flattenButton = new javax.swing.JButton();
+        allowRepeatsCheckBox = new javax.swing.JCheckBox();
+        jLabel2 = new javax.swing.JLabel();
         step3Panel = new javax.swing.JPanel();
         subFlatFromOrigButton = new javax.swing.JButton();
         createTransformButton = new javax.swing.JButton();
@@ -199,6 +232,7 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         step2Panel.add(step2Label3, gridBagConstraints);
 
         flattenValueComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Whole Note", "Half Note", "Quarter Note", "Eight Note", "Sixteenth Note" }));
+        flattenValueComboBox.setSelectedIndex(1);
         flattenValueComboBox.setToolTipText("select the resolution to flatten at");
         flattenValueComboBox.setMinimumSize(new java.awt.Dimension(145, 25));
         flattenValueComboBox.setPreferredSize(new java.awt.Dimension(145, 25));
@@ -226,6 +260,31 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 0);
         step2Panel.add(flattenButton, gridBagConstraints);
+
+        allowRepeatsCheckBox.setBackground(new java.awt.Color(252, 176, 60));
+        allowRepeatsCheckBox.setSelected(true);
+        allowRepeatsCheckBox.setText("Allow Repeat Pitches");
+        allowRepeatsCheckBox.setToolTipText("Whether ajacent notes with the same pitch in the flattened melody will be combined or not");
+        allowRepeatsCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                allowRepeatsCheckBoxActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.insets = new java.awt.Insets(6, 0, 0, 0);
+        step2Panel.add(allowRepeatsCheckBox, gridBagConstraints);
+
+        jLabel2.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
+        jLabel2.setText("<html> <b>Advice:</b> It is recommended to select Allow Repeat Pitches when learning by windowning");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.insets = new java.awt.Insets(2, 0, 0, 0);
+        step2Panel.add(jLabel2, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -288,7 +347,7 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         step3Panel.add(step3Label1, gridBagConstraints);
 
         step3Label2.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
-        step3Label2.setText("To just get just a visual representation of where to transformations are happening, you can subtract.");
+        step3Label2.setText("To just get just a visual representation of where transformations are happening, you can subtract.");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
@@ -297,9 +356,10 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         step3Panel.add(step3Label2, gridBagConstraints);
 
         step3Label3.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
-        step3Label3.setText("<html>Methods:<br>&nbsp;&nbsp;&nbsp;&nbsp;Windowing&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Learns transformations by just associating notes in a windowed section<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(sized by the resolution used in flattening) with their flattened note.<br>&nbsp;&nbsp;&nbsp;&nbsp;Trend Detection&nbsp;-&nbsp;Detects groups of notes that follow a trend and generates transfromations<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;that builds the group of notes from important notes in the flattened outline.\n");
-        step3Label3.setMinimumSize(new java.awt.Dimension(600, 75));
-        step3Label3.setPreferredSize(new java.awt.Dimension(600, 75));
+        step3Label3.setText("<html>Methods:<br>&nbsp;&nbsp;&nbsp;&nbsp;Windowing&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Learns transformations by just associating notes in a windowed section<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(sized by the resolution used in flattening) with their flattened note.<br>&nbsp;&nbsp;&nbsp;&nbsp;Trend Detection&nbsp;-&nbsp;Detects groups of notes that follow a trend and generates transfromations<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;that builds the group of notes from important notes in the flattened outline.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CURRENTLY ONLY DETECTS CHROMATIC DIFFERENCE TRENDS\n");
+        step3Label3.setMaximumSize(new java.awt.Dimension(2147483647, 85));
+        step3Label3.setMinimumSize(new java.awt.Dimension(600, 85));
+        step3Label3.setPreferredSize(new java.awt.Dimension(600, 85));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
@@ -308,6 +368,7 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         step3Panel.add(step3Label3, gridBagConstraints);
 
         generateTransformMethodComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Windowing", "Trend Detection" }));
+        generateTransformMethodComboBox.setToolTipText("select the method for learning");
         generateTransformMethodComboBox.setMinimumSize(new java.awt.Dimension(145, 25));
         generateTransformMethodComboBox.setPreferredSize(new java.awt.Dimension(145, 25));
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -381,7 +442,7 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         step4Panel.add(step4Label2, gridBagConstraints);
 
         step4Label3.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
-        step4Label3.setText("<html><b> Important: </b>To use the generated Transform, click this button to make it the opened transform in the Tranform Tab.");
+        step4Label3.setText("<html><b> Important: </b>To use the generated Transform, click this button to make it the opened transform in the Tranform Tab. Then go to the Transform tab and click Apply.");
         step4Label3.setMaximumSize(new java.awt.Dimension(652, 15));
         step4Label3.setMinimumSize(new java.awt.Dimension(678, 15));
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -470,7 +531,8 @@ public class TransformLearningPanel extends javax.swing.JPanel {
 
     private void createTransformButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createTransformButtonActionPerformed
         
-        String method = generateTransformMethodComboBox.getSelectedItem().toString();
+        String method = 
+                generateTransformMethodComboBox.getSelectedItem().toString();
         if(method.equals("Windowing"))
         {
             transform = learnByWindowing();
@@ -487,12 +549,18 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_createTransformButtonActionPerformed
 
+    private void allowRepeatsCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_allowRepeatsCheckBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_allowRepeatsCheckBoxActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox allowRepeatsCheckBox;
     private javax.swing.JButton createTransformButton;
     private javax.swing.JButton flattenButton;
     private javax.swing.JComboBox flattenValueComboBox;
     private javax.swing.JComboBox generateTransformMethodComboBox;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JButton replaceWithOriginalButton;
     private javax.swing.JButton saveOriginalButton;
     private javax.swing.JButton setTransformButton;
@@ -516,45 +584,81 @@ public class TransformLearningPanel extends javax.swing.JPanel {
     private javax.swing.JButton subFlatFromOrigButton;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Opens the generated transform in a new TextArea Dialogue
+     */
     public void showTransform()
     {
-        TransformDialogue transEditor = new TransformDialogue(notate.lickgenFrame, transform);
+        TransformDialogue transEditor = 
+                new TransformDialogue(notate.lickgenFrame, transform);
+        
         transEditor.setLocationRelativeTo(this);
         transEditor.toFront();
     }
     
+    /**
+     * Sets the desired resolution and calls one of the flattening methods
+     */
     private void flatten(int resolution)
     {
         this.resolution = resolution;
-        flattenByResolution(resolution);
+        boolean allowRepeats = allowRepeatsCheckBox.isSelected();
+        flattenByResolution(resolution, !allowRepeats);
     }
     
-    private void flattenByChord(int resolution)
+    /**
+     * Divides the melody into sections of length determined by the length of
+     * the chords in the melody, it then proceeds to flatten by resolution.
+     */
+    private void flattenByChord(int resolution, boolean concatRepeats)
     {
         notate.adjustSelection();
         int start = notate.getCurrentSelectionStart();
         int stop = notate.getCurrentSelectionEnd();
         MelodyPart melody = notate.getCurrentMelodyPart();
         ChordPart chords = notate.getChordProg();
-        MelodyPart flattenedPart = transformLearning.flattenByChord(melody, chords, resolution, start, stop);
+        MelodyPart flattenedPart = 
+                transformLearning.flattenByChord(melody, 
+                                                 chords, 
+                                                 resolution, 
+                                                 start, 
+                                                 stop, 
+                                                 concatRepeats);
+        
         MelodyPart replace = flattenedPart.extract(start, stop, true, true);
         notate.getCurrentMelodyPart().pasteOver(replace, start);
         notate.repaint();
     }
     
-    private void flattenByResolution(int resolution)
+    /**
+     * Divides the melody into segments of length resolution, gets the best note
+     * in each segment and set every note in the segment to that note.
+     */
+    private void flattenByResolution(int resolution, boolean concatRepeats)
     {
         notate.adjustSelection();
         int start = notate.getCurrentSelectionStart();
         int stop = notate.getCurrentSelectionEnd();
         MelodyPart melody = notate.getCurrentMelodyPart();
         ChordPart chords = notate.getChordProg();
-        MelodyPart flattenedPart = transformLearning.flattenByResolution(melody, chords, resolution, start, stop);
+        MelodyPart flattenedPart = 
+                transformLearning.flattenByResolution(melody, 
+                                                      chords,
+                                                      resolution, 
+                                                      start,
+                                                      stop,
+                                                      concatRepeats);
+        
         MelodyPart replace = flattenedPart.extract(start, stop, true, true);
         notate.getCurrentMelodyPart().pasteOver(replace, start);
         notate.repaint();
     }
     
+    /**
+     * Learns transformations by taking each original melody segment of length
+     * resolution and builds a transformation that can make them from their 
+     * associated flattened note. 
+     */
     private Transform learnByWindowing()
     {
         notate.adjustSelection();
@@ -562,10 +666,21 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         int stop = notate.getCurrentSelectionEnd();
         MelodyPart outline = notate.getCurrentMelodyPart();
         ChordPart chords = notate.getChordProg();
-        Polylist transformList = transformLearning.createBlockTransform(outline, original.copy(), chords, resolution, start, stop);
+        Polylist transformList = 
+                transformLearning.createBlockTransform(outline, 
+                                                       original.copy(), 
+                                                       chords, 
+                                                       start, 
+                                                       stop);
+        
         return new Transform(lickgen, transformList.toStringSansParens());
     }
-    
+    /**
+     * Learns transformations by going through the notes in a melody
+     * sequentially and detecting sections that contain a trend. Then a
+     * transformations is created by the definition of the trend detected.
+     * TRENDS CURRENTLY BEING DETECTED: Diatonic Displacement
+     */
     private Transform learnByTrendDetection()
     {
         notate.adjustSelection();
@@ -573,36 +688,58 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         int stop = notate.getCurrentSelectionEnd();
         MelodyPart outline = notate.getCurrentMelodyPart();
         ChordPart chords = notate.getChordProg();
-        Polylist transformList = transformLearning.createTrendTransform(outline, original.copy(), chords, start, stop);
+        Polylist transformList = 
+                transformLearning.createTrendTransform(outline, 
+                                                       original.copy(), 
+                                                       chords, 
+                                                       start, 
+                                                       stop);
+        
         return new Transform(lickgen, transformList.toStringSansParens());
     }
-    
+    /**
+     * Goes through each note in the original melody and if it equals the note 
+     * at the same place in the flattened melody, turn it into a rest. This 
+     * shows you the notes in the original melody that could be transformed
+     * from the outline notes. 
+     */
     private void subtractOutline()
     {
         notate.adjustSelection();
         int start = notate.getCurrentSelectionStart();
         int stop = notate.getCurrentSelectionEnd();
+        
         MelodyPart origSel = original.extract(start, stop, true, true);
-        MelodyPart outlineSel = notate.getCurrentMelodyPart().extract(start, stop, true, true);
+        MelodyPart outlineSel = notate.getCurrentMelodyPart().extract(start, 
+                                                                      stop, 
+                                                                      true, 
+                                                                      true);
+        
         flattened = outlineSel.copy();
         MelodyPart subFromOrig = new MelodyPart();
+        
+        // First look at the index of each note in the original selection
         for(int i = 0; i < origSel.size(); i = origSel.getNextIndex(i))
         {
             Note origNote = origSel.getCurrentNote(i);
             Note outlineNote = outlineSel.getCurrentNote(i);
-            
+            // if the note is the same as the note in the outline location,
+            // make it a rest
             if(origNote.samePitch(outlineNote))
             {
                 origNote = Note.makeRest(origNote.getRhythmValue());
             }
             subFromOrig.addNote(origNote);
         }
-        
+        // Then make sure the new melody doesn't have notes that extend into
+        // being the same pitch as the outline note in the same location
         for(int i = 0; i < outlineSel.size(); i = outlineSel.getNextIndex(i))
         {
             Note origNote = subFromOrig.getCurrentNote(i);
             Note outlineNote = outlineSel.getCurrentNote(i);
-            
+            // if the note is the same as the note in the outline location,
+            // then cut off the duration of the note so it doesn't overlap
+            // with the outlined note
             if(origNote.samePitch(outlineNote))
             {
                 int diff = origNote.getRhythmValue() - outlineNote.getRhythmValue();
@@ -616,7 +753,9 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         notate.repaint();
     }
     
-    
+    /**
+     * Shows the generated transform file in a new Dialogue. 
+     */
     public class TransformDialogue extends javax.swing.JDialog implements ActionListener  {
 
     private Transform trans;
