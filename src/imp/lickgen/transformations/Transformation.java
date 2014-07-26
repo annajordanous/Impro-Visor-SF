@@ -27,7 +27,6 @@ import imp.data.MelodyPart;
 import imp.data.Note;
 import imp.data.NoteSymbol;
 import imp.data.Unit;
-import imp.lickgen.LickGen;
 import imp.util.ErrorLog;
 import polya.*;
 import java.util.*;
@@ -43,13 +42,11 @@ private Polylist targetNotes;
 private int weight;
 private boolean enabled;
 private String description;
-private LickGen lickGen;
 private boolean hasChanged;
 public boolean debug;
-public Transformation(LickGen lickGen)
+public Transformation()
 {
     debug = false;
-    this.lickGen = lickGen;
     description = (String) "new-transformation"; 
     sourceNotes = Polylist.PolylistFromString("n1");
     targetNotes = Polylist.PolylistFromString("n1");
@@ -58,15 +55,15 @@ public Transformation(LickGen lickGen)
     hasChanged = false;
     enabled = true;
 }
-public Transformation(LickGen lickGen, String transString)
+public Transformation(String transString)
 {
-    this(lickGen);
+    this();
     setTransformation((Polylist)Polylist.PolylistFromString(transString).first());
     hasChanged = false;
 }
-public Transformation(LickGen lickGen, Polylist trans)
+public Transformation(Polylist trans)
 {
-    this(lickGen);
+    this();
     setTransformation(trans);
     hasChanged = false;
 }
@@ -74,7 +71,7 @@ public Transformation copy()
 {
     StringBuilder copyString = new StringBuilder();
     toFile(copyString, "");
-    Transformation copy = new Transformation(lickGen, copyString.toString());
+    Transformation copy = new Transformation(copyString.toString());
     return copy;
 }
 public boolean setTransformation(Polylist trans)
@@ -109,7 +106,7 @@ public boolean setTransformation(Polylist trans)
 
 public MelodyPart apply(MelodyPart notes, ChordPart chords, int startingSlot)
 {
-    Evaluate eval = new Evaluate(lickGen, new Polylist());
+    Evaluate eval = new Evaluate(new Polylist());
 
     PolylistEnum transSourceNotes = new PolylistEnum(sourceNotes);
     
@@ -175,7 +172,7 @@ public MelodyPart apply(MelodyPart notes, ChordPart chords, int startingSlot)
         }
         return null;
     }
-    Evaluate targetEval = new Evaluate(lickGen, eval.getFrame(),"get-note");
+    Evaluate targetEval = new Evaluate(eval.getFrame(),"get-note");
     Polylist result = targetNotes.map(targetEval).flatten();
     MelodyPart resultingMP = new MelodyPart();
     PolylistEnum resultEnum = result.elements();

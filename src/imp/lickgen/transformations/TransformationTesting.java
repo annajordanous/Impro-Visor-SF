@@ -563,7 +563,7 @@ String triplet_emb = "(substitution\n" +
         //Polylist polysub = Polylist.PolylistFromString(sub);
         //Substitution subcreated = new Substitution(polysub.assoc("substitution"));
         
-        transform = new Transform(lickGen, mordent+arpeggio+graceNote+identities+chromaticPassing+splittingQuarter+triplet_emb);
+        transform = new Transform(mordent+arpeggio+graceNote+identities+chromaticPassing+splittingQuarter+triplet_emb);
         
     }
     

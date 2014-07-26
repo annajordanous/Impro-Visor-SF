@@ -3384,7 +3384,7 @@ private boolean checkNote(int pos, int pitch, String pitchString,
  * in order of specificity
  */
 
-public int classifyNote(Note note, Chord chord)
+public static int classifyNote(Note note, Chord chord)
   {
     if( chord == null
      || chord.getName().equals(NOCHORD)
@@ -3396,13 +3396,7 @@ public int classifyNote(Note note, Chord chord)
     // Get pitch class
     int pitch = note.getPitch() % 12;
     PitchClass rootClass = chord.getRootPitchClass();
-
-    // May want to drop out this check or return CHORD instead
-    if( rootClass.enharmonic(pitch) )
-      {
-        //return BASS;
-      }
-
+    
     // Check for chord tone
     Polylist chordTones = chord.getSpell();
 
@@ -3428,35 +3422,6 @@ public int classifyNote(Note note, Chord chord)
       }
 
     // Not a chord nor color tone. 
-    // Check for scale tone. May want to drop this as well
-    Polylist scaleTones;
-
-    if( preferredScale.isEmpty()
-            || ((String) preferredScale.second()).equals(NONE) )
-      {
-        return NOTE;
-      }
-
-    if( ((String) preferredScale.second()).equals(FIRST_SCALE) )
-      {
-        scaleTones = chord.getFirstScale();
-      }
-    else
-      {
-        scaleTones = Advisor.getScale(
-                (String) preferredScale.first(),
-                (String) preferredScale.second());
-      }
-
-    while( scaleTones.nonEmpty() )
-      {
-        if( pitch == ((NoteSymbol) scaleTones.first()).getSemitones() )
-          {
-            return SCALE;
-          }
-        scaleTones = scaleTones.rest();
-      }
-
     return NOTE;
   }
 

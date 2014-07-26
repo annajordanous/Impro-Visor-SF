@@ -40,23 +40,21 @@ public class Evaluate implements Function1{
 public Polylist frame;
 String op;
 Object val;
-public LickGen lickGen;
 public boolean trace;
 
-Evaluate(LickGen lickGen, Polylist frame)
+Evaluate(Polylist frame)
 {
-    this(lickGen, frame, null, null);
+    this(frame, null, null);
 }
 
-Evaluate(LickGen lickGen, Polylist frame, String op)
+Evaluate(Polylist frame, String op)
 {
-    this(lickGen, frame, op, null);
+    this(frame, op, null);
 }
 
-Evaluate(LickGen lickGen, Polylist frame, String op, Object val)
+Evaluate(Polylist frame, String op, Object val)
 {
     this.trace = false;
-    this.lickGen = lickGen;
     this.frame = frame;
     this.op = op;
     this.val = val;
@@ -233,7 +231,7 @@ public Object evaluate(Object sent)
         System.out.println("\t\t\t\t\tOperator: " + operator.toString() + 
                 "\n\t\t\t\t\tArgs: " + args.toString());
     }
-    Polylist evaledArgs = args.map(new Evaluate(lickGen, frame)).flatten();
+    Polylist evaledArgs = args.map(new Evaluate(frame)).flatten();
     if(evaledArgs.member(null) && 
             Operators.fromGrammarName(operator.toString()) != Operators.OR && 
             Operators.fromGrammarName(operator.toString()) != Operators.MEMBER)
@@ -377,7 +375,7 @@ public Object evaluate(Object sent)
             case SCALE_DURATION:
                 double firstNum = readNumber(evaledArgs.first().toString());
                 if(evaledArgs.rest().length() != 1)
-                    returnVal = evaledArgs.rest().map(new Evaluate(lickGen, frame, Operators.SCALE_DURATION.getGrammarName(), firstNum)).flatten();
+                    returnVal = evaledArgs.rest().map(new Evaluate(frame, Operators.SCALE_DURATION.getGrammarName(), firstNum)).flatten();
                 else
                 {
                     returnVal = scale_duration((NoteChordPair)evaledArgs.rest().first(),(double)firstNum);
@@ -386,7 +384,7 @@ public Object evaluate(Object sent)
             case NOTE_DURATION_ADDITION:
                 firstArg = evaledArgs.first();
                 if(evaledArgs.rest().length() != 1)
-                    returnVal = evaledArgs.rest().map(new Evaluate(lickGen, frame, Operators.NOTE_DURATION_ADDITION.getGrammarName(), firstArg)).flatten();
+                    returnVal = evaledArgs.rest().map(new Evaluate(frame, Operators.NOTE_DURATION_ADDITION.getGrammarName(), firstArg)).flatten();
                 else
                 {
                     returnVal = note_duration_addition((NoteChordPair)evaledArgs.rest().first(),firstArg.toString());
@@ -395,7 +393,7 @@ public Object evaluate(Object sent)
             case NOTE_DURATION_SUBTRACTION:
                 firstArg = evaledArgs.first();
                 if(evaledArgs.rest().length() != 1)
-                    returnVal = evaledArgs.rest().map(new Evaluate(lickGen, frame, Operators.NOTE_DURATION_SUBTRACTION.getGrammarName(), firstArg)).flatten();
+                    returnVal = evaledArgs.rest().map(new Evaluate(frame, Operators.NOTE_DURATION_SUBTRACTION.getGrammarName(), firstArg)).flatten();
                 else
                 {
                     returnVal = note_duration_subtraction((NoteChordPair)evaledArgs.rest().first(),firstArg.toString());
@@ -404,7 +402,7 @@ public Object evaluate(Object sent)
             case SET_DURATION:
                 firstArg = evaledArgs.first();
                 if(evaledArgs.rest().length() != 1)
-                    returnVal = evaledArgs.rest().map(new Evaluate(lickGen, frame, Operators.SET_DURATION.getGrammarName(), firstArg)).flatten();
+                    returnVal = evaledArgs.rest().map(new Evaluate(frame, Operators.SET_DURATION.getGrammarName(), firstArg)).flatten();
                 else
                 {
                     returnVal = set_duration((NoteChordPair)evaledArgs.rest().first(),firstArg.toString());
@@ -413,7 +411,7 @@ public Object evaluate(Object sent)
             case SET_RELATIVE_PITCH:
                 firstArg = evaledArgs.first();
                 if(evaledArgs.rest().length() != 1)
-                    returnVal = evaledArgs.rest().map(new Evaluate(lickGen, frame, Operators.SET_RELATIVE_PITCH.getGrammarName(), firstArg)).flatten();
+                    returnVal = evaledArgs.rest().map(new Evaluate(frame, Operators.SET_RELATIVE_PITCH.getGrammarName(), firstArg)).flatten();
                 else
                 {
                     returnVal = set_relative_pitch((NoteChordPair)evaledArgs.rest().first(),firstArg.toString());
@@ -424,7 +422,7 @@ public Object evaluate(Object sent)
                 
                 
                 if(evaledArgs.rest().length() != 1)
-                    returnVal = evaledArgs.rest().map(new Evaluate(lickGen, frame, Operators.TRANSPOSE_DIATONIC.getGrammarName(), firstArg)).flatten();
+                    returnVal = evaledArgs.rest().map(new Evaluate(frame, Operators.TRANSPOSE_DIATONIC.getGrammarName(), firstArg)).flatten();
                 else
                 {
                     returnVal = transpose_diatonic((NoteChordPair)evaledArgs.second(),firstArg.toString());
@@ -433,7 +431,7 @@ public Object evaluate(Object sent)
             case TRANSPOSE_CHROMATIC:
                 firstArg = evaledArgs.first().toString();
                 if(evaledArgs.rest().length() != 1)
-                    returnVal = evaledArgs.rest().map(new Evaluate(lickGen, frame, Operators.TRANSPOSE_CHROMATIC.getGrammarName(), firstArg)).flatten();
+                    returnVal = evaledArgs.rest().map(new Evaluate(frame, Operators.TRANSPOSE_CHROMATIC.getGrammarName(), firstArg)).flatten();
                 else
                 {
                     returnVal = transpose_chromatic((NoteChordPair)evaledArgs.rest().first(),readNumber(firstArg.toString()));
@@ -441,7 +439,7 @@ public Object evaluate(Object sent)
                 break;
             case MAKE_REST:
                 if(evaledArgs.length() != 1)
-                    returnVal = evaledArgs.map(new Evaluate(lickGen, frame, Operators.MAKE_REST.getGrammarName())).flatten();
+                    returnVal = evaledArgs.map(new Evaluate(frame, Operators.MAKE_REST.getGrammarName())).flatten();
                 else
                 {
                     returnVal = make_rest((NoteChordPair)evaledArgs.first());
@@ -449,7 +447,7 @@ public Object evaluate(Object sent)
                 break;
             case GET_NOTE:
                 if(evaledArgs.length() > 1)
-                    returnVal = evaledArgs.map(new Evaluate(lickGen, frame, Operators.GET_NOTE.getGrammarName())).flatten();
+                    returnVal = evaledArgs.map(new Evaluate(frame, Operators.GET_NOTE.getGrammarName())).flatten();
                 else
                 {
                     returnVal = new Polylist(get_note(evaledArgs), new Polylist());
@@ -789,7 +787,7 @@ public Boolean duration_lt_eq(Polylist evaledArgs)
 public String note_category(Polylist evaledArgs)
 {
     NoteChordPair pair = (NoteChordPair) evaledArgs.first();
-    int classify = lickGen.classifyNote(pair.note, pair.chord);
+    int classify = LickGen.classifyNote(pair.note, pair.chord);
     switch(classify)
     {
         case LickGen.CHORD:
