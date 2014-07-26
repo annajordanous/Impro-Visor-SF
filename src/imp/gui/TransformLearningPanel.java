@@ -86,7 +86,8 @@ public class TransformLearningPanel extends javax.swing.JPanel {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
         java.awt.GridBagConstraints gridBagConstraints;
 
         step1Panel = new javax.swing.JPanel();
@@ -132,8 +133,10 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         saveOriginalButton.setToolTipText("Save the currently selected melody");
         saveOriginalButton.setMinimumSize(new java.awt.Dimension(300, 25));
         saveOriginalButton.setPreferredSize(new java.awt.Dimension(300, 25));
-        saveOriginalButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        saveOriginalButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 saveOriginalButtonActionPerformed(evt);
             }
         });
@@ -147,8 +150,10 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         replaceWithOriginalButton.setEnabled(false);
         replaceWithOriginalButton.setMinimumSize(new java.awt.Dimension(300, 25));
         replaceWithOriginalButton.setPreferredSize(new java.awt.Dimension(300, 25));
-        replaceWithOriginalButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        replaceWithOriginalButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 replaceWithOriginalButtonActionPerformed(evt);
             }
         });
@@ -245,8 +250,10 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         flattenButton.setToolTipText("flatten the currently selected melody with resolution chosen to the left");
         flattenButton.setMinimumSize(new java.awt.Dimension(145, 25));
         flattenButton.setPreferredSize(new java.awt.Dimension(145, 25));
-        flattenButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        flattenButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 flattenButtonActionPerformed(evt);
             }
         });
@@ -262,8 +269,10 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         allowRepeatsCheckBox.setSelected(true);
         allowRepeatsCheckBox.setText("Allow Repeat Pitches");
         allowRepeatsCheckBox.setToolTipText("Whether ajacent notes with the same pitch in the flattened melody will be combined or not");
-        allowRepeatsCheckBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        allowRepeatsCheckBox.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 allowRepeatsCheckBoxActionPerformed(evt);
             }
         });
@@ -290,7 +299,7 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         gridBagConstraints.weighty = 1.0;
         add(step2Panel, gridBagConstraints);
 
-        step3Panel.setBackground(new java.awt.Color(111, 176, 127));
+        step3Panel.setBackground(new java.awt.Color(130, 217, 151));
         step3Panel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Step 3", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
         step3Panel.setToolTipText("");
         step3Panel.setLayout(new java.awt.GridBagLayout());
@@ -300,8 +309,10 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         subFlatFromOrigButton.setEnabled(false);
         subFlatFromOrigButton.setMinimumSize(new java.awt.Dimension(300, 25));
         subFlatFromOrigButton.setPreferredSize(new java.awt.Dimension(300, 25));
-        subFlatFromOrigButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        subFlatFromOrigButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 subFlatFromOrigButtonActionPerformed(evt);
             }
         });
@@ -318,8 +329,10 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         createTransformButton.setMaximumSize(new java.awt.Dimension(135, 25));
         createTransformButton.setMinimumSize(new java.awt.Dimension(145, 25));
         createTransformButton.setPreferredSize(new java.awt.Dimension(145, 25));
-        createTransformButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        createTransformButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 createTransformButtonActionPerformed(evt);
             }
         });
@@ -383,7 +396,7 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         gridBagConstraints.weighty = 1.0;
         add(step3Panel, gridBagConstraints);
 
-        step4Panel.setBackground(new java.awt.Color(6, 133, 135));
+        step4Panel.setBackground(new java.awt.Color(153, 255, 153));
         step4Panel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Step 4", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
         step4Panel.setToolTipText("");
         step4Panel.setMinimumSize(new java.awt.Dimension(690, 154));
@@ -395,8 +408,10 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         showTransformButton.setEnabled(false);
         showTransformButton.setMinimumSize(new java.awt.Dimension(300, 25));
         showTransformButton.setPreferredSize(new java.awt.Dimension(300, 25));
-        showTransformButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        showTransformButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 showTransformButtonActionPerformed(evt);
             }
         });
@@ -410,8 +425,10 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         setTransformButton.setEnabled(false);
         setTransformButton.setMinimumSize(new java.awt.Dimension(300, 25));
         setTransformButton.setPreferredSize(new java.awt.Dimension(300, 25));
-        setTransformButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        setTransformButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 setTransformButtonActionPerformed(evt);
             }
         });
@@ -456,7 +473,6 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         gridBagConstraints.weighty = 1.0;
         add(step4Panel, gridBagConstraints);
 
-        jLabel1.setFont(new java.awt.Font("Lucida Grande", 0, 13)); // NOI18N
         jLabel1.setText("Follow every step to learn a transform for a solo. The comments labeled important are the strictly required instructions to generate a learned transform.");
         jLabel1.setAlignmentY(0.0F);
         jLabel1.setMaximumSize(new java.awt.Dimension(1000, 15));
