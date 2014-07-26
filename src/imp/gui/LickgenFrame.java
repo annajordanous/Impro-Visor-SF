@@ -338,12 +338,16 @@ public class LickgenFrame
         numClusterRepsLabel = new javax.swing.JLabel();
         windowSizeField = new javax.swing.JTextField();
         windowSlideField = new javax.swing.JTextField();
-        useRelativeCheckbox = new javax.swing.JCheckBox();
+        useRelativeWindowsCheckbox = new javax.swing.JCheckBox();
         useBricksCheckbox = new javax.swing.JCheckBox();
         numClusterRepsField = new javax.swing.JTextField();
         useMarkovCheckbox = new javax.swing.JCheckBox();
         MarkovLengthField = new javax.swing.JTextField();
         markovChainLengthLabel = new javax.swing.JLabel();
+        useWindowsCheckbox = new javax.swing.JCheckBox();
+        useRelativeBricksCheckbox = new javax.swing.JCheckBox();
+        useAbstractBricksCheckbox = new javax.swing.JCheckBox();
+        useAbstracWindowsCheckbox = new javax.swing.JCheckBox();
         loadBaseGrammarBtn = new javax.swing.JButton();
         saveGrammarAsButton = new javax.swing.JButton();
         openCorpusBtn = new javax.swing.JButton();
@@ -2108,7 +2112,8 @@ public class LickgenFrame
 
         windowParametersPanel.setBackground(new java.awt.Color(218, 215, 215));
         windowParametersPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Step 3: (Optional) Set the parameters below:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 14))); // NOI18N
-        windowParametersPanel.setMinimumSize(new java.awt.Dimension(500, 148));
+        windowParametersPanel.setMinimumSize(new java.awt.Dimension(500, 200));
+        windowParametersPanel.setPreferredSize(new java.awt.Dimension(1272, 200));
         windowParametersPanel.setLayout(new java.awt.GridBagLayout());
 
         windowSizeLabel.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
@@ -2120,7 +2125,7 @@ public class LickgenFrame
         windowSizeLabel.setPreferredSize(new java.awt.Dimension(200, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.weightx = 0.5;
@@ -2135,7 +2140,7 @@ public class LickgenFrame
         windowSlideLabel.setPreferredSize(new java.awt.Dimension(200, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.weightx = 0.5;
@@ -2149,8 +2154,8 @@ public class LickgenFrame
         numClusterRepsLabel.setMinimumSize(new java.awt.Dimension(350, 30));
         numClusterRepsLabel.setPreferredSize(new java.awt.Dimension(350, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.weightx = 0.5;
@@ -2165,7 +2170,7 @@ public class LickgenFrame
         windowSizeField.setPreferredSize(new java.awt.Dimension(90, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 0.5;
         windowParametersPanel.add(windowSizeField, gridBagConstraints);
@@ -2186,37 +2191,38 @@ public class LickgenFrame
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 0.5;
         windowParametersPanel.add(windowSlideField, gridBagConstraints);
 
-        useRelativeCheckbox.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
-        useRelativeCheckbox.setSelected(true);
-        useRelativeCheckbox.setToolTipText("Make productions use relative pitches");
-        useRelativeCheckbox.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        useRelativeCheckbox.setLabel("Use relative pitches");
-        useRelativeCheckbox.setMaximumSize(new java.awt.Dimension(9999, 9999));
-        useRelativeCheckbox.setMinimumSize(new java.awt.Dimension(350, 30));
-        useRelativeCheckbox.setPreferredSize(new java.awt.Dimension(400, 30));
-        useRelativeCheckbox.addActionListener(new java.awt.event.ActionListener()
+        useRelativeWindowsCheckbox.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
+        useRelativeWindowsCheckbox.setSelected(true);
+        useRelativeWindowsCheckbox.setText("Use relative pitches for windows");
+        useRelativeWindowsCheckbox.setToolTipText("Make productions use relative pitches");
+        useRelativeWindowsCheckbox.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        useRelativeWindowsCheckbox.setMaximumSize(new java.awt.Dimension(9999, 9999));
+        useRelativeWindowsCheckbox.setMinimumSize(new java.awt.Dimension(350, 30));
+        useRelativeWindowsCheckbox.setPreferredSize(new java.awt.Dimension(400, 30));
+        useRelativeWindowsCheckbox.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
-                useRelativeCheckboxActionPerformed(evt);
+                useRelativeWindowsCheckboxActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 0);
-        windowParametersPanel.add(useRelativeCheckbox, gridBagConstraints);
+        windowParametersPanel.add(useRelativeWindowsCheckbox, gridBagConstraints);
 
         useBricksCheckbox.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
+        useBricksCheckbox.setSelected(true);
+        useBricksCheckbox.setText("Use Bricks");
         useBricksCheckbox.setToolTipText("Create productions based on bricks");
         useBricksCheckbox.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        useBricksCheckbox.setLabel("Use bricks");
         useBricksCheckbox.setMaximumSize(new java.awt.Dimension(9999, 9999));
         useBricksCheckbox.setMinimumSize(new java.awt.Dimension(150, 30));
         useBricksCheckbox.setPreferredSize(new java.awt.Dimension(150, 30));
@@ -2242,8 +2248,8 @@ public class LickgenFrame
         numClusterRepsField.setMinimumSize(new java.awt.Dimension(100, 30));
         numClusterRepsField.setPreferredSize(new java.awt.Dimension(60, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 5;
-        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 0.5;
         windowParametersPanel.add(numClusterRepsField, gridBagConstraints);
@@ -2266,7 +2272,8 @@ public class LickgenFrame
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 0);
         windowParametersPanel.add(useMarkovCheckbox, gridBagConstraints);
@@ -2286,8 +2293,8 @@ public class LickgenFrame
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 5;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         windowParametersPanel.add(MarkovLengthField, gridBagConstraints);
 
@@ -2299,16 +2306,104 @@ public class LickgenFrame
         markovChainLengthLabel.setMinimumSize(new java.awt.Dimension(350, 30));
         markovChainLengthLabel.setPreferredSize(new java.awt.Dimension(350, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.weightx = 0.5;
         windowParametersPanel.add(markovChainLengthLabel, gridBagConstraints);
 
+        useWindowsCheckbox.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
+        useWindowsCheckbox.setSelected(true);
+        useWindowsCheckbox.setText("Use Windows");
+        useWindowsCheckbox.setToolTipText("Create productions based on bricks");
+        useWindowsCheckbox.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        useWindowsCheckbox.setMaximumSize(new java.awt.Dimension(9999, 9999));
+        useWindowsCheckbox.setMinimumSize(new java.awt.Dimension(150, 30));
+        useWindowsCheckbox.setPreferredSize(new java.awt.Dimension(150, 30));
+        useWindowsCheckbox.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                useWindowsCheckboxActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 0);
+        windowParametersPanel.add(useWindowsCheckbox, gridBagConstraints);
+
+        useRelativeBricksCheckbox.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
+        useRelativeBricksCheckbox.setSelected(true);
+        useRelativeBricksCheckbox.setText("Use relative pitches for bricks");
+        useRelativeBricksCheckbox.setToolTipText("Make productions use relative pitches");
+        useRelativeBricksCheckbox.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        useRelativeBricksCheckbox.setMaximumSize(new java.awt.Dimension(9999, 9999));
+        useRelativeBricksCheckbox.setMinimumSize(new java.awt.Dimension(350, 30));
+        useRelativeBricksCheckbox.setPreferredSize(new java.awt.Dimension(400, 30));
+        useRelativeBricksCheckbox.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                useRelativeBricksCheckboxActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 0);
+        windowParametersPanel.add(useRelativeBricksCheckbox, gridBagConstraints);
+
+        useAbstractBricksCheckbox.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
+        useAbstractBricksCheckbox.setSelected(true);
+        useAbstractBricksCheckbox.setText("Use abstract pitches for bricks");
+        useAbstractBricksCheckbox.setToolTipText("Make productions use relative pitches");
+        useAbstractBricksCheckbox.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        useAbstractBricksCheckbox.setMaximumSize(new java.awt.Dimension(9999, 9999));
+        useAbstractBricksCheckbox.setMinimumSize(new java.awt.Dimension(350, 30));
+        useAbstractBricksCheckbox.setPreferredSize(new java.awt.Dimension(400, 30));
+        useAbstractBricksCheckbox.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                useAbstractBricksCheckboxActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 0);
+        windowParametersPanel.add(useAbstractBricksCheckbox, gridBagConstraints);
+
+        useAbstracWindowsCheckbox.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
+        useAbstracWindowsCheckbox.setSelected(true);
+        useAbstracWindowsCheckbox.setText("Use abstract pitches for windows");
+        useAbstracWindowsCheckbox.setToolTipText("Make productions use relative pitches");
+        useAbstracWindowsCheckbox.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        useAbstracWindowsCheckbox.setMaximumSize(new java.awt.Dimension(9999, 9999));
+        useAbstracWindowsCheckbox.setMinimumSize(new java.awt.Dimension(350, 30));
+        useAbstracWindowsCheckbox.setPreferredSize(new java.awt.Dimension(400, 30));
+        useAbstracWindowsCheckbox.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                useAbstracWindowsCheckboxActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 0);
+        windowParametersPanel.add(useAbstracWindowsCheckbox, gridBagConstraints);
+
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         gridBagConstraints.weighty = 0.02;
@@ -2414,10 +2509,10 @@ public class LickgenFrame
         learningStep0Label.setBackground(new java.awt.Color(218, 215, 215));
         learningStep0Label.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
         learningStep0Label.setText("<html>Please follow these steps to learn a new grammar from a corpus of solos as a folder of leadsheets. <br>Click the rectangular buttons below from top to bottom.</html>  ");
-        learningStep0Label.setMaximumSize(new java.awt.Dimension(2147483647, 90));
-        learningStep0Label.setMinimumSize(new java.awt.Dimension(400, 85));
+        learningStep0Label.setMaximumSize(new java.awt.Dimension(2147483647, 60));
+        learningStep0Label.setMinimumSize(new java.awt.Dimension(400, 60));
         learningStep0Label.setOpaque(true);
-        learningStep0Label.setPreferredSize(new java.awt.Dimension(400, 85));
+        learningStep0Label.setPreferredSize(new java.awt.Dimension(400, 60));
         learningStep0Label.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -4402,9 +4497,9 @@ public class LickgenFrame
     private void useMarkovCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_useMarkovCheckboxActionPerformed
     }//GEN-LAST:event_useMarkovCheckboxActionPerformed
 
-    private void useRelativeCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_useRelativeCheckboxActionPerformed
+    private void useRelativeWindowsCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_useRelativeWindowsCheckboxActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_useRelativeCheckboxActionPerformed
+    }//GEN-LAST:event_useRelativeWindowsCheckboxActionPerformed
 
     private void windowSlideFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_windowSlideFieldActionPerformed
         // TODO add your handling code here:
@@ -5973,6 +6068,26 @@ public class LickgenFrame
         // TODO add your handling code here:
     }//GEN-LAST:event_useBricksCheckboxActionPerformed
 
+    private void useWindowsCheckboxActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_useWindowsCheckboxActionPerformed
+    {//GEN-HEADEREND:event_useWindowsCheckboxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_useWindowsCheckboxActionPerformed
+
+    private void useRelativeBricksCheckboxActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_useRelativeBricksCheckboxActionPerformed
+    {//GEN-HEADEREND:event_useRelativeBricksCheckboxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_useRelativeBricksCheckboxActionPerformed
+
+    private void useAbstractBricksCheckboxActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_useAbstractBricksCheckboxActionPerformed
+    {//GEN-HEADEREND:event_useAbstractBricksCheckboxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_useAbstractBricksCheckboxActionPerformed
+
+    private void useAbstracWindowsCheckboxActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_useAbstracWindowsCheckboxActionPerformed
+    {//GEN-HEADEREND:event_useAbstracWindowsCheckboxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_useAbstracWindowsCheckboxActionPerformed
+
     private void updateUseSoloist() {
         if (useSoloistCheckBox.isSelected() && lickgen.soloistIsLoaded()) {
             setLickGenStatus("Using Soloist file");
@@ -6310,13 +6425,17 @@ public class LickgenFrame
     private javax.swing.JLabel transposeProbLabel;
     private javax.swing.JTextField transposeProbabilityField;
     private javax.swing.JLabel typeLabel;
+    private javax.swing.JCheckBox useAbstracWindowsCheckbox;
+    private javax.swing.JCheckBox useAbstractBricksCheckbox;
     private javax.swing.JCheckBox useBricksCheckbox;
     private javax.swing.JCheckBox useCriticCheckBox;
     private javax.swing.JCheckBoxMenuItem useGrammarMI1;
     private javax.swing.JCheckBox useHeadCheckBox;
     private javax.swing.JCheckBox useMarkovCheckbox;
-    private javax.swing.JCheckBox useRelativeCheckbox;
+    private javax.swing.JCheckBox useRelativeBricksCheckbox;
+    private javax.swing.JCheckBox useRelativeWindowsCheckbox;
     private javax.swing.JCheckBox useSoloistCheckBox;
+    private javax.swing.JCheckBox useWindowsCheckbox;
     private javax.swing.JButton weightFileButton;
     private javax.swing.JTextField weightFileTextField;
     private javax.swing.JSeparator windowMenuSeparator2;
@@ -6348,7 +6467,7 @@ public class LickgenFrame
     }
     
     public void setUseRelative(boolean value) {
-        useRelativeCheckbox.setSelected(value);
+        useRelativeWindowsCheckbox.setSelected(value);
     }
     
     public void setUseBricks(boolean value) {
@@ -6418,7 +6537,7 @@ public class LickgenFrame
     }
 
     public boolean getUseRelativePitches() {
-        return useRelativeCheckbox.isSelected();
+        return useRelativeWindowsCheckbox.isSelected();
     }
     
     public boolean getUseMarkov() {
