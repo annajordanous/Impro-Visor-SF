@@ -24,6 +24,7 @@ import imp.Constants;
 import static imp.Constants.BEAT;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 
 /**
  * ImportMelody is adapted by Robert Keller from ImportBass, by Brandy McMenamy
@@ -119,49 +120,77 @@ public static void convertToImpPart(jm.music.data.Phrase phrase,
  * @param time
  * @param partOut
  * @param slot
- * @param precision 
+ * @param quantum 
  */
 
 public static int noteArray2ImpPart(ArrayList<jm.music.data.Note> origNoteArray,
                                 double time,
                                 MelodyPart partOut,
                                 int slot,
-                                int precision)
+                                int quantum)
   {
-    int accumulatedSpace = 0;
+    //System.out.println("\nquantum = " + quantum);
+    int notesLost = 0;
     
-    for( jm.music.data.Note note : origNoteArray ) 
+    Iterator<jm.music.data.Note> origNotes = origNoteArray.iterator();
+    int endLastNote = slot;
+    int accumulatedRestSlots = 0;
+    while( origNotes.hasNext() )
       {
-        //System.out.println("time = " + time + ", time*120 = " + time*120 + ", slot = " + slot);
-        int diff = precision*(int)((slot - 120*time)/precision);
-        if( diff > 0 )
-          {
-            accumulatedSpace += diff;
-            slot += diff;
-          }
+        double scaledTime = time*FACTOR;
+        jm.music.data.Note note = origNotes.next();
         double origRhythmValue = note.getRhythmValue();
-        if( note.isRest() )
+        //System.out.println("\nslot: " + slot + " scaledTime: " + scaledTime + " note: " + note);
+        if( !note.isRest() )
           {
-          int rhythmValue = precision*(int)((BEAT*(time + origRhythmValue) - slot)/precision);
-          Note newRest = new Rest(rhythmValue + accumulatedSpace);
-          partOut.addNote(newRest);
-          accumulatedSpace = 0;
-          slot += rhythmValue;
-         }
-        else
-          {
-          int rhythmValue = precision*(int)Math.round((BEAT * note.getRhythmValue())/precision);
-          if( rhythmValue > 0 )
-            {
-            Note newNote = new Note(note.getPitch(), rhythmValue);
-                   
-            partOut.addNote(newNote);
-            //System.out.println("beat " + slot/FBEAT + ": " + note.getDuration() + " -> " + newNote);
-            slot += rhythmValue;
+            // Rests in the original are ignored. Rests in the new part are
+            // created when a note end is strictly less than the next note onset.
+            if( slot >= scaledTime + quantum )
+              {
+                // The note cannot be placed in the current quantum, so it is ignored.
+                //System.out.println("slot: " + slot + " > scaledTime: " + scaledTime + " lost");
+                notesLost++;
+              }
+            else
+              {
+              // "catch up" slot to scaledTime
+              if( slot < scaledTime )
+                {
+                  slot = quantum*(int)Math.ceil(scaledTime/quantum);
+                }
+              
+              if( scaledTime <= (slot + quantum) )
+                {
+                // Can the note be scheduled in the current quantum?
+                //System.out.println("slot: " + slot + " endLastNote: " + endLastNote + " note lost");
+                if( slot >= endLastNote )
+                  {
+                  // Using this slot should not cut into the previous note.
+                  int duration = quantum*(int)Math.ceil((origRhythmValue*FACTOR)/quantum);
+                  int pitch = note.getPitch();
+                  Note newNote = new Note(pitch, duration);
+                  int gap = slot - endLastNote;
+                  if( gap > 0 )
+                    {
+                    // Fill in gap with rest if needed
+                    partOut.addRest(new Rest(gap));
+                    }
+                  partOut.addNote(newNote);
+                  endLastNote = slot + duration;
+                  //System.out.println("slot: " + slot + " endLastNote " + endLastNote + " placing: " + newNote);
+                  slot = endLastNote;
+                  }
+                }
+              else
+                {
+                notesLost++;
+                }
+              }
             }
+          time += origRhythmValue;
           }
-        time += origRhythmValue;
-      }  
+
+    System.out.println("notes lost in quantization: " + notesLost);
     return slot;
   }
 
