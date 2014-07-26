@@ -74,7 +74,6 @@ public class TransformPanel extends javax.swing.JPanel {
      * Creates new form SubstitutorTabPanel
      */
     public final String EXTENSION = ".transform";
-    private LickGen lickgen;
     private Notate notate;
     private Transform transform;
     private int editRow;
@@ -83,8 +82,7 @@ public class TransformPanel extends javax.swing.JPanel {
     private Stack<MelodyInContext> savedMelodies;
     private Stack<MelodyInContext> savedTrans;
     
-    public TransformPanel(LickGen lickgen, Notate notate) {
-        this.lickgen = lickgen;
+    public TransformPanel(Notate notate) {
         this.notate = notate;
         initComponents();
 
@@ -147,11 +145,11 @@ public class TransformPanel extends javax.swing.JPanel {
         }
         if(transformStr.length() > 0)
         {
-            transform = new Transform(lickgen, transformStr);
+            transform = new Transform(transformStr);
         }
         else
         {
-            transform = new Transform(lickgen);
+            transform = new Transform();
         }
         
         fillSubstitutionsList();
@@ -857,7 +855,7 @@ public class TransformPanel extends javax.swing.JPanel {
             }
             if(transformStr.length() > 0)
             {
-                Transform newTrans = new Transform(lickgen, transformStr);
+                Transform newTrans = new Transform(transformStr);
                 changeTransform(newTrans, newFilename);
             }
         }
@@ -877,8 +875,7 @@ public class TransformPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_revertSubstitutionsButtonActionPerformed
 
     private void createNewSubstitutionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createNewSubstitutionButtonActionPerformed
-        Substitution sub = new Substitution(lickgen);
-        transform.substitutions.add(sub);
+        transform.addNewSubstitution();
         fillSubstitutionsList();
         fillTransformationsList();
     }//GEN-LAST:event_createNewSubstitutionButtonActionPerformed
@@ -985,7 +982,7 @@ public class TransformPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_saveSubstitutionsButtonActionPerformed
 
     private void createNewSubstitutionsFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createNewSubstitutionsFileButtonActionPerformed
-        Transform newTrans = new Transform(lickgen);
+        Transform newTrans = new Transform();
         String newFilename = "newTransformFile.transform";
         changeTransform(newTrans, newFilename);
     }//GEN-LAST:event_createNewSubstitutionsFileButtonActionPerformed
@@ -1001,7 +998,7 @@ public class TransformPanel extends javax.swing.JPanel {
             }
             if(transformStr.length() > 0)
             {
-                Transform addTransform = new Transform(lickgen, transformStr);
+                Transform addTransform = new Transform(transformStr);
                 for(Substitution sub: addTransform.substitutions)
                 {
                     transform.substitutions.add(sub);

@@ -24,7 +24,6 @@ package imp.lickgen.transformations;
 import imp.data.ChordPart;
 import imp.data.MelodyPart;
 import imp.data.Note;
-import imp.lickgen.LickGen;
 import polya.*;
 import java.util.*;
 /**
@@ -39,13 +38,11 @@ private String name;
 public ArrayList<Transformation> transformations;
 public boolean debug;
 private boolean enabled;
-private LickGen lickGen;
 private boolean hasChanged;
 
-public Substitution (LickGen lickGen)
+public Substitution ()
 {
     debug = false;
-    this.lickGen = lickGen;
     transformations = new ArrayList<Transformation>();
     name = "new-substitution";
     type = "embellishment";
@@ -54,10 +51,9 @@ public Substitution (LickGen lickGen)
     hasChanged = false;
 }
 
-public Substitution (LickGen lickGen, Polylist sub)
+public Substitution (Polylist sub)
 {
     debug = false;
-    this.lickGen = lickGen;
     transformations = new ArrayList<Transformation>();
     name = (String) sub.assoc("name").second();
     type = (String) sub.assoc("type").second();
@@ -79,7 +75,7 @@ public Substitution (LickGen lickGen, Polylist sub)
             Polylist polyel = (Polylist) el;
             if(((String)polyel.first()).equals("transformation"))
             {
-                transformations.add(new Transformation(lickGen, polyel));
+                transformations.add(new Transformation(polyel));
             }
         }
     }
@@ -151,7 +147,7 @@ public MelodyPart apply(MelodyPart notes, ChordPart chords, int[] startingSlot)
 
 public void addNewTransformation()
 {
-    Transformation trans = new Transformation(lickGen);
+    Transformation trans = new Transformation();
     transformations.add(trans);
     hasChanged = true;
 }

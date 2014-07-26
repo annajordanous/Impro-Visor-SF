@@ -33,7 +33,6 @@ public class TransformLearningPanel extends javax.swing.JPanel {
      */
     private TransformLearning transformLearning;
     
-    private LickGen lickgen;
     private Notate notate;
     
     /**
@@ -62,24 +61,22 @@ public class TransformLearningPanel extends javax.swing.JPanel {
      * the TransformPanel in LickgenFrame that is to put the learned 
      * transform
      */
-    TransformPanel subPanel;
+    TransformPanel transformPanel;
     
     /**
      * Creates new form TransformLearningPanel
      */
-    public TransformLearningPanel(LickGen lickgen, 
-                                  Notate notate, 
+    public TransformLearningPanel(Notate notate, 
                                   TransformPanel subPanel) {
         initComponents();
-        this.lickgen = lickgen;
         this.notate = notate;
         // the class that contains the actual flattening and learning methods
-        transformLearning = new TransformLearning(lickgen);
+        transformLearning = new TransformLearning();
         original = new MelodyPart();
         flattened = new MelodyPart();
         resolution = 120;
-        transform = new Transform(lickgen);
-        this.subPanel = subPanel;
+        transform = new Transform();
+        this.transformPanel = subPanel;
     }
 
     /**
@@ -493,7 +490,7 @@ public class TransformLearningPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_showTransformButtonActionPerformed
 
     private void setTransformButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setTransformButtonActionPerformed
-        subPanel.setTransform(transform);
+        transformPanel.setTransform(transform);
     }//GEN-LAST:event_setTransformButtonActionPerformed
 
     private void replaceWithOriginalButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_replaceWithOriginalButtonActionPerformed
@@ -673,7 +670,7 @@ public class TransformLearningPanel extends javax.swing.JPanel {
                                                        start, 
                                                        stop);
         
-        return new Transform(lickgen, transformList.toStringSansParens());
+        return new Transform(transformList.toStringSansParens());
     }
     /**
      * Learns transformations by going through the notes in a melody
@@ -695,7 +692,7 @@ public class TransformLearningPanel extends javax.swing.JPanel {
                                                        start, 
                                                        stop);
         
-        return new Transform(lickgen, transformList.toStringSansParens());
+        return new Transform(transformList.toStringSansParens());
     }
     /**
      * Goes through each note in the original melody and if it equals the note 

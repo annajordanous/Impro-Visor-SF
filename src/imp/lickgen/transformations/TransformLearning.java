@@ -31,11 +31,8 @@ public static final int SKIP_TREND      = 1002;
 public static final int NO_TREND        = 999;
 public static final int NO_CHROMATIC_DATA   = 998;
 public static final String NO_DIATONIC_DATA   = "";
-private LickGen lickgen;
-public TransformLearning(LickGen lickgen)
-{
-    this.lickgen = lickgen;
-}
+public TransformLearning()
+{}
 
 /**
 * Divides a melody by chords and flattens each section by resolution.
@@ -256,11 +253,11 @@ private int getNoteScore(Note note,
     // This is definitely not optimized and can be improved
     int score = note.getRhythmValue();
     score += 120*(1 - (startingSlot%resolution)/(1.0*resolution));
-    if(lickgen.classifyNote(note, chord) == LickGen.CHORD)
+    if(LickGen.classifyNote(note, chord) == LickGen.CHORD)
     {
         score += 120;
     }
-    else if(lickgen.classifyNote(note, chord) == LickGen.COLOR)
+    else if(LickGen.classifyNote(note, chord) == LickGen.COLOR)
     {
         score += 20;          
     }
@@ -382,15 +379,15 @@ private Polylist getWindowGuardCondition(MelodyPart outline, Chord chord)
         Polylist chordFamilyEquals = Polylist.PolylistFromString("= (chord-family n1)");
         Polylist relPitchEquals = Polylist.PolylistFromString("= (relative-pitch n1)");
         
-        int cat = lickgen.classifyNote(origNote, chord);
+        int cat = LickGen.classifyNote(origNote, chord);
         switch (cat){
-            case(LickGen.CHORD):
+            case LickGen.CHORD:
                 categoryEquals = categoryEquals.addToEnd("C");
                 break;
-            case(LickGen.COLOR):
+            case LickGen.COLOR:
                 categoryEquals = categoryEquals.addToEnd("L");
                 break;
-            case(LickGen.APPROACH):
+            case LickGen.APPROACH:
                 categoryEquals = categoryEquals.addToEnd("A");
                 break;
             default:
@@ -465,7 +462,7 @@ private Polylist getTransposeDiatonicFunction(Note outlineNote,
                                               String var, 
                                               Chord chord)
 {
-    Evaluate eval = new Evaluate(lickgen, new Polylist());
+    Evaluate eval = new Evaluate(new Polylist());
     eval.setNoteVar("n1", outlineNote, chord);
     eval.setNoteVar("n2", transNote, chord);
     Polylist subHelper;
@@ -519,7 +516,7 @@ private Polylist getTransposeDiatonicCondition(Note note1,
                                                String var2, 
                                                Chord chord)
 {
-    Evaluate eval = new Evaluate(lickgen, new Polylist());
+    Evaluate eval = new Evaluate(new Polylist());
     eval.setNoteVar(var1, note1, chord);
     eval.setNoteVar(var2, note2, chord);
     Polylist subHelper;
@@ -828,15 +825,15 @@ private Polylist getTrendGuardCondition(Polylist importantNotesWithChords,
             // fill conditions
             Object relPitch = NoteConverter.noteToRelativePitch(note, chord).second();
             relPitchEquals = relPitchEquals.addToEnd(relPitch);
-            int cat = lickgen.classifyNote(note, chord);
+            int cat = LickGen.classifyNote(note, chord);
             switch (cat){
-                case(LickGen.CHORD):
+                case LickGen.CHORD:
                     categoryEquals = categoryEquals.addToEnd("C");
                     break;
-                case(LickGen.COLOR):
+                case LickGen.COLOR:
                     categoryEquals = categoryEquals.addToEnd("L");
                     break;
-                case(LickGen.APPROACH):
+                case LickGen.APPROACH:
                     categoryEquals = categoryEquals.addToEnd("A");
                     break;
                 default:

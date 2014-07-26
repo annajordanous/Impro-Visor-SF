@@ -27,7 +27,6 @@ import imp.data.MelodyPart;
 import imp.data.Note;
 import imp.data.NoteSymbol;
 import imp.gui.Notate;
-import imp.lickgen.LickGen;
 import polya.*;
 import java.util.*;
 /**
@@ -39,31 +38,28 @@ public class Transform
 
 private MelodyPart startingNotes;
 public ArrayList<Substitution> substitutions;
-private LickGen lickGen;
 public boolean debug;
 public boolean hasChanged;
 
-public Transform(LickGen lickGen)
+public Transform()
 {
     debug = false;
     hasChanged = false;
-    this.lickGen = lickGen;
     substitutions = new ArrayList<Substitution>();
 }
 
-public Transform(LickGen lickGen, String subs)
+public Transform(String subs)
 {
     debug = false;
     hasChanged = false;
     substitutions = new ArrayList<Substitution>();
-    this.lickGen = lickGen;
     Polylist polysubs = Polylist.PolylistFromString(subs);
     
     while(polysubs.nonEmpty())
     {
         if(polysubs.first() instanceof Polylist)
         {
-            Substitution sub = new Substitution(lickGen, (Polylist) polysubs.first());
+            Substitution sub = new Substitution((Polylist) polysubs.first());
             substitutions.add(sub);
         }
         polysubs=polysubs.rest();
@@ -275,7 +271,7 @@ public void toFile(StringBuilder buf)
 
 public Substitution addNewSubstitution()
 {
-    Substitution newSub = new Substitution(lickGen);
+    Substitution newSub = new Substitution();
     substitutions.add(newSub);
     hasChanged = true;
     return newSub;

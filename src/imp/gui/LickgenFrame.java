@@ -176,10 +176,10 @@ public class LickgenFrame
         critic = notate.getCritic();
         initComponents();
 
-        transformTab = new TransformPanel(lickgen, notate);
+        transformTab = new TransformPanel(notate);
         transformPanel.add(transformTab, new GridLayout(1, 1, 1, 1));
         
-        transformLearningTab = new TransformLearningPanel(lickgen, notate, transformTab);
+        transformLearningTab = new TransformLearningPanel(notate, transformTab);
         transformLearningPanel.add(transformLearningTab, new GridLayout(1, 1, 1, 1));
     }
 
