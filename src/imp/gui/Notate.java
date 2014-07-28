@@ -10180,7 +10180,7 @@ private String getChordRedirectName(int row)
 
     if( grammarfc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION )
       {
-        lickgenFrame.saveTriageParameters();
+        //lickgenFrame.saveTriageParameters(); // Not wanted here
 
         if( grammarfc.getSelectedFile().getName().endsWith(
             GrammarFilter.EXTENSION) )
