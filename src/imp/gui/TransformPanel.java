@@ -1,10 +1,27 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * This Java Class is part of the Impro-Visor Application.
+ *
+ * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College XML export code
+ * is also Copyright (C) 2009-2010 Nicolas Froment (aka Lasconic).
+ *
+ * Impro-Visor is free software; you can redistribute it and/or modifyc it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 2 of the License, or (at your option) any later
+ * version.
+ *
+ * Impro-Visor is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of merchantability or fitness
+ * for a particular purpose. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * Impro-Visor; if not, write to the Free Software Foundation, Inc., 51 Franklin
+ * St, Fifth Floor, Boston, MA 02110-1301 USA
  */
 package imp.gui;
 
 import imp.ImproVisor;
+import imp.com.PasteCommand;
 import imp.com.PlayScoreCommand;
 import imp.data.ChordPart;
 import imp.data.MelodyPart;
@@ -65,39 +82,71 @@ import javax.swing.text.BadLocationException;
 import polya.Polylist;
 
 /**
- *
+ * Panel that displays a transform and functions that use it. Is used in
+ * LickgenFrame.
+ * 
  * @author Alex Putman
  */
 public class TransformPanel extends javax.swing.JPanel {
 
     /**
-     * Creates new form SubstitutorTabPanel
+     * The extension for transform files
      */
     public final String EXTENSION = ".transform";
-    private Notate notate;
-    private Transform transform;
-    private int editRow;
-    private JFileChooser chooser;
-    private String filename;
-    private Stack<MelodyInContext> savedMelodies;
-    private Stack<MelodyInContext> savedTrans;
     
+    /**
+     * The notate that leadsheets are taken from
+     */
+    private Notate notate;
+    
+    /**
+     * The transform being displayed in this panel
+     */
+    private Transform transform;
+    
+    /**
+     * The row of the substitution being edited (name editing)
+     */
+    private int editSubstitutionRow;
+    
+    /**
+     * File chooser used to save and open transform files
+     */
+    private JFileChooser chooser;
+    
+    /**
+     * Filename of the currently open transform
+     */
+    private String filename;
+    
+    /**
+     * Saves the paste commands for applying, so they can be reverted. 
+     */
+    private Stack<MelodyInContext> savedMelodies;
+    
+    /**
+     * Creates new form SubstitutorTabPanel
+     */
     public TransformPanel(Notate notate) {
         this.notate = notate;
         initComponents();
-
-        editRow = -1; 
         
+        // No substitution row is being edited at first
+        editSubstitutionRow = -1; 
+        
+        // set the editor and renderer for the substitution table
         subJTable.setTableHeader(null);
         subJTable.setRowHeight(36);
         subJTable.setDefaultRenderer(Object.class, new SubstitutionCellRenderer());
         subJTable.setDefaultEditor(Object.class, new SubstitutionCellEditor());
-
+        
+        // set the editor and renderer for the transformation table
         transJTable.setTableHeader(null);
         transJTable.setRowHeight(36);
         transJTable.setDefaultRenderer(Object.class, new TransformationCellRenderer());
         transJTable.setDefaultEditor(Object.class, new TransformationCellEditor());
         
+        // set the file chooser and add the detection of overriding a file
         chooser = new JFileChooser(){
             @Override
             public void approveSelection(){
@@ -105,7 +154,10 @@ public class TransformPanel extends javax.swing.JPanel {
                 if(!f.getAbsolutePath().endsWith(EXTENSION))
                     f = new File(f.getAbsolutePath()+EXTENSION);
                 if(f.exists() && getDialogType() == SAVE_DIALOG){
-                    int result = JOptionPane.showConfirmDialog(this,"The file exists, overwrite?","Existing file",JOptionPane.YES_NO_CANCEL_OPTION);
+                    int result = JOptionPane.showConfirmDialog(this,
+                                                               "The file exists, overwrite?",
+                                                               "Existing file",
+                                                               JOptionPane.YES_NO_CANCEL_OPTION);
                     switch(result){
                         case JOptionPane.YES_OPTION:
                             super.approveSelection();
@@ -125,15 +177,20 @@ public class TransformPanel extends javax.swing.JPanel {
         
         chooser.setCurrentDirectory(ImproVisor.getGrammarDirectory());
         
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("Transform Files","transform");
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Transform Files",
+                                                                     "transform");
         chooser.setFileFilter(filter);
         
         savedMelodies = new Stack();
-        savedTrans = new Stack();
         
+        // Tries to set the transform as the default transform for the user
+        // (as in My.transform)
         setDefaultTrans();
     }
     
+    /**
+     * Tries to open the default transform "My.transform".
+     */
     private void setDefaultTrans()
     {
         filename = Preferences.DVF_TRANSFORM_VAL;
@@ -152,8 +209,8 @@ public class TransformPanel extends javax.swing.JPanel {
             transform = new Transform();
         }
         
-        fillSubstitutionsList();
-        fillTransformationsList();
+        redrawSubstitutionsList();
+        redrawTransformationsList();
         applySubstitutionsButton.setEnabled(true);
         saveSubstitutionsButton.setEnabled(true);
         cleanTransformButton.setEnabled(true);
@@ -838,8 +895,8 @@ public class TransformPanel extends javax.swing.JPanel {
 
     private void cleanTransformButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cleanTransformButtonActionPerformed
         transform.findDuplicatesAndAddToWeight();
-        fillSubstitutionsList();
-        fillTransformationsList();
+        redrawSubstitutionsList();
+        redrawTransformationsList();
     }//GEN-LAST:event_cleanTransformButtonActionPerformed
 
     private void openSubstitutionsFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openSubstitutionsFileButtonActionPerformed
@@ -876,20 +933,20 @@ public class TransformPanel extends javax.swing.JPanel {
 
     private void createNewSubstitutionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createNewSubstitutionButtonActionPerformed
         transform.addNewSubstitution();
-        fillSubstitutionsList();
-        fillTransformationsList();
+        redrawSubstitutionsList();
+        redrawTransformationsList();
     }//GEN-LAST:event_createNewSubstitutionButtonActionPerformed
 
     private void editSubstitutionNameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editSubstitutionNameButtonActionPerformed
-        if(editRow < 0)
+        if(editSubstitutionRow < 0)
         {
             int editIndex = subJTable.getEditingRow();
             if(editIndex >= 0)
             {
-                editRow = editIndex;
+                editSubstitutionRow = editIndex;
                 subJTable.setEditingRow(-1);
-                fillSubstitutionsList();
-                fillTransformationsList();
+                redrawSubstitutionsList();
+                redrawTransformationsList();
                 editSubstitutionNameButton.setText("Save Substitution Name");
             }
         }
@@ -897,8 +954,8 @@ public class TransformPanel extends javax.swing.JPanel {
         {
 
             resetEditNameButton();
-            fillSubstitutionsList();
-            fillTransformationsList();
+            redrawSubstitutionsList();
+            redrawTransformationsList();
         }
 
     }//GEN-LAST:event_editSubstitutionNameButtonActionPerformed
@@ -910,8 +967,8 @@ public class TransformPanel extends javax.swing.JPanel {
             Object toDelete = subJTable.getValueAt(editRow, 0);
             transform.substitutions.remove((Substitution)toDelete);
 
-            fillSubstitutionsList();
-            fillTransformationsList();
+            redrawSubstitutionsList();
+            redrawTransformationsList();
         }
     }//GEN-LAST:event_deleteSubstitutionButtonActionPerformed
 
@@ -927,7 +984,7 @@ public class TransformPanel extends javax.swing.JPanel {
             Substitution subToAddTo = (Substitution) toAddSub;
             subToAddTo.addNewTransformation();
         }
-        fillTransformationsList();
+        redrawTransformationsList();
     }//GEN-LAST:event_createNewTransformationButtonActionPerformed
 
     private void editSelectedTransformationButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editSelectedTransformationButtonActionPerformed
@@ -953,7 +1010,7 @@ public class TransformPanel extends javax.swing.JPanel {
                 Object toDelete = transJTable.getValueAt(editTransRow, 0);
                 ((Substitution)toDeleteSub).transformations.remove((Transformation)toDelete);
 
-                fillTransformationsList();
+                redrawTransformationsList();
             }
 
         }
@@ -963,7 +1020,10 @@ public class TransformPanel extends javax.swing.JPanel {
         Stave stave = notate.getCurrentStave();
         int start = notate.getCurrentSelectionStart();
         int stop = notate.getCurrentSelectionEnd();
-        notate.playCurrentSelection(false, 0, PlayScoreCommand.USEDRUMS, "putLick " + start + " - " + stop);
+        notate.playCurrentSelection(false, 
+                                    0, 
+                                    PlayScoreCommand.USEDRUMS, 
+                                    "putLick " + start + " - " + stop);
         ImproVisor.setPlayEntrySounds(true);
     }//GEN-LAST:event_substitutorPlayLeadsheetButtonActionPerformed
 
@@ -1004,8 +1064,8 @@ public class TransformPanel extends javax.swing.JPanel {
                     transform.substitutions.add(sub);
                 }
                 transform.hasChanged = true;
-                fillSubstitutionsList();
-                fillTransformationsList();
+                redrawSubstitutionsList();
+                redrawTransformationsList();
             }
         }
     }//GEN-LAST:event_addSubsFromOtherFileButtonActionPerformed
@@ -1027,8 +1087,10 @@ public class TransformPanel extends javax.swing.JPanel {
         int selectedSubRow = subJTable.getEditingRow();
         if(selectedSubRow >= 0)
         {
-            final Substitution selectedSub = (Substitution) subJTable.getValueAt(selectedSubRow, 0);
-            ScaleTransWeightsDialogue scale = new ScaleTransWeightsDialogue(notate.lickgenFrame, selectedSub);
+            final Substitution selectedSub = (Substitution) subJTable.getValueAt(selectedSubRow, 
+                                                                                 0);
+            ScaleTransWeightsDialogue scale = new ScaleTransWeightsDialogue(notate.lickgenFrame, 
+                                                                            selectedSub);
         }
     }//GEN-LAST:event_scaleTransWeightsButtonActionPerformed
 
@@ -1077,6 +1139,25 @@ public class TransformPanel extends javax.swing.JPanel {
     private javax.swing.JPanel useSubstitutionsButtonsPanel;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Pastes source melody over dest melody at startingSlot. This calls the 
+     * PasteCommand so that undo and redo can be used in notate. 
+     * @param dest
+     * @param source
+     * @param startingSlot 
+     */
+    public void pasteOver(MelodyPart dest, MelodyPart source, int startingSlot)
+    {
+        PasteCommand paste = new PasteCommand(source,dest,startingSlot,false);
+        notate.cm.execute(paste);
+    }
+    
+    /**
+     * Try to change the current transform and if there are unsaved changes then
+     * ask if they want to save. 
+     * @param transform
+     * @param newFilename 
+     */
     public void changeTransform(Transform transform, String newFilename)
     {
       
@@ -1129,14 +1210,13 @@ public class TransformPanel extends javax.swing.JPanel {
 
         this.transform = transform;
         resetEditNameButton();
-        fillSubstitutionsList();
-        fillTransformationsList();
+        redrawSubstitutionsList();
+        redrawTransformationsList();
         
         
         filename = newFilename;
         substitutionFromLabel.setText("Substitutions From: " + filename);
         savedMelodies = new Stack();
-        savedTrans = new Stack();
         revertSubstitutionsButton.setEnabled(false);
         reapplySubstitutionsButton.setEnabled(false);
 
@@ -1145,6 +1225,10 @@ public class TransformPanel extends javax.swing.JPanel {
         cleanTransformButton.setEnabled(true);
     }
     
+    /**
+     * Tries to save the current transform by bringing up a file saver dialogue
+     * @return whether the save went through or not
+     */
     private boolean saveCurrentTransform()
     {
         chooser.setSelectedFile(new File(filename));
@@ -1164,6 +1248,7 @@ public class TransformPanel extends javax.swing.JPanel {
 
                 saveTransformFile(chooser.getSelectedFile().getAbsolutePath() + EXTENSION);
               }
+            transform.hasChanged = false;
             substitutionFromLabel.setText("Substitutions From: " + filename);
             return true;
           }
@@ -1172,19 +1257,41 @@ public class TransformPanel extends javax.swing.JPanel {
             return false;
         }
     }
+    
+    /**
+     * 
+     * @return true if the the current transform has unsaved changes.
+     */
     private boolean unsavedChanges()
     {
         return transform.hasChanged();
     }
+    
+    /**
+     * If a substitution name is in the process of being edited, the process is
+     * stopped. 
+     */
     private void resetEditNameButton()
     {
-        editRow = -1;
+        editSubstitutionRow = -1;
         editSubstitutionNameButton.setText("Edit Substitution Name");
     }
+    
+    /**
+     * Tries to change the current transform to a new transform.
+     * @param trans 
+     */
     public void setTransform(Transform trans)
     {
+        // Currently only used for setting learned transforms from transform
+        // learning panel. If used for other uses, think of adding a string for
+        // new file name which is just being set here. 
         changeTransform(trans, "learnedTransform");
     }
+    
+    /**
+     * Apply the current transform to the currently selected melody. 
+     */
     public void applySubstitutions()
     {
         notate.stopPlaying();
@@ -1198,6 +1305,12 @@ public class TransformPanel extends javax.swing.JPanel {
         applySubstitutionsToPart(melody, chords);
     }
     
+    /**
+     * Apply the current transform the melodyPart and ChordPart sent at the
+     * location selected in notate.
+     * @param melody
+     * @param chords 
+     */
     public void applySubstitutionsToPart(MelodyPart melody, ChordPart chords)
     {
         
@@ -1212,27 +1325,31 @@ public class TransformPanel extends javax.swing.JPanel {
                                                   stop));
             
             MelodyPart transformedPart = transform.applySubstitutionsToMelodyPart(melody,
-                                                                                  chords,
-                                                                                  notate);
+                                                                                  chords);
             
 
+            pasteOver(notate.getMelodyPart(stave), transformedPart, start);
             
-            notate.getMelodyPart(stave).newPasteOver(transformedPart, start);
             if(substitutorRectifyCheckBox.isSelected())
             {
                 notate.rectifySelection(stave,start,stop);
                 
             }
-            notate.playCurrentSelection(false, 0, PlayScoreCommand.USEDRUMS, "putLick " + start + " - " + stop);
+            notate.playCurrentSelection(false, 
+                                        0, 
+                                        PlayScoreCommand.USEDRUMS, 
+                                        "putLick " + start + " - " + stop);
             ImproVisor.setPlayEntrySounds(true);
             
             revertSubstitutionsButton.setEnabled(true);
-            savedTrans = new Stack();
             reapplySubstitutionsButton.setEnabled(true);
         }
         
     }
     
+    /**
+     * Revert the last application of substitutions. 
+     */
     public void revertSubs()
     {
         MelodyInContext originalPart = savedMelodies.pop();
@@ -1241,11 +1358,8 @@ public class TransformPanel extends javax.swing.JPanel {
         int start = originalPart.getStart();
         int stop = originalPart.getStop();
         
-        MelodyPart oldPart = notate.getMelodyPart(stave).extract(start, stop, false);
-        savedTrans.push(new MelodyInContext(oldPart, stave, start, stop));
-        
         stave.setSelection(start, stop);
-        notate.getMelodyPart(stave).newPasteOver(originalPart.getMelody(), start);
+        pasteOver(notate.getMelodyPart(stave), originalPart.getMelody(), start);
         
         if(savedMelodies.size() < 1)
         {
@@ -1253,6 +1367,10 @@ public class TransformPanel extends javax.swing.JPanel {
             reapplySubstitutionsButton.setEnabled(false);
         }
     }
+    
+    /**
+     * Defines a selection in a stave from a melody with start and end slots.
+     */
     private class MelodyInContext {
         private MelodyPart melody;
         private Stave stave;
@@ -1287,25 +1405,34 @@ public class TransformPanel extends javax.swing.JPanel {
             return this.stop;
         }
     }
-    private void fillSubstitutionsList()
+    
+    /**
+     * First resets buttons that are used to edit the substitutions list. Then
+     * refills the substitutions table which redraws it. 
+     * This can probably be done more efficiently, but currently there are no 
+     * performance problems, so no need to rewrite.
+     */
+    private void redrawSubstitutionsList()
     {
-        
+        // if a substitution name is being edited, then only allow that row to
+        // be edited and set most buttons to not enabled, so that they have to 
+        // save changes to name before continuing.
         if(filename != null && filename.length() > 0)
         {
             substitutionFromLabel.setText("Substitutions From: " + filename);
         }
-        createNewSubstitutionButton.setEnabled((editRow < 0));
-        addSubsFromOtherFileButton.setEnabled((editRow < 0));
+        createNewSubstitutionButton.setEnabled((editSubstitutionRow < 0));
+        addSubsFromOtherFileButton.setEnabled((editSubstitutionRow < 0));
         deleteSubstitutionButton.setEnabled(false);
-        editSubstitutionNameButton.setEnabled((editRow >= 0));
+        editSubstitutionNameButton.setEnabled((editSubstitutionRow >= 0));
 
         deleteTransformationButton.setEnabled(false);
         editSelectedTransformationButton.setEnabled(false);
         createNewTransformationButton.setEnabled(false);
         scaleTransWeightsButton.setEnabled(false);
         
-        scaleMotifWeightsButton.setEnabled((editRow < 0));
-        scaleEmbWeightsButton.setEnabled((editRow < 0));
+        scaleMotifWeightsButton.setEnabled((editSubstitutionRow < 0));
+        scaleEmbWeightsButton.setEnabled((editSubstitutionRow < 0));
         
         setTotalSubWeights();
         
@@ -1325,12 +1452,14 @@ public class TransformPanel extends javax.swing.JPanel {
             }
             @Override
             public boolean isCellEditable(int row, int col) {
-                        if(editRow >= 0)
-                        {
-                            return (row == editRow);
-                        }
-                        else
-                            return true;
+                // If a substitution name is being edited, only let that cell
+                // be edited. 
+                if(editSubstitutionRow >= 0)
+                {
+                    return (row == editSubstitutionRow);
+                }
+                else
+                    return true;
 		}
             @Override
             public void setValueAt(Object value, int rowIndex, int columnIndex) {
@@ -1338,8 +1467,13 @@ public class TransformPanel extends javax.swing.JPanel {
             }
         });
     }
-    
-    private void fillTransformationsList()
+    /**
+     * First resets buttons that are used to edit the transformations list. Then
+     * refills the transformations table which redraws it. 
+     * This can probably be done more efficiently, but currently there are no 
+     * performance problems, so no need to rewrite.
+     */
+    private void redrawTransformationsList()
     {
         deleteTransformationButton.setEnabled(false);
         editSelectedTransformationButton.setEnabled(false);
@@ -1350,13 +1484,13 @@ public class TransformPanel extends javax.swing.JPanel {
         int totalSubWeight = 0;
         if(selectedSubRow >= 0)
         {
-            final Substitution selectedSub = (Substitution) subJTable.getValueAt(selectedSubRow, 0);
+            final Substitution selectedSub = (Substitution)subJTable.getValueAt(selectedSubRow, 0);
             subName = selectedSub.getName();
 
             totalSubWeight = selectedSub.getTotalWeight();
-            
+            // resets the transformations table
             transJTable.setModel(new javax.swing.table.AbstractTableModel() {
-                ArrayList<Transformation> trans = ((Substitution)subJTable.getValueAt(subJTable.getEditingRow(), 0)).transformations;
+                ArrayList<Transformation> trans = selectedSub.transformations;
 
 
                 public int getRowCount()
@@ -1383,6 +1517,7 @@ public class TransformPanel extends javax.swing.JPanel {
         }
         else
         {
+            // resets the transformations table
             transJTable.setModel(new javax.swing.table.AbstractTableModel() {
                 ArrayList<Transformation> trans = new ArrayList<Transformation>();
 
@@ -1414,7 +1549,11 @@ public class TransformPanel extends javax.swing.JPanel {
                                             "") + "");
         
     }
-
+    /**
+     * Tries to save the current transform to the given filepath string
+     * @param filepath                      filename to save transform to
+     * @return 0 if save worked, -1 if an error occurred
+     */
     private int saveTransformFile(String filepath) {
         try
         {
@@ -1432,7 +1571,10 @@ public class TransformPanel extends javax.swing.JPanel {
             return -1;
         }
     }
-    
+
+/**
+ * Set the labels that show the total weight for the substitution types
+ */
 public void setTotalSubWeights()
 {
     if(transform != null)
@@ -1447,6 +1589,10 @@ public void setTotalSubWeights()
     }
 }
 
+/**
+ * Set the labels that show the total weight for the transformations in the
+ * selected substitution. 
+ */
 public void setTotalTransWeights()
 {
         int selectedSubRow = subJTable.getEditingRow();
@@ -1462,30 +1608,55 @@ public void setTotalTransWeights()
                                             (totalSubWeight): 
                                             "") + "");
 }
+
+
+/* 
+********************************************************************************
+START OF CUSTOM COMPONENTS FOR SUBSTITUTIONS TABLE
+********************************************************************************
+*/
     
+/**
+ * The renderer for each cell of the substitutions table. This should be
+ * perfectly fine and coded decently. WARNING: These are pretty complicated, 
+ * so if you don't know what you are doing, don't try to change non superficial
+ * things. Could be combined with the Editor in the future for ease of changing.
+ */
 public class SubstitutionCellRenderer implements TableCellRenderer{
     public Component getTableCellRendererComponent(javax.swing.JTable table, Object value,
             boolean isSelected, boolean hasFocus, int row, int column) {
         
+        // For grid bag contraints, arguments on the same line are the same type
+        // of argument, but represent x and y values. 
         Substitution sub = (Substitution)value;
         
         javax.swing.JPanel panel = new javax.swing.JPanel(new GridBagLayout());
         
+        // First adding the enabled check box
         SubCheckBox subEnabled = new SubCheckBox(sub);
-        if(editRow >= 0)
+        if(editSubstitutionRow >= 0)
         {
             subEnabled.setEnabled(false);
         }
         GridBagConstraints subEnabledC = new GridBagConstraints(  0, 0,
-                                                                    1, 1,
-                                                                    0.0, 0.0,
-                GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0,0,0,0), 0, 0);
+                                                                  1, 1,
+                                                                  0.0, 0.0,
+                                                                  GridBagConstraints.WEST, 
+                                                                  GridBagConstraints.NONE, 
+                                                                  new Insets(0,0,0,0), 
+                                                                  0, 0);
         panel.add(subEnabled, subEnabledC);
+        
+        // then adding the name label, or if the name is being edited then a
+        // text box where the name can be edited
         GridBagConstraints subNameC = new GridBagConstraints( 1, 0,
-                                                            1, 1,
-                                                            1.0, 0.0,
-            GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0,4,0,0), 0, 0);
-        if(editRow == row)
+                                                              1, 1,
+                                                              1.0, 0.0,
+                                                              GridBagConstraints.WEST, 
+                                                              GridBagConstraints.HORIZONTAL, 
+                                                              new Insets(0,4,0,0), 
+                                                              0, 0);
+        if(editSubstitutionRow == row)
         {
             SubNameEditField editName = new SubNameEditField(sub);
             panel.add(editName, subNameC);
@@ -1498,42 +1669,55 @@ public class SubstitutionCellRenderer implements TableCellRenderer{
             panel.add(subName, subNameC);
         }
         
+        // then add the combo box for the type of the substitution
         SubTypeComboBox subTypesList = new SubTypeComboBox(sub);
-        if(editRow >= 0)
+        if(editSubstitutionRow >= 0)
         {
             subTypesList.setEnabled(false);
         }
         GridBagConstraints subTypesC = new GridBagConstraints(  2, 0,
                                                                 1, 1,
                                                                 0.0, 0.0,
-                GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0,0,0,0), 0, 0);
+                                                                GridBagConstraints.WEST, 
+                                                                GridBagConstraints.NONE, 
+                                                                new Insets(0,0,0,0), 
+                                                                0, 0);
         panel.add(subTypesList, subTypesC);
         
+        // then add the label the just says that weight
         javax.swing.JLabel weightLabel = new javax.swing.JLabel("weight = ");
         
         GridBagConstraints subWeightLabelC = new GridBagConstraints(3, 0,
                                                                     1, 1,
                                                                     0.0, 0.0,
-                GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0,20,0,0), 0, 0);
+                                                                    GridBagConstraints.WEST, 
+                                                                    GridBagConstraints.NONE, 
+                                                                    new Insets(0,20,0,0), 
+                                                                    0, 0);
         panel.add(weightLabel, subWeightLabelC);
         
+        // finally add the customized spinner for the weight of the substitution
         SubWeightField subWeightField = new SubWeightField(sub);
-        if(editRow >= 0)
+        if(editSubstitutionRow >= 0)
         {
             subWeightField.setEnabled(false);
         }
         GridBagConstraints subWeightC = new GridBagConstraints(4, 0,
-                                                                    1, 1,
-                                                                    0.0, 0.0,
-                GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0,0,0,4), 0, 0);
+                                                               1, 1,
+                                                               0.0, 0.0,
+                                                               GridBagConstraints.WEST, 
+                                                               GridBagConstraints.NONE, 
+                                                               new Insets(0,0,0,4), 
+                                                               0, 0);
         panel.add(subWeightField, subWeightC);
         
-        if ((hasFocus && editRow < 0) || (editRow == row)) {
+        // set the background of the cell based on its selection or editing
+        if ((hasFocus && editSubstitutionRow < 0) || (editSubstitutionRow == row)) {
                 panel.setBackground(table.getSelectionBackground());
          }
         else
         {
-            if(editRow >= 0)
+            if(editSubstitutionRow >= 0)
                 panel.setBackground(new Color(240,240,240));
             else
                 panel.setBackground(table.getBackground());
@@ -1542,15 +1726,22 @@ public class SubstitutionCellRenderer implements TableCellRenderer{
     }
     }
 
-    /**
-     *
-     */
+/**
+ * The editor for each cell of the substitution table. This is not done 
+ * completely to the general practices of editors. When adding or deleting
+ * elements, the table will just be regenerated instead of using the editor.
+ * Everything works though, so we probably don't want to change anything. 
+ * WARNING: These are pretty complicated, so if you don't know what you are
+ * doing, don't try to change non superficial things. 
+ */
 public class SubstitutionCellEditor extends AbstractCellEditor implements TableCellEditor {
     Substitution sub;
     public Component getTableCellEditorComponent(javax.swing.JTable table, Object value,
         boolean isSelected, int row, int column) {
         
-        if(editRow < 0)
+        // I'm not sure this is needed, but its not causing problems so I didn't
+        // remove it.
+        if(editSubstitutionRow < 0)
         {
             deleteSubstitutionButton.setEnabled(true);
             createNewTransformationButton.setEnabled(true);
@@ -1558,27 +1749,38 @@ public class SubstitutionCellEditor extends AbstractCellEditor implements TableC
         }
         editSubstitutionNameButton.setEnabled(true);
         
+        // Not sure how necessary this is either but wrote it a while ago, so 
+        // leaving it in.
         table.setEditingRow(row);
         sub = (Substitution)value;
 
         javax.swing.JPanel panel = new javax.swing.JPanel(new GridBagLayout());
         
+        // First add the enabled checkbox for the sub
         SubCheckBox subEnabled = new SubCheckBox(sub);
-        if(editRow >= 0)
+        if(editSubstitutionRow >= 0)
         {
             subEnabled.setEnabled(false);
         }
         GridBagConstraints subEnabledC = new GridBagConstraints(  0, 0,
-                                                                    1, 1,
-                                                                    0.0, 0.0,
-                GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0,0,0,0), 0, 0);
+                                                                  1, 1,
+                                                                  0.0, 0.0,
+                                                                  GridBagConstraints.WEST, 
+                                                                  GridBagConstraints.NONE, 
+                                                                  new Insets(0,0,0,0), 
+                                                                  0, 0);
         panel.add(subEnabled, subEnabledC);
         
+        // Then add the name of the sub. If it is not being edited, then just
+        // put it in a label, else in a custom text box to edit. 
         GridBagConstraints subNameC = new GridBagConstraints( 1, 0,
-                                                                1, 1,
-                                                                1.0, 0.0,
-                GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0,4,0,0), 0, 0);
-        if(editRow == row)
+                                                              1, 1,
+                                                              1.0, 0.0,
+                                                              GridBagConstraints.WEST, 
+                                                              GridBagConstraints.HORIZONTAL, 
+                                                              new Insets(0,4,0,0), 
+                                                              0, 0);
+        if(editSubstitutionRow == row)
         {
             SubNameEditField editName = new SubNameEditField(sub);
             panel.add(editName, subNameC);
@@ -1591,40 +1793,53 @@ public class SubstitutionCellEditor extends AbstractCellEditor implements TableC
             panel.add(subName, subNameC);
         }
         
+        // then add the type of the substitution in a combobox
         SubTypeComboBox subTypesList = new SubTypeComboBox(sub);
-        if(editRow >= 0)
+        if(editSubstitutionRow >= 0)
         {
             subTypesList.setEnabled(false);
         }
         GridBagConstraints subTypesC = new GridBagConstraints(  2, 0,
                                                                 1, 1,
                                                                 0.0, 0.0,
-                GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0,0,0,0), 0, 0);
+                                                                GridBagConstraints.WEST, 
+                                                                GridBagConstraints.NONE, 
+                                                                new Insets(0,0,0,0), 
+                                                                0, 0);
         panel.add(subTypesList, subTypesC);
         
+        // then add the label that just says weight.
         javax.swing.JLabel weightLabel = new javax.swing.JLabel("weight = ");
         
         GridBagConstraints subWeightLabelC = new GridBagConstraints(3, 0,
                                                                     1, 1,
                                                                     0.0, 0.0,
-                GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0,20,0,0), 0, 0);
+                                                                    GridBagConstraints.WEST, 
+                                                                    GridBagConstraints.NONE, 
+                                                                    new Insets(0,20,0,0), 
+                                                                    0, 0);
         panel.add(weightLabel, subWeightLabelC);
         
+        // finally add the custom spinner for the substitution weight.
         SubWeightField subWeightField = new SubWeightField(sub);
-        if(editRow >= 0)
+        if(editSubstitutionRow >= 0)
         {
             subWeightField.setEnabled(false);
         }
         GridBagConstraints subWeightC = new GridBagConstraints(4, 0,
-                                                                    1, 1,
-                                                                    0.0, 0.0,
-                GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0,0,0,4), 0, 0);
+                                                               1, 1,
+                                                               0.0, 0.0,
+                                                               GridBagConstraints.WEST, 
+                                                               GridBagConstraints.NONE, 
+                                                               new Insets(0,0,0,4), 
+                                                               0, 0);
         panel.add(subWeightField, subWeightC);
         
+        // Set the back ground based on selection of row
         panel.setBackground(table.getSelectionBackground());
         
-        if(editRow < 0)
-            fillTransformationsList();
+        if(editSubstitutionRow < 0)
+            redrawTransformationsList();
         return panel;
     }
     
@@ -1640,6 +1855,10 @@ public class SubstitutionCellEditor extends AbstractCellEditor implements TableC
     }
 }
 
+/**
+ * Custom CheckBox for the enabling or disabling of a substitution in the
+ * substitutions table.
+ */
 public class SubCheckBox extends javax.swing.JCheckBox implements ActionListener {
     private Substitution sub;
     
@@ -1657,7 +1876,12 @@ public class SubCheckBox extends javax.swing.JCheckBox implements ActionListener
     }
 }
 
-public class SubNameEditField extends javax.swing.JTextField implements ActionListener, DocumentListener {
+/**
+ * Custom TextField for editing a name of a substitution in the substitutions
+ * table.
+ */
+public class SubNameEditField extends javax.swing.JTextField 
+                              implements ActionListener, DocumentListener {
     private Substitution sub;
     
     public SubNameEditField(Substitution sub)
@@ -1671,9 +1895,9 @@ public class SubNameEditField extends javax.swing.JTextField implements ActionLi
     }
     @Override
     public void actionPerformed(ActionEvent e) {
-        editRow = -1;
-        fillSubstitutionsList();
-        fillTransformationsList();
+        editSubstitutionRow = -1;
+        redrawSubstitutionsList();
+        redrawTransformationsList();
         editSubstitutionNameButton.setText("Edit Substitution Name");
     }
 
@@ -1714,6 +1938,9 @@ public class SubNameEditField extends javax.swing.JTextField implements ActionLi
     }
 }
 
+/**
+ * Custom combobox for the type of a substitution in the substitutions table.
+ */
 public class SubTypeComboBox extends javax.swing.JComboBox implements ActionListener {
     private Substitution sub;
     String[] subTypes = { "motif", "embellishment" };
@@ -1750,13 +1977,19 @@ public class SubTypeComboBox extends javax.swing.JComboBox implements ActionList
     }
 }
 
+/**
+ * Custom JSpinner for the weight of a substitution in the substitutions table.
+ */
 public class SubWeightField extends javax.swing.JSpinner implements ChangeListener {
     private Substitution sub;
     
     public SubWeightField(Substitution sub)
     {
         this.sub = sub;
-        SpinnerNumberModel model = new SpinnerNumberModel(sub.getWeight(), 0, Integer.MAX_VALUE, 1);
+        SpinnerNumberModel model = new SpinnerNumberModel(sub.getWeight(), 
+                                                          0, 
+                                                          Integer.MAX_VALUE, 
+                                                          1);
         super.setModel(model);
         super.setMinimumSize(new Dimension(60, 25));
         super.setPreferredSize(new Dimension(60, 25));
@@ -1771,8 +2004,26 @@ public class SubWeightField extends javax.swing.JSpinner implements ChangeListen
             setTotalSubWeights();
         }
     }
-    }
+}
 
+/* 
+********************************************************************************
+END OF CUSTOM COMPONENTS FOR SUBSTITUTIONS TABLE
+********************************************************************************
+*/
+
+/* 
+********************************************************************************
+START OF CUSTOM COMPONENTS FOR TRANSFORMATIONS TABLE
+********************************************************************************
+*/
+
+/**
+ * The renderer for each cell of the transformations table. This should be
+ * perfectly fine and coded decently. WARNING: These are pretty complicated, 
+ * so if you don't know what you are doing, don't try to change non superficial
+ * things. Could be combined with the Editor in the future for ease of changing.
+ */
 public class TransformationCellRenderer implements TableCellRenderer{
     public Component getTableCellRendererComponent(javax.swing.JTable table, Object value,
             boolean isSelected, boolean hasFocus, int row, int column) {
@@ -1780,13 +2031,18 @@ public class TransformationCellRenderer implements TableCellRenderer{
         
         javax.swing.JPanel panel = new javax.swing.JPanel(new GridBagLayout());
         
+        // first add the enable check box for the transformation
         TransCheckBox transEnabled = new TransCheckBox(trans);
         GridBagConstraints transEnabledC = new GridBagConstraints(  0, 0,
                                                                     1, 1,
                                                                     0.0, 0.0,
-                GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0,0,0,0), 0, 0);
+                                                                    GridBagConstraints.WEST, 
+                                                                    GridBagConstraints.NONE, 
+                                                                    new Insets(0,0,0,0), 
+                                                                    0, 0);
         panel.add(transEnabled, transEnabledC);
         
+        // then add the description label for the transformation
         javax.swing.JLabel transDescLabel = new javax.swing.JLabel(trans.getDescription());
         transDescLabel.setMinimumSize(new Dimension(307, 25));
         transDescLabel.setPreferredSize(new Dimension(307, 25));
@@ -1794,23 +2050,35 @@ public class TransformationCellRenderer implements TableCellRenderer{
         GridBagConstraints transNameC = new GridBagConstraints( 1, 0,
                                                                 1, 1,
                                                                 1.0, 0.0,
-                GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0,4,0,0), 0, 0);
+                                                                GridBagConstraints.WEST, 
+                                                                GridBagConstraints.HORIZONTAL, 
+                                                                new Insets(0,4,0,0), 
+                                                                0, 0);
         panel.add(transDescLabel, transNameC);
         
+        // then add the label that just says weight
         javax.swing.JLabel weightLabel = new javax.swing.JLabel("weight = ");
         GridBagConstraints transWeightLabelC = new GridBagConstraints(  2, 0,
                                                                         1, 1,
                                                                         0.0, 0.0,
-                GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0,0,0,0), 0, 0);
+                                                                        GridBagConstraints.WEST, 
+                                                                        GridBagConstraints.NONE, 
+                                                                        new Insets(0,0,0,0), 
+                                                                        0, 0);
         panel.add(weightLabel, transWeightLabelC);
         
+        // then add the jspinner for the weight of the transformation
         TransWeightField transWeightField = new TransWeightField(trans);
         GridBagConstraints transWeightC = new GridBagConstraints(   3, 0,
                                                                     1, 1,
                                                                     0.0, 0.0,
-                GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0,0,0,4), 0, 0);
+                                                                    GridBagConstraints.WEST, 
+                                                                    GridBagConstraints.NONE, 
+                                                                    new Insets(0,0,0,4), 
+                                                                    0, 0);
         panel.add(transWeightField, transWeightC);
         
+        // set the background based on the focus of the cell
         if (hasFocus) {
                 panel.setBackground(table.getSelectionBackground());
          }
@@ -1822,9 +2090,14 @@ public class TransformationCellRenderer implements TableCellRenderer{
     }
 }
 
-    /**
-     *
-     */
+/**
+ * The editor for each cell of the transformations table. This is not done 
+ * completely to the general practices of editors. When adding or deleting
+ * elements, the table will just be regenerated instead of using the editor.
+ * Everything works though, so we probably don't want to change anything. 
+ * WARNING: These are pretty complicated, so if you don't know what you are
+ * doing, don't try to change non superficial things. 
+ */
 public class TransformationCellEditor extends AbstractCellEditor implements TableCellEditor {
     Transformation trans;
     public Component getTableCellEditorComponent(javax.swing.JTable table, Object value,
@@ -1834,13 +2107,18 @@ public class TransformationCellEditor extends AbstractCellEditor implements Tabl
         editSelectedTransformationButton.setEnabled(true);
         javax.swing.JPanel panel = new javax.swing.JPanel(new GridBagLayout());
         
+        // first add the check box for the enable of the transformation
         TransCheckBox transEnabled = new TransCheckBox(trans);
         GridBagConstraints transEnabledC = new GridBagConstraints(  0, 0,
                                                                     1, 1,
                                                                     0.0, 0.0,
-                GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0,0,0,0), 0, 0);
+                                                                    GridBagConstraints.WEST, 
+                                                                    GridBagConstraints.NONE, 
+                                                                    new Insets(0,0,0,0),    
+                                                                    0, 0);
         panel.add(transEnabled, transEnabledC);
         
+        // then add the label for the description of the transformation
         javax.swing.JLabel transDescLabel = new javax.swing.JLabel(trans.getDescription());
         transDescLabel.setMinimumSize(new Dimension(307, 25));
         transDescLabel.setPreferredSize(new Dimension(307, 25));
@@ -1848,22 +2126,35 @@ public class TransformationCellEditor extends AbstractCellEditor implements Tabl
         GridBagConstraints transNameC = new GridBagConstraints( 1, 0,
                                                                 1, 1,
                                                                 1.0, 0.0,
-                GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0,4,0,0), 0, 0);
+                                                                GridBagConstraints.WEST, 
+                                                                GridBagConstraints.HORIZONTAL,  
+                                                                new Insets(0,4,0,0), 
+                                                                0, 0);
         panel.add(transDescLabel, transNameC);
         
+        // then add the label that just says weight
         javax.swing.JLabel weightLabel = new javax.swing.JLabel("weight = ");
         GridBagConstraints transWeightLabelC = new GridBagConstraints(  2, 0,
                                                                         1, 1,
                                                                         0.0, 0.0,
-                GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0,0,0,0), 0, 0);
+                                                                        GridBagConstraints.WEST, 
+                                                                        GridBagConstraints.NONE, 
+                                                                        new Insets(0,0,0,0), 
+                                                                        0, 0);
         panel.add(weightLabel, transWeightLabelC);
         
+        // then add the custom spinner for the weight of the transformation
         TransWeightField transWeightField = new TransWeightField(trans);
         GridBagConstraints transWeightC = new GridBagConstraints(   3, 0,
                                                                     1, 1,
                                                                     0.0, 0.0,
-                GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0,0,0,4), 0, 0);
+                                                                    GridBagConstraints.WEST, 
+                                                                    GridBagConstraints.NONE, 
+                                                                    new Insets(0,0,0,4), 
+                                                                    0, 0);
         panel.add(transWeightField, transWeightC);
+        
+        // then set the background of the cell
         panel.setBackground(table.getSelectionBackground());
         return panel;
     }
@@ -1880,6 +2171,9 @@ public class TransformationCellEditor extends AbstractCellEditor implements Tabl
     }
 }
 
+/**
+ * The checkBox for a transformation saying if it is enabled or not.
+ */
 public class TransCheckBox extends javax.swing.JCheckBox implements ActionListener {
     private Transformation trans;
     
@@ -1897,13 +2191,19 @@ public class TransCheckBox extends javax.swing.JCheckBox implements ActionListen
     }
 }
 
+/**
+ * The custom spinner that holds the value for the weight of a transformation
+ */
 public class TransWeightField extends javax.swing.JSpinner implements ChangeListener {
     private Transformation trans;
     
     public TransWeightField(Transformation trans)
     {
         this.trans = trans;
-        SpinnerNumberModel model = new SpinnerNumberModel(trans.getWeight(), 0, Integer.MAX_VALUE, 1);
+        SpinnerNumberModel model = new SpinnerNumberModel(trans.getWeight(), 
+                                                          0, 
+                                                          Integer.MAX_VALUE, 
+                                                          1);
         super.setModel(model);
         super.setMinimumSize(new Dimension(60, 25));
         super.setPreferredSize(new Dimension(60, 25));
@@ -1919,8 +2219,11 @@ public class TransWeightField extends javax.swing.JSpinner implements ChangeList
             setTotalTransWeights();
         }
     }
-    }
+}
 
+/**
+ * The dialogue that appears to edit a transformation.
+ */
 public class TransformationDialogue extends javax.swing.JDialog implements ActionListener  {
 
     private Transformation trans;
@@ -1934,8 +2237,13 @@ public class TransformationDialogue extends javax.swing.JDialog implements Actio
         StringBuilder transFile = new StringBuilder();
         trans.toFile(transFile, "");
         contents = new javax.swing.JTextArea();
+        
+        // THIS IS VERY IMPORTANT FOR TAB SPACING
+        // Tabs are being based on size of 8, and need every character to have 
+        // then same width, so lines line up. 
         contents.setFont(new Font("monospaced", Font.PLAIN, 14));
         contents.setTabSize(8);
+        
         contents.setText(transFile.toString());
         super.setLocationRelativeTo(frame);
         javax.swing.JScrollPane scroll = new javax.swing.JScrollPane();
@@ -1952,16 +2260,29 @@ public class TransformationDialogue extends javax.swing.JDialog implements Actio
     }
     
     public void actionPerformed(ActionEvent e) {
-        boolean result = trans.setTransformation((Polylist)Polylist.PolylistFromString(contents.getText()).first());
+        Polylist edit = (Polylist)Polylist.PolylistFromString(contents.getText()).first();
+        boolean result = trans.setTransformation(edit);
+        // it the edited transform is invalid, the save was not made, so do not
+        // close the dialogue. 
         if(result)
         {
             dispose(); 
             setVisible(false); 
-            fillTransformationsList();
+            redrawTransformationsList();
         }
     }
 }    
 
+/* 
+********************************************************************************
+END OF CUSTOM COMPONENTS FOR TRANSFORMATIONS TABLE
+********************************************************************************
+*/
+
+/**
+ * Dialogue that opens to scale the weights of substitutions that are of the 
+ * type motif. 
+ */
 public class ScaleMotifWeightsDialogue extends javax.swing.JDialog implements ActionListener  {
 
     private Transform transform;
@@ -1975,7 +2296,8 @@ public class ScaleMotifWeightsDialogue extends javax.swing.JDialog implements Ac
         super.setLocationRelativeTo(frame);
         contents.setPreferredSize(new Dimension(50,20));
         contents.addActionListener(this);
-        javax.swing.JLabel scaleLabel = new javax.swing.JLabel("Scale all motif weights by: ");
+        String label = "Scale all motif weights by: ";
+        javax.swing.JLabel scaleLabel = new javax.swing.JLabel(label);
         
         javax.swing.JPanel layout = new javax.swing.JPanel(new FlowLayout());
         layout.add(scaleLabel);
@@ -1995,8 +2317,8 @@ public class ScaleMotifWeightsDialogue extends javax.swing.JDialog implements Ac
             transform.scaleMotifWeights(scale);
             dispose(); 
             setVisible(false); 
-            fillSubstitutionsList();
-            fillTransformationsList();
+            redrawSubstitutionsList();
+            redrawTransformationsList();
         }
         catch (Exception ex)
         {
@@ -2004,6 +2326,11 @@ public class ScaleMotifWeightsDialogue extends javax.swing.JDialog implements Ac
         }
     }
 }    
+
+/**
+ * Dialogue that opens to scale the weights of substitutions that are of the 
+ * type embellishment. 
+ */
 public class ScaleEmbWeightsDialogue extends javax.swing.JDialog implements ActionListener  {
 
     private Transform transform;
@@ -2017,7 +2344,8 @@ public class ScaleEmbWeightsDialogue extends javax.swing.JDialog implements Acti
         super.setLocationRelativeTo(frame);
         contents.setPreferredSize(new Dimension(50,20));
         contents.addActionListener(this);
-        javax.swing.JLabel scaleLabel = new javax.swing.JLabel("Scale all embellishment weights by: ");
+        String label = "Scale all embellishment weights by: ";
+        javax.swing.JLabel scaleLabel = new javax.swing.JLabel(label);
         
         javax.swing.JPanel layout = new javax.swing.JPanel(new FlowLayout());
         layout.add(scaleLabel);
@@ -2037,8 +2365,8 @@ public class ScaleEmbWeightsDialogue extends javax.swing.JDialog implements Acti
             transform.scaleEmbWeights(scale);
             dispose(); 
             setVisible(false); 
-            fillSubstitutionsList();
-            fillTransformationsList();
+            redrawSubstitutionsList();
+            redrawTransformationsList();
         }
         catch (Exception ex)
         {
@@ -2046,6 +2374,10 @@ public class ScaleEmbWeightsDialogue extends javax.swing.JDialog implements Acti
         }
     }
 }    
+/**
+ * Dialogue that opens to scale the weights of the transformations of the
+ * selected substitution.
+ */
 public class ScaleTransWeightsDialogue extends javax.swing.JDialog implements ActionListener  {
 
     private Substitution sub;
@@ -2059,7 +2391,8 @@ public class ScaleTransWeightsDialogue extends javax.swing.JDialog implements Ac
         super.setLocationRelativeTo(frame);
         contents.setPreferredSize(new Dimension(50,20));
         contents.addActionListener(this);
-        javax.swing.JLabel scaleLabel = new javax.swing.JLabel("Scale all transformation weights by: ");
+        String label = "Scale all transformation weights by: ";
+        javax.swing.JLabel scaleLabel = new javax.swing.JLabel(label);
         
         javax.swing.JPanel layout = new javax.swing.JPanel(new FlowLayout());
         layout.add(scaleLabel);
@@ -2079,7 +2412,7 @@ public class ScaleTransWeightsDialogue extends javax.swing.JDialog implements Ac
             sub.scaleTransWeights(scale);
             dispose(); 
             setVisible(false); 
-            fillTransformationsList();
+            redrawTransformationsList();
         }
         catch (Exception ex)
         {

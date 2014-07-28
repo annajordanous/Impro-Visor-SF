@@ -1,9 +1,26 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * This Java Class is part of the Impro-Visor Application.
+ *
+ * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College XML export code
+ * is also Copyright (C) 2009-2010 Nicolas Froment (aka Lasconic).
+ *
+ * Impro-Visor is free software; you can redistribute it and/or modifyc it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 2 of the License, or (at your option) any later
+ * version.
+ *
+ * Impro-Visor is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of merchantability or fitness
+ * for a particular purpose. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * Impro-Visor; if not, write to the Free Software Foundation, Inc., 51 Franklin
+ * St, Fifth Floor, Boston, MA 02110-1301 USA
  */
 package imp.gui;
 
+import imp.com.PasteCommand;
 import imp.data.Chord;
 import imp.data.ChordPart;
 import imp.data.MelodyPart;
@@ -23,7 +40,9 @@ import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import polya.*;
 
 /**
- *
+ * Panel that displays functions used in TransformLearning. Panel is drawn in 
+ * LickgenFrame.
+ * 
  * @author Alex Putman
  */
 public class TransformLearningPanel extends javax.swing.JPanel {
@@ -514,7 +533,7 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         int start = notate.getCurrentSelectionStart();
         int stop  = notate.getCurrentSelectionEnd();
         MelodyPart replace = original.extract(start, stop, true, true);
-        notate.getCurrentMelodyPart().pasteOver(replace, start);
+        pasteOver(notate.getCurrentMelodyPart(), replace, start);
         notate.repaint();
     }//GEN-LAST:event_replaceWithOriginalButtonActionPerformed
 
@@ -598,6 +617,15 @@ public class TransformLearningPanel extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     /**
+     * Allow for command undoing in notate
+     */
+    public void pasteOver(MelodyPart dest, MelodyPart source, int startingSlot)
+    {
+        PasteCommand paste = new PasteCommand(source,dest,startingSlot,false);
+        notate.cm.execute(paste);
+    }
+    
+    /**
      * Opens the generated transform in a new TextArea Dialogue
      */
     public void showTransform()
@@ -611,23 +639,36 @@ public class TransformLearningPanel extends javax.swing.JPanel {
     
     /**
      * Sets the desired resolution and calls one of the flattening methods
+     * then pastes the result into the leadsheet
      */
     private void flatten(int resolution)
     {
         this.resolution = resolution;
         boolean allowRepeats = allowRepeatsCheckBox.isSelected();
-        flattenByResolution(resolution, !allowRepeats);
+        
+        notate.adjustSelection();
+        int start = notate.getCurrentSelectionStart();
+        int stop = notate.getCurrentSelectionEnd();
+        
+        MelodyPart result = flattenByResolution(resolution, 
+                                                !allowRepeats, 
+                                                start, 
+                                                stop);
+        
+        pasteOver(notate.getCurrentMelodyPart(), result, start);
+        
+        notate.repaint();
     }
     
     /**
      * Divides the melody into sections of length determined by the length of
      * the chords in the melody, it then proceeds to flatten by resolution.
      */
-    private void flattenByChord(int resolution, boolean concatRepeats)
+    private MelodyPart flattenByChord(int resolution, 
+                                      boolean concatRepeats, 
+                                      int start, 
+                                      int stop)
     {
-        notate.adjustSelection();
-        int start = notate.getCurrentSelectionStart();
-        int stop = notate.getCurrentSelectionEnd();
         MelodyPart melody = notate.getCurrentMelodyPart();
         ChordPart chords = notate.getChordProg();
         MelodyPart flattenedPart = 
@@ -638,20 +679,19 @@ public class TransformLearningPanel extends javax.swing.JPanel {
                                                  stop, 
                                                  concatRepeats);
         
-        MelodyPart replace = flattenedPart.extract(start, stop, true, true);
-        notate.getCurrentMelodyPart().pasteOver(replace, start);
-        notate.repaint();
+        return flattenedPart.extract(start, stop, true, true);
+        
     }
     
     /**
      * Divides the melody into segments of length resolution, gets the best note
      * in each segment and set every note in the segment to that note.
      */
-    private void flattenByResolution(int resolution, boolean concatRepeats)
+    private MelodyPart flattenByResolution(int resolution, 
+                                           boolean concatRepeats,
+                                           int start,
+                                           int stop)
     {
-        notate.adjustSelection();
-        int start = notate.getCurrentSelectionStart();
-        int stop = notate.getCurrentSelectionEnd();
         MelodyPart melody = notate.getCurrentMelodyPart();
         ChordPart chords = notate.getChordProg();
         MelodyPart flattenedPart = 
@@ -662,9 +702,7 @@ public class TransformLearningPanel extends javax.swing.JPanel {
                                                       stop,
                                                       concatRepeats);
         
-        MelodyPart replace = flattenedPart.extract(start, stop, true, true);
-        notate.getCurrentMelodyPart().pasteOver(replace, start);
-        notate.repaint();
+        return flattenedPart.extract(start, stop, true, true);
     }
     
     /**
@@ -762,7 +800,7 @@ public class TransformLearningPanel extends javax.swing.JPanel {
             }
             
         }
-        notate.getCurrentMelodyPart().pasteOver(subFromOrig, start);
+        pasteOver(notate.getCurrentMelodyPart(), subFromOrig, start);
         notate.repaint();
     }
     
