@@ -28,6 +28,8 @@ import imp.data.Note;
 import imp.data.Part;
 import imp.data.Unit;
 import polya.Polylist;
+import java.lang.Long;
+import polya.PolylistEnum;
 
 /**
  *
@@ -52,14 +54,17 @@ public class Theme {
  
  int discriminatorOffset[] = new int[maxDiscriminators];
  
+ //construct a Theme from a MelodyPart
  public Theme(MelodyPart melody)
  {
      this.melody = melody;
+     this.ThemeLength = melody.size() / BEAT;
  }
+ 
  private static LinkedHashMap<String, Theme> allThemes = new LinkedHashMap<String, Theme>();
  private static ArrayList<Theme> orderedThemes = null;
  
-
+//create Theme from name and MelodyPart
      public static Theme makeTheme(String name, MelodyPart theme) {
          Theme newTheme = new Theme(theme);
          newTheme.name = name;
@@ -73,13 +78,16 @@ public class Theme {
          return newTheme;
      } 
      
+     //get name of a Theme
      String getName() { return name; } 
      
+ // get the string of notes in a theme    
      Polylist getNotes()
   {
   return Polylist.list(melodyToString(melody));
   }
-     
+   
+     //Convert a MelodyPart to a String
      public static String melodyToString(MelodyPart melody){
          Part.PartIterator i = melody.iterator(); //iterate over lick
                     String theme = ""; //set theme as empty to start
@@ -95,24 +103,56 @@ public class Theme {
                     return theme;
      } 
      
+     //Convert a Theme to a Polylist
      public Polylist ThemetoPolylist(Theme theme){
         return Polylist.list("theme", Polylist.list("name", theme.name), Polylist.list("notes", theme.melodyToString(theme.melody)));
      } 
      
+     //construct a Theme from a Polylist
      public Theme(Polylist list) {
-         String nameTheme = (String)list.first();
-         MelodyPart melodyTheme = (MelodyPart)list.last();
-         this.name = nameTheme;
-         this.melody = melodyTheme;
+         Polylist nameList = (Polylist)list.second(); //get Polylist of the name
+         Polylist nameTheme = nameList.rest(); //just get the name
+         PolylistEnum nameElements = nameTheme.elements(); //set the name of the Theme
+         
+         String nameString = "";
+          while (nameElements.hasMoreElements()) { //while there are more notes
+           Object current =  nameElements.nextElement();//get next note
+             String currentString = current.toString(); //convert it to String
+             nameString += currentString + " "; //add the note to the melodyString
+             System.out.println(nameString);
+         }  
+          this.name = nameString;
+         
+         Polylist melodyList = (Polylist)list.last(); //get polylist of the melody
+         Polylist melodyNotes = (Polylist)melodyList.rest(); //get the notes in a polylist
+         
+         PolylistEnum melodyElements = melodyNotes.elements(); //get the notes as elements
+         
+         //To get the notes of the theme in a string:
+         String melodyString = "";
+         while (melodyElements.hasMoreElements()) { //while there are more notes
+           Object current =  melodyElements.nextElement();//get next note
+             String currentString = current.toString(); //convert it to String
+             melodyString += currentString + " "; //add the note to the melodyString
+             System.out.println(melodyString);
+         }  
+         MelodyPart melody = new MelodyPart(melodyString); //create a MelodyPart of the string
+         this.melody = melody; //set the melody to the melody of the theme
      }
      
      
      
     public void showForm(java.io.PrintStream out) {
-        out.println("(theme "
+        out.println(toString());
+    }
+    
+ @Override
+    public String toString()
+    {
+        return "(theme "
                 + "(name " + getName()
                 + ")(notes " + melodyToString(melody)
-                + "))");
+                + "))";
     }
  
 }

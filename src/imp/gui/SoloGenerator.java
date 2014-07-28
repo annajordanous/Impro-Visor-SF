@@ -82,6 +82,7 @@ public class SoloGenerator extends javax.swing.JFrame {
             }
         }
     });
+    loadFromFile(fileName);
     }
 LickgenFrame lickgenFrame;
     /**
@@ -381,6 +382,9 @@ LickgenFrame lickgenFrame;
 
         setLocation(new java.awt.Point(10, 10));
         setLocationByPlatform(true);
+        setMaximumSize(new java.awt.Dimension(2140, 2140));
+        setMinimumSize(new java.awt.Dimension(1000, 563));
+        setPreferredSize(new java.awt.Dimension(500, 505));
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
@@ -437,15 +441,14 @@ LickgenFrame lickgenFrame;
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.gridheight = 4;
+        gridBagConstraints.gridwidth = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.ipadx = 20;
-        gridBagConstraints.ipady = -250;
+        gridBagConstraints.ipadx = 888;
+        gridBagConstraints.ipady = 537;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(9, 37, 0, 0);
+        gridBagConstraints.insets = new java.awt.Insets(18, 37, 0, 0);
         getContentPane().add(jScrollPane1, gridBagConstraints);
 
         jScrollPane3.setMaximumSize(new java.awt.Dimension(0, 0));
@@ -465,23 +468,25 @@ LickgenFrame lickgenFrame;
         jScrollPane3.setViewportView(themeList);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 5;
         gridBagConstraints.gridy = 3;
-        gridBagConstraints.gridwidth = 4;
-        gridBagConstraints.gridheight = 7;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.gridheight = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.ipady = 100;
+        gridBagConstraints.ipadx = 466;
+        gridBagConstraints.ipady = 648;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(1, 18, 0, 37);
+        gridBagConstraints.insets = new java.awt.Insets(9, 18, 0, 38);
         getContentPane().add(jScrollPane3, gridBagConstraints);
 
         ThemesLabel.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         ThemesLabel.setText("Themes");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridx = 5;
         gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridheight = 2;
         gridBagConstraints.ipady = 9;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(23, 78, 0, 0);
@@ -495,10 +500,10 @@ LickgenFrame lickgenFrame;
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.ipadx = 373;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(10, 57, 0, 0);
+        gridBagConstraints.insets = new java.awt.Insets(23, 57, 0, 0);
         getContentPane().add(generateSolo, gridBagConstraints);
 
         generateTheme.setLabel("Generate Theme");
@@ -509,11 +514,10 @@ LickgenFrame lickgenFrame;
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridheight = 2;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.ipadx = 358;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(36, 57, 0, 0);
+        gridBagConstraints.insets = new java.awt.Insets(9, 57, 0, 0);
         getContentPane().add(generateTheme, gridBagConstraints);
 
         currentSelection.setLabel("Use Current Selection in Leadsheet Window as Theme");
@@ -524,9 +528,8 @@ LickgenFrame lickgenFrame;
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 8;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.gridheight = 2;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.ipadx = 133;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(18, 53, 0, 0);
@@ -540,8 +543,8 @@ LickgenFrame lickgenFrame;
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 10;
-        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.ipadx = 412;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(10, 53, 0, 0);
@@ -555,7 +558,7 @@ LickgenFrame lickgenFrame;
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 11;
+        gridBagConstraints.gridy = 7;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.ipadx = 391;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
@@ -563,11 +566,12 @@ LickgenFrame lickgenFrame;
         getContentPane().add(stopPlaying, gridBagConstraints);
 
         SoloGeneratorTitle.setFont(new java.awt.Font("LiSong Pro", 0, 36)); // NOI18N
+        SoloGeneratorTitle.setMaximumSize(new java.awt.Dimension(327, 327));
         SoloGeneratorTitle.setText("Solo Generator");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.gridwidth = 4;
         gridBagConstraints.ipadx = 174;
         gridBagConstraints.ipady = -5;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
@@ -581,8 +585,9 @@ LickgenFrame lickgenFrame;
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 11;
+        gridBagConstraints.gridx = 6;
+        gridBagConstraints.gridy = 7;
+        gridBagConstraints.gridheight = 2;
         gridBagConstraints.ipadx = 32;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(18, 18, 28, 0);
@@ -614,33 +619,25 @@ private void playSelection()
         int themeUsesize = 0; // set size of the input themeUses to 0
         
         for (int i = 0; i < soloTable.getRowCount(); i++) { //loop through table
-            if (soloTable.getValueAt(i, THEME_COLUMN) != null) { //for every theme entered in the table
+            if (soloTable.getValueAt(i, THEME_COLUMN) != null) { 
+                //for every theme entered in the table
                 themeUsesize += 1; //add one to the size
             }
         }
         System.out.println(themeUsesize);
         
-        ArrayList<ThemeUse> themeUses = new ArrayList<ThemeUse>(); //create an empty array of themeUses
+        ArrayList<ThemeUse> themeUses = new ArrayList<ThemeUse>();
+        //create an empty array of themeUses
 
         for (int i = 0; i < soloTable.getRowCount(); i++) { //loop through size of themeUses
-
-//            if ((soloTable.getValueAt(i, 2) == null) &&  ((soloTable.getValueAt(i, 3) == null) || (soloTable.getValueAt(i, 4) == null)
-//                    || (soloTable.getValueAt(i, 5) == null) || (soloTable.getValueAt(i, 6) == null))) { //if any cell has incorrect info
-//                enteredIncorrectly.setVisible(true); //show error message
-//                break;
-//             } 
-//             if ((isDouble((String) soloTable.getValueAt(i, 3)) == false) 
-//              || (isDouble((String) soloTable.getValueAt(i, 4)) == false)
-//              || (isDouble((String) soloTable.getValueAt(i, 5)) == false) 
-//              || (isDouble((String) soloTable.getValueAt(i, 6)) == false)) {
-//                enteredIncorrectly.setVisible(true); //show error message
-//                break;
-//            }
-//            
-//            else 
             { 
-                System.out.println("list");
-                if (soloTable.getValueAt(i, THEME_COLUMN) != null) { 
+                if ((soloTable.getValueAt(i,THEME_COLUMN) == null)
+                && (soloTable.getValueAt(i,LENGTH_COLUMN) != null)) {
+                     enteredIncorrectly.setVisible(true); //show error message
+                    break;
+                }
+                
+               else if (soloTable.getValueAt(i, THEME_COLUMN) != null) { 
                     if ((isDouble((String) soloTable.getValueAt(i, 3)) == false) 
               || (isDouble((String) soloTable.getValueAt(i, 4)) == false)
               || (isDouble((String) soloTable.getValueAt(i, 5)) == false) 
@@ -729,13 +726,14 @@ private void playSelection()
             index = index <= 1 ? 0 : index-1;
             soloTable.setRowSelectionInterval(index, index);
         }
-
-
+ 
+          
         
     }//GEN-LAST:event_soloTableKeyPressed
 
     private void ResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ResetActionPerformed
-        resetCheck.setVisible(true);
+        resetCheck.setVisible(true); 
+        
     }//GEN-LAST:event_ResetActionPerformed
 
     private void soloTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_soloTableMouseClicked
@@ -775,7 +773,8 @@ private void playSelection()
                             
                             soloTable.setValueAt(name, j, NAME_COLUMN); 
                             //paste in the name of theme to the table
-                            soloTable.setValueAt(theme.ThemeLength + "", j, LENGTH_COLUMN); 
+                          //  soloTable.setValueAt(theme.ThemeLength + "", j, LENGTH_COLUMN); 
+                            soloTable.setValueAt(melody.size() / BEAT + "", j, LENGTH_COLUMN);
                             //paste in the theme length
                             soloTable.setValueAt(themestring, j, THEME_COLUMN); 
                             //paste in the theme in leadsheet notation
@@ -820,7 +819,11 @@ private void playSelection()
                 {  
                         soloTable.setValueAt(nameField.getText(), i, NAME_COLUMN); 
                         //set the name in the table
-                        addTheme(nameField.getText(), (String) soloTable.getValueAt(i, THEME_COLUMN)); 
+                        String name = nameField.getText();
+                        String melodyString = (String) soloTable.getValueAt(i, THEME_COLUMN);
+                        MelodyPart themeMelody = new MelodyPart(melodyString);
+                        Theme theme = Theme.makeTheme(name, themeMelody);
+                        addTheme(theme); 
                         //add the theme
                   }
                 
@@ -916,39 +919,39 @@ private void playSelection()
     }//GEN-LAST:event_NodeleteActionPerformed
 
    
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(SoloGenerator.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(SoloGenerator.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(SoloGenerator.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(SoloGenerator.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-            }
-        });
-    }
+//    /**
+//     * @param args the command line arguments
+//     */
+//    public static void main(String args[]) {
+//        /* Set the Nimbus look and feel */
+//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+//         */
+//        try {
+//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+//                if ("Nimbus".equals(info.getName())) {
+//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                    break;
+//                }
+//            }
+//        } catch (ClassNotFoundException ex) {
+//            java.util.logging.Logger.getLogger(SoloGenerator.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (InstantiationException ex) {
+//            java.util.logging.Logger.getLogger(SoloGenerator.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (IllegalAccessException ex) {
+//            java.util.logging.Logger.getLogger(SoloGenerator.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+//            java.util.logging.Logger.getLogger(SoloGenerator.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        }
+//        //</editor-fold>
+//
+//        /* Create and display the form */
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//            }
+//        });
+//    }
  
  private int themeLength = 8;
 
@@ -1181,10 +1184,11 @@ public class SoloGeneratorTableModel extends DefaultTableModel
                 System.out.println(melody);
                 String name = (String) soloTable.getValueAt(i, NAME_COLUMN);
                 String themestring = (String) soloTable.getValueAt(i, THEME_COLUMN);
-
+                MelodyPart themeMelody = new MelodyPart(themestring);
+                Theme theme = Theme.makeTheme(name,themeMelody);
                 if (orderedThemes.isEmpty()) {
                     System.out.println("empty");
-                    addTheme(name, themestring);
+                    addTheme(theme);
                 } 
                 
                 else if (orderedThemes.contains(name))
@@ -1206,7 +1210,7 @@ public class SoloGeneratorTableModel extends DefaultTableModel
 //                     System.out.println("themeproblem");
 //                     AlreadyNamed.setVisible(true); 
                             System.out.println("same");
-                            addTheme(name, themestring); //add the theme to the list
+                            addTheme(theme); //add the theme to the list
                             //   soloTable.setValueAt(pair.getValue(), i, 0); 
                             //set the name to the one in the list(what is was before user changed it)
                             for (int k = 0; k < soloTable.getRowCount(); k++) { //loop through table
@@ -1236,7 +1240,7 @@ public class SoloGeneratorTableModel extends DefaultTableModel
                         
                         else { //if there is no melody that matches the one in the table
                             System.out.println("Adding");
-                            addTheme(name, themestring);
+                            addTheme(theme);
                         }
                     }
                     break;
@@ -1285,32 +1289,56 @@ private static LinkedHashMap<Theme, String> allThemes = new LinkedHashMap<Theme,
            orderedThemes = new ArrayList<String>(allThemes.values());
             }       
       }
-
-public void addTheme(String name, String themestring)
+public void addTheme(Theme theme)
     {
         ensureThemeArray();
         int orderedThemesIndex = orderedThemes.size() - 1;
         System.out.println(allThemes);
         System.out.println(orderedThemes);
-        
+        String name = theme.name;
         for (int i = 0; i < soloTable.getRowCount(); i++) {
-            Theme newTheme = Theme.makeTheme(name, new MelodyPart(themestring));
             //  Theme theme = allThemes.get(themestring);
-            if ((soloTable.getValueAt(i, NAME_COLUMN) != null) 
-            && (!orderedThemes.contains(name))) {
+            if ( /*(soloTable.getValueAt(i, NAME_COLUMN) != null) 
+            && */ (!orderedThemes.contains(name))) {
                 orderedThemes.add(name);
-                allThemes.put(newTheme, name);
+                allThemes.put(theme, name);
             }
 
             themeListModel.reset();
-            orderedThemesIndex = orderedThemes.indexOf(newTheme);
+            orderedThemesIndex = orderedThemes.indexOf(theme);
             //  allThemesIndex = allThemes.indexOf(theme);
         }
         System.out.println(orderedThemes);
         System.out.println(allThemes);
         System.out.println("here");
-       saveRules(fileName);
+       //saveRules(fileName);
     }
+
+//public void addTheme(String name, String themestring)
+//    {
+//        ensureThemeArray();
+//        int orderedThemesIndex = orderedThemes.size() - 1;
+//        System.out.println(allThemes);
+//        System.out.println(orderedThemes);
+//        
+//        for (int i = 0; i < soloTable.getRowCount(); i++) {
+//            Theme newTheme = Theme.makeTheme(name, new MelodyPart(themestring));
+//            //  Theme theme = allThemes.get(themestring);
+//            if ( /*(soloTable.getValueAt(i, NAME_COLUMN) != null) 
+//            && */ (!orderedThemes.contains(name))) {
+//                orderedThemes.add(name);
+//                allThemes.put(newTheme, name);
+//            }
+//
+//            themeListModel.reset();
+//            orderedThemesIndex = orderedThemes.indexOf(newTheme);
+//            //  allThemesIndex = allThemes.indexOf(theme);
+//        }
+//        System.out.println(orderedThemes);
+//        System.out.println(allThemes);
+//        System.out.println("here");
+//       //saveRules(fileName);
+//    }
 
 File fileName = ImproVisor.getThemesFile();
 
@@ -1332,7 +1360,7 @@ public void saveRules(File file)
     }
   } 
 
-public void LoadFromFile(File file) {
+private void loadFromFile(File file) {
     java.io.FileInputStream themeStream;
 
         try {
@@ -1350,7 +1378,9 @@ public void LoadFromFile(File file) {
                 Polylist themePoly = (Polylist)ob;
                 Theme theme = new Theme(themePoly);
             //     ... put the Theme into your structure ...
-                addTheme(theme.name, theme.melodyToString(theme.melody));
+                addTheme(theme);
+                System.out.println("adding " + theme);
+                System.out.println(orderedThemes);
             }
         
         }
