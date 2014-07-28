@@ -701,7 +701,7 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
               }
             //System.out.println("gen = " + gen);
           }
-        return gen;
+        //return gen;
       }
 
     return gen; // throw new RuleApplicationException("applyRules, no such rule for " + gen);
@@ -853,31 +853,34 @@ public void clear()
   terminalString = Polylist.nil;
   }
 
-// Set all instances of variables in toSet corresponding value in getValsFrom.
+/**
+ * Set all instances of variables in toSet corresponding value in getValsFrom.
+ */
 
-private Polylist setVars(Polylist getValsFrom, Polylist getVarsFrom,
+private Polylist setVars(Polylist getValsFrom, 
+                         Polylist getVarsFrom,
                          Polylist toSet)
   {
-  try
+  // skip first element (why?)
+  getVarsFrom = getVarsFrom.rest();
+  getValsFrom = getValsFrom.rest();
+  while( getVarsFrom.nonEmpty() && getValsFrom.nonEmpty() )
     {
-    if( getValsFrom.length() > 1 && getVarsFrom.length() > 1 )
-      // Start at 1, because we ignore the first symbol.
-      {
-      for( int i = 1; i < getValsFrom.length(); ++i )
+      Object var = null;
+      Object val = null;
+      try
         {
-        Number val = (Number)getValsFrom.nth(i);
-        String var = (String)getVarsFrom.nth(i);
-        // Replace all vars in toSet with their value.
-        return replace(var, val.longValue(), toSet);
+        var = getVarsFrom.first().toString();
+        val = (Number)getValsFrom.first();
+        toSet = replace(var.toString(), ((Number)val).longValue(), toSet);
         }
-      }
-    }
-
-  // Currently we only allow variables to be set to integer values.
-  catch( ClassCastException e )
-    {
-    ErrorLog.log(ErrorLog.SEVERE, "Cannot set variable to non-integer value");
-    return null;
+      catch( Exception e )
+        {
+        ErrorLog.log(ErrorLog.SEVERE, "Cannot set variable " + var + " to " + val);
+        return toSet;
+        }
+      getVarsFrom = getVarsFrom.rest();
+      getValsFrom = getValsFrom.rest();
     }
   return toSet;
   }
