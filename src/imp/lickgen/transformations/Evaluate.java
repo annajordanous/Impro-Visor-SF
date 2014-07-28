@@ -32,7 +32,8 @@ import imp.util.ErrorLog;
 import polya.*;
 import java.util.*;
 /**
- *
+ * Class that applies the functions of the Transformational Grammar
+ * 
  * @author Alex Putman
  */
 public class Evaluate implements Function1{
@@ -42,16 +43,33 @@ String op;
 Object val;
 public boolean trace;
 
+/**
+ * 
+ * @param frame         the association list used for variables
+ */
 Evaluate(Polylist frame)
 {
     this(frame, null, null);
 }
 
+/**
+ * 
+ * @param frame         the association list used for variables
+ * @param op            the operator to be applied to each element of the
+ *                      evaluated list
+ */
 Evaluate(Polylist frame, String op)
 {
     this(frame, op, null);
 }
 
+/**
+ * 
+ * @param frame         the association list used for variables
+ * @param op            the operator to be applied to each element of the
+ *                      evaluated list
+ * @param val           the value associated with the operator to be applied
+ */
 Evaluate(Polylist frame, String op, Object val)
 {
     this.trace = false;
@@ -60,16 +78,32 @@ Evaluate(Polylist frame, String op, Object val)
     this.val = val;
 }
 
+/**
+ * get the value of a variable from the frame
+ * @param var       The variable name
+ * @return 
+ */
 public Object getVar(Object var)
 {
     return frame.assoc(var).second();
 }
 
+/**
+ * Set a variable name associated to the value to the frame
+ * @param var           variable name
+ * @param value         variable value
+ */
 public void setVar(Object var, Object value)
 {
     this.frame = frame.cons(Polylist.list(var,value));
 }
 
+/**
+ * Set a variable name associated to a NoteChordPair to the frame
+ * @param var           variable name
+ * @param note          note of variable   
+ * @param chord         chord of note
+ */
 public void setNoteVar(Object var, Note note, Chord chord)
 {
     NoteChordPair pair = new NoteChordPair(note,chord);
@@ -95,18 +129,34 @@ public boolean isVariable(Object obj)
     return (frame.assoc(obj)!=null);
 }
 
+/**
+ * checks if an object is a function
+ * @param obj
+ * @return 
+ */
 public boolean isFunction(Object obj)
 {
-    if(obj instanceof Polylist && !((Polylist)obj).isEmpty() && Operators.fromGrammarName(((Polylist)obj).first().toString())!=null)
+    if(obj instanceof Polylist 
+       && !((Polylist)obj).isEmpty() 
+       && Operators.fromGrammarName(((Polylist)obj).first().toString())!=null)
         return true;
     return false;
 }
 
+/**
+ * returns the variable frame 
+ * @return 
+ */
 public Polylist getFrame()
 {
     return frame;
 }
 
+/**
+ * Used to map a function to a Polylist
+ * @param x         Polylist to map function to
+ * @return          result
+ */
 public Object apply(Object x) {
     return evaluate(x);
 }
@@ -375,7 +425,9 @@ public Object evaluate(Object sent)
             case SCALE_DURATION:
                 double firstNum = readNumber(evaledArgs.first().toString());
                 if(evaledArgs.rest().length() != 1)
-                    returnVal = evaledArgs.rest().map(new Evaluate(frame, Operators.SCALE_DURATION.getGrammarName(), firstNum)).flatten();
+                    returnVal = evaledArgs.rest().map(new Evaluate(frame, 
+                                                                   Operators.SCALE_DURATION.getGrammarName(), 
+                                                                   firstNum)).flatten();
                 else
                 {
                     returnVal = scale_duration((NoteChordPair)evaledArgs.rest().first(),(double)firstNum);
@@ -384,7 +436,9 @@ public Object evaluate(Object sent)
             case NOTE_DURATION_ADDITION:
                 firstArg = evaledArgs.first();
                 if(evaledArgs.rest().length() != 1)
-                    returnVal = evaledArgs.rest().map(new Evaluate(frame, Operators.NOTE_DURATION_ADDITION.getGrammarName(), firstArg)).flatten();
+                    returnVal = evaledArgs.rest().map(new Evaluate(frame, 
+                                                                   Operators.NOTE_DURATION_ADDITION.getGrammarName(), 
+                                                                   firstArg)).flatten();
                 else
                 {
                     returnVal = note_duration_addition((NoteChordPair)evaledArgs.rest().first(),firstArg.toString());
@@ -393,7 +447,9 @@ public Object evaluate(Object sent)
             case NOTE_DURATION_SUBTRACTION:
                 firstArg = evaledArgs.first();
                 if(evaledArgs.rest().length() != 1)
-                    returnVal = evaledArgs.rest().map(new Evaluate(frame, Operators.NOTE_DURATION_SUBTRACTION.getGrammarName(), firstArg)).flatten();
+                    returnVal = evaledArgs.rest().map(new Evaluate(frame, 
+                                                                   Operators.NOTE_DURATION_SUBTRACTION.getGrammarName(), 
+                                                                   firstArg)).flatten();
                 else
                 {
                     returnVal = note_duration_subtraction((NoteChordPair)evaledArgs.rest().first(),firstArg.toString());
@@ -402,7 +458,9 @@ public Object evaluate(Object sent)
             case SET_DURATION:
                 firstArg = evaledArgs.first();
                 if(evaledArgs.rest().length() != 1)
-                    returnVal = evaledArgs.rest().map(new Evaluate(frame, Operators.SET_DURATION.getGrammarName(), firstArg)).flatten();
+                    returnVal = evaledArgs.rest().map(new Evaluate(frame, 
+                                                                   Operators.SET_DURATION.getGrammarName(), 
+                                                                   firstArg)).flatten();
                 else
                 {
                     returnVal = set_duration((NoteChordPair)evaledArgs.rest().first(),firstArg.toString());
@@ -411,7 +469,9 @@ public Object evaluate(Object sent)
             case SET_RELATIVE_PITCH:
                 firstArg = evaledArgs.first();
                 if(evaledArgs.rest().length() != 1)
-                    returnVal = evaledArgs.rest().map(new Evaluate(frame, Operators.SET_RELATIVE_PITCH.getGrammarName(), firstArg)).flatten();
+                    returnVal = evaledArgs.rest().map(new Evaluate(frame, 
+                                                                   Operators.SET_RELATIVE_PITCH.getGrammarName(), 
+                                                                   firstArg)).flatten();
                 else
                 {
                     returnVal = set_relative_pitch((NoteChordPair)evaledArgs.rest().first(),firstArg.toString());
@@ -422,7 +482,9 @@ public Object evaluate(Object sent)
                 
                 
                 if(evaledArgs.rest().length() != 1)
-                    returnVal = evaledArgs.rest().map(new Evaluate(frame, Operators.TRANSPOSE_DIATONIC.getGrammarName(), firstArg)).flatten();
+                    returnVal = evaledArgs.rest().map(new Evaluate(frame, 
+                                                                   Operators.TRANSPOSE_DIATONIC.getGrammarName(), 
+                                                                   firstArg)).flatten();
                 else
                 {
                     returnVal = transpose_diatonic((NoteChordPair)evaledArgs.second(),firstArg.toString());
@@ -431,7 +493,9 @@ public Object evaluate(Object sent)
             case TRANSPOSE_CHROMATIC:
                 firstArg = evaledArgs.first().toString();
                 if(evaledArgs.rest().length() != 1)
-                    returnVal = evaledArgs.rest().map(new Evaluate(frame, Operators.TRANSPOSE_CHROMATIC.getGrammarName(), firstArg)).flatten();
+                    returnVal = evaledArgs.rest().map(new Evaluate(frame, 
+                                                                   Operators.TRANSPOSE_CHROMATIC.getGrammarName(), 
+                                                                   firstArg)).flatten();
                 else
                 {
                     returnVal = transpose_chromatic((NoteChordPair)evaledArgs.rest().first(),readNumber(firstArg.toString()));
@@ -439,7 +503,8 @@ public Object evaluate(Object sent)
                 break;
             case MAKE_REST:
                 if(evaledArgs.length() != 1)
-                    returnVal = evaledArgs.map(new Evaluate(frame, Operators.MAKE_REST.getGrammarName())).flatten();
+                    returnVal = evaledArgs.map(new Evaluate(frame, 
+                                                            Operators.MAKE_REST.getGrammarName())).flatten();
                 else
                 {
                     returnVal = make_rest((NoteChordPair)evaledArgs.first());
@@ -447,7 +512,8 @@ public Object evaluate(Object sent)
                 break;
             case GET_NOTE:
                 if(evaledArgs.length() > 1)
-                    returnVal = evaledArgs.map(new Evaluate(frame, Operators.GET_NOTE.getGrammarName())).flatten();
+                    returnVal = evaledArgs.map(new Evaluate(frame, 
+                                                            Operators.GET_NOTE.getGrammarName())).flatten();
                 else
                 {
                     returnVal = new Polylist(get_note(evaledArgs), new Polylist());
@@ -467,6 +533,12 @@ public Object evaluate(Object sent)
     }
     return returnVal;
 }
+
+/*
+******************************************************************************** 
+START OF FUNCTIONS FOR TRANSFORMATIONAL GRAMMAR
+********************************************************************************
+*/
 
 /**
  * No argument can return false
@@ -529,7 +601,8 @@ public Boolean equals(Polylist evaledArgs)
     
     if(firstArg == null || secondArg == null)
         return false;
-    if(firstArg.toString().matches("(-?)([\\d]*)(\\.?)([\\d])*") && secondArg.toString().matches("(-?)([\\d]*)(\\.?)([\\d])*"))
+    if(firstArg.toString().matches("(-?)([\\d]*)(\\.?)([\\d])*") 
+       && secondArg.toString().matches("(-?)([\\d]*)(\\.?)([\\d])*"))
     {
         double firstNum = Double.parseDouble(firstArg.toString());
         double secondNum = Double.parseDouble(secondArg.toString());
@@ -1146,7 +1219,10 @@ public NoteChordPair note_duration_subtraction(NoteChordPair pair, String durati
 public NoteChordPair set_relative_pitch(NoteChordPair pair, String relPitch)
 {
     Note note = pair.note.copy();
-    Polylist transposeNoteList = Polylist.PolylistFromString("X " + relPitch + " " + Note.getDurationString(note.getRhythmValue()));
+    Polylist transposeNoteList = Polylist.PolylistFromString("X " + 
+                                                             relPitch + 
+                                                             " " + 
+                                                             Note.getDurationString(note.getRhythmValue()));
     Chord chord = pair.chord;
     Note newNote = LickGen.makeRelativeNote(transposeNoteList, chord);
     return new NoteChordPair(newNote, chord);
@@ -1228,13 +1304,32 @@ public Note get_note(Polylist evaledArgs)
     return note;
 }
 
+/*
+******************************************************************************** 
+END OF FUNCTIONS FOR TRANSFORMATIONAL GRAMMAR
+********************************************************************************
+*/
+
+/**
+ * Returns the double of a number in fraction form
+ * @param num       String of a number in fraction form
+ * @return 
+ */
 public double readNumber(String num)
 {
     if(num.indexOf("/") == -1)
         return Double.parseDouble(num);
     String[] halves = num.split("/");
-    return Arith.divide(Double.parseDouble(halves[0]), Double.parseDouble(halves[1])).doubleValue();
+    return Arith.divide(Double.parseDouble(halves[0]), 
+                        Double.parseDouble(halves[1])).doubleValue();
 }
+
+/**
+ * Adds two relative pitches 
+ * @param num1          Relative Pitch 1
+ * @param num2          Relative Pitch 2
+ * @return 
+ */
 public String addRelPitch(String num1, String num2)
 {
     String augment1 = "";
@@ -1293,40 +1388,15 @@ public String addRelPitch(String num1, String num2)
     returnString = augments + addTotal;
     return returnString;
 }
-public String modRelPitch(String pitch)
-{
-    if(!pitch.substring(0, 1).matches("\\-?[\\d]*"))
-    {
-        char insert = pitch.charAt(0);
-        int origNumber = Integer.parseInt(pitch.substring(1));
-        int number = 0;
-        if(origNumber < 0)
-        {
-            number = origNumber % 7;
-        }
-        else
-        {
-            number = (origNumber - 1)%7 + 1;
-        }
-        pitch = "" + insert + number; 
-    }
-    else
-    {
-        int origNumber = Integer.parseInt(pitch);
-        int number = 0;
-        if(origNumber<0)
-        {
-            number = origNumber % 7;
-        }
-        else
-        {
-            number = (origNumber - 1)%7 + 1;
-        }
-        pitch = "" + number; 
-    }
-    return pitch;
-}
 
+/**
+ * Returns the absolute Relative Pitch difference between two notes, not modding
+ * the results
+ * @param n1        First note that the second note subtracts from
+ * @param n2        Second note
+ * @param chord     Chord of n1
+ * @return          the relative pitch difference
+ */
 public String absoluteRelPitchDiff(Note n1, Note n2, Chord chord)
 {
     
@@ -1335,7 +1405,8 @@ public String absoluteRelPitchDiff(Note n1, Note n2, Chord chord)
     
     if(pitch_gr_eq(Polylist.PolylistFromString(rel1 + " " + rel2)) == null)
         return null;
-    while(pitch_gr_eq(Polylist.PolylistFromString(rel1 + " " + rel2)) && !(n1.getPitch() >= n2.getPitch())) 
+    while(pitch_gr_eq(Polylist.PolylistFromString(rel1 + " " + rel2)) 
+          && !(n1.getPitch() >= n2.getPitch())) 
     {
         rel2 = pitch_addition(Polylist.PolylistFromString(rel2 + " 8")).toString();
     }
@@ -1344,7 +1415,8 @@ public String absoluteRelPitchDiff(Note n1, Note n2, Chord chord)
     {
         return null;
     }
-    while(pitch_lt_eq(Polylist.PolylistFromString(rel1 + " " + rel2)) && !(n1.getPitch() <= n2.getPitch()))
+    while(pitch_lt_eq(Polylist.PolylistFromString(rel1 + " " + rel2)) 
+          && !(n1.getPitch() <= n2.getPitch()))
     {
         rel1 = pitch_addition(Polylist.PolylistFromString(rel1 + " 8")).toString();
     }

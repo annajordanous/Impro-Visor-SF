@@ -27,7 +27,8 @@ import imp.data.Note;
 import polya.*;
 import java.util.*;
 /**
- *
+ * Substitution in a Transform
+ * 
  * @author Alex Putman
  */
 public class Substitution {
@@ -40,17 +41,26 @@ public boolean debug;
 private boolean enabled;
 private boolean hasChanged;
 
+/**
+ * Creates a new empty Substitution with weight = 1, type = motif, 
+ * and enabled = true.
+ */
 public Substitution ()
 {
     debug = false;
     transformations = new ArrayList<Transformation>();
     name = "new-substitution";
-    type = "embellishment";
+    type = "motif";
     weight = 1;
     enabled = true;
     hasChanged = false;
 }
 
+/**
+ * Creates a new Substitution that is created from the transformational grammar
+ * in Polylist form
+ * @param sub               Polylist form of substitution grammar. 
+ */
 public Substitution (Polylist sub)
 {
     debug = false;
@@ -82,6 +92,14 @@ public Substitution (Polylist sub)
     hasChanged = false;
 }
 
+/**
+ * Tries to apply its transformations randomly based on weight 
+ * @param notes                 melody part to apply substitution on
+ * @param chords                chord part of notes
+ * @param startingSlot          slot to start applying to
+ * @return                      the transformed notes, or null if no 
+ *                              transformations can be applied. 
+ */
 public MelodyPart apply(MelodyPart notes, ChordPart chords, int[] startingSlot)
 {
     // for weighted random shuffling
@@ -106,6 +124,8 @@ public MelodyPart apply(MelodyPart notes, ChordPart chords, int[] startingSlot)
         full.removeAll(Collections.singleton(trans));
     } while(!full.isEmpty());
     
+    // Try to apply each transformation, if the transformation can be applied
+    // use it, else try the next
     for(Transformation trans: sortedTrans)
     {
         int newStartingSlot = startingSlot[0];
@@ -142,15 +162,24 @@ public MelodyPart apply(MelodyPart notes, ChordPart chords, int[] startingSlot)
     {
         System.out.println("\t\tSub Failed");
     }
+    // if not transformation could be applied, return null
     return null;
 }
 
+/**
+ * Adds a new simple Transformation to the transformations list. 
+ */
 public void addNewTransformation()
 {
     Transformation trans = new Transformation();
     transformations.add(trans);
     hasChanged = true;
 }
+
+/**
+ * 
+ * @return the total of all the transformations weights added together
+ */
 public int getTotalWeight()
 {
     int totalWeight = 0;
@@ -160,6 +189,11 @@ public int getTotalWeight()
     }
     return totalWeight;
 }
+
+/**
+ * scale all the transformations weights in this substitution by a scale
+ * @param scale 
+ */
 public void scaleTransWeights(double scale)
 {
     if(scale != 1.0)
@@ -170,6 +204,7 @@ public void scaleTransWeights(double scale)
         trans.setWeight((int)newWeight);
     }
 }
+
 public int getWeight()
 {
     return weight;
@@ -218,6 +253,10 @@ public void setEnabled(boolean en)
     enabled = en;
 }
 
+/**
+ * Detect if this substitution has been changed since last saved
+ * @return 
+ */
 public boolean hasChanged()
 {
     if(hasChanged)
@@ -233,6 +272,12 @@ public boolean hasChanged()
     return false;
 }
 
+/**
+ * Check if this substitution has the same type and transformations as another
+ * substitution
+ * @param ob
+ * @return 
+ */
 public boolean equals(Object ob)
 {
     if(!(ob instanceof Substitution))
@@ -252,6 +297,11 @@ public boolean equals(Object ob)
     return true;
 }
 
+/** 
+ * Returns a copied version of Polylist of Notes 
+ * @param notelst                   Polylist of Notes
+ * @return 
+ */
 public Polylist newNoteList(Polylist notelst)
 {
     if(notelst.length()==1)
@@ -260,6 +310,10 @@ public Polylist newNoteList(Polylist notelst)
         return new Polylist(((Note)notelst.first()).copy(),newNoteList(notelst.rest()));
 }
     
+/**
+ * Writes the substitution to a string that can be used for debugging. 
+ * @return 
+ */
 public String toString()
 {
     StringBuilder buf = new StringBuilder();
@@ -271,6 +325,11 @@ public String toString()
     return buf.toString();
 }
 
+/**
+ * writes the substitution to a reader friendly string that can be written to a 
+ * file
+ * @param buf   StringBuilder to write to.
+ */
 public void toFile(StringBuilder buf)
 {
     buf.append("(substitution");

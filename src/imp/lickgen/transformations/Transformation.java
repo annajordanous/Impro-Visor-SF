@@ -31,7 +31,8 @@ import imp.util.ErrorLog;
 import polya.*;
 import java.util.*;
 /**
- *
+ * Transformation that is part of a Substitution
+ * 
  * @author Alex Putman
  */
 public class Transformation {
@@ -44,6 +45,11 @@ private boolean enabled;
 private String description;
 private boolean hasChanged;
 public boolean debug;
+
+/**
+ * Creates a default transformation that will always be able to transform a note
+ * with weight = 1
+ */
 public Transformation()
 {
     debug = false;
@@ -55,18 +61,33 @@ public Transformation()
     hasChanged = false;
     enabled = true;
 }
+
+/**
+ * Creates a transformation from a string containing a transformation grammar
+ * @param transString 
+ */
 public Transformation(String transString)
 {
     this();
     setTransformation((Polylist)Polylist.PolylistFromString(transString).first());
     hasChanged = false;
 }
+
+/**
+ * Creates a transformation from a polylist containing a transformation grammar
+ * @param trans 
+ */
 public Transformation(Polylist trans)
 {
     this();
     setTransformation(trans);
     hasChanged = false;
 }
+
+/**
+ * returns a copy of the current transformation
+ * @return 
+ */
 public Transformation copy()
 {
     StringBuilder copyString = new StringBuilder();
@@ -74,6 +95,12 @@ public Transformation copy()
     Transformation copy = new Transformation(copyString.toString());
     return copy;
 }
+
+/**
+ * Set the grammar of the current transformation to a new grammar
+ * @param trans         Polylist containing the new grammar to set
+ * @return              whether or not the new grammar was able to be set
+ */
 public boolean setTransformation(Polylist trans)
 {   
     StringBuilder copyString = new StringBuilder();
@@ -104,6 +131,13 @@ public boolean setTransformation(Polylist trans)
     }
 }
 
+/**
+ * Try to apply this transformation to a set of notes
+ * @param notes             MelodyPart to apply to
+ * @param chords            ChordPart of notes
+ * @param startingSlot      slot to start applying at
+ * @return                  transformed melody
+ */
 public MelodyPart apply(MelodyPart notes, ChordPart chords, int startingSlot)
 {
     Evaluate eval = new Evaluate(new Polylist());
@@ -115,6 +149,8 @@ public MelodyPart apply(MelodyPart notes, ChordPart chords, int startingSlot)
     
     int newStartingSlot = startingSlot;
     int totalDurBefore = 0;
+    // First get the notes that would be transformed in this transformation
+    // and save the total duration of the notes before the application
     while(transSourceNotes.hasMoreElements() && newStartingSlot < notes.getSize())
     {
         
@@ -144,7 +180,8 @@ public MelodyPart apply(MelodyPart notes, ChordPart chords, int startingSlot)
     }
     if(debug)
     {
-        System.out.println("\t\t\tTrying Trans On: " + notes.extract(startingSlot, newStartingSlot - 1).toString());
+        System.out.println("\t\t\tTrying Trans On: " + 
+                           notes.extract(startingSlot, newStartingSlot - 1).toString());
     }
     if (transSourceNotes.hasMoreElements())
     {
@@ -154,8 +191,10 @@ public MelodyPart apply(MelodyPart notes, ChordPart chords, int startingSlot)
         }
         return null;
     }
-    
+    // Check that the melody satisfies the condition guard
     Boolean condition = (Boolean) eval.evaluate(conditionGuard);
+    
+    // if not, just return null, since the transformation could not be applied
     if(condition == null)
     {
         if(debug)
@@ -172,10 +211,14 @@ public MelodyPart apply(MelodyPart notes, ChordPart chords, int startingSlot)
         }
         return null;
     }
+    
+    // if the condition guard is satisfied, try to evaluate the target notes
     Evaluate targetEval = new Evaluate(eval.getFrame(),"get-note");
     Polylist result = targetNotes.map(targetEval).flatten();
     MelodyPart resultingMP = new MelodyPart();
     PolylistEnum resultEnum = result.elements();
+    
+    // get the total duration of the transformed notes
     int totalDurFinal = 0;
     while(resultEnum.hasMoreElements())
     {
@@ -188,8 +231,15 @@ public MelodyPart apply(MelodyPart notes, ChordPart chords, int startingSlot)
     }
     if(debug)
     {
-        System.out.println("\t\t\t\tBefore time: " + totalDurBefore + "\t\t\t\tAfter time: "+ totalDurFinal);
+        System.out.println("\t\t\t\tBefore time: " + 
+                           totalDurBefore + 
+                           "\t\t\t\tAfter time: " + 
+                           totalDurFinal);
     }
+    
+    // if the before and after duration are different, return null since 
+    // transforming this melody will not keep time the same.
+    // else return the transformed melody. 
     if(totalDurBefore != totalDurFinal)
     {
         if(debug)
@@ -208,13 +258,19 @@ public MelodyPart apply(MelodyPart notes, ChordPart chords, int startingSlot)
     }
 }
 
+/**
+ * See if this transformation ever changes the first note it takes in
+ * @return 
+ */
 public boolean changesFirstNote()
 {
     if(numSourceNotes() > 1 && sourceNotes.first().equals(targetNotes.first()))
         return false;
     return true;
 }
-
+/**
+ * See if the transformation ever changes the last note it takes in
+ */
 public boolean changesLastNote()
 {
     if(numSourceNotes() > 1 && sourceNotes.last().equals(targetNotes.last()))
@@ -222,6 +278,10 @@ public boolean changesLastNote()
     return true;
 }
 
+/**
+ * 
+ * @return the number of notes the transformation attempts to transform
+ */
 public int numSourceNotes()
 {
     return sourceNotes.length();
@@ -256,11 +316,20 @@ public String getDescription()
     return description;
 }
 
+/**
+ * 
+ * @return whether the transformation has been changed since it was last saved.
+ */
 public boolean hasChanged()
 {
     return hasChanged;
 }
-
+/**
+ * See if this transformation has the same source-notes, guard-condition and
+ * target notes as another transformation
+ * @param ob        Other transformation
+ * @return 
+ */
 public boolean equals(Object ob)
 {
     if(!(ob instanceof Transformation))
@@ -275,6 +344,10 @@ public boolean equals(Object ob)
     return true;
 }
 
+/**
+ * String version of a transformation that could be used for debugging
+ * @return 
+ */
 public String toString()
 {
     StringBuilder buf = new StringBuilder();
@@ -285,6 +358,11 @@ public String toString()
     return buf.toString();
 }
 
+/**
+ * Writes a reader friendly version of this transform to a StringBuilder
+ * @param buf       StringBuilder to write to
+ * @param tabs      The String of tabs to add to the beginning of every line
+ */
 public void toFile(StringBuilder buf, String tabs)
 {
     if(tabs.length()>0)
@@ -304,8 +382,19 @@ public void toFile(StringBuilder buf, String tabs)
     printPrettyPolylist("", tabs+"\t", buf, printTargetNotes);
     buf.append(")");
 }
-    
-public void printPrettyPolylist(String leftSide, String tabs, StringBuilder buf, Polylist list)
+
+/**
+ * Helper function for toFile that writes polylists pretty and easy to read in
+ * transformation form. 
+ * @param leftSide
+ * @param tabs
+ * @param buf
+ * @param list 
+ */
+public void printPrettyPolylist(String leftSide, 
+                                String tabs, 
+                                StringBuilder buf, 
+                                Polylist list)
 {
     Object first = list.first();
     String newLeftSide = "(" + first.toString();

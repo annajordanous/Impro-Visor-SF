@@ -30,7 +30,8 @@ import imp.gui.Notate;
 import polya.*;
 import java.util.*;
 /**
- *
+ * Holds an entire grammar for a transform
+ * 
  * @author Alex Putman
  */
 public class Transform 
@@ -41,6 +42,9 @@ public ArrayList<Substitution> substitutions;
 public boolean debug;
 public boolean hasChanged;
 
+/**
+ * Create an empty transform
+ */
 public Transform()
 {
     debug = false;
@@ -48,6 +52,10 @@ public Transform()
     substitutions = new ArrayList<Substitution>();
 }
 
+/**
+ * Create a transform from a string containing a transformational grammar
+ * @param subs                  String containing the grammar
+ */
 public Transform(String subs)
 {
     debug = false;
@@ -66,7 +74,13 @@ public Transform(String subs)
     }
 }
 
-public MelodyPart applySubstitutionsToMelodyPart(MelodyPart melody, ChordPart chords, Notate notate)
+/**
+ * Applies the substitutions randomly by weight to a melody
+ * @param melody        Melody to apply substitutions to
+ * @param chords        ChordPart of the melody
+ * @return the transformed melody
+ */
+public MelodyPart applySubstitutionsToMelodyPart(MelodyPart melody, ChordPart chords)
 {
     startingNotes = melody.copy();
     
@@ -100,6 +114,13 @@ public MelodyPart applySubstitutionsToMelodyPart(MelodyPart melody, ChordPart ch
     return transMelody;
 }
 
+/**
+ * Apply a certain arraylist of substitutions to a melody
+ * @param substitutions         substitutions to apply
+ * @param transNotes            melody to transform
+ * @param chords                chordPart of transNotes
+ * @return                      transformed melody
+ */
 private MelodyPart applySubstitutionType(ArrayList<Substitution> substitutions, 
                                          MelodyPart transNotes, 
                                          ChordPart chords)
@@ -111,14 +132,21 @@ private MelodyPart applySubstitutionType(ArrayList<Substitution> substitutions,
     int[] startingSlot = new int[1];
     startingSlot[0] = 0;
     
+    // go through each index, trying to apply the substitutions at the slot.
+    // if a substitution is applied, change the index to the end of the applied
+    // melody, if not, just go to the next note. 
     while(transNotes.size() > transNotes.getNextIndex(startingSlot[0]-1))
     {
         if(debug)
         {
-            System.out.println("\tYet to parse: " + transNotes.extract(startingSlot[0], transNotes.getSize())
-                + "\n\tSubstituted: " + subbedMP.extract(0, startingSlot[0] - 1));
+            System.out.println("\tYet to parse: " + 
+                               transNotes.extract(startingSlot[0], 
+                                                  transNotes.getSize()) +
+                               "\n\tSubstituted: " + 
+                               subbedMP.extract(0, startingSlot[0] - 1));
         }
         
+        // sort the substitutions by weight randomly
         ArrayList<Substitution> full = new ArrayList<Substitution>();
         for(Substitution sub : substitutions)
         {
@@ -142,6 +170,9 @@ private MelodyPart applySubstitutionType(ArrayList<Substitution> substitutions,
             full.removeAll(Collections.singleton(sub));
         } while(!full.isEmpty());
         
+        // go throught each substitution. If it can be applied at the starting 
+        // slot, use that substitution, if not move onto the next.
+        
         MelodyPart substituted = null;
         int initSlot = startingSlot[0];
         for(Substitution sub: sortedSubs)
@@ -160,6 +191,8 @@ private MelodyPart applySubstitutionType(ArrayList<Substitution> substitutions,
                 System.out.println("");
             }
         }
+        // if no substitution worked, just keep the note at the starting index 
+        // as is and try to apply to the next note. 
         if(substituted == null)
         {
             Note addNote = transNotes.getNote(initSlot);
@@ -176,6 +209,11 @@ private MelodyPart applySubstitutionType(ArrayList<Substitution> substitutions,
     return transNotes;
 }
 
+/**
+ * Find substitutions that have the same type and transformations, and delete
+ * all but one, adding all of their weights together. Basically just combines
+ * all substitutions that do the same thing. 
+ */
 public void findDuplicatesAndAddToWeight()
 {
     for(int i = 0; i < substitutions.size(); i++)
@@ -195,6 +233,10 @@ public void findDuplicatesAndAddToWeight()
     }
 }
 
+/**
+ * get the total of adding all the weights of the substitutions of type motif
+ * @return 
+ */
 public int getTotalMotifWeight()
 {
     int totalWeight = 0;
@@ -205,6 +247,11 @@ public int getTotalMotifWeight()
     }
     return totalWeight;
 }
+/**
+ * get the total of adding all the weights of the substitutions of type
+ * embellishment
+ * @return 
+ */
 public int getTotalEmbWeight()
 {
     int totalWeight = 0;
@@ -215,6 +262,12 @@ public int getTotalEmbWeight()
     }
     return totalWeight;
 }
+
+/**
+ * scale all of the weights of substitutions in this transform that are of type
+ * motif
+ * @param scale     double to multiply all motif weights by
+ */
 public void scaleMotifWeights(double scale)
 {
     if(scale != 1.0)
@@ -228,6 +281,12 @@ public void scaleMotifWeights(double scale)
         }
     }
 }
+
+/**
+ * scale all of the weights of substitutions in this transform that are of type
+ * embellishment
+ * @param scale     double to multiply all motif weights by
+ */
 public void scaleEmbWeights(double scale)
 {
     if(scale != 1.0)
@@ -242,6 +301,11 @@ public void scaleEmbWeights(double scale)
     }
 }
 
+/**
+ * Turns a melody into Polylist of notes in the melody
+ * @param melody
+ * @return 
+ */
 public Polylist melodyPartToNoteList(MelodyPart melody)
 {
     int slotvalue = 0;
@@ -255,11 +319,19 @@ public Polylist melodyPartToNoteList(MelodyPart melody)
     return nList;
 }
 
+/**
+ *
+ * @return the original melody that was transformed
+ */
 public MelodyPart getOriginalMelodyPart()
 {
     return startingNotes;
 }
 
+/**
+ * Prints a reader friendly string version of the transform to a string builder
+ * @param buf   StringBuilder to write to.
+ */
 public void toFile(StringBuilder buf)
 {
     for(Substitution sub: substitutions)
@@ -269,6 +341,9 @@ public void toFile(StringBuilder buf)
     }
 }
 
+/**
+ * add a blank substitution to the current transform
+ */
 public Substitution addNewSubstitution()
 {
     Substitution newSub = new Substitution();
@@ -277,6 +352,10 @@ public Substitution addNewSubstitution()
     return newSub;
 }
 
+/**
+ * detect if the current transform has changed since last saved.
+ * @return 
+ */
 public boolean hasChanged()
 {
     if(hasChanged)
