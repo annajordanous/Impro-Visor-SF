@@ -37,14 +37,17 @@ public class NoteConverter {
 
     private static final int octave = 12; //number of semitones in an octave
     private static final int rootOffset = 60; //middle C (the MIDI number for middle C is 60, +- n for +- n semitones) for now
-    /*chord families: minor, minor7, major, dominant, half-diminished, diminished, augmented
-    create arrays for each chord family that store the scale degree corresponding to each number of half steps
-    Note: I tried to give each scale degree a name that was logical and/or corresponded to common practice.
-    For some pitches (#5 or b13?  2 or 9, 4 or 11, 6 or 13?) there was more ambiguity.  Some scales (e.g. diminished, augmented)
-    also caused weirdness by virtue of how their accidentals are arranged.  Thus, there was definitely room for interpretation.
-    However, this nomenclature system should be consistent and thus suitable for its primary use, 
-    which is internal (grammar learning with bricks, transformational grammars).
-    Further explanatory comments provided as needed.*/
+    
+//    chord families: minor, minor7, major, dominant, half-diminished, diminished, augmented
+//    create arrays for each chord family that store the scale degree corresponding to each number of half steps
+ 
+//    Note: I tried to give each scale degree a name that was logical and/or corresponded to common practice.
+//    It was less clear, however, to name some pitches (#5 or b13?  2 or 9, 4 or 11, 6 or 13?).
+//    Some scales (e.g. diminished, augmented), by virtue of how their accidentals are arranged, also were strange.
+//    Thus, there was definitely room for interpretation.
+//    However, this nomenclature system should be consistent and thus suitable for its primary use, which is internal.
+//    Further explanatory comments provided as needed.
+    
     //minor (i.e. melodic minor)
     private static final String[] minorScaleDegrees = {"1", "b2", "2", "3", "#3", "4", "b5", "5", "b6", "6", "b7", "7"};
     //minor 7 (i.e. Dorian)
@@ -61,7 +64,7 @@ public class NoteConverter {
     //so also, nine half steps becomes a seventh
     private static final String[] dimScaleDegrees = {"1", "b2", "2", "3", "#3", "4", "b5", "5", "6", "7", "#7", "b8"};
     //augmented (e.g. major#5)
-    //here, seven half steps is called a b5 (because it's flat relative to the augmented fifth) even though the interval is a perfect fifth
+    //here, 7 half steps is called a b5 (because it's flat relative to the augmented fifth) even though the interval is a perfect fifth
     private static final String[] augScaleDegrees = {"1", "b2", "2", "b3", "3", "4", "#4", "b5", "5", "6", "b7", "7"};
 
     /**
@@ -576,7 +579,6 @@ public class NoteConverter {
                     String temp = tempString.first().toString();
                     strbuf.append(temp);
                     strbuf.append(" ");
-                    //System.out.println(strbuf.toString());
                     tempString = tempString.rest();
                     if (temp.charAt(0) != 'R') {
                         j++;

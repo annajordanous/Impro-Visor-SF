@@ -59,7 +59,6 @@ public class LickgenFrame
         extends javax.swing.JFrame
         implements imp.Constants {
 
-    private boolean useWindows; //TO BE PHASED OUT
     private int themeLength = 8;
     private double themeProb = 0.4;
     private double transposeProb = 0.5;
@@ -218,8 +217,7 @@ public class LickgenFrame
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
         generatorPane = new javax.swing.JTabbedPane();
@@ -347,7 +345,7 @@ public class LickgenFrame
         useWindowsCheckbox = new javax.swing.JCheckBox();
         useRelativeBricksCheckbox = new javax.swing.JCheckBox();
         useAbstractBricksCheckbox = new javax.swing.JCheckBox();
-        useAbstracWindowsCheckbox = new javax.swing.JCheckBox();
+        useAbstractWindowsCheckbox = new javax.swing.JCheckBox();
         loadBaseGrammarBtn = new javax.swing.JButton();
         saveGrammarAsButton = new javax.swing.JButton();
         openCorpusBtn = new javax.swing.JButton();
@@ -431,10 +429,8 @@ public class LickgenFrame
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Lick Generator Controls");
         setMinimumSize(new java.awt.Dimension(1000, 800));
-        addWindowListener(new java.awt.event.WindowAdapter()
-        {
-            public void windowClosed(java.awt.event.WindowEvent evt)
-            {
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
                 closeWindow(evt);
             }
         });
@@ -493,10 +489,8 @@ public class LickgenFrame
         generateLickButton.setMaximumSize(new java.awt.Dimension(135, 29));
         generateLickButton.setMinimumSize(new java.awt.Dimension(135, 29));
         generateLickButton.setPreferredSize(new java.awt.Dimension(135, 29));
-        generateLickButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        generateLickButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 generateLickButtonActionPerformed(evt);
             }
         });
@@ -510,10 +504,8 @@ public class LickgenFrame
 
         genRhythmButton.setText("Generate Abstract Melody Only");
         genRhythmButton.setToolTipText("Generate the rhythm pattern for a lick, without the actual notes.");
-        genRhythmButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        genRhythmButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 genRhythmButtonActionPerformed(evt);
             }
         });
@@ -527,10 +519,8 @@ public class LickgenFrame
 
         fillMelodyButton.setText("Fill Abstract Melody");
         fillMelodyButton.setToolTipText("Fill the notes for the given pattern.");
-        fillMelodyButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        fillMelodyButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fillMelodyButtonActionPerformed(evt);
             }
         });
@@ -544,10 +534,8 @@ public class LickgenFrame
 
         getAbstractMelodyButton.setText("Extract Abstract Melody");
         getAbstractMelodyButton.setToolTipText("Extract the rhythm from the leadsheet.");
-        getAbstractMelodyButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        getAbstractMelodyButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 getAbstractMelodyButtonActionPerformed(evt);
             }
         });
@@ -561,10 +549,8 @@ public class LickgenFrame
 
         getSelRhythmButton.setText("Extract Rhythm");
         getSelRhythmButton.setToolTipText("Extract the rhythm from the leadsheet.");
-        getSelRhythmButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        getSelRhythmButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 getSelRhythmButtonActionPerformed(evt);
             }
         });
@@ -578,10 +564,8 @@ public class LickgenFrame
 
         playLickButton.setText("Play");
         playLickButton.setToolTipText("Play the lick again.");
-        playLickButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        playLickButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 playLickButtonActionPerformed(evt);
             }
         });
@@ -594,10 +578,8 @@ public class LickgenFrame
 
         stopLickButton.setText("Stop");
         stopLickButton.setToolTipText("Stop playing.");
-        stopLickButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        stopLickButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 stopLickButtonActionPerformed(evt);
             }
         });
@@ -610,10 +592,8 @@ public class LickgenFrame
 
         saveLickButton.setText("Save");
         saveLickButton.setToolTipText("Save the lick in the vocabulary.");
-        saveLickButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        saveLickButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveLickButtonActionPerformed(evt);
             }
         });
@@ -669,28 +649,21 @@ public class LickgenFrame
         maxPitchField.setToolTipText("The maximum pitch in a generated lick.");
         maxPitchField.setMinimumSize(new java.awt.Dimension(60, 24));
         maxPitchField.setPreferredSize(new java.awt.Dimension(60, 24));
-        maxPitchField.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        maxPitchField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 maxPitchFieldActionPerformed(evt);
             }
         });
-        maxPitchField.addFocusListener(new java.awt.event.FocusAdapter()
-        {
-            public void focusGained(java.awt.event.FocusEvent evt)
-            {
+        maxPitchField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
                 maxPitchFieldGetsFocus(evt);
             }
-            public void focusLost(java.awt.event.FocusEvent evt)
-            {
+            public void focusLost(java.awt.event.FocusEvent evt) {
                 maxPitchFieldFocusLost(evt);
             }
         });
-        maxPitchField.addKeyListener(new java.awt.event.KeyAdapter()
-        {
-            public void keyPressed(java.awt.event.KeyEvent evt)
-            {
+        maxPitchField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
                 maxPitchFieldenterLickKeyPressed(evt);
             }
         });
@@ -720,28 +693,21 @@ public class LickgenFrame
         minPitchField.setToolTipText("The minimum pitch in a generated lick.");
         minPitchField.setMinimumSize(new java.awt.Dimension(60, 24));
         minPitchField.setPreferredSize(new java.awt.Dimension(60, 24));
-        minPitchField.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        minPitchField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 minPitchFieldActionPerformed(evt);
             }
         });
-        minPitchField.addFocusListener(new java.awt.event.FocusAdapter()
-        {
-            public void focusGained(java.awt.event.FocusEvent evt)
-            {
+        minPitchField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
                 minPitchFieldGetsFocus(evt);
             }
-            public void focusLost(java.awt.event.FocusEvent evt)
-            {
+            public void focusLost(java.awt.event.FocusEvent evt) {
                 minPitchFieldFocusLost(evt);
             }
         });
-        minPitchField.addKeyListener(new java.awt.event.KeyAdapter()
-        {
-            public void keyPressed(java.awt.event.KeyEvent evt)
-            {
+        minPitchField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
                 minPitchFieldenterLickKeyPressed(evt);
             }
         });
@@ -770,28 +736,21 @@ public class LickgenFrame
         minIntervalField.setToolTipText("The minimum interval from one note to the next, if not a leap.");
         minIntervalField.setMinimumSize(new java.awt.Dimension(60, 24));
         minIntervalField.setPreferredSize(new java.awt.Dimension(60, 24));
-        minIntervalField.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        minIntervalField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 minIntervalFieldActionPerformed(evt);
             }
         });
-        minIntervalField.addFocusListener(new java.awt.event.FocusAdapter()
-        {
-            public void focusGained(java.awt.event.FocusEvent evt)
-            {
+        minIntervalField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
                 minIntervalFieldGetsFocus(evt);
             }
-            public void focusLost(java.awt.event.FocusEvent evt)
-            {
+            public void focusLost(java.awt.event.FocusEvent evt) {
                 minIntervalFieldFocusLost(evt);
             }
         });
-        minIntervalField.addKeyListener(new java.awt.event.KeyAdapter()
-        {
-            public void keyPressed(java.awt.event.KeyEvent evt)
-            {
+        minIntervalField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
                 minIntervalFieldenterLickKeyPressed(evt);
             }
         });
@@ -808,28 +767,21 @@ public class LickgenFrame
         maxIntervalField.setToolTipText("The maximum interval from one note to the next, if not a leap.");
         maxIntervalField.setMinimumSize(new java.awt.Dimension(60, 24));
         maxIntervalField.setPreferredSize(new java.awt.Dimension(60, 24));
-        maxIntervalField.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        maxIntervalField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 maxIntervalFieldActionPerformed(evt);
             }
         });
-        maxIntervalField.addFocusListener(new java.awt.event.FocusAdapter()
-        {
-            public void focusGained(java.awt.event.FocusEvent evt)
-            {
+        maxIntervalField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
                 maxIntervalFieldGetsFocus(evt);
             }
-            public void focusLost(java.awt.event.FocusEvent evt)
-            {
+            public void focusLost(java.awt.event.FocusEvent evt) {
                 maxIntervalFieldFocusLost(evt);
             }
         });
-        maxIntervalField.addKeyListener(new java.awt.event.KeyAdapter()
-        {
-            public void keyPressed(java.awt.event.KeyEvent evt)
-            {
+        maxIntervalField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
                 maxIntervalFieldenterLickKeyPressed(evt);
             }
         });
@@ -859,28 +811,21 @@ public class LickgenFrame
         minDurationField.setEnabled(false);
         minDurationField.setMinimumSize(new java.awt.Dimension(60, 24));
         minDurationField.setPreferredSize(new java.awt.Dimension(60, 24));
-        minDurationField.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        minDurationField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 minDurationFieldActionPerformed(evt);
             }
         });
-        minDurationField.addFocusListener(new java.awt.event.FocusAdapter()
-        {
-            public void focusGained(java.awt.event.FocusEvent evt)
-            {
+        minDurationField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
                 minDurationFieldGetsFocus(evt);
             }
-            public void focusLost(java.awt.event.FocusEvent evt)
-            {
+            public void focusLost(java.awt.event.FocusEvent evt) {
                 minDurationFieldFocusLost(evt);
             }
         });
-        minDurationField.addKeyListener(new java.awt.event.KeyAdapter()
-        {
-            public void keyPressed(java.awt.event.KeyEvent evt)
-            {
+        minDurationField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
                 minDurationFieldenterLickKeyPressed(evt);
             }
         });
@@ -898,28 +843,21 @@ public class LickgenFrame
         maxDurationField.setEnabled(false);
         maxDurationField.setMinimumSize(new java.awt.Dimension(60, 24));
         maxDurationField.setPreferredSize(new java.awt.Dimension(60, 24));
-        maxDurationField.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        maxDurationField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 maxDurationFieldActionPerformed(evt);
             }
         });
-        maxDurationField.addFocusListener(new java.awt.event.FocusAdapter()
-        {
-            public void focusGained(java.awt.event.FocusEvent evt)
-            {
+        maxDurationField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
                 maxDurationFieldGetsFocus(evt);
             }
-            public void focusLost(java.awt.event.FocusEvent evt)
-            {
+            public void focusLost(java.awt.event.FocusEvent evt) {
                 maxDurationFieldFocusLost(evt);
             }
         });
-        maxDurationField.addKeyListener(new java.awt.event.KeyAdapter()
-        {
-            public void keyPressed(java.awt.event.KeyEvent evt)
-            {
+        maxDurationField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
                 maxDurationFieldenterLickKeyPressed(evt);
             }
         });
@@ -935,28 +873,21 @@ public class LickgenFrame
         totalBeatsField.setToolTipText("The number of beats in the lick.");
         totalBeatsField.setMinimumSize(new java.awt.Dimension(60, 24));
         totalBeatsField.setPreferredSize(new java.awt.Dimension(60, 24));
-        totalBeatsField.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        totalBeatsField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 totalBeatsFieldActionPerformed(evt);
             }
         });
-        totalBeatsField.addFocusListener(new java.awt.event.FocusAdapter()
-        {
-            public void focusGained(java.awt.event.FocusEvent evt)
-            {
+        totalBeatsField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
                 totalBeatsFieldGetsFocus(evt);
             }
-            public void focusLost(java.awt.event.FocusEvent evt)
-            {
+            public void focusLost(java.awt.event.FocusEvent evt) {
                 totalBeatsFieldFocusLost(evt);
             }
         });
-        totalBeatsField.addKeyListener(new java.awt.event.KeyAdapter()
-        {
-            public void keyPressed(java.awt.event.KeyEvent evt)
-            {
+        totalBeatsField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
                 totalBeatsFieldenterLickKeyPressed(evt);
             }
         });
@@ -1003,28 +934,21 @@ public class LickgenFrame
         restProbField.setEnabled(false);
         restProbField.setMinimumSize(new java.awt.Dimension(60, 24));
         restProbField.setPreferredSize(new java.awt.Dimension(60, 24));
-        restProbField.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        restProbField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 restProbFieldActionPerformed(evt);
             }
         });
-        restProbField.addFocusListener(new java.awt.event.FocusAdapter()
-        {
-            public void focusGained(java.awt.event.FocusEvent evt)
-            {
+        restProbField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
                 restProbFieldGetsFocus(evt);
             }
-            public void focusLost(java.awt.event.FocusEvent evt)
-            {
+            public void focusLost(java.awt.event.FocusEvent evt) {
                 restProbFieldFocusLost(evt);
             }
         });
-        restProbField.addKeyListener(new java.awt.event.KeyAdapter()
-        {
-            public void keyPressed(java.awt.event.KeyEvent evt)
-            {
+        restProbField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
                 restProbFieldenterLickKeyPressed(evt);
             }
         });
@@ -1052,17 +976,13 @@ public class LickgenFrame
         leapProbField.setMaximumSize(new java.awt.Dimension(60, 2147483647));
         leapProbField.setMinimumSize(new java.awt.Dimension(60, 24));
         leapProbField.setPreferredSize(new java.awt.Dimension(60, 24));
-        leapProbField.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        leapProbField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 leapProbFieldActionPerformed(evt);
             }
         });
-        leapProbField.addFocusListener(new java.awt.event.FocusAdapter()
-        {
-            public void focusLost(java.awt.event.FocusEvent evt)
-            {
+        leapProbField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
                 leapProbFieldFocusLost(evt);
             }
         });
@@ -1079,10 +999,8 @@ public class LickgenFrame
         avoidRepeatsCheckbox.setMaximumSize(new java.awt.Dimension(220, 22));
         avoidRepeatsCheckbox.setMinimumSize(new java.awt.Dimension(220, 22));
         avoidRepeatsCheckbox.setPreferredSize(new java.awt.Dimension(220, 22));
-        avoidRepeatsCheckbox.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        avoidRepeatsCheckbox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 avoidRepeatsCheckboxActionPerformed(evt);
             }
         });
@@ -1099,10 +1017,8 @@ public class LickgenFrame
         recurrentCheckbox.setMaximumSize(new java.awt.Dimension(150, 23));
         recurrentCheckbox.setMinimumSize(new java.awt.Dimension(150, 23));
         recurrentCheckbox.setPreferredSize(new java.awt.Dimension(150, 23));
-        recurrentCheckbox.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        recurrentCheckbox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 recurrentCheckboxActionPerformed(evt);
             }
         });
@@ -1139,10 +1055,8 @@ public class LickgenFrame
         gapField.setMaximumSize(new java.awt.Dimension(45, 24));
         gapField.setMinimumSize(new java.awt.Dimension(45, 24));
         gapField.setPreferredSize(new java.awt.Dimension(45, 24));
-        gapField.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        gapField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 gapFieldActionPerformed(evt);
             }
         });
@@ -1160,10 +1074,8 @@ public class LickgenFrame
         rectifyCheckBox.setMaximumSize(new java.awt.Dimension(160, 23));
         rectifyCheckBox.setMinimumSize(new java.awt.Dimension(160, 23));
         rectifyCheckBox.setPreferredSize(new java.awt.Dimension(160, 23));
-        rectifyCheckBox.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        rectifyCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rectifyCheckBoxActionPerformed(evt);
             }
         });
@@ -1179,10 +1091,8 @@ public class LickgenFrame
         useSoloistCheckBox.setMaximumSize(new java.awt.Dimension(150, 23));
         useSoloistCheckBox.setMinimumSize(new java.awt.Dimension(150, 23));
         useSoloistCheckBox.setPreferredSize(new java.awt.Dimension(150, 23));
-        useSoloistCheckBox.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        useSoloistCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 useSoloistCheckBoxActionPerformed(evt);
             }
         });
@@ -1207,10 +1117,8 @@ public class LickgenFrame
         regenerateHeadDataBtn.setMaximumSize(new java.awt.Dimension(180, 29));
         regenerateHeadDataBtn.setMinimumSize(new java.awt.Dimension(180, 29));
         regenerateHeadDataBtn.setPreferredSize(new java.awt.Dimension(180, 29));
-        regenerateHeadDataBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        regenerateHeadDataBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 regenerateHeadDataBtnActionPerformed(evt);
             }
         });
@@ -1226,10 +1134,8 @@ public class LickgenFrame
         continuallyGenerateCheckBox.setSelected(true);
         continuallyGenerateCheckBox.setText("Continually Generate ");
         continuallyGenerateCheckBox.setToolTipText("After grading, continually generate new licks.");
-        continuallyGenerateCheckBox.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        continuallyGenerateCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 continuallyGenerateCheckBoxActionPerformed(evt);
             }
         });
@@ -1243,10 +1149,8 @@ public class LickgenFrame
 
         generationSelectionButton.setText("Size of Selection");
         generationSelectionButton.setToolTipText("Lock the selection for lick generation.");
-        generationSelectionButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        generationSelectionButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 generationSelectionButtonActionPerformed(evt);
             }
         });
@@ -1257,10 +1161,8 @@ public class LickgenFrame
 
         styleRecognitionButton.setText("Prepare Critics");
         styleRecognitionButton.setToolTipText("Attempts to guess the musician of the selection based off parellel trained networks.");
-        styleRecognitionButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        styleRecognitionButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 styleRecognitionButtonActionPerformed(evt);
             }
         });
@@ -1324,17 +1226,13 @@ public class LickgenFrame
         chordToneWeightField.setToolTipText("The amount of weight to give to chord tones (vs. scale or color tones).");
         chordToneWeightField.setMinimumSize(new java.awt.Dimension(40, 24));
         chordToneWeightField.setPreferredSize(new java.awt.Dimension(40, 24));
-        chordToneWeightField.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        chordToneWeightField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 chordToneWeightFieldActionPerformed(evt);
             }
         });
-        chordToneWeightField.addFocusListener(new java.awt.event.FocusAdapter()
-        {
-            public void focusLost(java.awt.event.FocusEvent evt)
-            {
+        chordToneWeightField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
                 chordToneWeightFieldFocusLost(evt);
             }
         });
@@ -1347,17 +1245,13 @@ public class LickgenFrame
         colorToneWeightField.setToolTipText("The amount of weight to give to color tones (vs. chord or scale tones).");
         colorToneWeightField.setMinimumSize(new java.awt.Dimension(40, 24));
         colorToneWeightField.setPreferredSize(new java.awt.Dimension(40, 24));
-        colorToneWeightField.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        colorToneWeightField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 colorToneWeightFieldActionPerformed(evt);
             }
         });
-        colorToneWeightField.addFocusListener(new java.awt.event.FocusAdapter()
-        {
-            public void focusLost(java.awt.event.FocusEvent evt)
-            {
+        colorToneWeightField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
                 colorToneWeightFieldFocusLost(evt);
             }
         });
@@ -1370,17 +1264,13 @@ public class LickgenFrame
         scaleToneWeightField.setToolTipText("The amount of weight to give to scale tones (vs. chord or color tones).");
         scaleToneWeightField.setMinimumSize(new java.awt.Dimension(40, 24));
         scaleToneWeightField.setPreferredSize(new java.awt.Dimension(40, 24));
-        scaleToneWeightField.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        scaleToneWeightField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 scaleToneWeightFieldActionPerformed(evt);
             }
         });
-        scaleToneWeightField.addFocusListener(new java.awt.event.FocusAdapter()
-        {
-            public void focusLost(java.awt.event.FocusEvent evt)
-            {
+        scaleToneWeightField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
                 scaleToneWeightFieldFocusLost(evt);
             }
         });
@@ -1393,17 +1283,13 @@ public class LickgenFrame
         chordToneDecayField.setToolTipText("Decrease chord tone probability by this amount for each tone.");
         chordToneDecayField.setMinimumSize(new java.awt.Dimension(40, 24));
         chordToneDecayField.setPreferredSize(new java.awt.Dimension(40, 24));
-        chordToneDecayField.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        chordToneDecayField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 chordToneDecayFieldActionPerformed(evt);
             }
         });
-        chordToneDecayField.addFocusListener(new java.awt.event.FocusAdapter()
-        {
-            public void focusLost(java.awt.event.FocusEvent evt)
-            {
+        chordToneDecayField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
                 chordToneDecayFieldFocusLost(evt);
             }
         });
@@ -1444,10 +1330,8 @@ public class LickgenFrame
         scaleChoicePanel.add(typeLabel, gridBagConstraints);
 
         scaleComboBox.setToolTipText("The type of scale to use in scale tones. The default is the first scale associated with the chord.\n");
-        scaleComboBox.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        scaleComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 scaleComboBoxActionPerformed(evt);
             }
         });
@@ -1468,10 +1352,8 @@ public class LickgenFrame
         scaleChoicePanel.add(rootLabel, gridBagConstraints);
 
         rootComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "C", "C#/Db", "D", "D#/Eb", "E", "F", "F#", "Gb", "G", "G#/Ab", "A", "A#/Bb", "B" }));
-        rootComboBox.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        rootComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rootComboBoxActionPerformed(evt);
             }
         });
@@ -1552,10 +1434,8 @@ public class LickgenFrame
         grade1Btn.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         grade1Btn.setMargin(new java.awt.Insets(2, 2, 2, 2));
         grade1Btn.setPreferredSize(new java.awt.Dimension(23, 21));
-        grade1Btn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        grade1Btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 grade1BtnActionPerformed(evt);
             }
         });
@@ -1569,10 +1449,8 @@ public class LickgenFrame
         grade2Btn.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         grade2Btn.setMargin(new java.awt.Insets(2, 2, 2, 2));
         grade2Btn.setPreferredSize(new java.awt.Dimension(23, 21));
-        grade2Btn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        grade2Btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 grade2BtnActionPerformed(evt);
             }
         });
@@ -1585,10 +1463,8 @@ public class LickgenFrame
         grade3Btn.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         grade3Btn.setMargin(new java.awt.Insets(2, 2, 2, 2));
         grade3Btn.setPreferredSize(new java.awt.Dimension(23, 21));
-        grade3Btn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        grade3Btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 grade3BtnActionPerformed(evt);
             }
         });
@@ -1601,10 +1477,8 @@ public class LickgenFrame
         grade4Btn.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         grade4Btn.setMargin(new java.awt.Insets(2, 2, 2, 2));
         grade4Btn.setPreferredSize(new java.awt.Dimension(23, 21));
-        grade4Btn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        grade4Btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 grade4BtnActionPerformed(evt);
             }
         });
@@ -1617,10 +1491,8 @@ public class LickgenFrame
         grade5Btn.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         grade5Btn.setMargin(new java.awt.Insets(2, 2, 2, 2));
         grade5Btn.setPreferredSize(new java.awt.Dimension(23, 21));
-        grade5Btn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        grade5Btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 grade5BtnActionPerformed(evt);
             }
         });
@@ -1633,10 +1505,8 @@ public class LickgenFrame
         grade6Btn.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         grade6Btn.setMargin(new java.awt.Insets(2, 2, 2, 2));
         grade6Btn.setPreferredSize(new java.awt.Dimension(23, 21));
-        grade6Btn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        grade6Btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 grade6BtnActionPerformed(evt);
             }
         });
@@ -1649,10 +1519,8 @@ public class LickgenFrame
         grade7Btn.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         grade7Btn.setMargin(new java.awt.Insets(2, 2, 2, 2));
         grade7Btn.setPreferredSize(new java.awt.Dimension(23, 21));
-        grade7Btn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        grade7Btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 grade7BtnActionPerformed(evt);
             }
         });
@@ -1665,10 +1533,8 @@ public class LickgenFrame
         grade8Btn.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         grade8Btn.setMargin(new java.awt.Insets(2, 2, 2, 2));
         grade8Btn.setPreferredSize(new java.awt.Dimension(23, 21));
-        grade8Btn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        grade8Btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 grade8BtnActionPerformed(evt);
             }
         });
@@ -1681,10 +1547,8 @@ public class LickgenFrame
         grade9Btn.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         grade9Btn.setMargin(new java.awt.Insets(2, 2, 2, 2));
         grade9Btn.setPreferredSize(new java.awt.Dimension(23, 21));
-        grade9Btn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        grade9Btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 grade9BtnActionPerformed(evt);
             }
         });
@@ -1697,10 +1561,8 @@ public class LickgenFrame
         grade10Btn.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         grade10Btn.setMargin(new java.awt.Insets(2, 2, 2, 2));
         grade10Btn.setPreferredSize(new java.awt.Dimension(23, 21));
-        grade10Btn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        grade10Btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 grade10BtnActionPerformed(evt);
             }
         });
@@ -1713,10 +1575,8 @@ public class LickgenFrame
         gradeBadBtn.setText("Bad");
         gradeBadBtn.setToolTipText("Grade for a bad jazz lick.");
         gradeBadBtn.setVisible(false);
-        gradeBadBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        gradeBadBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 gradeBadBtnActionPerformed(evt);
             }
         });
@@ -1729,10 +1589,8 @@ public class LickgenFrame
         gradeAverageBtn.setText("Average");
         gradeAverageBtn.setToolTipText("Grade for an average jazz lick.");
         gradeAverageBtn.setVisible(false);
-        gradeAverageBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        gradeAverageBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 gradeAverageBtnActionPerformed(evt);
             }
         });
@@ -1745,10 +1603,8 @@ public class LickgenFrame
         gradeGoodBtn.setText("Good");
         gradeGoodBtn.setToolTipText("Grade for a good jazz lick.");
         gradeGoodBtn.setVisible(false);
-        gradeGoodBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        gradeGoodBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 gradeGoodBtnActionPerformed(evt);
             }
         });
@@ -1772,10 +1628,8 @@ public class LickgenFrame
 
         clearProbsButton.setToolTipText("Clear all pitch probabilities.");
         clearProbsButton.setLabel("Clear All Probabilities");
-        clearProbsButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        clearProbsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 clearProbsButtonActionPerformed(evt);
             }
         });
@@ -1790,10 +1644,8 @@ public class LickgenFrame
 
         FillProbsButton.setText("Fill");
         FillProbsButton.setToolTipText("Fill pitch probabilities from chords.\n");
-        FillProbsButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        FillProbsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 FillProbsButtonActionPerformed(evt);
             }
         });
@@ -1807,10 +1659,8 @@ public class LickgenFrame
 
         autoFillCheckBox.setSelected(true);
         autoFillCheckBox.setText("Auto-Fill");
-        autoFillCheckBox.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        autoFillCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 autoFillCheckBoxActionPerformed(evt);
             }
         });
@@ -1861,10 +1711,8 @@ public class LickgenFrame
 
         offsetByMeasureGradeSoloButton.setText("Offset By Measure");
         offsetByMeasureGradeSoloButton.setToolTipText("Moves the selection one measure forward. To be used with automated correction if there is an odd number of measures.");
-        offsetByMeasureGradeSoloButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        offsetByMeasureGradeSoloButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 offsetByMeasureGradeSoloButtonActionPerformed(evt);
             }
         });
@@ -1876,10 +1724,8 @@ public class LickgenFrame
 
         forwardGradeSoloButton.setText("Step Forward");
         forwardGradeSoloButton.setToolTipText("Move the selection two measures forward.");
-        forwardGradeSoloButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        forwardGradeSoloButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 forwardGradeSoloButtonActionPerformed(evt);
             }
         });
@@ -1891,10 +1737,8 @@ public class LickgenFrame
 
         backwardGradeSoloButton.setText("Step Backward");
         backwardGradeSoloButton.setToolTipText("Move the selection two measures back.");
-        backwardGradeSoloButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        backwardGradeSoloButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 backwardGradeSoloButtonActionPerformed(evt);
             }
         });
@@ -1906,10 +1750,8 @@ public class LickgenFrame
 
         resetSelectionButton.setText("Reset Selection");
         resetSelectionButton.setToolTipText("Undo a change.");
-        resetSelectionButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        resetSelectionButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 resetSelectionButtonActionPerformed(evt);
             }
         });
@@ -1924,10 +1766,8 @@ public class LickgenFrame
         gradeAllMeasuresButton.setMaximumSize(new java.awt.Dimension(117, 29));
         gradeAllMeasuresButton.setMinimumSize(new java.awt.Dimension(117, 29));
         gradeAllMeasuresButton.setPreferredSize(new java.awt.Dimension(117, 29));
-        gradeAllMeasuresButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        gradeAllMeasuresButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 gradeAllMeasuresButtonActionPerformed(evt);
             }
         });
@@ -1939,10 +1779,8 @@ public class LickgenFrame
 
         regenerateLickForSoloButton.setText("Generate Better Lick");
         regenerateLickForSoloButton.setToolTipText("Generate a lick that passes through the filter, with a grade that is high enough..");
-        regenerateLickForSoloButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        regenerateLickForSoloButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 regenerateLickForSoloButtonActionPerformed(evt);
             }
         });
@@ -1954,10 +1792,8 @@ public class LickgenFrame
 
         gradeLickFromStaveButton.setText("Grade Selected Lick");
         gradeLickFromStaveButton.setToolTipText("Use the critic to grade the current two measure selection.");
-        gradeLickFromStaveButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        gradeLickFromStaveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 gradeLickFromStaveButtonActionPerformed(evt);
             }
         });
@@ -1984,10 +1820,8 @@ public class LickgenFrame
         useCriticCheckBox.setMaximumSize(new java.awt.Dimension(110, 23));
         useCriticCheckBox.setMinimumSize(new java.awt.Dimension(110, 23));
         useCriticCheckBox.setPreferredSize(new java.awt.Dimension(110, 23));
-        useCriticCheckBox.addMouseListener(new java.awt.event.MouseAdapter()
-        {
-            public void mouseClicked(java.awt.event.MouseEvent evt)
-            {
+        useCriticCheckBox.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
                 useCriticCheckBoxMouseClicked(evt);
             }
         });
@@ -2004,14 +1838,11 @@ public class LickgenFrame
         criticGradeTextField.setEnabled(false);
         criticGradeTextField.setMinimumSize(new java.awt.Dimension(60, 24));
         criticGradeTextField.setPreferredSize(new java.awt.Dimension(60, 24));
-        criticGradeTextField.addFocusListener(new java.awt.event.FocusAdapter()
-        {
-            public void focusGained(java.awt.event.FocusEvent evt)
-            {
+        criticGradeTextField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
                 criticGradeTextFieldFocusGained(evt);
             }
-            public void focusLost(java.awt.event.FocusEvent evt)
-            {
+            public void focusLost(java.awt.event.FocusEvent evt) {
                 criticGradeTextFieldFocusLost(evt);
             }
         });
@@ -2057,10 +1888,8 @@ public class LickgenFrame
 
         loadRandomGrammarButton.setText("Load Random");
         loadRandomGrammarButton.setToolTipText("Loads the random grammar for lick generation.");
-        loadRandomGrammarButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        loadRandomGrammarButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 loadRandomGrammarButtonActionPerformed(evt);
             }
         });
@@ -2168,6 +1997,11 @@ public class LickgenFrame
         windowSizeField.setMaximumSize(null);
         windowSizeField.setMinimumSize(new java.awt.Dimension(90, 30));
         windowSizeField.setPreferredSize(new java.awt.Dimension(90, 30));
+        windowSizeField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                windowSizeFieldActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
@@ -2182,10 +2016,8 @@ public class LickgenFrame
         windowSlideField.setMaximumSize(null);
         windowSlideField.setMinimumSize(new java.awt.Dimension(90, 30));
         windowSlideField.setPreferredSize(new java.awt.Dimension(90, 30));
-        windowSlideField.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        windowSlideField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 windowSlideFieldActionPerformed(evt);
             }
         });
@@ -2204,10 +2036,8 @@ public class LickgenFrame
         useRelativeWindowsCheckbox.setMaximumSize(new java.awt.Dimension(9999, 9999));
         useRelativeWindowsCheckbox.setMinimumSize(new java.awt.Dimension(350, 30));
         useRelativeWindowsCheckbox.setPreferredSize(new java.awt.Dimension(400, 30));
-        useRelativeWindowsCheckbox.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        useRelativeWindowsCheckbox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 useRelativeWindowsCheckboxActionPerformed(evt);
             }
         });
@@ -2226,10 +2056,8 @@ public class LickgenFrame
         useBricksCheckbox.setMaximumSize(new java.awt.Dimension(9999, 9999));
         useBricksCheckbox.setMinimumSize(new java.awt.Dimension(150, 30));
         useBricksCheckbox.setPreferredSize(new java.awt.Dimension(150, 30));
-        useBricksCheckbox.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        useBricksCheckbox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 useBricksCheckboxActionPerformed(evt);
             }
         });
@@ -2263,10 +2091,8 @@ public class LickgenFrame
         useMarkovCheckbox.setMaximumSize(new java.awt.Dimension(9999, 9999));
         useMarkovCheckbox.setMinimumSize(new java.awt.Dimension(350, 30));
         useMarkovCheckbox.setPreferredSize(new java.awt.Dimension(400, 30));
-        useMarkovCheckbox.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        useMarkovCheckbox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 useMarkovCheckboxActionPerformed(evt);
             }
         });
@@ -2285,10 +2111,8 @@ public class LickgenFrame
         MarkovLengthField.setMaximumSize(new java.awt.Dimension(9999, 9999));
         MarkovLengthField.setMinimumSize(new java.awt.Dimension(100, 30));
         MarkovLengthField.setPreferredSize(new java.awt.Dimension(60, 30));
-        MarkovLengthField.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        MarkovLengthField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 MarkovLengthFieldActionPerformed(evt);
             }
         });
@@ -2321,10 +2145,8 @@ public class LickgenFrame
         useWindowsCheckbox.setMaximumSize(new java.awt.Dimension(9999, 9999));
         useWindowsCheckbox.setMinimumSize(new java.awt.Dimension(150, 30));
         useWindowsCheckbox.setPreferredSize(new java.awt.Dimension(150, 30));
-        useWindowsCheckbox.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        useWindowsCheckbox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 useWindowsCheckboxActionPerformed(evt);
             }
         });
@@ -2343,10 +2165,8 @@ public class LickgenFrame
         useRelativeBricksCheckbox.setMaximumSize(new java.awt.Dimension(9999, 9999));
         useRelativeBricksCheckbox.setMinimumSize(new java.awt.Dimension(350, 30));
         useRelativeBricksCheckbox.setPreferredSize(new java.awt.Dimension(400, 30));
-        useRelativeBricksCheckbox.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        useRelativeBricksCheckbox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 useRelativeBricksCheckboxActionPerformed(evt);
             }
         });
@@ -2365,10 +2185,8 @@ public class LickgenFrame
         useAbstractBricksCheckbox.setMaximumSize(new java.awt.Dimension(9999, 9999));
         useAbstractBricksCheckbox.setMinimumSize(new java.awt.Dimension(350, 30));
         useAbstractBricksCheckbox.setPreferredSize(new java.awt.Dimension(400, 30));
-        useAbstractBricksCheckbox.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        useAbstractBricksCheckbox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 useAbstractBricksCheckboxActionPerformed(evt);
             }
         });
@@ -2379,19 +2197,17 @@ public class LickgenFrame
         gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 0);
         windowParametersPanel.add(useAbstractBricksCheckbox, gridBagConstraints);
 
-        useAbstracWindowsCheckbox.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
-        useAbstracWindowsCheckbox.setSelected(true);
-        useAbstracWindowsCheckbox.setText("Use abstract pitches for windows");
-        useAbstracWindowsCheckbox.setToolTipText("Make productions use relative pitches");
-        useAbstracWindowsCheckbox.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        useAbstracWindowsCheckbox.setMaximumSize(new java.awt.Dimension(9999, 9999));
-        useAbstracWindowsCheckbox.setMinimumSize(new java.awt.Dimension(350, 30));
-        useAbstracWindowsCheckbox.setPreferredSize(new java.awt.Dimension(400, 30));
-        useAbstracWindowsCheckbox.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                useAbstracWindowsCheckboxActionPerformed(evt);
+        useAbstractWindowsCheckbox.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
+        useAbstractWindowsCheckbox.setSelected(true);
+        useAbstractWindowsCheckbox.setText("Use abstract pitches for windows");
+        useAbstractWindowsCheckbox.setToolTipText("Make productions use relative pitches");
+        useAbstractWindowsCheckbox.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        useAbstractWindowsCheckbox.setMaximumSize(new java.awt.Dimension(9999, 9999));
+        useAbstractWindowsCheckbox.setMinimumSize(new java.awt.Dimension(350, 30));
+        useAbstractWindowsCheckbox.setPreferredSize(new java.awt.Dimension(400, 30));
+        useAbstractWindowsCheckbox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                useAbstractWindowsCheckboxActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -2399,7 +2215,7 @@ public class LickgenFrame
         gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 0);
-        windowParametersPanel.add(useAbstracWindowsCheckbox, gridBagConstraints);
+        windowParametersPanel.add(useAbstractWindowsCheckbox, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -2418,10 +2234,8 @@ public class LickgenFrame
         loadBaseGrammarBtn.setMinimumSize(new java.awt.Dimension(105, 60));
         loadBaseGrammarBtn.setOpaque(true);
         loadBaseGrammarBtn.setPreferredSize(new java.awt.Dimension(173, 60));
-        loadBaseGrammarBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        loadBaseGrammarBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 loadBaseGrammarBtnActionPerformed(evt);
             }
         });
@@ -2441,10 +2255,8 @@ public class LickgenFrame
         saveGrammarAsButton.setMaximumSize(new java.awt.Dimension(9999, 9999));
         saveGrammarAsButton.setOpaque(true);
         saveGrammarAsButton.setPreferredSize(new java.awt.Dimension(173, 60));
-        saveGrammarAsButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        saveGrammarAsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveGrammarAsButtonActionPerformed(evt);
             }
         });
@@ -2466,10 +2278,8 @@ public class LickgenFrame
         openCorpusBtn.setMinimumSize(new java.awt.Dimension(240, 75));
         openCorpusBtn.setOpaque(true);
         openCorpusBtn.setPreferredSize(new java.awt.Dimension(240, 75));
-        openCorpusBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        openCorpusBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 openCorpusBtnActionPerformed(evt);
             }
         });
@@ -2490,10 +2300,8 @@ public class LickgenFrame
         toGrammarBtn.setMinimumSize(new java.awt.Dimension(240, 75));
         toGrammarBtn.setOpaque(true);
         toGrammarBtn.setPreferredSize(new java.awt.Dimension(240, 75));
-        toGrammarBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        toGrammarBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 toGrammarBtnActionPerformed(evt);
             }
         });
@@ -2532,10 +2340,8 @@ public class LickgenFrame
         testGeneration.setMinimumSize(new java.awt.Dimension(240, 29));
         testGeneration.setOpaque(true);
         testGeneration.setPreferredSize(new java.awt.Dimension(240, 29));
-        testGeneration.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        testGeneration.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 testGenerationActionPerformed(evt);
             }
         });
@@ -2558,10 +2364,8 @@ public class LickgenFrame
         generateSoloButton.setMaximumSize(new java.awt.Dimension(100, 30));
         generateSoloButton.setMinimumSize(new java.awt.Dimension(100, 30));
         generateSoloButton.setPreferredSize(new java.awt.Dimension(100, 30));
-        generateSoloButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        generateSoloButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 generateSoloButtonActionPerformed(evt);
             }
         });
@@ -2578,10 +2382,8 @@ public class LickgenFrame
         generateThemeButton.setMaximumSize(new java.awt.Dimension(100, 30));
         generateThemeButton.setMinimumSize(new java.awt.Dimension(100, 30));
         generateThemeButton.setPreferredSize(new java.awt.Dimension(100, 30));
-        generateThemeButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        generateThemeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 generateThemeButtonActionPerformed(evt);
             }
         });
@@ -2650,10 +2452,8 @@ public class LickgenFrame
         genSoloThemeBtn.setMaximumSize(new java.awt.Dimension(100, 30));
         genSoloThemeBtn.setMinimumSize(new java.awt.Dimension(100, 30));
         genSoloThemeBtn.setPreferredSize(new java.awt.Dimension(100, 30));
-        genSoloThemeBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        genSoloThemeBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 genSoloThemeBtnActionPerformed(evt);
             }
         });
@@ -2697,10 +2497,8 @@ public class LickgenFrame
         pasteThemeBtn.setMaximumSize(new java.awt.Dimension(100, 30));
         pasteThemeBtn.setMinimumSize(new java.awt.Dimension(100, 30));
         pasteThemeBtn.setPreferredSize(new java.awt.Dimension(100, 30));
-        pasteThemeBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        pasteThemeBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 pasteThemeBtnActionPerformed(evt);
             }
         });
@@ -2717,10 +2515,8 @@ public class LickgenFrame
         playSoloBtn.setMaximumSize(new java.awt.Dimension(100, 30));
         playSoloBtn.setMinimumSize(new java.awt.Dimension(100, 30));
         playSoloBtn.setPreferredSize(new java.awt.Dimension(100, 30));
-        playSoloBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        playSoloBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 playSoloBtnActionPerformed(evt);
             }
         });
@@ -2737,10 +2533,8 @@ public class LickgenFrame
         stopSoloPlayBtn.setMaximumSize(new java.awt.Dimension(100, 30));
         stopSoloPlayBtn.setMinimumSize(new java.awt.Dimension(100, 30));
         stopSoloPlayBtn.setPreferredSize(new java.awt.Dimension(100, 30));
-        stopSoloPlayBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        stopSoloPlayBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 stopSoloPlayBtnActionPerformed(evt);
             }
         });
@@ -2824,33 +2618,26 @@ public class LickgenFrame
         layerInfoScrollPane.setMinimumSize(new java.awt.Dimension(469, 402));
 
         layerDataTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][]
-            {
+            new Object [][] {
                 { new Integer(1),  new Integer(64), "Logsig"},
                 { new Integer(2),  new Integer(1), "Logsig"}
             },
-            new String []
-            {
+            new String [] {
                 "Layer Index", "Layer Size", "Layer Type"
             }
-        )
-        {
-            Class[] types = new Class []
-            {
+        ) {
+            Class[] types = new Class [] {
                 java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class
             };
-            boolean[] canEdit = new boolean []
-            {
+            boolean[] canEdit = new boolean [] {
                 false, true, true
             };
 
-            public Class getColumnClass(int columnIndex)
-            {
+            public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
 
-            public boolean isCellEditable(int rowIndex, int columnIndex)
-            {
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
                 if (columnIndex == 1
                     && rowIndex == layerDataTable.getRowCount() - 1)
                 {
@@ -2863,10 +2650,8 @@ public class LickgenFrame
         layerDataTable.setMinimumSize(new java.awt.Dimension(150, 900));
         layerDataTable.setPreferredSize(new java.awt.Dimension(150, 900));
         layerDataTable.getTableHeader().setReorderingAllowed(false);
-        layerDataTable.addMouseListener(new java.awt.event.MouseAdapter()
-        {
-            public void mouseClicked(java.awt.event.MouseEvent evt)
-            {
+        layerDataTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
                 layerDataTableMouseClicked(evt);
             }
         });
@@ -2911,10 +2696,8 @@ public class LickgenFrame
         generateWeightFileButton.setMaximumSize(new java.awt.Dimension(300, 29));
         generateWeightFileButton.setMinimumSize(new java.awt.Dimension(300, 29));
         generateWeightFileButton.setPreferredSize(new java.awt.Dimension(300, 29));
-        generateWeightFileButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        generateWeightFileButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 generateWeightFileButtonActionPerformed(evt);
             }
         });
@@ -2929,10 +2712,8 @@ public class LickgenFrame
         getNetworkStatsButton.setMaximumSize(new java.awt.Dimension(300, 29));
         getNetworkStatsButton.setMinimumSize(new java.awt.Dimension(300, 29));
         getNetworkStatsButton.setPreferredSize(new java.awt.Dimension(300, 29));
-        getNetworkStatsButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        getNetworkStatsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 getNetworkStatsButtonActionPerformed(evt);
             }
         });
@@ -2947,10 +2728,8 @@ public class LickgenFrame
         clearWeightFileButton.setMaximumSize(new java.awt.Dimension(300, 29));
         clearWeightFileButton.setMinimumSize(new java.awt.Dimension(300, 29));
         clearWeightFileButton.setPreferredSize(new java.awt.Dimension(300, 29));
-        clearWeightFileButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        clearWeightFileButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 clearWeightFileButtonActionPerformed(evt);
             }
         });
@@ -2965,10 +2744,8 @@ public class LickgenFrame
         loadWeightFileButton.setMaximumSize(new java.awt.Dimension(300, 29));
         loadWeightFileButton.setMinimumSize(new java.awt.Dimension(300, 29));
         loadWeightFileButton.setPreferredSize(new java.awt.Dimension(300, 29));
-        loadWeightFileButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        loadWeightFileButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 loadWeightFileButtonActionPerformed(evt);
             }
         });
@@ -2983,10 +2760,8 @@ public class LickgenFrame
         resetNnetInstructionsButton.setMaximumSize(new java.awt.Dimension(300, 29));
         resetNnetInstructionsButton.setMinimumSize(new java.awt.Dimension(300, 29));
         resetNnetInstructionsButton.setPreferredSize(new java.awt.Dimension(300, 29));
-        resetNnetInstructionsButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        resetNnetInstructionsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 resetNnetInstructionsButtonActionPerformed(evt);
             }
         });
@@ -3001,10 +2776,8 @@ public class LickgenFrame
         resetDefaultValuesButton.setMaximumSize(new java.awt.Dimension(300, 29));
         resetDefaultValuesButton.setMinimumSize(new java.awt.Dimension(300, 29));
         resetDefaultValuesButton.setPreferredSize(new java.awt.Dimension(300, 29));
-        resetDefaultValuesButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        resetDefaultValuesButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 resetDefaultValuesButtonActionPerformed(evt);
             }
         });
@@ -3019,10 +2792,8 @@ public class LickgenFrame
         resetNetworkButton.setMaximumSize(new java.awt.Dimension(300, 29));
         resetNetworkButton.setMinimumSize(new java.awt.Dimension(300, 29));
         resetNetworkButton.setPreferredSize(new java.awt.Dimension(300, 29));
-        resetNetworkButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        resetNetworkButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 resetNetworkButtonActionPerformed(evt);
             }
         });
@@ -3047,10 +2818,8 @@ public class LickgenFrame
 
         trainingFileButton.setText("Training File");
         trainingFileButton.setToolTipText("Select the training file for the network.");
-        trainingFileButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        trainingFileButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 trainingFileButtonActionPerformed(evt);
             }
         });
@@ -3198,10 +2967,8 @@ public class LickgenFrame
 
         addLayerToTableButton.setText("Add Layer");
         addLayerToTableButton.setToolTipText("Add a layer to the end of the network. If a layer is selected, add it below that one.");
-        addLayerToTableButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        addLayerToTableButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addLayerToTableButtonActionPerformed(evt);
             }
         });
@@ -3216,10 +2983,8 @@ public class LickgenFrame
 
         removeLayerFromTableButton.setText("Remove Layer");
         removeLayerFromTableButton.setToolTipText("Delete the selected layer.");
-        removeLayerFromTableButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        removeLayerFromTableButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 removeLayerFromTableButtonActionPerformed(evt);
             }
         });
@@ -3236,10 +3001,8 @@ public class LickgenFrame
         moveLayerUpTableButton.setMaximumSize(new java.awt.Dimension(100, 29));
         moveLayerUpTableButton.setMinimumSize(new java.awt.Dimension(100, 29));
         moveLayerUpTableButton.setPreferredSize(new java.awt.Dimension(100, 29));
-        moveLayerUpTableButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        moveLayerUpTableButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 moveLayerUpTableButtonActionPerformed(evt);
             }
         });
@@ -3257,10 +3020,8 @@ public class LickgenFrame
         moveLayerDownTableButton.setMaximumSize(new java.awt.Dimension(120, 29));
         moveLayerDownTableButton.setMinimumSize(new java.awt.Dimension(120, 29));
         moveLayerDownTableButton.setPreferredSize(new java.awt.Dimension(120, 29));
-        moveLayerDownTableButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        moveLayerDownTableButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 moveLayerDownTableButtonActionPerformed(evt);
             }
         });
@@ -3274,10 +3035,8 @@ public class LickgenFrame
 
         weightFileButton.setText("Weight File");
         weightFileButton.setToolTipText("Name automatically set from Training File. If you are only loading weights into the critic, use this.");
-        weightFileButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        weightFileButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 weightFileButtonActionPerformed(evt);
             }
         });
@@ -3315,30 +3074,24 @@ public class LickgenFrame
         grammarMenu1.setMnemonic('G');
         grammarMenu1.setText("Grammar Options");
         grammarMenu1.setToolTipText("Edit or change the current grammar file.");
-        grammarMenu1.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        grammarMenu1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 grammarMenu1ActionPerformed(evt);
             }
         });
 
         openGrammarMI1.setText("Load Grammar");
         openGrammarMI1.setToolTipText("Selects which grammar file to used.");
-        openGrammarMI1.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        openGrammarMI1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 openGrammarMI1ActionPerformed(evt);
             }
         });
         grammarMenu1.add(openGrammarMI1);
 
         showLogMI1.setText("Show Log");
-        showLogMI1.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        showLogMI1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 showLogMI1ActionPerformed(evt);
             }
         });
@@ -3346,10 +3099,8 @@ public class LickgenFrame
 
         saveGrammarMI1.setText("Save Grammar As ...");
         saveGrammarMI1.setToolTipText("Saves the grammar file under a specified name.");
-        saveGrammarMI1.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        saveGrammarMI1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveGrammarMI1ActionPerformed(evt);
             }
         });
@@ -3357,10 +3108,8 @@ public class LickgenFrame
 
         editGrammarMI1.setText("Edit Grammar");
         editGrammarMI1.setToolTipText("Edit the current grammar using a text editor.");
-        editGrammarMI1.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        editGrammarMI1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 editGrammarMI1ActionPerformed(evt);
             }
         });
@@ -3368,10 +3117,8 @@ public class LickgenFrame
 
         reloadGrammarMI1.setText("Reload Grammar");
         reloadGrammarMI1.setToolTipText("Reloads the grammar file.");
-        reloadGrammarMI1.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        reloadGrammarMI1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 reloadGrammarMI1ActionPerformed(evt);
             }
         });
@@ -3379,20 +3126,16 @@ public class LickgenFrame
 
         toCriticMI1.setText("Send Licks to Critic");
         toCriticMI1.setToolTipText("Copies licks in a special format for learning by critic (a separate tool).");
-        toCriticMI1.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        toCriticMI1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 toCriticMI1ActionPerformed(evt);
             }
         });
         grammarMenu1.add(toCriticMI1);
 
         showCriticMI1.setText("Show Critic Exporter");
-        showCriticMI1.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        showCriticMI1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 showCriticMI1ActionPerformed(evt);
             }
         });
@@ -3401,10 +3144,8 @@ public class LickgenFrame
         useGrammarMI1.setSelected(true);
         useGrammarMI1.setText("Use Grammar");
         useGrammarMI1.setToolTipText("Indicates whether or not a grammar should be used in lick generation. Without this, generation will be governed only by probabilities set in the fields below.");
-        useGrammarMI1.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        useGrammarMI1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 useGrammarMI1ActionPerformed(evt);
             }
         });
@@ -3413,27 +3154,21 @@ public class LickgenFrame
         generatorMenuBar1.add(grammarMenu1);
 
         generatorWindowMenu1.setLabel("Window");
-        generatorWindowMenu1.addMenuListener(new javax.swing.event.MenuListener()
-        {
-            public void menuSelected(javax.swing.event.MenuEvent evt)
-            {
+        generatorWindowMenu1.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
                 generatorWindowMenu1MenuSelected(evt);
             }
-            public void menuDeselected(javax.swing.event.MenuEvent evt)
-            {
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
-            public void menuCanceled(javax.swing.event.MenuEvent evt)
-            {
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
 
         closeWindowMI2.setMnemonic('C');
         closeWindowMI2.setText("Close Window");
         closeWindowMI2.setToolTipText("Closes the current window (exits program if there are no other windows)");
-        closeWindowMI2.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        closeWindowMI2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 closeWindowMI2ActionPerformed(evt);
             }
         });
@@ -3441,10 +3176,8 @@ public class LickgenFrame
 
         cascadeMI2.setMnemonic('A');
         cascadeMI2.setText("Cascade Windows");
-        cascadeMI2.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        cascadeMI2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cascadeMI2ActionPerformed(evt);
             }
         });
@@ -5271,7 +5004,7 @@ public class LickgenFrame
         getAbstractMelody();
 
     }
-
+    
     public void getAbstractMelody() {
 
         if (!allMeasures) {
@@ -5283,15 +5016,11 @@ public class LickgenFrame
 
         int beatsToSlide = Integer.parseInt(windowSlideField.getText());
 
-        //int measureWindow = 2;
-
         int selStart = notate.getCurrentSelectionStart();
 
         int selEnd = notate.getCurrentSelectionEnd();
 
-        for (int measureWindow = minMeasureWindow; measureWindow <= maxMeasureWindow;
-                measureWindow++) {
-            //int slotsPerMeasure = score.getMetre()[0] * BEAT; //assume something/4 time
+        for (int measureWindow = minMeasureWindow; measureWindow <= maxMeasureWindow; measureWindow++) {
 
             int slotsPerMeasure = BEAT;
 
@@ -5313,24 +5042,26 @@ public class LickgenFrame
                     BufferedWriter out = new BufferedWriter(new FileWriter(frameFile, true));
                     out.close();
                 } catch (Exception e) {
-                    System.out.println("I/O troubles");
+                    System.out.println("I/O troubles" + e.toString());
                 }
+                imp.cluster.CreateBrickGrammar.processByBrick(notate, this);
             } else {
                 for (int window = 0; window < measureWindow; window += beatsToSlide) {
                     //extract all sections of size measureWindow
                     for (int i = 0;
                             (i * slotsPerSection) + (window * BEAT) + slotsPerSection <= (numMeasures) * slotsPerSection;
                             i++) {
-                        //System.out.println("Window: " + window);
-                        //System.out.println("i: " + i);
                         String production = addMeasureToAbstractMelody(
                                 start + (i * slotsPerSection) + (window * BEAT),
                                 measureWindow,
                                 i == 0);
                         if (production != null) {
-                            writeProduction(production, measureWindow,
+                            writeProduction(production, 
+                                    measureWindow,
                                     (i * slotsPerSection) + (window * BEAT),
-                                    true, null, -1);
+                                    true,
+                                    null,
+                                    -1);
                         }
                     }
                 }
@@ -5352,20 +5083,18 @@ public class LickgenFrame
             Polylist previous = Polylist.nil;
             float accumulatedProbability = 0;
 
-            //Note - rules must have form similar to (rule (V4) (N4) 0.22)
-
             for (Iterator<Polylist> e = ruleList.iterator(); e.hasNext();) {
                 Polylist current = e.next();
                 if (current.first().equals("rule") || current.first().equals("base")) {
-                    if ((!previous.equals(Polylist.nil)) && current.allButLast().equals(
-                            previous.allButLast())) {
+                    if ((!previous.equals(Polylist.nil))
+                            && current.allButLast().equals(previous.allButLast())) {
                         accumulatedProbability += ((Number) current.last()).floatValue();
                         int round = (int) (accumulatedProbability * 100);
                         accumulatedProbability = (float) (round / 100.0);
                     } else {
                         if (previous.nonEmpty()) {
-                            newRules.add(
-                                    Polylist.list(previous.first(), previous.second(),
+                            newRules.add(Polylist.list(previous.first(),
+                                    previous.second(),
                                     previous.third(),
                                     accumulatedProbability));
                         }
@@ -5441,8 +5170,12 @@ public class LickgenFrame
     /**
      * add the production to file
      */
-    public void writeProduction(String production, int measureWindow, int location,
-            boolean writeExactMelody, String brickType, int chorus) {
+    public void writeProduction(String production,
+            int measureWindow,
+            int location,
+            boolean writeExactMelody,
+            String brickType,
+            int chorus) {
         
         if (chorus == -1) { //didn't provide any information about what chorus we're on
             chorus = notate.getSelectedIndex();
@@ -5483,23 +5216,16 @@ public class LickgenFrame
                 int slotsPerSection = measureWindow * BEAT;
                 String melodyToWrite;
                 String relativePitchMelody = "";
-                //String exactMelody = null; //= melodyData.get(location);
                 String exactMelody = production;
-                String[] splitMel; // = exactMelody.split(" ");
-                //if(!splitMel[0].equals(Integer.toString(location))) {
+                String[] splitMel; 
                 boolean foundMatch = false;
-//                System.out.print("Melody data: ");
-//                for (int i = 0; i < melodyData.size(); i++) {
-//                    System.out.print(melodyData.get(i) + " ");
-//                }
-//                System.out.println();
-                
                         
                 for (int i = 0; i < melodyData.size(); i++) {
                     splitMel = melodyData.get(i).split(" ");
                     if (splitMel[0].equals(Integer.toString(location))) { //we've located our production's data in our melody data
                         exactMelody = melodyData.get(i); //the melody data is in small (1 measure) fixed-length strips
-                        int j = i; //starting at this strip, we'll see if we need to add more strips (to match the length of our production)
+                        int j = i; //starting at this strip, we'll see if we need to add more strips
+                                    //(to match the length of our production)
                         int exactMelodyLength = 0;
                         if (j < melodyData.size() - 1) {
                             String[] splitNextMel = melodyData.get(j+1).split(" ");
@@ -5527,7 +5253,6 @@ public class LickgenFrame
                     System.out.println("Melody data: " + melodyData);
                 }
 
-                //}
                 if (notate.getSelectedIndex() == 0) /*head*/ {
                     melodyToWrite = "Head " + exactMelody;
                 } else {
@@ -5613,23 +5338,14 @@ public class LickgenFrame
         //pitches of notes in measure not including rests
         ArrayList<Integer> notes = new ArrayList<Integer>();
 
-        //System.out.println("selStart: " + selStart);
-        //System.out.println(part.getPrevNote(current));
-        //System.out.print("rhythm of prevnote: " + part.getPrevNote(current).getRhythmValue());
-        //System.out.println("slots per section: " + slotsPerSection);
-        //System.out.println("Prev index: " + part.getPrevIndex(current));
-        //if(part.getPrevNote(current) != null) System.out.println("not null.");
-        //System.out.println("thing: " + (slotsPerSection - part.getPrevIndex(current) % slotsPerSection));
-
         boolean tiedAtStart = false, tiedAtEnd = false;
 
         //untie first note if it is tied from last measure
-        if (part.getPrevNote(current) != null && part.getPrevNote(current).getRhythmValue() > current - part.getPrevIndex(
-                current)/*slotsPerSection - part.getPrevIndex(current) % slotsPerSection*/) {
+        if (part.getPrevNote(current) != null
+                && part.getPrevNote(current).getRhythmValue() > current - part.getPrevIndex(current)) {
 
             tiedAtStart = true;
-            //System.out.println("Got here.");
-            //
+
             //untie and set the previous note
             Note untiedNote = part.getPrevNote(current).copy();
             int originalRhythmVal = untiedNote.getRhythmValue();
@@ -5649,7 +5365,6 @@ public class LickgenFrame
             if (part.getPrevNote(selEnd).getRhythmValue() > selEnd - part.getPrevIndex(
                     selEnd)) {
                 tiedAtEnd = true;
-                //System.out.println("Untying notes at end.");
                 int tracker = part.getPrevIndex(selEnd);
                 Note untiedNote = part.getNote(tracker).copy();
                 int originalRhythmVal = untiedNote.getRhythmValue();
@@ -5664,19 +5379,15 @@ public class LickgenFrame
         }
 
         if (part.getPrevNote(selStart + 1) != null) {
-            if ((part.getPrevIndex(selStart + 1) != selStart) && !(part.getPrevNote(
-                    selStart + 1).isRest())) {
-                //System.out.println("prev index: " + part.getPrevIndex(selStart + 1) + "note: " + part.getPrevNote(selStart + 1).getPitch());
+            if ((part.getPrevIndex(selStart + 1) != selStart)
+                    && !(part.getPrevNote(selStart + 1).isRest())) {
                 return null;
             }
         }
 
-        //if(part.melodyIsEmpty(selStart, slotsPerSection)) {
-        //    if(selStart - slotsPerSection >= slotsPerSection && part.melodyIsEmpty(selStart - slotsPerSection, slotsPerSection))
-        // }
         while (current < selEnd) {
 
-            //if the is a null note, make it a rest
+            //if the current note is a null note, make it a rest
             if (part.getNote(current) == null) {
                 int next = part.getNextIndex(current);
                 Note n = Note.makeRest(next - current);
@@ -5689,8 +5400,6 @@ public class LickgenFrame
                     current).getRhythmValue());
 
             int pitch = part.getNote(current).getPitch();
-
-            int rhythm = 0;
 
             if (part.getNote(current).isRest()) {
                 rhythmString = rhythmString.cons("R" + sb.substring(1));
@@ -5733,77 +5442,15 @@ public class LickgenFrame
 
         rhythmString = rhythmString.reverse();
 
-        /*
-         //add in goal notes to the rhythmString
-         Polylist goalString = new Polylist();
-         for (Polylist L = rhythmString; L.length() > 1; L = L.rest()) {
 
-         String first = (String) L.first();
-         String duration = first.substring(1);
+        //add in goal notes to the rhythmString
 
-         //get duration of slots of the first note
-         int slots = Key.getDuration(duration);
-
-         String second = (String) L.rest().first();
-
-         //make chord tone goal note if followed by rest
-         if (second.startsWith("R") && first.startsWith("C")) {
-         first = first.replace('C', 'G');
-         }
-
-         //make chord tone quarter note or longer a goal note
-         if (first.startsWith("C") && slots >= 120) {
-         first = first.replace('C', 'G');
-         }
-
-         //make color tone quarter note or longer a goal note
-         //if (first.startsWith("L") && slots >= 120) {
-         //    first = first.replace('L', 'G');
-         //}
-
-         //make random quarter note or longer a goal note
-         if(first.startsWith("X") && slots >= 120) {
-         first = first.replace('X', 'G');
-         }
-
-         goalString = goalString.cons(first);
-
-         //check last note
-         if (L.length() == 2) {
-         String lastDuration = second.substring(1);
-
-         //get duration of slots of the first note
-         int lastSlots = Key.getDuration(lastDuration);
-
-         //make chord tone quarter note or longer a goal note
-         if (second.startsWith("C") && lastSlots >= 120) {
-         second = second.replace('C', 'G');
-         }
-
-         //make color tone quarter note or longer a goal note
-         //if (second.startsWith("L") && lastSlots >= 120) {
-         //    second = second.replace('L', 'G');
-         //}
-         goalString = goalString.cons(second);
-         }
-         }
-
-         //set rhythm string to have replaced the correct notes with goal notes
-         goalString = goalString.reverse();
-         rhythmString = goalString;
-
-         */
         //process intervals
         ArrayList<Integer> intervals = new ArrayList<Integer>();
         intervals.add(0);
         for (int i = 1; i < notes.size(); i++) {
             intervals.add(notes.get(i) - notes.get(i - 1));
         }
-        //System.out.println("Intervals: " + intervals.size());
-        //test intervals
-        //for (int i = 0; i < intervals.size(); i++) {
-        //    System.out.println("Interval: " + intervals.get(i));
-        //}
 
         //process slopes
         ArrayList<int[]> slopes = new ArrayList<int[]>();
@@ -5856,8 +5503,10 @@ public class LickgenFrame
                 String len = Note.getDurationString(slotsPerSection);
                 rhythm = thisPitch + len;
             }
-            String returnString =
-                    "((slope " + minPitchChange + " " + maxPitchChange + " " + rhythm + "))";
+            String returnString = "((slope "
+                    + minPitchChange + " "
+                    + maxPitchChange + " "
+                    + rhythm + "))";
             if (isSongStart) {
                 returnString = returnString.concat("STARTER");
             }
@@ -5976,7 +5625,6 @@ public class LickgenFrame
                     String temp = tempString.first().toString();
                     strbuf.append(temp);
                     strbuf.append(" ");
-                    //System.out.println(strbuf.toString());
                     tempString = tempString.rest();
                     if (temp.charAt(0) != 'R') {
                         j++;
@@ -5987,9 +5635,7 @@ public class LickgenFrame
             strbuf.append(")");
         }
         strbuf.append(")");
-        //System.out.println("Abstract melody: " + strbuf.toString() + " Start: " + selStart + " End: " + selEnd);
         //if we are writing to file, write the chords, start data, and tie data
-        /* Now the only option: if (writeProductionBtn.isSelected()) */
         {
 
             //Mark measure as 'songStarter' if it is the first of a song
@@ -6083,10 +5729,14 @@ public class LickgenFrame
         // TODO add your handling code here:
     }//GEN-LAST:event_useAbstractBricksCheckboxActionPerformed
 
-    private void useAbstracWindowsCheckboxActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_useAbstracWindowsCheckboxActionPerformed
-    {//GEN-HEADEREND:event_useAbstracWindowsCheckboxActionPerformed
+    private void useAbstractWindowsCheckboxActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_useAbstractWindowsCheckboxActionPerformed
+    {//GEN-HEADEREND:event_useAbstractWindowsCheckboxActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_useAbstracWindowsCheckboxActionPerformed
+    }//GEN-LAST:event_useAbstractWindowsCheckboxActionPerformed
+
+    private void windowSizeFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_windowSizeFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_windowSizeFieldActionPerformed
 
     private void updateUseSoloist() {
         if (useSoloistCheckBox.isSelected() && lickgen.soloistIsLoaded()) {
@@ -6425,8 +6075,8 @@ public class LickgenFrame
     private javax.swing.JLabel transposeProbLabel;
     private javax.swing.JTextField transposeProbabilityField;
     private javax.swing.JLabel typeLabel;
-    private javax.swing.JCheckBox useAbstracWindowsCheckbox;
     private javax.swing.JCheckBox useAbstractBricksCheckbox;
+    private javax.swing.JCheckBox useAbstractWindowsCheckbox;
     private javax.swing.JCheckBox useBricksCheckbox;
     private javax.swing.JCheckBox useCriticCheckBox;
     private javax.swing.JCheckBoxMenuItem useGrammarMI1;
@@ -6480,7 +6130,7 @@ public class LickgenFrame
     
     public void setUseWindows(boolean value ) {
         //useWindowsCheckbox.setSelected(value);
-        useWindows = value;
+        useWindowsCheckbox.setSelected(value);
     }
 
     public boolean toCriticSelected() {
@@ -6515,6 +6165,10 @@ public class LickgenFrame
     public void setGap(double value) {
         gapField.setText("" + value);
     }
+    
+    public boolean getUseWindows() {
+        return useWindowsCheckbox.isSelected();
+    }
 
     public int getWindowSize() {
         return Integer.parseInt(windowSizeField.getText());
@@ -6528,16 +6182,16 @@ public class LickgenFrame
         return Integer.parseInt(numClusterRepsField.getText());
     }
 
-    public boolean useMarkovSelected() {
-        return useMarkovCheckbox.isSelected();
-    }
-
     public int getMarkovFieldLength() {
         return Integer.parseInt(MarkovLengthField.getText());
     }
 
-    public boolean getUseRelativePitches() {
+    public boolean getUseRelativeWindows() {
         return useRelativeWindowsCheckbox.isSelected();
+    }
+    
+    public boolean getUseAbstractWindows() {
+        return useAbstractWindowsCheckbox.isSelected();
     }
     
     public boolean getUseMarkov() {
@@ -6547,6 +6201,15 @@ public class LickgenFrame
     public boolean getUseBricks() {
         return useBricksCheckbox.isSelected();
     }
+    
+    public boolean getUseRelativeBricks() {
+        return useRelativeBricksCheckbox.isSelected();
+    }
+    
+    public boolean getUseAbstractBricks() {
+        return useAbstractBricksCheckbox.isSelected();
+    }
+   
 
     public void redoScales() {
         DefaultComboBoxModel dcbm = (DefaultComboBoxModel) scaleComboBox.getModel();
@@ -6697,29 +6360,25 @@ public class LickgenFrame
 
         setLickGenStatus("Writing productions to grammar file: " + outFile);
         
-        //OVERWRITE with new checkboxes
-        useWindows = useMarkovSelected(); //replace this with a useWindows checkbox;
-        boolean windows_useRelative = getUseRelativePitches(); //replace this with an independent checkbox
-        //make getUseRelativePitches() specific to either windows or bricks
-        //if we even want the user to be able to set the options for bricks and windows independently
-        
-        if (useBricksCheckbox.isSelected()) {
+        if (getUseBricks()) {
             imp.cluster.CreateBrickGrammar.create(notate.getChordProg(),
                     inFile,
                     outFile,
                     getNumClusterReps(),
-                    getUseRelativePitches(),
+                    getUseRelativeBricks(),
+                    getUseAbstractBricks(),
                     notate,
                     this);
         } 
-        if (useWindows) {
+        if (getUseWindows()) {
             imp.cluster.CreateGrammar.create(notate.getChordProg(),
                     inFile,
                     outFile,
                     getNumClusterReps(),
-                    useMarkovSelected(),
+                    getUseMarkov(),
                     getMarkovFieldLength(),
-                    windows_useRelative,
+                    getUseRelativeWindows(),
+                    getUseAbstractWindows(),
                     notate);
         }
         setLickGenStatus("Done writing productions to grammar file: " + outFile);
