@@ -561,6 +561,44 @@ public void updateDefinePatterns(Color color, String name, String pattern)
     definedPattern = pattern;
 }
 
+/**
+ * Checks all the patterns to apply a name if a name is saved with an existing 
+ * pattern
+ */
+public void updateAllPatterns(String name, Polylist pattern)
+{
+    String rules = pattern.toStringSansParens();
+    for( PatternDisplay display: allBassPatterns )
+    {
+            BassPatternDisplay bass = (BassPatternDisplay)display;
+            System.out.println("bass pattern: " + bass);
+            String bassText = bass.getPatternText();
+            
+            if( rules.equals(bassText) )
+            {
+                bass.setDisplayText(bassText, name);
+                int col = allBassPatterns.indexOf(display);
+                int row = StyleTableModel.BASS_PATTERN_ROW;
+                setCell(bassText, row, col, SILENT, name);
+                System.out.println("display text: " + bass.getDisplayText());
+            }
+    }
+    
+    for( PatternDisplay display: allChordPatterns )
+    {
+        if( display instanceof ChordPatternDisplay )
+        {
+            ChordPatternDisplay chord = (ChordPatternDisplay)display;
+            String chordText = chord.getPatternText();
+            
+            if( rules.equals(chordText) )
+            {
+                chord.setDisplayText(chordText, name);
+            }
+        }
+    }
+}
+
   /**
    * Update the "cache", a few rows above the actual spreadsheet,
    * showing cell contents for convenience in editing.
@@ -644,9 +682,15 @@ public void updateDefinePatterns(Color color, String name, String pattern)
             nameField0.setText("" + ((PatternDisplay)contents).getName());
             weightField0.setText("" + ((PatternDisplay)contents).getWeight());
             if( contents instanceof ChordPatternDisplay )
-            {
+                {
                 pushField0.setText("" + ((ChordPatternDisplay)contents).getPushString());
-            }
+                }
+            if( contents instanceof DrumRuleDisplay )
+                {
+                DrumPatternDisplay pattern = (DrumPatternDisplay)getDrumPattern(recentColumns[0]);
+                String weight = "" + pattern.getWeight();
+                weightField0.setText(weight);
+                }
             }
           rowField0.setText("" + rowHeaderLabels.get(recentRows[0]));
           columnField0.setText("" + styleTable.getColumnName(recentColumns[0]));
@@ -673,6 +717,12 @@ public void updateDefinePatterns(Color color, String name, String pattern)
                 {
                 pushField1.setText("" + ((ChordPatternDisplay)contents).getPushString());
                 }
+              if( contents instanceof DrumRuleDisplay )
+                {
+                DrumPatternDisplay pattern = (DrumPatternDisplay)getDrumPattern(recentColumns[1]);
+                String weight = "" + pattern.getWeight();
+                weightField1.setText(weight);
+                }
             }
           rowField1.setText("" + rowHeaderLabels.get(recentRows[1]));
           columnField1.setText("" + styleTable.getColumnName(recentColumns[1]));
@@ -697,6 +747,12 @@ public void updateDefinePatterns(Color color, String name, String pattern)
               if( contents instanceof ChordPatternDisplay )
                 {
                 pushField2.setText("" + ((ChordPatternDisplay)contents).getPushString());
+                }
+              if( contents instanceof DrumRuleDisplay )
+                {
+                DrumPatternDisplay pattern = (DrumPatternDisplay)getDrumPattern(recentColumns[2]);
+                String weight = "" + pattern.getWeight();
+                weightField2.setText(weight);
                 }
             }
           rowField2.setText("" + rowHeaderLabels.get(recentRows[2]));
@@ -6015,7 +6071,7 @@ public void updateDefinePatterns(Color color, String name, String pattern)
         {
           updateMirror(recentRows[0], recentColumns[0], revisedContent);
         }
-        System.out.println("push: " + pushField0.getText());
+        //System.out.println("push: " + pushField0.getText());
       }
 }//GEN-LAST:event_styleTextField0ActionPerformed
 
@@ -7505,6 +7561,7 @@ private void openStyleMixer()
             definedDrumRules.put(definedName, rules);
             updateDrumList();
         }
+        updateAllPatterns(definedName, rules);
     }//GEN-LAST:event_savePatternButtonMouseClicked
 
     private void removePatternButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_removePatternButtonMouseClicked
@@ -7700,7 +7757,7 @@ private void openStyleMixer()
                     StyleTableModel.BASS_PATTERN_WEIGHT_ROW, 
                     recentColumns[0], 
                     SILENT);
-            int weightInt = Integer.parseInt(weight);
+            float weightInt = Float.parseFloat(weight);
             BassPatternDisplay display = (BassPatternDisplay)getBassPattern(recentColumns[0]);
             display.setWeight(weightInt);
             updateMirror(recentRows[0], recentColumns[0], display.toString());
@@ -7712,7 +7769,7 @@ private void openStyleMixer()
                     StyleTableModel.CHORD_PATTERN_WEIGHT_ROW, 
                     recentColumns[0], 
                     SILENT);
-            int weightInt = Integer.parseInt(weight);
+            float weightInt = Float.parseFloat(weight);
             ChordPatternDisplay display = (ChordPatternDisplay)getChordPattern(recentColumns[0]);
             display.setWeight(weightInt);
             updateMirror(recentRows[0], recentColumns[0], display.toString());
@@ -7724,7 +7781,7 @@ private void openStyleMixer()
                     StyleTableModel.DRUM_PATTERN_WEIGHT_ROW,
                     recentColumns[0],
                     SILENT);
-            int weightInt = Integer.parseInt(weight);
+            float weightInt = Float.parseFloat(weight);
             DrumPatternDisplay display = (DrumPatternDisplay)getDrumPattern(recentColumns[0]);
             display.setWeight(weightInt);
             updateMirror(recentRows[0], recentColumns[0], display.toString());

@@ -391,23 +391,27 @@ public int getNumColumns()
     @Override
     public boolean isCellEditable(int row, int col) {
         // the data/cell address is constant, no matter where the cell appears onscreen.
-        return ( col >= FIRST_PATTERN_COLUMN 
-                  && (  row == BASS_PATTERN_WEIGHT_ROW 
-                     || row == BASS_PATTERN_ROW 
-                     || row == CHORD_PATTERN_WEIGHT_ROW 
-                     || row == CHORD_PATTERN_PUSH_ROW 
-                     || row == CHORD_PATTERN_ROW 
-                     || row == DRUM_PATTERN_WEIGHT_ROW 
-                     || row == DRUM_PATTERN_NAME_ROW
-                     || row >= FIRST_PERCUSSION_INSTRUMENT_ROW
-                     )
-               )
-            || ( col == INSTRUMENT_INCLUDE_COLUMN 
+        return ( col == INSTRUMENT_INCLUDE_COLUMN 
                   && (  row == BASS_PATTERN_ROW 
                      || row == CHORD_PATTERN_ROW 
                      || row >= FIRST_PERCUSSION_INSTRUMENT_ROW
                      )
-               )
+                )
+                // If you want to return editability to the cells, 
+                // uncomment this!
+                
+                //|| ( col >= FIRST_PATTERN_COLUMN 
+                  //&& (  row == BASS_PATTERN_WEIGHT_ROW 
+                     //|| row == BASS_PATTERN_ROW 
+                     //|| row == CHORD_PATTERN_WEIGHT_ROW 
+                     //|| row == CHORD_PATTERN_PUSH_ROW 
+                     //|| row == CHORD_PATTERN_ROW 
+                     //|| row == DRUM_PATTERN_WEIGHT_ROW 
+                     //|| row == DRUM_PATTERN_NAME_ROW
+                     //|| row >= FIRST_PERCUSSION_INSTRUMENT_ROW
+                     //)
+               //) 
+                
             ;
     }
     
