@@ -190,4 +190,19 @@ public boolean playMe(double swingVal, int loopCount, double tempo)
     styleEditor.setStatus("OK");   
     styleEditor.requestFocusInWindow();
     }
+  
+  
+   public static void playScore(Notate notate, Score score, SoloGenerator soloGenerator)
+    {
+    MidiSynth synth = notate.getMidiSynth();
+
+    new PlayScoreCommand(score, 
+                         0, 
+                         true, 
+                         synth, 
+                         ImproVisor.getCurrentWindow(), 
+                         0, 
+                         notate.getTransposition())
+            .execute();
+    }
 }

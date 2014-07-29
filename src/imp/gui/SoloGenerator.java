@@ -57,6 +57,8 @@ import java.io.PrintStream;
 import java.io.FileOutputStream;
 import java.io.FileInputStream;
 import polya.Tokenizer;
+import imp.gui.PatternDisplay;
+import imp.data.Score;
 /**
  *
  * @author David Morrison, Nava Dallal
@@ -465,6 +467,11 @@ LickgenFrame lickgenFrame;
                 themeListClicked(evt);
             }
         });
+        themeList.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                themeListKeyPressed(evt);
+            }
+        });
         jScrollPane3.setViewportView(themeList);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -642,7 +649,7 @@ private void playSelection()
               || (isDouble((String) soloTable.getValueAt(i, 4)) == false)
               || (isDouble((String) soloTable.getValueAt(i, 5)) == false) 
               || (isDouble((String) soloTable.getValueAt(i, 6)) == false)) {
-                enteredIncorrectly.setVisible(true); //show error message
+                enteredIncorrectly.setVisible(true); //show error message 
                 break;
             }
                else {
@@ -745,7 +752,15 @@ private void playSelection()
         for (int i = 0; i < orderedThemes.size(); i++) { //loop through size of orderedThemes
             for (int j = 0; j < soloTable.getRowCount(); j++) {//loop through table
                 
-                if (themeList.isSelectedIndex(i) && soloTable.isCellSelected(j, THEME_COLUMN)) {
+                if (themeList.isSelectedIndex(i) 
+                && ((soloTable.isCellSelected(j, THEME_COLUMN))
+                || (soloTable.isCellSelected(j, NAME_COLUMN))
+                || (soloTable.isCellSelected(j, LENGTH_COLUMN))
+                || (soloTable.isCellSelected(j, USE_COLUMN))
+                || (soloTable.isCellSelected(j, TRANSPOSE_COLUMN))
+                || (soloTable.isCellSelected(j, INVERT_COLUMN))
+                || (soloTable.isCellSelected(j, REVERSE_COLUMN))
+                    )) {
                     //if a theme in the Themes scroll box is clicked and a theme cell is selected
                     String name = (String) themeList.getSelectedValue();
                     //set name equal to the one clicked in the scroll box
@@ -803,7 +818,7 @@ private void playSelection()
                     }
                 }
             }
-        }
+        }  
     }//GEN-LAST:event_themeListClicked
 
     private void OkButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OkButtonActionPerformed
@@ -918,6 +933,30 @@ private void playSelection()
        deleteCheck.setVisible(false);
     }//GEN-LAST:event_NodeleteActionPerformed
 
+    private void themeListKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_themeListKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            for (int i = 0; i < orderedThemes.size(); i++) { //loop through all saved themes
+                if (themeList.isSelectedIndex(i)) {
+                    String name = (String) themeList.getSelectedValue();
+                    Score score = new Score(name); 
+                    //create empty score with name of theme selected
+                    for (Map.Entry pair : allThemes.entrySet()) {
+                        //loop through entries in allThemes
+
+                        if (name == pair.getValue()) { //if the name in the themeList is equal to the name in the entry
+                            Theme theme = (Theme) pair.getKey();
+                            //set theme equal to the corresponding theme in that entry
+                            MelodyPart melody = theme.melody; //get the melody of the theme
+                            score.addPart(melody);
+                            System.out.println(score);
+                            PatternDisplay.playScore(notate, score, soloGenerator);
+                        }
+                    }
+                }
+            }
+        }
+    }//GEN-LAST:event_themeListKeyPressed
+
    
 //    /**
 //     * @param args the command line arguments
@@ -952,16 +991,8 @@ private void playSelection()
 //            }
 //        });
 //    }
- 
+ protected SoloGenerator soloGenerator;
  private int themeLength = 8;
-
-private double themeProb = 0.4;
-
-private double transposeProb = 0.5;
-
-private double invertProb = 0.1;
-
-private double reverseProb = 0.1;
 
 private Notate notate;
 
@@ -1314,31 +1345,6 @@ public void addTheme(Theme theme)
        //saveRules(fileName);
     }
 
-//public void addTheme(String name, String themestring)
-//    {
-//        ensureThemeArray();
-//        int orderedThemesIndex = orderedThemes.size() - 1;
-//        System.out.println(allThemes);
-//        System.out.println(orderedThemes);
-//        
-//        for (int i = 0; i < soloTable.getRowCount(); i++) {
-//            Theme newTheme = Theme.makeTheme(name, new MelodyPart(themestring));
-//            //  Theme theme = allThemes.get(themestring);
-//            if ( /*(soloTable.getValueAt(i, NAME_COLUMN) != null) 
-//            && */ (!orderedThemes.contains(name))) {
-//                orderedThemes.add(name);
-//                allThemes.put(newTheme, name);
-//            }
-//
-//            themeListModel.reset();
-//            orderedThemesIndex = orderedThemes.indexOf(newTheme);
-//            //  allThemesIndex = allThemes.indexOf(theme);
-//        }
-//        System.out.println(orderedThemes);
-//        System.out.println(allThemes);
-//        System.out.println("here");
-//       //saveRules(fileName);
-//    }
 
 File fileName = ImproVisor.getThemesFile();
 
