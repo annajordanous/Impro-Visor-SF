@@ -473,36 +473,43 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
         return null;
       }
 
-    Object pop = gen.first();
-
-    gen = gen.rest();
-
     // Accumulate any terminal values.
 
     accumulator = Polylist.nil;
-
-    while( isTerminal(pop) )
+    Object pop = null;
+    //System.out.println("gen before accumulation: " + gen);
+    while( gen.nonEmpty() )
       {
+        pop = gen.first();
+        gen = gen.rest();
+       
+        if( !isTerminal(pop) )
+          {
+            //System.out.println("not a terminal: " + pop);
+            break;
+          }
+        
         if( isWrappedTerminal(pop) )
           {
+            //System.out.println("wrappedTerminal: " + pop);
             accumulator = accumulator.cons(((Polylist) pop).first());
           }
         else
           {
             accumulator = accumulator.cons(pop);
           }
-
-        if( gen.isEmpty() )
-          {
-            accumulateTerminals();
-            return gen;
-          }
-
-        pop = gen.first();
-        gen = gen.rest();
       }
+    
+    //System.out.println("gen after accumulation: " + gen);
+    //System.out.println("accumulator: " + accumulator);
+    //System.out.println("pop = " + pop);
 
     accumulateTerminals();
+    
+    if( isTerminal(pop) )
+      {
+        return gen;
+      }
 
     // All applicable rhs RHS's (and their corresponding weights)
     // get loaded into these lists, to be selected from at random.
@@ -520,6 +527,7 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
       Polylist next = (Polylist) search.first();
       String type = (String) next.first();
 
+      //System.out.println("matching LHS " + pop);
       /*
        * RULEs and BASEs have the following S-expression format:
        * (<keyword> (<LHS symbol>) (<RHS>) weight)
@@ -611,7 +619,7 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
                       if( wt instanceof Number )
                         {
                           Double weight = ((Number) wt).doubleValue();
-                          if( weight > 0 )
+                          if( weight >= 0 )
                             {
                               ruleList.add(new WeightedRHS(rhs, weight));
                             }
@@ -631,7 +639,7 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
                   // This RHS element is not a string. Just carry it and hope for the best!
                   // It is probably an S-expression such as (slope M N ...)
                   Double weight = ((Number) wt).doubleValue();
-                  if( weight > 0 )
+                  if( weight >= 0 )
                     {
                       ruleList.add(new WeightedRHS(rhs, weight));
                     }
@@ -652,6 +660,9 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
     // Randomly choose an RHS to follow by summing all weights, then
     // finding the RHS the normalized weight of which spans a random number.
 
+    WeightedRHS chosen = null;
+
+    //System.out.println("match list size = " + RHStoUse.size() + " for " + pop);
     double rand = Math.random();
     double offset = 0.0;
     double total = 0.0;
@@ -662,7 +673,6 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
         total += wr.getWeight();
       }
 
-    WeightedRHS chosen = null;
 
     // Find the RHS to use.
     for( WeightedRHS wr : RHStoUse )
@@ -672,18 +682,24 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
         if( rand <= nextOffset )
           {
             chosen = wr;
-            //System.out.println("choosing " + wr);
             break;
           }
         offset = nextOffset;
       }
 
+    int rhsChoices = RHStoUse.size();
+    
+    if( chosen == null && rhsChoices > 0 )
+      {
+        chosen = RHStoUse.get(rhsChoices - 1);
+      }
     if( chosen == null )
       {
-        //System.out.println("nothing chosen");
+        //System.out.println("nothing chosen for " + pop);
       }
     else
       {
+        //System.out.println("chosen for " + pop + " " + chosen);
         // Move rhs onto gen as a stack.
         Polylist rhs = chosen.getRHS();
 
@@ -1070,7 +1086,7 @@ private Object evaluateBuiltin(Object arg1, Object arg2)
         if( brickname.equals(blockName) )
           {
             System.out.println("At slot " + chordSlot 
-                             + " using brick " + brickname);
+                             + " considering brick " + brickname);
             return ONE;
           }
         
