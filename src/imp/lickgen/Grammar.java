@@ -279,11 +279,51 @@ public Polylist addStart(int numSlots)
  */
 public boolean isTerminal(Object ob)
   {
-    return isScaleDegree(ob) 
+    return isAbstractNote(ob)
+        || isScaleDegree(ob) 
         || isSlope(ob) 
         || isTriadic(ob) 
         || isTerminalSpecifiedInFile(ob) 
         || isWrappedTerminal(ob);
+  }
+
+public boolean isAbstractNote(Object ob)
+  {
+    if( !(ob instanceof String) )
+      {
+        return false;
+      }
+    
+    String string = (String)ob;
+    int len = string.length();
+    if( len == 0 )
+      {
+        return false;
+      }
+    
+    char first = string.charAt(0);
+    String rest = string.substring(1);
+    switch( first )
+      {
+        case 'A':
+        case 'C':
+        case 'H':
+        case 'L':
+        case 'R':
+        case 'S':
+        case 'X':
+        case 'Y':
+            break;
+        default:
+            return false;
+      }
+    try{
+        return getDuration(rest) > 0;
+        }
+    catch( Exception e )
+      {
+      }
+    return false;
   }
 
 public boolean isTerminalSpecifiedInFile(Object ob)
@@ -314,7 +354,7 @@ public boolean isWrappedTerminal(Object ob)
         return false;
       }
     
-    return isTerminalSpecifiedInFile(oblist.first());
+    return  isTerminalSpecifiedInFile(oblist.first());
   }
 
 public static boolean isSlope(Object ob)
@@ -476,38 +516,40 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
     // Accumulate any terminal values.
 
     accumulator = Polylist.nil;
-    Object pop = null;
+    Object goal = null;
     //System.out.println("gen before accumulation: " + gen);
     while( gen.nonEmpty() )
       {
-        pop = gen.first();
+        goal = gen.first();
         gen = gen.rest();
        
-        if( !isTerminal(pop) )
+        if( !isTerminal(goal) )
           {
-            //System.out.println("not a terminal: " + pop);
+            //System.out.println("not a terminal: " + goal);
             break;
           }
         
-        if( isWrappedTerminal(pop) )
+        if( isWrappedTerminal(goal) )
           {
-            //System.out.println("wrappedTerminal: " + pop);
-            accumulator = accumulator.cons(((Polylist) pop).first());
+            //System.out.println("wrappedTerminal: " + goal);
+            accumulator = accumulator.cons(((Polylist) goal).first());
           }
         else
           {
-            accumulator = accumulator.cons(pop);
+            //System.out.println("terminal: " + goal);
+            accumulator = accumulator.cons(goal);
           }
       }
     
     //System.out.println("gen after accumulation: " + gen);
     //System.out.println("accumulator: " + accumulator);
-    //System.out.println("pop = " + pop);
+    //System.out.println("goal = " + goal);
 
     accumulateTerminals();
     
-    if( isTerminal(pop) )
+    if( isTerminal(goal) || isWrappedTerminal(goal) )
       {
+        // The reason for leaving the loop was that gen became empty;
         return gen;
       }
 
@@ -524,10 +566,10 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
     while( search.nonEmpty() )
       {
       // Next is the next rule to which to compare.
-      Polylist next = (Polylist) search.first();
-      String type = (String) next.first();
+      Polylist rule = (Polylist) search.first();
+      String type = (String) rule.first();
 
-      //System.out.println("matching LHS " + pop);
+      //System.out.println("matching LHS " + goal);
       /*
        * RULEs and BASEs have the following S-expression format:
        * (<keyword> (<LHS symbol>) (<RHS>) weight)
@@ -540,28 +582,28 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
        */
 
       // The BASE keyword stops all evalution and variable substitution.
-      // If a symbol matches both a RULE and a BASE, it will always choose the BASE.
+      // If a lhs matches both a RULE and a BASE, it will always choose the BASE.
       // This basically short-circuits any computation and provides an easy way
       // to find base cases.
 
-      if( type.equals(BASE) && next.length() == 4 )
+      if( type.equals(BASE) && rule.length() == 4 )
         {
-          //System.out.println("\nbase = " + next);
-          Object symbol = next.second();
-          Polylist rhs = (Polylist) next.third();
+          //System.out.println("\nbase = " + rule);
+          Object lhs = rule.second();
+          Polylist rhs = (Polylist) rule.third();
 
-          if( pop.equals(symbol) )
+          if( goal.equals(lhs) )
             {
-              Number weight = (Number) evaluate(next.fourth());
+              Number weight = (Number) evaluate(rule.fourth());
               baseList.add(new WeightedRHS(rhs, weight.doubleValue()));
             }
         }
       // Most objects will have type RULE.
-      else if( type.equals(RULE) && next.length() == 4 )
+      else if( type.equals(RULE) && rule.length() == 4 )
         {
-          //System.out.println("\nrule = " + next);
-          Object symbol = next.second();
-          Polylist rhs = (Polylist) next.third();
+          //System.out.println("\nrule = " + rule);
+          Object lhs = rule.second();
+          Polylist rhs = (Polylist) rule.third();
 
           //System.out.println(" rhs before evaluation  " + rhs);
 
@@ -569,14 +611,14 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
           // rhs.  All additional symbols will contain information.
           //System.out.println("pop = " + pop);
 
-          if( pop instanceof Polylist
-                  && ((Polylist) pop).first() instanceof String )
+          if( goal instanceof Polylist
+                  && ((Polylist) goal).first() instanceof String )
             {
-              if( ((String) ((Polylist) pop).first())
-                      .equals(((Polylist) symbol).first()) )
+              if( ((String) ((Polylist) goal).first())
+                      .equals(((Polylist) lhs).first()) )
                 {
                   // Fill in variables with their given numeric values.
-                  rhs = setVars((Polylist) pop, (Polylist) symbol, rhs);
+                  rhs = setVars((Polylist) goal, (Polylist) lhs, rhs);
 
                   //System.out.println(" rhs after setVars " + rhs);
 
@@ -615,7 +657,7 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
 
                   if( valid )
                     {
-                      Object wt = evaluate(next.fourth());
+                      Object wt = evaluate(rule.fourth());
                       if( wt instanceof Number )
                         {
                           Double weight = ((Number) wt).doubleValue();
@@ -626,14 +668,15 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
                         }
                       else
                         {
-                          ErrorLog.log(ErrorLog.WARNING, "Invalid weight in grammar rule: " + next);
+                          ErrorLog.log(ErrorLog.WARNING, "Invalid weight in grammar rule: " + rule);
                         }
                     }
                 }
             }
           else
             {
-              Object wt = evaluate(next.fourth());
+              // goal is not Polylist
+              Object wt = evaluate(rule.fourth());
               if( wt instanceof Number )
                 {
                   // This RHS element is not a string. Just carry it and hope for the best!
@@ -646,7 +689,7 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
                 }
               else
                 {
-                  ErrorLog.log(ErrorLog.WARNING, "Invalid weight in grammar rule: " + next);
+                  ErrorLog.log(ErrorLog.WARNING, "Invalid weight in grammar rule: " + rule);
                 }
             }
           //Otherwise ignore, as it may be a parameter, etc.
