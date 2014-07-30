@@ -495,7 +495,29 @@ public static int getDurationAbstractMelody(Polylist L)
     return duration;
   }
 
-
+/**
+ * Add the rhs of a rule to the appropriate list, assuming that the
+ * value of the weight expression is positive
+ * @param rhs
+ * @param wtExp
+ * @param ruleList 
+ */
+private void addToList(Polylist rhs, Object wtExp, ArrayList<WeightedRHS> ruleList)
+  {
+  Object wt = evaluate(wtExp);
+  if( wt instanceof Number )
+    {
+      Double weight = ((Number) wt).doubleValue();
+      if( weight > 0 )
+        {
+          ruleList.add(new WeightedRHS(rhs, weight));
+        }
+    }
+  else
+    {
+      ErrorLog.log(ErrorLog.WARNING, "Invalid weight expression in grammar rule: " + wtExp);
+    }
+  }
 
 
 /**
@@ -543,8 +565,7 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
     
     //System.out.println("gen after accumulation: " + gen);
     //System.out.println("accumulator: " + accumulator);
-    //System.out.println("goal = " + goal);
-
+    
     accumulateTerminals();
     
     if( isTerminal(goal) || isWrappedTerminal(goal) )
@@ -560,6 +581,8 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
     ArrayList<WeightedRHS> baseList = new ArrayList<WeightedRHS>();
 
     Polylist search = rules;
+    
+    //System.out.println("goal = " + goal);
 
     // Search through and find all rules that apply to the non-terminal pop.
  
@@ -594,8 +617,7 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
 
           if( goal.equals(lhs) )
             {
-              Number weight = (Number) evaluate(rule.fourth());
-              baseList.add(new WeightedRHS(rhs, weight.doubleValue()));
+              addToList(rhs, rule.fourth(), baseList);
             }
         }
       // Most objects will have type RULE.
@@ -611,14 +633,28 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
           // rhs.  All additional symbols will contain information.
           //System.out.println("pop = " + pop);
 
-          if( goal instanceof Polylist
-                  && ((Polylist) goal).first() instanceof String )
+          if( goal.equals(lhs) )
             {
-              if( ((String) ((Polylist) goal).first())
-                      .equals(((Polylist) lhs).first()) )
+              addToList(rhs, rule.fourth(), ruleList);
+            }
+          else if( goal instanceof Polylist )
+            {
+              Polylist goalAsList = (Polylist)goal;
+              
+              assert goalAsList.nonEmpty();
+              
+              assert goalAsList.first() instanceof String;
+              
+              assert lhs instanceof Polylist;
+              
+              String functor = (String)goalAsList.first();
+              
+              Polylist lhsAsList = (Polylist)lhs;
+              
+              if( functor.equals(lhsAsList.first()) )
                 {
                   // Fill in variables with their given numeric values.
-                  rhs = setVars((Polylist) goal, (Polylist) lhs, rhs);
+                  rhs = setVars(goalAsList, lhsAsList, rhs);
 
                   //System.out.println(" rhs after setVars " + rhs);
 
@@ -645,7 +681,7 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
                               // FIX: Replace this with a more sound mechanism.
 
                               Object arg = P.second();
-                              if( arg instanceof Number && ((Number) arg).intValue() < 0 )
+                              if( arg instanceof Number && ((Number) arg).intValue() <= 0 )
                                 {
                                   valid = false;
                                   //System.out.println("abandoning: " + rhs);
@@ -657,40 +693,14 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
 
                   if( valid )
                     {
-                      Object wt = evaluate(rule.fourth());
-                      if( wt instanceof Number )
-                        {
-                          Double weight = ((Number) wt).doubleValue();
-                          if( weight >= 0 )
-                            {
-                              ruleList.add(new WeightedRHS(rhs, weight));
-                            }
-                        }
-                      else
-                        {
-                          ErrorLog.log(ErrorLog.WARNING, "Invalid weight in grammar rule: " + rule);
-                        }
+                      addToList(rhs, rule.fourth(), ruleList);
                     }
                 }
             }
           else
             {
-              // goal is not Polylist
-              Object wt = evaluate(rule.fourth());
-              if( wt instanceof Number )
-                {
-                  // This RHS element is not a string. Just carry it and hope for the best!
-                  // It is probably an S-expression such as (slope M N ...)
-                  Double weight = ((Number) wt).doubleValue();
-                  if( weight >= 0 )
-                    {
-                      ruleList.add(new WeightedRHS(rhs, weight));
-                    }
-                }
-              else
-                {
-                  ErrorLog.log(ErrorLog.WARNING, "Invalid weight in grammar rule: " + rule);
-                }
+              // goal is not Polylist. Can this happen?
+              addToList(rhs, rule.fourth(), ruleList);
             }
           //Otherwise ignore, as it may be a parameter, etc.
         }
