@@ -204,5 +204,10 @@ public boolean playMe(double swingVal, int loopCount, double tempo)
                          0, 
                          notate.getTransposition())
             .execute();
+    
+     while( !synth.finishedPlaying() )
+      {
+      // Busy-wait          
+      }
     }
 }
