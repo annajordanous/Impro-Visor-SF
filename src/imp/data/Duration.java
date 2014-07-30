@@ -250,4 +250,131 @@ public static int default_numerator = 8;	// eighth note default
 //System.out.println("item = " + item + ", duration = " + duration);
     return duration;
     }    
+  
+   /**
+   * Determines whether item is a valid duration string.
+   */
+  
+  public static boolean isDuration(String item)
+    {
+    int len = item.length();
+    int index = 0;
+    if( len == 0 || !Character.isDigit(item.charAt(index)) )
+      {
+      return false;
+      }
+    
+    // Check for zero
+    // by trying to convert to a number.
+    // If conversion is unsuccessful or value is 0, false will be returned
+    
+    int value = 1;
+    try 
+      {
+        value = Integer.parseInt(item);
+      }
+    catch (Exception ex )
+      {
+      }
+    
+    if( value == 0 )
+      {
+        return false;
+      }
+
+    int duration = 0;
+    boolean firsttime = true;
+
+    // Example of input is 2.+8/3+32 meaning the value of a dotted halfnote
+    // eighth note triplet, and 32nd note.
+    // Note that there is no + to start with.
+
+    while( index < len && ((item.charAt(index) == PLUS) || firsttime || (item.charAt(index) == 'u')) )
+      {
+      int numerator;
+      int denominator = 1;
+      int this_duration;
+
+      if( firsttime )
+        {
+        firsttime = false; // no leading +
+        }
+      else
+        {
+        index++;		  // skip infix +'s
+        }
+
+      boolean hasDigit = false;
+
+      // Accumulate digits part
+      StringBuilder dur = new StringBuilder();
+      while( index < len && Character.isDigit(item.charAt(index)) )
+        {
+        hasDigit = true;
+        dur.append(item.charAt(index));
+        index++;
+        }
+
+      if( hasDigit )
+        {
+        numerator = new Integer(dur.toString()).intValue();
+        }
+      else
+        {
+        numerator = default_numerator;
+        }
+
+      int slots = WHOLE;  // 1 whole note = 4 quarter  notes
+
+      // Check for tuplet
+      if( index < len && item.charAt(index) == SLASH )
+        {
+        index++;
+        if( index >= len || !Character.isDigit(item.charAt(index)) )
+          {
+          return false;
+          }
+
+        StringBuilder tuplet = new StringBuilder();
+        while( index < len && Character.isDigit(item.charAt(index)) )
+          {
+          tuplet.append((Character)item.charAt(index));
+          index++;
+          }
+
+        denominator = new Integer(tuplet.toString()).intValue();
+        }
+
+      if( denominator > 1 )
+        {
+        slots *= (denominator - 1); // was 2
+        }
+
+      this_duration = slots / (numerator * denominator);
+
+      // Handle dotted notes, which add to individual duration.
+      
+      int increment = this_duration;
+
+      while( index < len && item.charAt(index) == DOT )
+        {
+        increment /= 2;
+        this_duration += increment;
+        index++;
+        }
+
+      duration += this_duration;
+      }
+
+    if( index < len )
+      {
+      return false;
+      }
+
+    if( duration <= 0 )
+      {
+      return false;
+      }
+    return true;
+    }    
 }
