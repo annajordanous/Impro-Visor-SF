@@ -317,13 +317,10 @@ public boolean isAbstractNote(Object ob)
         default:
             return false;
       }
-    try{
-        return getDuration(rest) > 0;
-        }
-    catch( Exception e )
-      {
-      }
-    return false;
+        //System.out.print("string = " + string);
+        boolean isDuration  = Duration.isDuration(rest);
+        //System.out.println(" isAbstractNote = " + isDuration);
+        return  isDuration;
   }
 
 public boolean isTerminalSpecifiedInFile(Object ob)
@@ -354,7 +351,7 @@ public boolean isWrappedTerminal(Object ob)
         return false;
       }
     
-    return  isTerminalSpecifiedInFile(oblist.first());
+    return  isAbstractNote(oblist.first()); //isTerminalSpecifiedInFile(oblist.first());
   }
 
 public static boolean isSlope(Object ob)
@@ -508,7 +505,7 @@ private void addToList(Polylist rhs, Object wtExp, ArrayList<WeightedRHS> ruleLi
   if( wt instanceof Number )
     {
       Double weight = ((Number) wt).doubleValue();
-      if( weight > 0 )
+      if( weight >= 0 )
         {
           ruleList.add(new WeightedRHS(rhs, weight));
         }
@@ -547,18 +544,18 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
        
         if( !isTerminal(goal) )
           {
-            //System.out.println("not a terminal: " + goal);
+            //x System.out.println("not a terminal: " + goal);
             break;
           }
         
         if( isWrappedTerminal(goal) )
           {
-            //System.out.println("wrappedTerminal: " + goal);
+            //x System.out.println("wrappedTerminal: " + goal);
             accumulator = accumulator.cons(((Polylist) goal).first());
           }
         else
           {
-            //System.out.println("terminal: " + goal);
+            //x System.out.println("terminal: " + goal);
             accumulator = accumulator.cons(goal);
           }
       }
@@ -582,11 +579,18 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
 
     Polylist search = rules;
     
-    //System.out.println("goal = " + goal);
+    //x System.out.println("goal = " + goal);
 
     // Search through and find all rules that apply to the non-terminal pop.
  
-    while( search.nonEmpty() )
+    Polylist goalAsList = (Polylist)goal;
+            
+    if( goalAsList.first().equals(startSymbol) 
+    &&  (((Number)goalAsList.second()).longValue() <= 0) )
+      {
+        //x System.out.println("Base case is goal");
+      }
+    else while( search.nonEmpty() )
       {
       // Next is the next rule to which to compare.
       Polylist rule = (Polylist) search.first();
@@ -596,7 +600,7 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
       /*
        * RULEs and BASEs have the following S-expression format:
        * (<keyword> (<LHS symbol>) (<RHS>) weight)
-       * <keyword> can be RULE or BASE
+       * <keyword> can be "rule" or "base"
        * <LHS symbol> can be a string or a polylist of strings
        * <RHS> is a polylist of symbols (or if it's a RULE, some expressions
        *	to evaluate).
@@ -621,7 +625,8 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
             }
         }
       // Most objects will have type RULE.
-      else if( type.equals(RULE) && rule.length() == 4 )
+      else 
+      if( type.equals(RULE) && rule.length() == 4 )
         {
           //System.out.println("\nrule = " + rule);
           Object lhs = rule.second();
@@ -639,7 +644,7 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
             }
           else if( goal instanceof Polylist )
             {
-              Polylist goalAsList = (Polylist)goal;
+//              Polylist goalAsList = (Polylist)goal;
               
               assert goalAsList.nonEmpty();
               
@@ -656,6 +661,8 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
                   // Fill in variables with their given numeric values.
                   rhs = setVars(goalAsList, lhsAsList, rhs);
 
+                  if( rhs != null )
+                    {
                   //System.out.println(" rhs after setVars " + rhs);
 
                   // Evaluate any expressions that need to be evaluated.
@@ -663,39 +670,41 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
 
                   //System.out.println(" rhs after evaluation " + rhs);
 
-                  // Check for negative arguments in RHS,
-                  // In which case don't use RHS
-                  boolean valid = true;
-                  PolylistEnum L = rhs.elements();
-                  while( L.hasMoreElements() )
-                    {
-                      Object ob = L.nextElement();
-                      if( ob instanceof Polylist )
-                        {
-                          Polylist P = (Polylist) ob;
-
-                          if( P.length() == 2 && P.first().equals(startSymbol) )
-                            {
-                              // We found the start symbol on the RHS.
-                              // Only pass it if argument is non-negative.
-                              // FIX: Replace this with a more sound mechanism.
-
-                              Object arg = P.second();
-                              if( arg instanceof Number && ((Number) arg).intValue() <= 0 )
-                                {
-                                  valid = false;
-                                  //System.out.println("abandoning: " + rhs);
-                                  break;
-                                }
-                            }
-                        }
-                    } // while
-
-                  if( valid )
-                    {
+//                  // Check for negative arguments in RHS,
+//                  // In which case don't use RHS
+//                  boolean valid = true;
+//                  PolylistEnum L = rhs.elements();
+//                  Polylist rebuilt = Polylist.nil;
+//                  while( L.hasMoreElements() )
+//                    {
+//                      Object ob = L.nextElement();
+//                      if( ob instanceof Polylist )
+//                        {
+//                          Polylist P = (Polylist) ob;
+//
+//                          if( P.length() == 2 
+//                           && P.first().equals(startSymbol)
+//                           && P.second() instanceof Number
+//                           && ((Number)P.second()).intValue() < 0 )
+//                            {
+//                                  //valid = false;
+//                                  System.out.println("base case: " + rhs);
+//                                  valid = false;
+//                            }
+//                          else
+//                            {
+//                              rebuilt = rebuilt.cons(ob);
+//                            }
+//                        }
+//                    } // while
+//
+//                  if( valid && rebuilt.nonEmpty() )
+//                    {
+                  
                       addToList(rhs, rule.fourth(), ruleList);
                     }
                 }
+            
             }
           else
             {
@@ -748,11 +757,11 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
       }
     if( chosen == null )
       {
-        //System.out.println("nothing chosen for " + pop);
+        //x System.out.println("nothing chosen for " + goal);
       }
     else
       {
-        //System.out.println("chosen for " + pop + " " + chosen);
+        //x System.out.println("chosen for " + goal + " " + chosen);
         // Move rhs onto gen as a stack.
         Polylist rhs = chosen.getRHS();
 
@@ -768,8 +777,8 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
               {
                 gen = gen.cons(Polylist.list(ob));
               }
-            //System.out.println("gen = " + gen);
           }
+        //x System.out.println("gen = " + gen);
         //return gen;
       }
 
@@ -924,32 +933,45 @@ public void clear()
 
 /**
  * Set all instances of variables in toSet corresponding value in getValsFrom.
+ * This is a unilateral unification.
  */
 
 private Polylist setVars(Polylist getValsFrom, 
                          Polylist getVarsFrom,
                          Polylist toSet)
   {
-  // skip first element (why?)
-  getVarsFrom = getVarsFrom.rest();
-  getValsFrom = getValsFrom.rest();
-  while( getVarsFrom.nonEmpty() && getValsFrom.nonEmpty() )
+  // skip first element, which is a functor
+  Polylist vars = getVarsFrom.rest();
+  Polylist vals = getValsFrom.rest();
+  while( vars.nonEmpty() && vals.nonEmpty() )
     {
-      Object var = null;
-      Object val = null;
-      try
+      Object var = vars.first();
+      Object val = vals.first();
+      if( (var instanceof Number) && (val instanceof Number) )
         {
-        var = getVarsFrom.first().toString();
-        val = (Number)getValsFrom.first();
+          if( ((Number)var).longValue() != ((Number)val).longValue() )
+            {
+              return null;  // not unifiable
+            }
+        }
+      else if( (var instanceof String) && (val instanceof Number) )
+        {
         toSet = replace(var.toString(), ((Number)val).longValue(), toSet);
         }
-      catch( Exception e )
+      else if( (var instanceof String) && (val instanceof String) )
         {
-        ErrorLog.log(ErrorLog.SEVERE, "Cannot set variable " + var + " to " + val);
-        return toSet;
+          if( !var.equals(val ) )
+            {
+             return null;  // not unifiable  
+            }
         }
-      getVarsFrom = getVarsFrom.rest();
-      getValsFrom = getValsFrom.rest();
+      else
+        {
+          return null; // not unifiable
+        }
+
+      vars = vars.rest();
+      vals = vals.rest();
     }
   return toSet;
   }
@@ -1113,7 +1135,7 @@ private Object evaluateBuiltin(Object arg1, Object arg2)
             return ZERO;
           }
         
-        return families.member(currentChord.getFamily()) ? ONE : ZERO;
+        return families.member(currentChord.getFamily()) ? ONE : 0.1;
       }
     // Is evaluable of the form (builtin brick <brickname>)
     if( BRICK.equals(arg1) )
@@ -1146,7 +1168,7 @@ private Object evaluateBuiltin(Object arg1, Object arg2)
        //System.out.println("At slot " + chordSlot 
        //           + " brickname " + brickname + " doesn't match " + blockName);
        
-       return ZERO;
+       return 0.1; //ZERO;
        }
     MelodyPart melody = notate.getCurrentMelodyPart();    
     MelodyPart currMelody = melody.extract(currentSlot - LENGTH_OF_TRADE, currentSlot);
@@ -1248,7 +1270,7 @@ private Polylist replace(String varName, Long value, Polylist toReplace)
       }
     L = L.rest();
     }
-
+  //System.out.println("replace var " + varName + " with " + value + " in " + toReplace + " giving " + toReturn.reverse());
   return toReturn.reverse();
   }
 
@@ -1280,28 +1302,10 @@ class WeightedRHS
   @Override
   public String toString()
     {
-      StringBuilder buffer = new StringBuilder();
-      buffer.append("weight ");
-      buffer.append(weight);
-      if( rhs instanceof Polylist )
-        {
-          Polylist rhspl = (Polylist)rhs;
-          if( rhspl.isEmpty() )
-            {
-              buffer.append(" ()");
-            }
-          else
-            {
-              buffer.append(" (");
-              buffer.append(rhspl.first());
-              if( !rhspl.rest().isEmpty() )
-                {
-                  buffer.append(" ...");
-                }
-              buffer.append(")");
-            }         
-        }
-      return buffer.toString();
+      Polylist rhsList = (Polylist)rhs;
+      return "weight " + weight 
+           + " dur " + getDurationAbstractMelody(rhsList) + " " 
+           + rhsList;
     }
   }
 }
