@@ -66,6 +66,7 @@ import javax.swing.Action;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
@@ -226,6 +227,16 @@ public class TransformPanel extends javax.swing.JPanel {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
+        transformationsFunctionDialogue = new javax.swing.JDialog();
+        functionTypeSelectionPanel = new javax.swing.JPanel();
+        booleanReturnButton = new javax.swing.JButton();
+        noteReturnButton = new javax.swing.JButton();
+        otherReturnButton = new javax.swing.JButton();
+        anyReturnButton = new javax.swing.JButton();
+        documentationPane = new javax.swing.JScrollPane();
+        documentationPanel = new javax.swing.JPanel();
+        functionNamePane = new javax.swing.JScrollPane();
+        functionNamePanel = new javax.swing.JPanel();
         selectSubstitutionsButtonsPanel = new javax.swing.JPanel();
         createNewSubstitutionsFileButton = new javax.swing.JButton();
         openSubstitutionsFileButton = new javax.swing.JButton();
@@ -245,11 +256,11 @@ public class TransformPanel extends javax.swing.JPanel {
         substitutionFromLabel = new javax.swing.JLabel();
         subsScrollPane = new javax.swing.JScrollPane();
         subJTable = new javax.swing.JTable();
-        jPanel1 = new javax.swing.JPanel();
+        totalMotifWeightsPanel = new javax.swing.JPanel();
         motifTotalLabel = new javax.swing.JLabel();
         scaleMotifWeightsButton = new javax.swing.JButton();
         motifTotalWeightValueLabel = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
+        totalEmbWeightsPanel = new javax.swing.JPanel();
         scaleEmbWeightsButton = new javax.swing.JButton();
         embTotalLabel = new javax.swing.JLabel();
         embTotalWeightValueLabel = new javax.swing.JLabel();
@@ -260,14 +271,77 @@ public class TransformPanel extends javax.swing.JPanel {
         deleteTransformationButton = new javax.swing.JButton();
         transScrollPane = new javax.swing.JScrollPane();
         transJTable = new javax.swing.JTable();
-        jPanel3 = new javax.swing.JPanel();
+        totalTransformationsWeightsPanel = new javax.swing.JPanel();
         scaleTransWeightsButton = new javax.swing.JButton();
         transTotalWeightValueLabel = new javax.swing.JLabel();
         transTotalLabel = new javax.swing.JLabel();
+        transformationsFunctionsPanel = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
         playbackPanel = new javax.swing.JPanel();
         substitutorPlayLeadsheetButton = new javax.swing.JButton();
         substitutorStopLeadsheetButton = new javax.swing.JButton();
         substitutorSaveLeadsheetButton = new javax.swing.JButton();
+
+        transformationsFunctionDialogue.setTitle("Transformation Functions");
+        transformationsFunctionDialogue.getContentPane().setLayout(new java.awt.GridBagLayout());
+
+        functionTypeSelectionPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Function Return Types", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 12))); // NOI18N
+        functionTypeSelectionPanel.setMinimumSize(new java.awt.Dimension(175, 61));
+        functionTypeSelectionPanel.setPreferredSize(new java.awt.Dimension(175, 61));
+        functionTypeSelectionPanel.setLayout(new java.awt.GridBagLayout());
+
+        booleanReturnButton.setText("Boolean");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        functionTypeSelectionPanel.add(booleanReturnButton, gridBagConstraints);
+
+        noteReturnButton.setText("Note");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(8, 0, 9, 0);
+        functionTypeSelectionPanel.add(noteReturnButton, gridBagConstraints);
+
+        otherReturnButton.setText("Other / Not Determinable");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        functionTypeSelectionPanel.add(otherReturnButton, gridBagConstraints);
+
+        anyReturnButton.setText("All");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(9, 0, 0, 0);
+        functionTypeSelectionPanel.add(anyReturnButton, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.5;
+        transformationsFunctionDialogue.getContentPane().add(functionTypeSelectionPanel, gridBagConstraints);
+
+        documentationPane.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Function Documentation", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
+        documentationPane.setViewportView(documentationPanel);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        transformationsFunctionDialogue.getContentPane().add(documentationPane, gridBagConstraints);
+
+        functionNamePane.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Function Names", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
+        functionNamePane.setViewportView(functionNamePanel);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 2.0;
+        gridBagConstraints.weighty = 1.0;
+        transformationsFunctionDialogue.getContentPane().add(functionNamePane, gridBagConstraints);
 
         setLayout(new java.awt.GridBagLayout());
 
@@ -451,9 +525,9 @@ public class TransformPanel extends javax.swing.JPanel {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 5;
+        gridBagConstraints.gridwidth = 6;
         gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 7);
@@ -583,15 +657,15 @@ public class TransformPanel extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(8, 6, 0, 6);
         substitutionsPanel.add(subsScrollPane, gridBagConstraints);
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Motif Weights", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 12))); // NOI18N
-        jPanel1.setMinimumSize(new java.awt.Dimension(200, 50));
-        jPanel1.setLayout(new java.awt.GridBagLayout());
+        totalMotifWeightsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Motif Weights", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 12))); // NOI18N
+        totalMotifWeightsPanel.setMinimumSize(new java.awt.Dimension(200, 51));
+        totalMotifWeightsPanel.setLayout(new java.awt.GridBagLayout());
 
         motifTotalLabel.setText("Total: ");
         motifTotalLabel.setMaximumSize(new java.awt.Dimension(35, 14));
         motifTotalLabel.setMinimumSize(new java.awt.Dimension(35, 20));
         motifTotalLabel.setPreferredSize(new java.awt.Dimension(35, 20));
-        jPanel1.add(motifTotalLabel, new java.awt.GridBagConstraints());
+        totalMotifWeightsPanel.add(motifTotalLabel, new java.awt.GridBagConstraints());
 
         scaleMotifWeightsButton.setText("Scale All");
         scaleMotifWeightsButton.setToolTipText("scale all the weights of substitutions currently labeled as motifs");
@@ -605,25 +679,26 @@ public class TransformPanel extends javax.swing.JPanel {
         gridBagConstraints.gridy = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
-        jPanel1.add(scaleMotifWeightsButton, gridBagConstraints);
+        totalMotifWeightsPanel.add(scaleMotifWeightsButton, gridBagConstraints);
 
-        motifTotalWeightValueLabel.setMinimumSize(new java.awt.Dimension(70, 20));
-        motifTotalWeightValueLabel.setPreferredSize(new java.awt.Dimension(70, 20));
+        motifTotalWeightValueLabel.setMinimumSize(new java.awt.Dimension(60, 20));
+        motifTotalWeightValueLabel.setPreferredSize(new java.awt.Dimension(60, 20));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
-        jPanel1.add(motifTotalWeightValueLabel, gridBagConstraints);
+        totalMotifWeightsPanel.add(motifTotalWeightValueLabel, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        substitutionsPanel.add(jPanel1, gridBagConstraints);
+        gridBagConstraints.weightx = 1.0;
+        substitutionsPanel.add(totalMotifWeightsPanel, gridBagConstraints);
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Embellishment Weights", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 12))); // NOI18N
-        jPanel2.setMinimumSize(new java.awt.Dimension(200, 50));
-        jPanel2.setLayout(new java.awt.GridBagLayout());
+        totalEmbWeightsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Embellishment Weights", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 12))); // NOI18N
+        totalEmbWeightsPanel.setMinimumSize(new java.awt.Dimension(200, 51));
+        totalEmbWeightsPanel.setLayout(new java.awt.GridBagLayout());
 
         scaleEmbWeightsButton.setText("Scale All");
         scaleEmbWeightsButton.setToolTipText("scale all the weights of substitutions currently labeled as embellishments");
@@ -637,7 +712,7 @@ public class TransformPanel extends javax.swing.JPanel {
         gridBagConstraints.gridy = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
-        jPanel2.add(scaleEmbWeightsButton, gridBagConstraints);
+        totalEmbWeightsPanel.add(scaleEmbWeightsButton, gridBagConstraints);
 
         embTotalLabel.setText("Total: ");
         embTotalLabel.setMaximumSize(new java.awt.Dimension(35, 14));
@@ -646,21 +721,22 @@ public class TransformPanel extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        jPanel2.add(embTotalLabel, gridBagConstraints);
+        totalEmbWeightsPanel.add(embTotalLabel, gridBagConstraints);
 
-        embTotalWeightValueLabel.setMinimumSize(new java.awt.Dimension(70, 20));
-        embTotalWeightValueLabel.setPreferredSize(new java.awt.Dimension(70, 20));
+        embTotalWeightValueLabel.setMinimumSize(new java.awt.Dimension(60, 20));
+        embTotalWeightValueLabel.setPreferredSize(new java.awt.Dimension(60, 20));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
-        jPanel2.add(embTotalWeightValueLabel, gridBagConstraints);
+        totalEmbWeightsPanel.add(embTotalWeightValueLabel, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 4;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        substitutionsPanel.add(jPanel2, gridBagConstraints);
+        gridBagConstraints.weightx = 1.0;
+        substitutionsPanel.add(totalEmbWeightsPanel, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -683,7 +759,7 @@ public class TransformPanel extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.gridwidth = 6;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.weightx = 1.0;
@@ -702,6 +778,7 @@ public class TransformPanel extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.weightx = 1.0;
@@ -718,8 +795,9 @@ public class TransformPanel extends javax.swing.JPanel {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.weightx = 1.0;
@@ -736,8 +814,9 @@ public class TransformPanel extends javax.swing.JPanel {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.weightx = 1.0;
@@ -775,7 +854,7 @@ public class TransformPanel extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.gridwidth = 6;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.weightx = 1.0;
@@ -783,9 +862,10 @@ public class TransformPanel extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(8, 6, 0, 6);
         transformationsPanel.add(transScrollPane, gridBagConstraints);
 
-        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Transformation Weights", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 12))); // NOI18N
-        jPanel3.setMinimumSize(new java.awt.Dimension(200, 50));
-        jPanel3.setLayout(new java.awt.GridBagLayout());
+        totalTransformationsWeightsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Transformation Weights", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 12))); // NOI18N
+        totalTransformationsWeightsPanel.setMinimumSize(new java.awt.Dimension(190, 51));
+        totalTransformationsWeightsPanel.setPreferredSize(new java.awt.Dimension(190, 51));
+        totalTransformationsWeightsPanel.setLayout(new java.awt.GridBagLayout());
 
         scaleTransWeightsButton.setText("Scale All");
         scaleTransWeightsButton.setToolTipText("scale all the weights of transformations in the currently selected substitution");
@@ -799,14 +879,14 @@ public class TransformPanel extends javax.swing.JPanel {
         gridBagConstraints.gridy = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
-        jPanel3.add(scaleTransWeightsButton, gridBagConstraints);
+        totalTransformationsWeightsPanel.add(scaleTransWeightsButton, gridBagConstraints);
 
-        transTotalWeightValueLabel.setMinimumSize(new java.awt.Dimension(70, 20));
-        transTotalWeightValueLabel.setPreferredSize(new java.awt.Dimension(70, 20));
+        transTotalWeightValueLabel.setMinimumSize(new java.awt.Dimension(60, 20));
+        transTotalWeightValueLabel.setPreferredSize(new java.awt.Dimension(60, 20));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
-        jPanel3.add(transTotalWeightValueLabel, gridBagConstraints);
+        totalTransformationsWeightsPanel.add(transTotalWeightValueLabel, gridBagConstraints);
 
         transTotalLabel.setText("Total: ");
         transTotalLabel.setMaximumSize(new java.awt.Dimension(35, 14));
@@ -815,14 +895,34 @@ public class TransformPanel extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        jPanel3.add(transTotalLabel, gridBagConstraints);
+        totalTransformationsWeightsPanel.add(transTotalLabel, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        transformationsPanel.add(jPanel3, gridBagConstraints);
+        transformationsPanel.add(totalTransformationsWeightsPanel, gridBagConstraints);
+
+        transformationsFunctionsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Transformations Functions", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 12))); // NOI18N
+        transformationsFunctionsPanel.setMinimumSize(new java.awt.Dimension(80, 51));
+        transformationsFunctionsPanel.setPreferredSize(new java.awt.Dimension(80, 51));
+        transformationsFunctionsPanel.setLayout(new java.awt.GridBagLayout());
+
+        jButton1.setText("Show Function Documentation");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        transformationsFunctionsPanel.add(jButton1, new java.awt.GridBagConstraints());
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        transformationsPanel.add(transformationsFunctionsPanel, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
@@ -1094,26 +1194,38 @@ public class TransformPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_scaleTransWeightsButtonActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        notate.openHelpDialog();
+        notate.helpDialog.showTransformationDocs();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel SubstitutorParametersPanel;
     private javax.swing.JButton addSubsFromOtherFileButton;
+    private javax.swing.JButton anyReturnButton;
     private javax.swing.JButton applySubstitutionsButton;
+    private javax.swing.JButton booleanReturnButton;
     private javax.swing.JButton cleanTransformButton;
     private javax.swing.JButton createNewSubstitutionButton;
     private javax.swing.JButton createNewSubstitutionsFileButton;
     private javax.swing.JButton createNewTransformationButton;
     private javax.swing.JButton deleteSubstitutionButton;
     private javax.swing.JButton deleteTransformationButton;
+    private javax.swing.JScrollPane documentationPane;
+    private javax.swing.JPanel documentationPanel;
     private javax.swing.JButton editSelectedTransformationButton;
     private javax.swing.JButton editSubstitutionNameButton;
     private javax.swing.JLabel embTotalLabel;
     private javax.swing.JLabel embTotalWeightValueLabel;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
+    private javax.swing.JScrollPane functionNamePane;
+    private javax.swing.JPanel functionNamePanel;
+    private javax.swing.JPanel functionTypeSelectionPanel;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel motifTotalLabel;
     private javax.swing.JLabel motifTotalWeightValueLabel;
+    private javax.swing.JButton noteReturnButton;
     private javax.swing.JButton openSubstitutionsFileButton;
+    private javax.swing.JButton otherReturnButton;
     private javax.swing.JPanel playbackPanel;
     private javax.swing.JButton reapplySubstitutionsButton;
     private javax.swing.JButton revertSubstitutionsButton;
@@ -1130,11 +1242,16 @@ public class TransformPanel extends javax.swing.JPanel {
     private javax.swing.JCheckBox substitutorRectifyCheckBox;
     private javax.swing.JButton substitutorSaveLeadsheetButton;
     private javax.swing.JButton substitutorStopLeadsheetButton;
+    private javax.swing.JPanel totalEmbWeightsPanel;
+    private javax.swing.JPanel totalMotifWeightsPanel;
+    private javax.swing.JPanel totalTransformationsWeightsPanel;
     private javax.swing.JTable transJTable;
     private javax.swing.JScrollPane transScrollPane;
     private javax.swing.JLabel transTotalLabel;
     private javax.swing.JLabel transTotalWeightValueLabel;
     private javax.swing.JLabel transformationSubstitutionNameLabel;
+    private javax.swing.JDialog transformationsFunctionDialogue;
+    private javax.swing.JPanel transformationsFunctionsPanel;
     private javax.swing.JPanel transformationsPanel;
     private javax.swing.JPanel useSubstitutionsButtonsPanel;
     // End of variables declaration//GEN-END:variables
