@@ -203,8 +203,15 @@ public Polylist run(int startSlot, int numSlots, Notate myNotate)
                 // System.out.println("gen = " + gen);  // Shows rhs.
                 gen = applyRules(gen);
 
+                if( gen == null )
+                  {
+                  throw new RuleApplicationException();
+                  //return null;
+                  }
+                
                 accumulateTerminals();
               }
+            accumulateTerminals();
             return terminalString;
           }
         catch( RuleApplicationException e )
@@ -532,69 +539,54 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
         return null;
       }
 
+     Object pop = gen.first();
+
+     gen = gen.rest();
+
     // Accumulate any terminal values.
 
     accumulator = Polylist.nil;
-    Object goal = null;
-    //System.out.println("gen before accumulation: " + gen);
-    while( gen.nonEmpty() )
-      {
-        goal = gen.first();
-        gen = gen.rest();
        
-        if( !isTerminal(goal) )
+      while( isScaleDegree(pop) || isSlope(pop) || isTriadic(pop) || isTerminal(pop) || isWrappedTerminal(pop))
           {
-            //x System.out.println("not a terminal: " + goal);
-            break;
-          }
-        
-        if( isWrappedTerminal(goal) )
+          if( isWrappedTerminal(pop) )
           {
-            //x System.out.println("wrappedTerminal: " + goal);
-            accumulator = accumulator.cons(((Polylist) goal).first());
+              accumulator = accumulator.cons(((Polylist)pop).first());
           }
         else
           {
-            //x System.out.println("terminal: " + goal);
-            accumulator = accumulator.cons(goal);
+            accumulator = accumulator.cons(pop);
           }
-      }
     
-    //System.out.println("gen after accumulation: " + gen);
-    //System.out.println("accumulator: " + accumulator);
-    
+           if( gen.isEmpty() )
+            {
     accumulateTerminals();
-    
-    if( isTerminal(goal) || isWrappedTerminal(goal) )
-      {
-        // The reason for leaving the loop was that gen became empty;
         return gen;
       }
 
-    // All applicable rhs RHS's (and their corresponding weights)
-    // get loaded into these lists, to be selected from at random.
+          pop = gen.first();
+          gen = gen.rest();
+        }
 
-    ArrayList<WeightedRHS> ruleList = new ArrayList<WeightedRHS>();
-    ArrayList<WeightedRHS> baseList = new ArrayList<WeightedRHS>();
+      accumulateTerminals();
+
+      // All applicable rules (and their corresponding weights)
+      // get loaded into these arrays, to be selected from at random.
+      ArrayList<Polylist> ruleArray = new ArrayList<Polylist>(5);
+      ArrayList<Polylist> baseArray = new ArrayList<Polylist>(5);
+      ArrayList<Double> ruleWeights = new ArrayList<Double>(5);
+      ArrayList<Double> baseWeights = new ArrayList<Double>(5);
 
     Polylist search = rules;
     
-    //x System.out.println("goal = " + goal);
-
-    // Search through and find all rules that apply to the non-terminal pop.
- 
-    Polylist goalAsList = (Polylist)goal;
-            
-    if( goalAsList.first().equals(startSymbol) 
-    &&  (((Number)goalAsList.second()).longValue() <= 0) )
+      // Now search through and find all rules that apply to the given start symbol.
+      // Note that a start symbol can be a polylist.
+      while( search.nonEmpty() )
       {
-        //x System.out.println("Base case is goal");
-      }
-    else while( search.nonEmpty() )
-      {
-      // Next is the next rule to which to compare.
-      Polylist rule = (Polylist) search.first();
-      String type = (String) rule.first();
+        // Next is the next rule to compare to
+        Polylist next = (Polylist)search.first();
+        String type = (String)next.first();
+        //System.out.println("\nnext = " + next);
 
       //System.out.println("matching LHS " + goal);
       /*
@@ -612,25 +604,25 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
       // If a lhs matches both a RULE and a BASE, it will always choose the BASE.
       // This basically short-circuits any computation and provides an easy way
       // to find base cases.
-
-      if( type.equals(BASE) && rule.length() == 4 )
+        if( type.equals(BASE) && next.length() == 4 )
         {
-          //System.out.println("\nbase = " + rule);
-          Object lhs = rule.second();
-          Polylist rhs = (Polylist) rule.third();
+          //System.out.println("\nbase = " + next);
+          Object symbol = next.second();
+          Polylist derivation = (Polylist)next.third();
 
-          if( goal.equals(lhs) )
+          if( pop.equals(symbol) )
             {
-              addToList(rhs, rule.fourth(), baseList);
+            baseArray.add(derivation);
+            Number weight = (Number)evaluate(next.fourth());
+            baseWeights.add(weight.doubleValue());
             }
         }
       // Most objects will have type RULE.
-      else 
-      if( type.equals(RULE) && rule.length() == 4 )
+        else if( type.equals(RULE) && next.length() == 4 )
         {
-          //System.out.println("\nrule = " + rule);
-          Object lhs = rule.second();
-          Polylist rhs = (Polylist) rule.third();
+          //System.out.println("\nrule = " + next);
+          Object symbol = next.second();
+          Polylist derivation = (Polylist)next.third();
 
           //System.out.println(" rhs before evaluation  " + rhs);
 
@@ -638,134 +630,140 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
           // rhs.  All additional symbols will contain information.
           //System.out.println("pop = " + pop);
 
-          if( goal.equals(lhs) )
+          if( pop instanceof Polylist && ((Polylist)pop).first() instanceof String )
             {
-              addToList(rhs, rule.fourth(), ruleList);
-            }
-          else if( goal instanceof Polylist )
+            if( ((String)((Polylist)pop).first()).equals(((Polylist)symbol).first()) )
             {
-//              Polylist goalAsList = (Polylist)goal;
+              // Fill in variables with their given numeric values.
+              derivation = setVars((Polylist)pop, (Polylist)symbol, derivation);
               
-              assert goalAsList.nonEmpty();
-              
-              assert goalAsList.first() instanceof String;
-              
-              assert lhs instanceof Polylist;
-              
-              String functor = (String)goalAsList.first();
-              
-              Polylist lhsAsList = (Polylist)lhs;
-              
-              if( functor.equals(lhsAsList.first()) )
+              if( derivation == null )
                 {
-                  // Fill in variables with their given numeric values.
-                  rhs = setVars(goalAsList, lhsAsList, rhs);
+                        search = search.rest();
+                        continue;
+                }
+              
+              //System.out.println(" derivation after setVars " + derivation);
+              
+              // Evaluate any expressions that need to be evaluated.
+              derivation = (Polylist)evaluate(derivation);
+              
+              //System.out.println(" derivation after evaluation " + derivation);
+              
+              // Check for negative arguments in RHS,
+              // In which case don't use RHS
+              boolean valid = true;
+              PolylistEnum L = derivation.elements();
+              while( L.hasMoreElements() )
+              {
+                Object ob = L.nextElement();
+                if( ob instanceof Polylist )
+                {
+                  Polylist P = (Polylist)ob;
+              
+                  if( P.length() == 2 && P.first().equals(startSymbol) ) 
+                {
+                  // We found the start symbol on the RHS.
+                  // Only pass it if argument is non-negative.
+                  // FIX: Replace this with a more sound mechanism.
 
-                  if( rhs != null )
+                    Object arg = P.second();
+                    if( arg instanceof Number && ((Number)arg).intValue() < 0 )
                     {
-                  //System.out.println(" rhs after setVars " + rhs);
-
-                  // Evaluate any expressions that need to be evaluated.
-                  rhs = (Polylist) evaluate(rhs);
-
-                  //System.out.println(" rhs after evaluation " + rhs);
-
-//                  // Check for negative arguments in RHS,
-//                  // In which case don't use RHS
-//                  boolean valid = true;
-//                  PolylistEnum L = rhs.elements();
-//                  Polylist rebuilt = Polylist.nil;
-//                  while( L.hasMoreElements() )
-//                    {
-//                      Object ob = L.nextElement();
-//                      if( ob instanceof Polylist )
-//                        {
-//                          Polylist P = (Polylist) ob;
-//
-//                          if( P.length() == 2 
-//                           && P.first().equals(startSymbol)
-//                           && P.second() instanceof Number
-//                           && ((Number)P.second()).intValue() < 0 )
-//                            {
-//                                  //valid = false;
-//                                  System.out.println("base case: " + rhs);
-//                                  valid = false;
-//                            }
-//                          else
-//                            {
-//                              rebuilt = rebuilt.cons(ob);
-//                            }
-//                        }
-//                    } // while
-//
-//                  if( valid && rebuilt.nonEmpty() )
-//                    {
-                  
-                      addToList(rhs, rule.fourth(), ruleList);
+                      valid = false;
+                      //System.out.println("abandoning: " + derivation);
+                      break;
                     }
                 }
+                }
+              } // while
             
+              if( valid )
+                {
+                Object wt = evaluate(next.fourth());
+                if( wt instanceof Number )
+                  {
+                  Double weight = ((Number)wt).doubleValue();
+                  if( weight > 0 )
+                    {
+                    ruleArray.add(derivation);
+                    ruleWeights.add(weight);
+                    //System.out.println("Adding with weight " + weight + " derivation " + derivation);
+            }
+                  }
+          else
+            {
+                  ErrorLog.log(ErrorLog.WARNING, "Invalid weight in grammar rule: " + next);
+            }
+                }
+              }
             }
           else
             {
-              // goal is not Polylist. Can this happen?
-              addToList(rhs, rule.fourth(), ruleList);
+            Object wt = evaluate(next.fourth());
+            if( wt instanceof Number )
+              {
+              // This RHS element is not a string. Just carry it and hope for the best!
+              // It is probably an S-expression such as (slope M N ...)
+              Double weight = ((Number)wt).doubleValue();
+              if( weight > 0 )
+                {
+                ruleArray.add(derivation);
+                ruleWeights.add(weight);
+                //System.out.println("Adding with weight " + weight + " derivation " + derivation);
+                }
+              }
+            else
+              {
+              ErrorLog.log(ErrorLog.WARNING, "Invalid weight in grammar rule: " + next);
+              }
             }
           //Otherwise ignore, as it may be a parameter, etc.
         }
       search = search.rest();
     }
 
-    // If any base case exists, use it and ignore all rules.
-    ArrayList<WeightedRHS> RHStoUse = baseList.isEmpty() ? ruleList : baseList;
+      // Randomly choose a rule to follow.
+      double total = 0.0;
 
-    // Randomly choose an RHS to follow by summing all weights, then
-    // finding the RHS the normalized weight of which spans a random number.
+      ArrayList<Polylist> rulesList;
+      ArrayList<Double> weightArray;
 
-    WeightedRHS chosen = null;
-
-    //System.out.println("match list size = " + RHStoUse.size() + " for " + pop);
-    double rand = Math.random();
-    double offset = 0.0;
-    double total = 0.0;
-
-    // Compute the total for normalization.
-    for( WeightedRHS wr : RHStoUse )
+      // If any base cases exist, we ignore all rules.
+      if( !baseWeights.isEmpty() )
       {
-        total += wr.getWeight();
+        rulesList = new ArrayList<Polylist>(baseArray);
+        weightArray = new ArrayList<Double>(baseWeights);
       }
-
-
-    // Find the RHS to use.
-    for( WeightedRHS wr : RHStoUse )
+      else
       {
-        double thisWeight = wr.getWeight();
-        double nextOffset = offset + thisWeight / total;
-        if( rand <= nextOffset )
-          {
-            chosen = wr;
-            break;
+        rulesList = new ArrayList<Polylist>(ruleArray);
+        weightArray = new ArrayList<Double>(ruleWeights);
           }
-        offset = nextOffset;
-      }
 
-    int rhsChoices = RHStoUse.size();
+      //System.out.println("rules = " + rules);
     
-    if( chosen == null && rhsChoices > 0 )
+      // Sum up all the weights to use in a weighted average.	    
+      for( int i = 0; i < weightArray.size(); ++i )
       {
-        chosen = RHStoUse.get(rhsChoices - 1);
-      }
-    if( chosen == null )
-      {
-        //x System.out.println("nothing chosen for " + goal);
-      }
-    else
-      {
-        //x System.out.println("chosen for " + goal + " " + chosen);
-        // Move rhs onto gen as a stack.
-        Polylist rhs = chosen.getRHS();
+        total += weightArray.get(i);
 
-        for( Polylist L = rhs; L.nonEmpty(); L = L.rest() )
+        // Generate a random number to find out which rule to use...
+      }
+      double rand = Math.random();
+      double offset = 0.0;
+
+      int weightSize = weightArray.size();
+      // Loop through all rules.
+      for( int i = 0; i < weightSize; ++i )
+      {
+        // If the random number falls between the range of the probability 
+        // for that rule, we choose it and break out of the loop.
+        if( rand >= offset && rand < offset + (weightArray.get(i) / total) )
+      {
+          Polylist rule = rulesList.get(i);
+
+          for( Polylist L = rule; L.nonEmpty(); L = L.rest() )
           {
             Object ob = L.first();
 
@@ -778,9 +776,11 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
                 gen = gen.cons(Polylist.list(ob));
               }
           }
-        //x System.out.println("gen = " + gen);
-        //return gen;
+          return gen;
+          
       }
+        offset += weightArray.get(i) / total;
+        }
 
     return gen; // throw new RuleApplicationException("applyRules, no such rule for " + gen);
   }
