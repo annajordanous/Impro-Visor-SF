@@ -170,48 +170,50 @@ public enum Operators {
   // Idiomatic Java names. You could ignore those if you really want,
   // and overload the constructor to have a parameterless one which calls
   // name() if you really want.
+    
+  // "//" denotes that that function is in the documentation panel
   PRINT_NOTE("print-note"), // only for debugging, not program
-  AND("and"),
-  OR("or"),
-  NOT("not"),
-  IF("if"),
-  EQUALS("="),
-  ABSOLUTE_VALUE("abs"),
-  GR(">"),
-  GR_EQ(">="),
-  LT("<"),
-  LT_EQ("<="),
-  MEMBER("member"),
-  CHORD_EQUALS("chord="),
+  AND("and"),//
+  OR("or"),//
+  NOT("not"),//
+  IF("if"),//
+  EQUALS("="),//
+  ABSOLUTE_VALUE("abs"),//
+  GR(">"),//
+  GR_EQ(">="),//
+  LT("<"),//
+  LT_EQ("<="),//
+  MEMBER("member"),//
+  CHORD_EQUALS("chord="),//
   CHORD_FAMILY("chord-family"),
-  TRIPLET("triplet?"),
-  QUINTUPLET("quintuplet?"),
-  REST("rest?"),
-  DURATION("duration"),
-  DURATION_ADDITION("duration+"),
-  DURATION_SUBTRACTION("duration-"),
-  DURATION_GR("duration>"),
-  DURATION_GR_EQ("duration>="),
-  DURATION_LT("duration<"),
-  DURATION_LT_EQ("duration<="),
-  PITCH_ADDITION("pitch+"),
-  PITCH_SUBTRACTION("pitch-"),
-  PITCH_GR("pitch>"),
-  PITCH_GR_EQ("pitch>="),
-  PITCH_LT("pitch<"),
-  PITCH_LT_EQ("pitch<="),
-  NOTE_CATEGORY("note-category"),
-  RELATIVE_PITCH("relative-pitch"),
-  ABSOLUTE_PITCH("absolute-pitch"),
-  SCALE_DURATION("scale-duration"),
-  NOTE_DURATION_ADDITION("add-duration"),
-  NOTE_DURATION_SUBTRACTION("subtract-duration"),
-  SET_DURATION("set-duration"),
-  SET_RELATIVE_PITCH("set-relative-pitch"),
-  TRANSPOSE_DIATONIC("transpose-diatonic"),
-  TRANSPOSE_CHROMATIC("transpose-chromatic"),
-  MAKE_REST("make-rest"),
-  GET_NOTE("get-note");
+  TRIPLET("triplet?"),//
+  QUINTUPLET("quintuplet?"),//
+  REST("rest?"),//
+  DURATION("duration"),//
+  DURATION_ADDITION("duration+"),//
+  DURATION_SUBTRACTION("duration-"),//
+  DURATION_GR("duration>"),//
+  DURATION_GR_EQ("duration>="),//
+  DURATION_LT("duration<"),//
+  DURATION_LT_EQ("duration<="),//
+  PITCH_ADDITION("pitch+"),//
+  PITCH_SUBTRACTION("pitch-"),//
+  PITCH_GR("pitch>"),//
+  PITCH_GR_EQ("pitch>="),//
+  PITCH_LT("pitch<"),//
+  PITCH_LT_EQ("pitch<="),//
+  NOTE_CATEGORY("note-category"),//
+  RELATIVE_PITCH("relative-pitch"),//
+  ABSOLUTE_PITCH("absolute-pitch"),//
+  SCALE_DURATION("scale-duration"),//
+  NOTE_DURATION_ADDITION("add-duration"),//
+  NOTE_DURATION_SUBTRACTION("subtract-duration"),//
+  SET_DURATION("set-duration"),//
+  SET_RELATIVE_PITCH("set-relative-pitch"),//
+  TRANSPOSE_DIATONIC("transpose-diatonic"),//
+  TRANSPOSE_CHROMATIC("transpose-chromatic"),//
+  MAKE_REST("make-rest"),//
+  GET_NOTE("get-note"); // Only used in transformation.java
 
   public static final Map<String, Operators> nameToValueMap;
 
@@ -722,7 +724,7 @@ public Boolean rest(Polylist evaledArgs)
 public boolean chord_equals(Polylist evaledArgs)
 {
     NoteChordPair pair1 = (NoteChordPair) evaledArgs.first();
-    NoteChordPair pair2 = (NoteChordPair) evaledArgs.first();
+    NoteChordPair pair2 = (NoteChordPair) evaledArgs.second();
     return pair1.chord.getChordSymbol().equals(pair2.chord.getChordSymbol());
 }
 /**
