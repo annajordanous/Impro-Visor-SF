@@ -334,6 +334,11 @@ public DrumRuleDisplay getSelectedRule()
     return curSelectedRule;
   }
 
+public ArrayList<DrumRuleDisplay> getDrumRules()
+{
+    return rules;
+}
+
 
 /**
  * Sets the number in the title to num.
