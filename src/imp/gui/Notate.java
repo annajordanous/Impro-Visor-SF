@@ -13902,7 +13902,7 @@ private MelodyPart makeLick(Polylist rhythm, int start, int stop)
     if( actualSize > desiredSize )
       {
         //System.out.println("makeLick: reducing size from " + actualSize + " to desired " + desiredSize);
-        lick = lick.extract(0, desiredSize-1);
+        lick = lick.extract(0, desiredSize-1, true);
       }
 
     return lick;
