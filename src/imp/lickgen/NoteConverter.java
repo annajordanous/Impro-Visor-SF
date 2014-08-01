@@ -169,11 +169,6 @@ public class NoteConverter {
             } catch (Exception e) {
                 System.out.println("Exception when matching notes to chords: " + e.toString());
                 System.out.println("Exact melody: " + exactMelody);
-                System.out.print("Chord part: " + chordProg);
-                System.out.println("At note: " + (i/2 + 1));
-                System.out.println("Total chord duration: " + totalChordDurationInMelody);
-                System.out.println("Total note duration: " + totalNoteDurationInMelody);
-                System.out.println("Total number of chords: " + allChords.size());
                 System.out.println("\n");
             }
             
