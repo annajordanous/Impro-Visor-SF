@@ -27,6 +27,11 @@ import imp.data.Duration;
 import imp.data.MelodyPart;
 import imp.data.Part.PartIterator;
 import imp.gui.Notate;
+import static imp.lickgen.Terminals.getDuration;
+import static imp.lickgen.Terminals.getDurationAbstractMelody;
+import static imp.lickgen.Terminals.isTerminal;
+import static imp.lickgen.Terminals.isWrappedTerminal;
+import static imp.lickgen.Terminals.truncateAbstractMelody;
 import imp.util.ErrorLog;
 import imp.util.ErrorLogWithResponse;
 import java.io.*;
@@ -39,7 +44,8 @@ import polya.PolylistEnum;
 import polya.Tokenizer;
 
 /*
- * @author David Morrison, modifications by Robert Keller, 21 June 2012
+ * @author David Morrison, modifications by Robert Keller, 21 June 2012, 
+ * revised method by Robert Keller, 1 August 2014
  */
 
 public class Grammar
@@ -292,243 +298,7 @@ public Polylist addStart(int numSlots)
   return null;
   }
 
-/**
- * Returns true if ob is considered a terminal in the grammar.
- * @param ob
- * @return 
- */
-public boolean isTerminal(Object ob)
-  {
-    return isAbstractNote(ob)
-        || isScaleDegree(ob) 
-        || isSlope(ob) 
-        || isTriadic(ob) 
-        || isWrappedTerminal(ob);
-  }
 
-public boolean isAbstractNote(Object ob)
-  {
-    if( !(ob instanceof String) )
-      {
-        return false;
-      }
-    
-    String string = (String)ob;
-    int len = string.length();
-    if( len == 0 )
-      {
-        return false;
-      }
-    
-    char first = string.charAt(0);
-    String rest = string.substring(1);
-    switch( first )
-      {
-        case 'A':
-        case 'C':
-        case 'H':
-        case 'L':
-        case 'R':
-        case 'S':
-        case 'X':
-        case 'Y':
-            break;
-        default:
-            return false;
-      }
-        //System.out.print("string = " + string);
-        boolean isDuration  = Duration.isDuration(rest);
-        //System.out.println(" isAbstractNote = " + isDuration);
-        return  isDuration;
-  }
-
-public boolean isTerminalSpecifiedInFile(Object ob)
-  {
-    if( terminals.contains(ob) )
-      {
-        return true;
-      }
-    return false;
-  }
-
-public boolean isWrappedTerminal(Object ob)
-  {
-    if( !(ob instanceof Polylist) )
-      {
-        return false;
-      }
-    
-    if( isScaleDegree(ob) || isSlope(ob) || isTriadic(ob) )
-      {
-        return false;
-      }
-    
-    Polylist oblist = (Polylist) ob;
-    
-    if( oblist.isEmpty() )
-      {
-        return false;
-      }
-    
-    return  isAbstractNote(oblist.first()); //isTerminalSpecifiedInFile(oblist.first());
-  }
-
-public static boolean isSlope(Object ob)
-  {
-    if( !(ob instanceof Polylist) )
-      {
-        return false;
-      }
-    
-    Polylist oblist = (Polylist)ob;
-    
-    if( oblist.length() < 4 )
-      {
-        return false;
-      }
-    
-    if( !oblist.first().equals("slope") )
-      {
-        return false;
-      }
-    
-    return true;
-  }
-
-public static boolean isTriadic(Object ob)
-  {
-    if( !(ob instanceof Polylist) )
-      {
-        return false;
-      }
-    
-    Polylist oblist = (Polylist)ob;
-    
-    if( oblist.length() != 3 )
-      {
-        return false;
-      }
-    
-    if( !oblist.first().equals("triadic") )
-      {
-        return false;
-      }
-    
-    return true;
-  }
-
-public static boolean isScaleDegree(Object ob)
-  {
-    if( !(ob instanceof Polylist ) )
-      {
-        return false;
-      }
-    
-    Polylist oblist = (Polylist)ob;
-    
-    if( oblist.length() != 3 )
-      {
-        return false;
-      }
-    
-    Object first = oblist.first();
-    
-    if( !(first instanceof String) )
-      {
-        return false;
-      }
-       
-    if( !("X".equals((String)first)) )
-      {
-        return false;
-      }
-    
-    Object second = oblist.second();
-    
-    if( !(second instanceof Long || second instanceof String ) )
-      {
-        return false;
-      }
-    
-    Object third = oblist.third();
- 
-    if( !(third instanceof Long || third instanceof String ) )
-      {
-        return false;
-      }
-    return true;
-  }
-
-/**
- * Get the duration of various terminals.
- * This is used in calculating chordSlot, for example.
- * @param ob
- * @return 
- */
-public static int getDuration(Object ob)
-  {
-    //System.out.print("duration of " + ob + " = ");
-    int result = 0;
-    
-    if( ob instanceof String )
-      {
-        result = Duration.getDuration(((String)ob).substring(1));
-      }
-    else if( isScaleDegree(ob) )
-      {
-        result = Duration.getDuration(((Polylist) ob).third().toString());
-      }
-    else if( isSlope(ob) )
-      {
-        // Get the tail from the fourth element on
-        Polylist body = ((Polylist)ob).rest().rest().rest();
-        int sum = 0;
-        while( body.nonEmpty() )
-          {
-            sum += getDuration(body.first());
-            body = body.rest();
-          }
-        result = sum;
-      }
-    else if( isTriadic(ob) )
-      {
-        result = Duration.getDuration(((Polylist)ob).second().toString());
-      }
-    
-    //System.out.println(result);
-    
-    return result;
-  }
-
-public static int getDurationAbstractMelody(Polylist L)
-  {
-    int duration = 0;
-    while( L.nonEmpty() )
-      {
-        duration += getDuration(L.first());
-        L = L.rest();
-      }
-    return duration;
-  }
-
-public static Polylist truncateAbstractMelody(Polylist L, int desiredDuration)
-  {
-    PolylistBuffer buffer = new PolylistBuffer();
-    int duration = 0;
-    while( L.nonEmpty() )
-      {
-        Object first = L.first();
-        int dur = getDuration(first);
-        if( duration + dur > desiredDuration )
-          {
-            break;
-          }
-        buffer.append(first);
-        duration += dur;
-        L = L.rest();
-      }
-    return buffer.toPolylist();    
-  }
 
 /**
  * Add the rhs of a rule to the appropriate list, assuming that the
