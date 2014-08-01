@@ -682,6 +682,7 @@ public class Notate
     GENERATED,
     GENERATION_FAILED,
     ROADMAP,
+    ROADMAP_DONE,
     ADVICE,
     LEADSHEET_SAVED,
     STYLE_EDIT,
@@ -7916,10 +7917,10 @@ boolean saveConstructionLineState;
         quantizeComboBox.setMaximumRowCount(24);
         quantizeComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "-", "Best", "1", "2", "5", "10", "15", "20", "30", "40", "60", "80", "120", "160", "240", "360", "480" }));
         quantizeComboBox.setToolTipText("Quantize melody to specified number of subdivisions per beat (for MIDI input)."); // NOI18N
-        quantizeComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Quantize", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Dialog", 0, 10))); // NOI18N
-        quantizeComboBox.setMaximumSize(new java.awt.Dimension(90, 45));
-        quantizeComboBox.setMinimumSize(new java.awt.Dimension(90, 45));
-        quantizeComboBox.setPreferredSize(new java.awt.Dimension(90, 45));
+        quantizeComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Snap", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Dialog", 0, 10))); // NOI18N
+        quantizeComboBox.setMaximumSize(new java.awt.Dimension(75, 45));
+        quantizeComboBox.setMinimumSize(new java.awt.Dimension(75, 45));
+        quantizeComboBox.setPreferredSize(new java.awt.Dimension(750, 45));
         quantizeComboBox.addMouseListener(new java.awt.event.MouseAdapter()
         {
             public void mouseReleased(java.awt.event.MouseEvent evt)
@@ -11532,6 +11533,9 @@ public void setMode(Mode mode)
             break;
         case ROADMAP:
             setStatus("Creating Roadmap");
+            break;
+        case ROADMAP_DONE:
+            setStatus("Roadmap Created");
             break;
         case ADVICE:
             setStatus("Select Advice.");
@@ -26320,6 +26324,7 @@ public void roadMapThis()
 public void roadMapThisAnalyze()
   {
     setMode(Mode.ROADMAP);
+    repaint();
     setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
     establishRoadMapFrame();
     score.toRoadMapFrame(roadmapFrame);  
@@ -26327,6 +26332,7 @@ public void roadMapThisAnalyze()
     roadmapFrame.updatePhiAndDelta(getPhiStatus(),getDeltaStatus());
     roadmapFrame.makeVisible(true);
     setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+    setMode(Mode.ROADMAP_DONE);
     staveRequestFocus();
   }
 
@@ -26367,6 +26373,7 @@ public void openEmptyRoadmap()
     roadmapFrame.updatePhiAndDelta(getPhiStatus(),getDeltaStatus());
     roadmapFrame.makeVisible(false);
     roadmapFrame.setVisible(true);
+    setMode(Mode.ROADMAP_DONE);
   }
 
 
