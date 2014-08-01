@@ -151,15 +151,7 @@ public class CreateBrickGrammar {
             Notate notate,
             LickgenFrame frame) {
         
-        //test if multi-tune corpus is working
-        System.out.println("All bricks: ");
-        for (Block b : blocks) {
-            System.out.println(b);
-        }
-        
         //do processing by brick
-        //processByBrick(notate, frame);
-        
         if (brickKindsArray.length == 0) { //must be a pretty strange tune for this to happen...
             ErrorLog.log(ErrorLog.COMMENT, "No bricks found in the tune. "
                     + "Please try again with windows");
@@ -237,7 +229,7 @@ public class CreateBrickGrammar {
             BufferedWriter out = new BufferedWriter(new FileWriter(outfile, true));
             //overhead rules that specify how many duration slots to subtract off for bricks of different durations
             for (int dur = 0; dur < brickDurationsArray.length; ++dur) {
-                out.write("\n(rule (P Y) ((START "
+                out.write("\n(rule (P Y) ((BRICK "
                         + brickDurationsArray[dur]
                         + ") (P (- Y "
                         + brickDurationsArray[dur]
@@ -317,7 +309,7 @@ public class CreateBrickGrammar {
     
     public static void writeRule(String rule, DataPoint rep, BufferedWriter out) {
         try {
-            out.write("(rule (START "
+            out.write("(rule (BRICK "
                             + (rep.getSegLength()*BEAT)
                             + ") ("
                             + rule

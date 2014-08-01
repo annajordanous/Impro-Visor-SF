@@ -33,7 +33,6 @@ import imp.audio.PitchExtractor;
 import imp.audio.SCDelayOffsetter;
 import imp.audio.SCHandler;
 import imp.brickdictionary.Block;
-import imp.cluster.CreateGrammar;
 import imp.com.*;
 import imp.data.*;
 import imp.data.musicXML.ChordDescription;
@@ -19794,6 +19793,9 @@ public ArrayList<String> getMelodyData(Score s, int chorusNumber)
                 int len = currentNote.getRhythmValue();
                 len -= (i - melPart.getPrevIndex(i));
                 //measure = measure.concat (Integer.toString(i - melPart.getPrevIndex(i)));
+                if (len > melPart.getMeasureLength()) { //note is also tied to next measure (so it must be a whole note tied on either end)
+                    len = melPart.getMeasureLength(); //we'll add the note to which it is tied later
+                }
                 measure = measure.concat(Integer.toString(len));
                 measure = measure.concat(" ");
                 tracker = p.getNextIndex(0);
