@@ -27,6 +27,7 @@ import imp.data.*;
 import imp.gui.Notate;
 import imp.util.ErrorLog;
 import imp.util.NonExistentParameterException;
+import static imp.lickgen.Terminals.isScaleDegree;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -1882,7 +1883,7 @@ public boolean fillMelody(MelodyPart lick,
 
         //System.out.println("item = " + item);
 
-        if( Grammar.isScaleDegree(item) )
+        if( isScaleDegree(item) )
            {
            // first is of the form (X degree duration)
            Chord chord = chordProg.getCurrentChord(position);
