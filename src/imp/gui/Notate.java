@@ -13933,8 +13933,8 @@ private MelodyPart makeLick(Polylist rhythm)
     if( actualSize > desiredSize )
       {
         //System.out.println("makeLick: reducing size from " + actualSize + " to desired " + desiredSize);
-        lick = lick.extract(0, desiredSize-1);
-      }
+        lick = lick.extract(0, desiredSize-1, true);
+       }
 
     return lick;
   }
@@ -22207,13 +22207,21 @@ public void originalGenerate(LickGen lickgen, int improviseStartSlot, int improv
           {
             int beatsGenerated = lick.size()/BEAT;
 
-            if( beatsGenerated != beatsRequested )
+            if( beatsGenerated > beatsRequested )
               {
                //debug
-               System.out.println("generated " + beatsGenerated
-                            + " beats, but " + beatsRequested + " requested");
+               //System.out.println("generated " + beatsGenerated
+               //             + " beats, but " + beatsRequested + " requested (fewer)");
+               
+               lick = lick.extract(0, BEAT*beatsRequested-1, true);
               }
-
+            else if( beatsGenerated < beatsRequested )
+              {
+               //debug
+               //System.out.println("generated " + beatsGenerated
+               //             + " beats, but " + beatsRequested + " requested (more)");
+              }
+            
             if(useSubstitutorCheckBox.isSelected())
             {
                 ChordPart chords = getChordProg().extract(improviseStartSlot,
