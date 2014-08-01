@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import polya.Arith;
 import polya.Polylist;
+import polya.PolylistBuffer;
 import polya.PolylistEnum;
 import polya.Tokenizer;
 
@@ -127,6 +128,8 @@ Polylist terminalString;
 Polylist accumulator = Polylist.nil;
 
 
+int numSlots;
+
 /**
  * Transfers terminals from accumulator, which is behaving as a stack,
  * to terminalString, which is behaving as a queue.
@@ -147,7 +150,9 @@ private void accumulateTerminals()
     
     for( Polylist L = accumulator; L.nonEmpty(); L = L.rest() )
       {
-      chordSlot += getDuration(L.first());
+      int duration = getDuration(L.first());
+      chordSlot += duration;
+      numSlots -= duration;
       }
     
     accumulator = Polylist.nil;
@@ -166,26 +171,31 @@ private void accumulateTerminals()
 // grammar. We have tried to arrange this failure to take the form of an exception,
 // and will then simply try again, until a terminal string is generated.
 
-public Polylist run(int startSlot, int numSlots, Notate myNotate)
+public Polylist run(int startSlot, int initialNumSlots, Notate myNotate)
   {
     currentSlot = startSlot;
     chordSlot = startSlot;
+    numSlots = initialNumSlots;
     int savedRetryCount = retryCount;
     int maxRetries = 20;
     notate = myNotate;
     
-    while( (retryCount - savedRetryCount) <= maxRetries )
+    terminalString = Polylist.nil;
+    int stage = 0;
+    
+    while( numSlots > 0 ) //(retryCount - savedRetryCount) <= maxRetries )
       {
         try
           {
-            terminalString = Polylist.nil;
-            
+            stage++;
             Polylist gen = addStart(numSlots);
             
             if( gen == null )
               {
                 return Polylist.nil;    // In case no grammar
               }
+            
+            //ySystem.out.println("\nStage " + stage + " generation starts with " + gen + " terminalString length " + getDurationAbstractMelody(terminalString));
             
             // gen is a list representing the undeveloped frontier of the rhs tree
             // symbols in gen are expanded one at a time, left-to-right
@@ -211,8 +221,8 @@ public Polylist run(int startSlot, int numSlots, Notate myNotate)
                 
                 accumulateTerminals();
               }
-            accumulateTerminals();
-            return terminalString;
+            //accumulateTerminals();
+            //return terminalString;
           }
         catch( RuleApplicationException e )
           {
@@ -223,8 +233,11 @@ public Polylist run(int startSlot, int numSlots, Notate myNotate)
           }
       notate.setLickGenStatus("Retrying lick generation (" + (++retryCount) + " cumulative).");
       }
-    notate.setLickGenStatus("Unable to generate in " + maxRetries + " retries.");
-    return null;
+    //ySystem.out.println("completed in " + stage + " stages" + ". terminalString length " + getDurationAbstractMelody(terminalString));
+
+    return truncateAbstractMelody(terminalString, initialNumSlots);
+//    notate.setLickGenStatus("Unable to generate in " + maxRetries + " retries.");
+//    return null;
   }
 
 
@@ -290,7 +303,6 @@ public boolean isTerminal(Object ob)
         || isScaleDegree(ob) 
         || isSlope(ob) 
         || isTriadic(ob) 
-        || isTerminalSpecifiedInFile(ob) 
         || isWrappedTerminal(ob);
   }
 
@@ -499,6 +511,25 @@ public static int getDurationAbstractMelody(Polylist L)
     return duration;
   }
 
+public static Polylist truncateAbstractMelody(Polylist L, int desiredDuration)
+  {
+    PolylistBuffer buffer = new PolylistBuffer();
+    int duration = 0;
+    while( L.nonEmpty() )
+      {
+        Object first = L.first();
+        int dur = getDuration(first);
+        if( duration + dur > desiredDuration )
+          {
+            break;
+          }
+        buffer.append(first);
+        duration += dur;
+        L = L.rest();
+      }
+    return buffer.toPolylist();    
+  }
+
 /**
  * Add the rhs of a rule to the appropriate list, assuming that the
  * value of the weight expression is positive
@@ -547,7 +578,7 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
 
     accumulator = Polylist.nil;
        
-      while( isScaleDegree(pop) || isSlope(pop) || isTriadic(pop) || isTerminal(pop) || isWrappedTerminal(pop))
+      while( isTerminal(pop) )
           {
           if( isWrappedTerminal(pop) )
           {
@@ -558,18 +589,22 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
             accumulator = accumulator.cons(pop);
           }
     
-           if( gen.isEmpty() )
+           if( gen.isEmpty() || numSlots <= 0 )
             {
-    accumulateTerminals();
-        return gen;
-      }
+            accumulateTerminals();
+            return gen;
+            }
 
           pop = gen.first();
           gen = gen.rest();
         }
 
       accumulateTerminals();
-
+//      if( numSlots <= 0 )
+//            {
+//            return gen;
+//            }
+      
       // All applicable rules (and their corresponding weights)
       // get loaded into these arrays, to be selected from at random.
       ArrayList<Polylist> ruleArray = new ArrayList<Polylist>(5);
@@ -604,7 +639,14 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
       // If a lhs matches both a RULE and a BASE, it will always choose the BASE.
       // This basically short-circuits any computation and provides an easy way
       // to find base cases.
-        if( type.equals(BASE) && next.length() == 4 )
+        
+//        if( numSlots <= 0 )
+//          {
+//          System.out.println("terminals: " + terminalString);
+//          return gen;            
+//          }
+//        else 
+            if( type.equals(BASE) && next.length() == 4 )
         {
           //System.out.println("\nbase = " + next);
           Object symbol = next.second();
@@ -637,10 +679,11 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
               // Fill in variables with their given numeric values.
               derivation = setVars((Polylist)pop, (Polylist)symbol, derivation);
               
+              // A null result means that unification failed.
               if( derivation == null )
                 {
-                        search = search.rest();
-                        continue;
+                search = search.rest();
+                continue;
                 }
               
               //System.out.println(" derivation after setVars " + derivation);
@@ -648,12 +691,13 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
               // Evaluate any expressions that need to be evaluated.
               derivation = (Polylist)evaluate(derivation);
               
-              //System.out.println(" derivation after evaluation " + derivation);
+              //System.out.println(" derivation after evaluation of " + pop + ": " + derivation);
               
               // Check for negative arguments in RHS,
               // In which case don't use RHS
               boolean valid = true;
               PolylistEnum L = derivation.elements();
+              polya.PolylistBuffer B = new polya.PolylistBuffer();
               while( L.hasMoreElements() )
               {
                 Object ob = L.nextElement();
@@ -668,15 +712,20 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
                   // FIX: Replace this with a more sound mechanism.
 
                     Object arg = P.second();
-                    if( arg instanceof Number && ((Number)arg).intValue() < 0 )
+                    if( arg instanceof Number && ((Number)arg).intValue() <= 0 )
                     {
-                      valid = false;
+                      //valid = false;
                       //System.out.println("abandoning: " + derivation);
-                      break;
+                      //break;
                     }
+              else B.append(ob);
                 }
+              else B.append(ob);
                 }
+              else B.append(ob);
               } // while
+              
+              derivation = B.toPolylist();
             
               if( valid )
                 {
@@ -684,7 +733,7 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
                 if( wt instanceof Number )
                   {
                   Double weight = ((Number)wt).doubleValue();
-                  if( weight > 0 )
+                  if( weight >= 0 )
                     {
                     ruleArray.add(derivation);
                     ruleWeights.add(weight);
@@ -706,7 +755,7 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
               // This RHS element is not a string. Just carry it and hope for the best!
               // It is probably an S-expression such as (slope M N ...)
               Double weight = ((Number)wt).doubleValue();
-              if( weight > 0 )
+              if( weight >= 0 )
                 {
                 ruleArray.add(derivation);
                 ruleWeights.add(weight);
@@ -775,13 +824,26 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
               {
                 gen = gen.cons(Polylist.list(ob));
               }
+            //System.out.println("gen = " + gen);
           }
+          //System.out.println("terminals: " + terminalString);
+          accumulateTerminals();
           return gen;
           
       }
         offset += weightArray.get(i) / total;
         }
-
+      if( weightSize > 0 )
+        {
+          gen = gen.cons(rulesList.get(weightSize-1));
+          //ySystem.out.println("using a backup rule for "  + pop);
+        }
+      else
+        {
+        //ySystem.out.println("failed to find rule out of " + weightSize + " possible for " + pop);
+        }
+    accumulateTerminals();
+    //System.out.println("terminals: " + terminalString);
     return gen; // throw new RuleApplicationException("applyRules, no such rule for " + gen);
   }
 
@@ -820,19 +882,19 @@ public ArrayList<Object> getAllOfType(String t)
   return elements;
   }
 
-/**
- * Get all the allowable terminal symbols, as specified in the grammar file.
- */
-
-public ArrayList<String> getTerminals()
-  {
-  Collection terms = (Collection)getAllOfType(TERMINAL);
-  if( terminals == null )
-    {
-    return new ArrayList<String>(); // empty
-    }
-  return new ArrayList<String>(terms);
-  }
+///**
+// * Get all the allowable terminal symbols, as specified in the grammar file.
+// */
+//
+//public ArrayList<String> getTerminals()
+//  {
+//  Collection terms = (Collection)getAllOfType(TERMINAL);
+//  if( terminals == null )
+//    {
+//    return new ArrayList<String>(); // empty
+//    }
+//  return new ArrayList<String>(terms);
+//  }
 
 
 public void clearParams()
@@ -890,7 +952,7 @@ public int loadGrammar(String filename)
         }
       }
     rules = rules.reverse();
-    terminals = getTerminals();
+    //terminals = getTerminals();
     return 0;
     }
   catch( FileNotFoundException e )
