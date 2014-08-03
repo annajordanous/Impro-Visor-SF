@@ -26,7 +26,6 @@ import imp.data.MelodyPart;
 import imp.data.Part.PartIterator;
 import imp.gui.Notate;
 import static imp.lickgen.Terminals.getDuration;
-import static imp.lickgen.Terminals.getDurationAbstractMelody;
 import static imp.lickgen.Terminals.isTerminal;
 import static imp.lickgen.Terminals.isWrappedTerminal;
 import static imp.lickgen.Terminals.truncateAbstractMelody;
@@ -47,6 +46,13 @@ import polya.Tokenizer;
  */
 public class Grammar
 {
+/**
+ * Set traceLevel to 1 to see which rules are being applied and also
+ * any bricks identified.
+ * Set traceLevel to 2 to see frontier of derivation in addition to rules.
+ */
+int traceLevel = 0;
+
 // Rule tags:
 public static final String START = "startsymbol";
 public static final String TERMINAL = "terminals";
@@ -91,34 +97,14 @@ public Grammar(String file)
  */
 PolylistBuffer terminalBuffer;
 
-/**
- * Stack used to accumulate terminals to transfer to terminalBuffer.
- */
-Polylist accumulator = Polylist.nil;
 int numSlots;
 
-/**
- * Transfers terminals from accumulator, which is behaving as a stack, to
- * terminalBuffer, which is behaving as a queue.
- */
-private void accumulateTerminals()
+private void accumulateTerminal(Object terminal)
   {
-    if( accumulator.isEmpty() )
-      {
-        return; // nothing to accumulate
-      }
-
-    for( Polylist L = accumulator; L.nonEmpty(); L = L.rest() )
-      {
-        Object terminal =  L.first();
         terminalBuffer.append(terminal);
         int duration = getDuration(terminal);
         chordSlot += duration;
         numSlots -= duration;
-      }
-
-    accumulator = Polylist.nil;
-    //System.out.println("slot now = " + chordSlot);
   }
 
 /**
@@ -175,9 +161,12 @@ public Polylist run(int startSlot, int initialNumSlots, Notate myNotate)
                   {
                     throw new RuleApplicationException();
                   }
-
-                accumulateTerminals();
               }
+            
+           if( traceLevel > 1 )
+             {
+             showFrontier(gen);
+             }           
            }
         catch( RuleApplicationException e )
           {
@@ -243,8 +232,8 @@ public Polylist addStart(int numSlots)
   }
 
 /**
- * Add the rhs of a rule to the appropriate list, assuming that the value of the
- * weight expression is positive
+ * Add a rule to the appropriate list, assuming that the value of the
+ * weight expression is non-negative.
  *
  * @param lhs left-hand side of the rule
  * @param rhs right-hand side of the rule
@@ -280,32 +269,29 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
     Object pop = gen.first();
     gen = gen.rest();
 
-    // Accumulate any terminal values.
-
-    accumulator = Polylist.nil;
+    // Accumulate any terminal values at the beginning of gen
 
     while( isTerminal(pop) )
       {
         if( isWrappedTerminal(pop) )
           {
-            accumulator = accumulator.cons(((Polylist) pop).first());
+            accumulateTerminal(((Polylist) pop).first());
           }
         else
           {
-            accumulator = accumulator.cons(pop);
+            accumulateTerminal(pop);
           }
 
         if( gen.isEmpty() || numSlots <= 0 )
           {
-            accumulateTerminals();
             return gen;
           }
 
         pop = gen.first();
         gen = gen.rest();
       }
-
-    accumulateTerminals();
+    
+    // pop is a non-terminal
      
     ArrayList<WeightedRule> ruleList = new ArrayList<WeightedRule>();
     ArrayList<WeightedRule> baseList = new ArrayList<WeightedRule>();
@@ -355,9 +341,6 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
             Polylist rhs = (Polylist) next.third();
 
             //System.out.println(" rhs before evaluation  " + rhs);
-
-            // The first lhs can never be a variable, it will give the "name" of the
-            // rhs.  All additional symbols will contain information.
             //System.out.println("pop = " + pop);
 
             if( pop instanceof Polylist 
@@ -365,7 +348,8 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
               {
                 if( ((String) ((Polylist) pop).first()).equals(lhs.first()) )
                   {
-                    // Fill in variables with their given numeric values.
+                    // Unify variables with their given numeric values,
+                    // in preparation for evaluation.
                     rhs = setVars((Polylist) pop, lhs, rhs);
 
                     // A null result means that unification failed.
@@ -438,24 +422,27 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
 
     if( listToUse.isEmpty() )
       {
-      System.out.println("no applicable rule for " + pop);       
+      if( traceLevel > 0 )
+        {
+        System.out.println("goal: " + pop + "no rule found");
+        }
       }
     else
       {
-    // Sum up all the weights for normalization.	    
-    double total = 0.0;
-    for( WeightedRule weightedRule: listToUse)
-      {
+      // Sum up all the weights for normalization.	    
+      double total = 0.0;
+      for( WeightedRule weightedRule: listToUse)
+        {
         total += weightedRule.getWeight();
-      }
+        }
     
-    // Generate a random number to find out which rule to use...
+    // Generate a random number to find out which rule to use.
     double rand = total*Math.random();
     double offset = 0.0;
 
     int listSize = listToUse.size();
     
-    boolean ruleFound = false;
+    WeightedRule ruleToUse = null;
     // Loop through all rules up to one in the probability interval,
     // the break.
     for( WeightedRule weightedRule: listToUse)
@@ -466,28 +453,39 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
         if( rand >= offset && rand < (offset + rule_weight) )
           {
             //System.out.println("rule found");
-            gen = weightedRule.addToGen(gen);
-            ruleFound = true;
+            ruleToUse = weightedRule;
             break;
           }
         offset += rule_weight;
       }
     
-    // Use the last rule in the list.
-    if( !ruleFound )
+    if( ruleToUse == null && listSize > 0)
       {
-      if( listSize > 0 )
-        {
-        int index = listSize - 1;
-        gen = listToUse.get(listSize - 1).addToGen(gen);
-        }
+      // Use the last rule in the list.
+      ruleToUse = listToUse.get(listSize - 1);
+      }
+    
+    if( ruleToUse != null )
+      {
+        if( traceLevel > 1 )
+          {
+          showFrontier(gen.cons(pop));
+          } 
+        if( traceLevel > 0 )
+          {
+          System.out.println(ruleToUse);
+          System.out.println();
+          }
+      gen = ruleToUse.addToGen(gen);
       }
     }
-    
-    accumulateTerminals();
-    //System.out.println("gen = " + gen);
-    //System.out.println("terminals: " + terminalBuffer);
+
     return gen; // throw new RuleApplicationException("applyRules, no such rule for " + gen);
+  }
+
+private void showFrontier(Polylist gen)
+  {
+    System.out.print("| " + terminalBuffer.toPolylist() + " | " + gen + " | ");
   }
 
 /**
@@ -562,6 +560,7 @@ public Polylist getRules()
 public int loadGrammar(String filename)
   {
     //System.out.println("Grammar loadGrammar " + filename);
+    clear();
     try
       {
         Tokenizer in = new Tokenizer(new FileInputStream(filename));
@@ -838,8 +837,11 @@ private Object evaluateBuiltin(Object arg1, Object arg2)
 
         if( brickname.equals(blockName) )
           {
-            System.out.println("At slot " + chordSlot
+            if( traceLevel > 0 )
+              {
+              System.out.println("At slot " + chordSlot
                     + " considering brick " + brickname);
+              }
             return ONE;
           }
 
@@ -979,27 +981,36 @@ double getWeight()
 
 Polylist addToGen(Polylist gen)
   {
+    boolean onlyTerminalsSoFar = true;
+    PolylistBuffer afterFirstTerminals = new PolylistBuffer();
+    
     for( Polylist L = rhs; L.nonEmpty(); L = L.rest() )
       {
         Object next = L.first();
-        if( next instanceof Polylist )
+        if( onlyTerminalsSoFar && isTerminal(next) )
           {
-            gen = gen.cons(next);
+            accumulateTerminal(next);
           }
         else
           {
-            gen = gen.cons(Polylist.list(next));
+          onlyTerminalsSoFar = false;
+          if( next instanceof Polylist )
+            {
+            afterFirstTerminals.append(next);
+            }
+          else
+            {
+            afterFirstTerminals.append(Polylist.list(next));
+            }
           }
       }
-    return gen;
+    return afterFirstTerminals.toPolylist().append(gen);
   }
 
 @Override
 public String toString()
   {
-  return "weight " + weight
-       + " dur " + getDurationAbstractMelody(rhs) + " "
-       + lhs + rhs;
+  return lhs + " -> " + rhs + " [prob " + weight +"]";
   }
 
 }
