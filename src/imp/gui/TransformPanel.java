@@ -663,8 +663,8 @@ public class TransformPanel extends javax.swing.JPanel {
 
         motifTotalLabel.setText("Total: ");
         motifTotalLabel.setMaximumSize(new java.awt.Dimension(35, 14));
-        motifTotalLabel.setMinimumSize(new java.awt.Dimension(35, 20));
-        motifTotalLabel.setPreferredSize(new java.awt.Dimension(35, 20));
+        motifTotalLabel.setMinimumSize(new java.awt.Dimension(50, 20));
+        motifTotalLabel.setPreferredSize(new java.awt.Dimension(50, 20));
         totalMotifWeightsPanel.add(motifTotalLabel, new java.awt.GridBagConstraints());
 
         scaleMotifWeightsButton.setText("Scale All");
@@ -716,8 +716,8 @@ public class TransformPanel extends javax.swing.JPanel {
 
         embTotalLabel.setText("Total: ");
         embTotalLabel.setMaximumSize(new java.awt.Dimension(35, 14));
-        embTotalLabel.setMinimumSize(new java.awt.Dimension(35, 20));
-        embTotalLabel.setPreferredSize(new java.awt.Dimension(35, 20));
+        embTotalLabel.setMinimumSize(new java.awt.Dimension(50, 20));
+        embTotalLabel.setPreferredSize(new java.awt.Dimension(50, 20));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -890,8 +890,8 @@ public class TransformPanel extends javax.swing.JPanel {
 
         transTotalLabel.setText("Total: ");
         transTotalLabel.setMaximumSize(new java.awt.Dimension(35, 14));
-        transTotalLabel.setMinimumSize(new java.awt.Dimension(35, 20));
-        transTotalLabel.setPreferredSize(new java.awt.Dimension(35, 20));
+        transTotalLabel.setMinimumSize(new java.awt.Dimension(50, 20));
+        transTotalLabel.setPreferredSize(new java.awt.Dimension(50, 20));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
