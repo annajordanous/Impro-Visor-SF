@@ -130,26 +130,49 @@ public static int noteArray2ImpPart(ArrayList<jm.music.data.Note> origNoteArray,
                                 int quantum)
   {
     //System.out.println("\nquantum = " + quantum);
-    int notesLost = 0;
     
+        // jMusic iterator to parse out and return input notes to add one by one to 
+        // Improvisor's MelodyPart
     Iterator<jm.music.data.Note> origNotes = origNoteArray.iterator();
+
+        // variable that keeps track of the longest note found to fit in the slot
+        // under consideration (optimizing so shorter notes are, if necessary, 
+        // lost instead)
+        Note longest = new Note(1);
+
+        // variable to keep track of the end of the last placed note in the 
+        // Improvisor part
     int endLastNote = slot;
-    int accumulatedRestSlots = 0;
-    while( origNotes.hasNext() )
+
+        // variable to keep track of the notes lost for a given quantum  
+        int notesLost = 0;
+
+        while (origNotes.hasNext()) 
       {
-        double scaledTime = time*FACTOR;
+            // converting the continous time of jMusic closer to Improvisor's 
+            // slot-based time system
+            double scaledTime = time * FACTOR;
+
+            // variable to store the note under current consideration
         jm.music.data.Note note = origNotes.next();
+
+            // gets original rhythm value of note under consideration, in case of
+            // later truncation
         double origRhythmValue = note.getRhythmValue();
-        //System.out.println("\nslot: " + slot + " scaledTime: " + scaledTime + " note: " + note);
-        if( !note.isRest() )
+
+            // System.out.println("\nslot: "+slot+" scaledTime: "+scaledTime+" note: "+note);
+
+            if (!note.isRest()) 
           {
-            // Rests in the original are ignored. Rests in the new part are
-            // created when a note end is strictly less than the next note onset.
-            if( slot >= scaledTime + quantum )
+                // rests in the original are ignored, but rests in the new part are
+                // created when a note end is strictly less than the next note onset            
+                if (slot >= scaledTime + quantum) 
               {
-                // The note cannot be placed in the current quantum, so it is ignored.
-                //System.out.println("slot: " + slot + " > scaledTime: " + scaledTime + " lost");
+                    // the current note cannot be placed in the current quantum, 
+                    // so it is ignored
                 notesLost++;
+
+                    //System.out.println("slot: "+slot+" > scaledTime: "+scaledTime+" lost");
               }
             else
               {
@@ -161,9 +184,12 @@ public static int noteArray2ImpPart(ArrayList<jm.music.data.Note> origNoteArray,
               
               if( scaledTime <= (slot + quantum) )
                 {
-                // Can the note be scheduled in the current quantum?
+                        // the current note cannot be placed in the current quantum, 
+                        // so it is ignored
+
                 //System.out.println("slot: " + slot + " endLastNote: " + endLastNote + " note lost");
-                if( slot >= endLastNote )
+
+                        if (slot >= endLastNote) 
                   {
                   // Using this slot should not cut into the previous note.
                   int duration = quantum*(int)Math.ceil((origRhythmValue*FACTOR)/quantum);
@@ -198,7 +224,6 @@ int size()
   {
     return parts.length;
   }
-
 
 /**
  * Finds the ith part.
