@@ -250,7 +250,6 @@ public void mergeRests(ArrayList<jm.music.data.Note> origNoteArray)
       }
   }
 
-
 /**
  * Convert an Impro-Visor MelodyPart to a jMusic score
  */

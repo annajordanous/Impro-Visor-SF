@@ -1,4 +1,5 @@
 /**
+ * 
  * This Java Class is part of the Impro-Visor Application.
  *
  * Copyright (C) 2005-2014 Robert Keller and Harvey Mudd College
