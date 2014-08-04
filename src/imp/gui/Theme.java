@@ -119,7 +119,7 @@ public class Theme {
            Object current =  nameElements.nextElement();//get next note
              String currentString = current.toString(); //convert it to String
              nameString += currentString + " "; //add the note to the melodyString
-             System.out.println(nameString);
+           //  System.out.println(nameString);
          }  
           this.name = nameString;
          
@@ -133,8 +133,9 @@ public class Theme {
          while (melodyElements.hasMoreElements()) { //while there are more notes
            Object current =  melodyElements.nextElement();//get next note
              String currentString = current.toString(); //convert it to String
+             System.out.println(currentString.charAt(1));
              melodyString += currentString + " "; //add the note to the melodyString
-             System.out.println(melodyString);
+            // System.out.println(melodyString);
          }  
          MelodyPart melody = new MelodyPart(melodyString); //create a MelodyPart of the string
          this.melody = melody; //set the melody to the melody of the theme

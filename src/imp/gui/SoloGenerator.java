@@ -59,18 +59,38 @@ import java.io.FileInputStream;
 import polya.Tokenizer;
 import imp.gui.PatternDisplay;
 import imp.data.Score;
+import javax.swing.table.DefaultTableCellRenderer;
+import polya.PolylistEnum;
 /**
  *
  * @author David Morrison, Nava Dallal
  */
 public class SoloGenerator extends javax.swing.JFrame {
+    
+ public void setTableColumnWidths()
+  {
+      for(int j = 0; j < soloTableModel.getColumnCount();j++)
+    {
+        soloTable.getColumnModel().getColumn(j).
+                setPreferredWidth(soloTableModel.getColumnWidths(j));
+    }
 
+    DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+
+    for(int j = 1; j < soloTableModel.getColumnCount(); j++)
+    {
+        renderer.setHorizontalAlignment( soloTableModel.getColumnAdjustments(j));
+        soloTable.getColumnModel().getColumn(j).setCellRenderer( renderer );
+    }
+    //sectionTable.getColumnModel().getColumn(0).setCellRenderer( sectionCellRenderer );
+  }
     /**
      * Creates new form SoloGenerator
      */
     public SoloGenerator(LickGen lickgen, Notate notate, CommandManager cm) {
         this.random = new Random();
         initComponents();
+    //    testDialog.setVisible(true);
     this.cm = cm;
     this.lickgen = lickgen;
     this.notate = notate;
@@ -84,6 +104,7 @@ public class SoloGenerator extends javax.swing.JFrame {
             }
         }
     });
+    setTableColumnWidths();
     loadFromFile(fileName);
     }
 LickgenFrame lickgenFrame;
@@ -122,6 +143,8 @@ LickgenFrame lickgenFrame;
         deletesure = new javax.swing.JLabel();
         Okdelete = new javax.swing.JButton();
         Nodelete = new javax.swing.JButton();
+        testDialog = new javax.swing.JDialog();
+        textArea1 = new java.awt.TextArea();
         jScrollPane1 = new javax.swing.JScrollPane();
         soloTable = new javax.swing.JTable();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -382,6 +405,12 @@ LickgenFrame lickgenFrame;
         gridBagConstraints.insets = new java.awt.Insets(18, 71, 135, 0);
         deleteCheck.getContentPane().add(Nodelete, gridBagConstraints);
 
+        testDialog.getContentPane().setLayout(new java.awt.GridLayout(1, 0));
+
+        textArea1.setEditable(false);
+        textArea1.setSize(new java.awt.Dimension(100, 200));
+        testDialog.getContentPane().add(textArea1);
+
         setLocation(new java.awt.Point(10, 10));
         setLocationByPlatform(true);
         setMaximumSize(new java.awt.Dimension(2140, 2140));
@@ -420,6 +449,7 @@ LickgenFrame lickgenFrame;
         soloTable.setColumnSelectionAllowed(true);
         soloTable.setGridColor(new java.awt.Color(0, 0, 0));
         soloTable.setPreferredSize(null);
+        soloTable.setSelectionBackground(javax.swing.UIManager.getDefaults().getColor("CheckBoxMenuItem.selectionBackground"));
         soloTable.setShowGrid(true);
         soloTable.getTableHeader().setReorderingAllowed(false);
         soloTable.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -667,6 +697,7 @@ private void playSelection()
         }
         generateSolo(themeUses, cm);
         playSelection();
+        
 
 
     }//GEN-LAST:event_generateSoloActionPerformed
@@ -839,6 +870,7 @@ private void playSelection()
                         MelodyPart themeMelody = new MelodyPart(melodyString);
                         Theme theme = Theme.makeTheme(name, themeMelody);
                         addTheme(theme); 
+                        saveRules(fileName);
                         //add the theme
                   }
                 
@@ -1071,7 +1103,7 @@ public class SoloGeneratorTableModel extends DefaultTableModel
             };
     
     int [] columnWidths = new int [] {
-                30    , 25   , 70   , 25   , 25  , 25,  25
+                55 , 20  , 155   , 7 , 20  , 8,  15
             };
     int [] columnAdjustment = new int [] {
                 JLabel.CENTER, JLabel.LEFT, JLabel.LEFT, JLabel.RIGHT,
@@ -1154,6 +1186,7 @@ public class SoloGeneratorTableModel extends DefaultTableModel
        }
        return Object.class;
   }
+  
  
   @Override
   public void setValueAt(Object value, int row, int col) {
@@ -1168,10 +1201,11 @@ public class SoloGeneratorTableModel extends DefaultTableModel
         for (int i = 0; i < soloTable.getRowCount(); i++) { //loop through table
             
             if ((soloTable.isCellSelected(i, THEME_COLUMN)) 
-            && (soloTable.getValueAt(i, THEME_COLUMN) != null)) 
+            && (soloTable.getValueAt(i, THEME_COLUMN) != null)
+            && (soloTable.getValueAt(i,LENGTH_COLUMN) == null))        
             { //if a theme is selected
                 
-                if (soloTable.getValueAt(i, NAME_COLUMN) == null) 
+                if (soloTable.getValueAt(i, NAME_COLUMN) == null)
                 { //if there is no name
                     MelodyPart melody = new MelodyPart((String) soloTable.getValueAt(i, THEME_COLUMN)); 
                     //set melody to the leadsheet notation of the theme
@@ -1214,15 +1248,12 @@ public class SoloGeneratorTableModel extends DefaultTableModel
                 MelodyPart melody = new MelodyPart((String) soloTable.getValueAt(i, THEME_COLUMN));
                 System.out.println(melody);
                 String name = (String) soloTable.getValueAt(i, NAME_COLUMN);
+                System.out.println(name);
                 String themestring = (String) soloTable.getValueAt(i, THEME_COLUMN);
                 MelodyPart themeMelody = new MelodyPart(themestring);
                 Theme theme = Theme.makeTheme(name,themeMelody);
-                if (orderedThemes.isEmpty()) {
-                    System.out.println("empty");
-                    addTheme(theme);
-                } 
                 
-                else if (orderedThemes.contains(name))
+                if (orderedThemes.contains(name))
                 { //if the user types a name already in the list
                     System.out.println("contains");
                     nameErrorMessage.setVisible(true); 
@@ -1242,6 +1273,7 @@ public class SoloGeneratorTableModel extends DefaultTableModel
 //                     AlreadyNamed.setVisible(true); 
                             System.out.println("same");
                             addTheme(theme); //add the theme to the list
+                            saveRules(fileName);
                             //   soloTable.setValueAt(pair.getValue(), i, 0); 
                             //set the name to the one in the list(what is was before user changed it)
                             for (int k = 0; k < soloTable.getRowCount(); k++) { //loop through table
@@ -1272,6 +1304,7 @@ public class SoloGeneratorTableModel extends DefaultTableModel
                         else { //if there is no melody that matches the one in the table
                             System.out.println("Adding");
                             addTheme(theme);
+                            saveRules(fileName);
                         }
                     }
                     break;
@@ -1329,8 +1362,7 @@ public void addTheme(Theme theme)
         String name = theme.name;
         for (int i = 0; i < soloTable.getRowCount(); i++) {
             //  Theme theme = allThemes.get(themestring);
-            if ( /*(soloTable.getValueAt(i, NAME_COLUMN) != null) 
-            && */ (!orderedThemes.contains(name))) {
+            if ( (!orderedThemes.contains(name))) {
                 orderedThemes.add(name);
                 allThemes.put(theme, name);
             }
@@ -1382,6 +1414,7 @@ private void loadFromFile(File file) {
         while( (ob = in.nextSexp()) != Tokenizer.eof ) {
             if( ob instanceof Polylist)  {
                 Polylist themePoly = (Polylist)ob;
+                //ExpandCommand(themePoly);
                 Theme theme = new Theme(themePoly);
             //     ... put the Theme into your structure ...
                 addTheme(theme);
@@ -1466,6 +1499,42 @@ public MelodyPart fillMelody(int beatValue,
     return result;
   } 
 
+public void ExpandCommand(Polylist list) {
+     Polylist melodyList = (Polylist)list.last(); //get polylist of the melody
+         Polylist melodyNotes = (Polylist)melodyList.rest(); //get the notes in a polylist
+         
+         PolylistEnum melodyElements = melodyNotes.elements(); //get the notes as elements
+         
+         //To get the notes of the theme in a string:
+         String melodyString = "";
+         while (melodyElements.hasMoreElements()) { //while there are more notes
+           Object current =  melodyElements.nextElement();//get next note
+             String currentString = current.toString(); //convert it to String
+             if (currentString.length() == 2) {
+             int intValue = Integer.parseInt(currentString.charAt(1) + "");
+             int newValue = intValue/2;
+            System.out.println(newValue);
+            System.out.println(currentString.charAt(0));
+             String newNote = currentString.charAt(0) + newValue + "";
+            //  System.out.println(newNote);
+             melodyString += newNote + " "; //add the note to the melodyString
+             }
+             else if (currentString.length() == 3) {
+                 int newValue = currentString.charAt(2)/2;
+                 String newNote = currentString.charAt(0) + currentString.charAt(1) + newValue + "";
+                 melodyString += newNote + " "; //add the note to the melodyString
+             }
+             else {
+                 int newValue = currentString.charAt(3)/2;
+                 String newNote = currentString.charAt(0) + currentString.charAt(1) + currentString.charAt(2) + newValue + "";
+                 melodyString += newNote + " "; //add the note to the melodyString
+                 
+             }
+            // System.out.println(melodyString);
+         }  
+         System.out.println(melodyString);
+         MelodyPart melody = new MelodyPart(melodyString); //create a MelodyPart of the string
+}
     public MelodyPart generateTheme() { 
         for (int x = 0; x < soloTable.getRowCount(); x++) { //loop through the rows of the table
             if ((soloTable.getValueAt(x, LENGTH_COLUMN) != null)
@@ -1662,6 +1731,7 @@ Random random;
 
             int themei = random.nextInt(10 * probUselist.size() + 1);
             System.out.println(themei);
+           // testDialog.insert(System.out.println(themei),0);
             //pick a random number from 0 inclusive to 10*the probability list size
             //since all the elements in the list are multpled by 10, the size has to be multiplied by 10 too
 
@@ -1804,6 +1874,8 @@ Random random;
     private javax.swing.JDialog resetCheck;
     private javax.swing.JTable soloTable;
     private java.awt.Button stopPlaying;
+    private javax.swing.JDialog testDialog;
+    private java.awt.TextArea textArea1;
     private javax.swing.JList themeList;
     private javax.swing.JLabel tryAgain;
     private javax.swing.JLabel typedWrong;
