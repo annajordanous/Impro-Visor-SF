@@ -2379,7 +2379,7 @@ public void setAutoFill(boolean fill)
     public static MelodyPart quantizeNoRes(MelodyPart original)
     {
         MelodyPart qMelody = original.copy(); 
-        //qMelody.shiftAndMergeMelody();
+        qMelody.shiftAndMergeMelody();
         qMelody.mergeAdjacentRests();
         
         return qMelody;
