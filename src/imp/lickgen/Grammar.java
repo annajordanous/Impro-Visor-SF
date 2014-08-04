@@ -28,7 +28,6 @@ import imp.gui.Notate;
 import static imp.lickgen.Terminals.getDuration;
 import static imp.lickgen.Terminals.isTerminal;
 import static imp.lickgen.Terminals.isWrappedTerminal;
-import static imp.lickgen.Terminals.truncateAbstractMelody;
 import imp.util.ErrorLog;
 import imp.util.ErrorLogWithResponse;
 import java.io.*;
@@ -82,10 +81,10 @@ public static final Double ZERO = new Double(0);
 //ArrayList<String> terminals = new ArrayList<String>();
 Polylist rules = Polylist.nil;
 String startSymbol = null; // to be set
-private int retryCount = 0;
 private Notate notate;
 private int currentSlot;
 private int chordSlot;
+boolean quotaReached;
 
 public Grammar(String file)
   {
@@ -97,15 +96,8 @@ public Grammar(String file)
  */
 PolylistBuffer terminalBuffer;
 
-int numSlots;
+int numSlotsToFill;
 
-private void accumulateTerminal(Object terminal)
-  {
-        terminalBuffer.append(terminal);
-        int duration = getDuration(terminal);
-        chordSlot += duration;
-        numSlots -= duration;
-  }
 
 /**
  * Applies grammar rules to generate a melody
@@ -113,7 +105,7 @@ private void accumulateTerminal(Object terminal)
  * @param data the number of slots to be filled
  * @return
  */
-// This code is kind of hacked. First gen should be called in a functional style.
+// This code is kind of hacked. First stack should be called in a functional style.
 // The other issue is that applyRules sometimes fails when run on a generated
 // grammar. We have tried to arrange this failure to take the form of an exception,
 // and will then simply try again, until a terminal string is generated.
@@ -121,43 +113,48 @@ public Polylist run(int startSlot, int initialNumSlots, Notate myNotate)
   {
     currentSlot = startSlot;
     chordSlot = startSlot;
-    numSlots = initialNumSlots;
+    numSlotsToFill = initialNumSlots;
     notate = myNotate;
 
     terminalBuffer = new PolylistBuffer();
     int stage = 0;
 
-    while( numSlots > 0 )
+    quotaReached = numSlotsToFill == 0;
+    
+    while( !quotaReached )
       {
+        // Start a new stage, with the start symbol and number of slots to fill
+        // as the argument on an initial goal.
+        
         try
           {
             stage++;
-            Polylist gen = addStart(numSlots);
+            Polylist stack = addStart(numSlotsToFill);
 
-            if( gen == null )
+            if( stack == null )
               {
                 return Polylist.nil;    // In case no grammar
               }
 
-            //System.out.println("\nStage " + stage + " generation starts with " + gen + " terminalBuffer length " + getDurationAbstractMelody(terminalBuffer));
+            //System.out.println("\nStage " + stage + " generation starts with " + stack + " terminalBuffer length " + getDurationAbstractMelody(terminalBuffer));
 
-            // gen is a list representing the undeveloped frontier of the rhs tree
-            // symbols in gen are expanded one at a time, left-to-right
+            // stack is a list representing the undeveloped frontier of the rhs tree
+            // symbols in stack are expanded one at a time, left-to-right
             // As non-terminal are expanded, the RHS replaces the non-terminal
-            // on the left of gen.
-            // If the top of gen is a terminal, it is flipped over onto 
+            // on the left of stack.
+            // If the top of stack is a terminal, it is flipped over onto 
             // accumulator, and then appended to terminalBuffer.
 
-            // So the combination of terminalBuffer and gen represent the total
+            // So the combination of terminalBuffer and stack represent the total
             // frontier of the rhs tree.
             // The variable terminalBuffer is modified implicitly within applyRules.
 
-            while( gen.nonEmpty() )
+            while( !quotaReached && stack.nonEmpty() )
               {
-                // System.out.println("gen = " + gen);  // Shows rhs.
-                gen = applyRules(gen);
+                // System.out.println("stack = " + stack);  // Shows rhs.
+                stack = applyRules(stack);
 
-                if( gen == null )
+                if( stack == null )
                   {
                     throw new RuleApplicationException();
                   }
@@ -165,7 +162,7 @@ public Polylist run(int startSlot, int initialNumSlots, Notate myNotate)
             
            if( traceLevel > 1 )
              {
-             showFrontier(gen);
+             showFrontier(stack);
              }           
            }
         catch( RuleApplicationException e )
@@ -178,15 +175,38 @@ public Polylist run(int startSlot, int initialNumSlots, Notate myNotate)
       }
     //ySystem.out.println("completed in " + stage + " stages" + ". terminalBuffer length " + getDurationAbstractMelody(terminalBuffer));
 
-    return truncateAbstractMelody(terminalBuffer.toPolylist(), initialNumSlots);
+    return terminalBuffer.toPolylist();
   }
 
 /**
- * Add the Start Symbol to list gen in order to start the grammar expansion.
+ * Add terminal to the list of terminals generated, as long as the quota has
+ * not been reached. Checks whether the terminal would go over quota, and
+ * if so, does not add it, but set quotaReached indicator instead.
+ * @param terminal 
+ */
+private void accumulateTerminal(Object terminal)
+  {
+    if( quotaReached )
+      {
+        return;
+      }
+    int duration = getDuration(terminal);
+    if( numSlotsToFill < duration )
+      {
+        quotaReached = true;
+        return;
+      }
+    terminalBuffer.append(terminal);
+    chordSlot += duration;
+    numSlotsToFill -= duration;
+  }
+
+/**
+ * Add the Start Symbol to list stack in order to start the grammar expansion.
  */
 public Polylist addStart(int numSlots)
   {
-    Polylist gen = Polylist.nil;
+    Polylist stack = Polylist.nil;
     Polylist search = rules;
 
     // While the list of rules isn't empty...
@@ -198,7 +218,7 @@ public Polylist addStart(int numSlots)
         try
           {
             // ... See if the next rule contains the "startsymbol" tag.
-            // If it does, pop it on the front of the string.
+            // If it does, token it on the front of the string.
             if( ((String) next.first()).equals(START) )
               {
                 if( next.length() == 2 && next.second() instanceof String )
@@ -206,8 +226,8 @@ public Polylist addStart(int numSlots)
                     startSymbol = (String) next.second();
 
                     Polylist s = Polylist.list(startSymbol, numSlots);
-                    gen = gen.cons(s);
-                    return gen;
+                    stack = stack.cons(s);
+                    return stack;
                   }
                 else
                   {
@@ -232,7 +252,8 @@ public Polylist addStart(int numSlots)
   }
 
 /**
- * Add a rule to the appropriate list, assuming that the value of the
+ * Add a rule to the appropriate list, so that probabilities can be
+ * computed and a rule then selected. Only add if the computed value of the
  * weight expression is non-negative.
  *
  * @param lhs left-hand side of the rule
@@ -261,37 +282,37 @@ private void addToList(Polylist lhs,
   }
 
 /**
- * Pop tokens off the gen stack. Any terminal tokens are pushed onto
+ * Pop tokens off the stack stack. Any terminal tokens are pushed onto
  * accumulator. Rules are applied to non-terminals.
  */
-public Polylist applyRules(Polylist gen) throws RuleApplicationException
+public Polylist applyRules(Polylist stack) throws RuleApplicationException
   {
-    Object pop = gen.first();
-    gen = gen.rest();
+    Object token = stack.first();
+    stack = stack.rest();
 
-    // Accumulate any terminal values at the beginning of gen
+    // Accumulate any terminal values at the beginning of stack.
 
-    while( isTerminal(pop) )
+    while( !quotaReached && isTerminal(token) )
       {
-        if( isWrappedTerminal(pop) )
+        if( isWrappedTerminal(token) )
           {
-            accumulateTerminal(((Polylist) pop).first());
+            accumulateTerminal(((Polylist) token).first());
           }
         else
           {
-            accumulateTerminal(pop);
+            accumulateTerminal(token);
           }
 
-        if( gen.isEmpty() || numSlots <= 0 )
+        if( stack.isEmpty() || quotaReached )
           {
-            return gen;
+            return stack;
           }
 
-        pop = gen.first();
-        gen = gen.rest();
+        token = stack.first();
+        stack = stack.rest();
       }
     
-    // pop is a non-terminal
+    // token is a non-terminal
      
     ArrayList<WeightedRule> ruleList = new ArrayList<WeightedRule>();
     ArrayList<WeightedRule> baseList = new ArrayList<WeightedRule>();
@@ -328,9 +349,9 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
             Polylist lhs = (Polylist) next.second();
             Polylist rhs = (Polylist) next.third();
 
-            if( pop.equals(lhs) )
+            if( token.equals(lhs) )
               {
-                addToList(lhs, rhs, next.fourth(), baseList);
+                //addToList(lhs, rhs, next.fourth(), baseList);
               }
           }
         // Most objects will have type RULE.
@@ -341,16 +362,16 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
             Polylist rhs = (Polylist) next.third();
 
             //System.out.println(" rhs before evaluation  " + rhs);
-            //System.out.println("pop = " + pop);
+            //System.out.println("token = " + token);
 
-            if( pop instanceof Polylist 
-                && ((Polylist) pop).first() instanceof String )
+            if( token instanceof Polylist 
+                && ((Polylist) token).first() instanceof String )
               {
-                if( ((String) ((Polylist) pop).first()).equals(lhs.first()) )
+                if( ((String) ((Polylist) token).first()).equals(lhs.first()) )
                   {
                     // Unify variables with their given numeric values,
                     // in preparation for evaluation.
-                    rhs = setVars((Polylist) pop, lhs, rhs);
+                    rhs = setVars((Polylist) token, lhs, rhs);
 
                     // A null result means that unification failed.
                     if( rhs == null )
@@ -363,7 +384,7 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
                     // Evaluate any expressions that need to be evaluated.
                     rhs = (Polylist) evaluate(rhs);
 
-                    //System.out.println(" rhs after evaluation of " + pop + ": " + rhs);
+                    //System.out.println(" rhs after evaluation of " + token + ": " + rhs);
 
                     // Check for negative arguments in RHS,
                     // In which case don't use RHS
@@ -424,7 +445,7 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
       {
       if( traceLevel > 0 )
         {
-        System.out.println("goal: " + pop + "no rule found");
+        System.out.println("goal: " + token + "no rule found");
         }
       }
     else
@@ -469,18 +490,18 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
       {
         if( traceLevel > 1 )
           {
-          showFrontier(gen.cons(pop));
+          showFrontier(stack.cons(token));
           } 
         if( traceLevel > 0 )
           {
           System.out.println(ruleToUse);
           System.out.println();
           }
-      gen = ruleToUse.addToGen(gen);
+      stack = ruleToUse.addToGen(stack);
       }
     }
 
-    return gen; // throw new RuleApplicationException("applyRules, no such rule for " + gen);
+    return stack; // throw new RuleApplicationException("applyRules, no such rule for " + stack);
   }
 
 private void showFrontier(Polylist gen)
@@ -522,6 +543,11 @@ public ArrayList<Object> getAllOfType(String t)
     return elements;
   }
 
+
+/**
+ * Clear the parameters specified in the grammar file, for subsequent
+ * replacement.
+ */
 
 public void clearParams()
   {
