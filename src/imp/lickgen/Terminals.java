@@ -46,6 +46,13 @@ public static boolean isTerminal(Object ob)
         || isWrappedTerminal(ob);
   }
 
+/**
+ * An abstract note is a note of the type in the original abstract melody.
+ * This means one of the letters {A, C, H, L, R, S, X, Y} followed by
+ * a duration expression, such as 2+4.
+ * @param ob
+ * @return 
+ */
 public static boolean isAbstractNote(Object ob)
   {
     if( !(ob instanceof String) )
@@ -60,29 +67,32 @@ public static boolean isAbstractNote(Object ob)
         return false;
       }
     
-    char first = string.charAt(0);
-    String rest = string.substring(1);
-    switch( first )
+    switch( string.charAt(0) )
       {
-        case 'A':
-        case 'C':
-        case 'H':
-        case 'L':
-        case 'R':
-        case 'S':
-        case 'X':
-        case 'Y':
+        case 'A': // Approach
+        case 'C': // Chord
+        case 'H': // Helpful = Chord or Color
+        case 'L': // Color
+        case 'R': // Rest
+        case 'S': // Scale
+        case 'X': // Arbitrary
+        case 'Y': // Outside
             break;
         default:
             return false;
       }
         //System.out.print("string = " + string);
-        boolean isDuration  = Duration.isDuration(rest);
+        boolean isDuration  = Duration.isDuration(string.substring(1));
         //System.out.println(" isAbstractNote = " + isDuration);
         return  isDuration;
   }
 
-
+/**
+ * A wrapped terminal is an abstract note as a single element of a list
+ * S expression.
+ * @param ob
+ * @return 
+ */
 
 public static boolean isWrappedTerminal(Object ob)
   {
