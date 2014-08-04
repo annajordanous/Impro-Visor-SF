@@ -788,6 +788,9 @@ public class CreateGrammar implements imp.Constants {
     // Loads the grammar rules from the file in a polylist
     public static Polylist[] getRulesFromFile(String inFile) {
         Polylist[] grammarRules = null;
+
+        //only add a rule to this list of rules if it's not a duplicate of any previous rules
+        ArrayList<Polylist> rulesList = new ArrayList<Polylist>();
         try {
             File f = new File(inFile);
 
@@ -796,7 +799,6 @@ public class CreateGrammar implements imp.Constants {
             rd.read(buf);
             String input = new String(buf);
             String[] rules = input.split("\n");
-            grammarRules = new Polylist[rules.length];
             for (int i = 0; i < rules.length; i++) {
                 String rule = rules[i];
                 int stopIndex = rule.length();
@@ -805,16 +807,36 @@ public class CreateGrammar implements imp.Constants {
                 } else if (rule.contains("Chorus")) {
                     stopIndex = rule.indexOf("Chorus");
                 }
-                grammarRules[i] = Polylist.PolylistFromString(rules[i]);
-                grammarRules[i] = readRule(grammarRules[i]);
+                
+                Polylist newRule = Polylist.PolylistFromString(rules[i]);
+                
+                boolean isUnique = true;
+                if (rulesList.size() > 0) {
+                    for (Polylist p : rulesList) {
+                        if (newRule.equals(p)) {
+                            isUnique = false;
+                            break;
+                        }
+                    }
+                }
+                if (isUnique) {
+                    rulesList.add(newRule);
+                } else {
+                    System.out.println("Duplicate rule: " + newRule);
+                }
             }
         } catch (Exception e) {
             System.out.println("Exception getting rules from file: " + e.toString());
             e.printStackTrace();
         }
 
-
-        return grammarRules;
+        Polylist[] rulesArray = new Polylist[rulesList.size()];
+        for (int i = 0; i < rulesList.size(); ++i) {
+            rulesArray[i] = rulesList.get(i);
+            rulesArray[i] = readRule(rulesArray[i]);
+        }
+        
+        return rulesArray;
     }
     // Loads the grammar rules from in a polylist
 

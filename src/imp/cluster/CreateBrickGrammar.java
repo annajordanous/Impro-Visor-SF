@@ -55,7 +55,7 @@ public class CreateBrickGrammar {
      * processByBrick Scan the tune one brick at a time and write info to an
      * output file
      */
-    public static void processByBrick(Notate notate, LickgenFrame frame) {
+    public static void processByBrick(Notate notate, int chorusNumber, LickgenFrame frame) {
         //step 1: roadmap the tune to find out what bricks it uses and where
         ArrayList<Block> currentBlocks = notate.getRoadMapBlocks(); //blocks from the current tune we're processing
         for (Block block : currentBlocks) {
@@ -63,8 +63,8 @@ public class CreateBrickGrammar {
         }
         //PartIterator iterates through choruses Score.size() Score.getPart()
         MEASURE_LENGTH = notate.getCurrentMelodyPart().getMeasureLength();
-        int chorusCount = 1;
-        for (StaveScrollPane ssp : notate.getStaveScrollPane()) {
+        //for (StaveScrollPane ssp : notate.getStaveScrollPane()) {
+        StaveScrollPane ssp = notate.getStaveScrollPane()[chorusNumber];
             Stave s = ssp.getStave();
             MelodyPart melPart = notate.getMelodyPart(s);
             ChordPart chordProg = notate.getChordProg();
@@ -103,13 +103,13 @@ public class CreateBrickGrammar {
                                 location,
                                 true,
                                 currentBlock.getDashedName(),
-                                chorusCount);
+                                chorusNumber); //was chorusCount
                     }
                 }
                 totalDuration += currentBlock.getDuration();
             }
-            chorusCount++;
-        }
+            //chorusCount++;
+        //}
         
         //for convenience (to make it easier to refer to a specific brick type), store brick types in array
         brickKindsArray = new String[brickKinds.size()];

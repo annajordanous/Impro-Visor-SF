@@ -5006,46 +5006,46 @@ public class LickgenFrame
     }
     
     public void getAbstractMelody() {
+        if (useBricksCheckbox.isSelected()) {
+            File f = new File(notate.getGrammarFileName());
+            String dir = f.getParentFile().getPath();
+            frameFile = dir + File.separator + Directories.accumulatedProductions;
+            try { //we just want to create a file to which further productions can be written
+                BufferedWriter out = new BufferedWriter(new FileWriter(frameFile, true));
+                out.close();
+            } catch (Exception e) {
+                System.out.println("I/O issues" + e.toString());
+            }
+            imp.cluster.CreateBrickGrammar.processByBrick(notate, notate.getSelectedIndex(), this);
+        } 
+        else {//if (useWindowsCheckbox.isSelected()) {
+            if (!allMeasures) {
+                melodyData = notate.getMelodyData(notate.getSelectedIndex());
+            }
 
-        if (!allMeasures) {
-            melodyData = notate.getMelodyData(notate.getSelectedIndex());
-        }
+            int minMeasureWindow = Integer.parseInt(windowSizeField.getText());
+            int maxMeasureWindow = Integer.parseInt(windowSizeField.getText());
 
-        int minMeasureWindow = Integer.parseInt(windowSizeField.getText());
-        int maxMeasureWindow = Integer.parseInt(windowSizeField.getText());
+            int beatsToSlide = Integer.parseInt(windowSlideField.getText());
 
-        int beatsToSlide = Integer.parseInt(windowSlideField.getText());
+            int selStart = notate.getCurrentSelectionStart();
 
-        int selStart = notate.getCurrentSelectionStart();
+            int selEnd = notate.getCurrentSelectionEnd();
+            for (int measureWindow = minMeasureWindow; measureWindow <= maxMeasureWindow; measureWindow++) {
 
-        int selEnd = notate.getCurrentSelectionEnd();
+                int slotsPerMeasure = BEAT;
 
-        for (int measureWindow = minMeasureWindow; measureWindow <= maxMeasureWindow; measureWindow++) {
+                int slotsPerSection = slotsPerMeasure * measureWindow;
 
-            int slotsPerMeasure = BEAT;
+                int start = selStart - (selStart % slotsPerMeasure);
 
-            int slotsPerSection = slotsPerMeasure * measureWindow;
+                int end = selEnd - (selEnd % slotsPerMeasure) + slotsPerMeasure - 1;
 
-            int start = selStart - (selStart % slotsPerMeasure);
+                int numMeasures = (end + 1 - start) / slotsPerSection;
 
-            int end = selEnd - (selEnd % slotsPerMeasure) + slotsPerMeasure - 1;
+                //writeBeatsToSlide(beatsToSlide);
+                //loop through places to start the measure window
 
-            int numMeasures = (end + 1 - start) / slotsPerSection;
-
-            //writeBeatsToSlide(beatsToSlide);
-            //loop through places to start the measure window
-            if (useBricksCheckbox.isSelected()) {
-                File f = new File(notate.getGrammarFileName());
-                String dir = f.getParentFile().getPath();
-                frameFile = dir + File.separator + Directories.accumulatedProductions;
-                try { //we just want to create a file to which further productions can be written
-                    BufferedWriter out = new BufferedWriter(new FileWriter(frameFile, true));
-                    out.close();
-                } catch (Exception e) {
-                    System.out.println("I/O troubles" + e.toString());
-                }
-                imp.cluster.CreateBrickGrammar.processByBrick(notate, this);
-            } else {
                 for (int window = 0; window < measureWindow; window += beatsToSlide) {
                     //extract all sections of size measureWindow
                     for (int i = 0;
@@ -5056,7 +5056,7 @@ public class LickgenFrame
                                 measureWindow,
                                 i == 0);
                         if (production != null) {
-                            writeProduction(production, 
+                            writeProduction(production,
                                     measureWindow,
                                     (i * slotsPerSection) + (window * BEAT),
                                     true,
@@ -5138,32 +5138,33 @@ public class LickgenFrame
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
+            //Enter the whole selection into the window
+            int slotsPerMeasure = BEAT;
+            int start = selStart - (selStart % slotsPerMeasure);
+            int end = selEnd - (selEnd % slotsPerMeasure) + slotsPerMeasure;
+            int measureWindow = (end - start) / BEAT;
+
+            String production = addMeasureToAbstractMelody(start, measureWindow, false);
+
+            if (production != null) {
+                if (production.contains("STARTER")) {
+                    production = production.replace("STARTER", "");
+                }
+                if (production.contains("ENDTIED")) {
+                    production = production.replace("ENDTIED ", "");
+                }
+                if (production.contains("STARTTIED")) {
+                    production = production.replace("STARTTIED ", "");
+                }
+                if (production.contains("CHORDS")) {
+                    production = production.substring(0, production.indexOf("CHORDS"));
+                }
+                setRhythmFieldText(production.toString());
+            }
+
 
         }
 
-        //Enter the whole selection into the window
-        int slotsPerMeasure = BEAT;
-        int start = selStart - (selStart % slotsPerMeasure);
-        int end = selEnd - (selEnd % slotsPerMeasure) + slotsPerMeasure;
-        int measureWindow = (end - start) / BEAT;
-
-        String production = addMeasureToAbstractMelody(start, measureWindow, false);
-
-        if (production != null) {
-            if (production.contains("STARTER")) {
-                production = production.replace("STARTER", "");
-            }
-            if (production.contains("ENDTIED")) {
-                production = production.replace("ENDTIED ", "");
-            }
-            if (production.contains("STARTTIED")) {
-                production = production.replace("STARTTIED ", "");
-            }
-            if (production.contains("CHORDS")) {
-                production = production.substring(0, production.indexOf("CHORDS"));
-            }
-            setRhythmFieldText(production.toString());
-        }
 
     }
 
@@ -5179,9 +5180,8 @@ public class LickgenFrame
         
         if (chorus == -1) { //didn't provide any information about what chorus we're on
             chorus = notate.getSelectedIndex();
-        } else {
-            chorus = chorus - 1; //because indexing in Java starts at zero but we like to think of first, second, etc. choruses
         }
+        
         if (!allMeasures) {
             melodyData = notate.getMelodyData(chorus); 
         }
