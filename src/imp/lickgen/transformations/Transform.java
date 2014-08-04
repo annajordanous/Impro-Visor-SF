@@ -129,9 +129,11 @@ private MelodyPart applySubstitutionType(ArrayList<Substitution> substitutions,
     
     MelodyPart subbedMP = new MelodyPart();
     
-    int[] startingSlot = new int[1];
+    int[] startingSlot = new int[2];
+    // the returned slot to start pasting over
     startingSlot[0] = 0;
-    
+    // the returned slot to start transforming on again
+    startingSlot[1] = 0;
     // go through each index, trying to apply the substitutions at the slot.
     // if a substitution is applied, change the index to the end of the applied
     // melody, if not, just go to the next note. 
@@ -203,7 +205,8 @@ private MelodyPart applySubstitutionType(ArrayList<Substitution> substitutions,
         }
         else
         {
-            transNotes.pasteOver(substituted, initSlot);
+            transNotes.pasteOver(substituted, startingSlot[0]);
+            startingSlot[0] = startingSlot[1];
         }
     }
     return transNotes;

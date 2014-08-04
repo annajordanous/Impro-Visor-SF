@@ -149,8 +149,8 @@ public class TransformLearningPanel extends javax.swing.JPanel {
 
         saveOriginalButton.setText("Save Original");
         saveOriginalButton.setToolTipText("Save the currently selected melody");
-        saveOriginalButton.setMinimumSize(new java.awt.Dimension(300, 25));
-        saveOriginalButton.setPreferredSize(new java.awt.Dimension(300, 25));
+        saveOriginalButton.setMinimumSize(new java.awt.Dimension(340, 25));
+        saveOriginalButton.setPreferredSize(new java.awt.Dimension(340, 25));
         saveOriginalButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveOriginalButtonActionPerformed(evt);
@@ -164,8 +164,8 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         replaceWithOriginalButton.setText("Replace Current Melody with Original");
         replaceWithOriginalButton.setToolTipText("replace the current melody with the saved melody");
         replaceWithOriginalButton.setEnabled(false);
-        replaceWithOriginalButton.setMinimumSize(new java.awt.Dimension(300, 25));
-        replaceWithOriginalButton.setPreferredSize(new java.awt.Dimension(300, 25));
+        replaceWithOriginalButton.setMinimumSize(new java.awt.Dimension(340, 25));
+        replaceWithOriginalButton.setPreferredSize(new java.awt.Dimension(340, 25));
         replaceWithOriginalButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 replaceWithOriginalButtonActionPerformed(evt);
@@ -218,7 +218,7 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         step2Panel.setLayout(new java.awt.GridBagLayout());
 
         step2Label1.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
-        step2Label1.setText("Next, to make transformations you will need a basic outline from the original melody to transform from.");
+        step2Label1.setText("Next, to make transformations you will need a basic outline for the original melody to transform from.");
         step2Label1.setMaximumSize(new java.awt.Dimension(672, 15));
         step2Label1.setMinimumSize(new java.awt.Dimension(672, 15));
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -230,7 +230,7 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         step2Panel.add(step2Label1, gridBagConstraints);
 
         step2Label2.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
-        step2Label2.setText("<html><b> Important: </b>Select a resolution, or minimum duration each note in the outline must satisfy, then click the Flatten button.");
+        step2Label2.setText("<html><b> Important: </b>Select a resolution that represents the length of the notes that result from flattening, then click Flatten");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
@@ -239,7 +239,7 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         step2Panel.add(step2Label2, gridBagConstraints);
 
         step2Label3.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
-        step2Label3.setText("Flattening will happen on the currently selected melody, so an original melody is not required to be saved.");
+        step2Label3.setText("This step will \"flatten\" the selected melody to create a basic outline.");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
@@ -250,8 +250,8 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         flattenValueComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Whole Note", "Half Note", "Quarter Note", "Eight Note", "Sixteenth Note" }));
         flattenValueComboBox.setSelectedIndex(1);
         flattenValueComboBox.setToolTipText("select the resolution to flatten at");
-        flattenValueComboBox.setMinimumSize(new java.awt.Dimension(145, 25));
-        flattenValueComboBox.setPreferredSize(new java.awt.Dimension(145, 25));
+        flattenValueComboBox.setMinimumSize(new java.awt.Dimension(165, 25));
+        flattenValueComboBox.setPreferredSize(new java.awt.Dimension(165, 25));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
@@ -262,8 +262,8 @@ public class TransformLearningPanel extends javax.swing.JPanel {
 
         flattenButton.setText("Flatten");
         flattenButton.setToolTipText("flatten the currently selected melody with resolution chosen to the left");
-        flattenButton.setMinimumSize(new java.awt.Dimension(145, 25));
-        flattenButton.setPreferredSize(new java.awt.Dimension(145, 25));
+        flattenButton.setMinimumSize(new java.awt.Dimension(165, 25));
+        flattenButton.setPreferredSize(new java.awt.Dimension(165, 25));
         flattenButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 flattenButtonActionPerformed(evt);
@@ -317,8 +317,8 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         subFlatFromOrigButton.setText("Subtract Flattening from Original");
         subFlatFromOrigButton.setToolTipText("show just the transformations in the leadsheet");
         subFlatFromOrigButton.setEnabled(false);
-        subFlatFromOrigButton.setMinimumSize(new java.awt.Dimension(300, 25));
-        subFlatFromOrigButton.setPreferredSize(new java.awt.Dimension(300, 25));
+        subFlatFromOrigButton.setMinimumSize(new java.awt.Dimension(340, 25));
+        subFlatFromOrigButton.setPreferredSize(new java.awt.Dimension(340, 25));
         subFlatFromOrigButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 subFlatFromOrigButtonActionPerformed(evt);
@@ -335,8 +335,8 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         createTransformButton.setEnabled(false);
         createTransformButton.setMargin(new java.awt.Insets(2, 12, 2, 12));
         createTransformButton.setMaximumSize(new java.awt.Dimension(135, 25));
-        createTransformButton.setMinimumSize(new java.awt.Dimension(145, 25));
-        createTransformButton.setPreferredSize(new java.awt.Dimension(145, 25));
+        createTransformButton.setMinimumSize(new java.awt.Dimension(165, 25));
+        createTransformButton.setPreferredSize(new java.awt.Dimension(165, 25));
         createTransformButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 createTransformButtonActionPerformed(evt);
@@ -385,8 +385,8 @@ public class TransformLearningPanel extends javax.swing.JPanel {
 
         generateTransformMethodComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Windowing", "Trend Detection" }));
         generateTransformMethodComboBox.setToolTipText("select the method for learning");
-        generateTransformMethodComboBox.setMinimumSize(new java.awt.Dimension(145, 25));
-        generateTransformMethodComboBox.setPreferredSize(new java.awt.Dimension(145, 25));
+        generateTransformMethodComboBox.setMinimumSize(new java.awt.Dimension(165, 25));
+        generateTransformMethodComboBox.setPreferredSize(new java.awt.Dimension(165, 25));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
@@ -412,8 +412,8 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         showTransformButton.setText("Show Generated Transform");
         showTransformButton.setToolTipText("show the transform file generated from above");
         showTransformButton.setEnabled(false);
-        showTransformButton.setMinimumSize(new java.awt.Dimension(300, 25));
-        showTransformButton.setPreferredSize(new java.awt.Dimension(300, 25));
+        showTransformButton.setMinimumSize(new java.awt.Dimension(340, 25));
+        showTransformButton.setPreferredSize(new java.awt.Dimension(340, 25));
         showTransformButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 showTransformButtonActionPerformed(evt);
@@ -427,8 +427,8 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         setTransformButton.setText("Put Transform into Transform tab");
         setTransformButton.setToolTipText("put the transform generated above into the transform tab");
         setTransformButton.setEnabled(false);
-        setTransformButton.setMinimumSize(new java.awt.Dimension(300, 25));
-        setTransformButton.setPreferredSize(new java.awt.Dimension(300, 25));
+        setTransformButton.setMinimumSize(new java.awt.Dimension(340, 25));
+        setTransformButton.setPreferredSize(new java.awt.Dimension(340, 25));
         setTransformButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 setTransformButtonActionPerformed(evt);

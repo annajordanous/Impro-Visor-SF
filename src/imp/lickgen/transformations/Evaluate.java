@@ -1236,6 +1236,9 @@ public NoteChordPair transpose_diatonic(NoteChordPair pair, String relPitch)
 {
     if(pair.chord.isNOCHORD())
         return null;
+    if(pair.note.isRest())
+        return null;
+    
     String returns = relative_pitch(new Polylist(pair, new Polylist())).toString();
     if(returns == null)
     {
@@ -1285,6 +1288,8 @@ public NoteChordPair transpose_chromatic(NoteChordPair pair, double pitches)
 {
     pitches *= 2;
     Note note = pair.note.copy();
+    if(note.isRest())
+        return null;
     note.shiftPitch((int)pitches, 0);
     return new NoteChordPair(note, pair.chord);
 }

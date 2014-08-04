@@ -142,14 +142,13 @@ public MelodyPart apply(MelodyPart notes, ChordPart chords, int[] startingSlot)
                 System.out.println("\t\t\tTrans Worked");
                 System.out.println("\t\tSub Result: " + result.toString());
             }
+            if(!trans.changesFirstNote() && notes.getPrevIndex(newStartingSlot) > -1)
+                startingSlot[0] = notes.getPrevIndex(newStartingSlot);
             
             for(int i = 0; i < trans.numSourceNotes(); i++)
                 newStartingSlot = notes.getNextIndex(newStartingSlot);
             
-            if(!trans.changesLastNote())
-                newStartingSlot = notes.getPrevIndex(newStartingSlot);
-            
-            startingSlot[0] = newStartingSlot;
+            startingSlot[1] = newStartingSlot;
             
             return result;
         }
