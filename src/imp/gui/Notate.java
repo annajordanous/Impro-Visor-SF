@@ -23664,14 +23664,14 @@ public void setKconstantSlider(double value)
         quantizeString = ((String)quantizeComboBox.getSelectedItem());
         
         // case: nothing valid selected, attempt to select null option
-        if (quantizeString == "-")
+        if (quantizeString.equals("-"))
         {
             System.out.println("Please make a valid selection.");
         }
         
         // case: selected option to quantize the string according to the best 
         // resolution found and other factors of MelodyPart.quantize()
-        else if (quantizeString == "Best") 
+        else if (quantizeString.equals("Best")) 
         {
             quantizeResolution = originalPart.getBestResolution();
             quantizedPart = MelodyPart.quantize(originalPart);

@@ -2123,8 +2123,15 @@ public void setAutoFill(boolean fill)
         int sum = melody.getNoteSum();
         return melody;
     }
+        public void swap(Note shiftFor, Note moveBack)
+    {
+        MelodyPart melody = this;
+        melody.addUnit(shiftFor);
+        melody.addUnit(moveBack);
     
-    public int shiftAndExtend(Note prev, Note note)
+    }
+    
+    public int shiftAndMergeHelper(Note prev, Note note)
     {
         int noteLength = note.getRhythmValue();
         int prevLength = prev.getRhythmValue();
@@ -2164,20 +2171,16 @@ public void setAutoFill(boolean fill)
             }
         }
         
-        // shift case
-        if (isNoteValidLength && !isPrevValidLength)
-        {
-            //System.out.println("TODO: shift case");
-        }
-        // shift case
-        if (isPrevValidLength && !isNoteValidLength)
-        {
-            //System.out.println("TODO: shift case");
-        }
+            // TODO: shift case statement
+//            if (...)
+//            {
+//                return 2;
+//            }
+
         return -1;
     }
     
-    public MelodyPart shiftAndExtendMelody()
+    public MelodyPart shiftAndMergeMelody()
     {
         MelodyPart melody = this.copy();
         MelodyPart fixed = new MelodyPart();
@@ -2189,10 +2192,11 @@ public void setAutoFill(boolean fill)
         int shiftAndExtendValue;
         int prospRhythmValue;
         int prospPitch;
+        int index = 0;
         
         while(iter.hasNext())
         {
-            shiftAndExtendValue = shiftAndExtend(prev, note);
+            shiftAndExtendValue = shiftAndMergeHelper(prev, note);
             
             // case: adding previous value to note, removing previous
             if (shiftAndExtendValue == 1)
@@ -2203,6 +2207,7 @@ public void setAutoFill(boolean fill)
                 {
                     Rest prosp = new Rest(prospRhythmValue);
                     fixed.addNote(prosp);
+                    index += prospRhythmValue;
                     System.out.println("Added prosp = "+prosp+" replacing note");
                 }
                 
@@ -2211,6 +2216,7 @@ public void setAutoFill(boolean fill)
                     prospPitch = note.getPitch();
                     Note prosp = new Note(prospPitch, prospRhythmValue);
                     fixed.addNote(prosp);
+                    index += prospRhythmValue;
                     System.out.println("Added prosp = "+prosp+" replacing note");
                 } 
                 
@@ -2235,6 +2241,7 @@ public void setAutoFill(boolean fill)
                 {
                    Rest prosp = new Rest(prospRhythmValue);
                    fixed.addNote(prosp);
+                   index += prospRhythmValue;
                    System.out.println("Added prosp = "+prosp+" replacing note");
                 }
                 
@@ -2243,6 +2250,7 @@ public void setAutoFill(boolean fill)
                     prospPitch = prev.getPitch();
                     Note prosp = new Note(prospPitch, prospRhythmValue);
                     fixed.addNote(prosp);
+                    index += prospRhythmValue;
                     System.out.println("Added prosp = "+prosp+" replacing prev");
                 }
                 
@@ -2258,6 +2266,11 @@ public void setAutoFill(boolean fill)
                 }
             }
             
+            else if (shiftAndExtendValue == 2)
+            {
+                //TODO: write shift function
+            }
+            
             // case: no change necessary
             else
             {
@@ -2265,6 +2278,7 @@ public void setAutoFill(boolean fill)
                 {
                    Rest prosp = new Rest(prev.getRhythmValue());
                    fixed.addNote(prosp);
+                   index += prosp.getRhythmValue();
                    //System.out.println("Added regular = "+prev);
                 }
                 
@@ -2273,6 +2287,7 @@ public void setAutoFill(boolean fill)
                     prospPitch = prev.getPitch();
                     Note prosp = new Note(prospPitch, prev.getRhythmValue());
                     fixed.addNote(prosp);
+                    index += prosp.getRhythmValue();
                     //System.out.println("Added regular = "+prev);
                     }
                 
@@ -2353,7 +2368,7 @@ public void setAutoFill(boolean fill)
         qMelody = original.applyResolution(resolution);
         
         //shift and extend notes and rests towards valid lengths
-        qMelody = qMelody.shiftAndExtendMelody();
+        qMelody = qMelody.shiftAndMergeMelody();
         
         // merge adjacent rests
         qMelody.mergeAdjacentRests();
@@ -2365,7 +2380,7 @@ public void setAutoFill(boolean fill)
     public static MelodyPart quantizeNoRes(MelodyPart original)
     {
         MelodyPart qMelody = original.copy(); 
-        //qMelody.shiftAndExtendMelody();
+        //qMelody.shiftAndMergeMelody();
         qMelody.mergeAdjacentRests();
         
         return qMelody;
