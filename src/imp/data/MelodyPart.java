@@ -54,7 +54,6 @@ public class MelodyPart
         extends Part
   {
   /**
-   *
    * This is a "fudge-factor" to keep display from getting weird
    * during extraction. It limits the smallest note to a set
    * duration.  If the copied duration is less, then it is artificially
