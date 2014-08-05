@@ -5054,7 +5054,8 @@ public class LickgenFrame
                         String production = addMeasureToAbstractMelody(
                                 start + (i * slotsPerSection) + (window * BEAT),
                                 measureWindow,
-                                i == 0);
+                                i == 0,
+                                true);
                         if (production != null) {
                             writeProduction(production,
                                     measureWindow,
@@ -5144,7 +5145,10 @@ public class LickgenFrame
             int end = selEnd - (selEnd % slotsPerMeasure) + slotsPerMeasure;
             int measureWindow = (end - start) / BEAT;
 
-            String production = addMeasureToAbstractMelody(start, measureWindow, false);
+            String production = addMeasureToAbstractMelody(start, 
+                                                           measureWindow, 
+                                                           false,
+                                                           true);
 
             if (production != null) {
                 if (production.contains("STARTER")) {
@@ -5164,8 +5168,13 @@ public class LickgenFrame
         }
     }
 
+   
+/**
+ * Extract melody for purpose of display only, not creating productions. This
+ * code was adapted from getAbstractMelody()
+ */
     
- public void extractAbstractMelody()
+public void extractAbstractMelody()
   {
     if( !allMeasures )
       {
@@ -5174,17 +5183,15 @@ public class LickgenFrame
 
     int minMeasureWindow = Integer.parseInt(windowSizeField.getText());
     int maxMeasureWindow = Integer.parseInt(windowSizeField.getText());
-
     int beatsToSlide = Integer.parseInt(windowSlideField.getText());
-
-    //int measureWindow = 2;
 
     int selStart = notate.getCurrentSelectionStart();
 
     int selEnd = notate.getCurrentSelectionEnd();
 
-    for( int measureWindow = minMeasureWindow; measureWindow <= maxMeasureWindow;
-        measureWindow++ )
+    for( int measureWindow = minMeasureWindow; 
+             measureWindow <= maxMeasureWindow;
+             measureWindow++ )
       {
         //int slotsPerMeasure = score.getMetre()[0] * BEAT; //assume something/4 time
 
@@ -5198,124 +5205,24 @@ public class LickgenFrame
 
         int numMeasures = (end + 1 - start) / slotsPerSection;
 
-
-        //writeBeatsToSlide(beatsToSlide);
         //loop through places to start the measure window
         for( int window = 0; window < measureWindow; window += beatsToSlide )
           {
             //extract all sections of size measureWindow
             for( int i = 0;
-                (i * slotsPerSection) + (window * BEAT) + slotsPerSection <= (numMeasures) * slotsPerSection;
-                i++ )
+                    (i * slotsPerSection) + (window * BEAT) + slotsPerSection 
+                     <= (numMeasures) * slotsPerSection;
+                    i++ )
               {
                 //System.out.println("Window: " + window);
                 //System.out.println("i: " + i);
                 String production = addMeasureToAbstractMelody(
-                    start + (i * slotsPerSection) + (window * BEAT),
-                                                               measureWindow,
-                                                               i == 0);
-//                if( production != null )
-//                  {
-//                         writeProduction(production, measureWindow,
-//                                        (i * slotsPerSection) + (window * BEAT),
-//                                        true);
-//                  }
+                        start + (i * slotsPerSection) + (window * BEAT),
+                        measureWindow,
+                        i == 0,
+                        false);
               }
-
           }
-
-        lickgen.loadGrammar(notate.getGrammarFileName());
-        Grammar g = lickgen.getGrammar();
-        Polylist rules = g.getRules();
-
-        ArrayList<Polylist> ruleList = new ArrayList<Polylist>();
-        for( Polylist L = rules; L.nonEmpty(); L = L.rest() )
-          {
-            ruleList.add((Polylist) L.first());
-          }
-        Collections.sort(ruleList, new PolylistComparer());
-
-        ArrayList<Polylist> newRules = new ArrayList<Polylist>();
-
-
-        Polylist previous = Polylist.nil;
-        float accumulatedProbability = 0;
-
-
-        //Note - rules must have form similar to (rule (V4) (N4) 0.22)
-
-//        for( Iterator<Polylist> e = ruleList.iterator(); e.hasNext(); )
-//          {
-//            Polylist current = e.next();
-//            if( current.first().equals("rule") || current.first().equals("base") )
-//              {
-//                if( (!previous.equals(Polylist.nil)) && current.allButLast().equals(
-//                    previous.allButLast()) )
-//                  {
-//                    accumulatedProbability += ((Number) current.last()).floatValue();
-//                    int round = (int) (accumulatedProbability * 100);
-//                    accumulatedProbability = (float) (round / 100.0);
-//                  }
-//                else
-//                  {
-//                    if( previous.nonEmpty() )
-//                      {
-//                        newRules.add(
-//                            Polylist.list(previous.first(), previous.second(),
-//                                          previous.third(),
-//                                          accumulatedProbability));
-//                      }
-//                    accumulatedProbability = ((Number) current.last()).floatValue();
-//                    previous = current;
-//                  }
-//              }
-//            else
-//              {
-//                newRules.add(current);
-//              }
-//          }
-        if( previous.nonEmpty() )
-          {
-            newRules.add(Polylist.list(previous.first(),
-                                              previous.second(),
-                                              previous.third(),
-                                              accumulatedProbability));
-          }
-
-
-        try
-          {
-            File f = new File(notate.getGrammarFileName());
-            if( f.exists() )
-              {
-                System.gc();
-                boolean deleted = f.delete();
-                while( !deleted )
-                  {
-                    deleted = f.delete();
-                  }
-              }
-
-            File f_out = new File(notate.getGrammarFileName());
-            FileWriter out = new FileWriter(f_out, true);
-
-            notate.setLickGenStatus(
-                "Writing " + newRules.size() + " grammar rules to " + notate.getGrammarFileName());
-
-            for( int i = 0; i < newRules.size(); i++ )
-              {
-                out.write(newRules.get(i).toString() + "\n");
-              }
-            out.close();
-
-            notate.refreshGrammarEditor();
-
-          }
-        catch( Exception e )
-          {
-            System.out.println(e.getMessage());
-          }
-
       }
 
     //Enter the whole selection into the window
@@ -5324,30 +5231,14 @@ public class LickgenFrame
     int end = selEnd - (selEnd % slotsPerMeasure) + slotsPerMeasure;
     int measureWindow = (end - start) / BEAT;
 
-    String production = addMeasureToAbstractMelody(start, measureWindow, false);
+    String production = addMeasureToAbstractMelody(start, measureWindow, false, false);
 
     if( production != null )
       {
-        if( production.contains("STARTER") )
-          {
-            production = production.replace("STARTER", "");
-          }
-        if( production.contains("ENDTIED") )
-          {
-            production = production.replace("ENDTIED ", "");
-          }
-        if( production.contains("STARTTIED") )
-          {
-            production = production.replace("STARTTIED ", "");
-          }
-        if( production.contains("CHORDS") )
-          {
-            production = production.substring(0, production.indexOf("CHORDS"));
-          }
         setRhythmFieldText(production.toString());
       }
+  }
 
- }
     /**
      * add the production to file
      */
@@ -5484,8 +5375,10 @@ public class LickgenFrame
         }
     }
 
-    public String addMeasureToAbstractMelody(int selStart, int measureWindow,
-            boolean isSongStart) {
+    public String addMeasureToAbstractMelody(int selStart, 
+                                             int measureWindow,
+                                             boolean isSongStart,
+                                             boolean writeChords) {
         //int slotsPerMeasure = score.getMetre()[0] * BEAT; //assume something/4 time
         int slotsPerSection = BEAT * measureWindow;
         //boolean isSongStart = (selStart == 0);
@@ -5822,19 +5715,23 @@ public class LickgenFrame
             if (isSongStart) {
                 strbuf.append("STARTER");
             }
-            strbuf.append("CHORDS ");
+            if( writeChords )
+              {
+              strbuf.append("CHORDS ");
 
-            ChordPart chords = notate.getChordProg().extract(selStart,
-                    selStart + slotsPerSection - 1);
-            ArrayList<Unit> chordList = chords.getUnitList();
-            if (chordList.isEmpty()) {
-                System.out.println("No chords");
-            }
-            for (int i = 0; i < chordList.size(); i++) {
-                String nextChord = ((Chord) chordList.get(i)).toLeadsheet();
-                strbuf.append(nextChord);
-                strbuf.append(" ");
-            }
+              ChordPart chords = notate.getChordProg()
+                      .extract(selStart,
+                               selStart + slotsPerSection - 1);
+              ArrayList<Unit> chordList = chords.getUnitList();
+              if (chordList.isEmpty()) {
+                  System.out.println("No chords");
+              }
+              for (int i = 0; i < chordList.size(); i++) {
+                  String nextChord = ((Chord) chordList.get(i)).toLeadsheet();
+                  strbuf.append(nextChord);
+                  strbuf.append(" ");
+              }
+              }
         }
 
         return strbuf.toString();
