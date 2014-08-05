@@ -67,7 +67,37 @@ import polya.PolylistEnum;
  */
 public class SoloGenerator extends javax.swing.JFrame {
     
- public void setTableColumnWidths()
+ String TITLE = "Solo Generator";
+ LickgenFrame lickgenFrame;
+
+    /**
+     * Creates new form SoloGenerator
+     */
+    public SoloGenerator(LickGen lickgen, Notate notate, CommandManager cm) {
+        this.random = new Random();
+        initComponents();
+    //    testDialog.setVisible(true);
+    this.cm = cm;
+    this.lickgen = lickgen;
+    this.notate = notate;
+    
+    setTitle(TITLE);
+    WindowRegistry.registerWindow(this);
+    soloTable.setModel(soloTableModel);
+    soloTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    soloTable.addMouseListener(new MouseAdapter() {
+        public void mouseReleased(MouseEvent e) {
+            if(e.getClickCount() >= 1) {
+                int row = soloTable.rowAtPoint(e.getPoint());
+              soloTable.getSelectionModel().setSelectionInterval(row,row);
+            }
+        }
+    });
+    setTableColumnWidths();
+    loadFromFile(fileName);
+    }
+
+public void setTableColumnWidths()
   {
       for(int j = 0; j < soloTableModel.getColumnCount();j++)
     {
@@ -84,30 +114,7 @@ public class SoloGenerator extends javax.swing.JFrame {
     }
     //sectionTable.getColumnModel().getColumn(0).setCellRenderer( sectionCellRenderer );
   }
-    /**
-     * Creates new form SoloGenerator
-     */
-    public SoloGenerator(LickGen lickgen, Notate notate, CommandManager cm) {
-        this.random = new Random();
-        initComponents();
-    //    testDialog.setVisible(true);
-    this.cm = cm;
-    this.lickgen = lickgen;
-    this.notate = notate;
-    soloTable.setModel(soloTableModel);
-    soloTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-    soloTable.addMouseListener(new MouseAdapter() {
-        public void mouseReleased(MouseEvent e) {
-            if(e.getClickCount() >= 1) {
-                int row = soloTable.rowAtPoint(e.getPoint());
-              soloTable.getSelectionModel().setSelectionInterval(row,row);
-            }
-        }
-    });
-    setTableColumnWidths();
-    loadFromFile(fileName);
-    }
-LickgenFrame lickgenFrame;
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -115,7 +122,8 @@ LickgenFrame lickgenFrame;
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
         java.awt.GridBagConstraints gridBagConstraints;
 
         nameErrorMessage = new javax.swing.JDialog();
@@ -157,17 +165,29 @@ LickgenFrame lickgenFrame;
         stopPlaying = new java.awt.Button();
         SoloGeneratorTitle = new java.awt.Label();
         Reset = new javax.swing.JButton();
+        roadmapMenuBar = new javax.swing.JMenuBar();
+        javax.swing.JMenu fileMenu = new javax.swing.JMenu();
+        javax.swing.JMenuItem exitMenuItem = new javax.swing.JMenuItem();
+        windowMenu = new javax.swing.JMenu();
+        closeWindowMI = new javax.swing.JMenuItem();
+        cascadeMI = new javax.swing.JMenuItem();
+        jSeparator5 = new javax.swing.JPopupMenu.Separator();
+        windowMenuSeparator = new javax.swing.JSeparator();
 
         nameErrorMessage.setMinimumSize(new java.awt.Dimension(500, 400));
         nameErrorMessage.getContentPane().setLayout(new java.awt.GridBagLayout());
 
-        nameField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        nameField.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 nameFieldActionPerformed(evt);
             }
         });
-        nameField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
+        nameField.addKeyListener(new java.awt.event.KeyAdapter()
+        {
+            public void keyPressed(java.awt.event.KeyEvent evt)
+            {
                 nameFieldKeyPressed(evt);
             }
         });
@@ -193,8 +213,10 @@ LickgenFrame lickgenFrame;
         nameErrorMessage.getContentPane().add(namePicked, gridBagConstraints);
 
         CancelButton.setText("Cancel");
-        CancelButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        CancelButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 CancelButtonActionPerformed(evt);
             }
         });
@@ -206,8 +228,10 @@ LickgenFrame lickgenFrame;
         nameErrorMessage.getContentPane().add(CancelButton, gridBagConstraints);
 
         OkButton.setText("Ok");
-        OkButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        OkButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 OkButtonActionPerformed(evt);
             }
         });
@@ -251,13 +275,17 @@ LickgenFrame lickgenFrame;
         enteredIncorrectly.getContentPane().add(tryAgain, gridBagConstraints);
 
         cellOkbutton.setText("Ok");
-        cellOkbutton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        cellOkbutton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 cellOkbuttonActionPerformed(evt);
             }
         });
-        cellOkbutton.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
+        cellOkbutton.addKeyListener(new java.awt.event.KeyAdapter()
+        {
+            public void keyPressed(java.awt.event.KeyEvent evt)
+            {
                 cellOkbuttonKeyPressed(evt);
             }
         });
@@ -309,13 +337,17 @@ LickgenFrame lickgenFrame;
         resetCheck.getContentPane().add(youSure, gridBagConstraints);
 
         YesButton.setText("Yes, Continue");
-        YesButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        YesButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 YesButtonActionPerformed(evt);
             }
         });
-        YesButton.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
+        YesButton.addKeyListener(new java.awt.event.KeyAdapter()
+        {
+            public void keyPressed(java.awt.event.KeyEvent evt)
+            {
                 YesButtonKeyPressed(evt);
             }
         });
@@ -327,8 +359,10 @@ LickgenFrame lickgenFrame;
         resetCheck.getContentPane().add(YesButton, gridBagConstraints);
 
         NoButton.setText("No, Cancel");
-        NoButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        NoButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 NoButtonActionPerformed(evt);
             }
         });
@@ -354,8 +388,10 @@ LickgenFrame lickgenFrame;
         AlreadyNamed.getContentPane().add(OverwriteOption, gridBagConstraints);
 
         YesOverwrite.setText("Yes");
-        YesOverwrite.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        YesOverwrite.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 YesOverwriteActionPerformed(evt);
             }
         });
@@ -367,8 +403,10 @@ LickgenFrame lickgenFrame;
         AlreadyNamed.getContentPane().add(YesOverwrite, gridBagConstraints);
 
         NoOverwrite.setText("No");
-        NoOverwrite.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        NoOverwrite.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 NoOverwriteActionPerformed(evt);
             }
         });
@@ -395,8 +433,10 @@ LickgenFrame lickgenFrame;
         deleteCheck.getContentPane().add(deletesure, gridBagConstraints);
 
         Okdelete.setText("Yes");
-        Okdelete.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        Okdelete.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 OkdeleteActionPerformed(evt);
             }
         });
@@ -408,8 +448,10 @@ LickgenFrame lickgenFrame;
         deleteCheck.getContentPane().add(Okdelete, gridBagConstraints);
 
         Nodelete.setText("No");
-        Nodelete.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        Nodelete.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 NodeleteActionPerformed(evt);
             }
         });
@@ -431,8 +473,17 @@ LickgenFrame lickgenFrame;
         setMaximumSize(new java.awt.Dimension(2140, 2140));
         setMinimumSize(new java.awt.Dimension(1000, 563));
         setPreferredSize(new java.awt.Dimension(500, 505));
-        addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
+        addWindowListener(new java.awt.event.WindowAdapter()
+        {
+            public void windowClosed(java.awt.event.WindowEvent evt)
+            {
+                SoloGenerator.this.windowClosed(evt);
+            }
+        });
+        addKeyListener(new java.awt.event.KeyAdapter()
+        {
+            public void keyPressed(java.awt.event.KeyEvent evt)
+            {
                 formKeyPressed(evt);
             }
         });
@@ -441,7 +492,8 @@ LickgenFrame lickgenFrame;
         jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
         soloTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+            new Object [][]
+            {
                 {null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null},
@@ -453,15 +505,19 @@ LickgenFrame lickgenFrame;
                 {null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null}
             },
-            new String [] {
+            new String []
+            {
                 "Name", "Theme Length", "Theme", "Prob. to Use", "Prob. to Transpose", "Prob. to Invert", "Prob. to Reverse"
             }
-        ) {
-            Class[] types = new Class [] {
+        )
+        {
+            Class[] types = new Class []
+            {
                 java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
             };
 
-            public Class getColumnClass(int columnIndex) {
+            public Class getColumnClass(int columnIndex)
+            {
                 return types [columnIndex];
             }
         });
@@ -472,18 +528,24 @@ LickgenFrame lickgenFrame;
         soloTable.setSelectionBackground(javax.swing.UIManager.getDefaults().getColor("CheckBoxMenuItem.selectionBackground"));
         soloTable.setShowGrid(true);
         soloTable.getTableHeader().setReorderingAllowed(false);
-        soloTable.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+        soloTable.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
                 soloTableMouseClicked(evt);
             }
         });
-        soloTable.addComponentListener(new java.awt.event.ComponentAdapter() {
-            public void componentShown(java.awt.event.ComponentEvent evt) {
+        soloTable.addComponentListener(new java.awt.event.ComponentAdapter()
+        {
+            public void componentShown(java.awt.event.ComponentEvent evt)
+            {
                 soloTableComponentShown(evt);
             }
         });
-        soloTable.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
+        soloTable.addKeyListener(new java.awt.event.KeyAdapter()
+        {
+            public void keyPressed(java.awt.event.KeyEvent evt)
+            {
                 soloTableKeyPressed(evt);
             }
         });
@@ -512,13 +574,17 @@ LickgenFrame lickgenFrame;
         themeList.setLayoutOrientation(javax.swing.JList.VERTICAL_WRAP);
         themeList.setPreferredSize(null);
         themeList.setVisibleRowCount(30);
-        themeList.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+        themeList.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
                 themeListClicked(evt);
             }
         });
-        themeList.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
+        themeList.addKeyListener(new java.awt.event.KeyAdapter()
+        {
+            public void keyPressed(java.awt.event.KeyEvent evt)
+            {
                 themeListKeyPressed(evt);
             }
         });
@@ -550,8 +616,10 @@ LickgenFrame lickgenFrame;
         getContentPane().add(ThemesLabel, gridBagConstraints);
 
         generateSolo.setLabel("Generate Solo");
-        generateSolo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        generateSolo.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 generateSoloActionPerformed(evt);
             }
         });
@@ -564,8 +632,10 @@ LickgenFrame lickgenFrame;
         getContentPane().add(generateSolo, gridBagConstraints);
 
         generateTheme.setLabel("Generate Theme");
-        generateTheme.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        generateTheme.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 generateThemeActionPerformed(evt);
             }
         });
@@ -578,8 +648,10 @@ LickgenFrame lickgenFrame;
         getContentPane().add(generateTheme, gridBagConstraints);
 
         currentSelection.setLabel("Use Current Selection in Leadsheet Window as Theme");
-        currentSelection.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        currentSelection.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 currentSelectionActionPerformed(evt);
             }
         });
@@ -593,8 +665,10 @@ LickgenFrame lickgenFrame;
         getContentPane().add(currentSelection, gridBagConstraints);
 
         playSolo.setLabel("Play Solo");
-        playSolo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        playSolo.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 playSoloActionPerformed(evt);
             }
         });
@@ -608,8 +682,10 @@ LickgenFrame lickgenFrame;
         getContentPane().add(playSolo, gridBagConstraints);
 
         stopPlaying.setLabel("Stop Playing");
-        stopPlaying.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        stopPlaying.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 stopPlayingActionPerformed(evt);
             }
         });
@@ -636,8 +712,10 @@ LickgenFrame lickgenFrame;
         getContentPane().add(SoloGeneratorTitle, gridBagConstraints);
 
         Reset.setText("Reset");
-        Reset.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        Reset.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 ResetActionPerformed(evt);
             }
         });
@@ -649,6 +727,70 @@ LickgenFrame lickgenFrame;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(18, 18, 28, 0);
         getContentPane().add(Reset, gridBagConstraints);
+
+        fileMenu.setText("File"); // NOI18N
+        fileMenu.setMaximumSize(new java.awt.Dimension(50, 40));
+        fileMenu.setPreferredSize(new java.awt.Dimension(50, 21));
+
+        exitMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
+        exitMenuItem.setText("Close this window."); // NOI18N
+        exitMenuItem.setToolTipText("Closes this window."); // NOI18N
+        exitMenuItem.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                exitMenuItemexitMIhandler(evt);
+            }
+        });
+        fileMenu.add(exitMenuItem);
+
+        roadmapMenuBar.add(fileMenu);
+
+        windowMenu.setMnemonic('W');
+        windowMenu.setText("Window"); // NOI18N
+        windowMenu.addMenuListener(new javax.swing.event.MenuListener()
+        {
+            public void menuSelected(javax.swing.event.MenuEvent evt)
+            {
+                windowMenuMenuSelected(evt);
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt)
+            {
+            }
+            public void menuCanceled(javax.swing.event.MenuEvent evt)
+            {
+            }
+        });
+
+        closeWindowMI.setMnemonic('C');
+        closeWindowMI.setText("Close Window"); // NOI18N
+        closeWindowMI.setToolTipText("Closes the current window (exits program if there are no other windows)"); // NOI18N
+        closeWindowMI.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                closeWindowMIActionPerformed(evt);
+            }
+        });
+        windowMenu.add(closeWindowMI);
+
+        cascadeMI.setMnemonic('A');
+        cascadeMI.setText("Cascade Windows"); // NOI18N
+        cascadeMI.setToolTipText("Rearrange windows into a cascade.\n"); // NOI18N
+        cascadeMI.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                cascadeMIActionPerformed(evt);
+            }
+        });
+        windowMenu.add(cascadeMI);
+        windowMenu.add(jSeparator5);
+        windowMenu.add(windowMenuSeparator);
+
+        roadmapMenuBar.add(windowMenu);
+
+        setJMenuBar(roadmapMenuBar);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -1069,40 +1211,47 @@ private void playSelection()
         resetCheck.setVisible(false);
     }//GEN-LAST:event_YesButtonKeyPressed
 
-   
-//    /**
-//     * @param args the command line arguments
-//     */
-//    public static void main(String args[]) {
-//        /* Set the Nimbus look and feel */
-//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-//         */
-//        try {
-//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-//                if ("Nimbus".equals(info.getName())) {
-//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-//                    break;
-//                }
-//            }
-//        } catch (ClassNotFoundException ex) {
-//            java.util.logging.Logger.getLogger(SoloGenerator.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (InstantiationException ex) {
-//            java.util.logging.Logger.getLogger(SoloGenerator.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (IllegalAccessException ex) {
-//            java.util.logging.Logger.getLogger(SoloGenerator.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-//            java.util.logging.Logger.getLogger(SoloGenerator.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        }
-//        //</editor-fold>
-//
-//        /* Create and display the form */
-//        java.awt.EventQueue.invokeLater(new Runnable() {
-//            public void run() {
-//            }
-//        });
-//    }
+    private void windowClosed(java.awt.event.WindowEvent evt)//GEN-FIRST:event_windowClosed
+    {//GEN-HEADEREND:event_windowClosed
+    closeWindow();
+    }//GEN-LAST:event_windowClosed
+
+    private void exitMenuItemexitMIhandler(java.awt.event.ActionEvent evt)//GEN-FIRST:event_exitMenuItemexitMIhandler
+    {//GEN-HEADEREND:event_exitMenuItemexitMIhandler
+        closeWindow();
+    }//GEN-LAST:event_exitMenuItemexitMIhandler
+
+    private void closeWindowMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_closeWindowMIActionPerformed
+    {//GEN-HEADEREND:event_closeWindowMIActionPerformed
+        closeWindow();
+    }//GEN-LAST:event_closeWindowMIActionPerformed
+
+    private void closeWindow()
+      {
+        WindowRegistry.unregisterWindow(this);
+        setVisible(false); 
+      }
+    
+    private void cascadeMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_cascadeMIActionPerformed
+    {//GEN-HEADEREND:event_cascadeMIActionPerformed
+        WindowRegistry.cascadeWindows(this);
+    }//GEN-LAST:event_cascadeMIActionPerformed
+
+    private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt)//GEN-FIRST:event_windowMenuMenuSelected
+    {//GEN-HEADEREND:event_windowMenuMenuSelected
+        windowMenu.removeAll();
+
+        windowMenu.add(closeWindowMI);
+
+        windowMenu.add(cascadeMI);
+
+        for(WindowMenuItem w : WindowRegistry.getWindows())
+        windowMenu.add(w.getMI(this));       // these are static, and calling getMI updates the name on them too in case the window title changed
+
+        windowMenu.repaint();
+    }//GEN-LAST:event_windowMenuMenuSelected
+
+
  protected SoloGenerator soloGenerator;
  private int themeLength = 8;
 
@@ -1966,7 +2115,6 @@ Random random;
 
 
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDialog AlreadyNamed;
     private javax.swing.JButton CancelButton;
@@ -1982,8 +2130,10 @@ Random random;
     private java.awt.Label ThemesLabel;
     private javax.swing.JButton YesButton;
     private javax.swing.JButton YesOverwrite;
+    private javax.swing.JMenuItem cascadeMI;
     private javax.swing.JButton cellOkbutton;
     private javax.swing.JLabel chooseName;
+    private javax.swing.JMenuItem closeWindowMI;
     private java.awt.Button currentSelection;
     private javax.swing.JDialog deleteCheck;
     private javax.swing.JLabel deletesure;
@@ -1994,11 +2144,13 @@ Random random;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JPopupMenu.Separator jSeparator5;
     private javax.swing.JDialog nameErrorMessage;
     private javax.swing.JTextField nameField;
     private javax.swing.JLabel namePicked;
     private java.awt.Button playSolo;
     private javax.swing.JDialog resetCheck;
+    private javax.swing.JMenuBar roadmapMenuBar;
     private javax.swing.JTable soloTable;
     private java.awt.Button stopPlaying;
     private javax.swing.JDialog testDialog;
@@ -2006,6 +2158,8 @@ Random random;
     private javax.swing.JList themeList;
     private javax.swing.JLabel tryAgain;
     private javax.swing.JLabel typedWrong;
+    private javax.swing.JMenu windowMenu;
+    private javax.swing.JSeparator windowMenuSeparator;
     private javax.swing.JLabel youSure;
     // End of variables declaration//GEN-END:variables
 } 
