@@ -8532,6 +8532,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="soloGeneratorMI">
               <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+H"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Solo Generator"/>
                 <Property name="toolTipText" type="java.lang.String" value="Control panel for solo generation"/>
               </Properties>

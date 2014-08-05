@@ -307,6 +307,78 @@
         </Component>
       </SubComponents>
     </Container>
+    <Menu class="javax.swing.JMenuBar" name="roadmapMenuBar">
+      <SubComponents>
+        <Menu class="javax.swing.JMenu" name="fileMenu">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="File" noResource="true"/>
+            <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[50, 40]"/>
+            </Property>
+            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[50, 21]"/>
+            </Property>
+          </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="true"/>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
+          </AuxValues>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="exitMenuItem">
+              <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+Q"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Close this window." noResource="true"/>
+                <Property name="toolTipText" type="java.lang.String" value="Closes this window." noResource="true"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="exitMenuItemexitMIhandler"/>
+              </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="true"/>
+                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
+              </AuxValues>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
+        <Menu class="javax.swing.JMenu" name="windowMenu">
+          <Properties>
+            <Property name="mnemonic" type="int" value="87"/>
+            <Property name="text" type="java.lang.String" value="Window" noResource="true"/>
+          </Properties>
+          <Events>
+            <EventHandler event="menuSelected" listener="javax.swing.event.MenuListener" parameters="javax.swing.event.MenuEvent" handler="windowMenuMenuSelected"/>
+          </Events>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="closeWindowMI">
+              <Properties>
+                <Property name="mnemonic" type="int" value="67"/>
+                <Property name="text" type="java.lang.String" value="Close Window" noResource="true"/>
+                <Property name="toolTipText" type="java.lang.String" value="Closes the current window (exits program if there are no other windows)" noResource="true"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="closeWindowMIActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="cascadeMI">
+              <Properties>
+                <Property name="mnemonic" type="int" value="65"/>
+                <Property name="text" type="java.lang.String" value="Cascade Windows" noResource="true"/>
+                <Property name="toolTipText" type="java.lang.String" value="Rearrange windows into a cascade.&#xa;" noResource="true"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cascadeMIActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator5">
+            </MenuItem>
+            <MenuItem class="javax.swing.JSeparator" name="windowMenuSeparator">
+            </MenuItem>
+          </SubComponents>
+        </Menu>
+      </SubComponents>
+    </Menu>
   </NonVisualComponents>
   <Properties>
     <Property name="location" type="java.awt.Point" editor="org.netbeans.beaninfo.editors.PointEditor">
@@ -324,10 +396,12 @@
     </Property>
   </Properties>
   <SyntheticProperties>
+    <SyntheticProperty name="menuBar" type="java.lang.String" value="roadmapMenuBar"/>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
     <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
   </SyntheticProperties>
   <Events>
+    <EventHandler event="windowClosed" listener="java.awt.event.WindowListener" parameters="java.awt.event.WindowEvent" handler="windowClosed"/>
     <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="formKeyPressed"/>
   </Events>
   <AuxValues>
