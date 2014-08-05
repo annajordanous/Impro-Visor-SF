@@ -11,8 +11,8 @@ import static imp.cluster.CreateGrammar.averageVector;
 import static imp.cluster.CreateGrammar.calcAverage;
 import static imp.cluster.CreateGrammar.getClusterReps;
 import static imp.cluster.CreateGrammar.getClusters;
-import static imp.cluster.CreateGrammar.getRuleStringsFromFile;
-import static imp.cluster.CreateGrammar.getRulesFromFile;
+import static imp.cluster.CreateGrammar.getRuleStringsFromWriter;
+import static imp.cluster.CreateGrammar.getRulesFromWriter;
 import static imp.cluster.CreateGrammar.processRule;
 import imp.data.ChordPart;
 import imp.data.MelodyPart;
@@ -24,6 +24,7 @@ import imp.lickgen.NoteConverter;
 import imp.util.ErrorLog;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -50,7 +51,8 @@ public class CreateBrickGrammar {
     
     private static int MEASURE_LENGTH; //so we can determine if bricks start on measures
     
-
+    //HYBRID GRAMMARS: TRY USING DIFFERENT BUFFEREDWRITERS FOR BRICK AND WINDOW PRODUCTIONS
+    
     /**
      * processByBrick Scan the tune one brick at a time and write info to an
      * output file
@@ -143,14 +145,14 @@ public class CreateBrickGrammar {
      * @param notate used to process melody by brick
      */
     public static void create(ChordPart chordProg,
-            String inFile,
+            //String inFile,
+            StringWriter inWriter,
             String outFile,
             int repsPerCluster,
             boolean useRelative,
             boolean useAbstract,
             Notate notate,
-            LickgenFrame frame) {
-        
+            LickgenFrame frame) {       
         //do processing by brick
         if (brickKindsArray.length == 0) { //must be a pretty strange tune for this to happen...
             ErrorLog.log(ErrorLog.COMMENT, "No bricks found in the tune. "
@@ -166,8 +168,10 @@ public class CreateBrickGrammar {
         boolean useHead = false;
 
         //make initial calls to read from the file
-        Polylist[] rules = getRulesFromFile(inFile);
-        String[] ruleStrings = getRuleStringsFromFile(inFile);
+        //Polylist[] rules = getRulesFromWriter(inFile);
+        //String[] ruleStrings = getRuleStringsFromWriter(inFile);
+        Polylist[] rules = getRulesFromWriter(inWriter);
+        String[] ruleStrings = getRuleStringsFromWriter(inWriter);
         
         //create a list of lists, each holding DataPoints corresponding to a certain type of brick
         ArrayList<DataPoint> headData = new ArrayList<DataPoint>();
@@ -202,23 +206,23 @@ public class CreateBrickGrammar {
         
         //cluster the data
         //add clusters by type of brick in the same order that the brick types are stored in brickLists
-        for (Vector<DataPoint> brickData : brickLists) { 
-            if (brickData.size() > 0) {
-                double[] averages = calcAverage(brickData);
-                averageVector(brickData, averages);
-                
-                //so we don't try to choose more representatives from a cluster than physically possible
-                if (repsPerCluster > brickData.size()) {
-                    repsPerCluster = brickData.size(); 
-                }
-                
-                Cluster[] clusters = getClusters(brickData, averages, brickData.size() / repsPerCluster);
-                allClusters.add(clusters);
-
-                DataPoint[] reps = getClusterReps(clusters, repsPerCluster);
-                allReps.add(reps);
-            }
-        }
+//        for (Vector<DataPoint> brickData : brickLists) { 
+//            if (brickData.size() > 0) {
+//                double[] averages = calcAverage(brickData);
+//                averageVector(brickData, averages);
+//                
+//                //so we don't try to choose more representatives from a cluster than physically possible
+//                if (repsPerCluster > brickData.size()) {
+//                    repsPerCluster = brickData.size(); 
+//                }
+//                
+//                Cluster[] clusters = getClusters(brickData, averages, brickData.size() / repsPerCluster);
+//                allClusters.add(clusters);
+//
+//                DataPoint[] reps = getClusterReps(clusters, repsPerCluster);
+//                allReps.add(reps);
+//            }
+//        }
 
         //note: no need for a .soloist file
         writeBrickGrammar(useRelative, useAbstract, outFile, notate);
@@ -237,12 +241,6 @@ public class CreateBrickGrammar {
                         + Math.pow(10, dur) + ")");
             }
             out.write("\n");
-
-            //when writing rules, keep track of how many bricks of each kind we've written rules for
-//            int[] brickKindsCount = new int[brickKindsArray.length];
-//            for (int i = 0; i < brickKindsCount.length; i++) {
-//                brickKindsCount[i] = 0;
-//            }
             
             //write rules by brick type
             for (Vector<DataPoint> list : brickLists) {
