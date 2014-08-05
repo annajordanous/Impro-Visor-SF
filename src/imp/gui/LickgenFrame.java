@@ -89,6 +89,8 @@ public class LickgenFrame
     private LickGen lickgen;
     private CommandManager cm;
     private String frameFile;
+    private StringWriter brickProductionsWriter = new StringWriter();
+    private StringWriter windowProductionsWriter = new StringWriter();
 // Complexity graph variables
     private int numControllers;
     private int curController;
@@ -5006,19 +5008,21 @@ public class LickgenFrame
     }
     
     public void getAbstractMelody() {
+        //create a file
+        File f = new File(notate.getGrammarFileName());
+        String dir = f.getParentFile().getPath();
+        frameFile = dir + File.separator + Directories.accumulatedProductions;
+        try { //we just want to create a file to which further productions can be written
+            BufferedWriter out = new BufferedWriter(new FileWriter(frameFile, true));
+            out.close();
+        } catch (Exception e) {
+            System.out.println("I/O issues" + e.toString());
+        }
+            
         if (useBricksCheckbox.isSelected()) {
-            File f = new File(notate.getGrammarFileName());
-            String dir = f.getParentFile().getPath();
-            frameFile = dir + File.separator + Directories.accumulatedProductions;
-            try { //we just want to create a file to which further productions can be written
-                BufferedWriter out = new BufferedWriter(new FileWriter(frameFile, true));
-                out.close();
-            } catch (Exception e) {
-                System.out.println("I/O issues" + e.toString());
-            }
             imp.cluster.CreateBrickGrammar.processByBrick(notate, notate.getSelectedIndex(), this);
         } 
-        else {//if (useWindowsCheckbox.isSelected()) {
+        if (useWindowsCheckbox.isSelected()) {
             if (!allMeasures) {
                 melodyData = notate.getMelodyData(notate.getSelectedIndex());
             }
@@ -5238,7 +5242,7 @@ public void extractAbstractMelody()
         setRhythmFieldText(production.toString());
       }
   }
-
+    
     /**
      * add the production to file
      */
@@ -5271,7 +5275,13 @@ public void extractAbstractMelody()
             File f = new File(notate.getGrammarFileName());
             String dir = f.getParentFile().getPath();
             frameFile = dir + File.separator + Directories.accumulatedProductions;
-            BufferedWriter out = new BufferedWriter(new FileWriter(frameFile, true));
+            //BufferedWriter out = new BufferedWriter(new FileWriter(frameFile, true));
+            BufferedWriter out = null;
+            if (brickType != null) {
+                out = new BufferedWriter(brickProductionsWriter);
+            } else {
+                out = new BufferedWriter(windowProductionsWriter);
+            }
 
             if (!writeExactMelody) {
                 out.write("(rule (Seg"
@@ -5371,7 +5381,7 @@ public void extractAbstractMelody()
                     + ") \n");
             out.close();
         } catch (IOException e) {
-            System.out.println("IO EXCEPTION!");
+            System.out.println("IO EXCEPTION!" + e.toString());
         }
     }
 
@@ -6243,6 +6253,14 @@ public void extractAbstractMelody()
         gapField.setText("" + value);
     }
     
+    public StringWriter getBrickProductionsWriter() {
+        return brickProductionsWriter;
+    }
+    
+    public StringWriter getWindowProductionsWriter() {
+        return windowProductionsWriter;
+    }
+    
     public boolean getUseWindows() {
         return useWindowsCheckbox.isSelected();
     }
@@ -6439,7 +6457,8 @@ public void extractAbstractMelody()
         
         if (getUseBricks()) {
             imp.cluster.CreateBrickGrammar.create(notate.getChordProg(),
-                    inFile,
+                    //inFile,
+                    getBrickProductionsWriter(),
                     outFile,
                     getNumClusterReps(),
                     getUseRelativeBricks(),
@@ -6449,7 +6468,8 @@ public void extractAbstractMelody()
         } 
         if (getUseWindows()) {
             imp.cluster.CreateGrammar.create(notate.getChordProg(),
-                    inFile,
+                    //inFile,
+                    getWindowProductionsWriter(),
                     outFile,
                     getNumClusterReps(),
                     getUseMarkov(),

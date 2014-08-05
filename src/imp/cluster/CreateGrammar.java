@@ -54,7 +54,8 @@ public class CreateGrammar implements imp.Constants {
      * into the grammar
      */
     public static void create(ChordPart chordProg, 
-                              String inFile, 
+                              //String inFile, 
+                              StringWriter inWriter,
                               String outFile,
                               int repsPerCluster, 
                               boolean Markov, 
@@ -66,8 +67,10 @@ public class CreateGrammar implements imp.Constants {
         notate.setLickGenStatus("Writing grammar rules: " + outFile);
 
         //make initial calls to read from the file
-        Polylist[] rules = getRulesFromFile(inFile);
-        String[] ruleStrings = getRuleStringsFromFile(inFile);
+//        Polylist[] rules = getRulesFromWriter(inFile);
+//        String[] ruleStrings = getRuleStringsFromWriter(inFile);
+        Polylist[] rules = getRulesFromWriter(inWriter);
+        String[] ruleStrings = getRuleStringsFromWriter(inWriter);
         //initialize vectors
         Vector<DataPoint> dataPoints = new Vector<DataPoint>();
 
@@ -786,48 +789,38 @@ public class CreateGrammar implements imp.Constants {
     }
 
     // Loads the grammar rules from the file in a polylist
-    public static Polylist[] getRulesFromFile(String inFile) {
+    public static Polylist[] getRulesFromWriter(StringWriter inWriter) {
         Polylist[] grammarRules = null;
 
         //only add a rule to this list of rules if it's not a duplicate of any previous rules
         ArrayList<Polylist> rulesList = new ArrayList<Polylist>();
-        try {
-            File f = new File(inFile);
+        String input = inWriter.toString();
+        String[] rules = input.split("\n");
+        for (int i = 0; i < rules.length; i++) {
+            String rule = rules[i];
+            int stopIndex = rule.length();
+            if (rule.contains("Head")) {
+                stopIndex = rule.indexOf("Head");
+            } else if (rule.contains("Chorus")) {
+                stopIndex = rule.indexOf("Chorus");
+            }
 
-            FileReader rd = new FileReader(f);
-            char[] buf = new char[(int) f.length()];
-            rd.read(buf);
-            String input = new String(buf);
-            String[] rules = input.split("\n");
-            for (int i = 0; i < rules.length; i++) {
-                String rule = rules[i];
-                int stopIndex = rule.length();
-                if (rule.contains("Head")) {
-                    stopIndex = rule.indexOf("Head");
-                } else if (rule.contains("Chorus")) {
-                    stopIndex = rule.indexOf("Chorus");
-                }
-                
-                Polylist newRule = Polylist.PolylistFromString(rules[i]);
-                
-                boolean isUnique = true;
-                if (rulesList.size() > 0) {
-                    for (Polylist p : rulesList) {
-                        if (newRule.equals(p)) {
-                            isUnique = false;
-                            break;
-                        }
+            Polylist newRule = Polylist.PolylistFromString(rules[i]);
+
+            boolean isUnique = true;
+            if (rulesList.size() > 0) {
+                for (Polylist p : rulesList) {
+                    if (newRule.equals(p)) {
+                        isUnique = false;
+                        break;
                     }
                 }
-                if (isUnique) {
-                    rulesList.add(newRule);
-                } else {
-                    System.out.println("Duplicate rule: " + newRule);
-                }
             }
-        } catch (Exception e) {
-            System.out.println("Exception getting rules from file: " + e.toString());
-            e.printStackTrace();
+            if (isUnique) {
+                rulesList.add(newRule);
+            } else {
+                System.out.println("Duplicate rule: " + newRule);
+            }
         }
 
         Polylist[] rulesArray = new Polylist[rulesList.size()];
@@ -840,22 +833,83 @@ public class CreateGrammar implements imp.Constants {
     }
     // Loads the grammar rules from in a polylist
 
-    public static String[] getRuleStringsFromFile(String inFile) {
+    public static String[] getRuleStringsFromWriter(StringWriter inWriter) {
         String[] rules;
-        String input = "";
-        try {
-            File f = new File(inFile);
-
-            FileReader rd = new FileReader(f);
-            char[] buf = new char[(int) f.length()];
-            rd.read(buf);
-            input = new String(buf);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+        String input = inWriter.toString();
         rules = input.split("\n");
         return rules;
     }
+//    // Loads the grammar rules from the file in a polylist
+//    public static Polylist[] getRulesFromWriter(String inFile) {
+//        Polylist[] grammarRules = null;
+//
+//        //only add a rule to this list of rules if it's not a duplicate of any previous rules
+//        ArrayList<Polylist> rulesList = new ArrayList<Polylist>();
+//        try {
+//            File f = new File(inFile);
+//
+//            FileReader rd = new FileReader(f);
+//            char[] buf = new char[(int) f.length()];
+//            rd.read(buf);
+//            String input = new String(buf);
+//            String[] rules = input.split("\n");
+//            for (int i = 0; i < rules.length; i++) {
+//                String rule = rules[i];
+//                int stopIndex = rule.length();
+//                if (rule.contains("Head")) {
+//                    stopIndex = rule.indexOf("Head");
+//                } else if (rule.contains("Chorus")) {
+//                    stopIndex = rule.indexOf("Chorus");
+//                }
+//                
+//                Polylist newRule = Polylist.PolylistFromString(rules[i]);
+//                
+//                boolean isUnique = true;
+//                if (rulesList.size() > 0) {
+//                    for (Polylist p : rulesList) {
+//                        if (newRule.equals(p)) {
+//                            isUnique = false;
+//                            break;
+//                        }
+//                    }
+//                }
+//                if (isUnique) {
+//                    rulesList.add(newRule);
+//                } else {
+//                    System.out.println("Duplicate rule: " + newRule);
+//                }
+//            }
+//        } catch (Exception e) {
+//            System.out.println("Exception getting rules from file: " + e.toString());
+//            e.printStackTrace();
+//        }
+//
+//        Polylist[] rulesArray = new Polylist[rulesList.size()];
+//        for (int i = 0; i < rulesList.size(); ++i) {
+//            rulesArray[i] = rulesList.get(i);
+//            rulesArray[i] = readRule(rulesArray[i]);
+//        }
+//        
+//        return rulesArray;
+//    }
+//    // Loads the grammar rules from in a polylist
+//
+//    public static String[] getRuleStringsFromWriter(String inFile) {
+//        String[] rules;
+//        String input = "";
+//        try {
+//            File f = new File(inFile);
+//
+//            FileReader rd = new FileReader(f);
+//            char[] buf = new char[(int) f.length()];
+//            rd.read(buf);
+//            input = new String(buf);
+//        } catch (Exception e) {
+//            System.out.println(e.getMessage());
+//        }
+//        rules = input.split("\n");
+//        return rules;
+//    }
 
     //get averages
     public static double[] calcAverage(Vector<DataPoint> seg) {
