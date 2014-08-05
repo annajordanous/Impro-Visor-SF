@@ -166,6 +166,11 @@ LickgenFrame lickgenFrame;
                 nameFieldActionPerformed(evt);
             }
         });
+        nameField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                nameFieldKeyPressed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
@@ -251,6 +256,11 @@ LickgenFrame lickgenFrame;
                 cellOkbuttonActionPerformed(evt);
             }
         });
+        cellOkbutton.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                cellOkbuttonKeyPressed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 3;
@@ -302,6 +312,11 @@ LickgenFrame lickgenFrame;
         YesButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 YesButtonActionPerformed(evt);
+            }
+        });
+        YesButton.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                YesButtonKeyPressed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -416,6 +431,11 @@ LickgenFrame lickgenFrame;
         setMaximumSize(new java.awt.Dimension(2140, 2140));
         setMinimumSize(new java.awt.Dimension(1000, 563));
         setPreferredSize(new java.awt.Dimension(500, 505));
+        addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                formKeyPressed(evt);
+            }
+        });
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
@@ -669,7 +689,7 @@ private void playSelection()
         for (int i = 0; i < soloTable.getRowCount(); i++) { //loop through size of themeUses
             { 
                 if ((soloTable.getValueAt(i,THEME_COLUMN) == null)
-                && (soloTable.getValueAt(i,LENGTH_COLUMN) != null)) {
+                 && (soloTable.getValueAt(i, LENGTH_COLUMN) != null)) {
                      enteredIncorrectly.setVisible(true); //show error message
                     break;
                 }
@@ -703,7 +723,7 @@ private void playSelection()
     }//GEN-LAST:event_generateSoloActionPerformed
 
     private void currentSelectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_currentSelectionActionPerformed
-        int index = soloTable.getSelectedRow();
+       // int index = soloTable.getSelectedRow();
         MelodyPart sel = notate.getCurrentStave().getDisplayPart().extract(
                 notate.getCurrentSelectionStart(),
                 notate.getCurrentSelectionEnd());
@@ -712,29 +732,35 @@ private void playSelection()
         while (i.hasNext()) {
             theme += i.next().toLeadsheet() + " ";
         }
-
-        soloTable.setValueAt(theme, index, THEME_COLUMN);
-        soloTable.setValueAt(sel.getSize() / BEAT + "", index, LENGTH_COLUMN);
+        for (int j = 0; j < soloTable.getRowCount(); j++) { 
+         if ((soloTable.getValueAt(j, NAME_COLUMN) == null) 
+          && (soloTable.getValueAt(j,THEME_COLUMN) == null) 
+          && (soloTable.getValueAt(j, LENGTH_COLUMN) == null)) 
+         {
+        soloTable.setValueAt(theme, j, THEME_COLUMN);
+        soloTable.setValueAt(sel.getSize() / BEAT + "", j, LENGTH_COLUMN);
         
-        if (soloTable.getValueAt(index, NAME_COLUMN) != null) {
-            MelodyPart melody = new MelodyPart((String) soloTable.getValueAt(index, THEME_COLUMN));
-            int themelength = melody.size() / BEAT;
-            soloTable.setValueAt(themelength + "", index, LENGTH_COLUMN);
-            
+//        if (soloTable.getValueAt(j, NAME_COLUMN) != null) {
+           MelodyPart melody = new MelodyPart((String) soloTable.getValueAt(j, THEME_COLUMN));
+//            int themelength = melody.size() / BEAT;
+//            soloTable.setValueAt(themelength + "", j, LENGTH_COLUMN);
+//            
             for (Map.Entry pair : allThemes.entrySet()) { //loop through all the entry sets of {Theme,name} in allThemes
                 Theme ThemeKey = (Theme) pair.getKey(); //get the Theme of each entry
                 
                 if (melody.toString().equals(ThemeKey.melody.toString())) { 
                     //if the melody in allThemes is the name as the melody in the table
-                    soloTable.setValueAt(pair.getValue(), index, NAME_COLUMN); 
+                    soloTable.setValueAt(pair.getValue(), j, NAME_COLUMN); 
                     //set the name to the one that matches that theme
                 } 
                 else 
                 {// if there is no matching theme in allThemes
-                    soloTable.setValueAt(null, index, NAME_COLUMN); //set the name to empty
+                    soloTable.setValueAt(null, j, NAME_COLUMN); //set the name to empty
                 }
             }
+            break;
         }
+      }
     }//GEN-LAST:event_currentSelectionActionPerformed
 
     private void playSoloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playSoloActionPerformed
@@ -784,14 +810,11 @@ private void playSelection()
             for (int j = 0; j < soloTable.getRowCount(); j++) {//loop through table
                 
                 if (themeList.isSelectedIndex(i) 
-                && ((soloTable.isCellSelected(j, THEME_COLUMN))
-                || (soloTable.isCellSelected(j, NAME_COLUMN))
-                || (soloTable.isCellSelected(j, LENGTH_COLUMN))
-                || (soloTable.isCellSelected(j, USE_COLUMN))
-                || (soloTable.isCellSelected(j, TRANSPOSE_COLUMN))
-                || (soloTable.isCellSelected(j, INVERT_COLUMN))
-                || (soloTable.isCellSelected(j, REVERSE_COLUMN))
-                    )) {
+                   && (soloTable.getValueAt(j, NAME_COLUMN) == null) 
+                   && (soloTable.getValueAt(j,THEME_COLUMN) == null) 
+                   && (soloTable.getValueAt(j, LENGTH_COLUMN) == null) 
+                       )
+                        {
                     //if a theme in the Themes scroll box is clicked and a theme cell is selected
                     String name = (String) themeList.getSelectedValue();
                     //set name equal to the one clicked in the scroll box
@@ -847,6 +870,7 @@ private void playSelection()
                             }
                         }
                     }
+                   break;
                 }
             }
         }  
@@ -988,6 +1012,51 @@ private void playSelection()
             }
         }
     }//GEN-LAST:event_themeListKeyPressed
+
+    private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
+        
+    }//GEN-LAST:event_formKeyPressed
+
+    private void nameFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nameFieldKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+             System.out.println("name");
+             if (orderedThemes.contains(nameField.getText())) 
+        { //if the user enters a name that is already in orderedThemes
+            nameErrorMessage.setVisible(true); //same error message pops up
+        }
+        
+        else {
+            for (int i = 0; i < soloTable.getRowCount(); i++) {// loop through table
+                
+                if (soloTable.isCellSelected(i, NAME_COLUMN)) 
+                {  
+                        soloTable.setValueAt(nameField.getText(), i, NAME_COLUMN); 
+                        //set the name in the table
+                        String name = nameField.getText();
+                        String melodyString = (String) soloTable.getValueAt(i, THEME_COLUMN);
+                        MelodyPart themeMelody = new MelodyPart(melodyString);
+                        Theme theme = Theme.makeTheme(name, themeMelody);
+                        addTheme(theme); 
+                        saveRules(fileName);
+                        //add the theme
+                  }
+                
+            }
+        }
+        nameErrorMessage.setVisible(false); //close the error window
+         }
+                                  
+
+    }//GEN-LAST:event_nameFieldKeyPressed
+
+    private void cellOkbuttonKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cellOkbuttonKeyPressed
+      enteredIncorrectly.setVisible(false);
+    }//GEN-LAST:event_cellOkbuttonKeyPressed
+
+    private void YesButtonKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_YesButtonKeyPressed
+        soloTableModel.tableReset();
+        resetCheck.setVisible(false);
+    }//GEN-LAST:event_YesButtonKeyPressed
 
    
 //    /**
@@ -1202,23 +1271,59 @@ public class SoloGeneratorTableModel extends DefaultTableModel
             
             if ((soloTable.isCellSelected(i, THEME_COLUMN)) 
             && (soloTable.getValueAt(i, THEME_COLUMN) != null)
-            && (soloTable.getValueAt(i,LENGTH_COLUMN) == null))        
+            && (soloTable.getValueAt(i,LENGTH_COLUMN) != null)) {
+               MelodyPart melody = new MelodyPart((String) soloTable.getValueAt(i, THEME_COLUMN)); 
+            
+               int themelength = melody.size() / BEAT;
+               
+              if (themelength != soloTable.getValueAt(i,LENGTH_COLUMN)){
+                  soloTable.setValueAt(themelength + "", i, LENGTH_COLUMN); 
+                  for (Map.Entry pair : allThemes.entrySet()) { 
+                        //loop through all the entry sets of {Theme,name} in allThemes
+                        Theme ThemeKey = (Theme) pair.getKey(); 
+                        //get the Theme of each entry
+
+                        if (melody.toString().equals(ThemeKey.melody.toString())) 
+                        { //if the melody in allThemes is the name as the melody in the table
+                            soloTable.setValueAt(pair.getValue(), i, NAME_COLUMN);
+                            //set the name to the one that matches that theme
+                        } 
+                        
+                        else 
+                        {// if there is no matching theme in allThemes
+                            soloTable.setValueAt(null, i, NAME_COLUMN); 
+                            //set the name to empty
+                        }
+                    }
+                  break;
+              }
+                  
+            }
+            if ((soloTable.isCellSelected(i, THEME_COLUMN)) 
+            && (soloTable.getValueAt(i, THEME_COLUMN) != null)
+            && (soloTable.getValueAt(i,LENGTH_COLUMN) == null)
+                    )        
             { //if a theme is selected
-                
-                if (soloTable.getValueAt(i, NAME_COLUMN) == null)
+//                MelodyPart melody = new MelodyPart((String) soloTable.getValueAt(i, THEME_COLUMN)); 
+//                int themelength = melody.size() / BEAT;
+//                
+//              if (themelength != soloTable.getValueAt(i, LENGTH_COLUMN)) {
+//                  soloTable.setValueAt(themelength + "", i, LENGTH_COLUMN);
+//                  System.out.println("equals");
+//                  return ;
+//              }
+            MelodyPart melody = new MelodyPart((String) soloTable.getValueAt(i, THEME_COLUMN)); 
+            
+            int themelength = melody.size() / BEAT;
+            
+             if ((soloTable.getValueAt(i, NAME_COLUMN) == null))
                 { //if there is no name
-                    MelodyPart melody = new MelodyPart((String) soloTable.getValueAt(i, THEME_COLUMN)); 
-                    //set melody to the leadsheet notation of the theme
-                    int themelength = melody.size() / BEAT;
                     soloTable.setValueAt(themelength + "", i, LENGTH_COLUMN); 
                     //set themelength in the table
                   } 
-                
+//                
                 else { //if there is already a name
-                    MelodyPart melody = new MelodyPart((String) soloTable.getValueAt(i, THEME_COLUMN));
-                    int themelength = melody.size() / BEAT;
                     soloTable.setValueAt(themelength + "", i, LENGTH_COLUMN);
-
                     for (Map.Entry pair : allThemes.entrySet()) { 
                         //loop through all the entry sets of {Theme,name} in allThemes
                         Theme ThemeKey = (Theme) pair.getKey(); 
@@ -1237,15 +1342,19 @@ public class SoloGeneratorTableModel extends DefaultTableModel
                         }
                     }
                 }
-
+             break;
             }
             
             if ((soloTable.isCellSelected(i, NAME_COLUMN))
             && (soloTable.getValueAt(i, THEME_COLUMN) != null) 
             && (soloTable.getValueAt(i, NAME_COLUMN) != null) 
-            && (soloTable.getValueAt(i,NAME_COLUMN) != " ")) 
+           // && (soloTable.getValueAt(i,NAME_COLUMN) != " ")
+                    ) 
             { //if name cell is selected, it's not empty and the theme isn't empty
-                MelodyPart melody = new MelodyPart((String) soloTable.getValueAt(i, THEME_COLUMN));
+            MelodyPart melody = new MelodyPart((String) soloTable.getValueAt(i, THEME_COLUMN)); 
+            
+            int themelength = melody.size() / BEAT;
+            
                 System.out.println(melody);
                 String name = (String) soloTable.getValueAt(i, NAME_COLUMN);
                 System.out.println(name);
@@ -1535,6 +1644,7 @@ public void ExpandCommand(Polylist list) {
          System.out.println(melodyString);
          MelodyPart melody = new MelodyPart(melodyString); //create a MelodyPart of the string
 }
+
     public MelodyPart generateTheme() { 
         for (int x = 0; x < soloTable.getRowCount(); x++) { //loop through the rows of the table
             if ((soloTable.getValueAt(x, LENGTH_COLUMN) != null)
