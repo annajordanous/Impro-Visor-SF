@@ -164,6 +164,10 @@ public void setTableColumnWidths()
         stopPlaying = new java.awt.Button();
         SoloGeneratorTitle = new java.awt.Label();
         Reset = new javax.swing.JButton();
+        themeIntervalTextField = new javax.swing.JTextField();
+        themeIntervalLabel = new javax.swing.JLabel();
+        noThemeProbTextField = new javax.swing.JTextField();
+        noThemeProbLabel = new javax.swing.JLabel();
         roadmapMenuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
         javax.swing.JMenuItem exitMenuItem = new javax.swing.JMenuItem();
@@ -697,17 +701,16 @@ public void setTableColumnWidths()
         gridBagConstraints.insets = new java.awt.Insets(10, 50, 0, 0);
         getContentPane().add(stopPlaying, gridBagConstraints);
 
-        SoloGeneratorTitle.setFont(new java.awt.Font("LiSong Pro", 0, 36)); // NOI18N
+        SoloGeneratorTitle.setFont(new java.awt.Font("Lucida Grande", 1, 36)); // NOI18N
         SoloGeneratorTitle.setMaximumSize(new java.awt.Dimension(327, 327));
-        SoloGeneratorTitle.setText("Solo Generator");
+        SoloGeneratorTitle.setText("Theme Weaver");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 4;
-        gridBagConstraints.ipadx = 174;
+        gridBagConstraints.gridwidth = 6;
         gridBagConstraints.ipady = -5;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(10, 278, 0, 0);
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 0);
         getContentPane().add(SoloGeneratorTitle, gridBagConstraints);
 
         Reset.setText("Reset");
@@ -726,6 +729,54 @@ public void setTableColumnWidths()
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(18, 18, 28, 0);
         getContentPane().add(Reset, gridBagConstraints);
+
+        themeIntervalTextField.setText("8");
+        themeIntervalTextField.setMaximumSize(new java.awt.Dimension(50, 2147483647));
+        themeIntervalTextField.setMinimumSize(new java.awt.Dimension(50, 28));
+        themeIntervalTextField.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                themeIntervalTextFieldActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        getContentPane().add(themeIntervalTextField, gridBagConstraints);
+
+        themeIntervalLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        themeIntervalLabel.setText("Theme Use Interval");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.ipadx = 5;
+        getContentPane().add(themeIntervalLabel, gridBagConstraints);
+
+        noThemeProbTextField.setText("0.5");
+        noThemeProbTextField.setMaximumSize(new java.awt.Dimension(50, 2147483647));
+        noThemeProbTextField.setMinimumSize(new java.awt.Dimension(50, 28));
+        noThemeProbTextField.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                noThemeProbTextFieldActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        getContentPane().add(noThemeProbTextField, gridBagConstraints);
+
+        noThemeProbLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        noThemeProbLabel.setText("No-Theme Prob.");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.ipadx = 5;
+        getContentPane().add(noThemeProbLabel, gridBagConstraints);
 
         fileMenu.setText("File"); // NOI18N
         fileMenu.setMaximumSize(new java.awt.Dimension(50, 40));
@@ -817,7 +868,7 @@ private void playSelection()
         int themeUsesize = 0; // set size of the input themeUses to 0
         
         for (int i = 0; i < soloTable.getRowCount(); i++) { //loop through table
-            if (soloTable.getValueAt(i, THEME_COLUMN) != null) { 
+            if (getValueAt(i, THEME_COLUMN) != null) { 
                 //for every theme entered in the table
                 themeUsesize += 1; //add one to the size
             }
@@ -829,26 +880,26 @@ private void playSelection()
 
         for (int i = 0; i < soloTable.getRowCount(); i++) { //loop through size of themeUses
             { 
-                if ((soloTable.getValueAt(i,THEME_COLUMN) == null)
-                 && (soloTable.getValueAt(i, LENGTH_COLUMN) != null)) {
+                if ((getValueAt(i,THEME_COLUMN) == null)
+                 && (getValueAt(i, LENGTH_COLUMN) != null)) {
                      enteredIncorrectly.setVisible(true); //show error message
                     break;
                 }
                 
-               else if (soloTable.getValueAt(i, THEME_COLUMN) != null) { 
-                    if ((isDouble((String) soloTable.getValueAt(i, 3)) == false) 
-              || (isDouble((String) soloTable.getValueAt(i, 4)) == false)
-              || (isDouble((String) soloTable.getValueAt(i, 5)) == false) 
-              || (isDouble((String) soloTable.getValueAt(i, 6)) == false)) {
+               else if (getValueAt(i, THEME_COLUMN) != null) { 
+                    if ((isDouble((String) getValueAt(i, 3)) == false) 
+              || (isDouble((String) getValueAt(i, 4)) == false)
+              || (isDouble((String) getValueAt(i, 5)) == false) 
+              || (isDouble((String) getValueAt(i, 6)) == false)) {
                 enteredIncorrectly.setVisible(true); //show error message 
                 break;
             }
                else {
-                ThemeUse use = new ThemeUse(new MelodyPart((String) soloTable.getValueAt(i, THEME_COLUMN)));
-                use.probUse = Double.valueOf((String) soloTable.getValueAt(i, USE_COLUMN));
-                use.probTranspose = Double.valueOf((String) soloTable.getValueAt(i, TRANSPOSE_COLUMN));
-                use.probInvert = Double.valueOf((String) soloTable.getValueAt(i, INVERT_COLUMN));
-                use.probReverse = Double.valueOf((String) soloTable.getValueAt(i, REVERSE_COLUMN));
+                ThemeUse use = new ThemeUse(new MelodyPart((String) getValueAt(i, THEME_COLUMN)));
+                use.probUse = Double.valueOf((String) getValueAt(i, USE_COLUMN));
+                use.probTranspose = Double.valueOf((String) getValueAt(i, TRANSPOSE_COLUMN));
+                use.probInvert = Double.valueOf((String) getValueAt(i, INVERT_COLUMN));
+                use.probReverse = Double.valueOf((String) getValueAt(i, REVERSE_COLUMN));
                 themeUses.add(use); // add a new ThemeUse to the arraylist with respective elements
                 
                 System.out.println(use);
@@ -874,15 +925,15 @@ private void playSelection()
             theme += i.next().toLeadsheet() + " ";
         }
         for (int j = 0; j < soloTable.getRowCount(); j++) { 
-         if ((soloTable.getValueAt(j, NAME_COLUMN) == null) 
-          && (soloTable.getValueAt(j,THEME_COLUMN) == null) 
-          && (soloTable.getValueAt(j, LENGTH_COLUMN) == null)) 
+         if ((getValueAt(j, NAME_COLUMN) == null) 
+          && (getValueAt(j,THEME_COLUMN) == null) 
+          && (getValueAt(j, LENGTH_COLUMN) == null)) 
          {
         setValueAt(theme, j, THEME_COLUMN);
         setValueAt(sel.getSize() / BEAT + "", j, LENGTH_COLUMN);
         
-//        if (soloTable.getValueAt(j, NAME_COLUMN) != null) {
-           MelodyPart melody = new MelodyPart((String) soloTable.getValueAt(j, THEME_COLUMN));
+//        if (getValueAt(j, NAME_COLUMN) != null) {
+           MelodyPart melody = new MelodyPart((String) getValueAt(j, THEME_COLUMN));
 //            int themelength = melody.size() / BEAT;
 //            setValueAt(themelength + "", j, LENGTH_COLUMN);
 //            
@@ -934,10 +985,10 @@ private void playSelection()
             //index = index <= 1 ? 0 : index-1;
             //soloTable.setRowSelectionInterval(index, index);
             
-            if( col == THEME_COLUMN && soloTable.getValueAt(index,THEME_COLUMN) != null )
+            if( col == THEME_COLUMN && getValueAt(index,THEME_COLUMN) != null )
               {
                 System.out.println("Theme at row " + index + " entered");
-                MelodyPart melody = new MelodyPart((String) soloTable.getValueAt(index, THEME_COLUMN)); 
+                MelodyPart melody = new MelodyPart((String) getValueAt(index, THEME_COLUMN)); 
                 int themeLengthBeats = melody.getSize()/BEAT;
                 soloTable.setValueAt(themeLengthBeats + "", index, LENGTH_COLUMN);
               }
@@ -962,9 +1013,9 @@ private void playSelection()
             for (int j = 0; j < soloTable.getRowCount(); j++) {//loop through table
                 
                 if (themeList.isSelectedIndex(i) 
-                   && (soloTable.getValueAt(j, NAME_COLUMN) == null) 
-                   && (soloTable.getValueAt(j,THEME_COLUMN) == null) 
-                   && (soloTable.getValueAt(j, LENGTH_COLUMN) == null) 
+                   && (getValueAt(j, NAME_COLUMN) == null) 
+                   && (getValueAt(j,THEME_COLUMN) == null) 
+                   && (getValueAt(j, LENGTH_COLUMN) == null) 
                        )
                         {
                     //if a theme in the Themes scroll box is clicked and a theme cell is selected
@@ -1003,12 +1054,12 @@ private void playSelection()
                             //in case the length is different than the one typed by the user 
                             int n = 0;
                             for (int x = 0; x < soloTable.getRowCount(); x++) { //loop through table
-                                if (soloTable.getValueAt(x, NAME_COLUMN) != null 
-                                && ((((String) soloTable.getValueAt(x, NAME_COLUMN)).equals(name))
-                                || ((String) soloTable.getValueAt(x, NAME_COLUMN)).equals(name + "-" + n))
+                                if (getValueAt(x, NAME_COLUMN) != null 
+                                && ((((String) getValueAt(x, NAME_COLUMN)).equals(name))
+                                || ((String) getValueAt(x, NAME_COLUMN)).equals(name + "-" + n))
                                 && (x != j) 
-                                && (((String) soloTable.getValueAt(x, THEME_COLUMN)).equals(themestring))  
-                                        //&& (!((String) soloTable.getValueAt(x, 1)).equals(theme.ThemeLength + ""))
+                                && (((String) getValueAt(x, THEME_COLUMN)).equals(themestring))  
+                                        //&& (!((String) getValueAt(x, 1)).equals(theme.ThemeLength + ""))
                                         ) {
                                     n += 1; //add one to n so if the same theme 
                                     //is already in the table it will be differentiated from it
@@ -1042,7 +1093,7 @@ private void playSelection()
                         setValueAt(nameField.getText(), i, NAME_COLUMN); 
                         //set the name in the table
                         String name = nameField.getText();
-                        String melodyString = (String) soloTable.getValueAt(i, THEME_COLUMN);
+                        String melodyString = (String) getValueAt(i, THEME_COLUMN);
                         MelodyPart themeMelody = new MelodyPart(melodyString);
                         Theme theme = Theme.makeTheme(name, themeMelody);
                         addTheme(theme); 
@@ -1082,7 +1133,7 @@ private void playSelection()
         for (int j = 0; j < soloTable.getRowCount(); j++) { 
 
             if (soloTable.isCellSelected(j,NAME_COLUMN)) {
-                theme = (MelodyPart)soloTable.getValueAt(j,THEME_COLUMN);
+                theme = (MelodyPart)getValueAt(j,THEME_COLUMN);
             }
             
         for (Map.Entry pair : allThemes.entrySet()) {
@@ -1106,7 +1157,7 @@ private void playSelection()
         for (int j = 0; j < soloTable.getRowCount(); j++) { 
             
             if (soloTable.isCellSelected(j,NAME_COLUMN)) {
-                theme = (MelodyPart)soloTable.getValueAt(j,THEME_COLUMN);
+                theme = (MelodyPart)getValueAt(j,THEME_COLUMN);
             }
             
         for (Map.Entry pair : allThemes.entrySet()) {
@@ -1185,7 +1236,7 @@ private void playSelection()
                         setValueAt(nameField.getText(), i, NAME_COLUMN); 
                         //set the name in the table
                         String name = nameField.getText();
-                        String melodyString = (String) soloTable.getValueAt(i, THEME_COLUMN);
+                        String melodyString = (String) getValueAt(i, THEME_COLUMN);
                         MelodyPart themeMelody = new MelodyPart(melodyString);
                         Theme theme = Theme.makeTheme(name, themeMelody);
                         addTheme(theme); 
@@ -1249,6 +1300,16 @@ private void playSelection()
 
         windowMenu.repaint();
     }//GEN-LAST:event_windowMenuMenuSelected
+
+    private void themeIntervalTextFieldActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_themeIntervalTextFieldActionPerformed
+    {//GEN-HEADEREND:event_themeIntervalTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_themeIntervalTextFieldActionPerformed
+
+    private void noThemeProbTextFieldActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_noThemeProbTextFieldActionPerformed
+    {//GEN-HEADEREND:event_noThemeProbTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_noThemeProbTextFieldActionPerformed
 
 
  protected SoloGenerator soloGenerator;
@@ -1436,17 +1497,20 @@ public class SoloGeneratorTableModel extends DefaultTableModel
         enteringValue(row, col);
   }
   
+    public Object getValueAt(int row, int col) {
+      return soloTable.getValueAt(row,col);
+  }
     public void enteringValue(int row, int col) {
         for (int i = 0; i < soloTable.getRowCount(); i++) { //loop through table
             
             if ((soloTable.isCellSelected(i, THEME_COLUMN)) 
-            && (soloTable.getValueAt(i, THEME_COLUMN) != null)
-            && (soloTable.getValueAt(i,LENGTH_COLUMN) != null)) {
-               MelodyPart melody = new MelodyPart((String) soloTable.getValueAt(i, THEME_COLUMN)); 
+            && (getValueAt(i, THEME_COLUMN) != null)
+            && (getValueAt(i,LENGTH_COLUMN) != null)) {
+               MelodyPart melody = new MelodyPart((String) getValueAt(i, THEME_COLUMN)); 
             
                int themelength = melody.size() / BEAT;
                
-              if (themelength != soloTable.getValueAt(i,LENGTH_COLUMN)){
+              if (themelength != getValueAt(i,LENGTH_COLUMN)){
                   soloTable.setValueAt(themelength + "", i, LENGTH_COLUMN); 
                   for (Map.Entry pair : allThemes.entrySet()) { 
                         //loop through all the entry sets of {Theme,name} in allThemes
@@ -1470,23 +1534,23 @@ public class SoloGeneratorTableModel extends DefaultTableModel
                   
             }
             if ((soloTable.isCellSelected(i, THEME_COLUMN)) 
-            && (soloTable.getValueAt(i, THEME_COLUMN) != null)
-            && (soloTable.getValueAt(i,LENGTH_COLUMN) == null)
+            && (getValueAt(i, THEME_COLUMN) != null)
+            && (getValueAt(i,LENGTH_COLUMN) == null)
                     )        
             { //if a theme is selected
-//                MelodyPart melody = new MelodyPart((String) soloTable.getValueAt(i, THEME_COLUMN)); 
+//                MelodyPart melody = new MelodyPart((String) getValueAt(i, THEME_COLUMN)); 
 //                int themelength = melody.size() / BEAT;
 //                
-//              if (themelength != soloTable.getValueAt(i, LENGTH_COLUMN)) {
+//              if (themelength != getValueAt(i, LENGTH_COLUMN)) {
 //                  soloTable.setValueAt(themelength + "", i, LENGTH_COLUMN);
 //                  System.out.println("equals");
 //                  return ;
 //              }
-            MelodyPart melody = new MelodyPart((String) soloTable.getValueAt(i, THEME_COLUMN)); 
+            MelodyPart melody = new MelodyPart((String) getValueAt(i, THEME_COLUMN)); 
             
             int themelength = melody.size() / BEAT;
             
-             if ((soloTable.getValueAt(i, NAME_COLUMN) == null))
+             if ((getValueAt(i, NAME_COLUMN) == null))
                 { //if there is no name
                     soloTable.setValueAt(themelength + "", i, LENGTH_COLUMN); 
                     //set themelength in the table
@@ -1516,19 +1580,19 @@ public class SoloGeneratorTableModel extends DefaultTableModel
             }
             
             if ((soloTable.isCellSelected(i, NAME_COLUMN))
-            && (soloTable.getValueAt(i, THEME_COLUMN) != null) 
-            && (soloTable.getValueAt(i, NAME_COLUMN) != null) 
-           // && (soloTable.getValueAt(i,NAME_COLUMN) != " ")
+            && (getValueAt(i, THEME_COLUMN) != null) 
+            && (getValueAt(i, NAME_COLUMN) != null) 
+           // && (getValueAt(i,NAME_COLUMN) != " ")
                     ) 
             { //if name cell is selected, it's not empty and the theme isn't empty
-            MelodyPart melody = new MelodyPart((String) soloTable.getValueAt(i, THEME_COLUMN)); 
+            MelodyPart melody = new MelodyPart((String) getValueAt(i, THEME_COLUMN)); 
             
             int themelength = melody.size() / BEAT;
             
                 System.out.println(melody);
-                String name = (String) soloTable.getValueAt(i, NAME_COLUMN);
+                String name = (String) getValueAt(i, NAME_COLUMN);
                 System.out.println(name);
-                String themestring = (String) soloTable.getValueAt(i, THEME_COLUMN);
+                String themestring = (String) getValueAt(i, THEME_COLUMN);
                 MelodyPart themeMelody = new MelodyPart(themestring);
                 Theme theme = Theme.makeTheme(name,themeMelody);
                 
@@ -1557,9 +1621,9 @@ public class SoloGeneratorTableModel extends DefaultTableModel
                             //set the name to the one in the list(what is was before user changed it)
                             for (int k = 0; k < soloTable.getRowCount(); k++) { //loop through table
 
-                                if ((soloTable.getValueAt(k, NAME_COLUMN) == null)
-                                && (soloTable.getValueAt(k, LENGTH_COLUMN) == null)
-                                && (soloTable.getValueAt(k, THEME_COLUMN) == null)) 
+                                if ((getValueAt(k, NAME_COLUMN) == null)
+                                && (getValueAt(k, LENGTH_COLUMN) == null)
+                                && (getValueAt(k, THEME_COLUMN) == null)) 
                                 { //if there is a null row (besides probabilities)
                                     soloTable.setValueAt(name, k, NAME_COLUMN); 
                                     //set name to one user typed
@@ -1567,7 +1631,7 @@ public class SoloGeneratorTableModel extends DefaultTableModel
                                     //set theme to the one 
 
                                     if (!(row == i && col == LENGTH_COLUMN)) {
-                                        soloTable.setValueAt(soloTable.getValueAt(i, LENGTH_COLUMN), k, LENGTH_COLUMN); 
+                                        soloTable.setValueAt(getValueAt(i, LENGTH_COLUMN), k, LENGTH_COLUMN); 
                                         //set the themelength
                                     }
                                     break;
@@ -1817,20 +1881,20 @@ public void ExpandCommand(Polylist list) {
 
     public MelodyPart generateTheme() { 
         for (int x = 0; x < soloTable.getRowCount(); x++) { //loop through the rows of the table
-            if ((soloTable.getValueAt(x, LENGTH_COLUMN) != null)
-           &&  (!isInteger((String) soloTable.getValueAt(x, LENGTH_COLUMN)))) {
+            if ((getValueAt(x, LENGTH_COLUMN) != null)
+           &&  (!isInteger((String) getValueAt(x, LENGTH_COLUMN)))) {
                 System.out.println("error");
                 enteredIncorrectly.setVisible(true);
               } 
             else {
                 
                if  (((soloTable.isCellSelected(x, LENGTH_COLUMN)) 
-                && (soloTable.getValueAt(x, LENGTH_COLUMN) != null))
-                || ((soloTable.getValueAt(x, LENGTH_COLUMN) != null) 
-                && (soloTable.getValueAt(x,THEME_COLUMN) == null))){
+                && (getValueAt(x, LENGTH_COLUMN) != null))
+                || ((getValueAt(x, LENGTH_COLUMN) != null) 
+                && (getValueAt(x,THEME_COLUMN) == null))){
                     //if the theme length cell is selected and has something in it 
                    // or if there is something in a length cell and has no theme
-                    int Length = notate.intFromStringInRange((String) soloTable.getValueAt(x, LENGTH_COLUMN), 0, 100, themeLength); 
+                    int Length = notate.intFromStringInRange((String) getValueAt(x, LENGTH_COLUMN), 0, 100, themeLength); 
                     //get length from tablek
                     themeLength = BEAT * Length;
                     Polylist rhythm = lickgen.generateRhythmFromGrammar(0, themeLength); 
@@ -1854,7 +1918,7 @@ public void ExpandCommand(Polylist list) {
                     soloTable.setValueAt(theme, x, THEME_COLUMN); 
                     //make theme appear in table 
                     
-                    if (soloTable.getValueAt(x, NAME_COLUMN) != null) {
+                    if (getValueAt(x, NAME_COLUMN) != null) {
                         soloTable.setValueAt(null, x, NAME_COLUMN);
                     }
                     
@@ -2152,6 +2216,8 @@ Random random;
     private javax.swing.JDialog nameErrorMessage;
     private javax.swing.JTextField nameField;
     private javax.swing.JLabel namePicked;
+    private javax.swing.JLabel noThemeProbLabel;
+    private javax.swing.JTextField noThemeProbTextField;
     private java.awt.Button playSolo;
     private javax.swing.JDialog resetCheck;
     private javax.swing.JMenuBar roadmapMenuBar;
@@ -2159,6 +2225,8 @@ Random random;
     private java.awt.Button stopPlaying;
     private javax.swing.JDialog testDialog;
     private java.awt.TextArea textArea1;
+    private javax.swing.JLabel themeIntervalLabel;
+    private javax.swing.JTextField themeIntervalTextField;
     private javax.swing.JList themeList;
     private javax.swing.JLabel tryAgain;
     private javax.swing.JLabel typedWrong;
