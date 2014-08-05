@@ -93,6 +93,8 @@ public class MelodyPart
   };
 */
   
+  public boolean alreadyQuantized = false;
+  
   private static int melodyPartNumber = 0;
   
   private String id;
@@ -116,6 +118,16 @@ public class MelodyPart
     {
     return volume;
     }
+  
+   public boolean getAlreadyQuantized()
+  {
+      return alreadyQuantized;
+  }
+  
+  public void setAlreadyQuantized(boolean b)
+  {
+      alreadyQuantized = b;
+  }
 
   /**
    * Creates an empty MelodyPart.
@@ -2185,117 +2197,113 @@ public void setAutoFill(boolean fill)
         MelodyPart fixed = new MelodyPart();
         
         PartIterator iter = melody.iterator();
-        Note prev = (Note)iter.next();
-        Note note = (Note)iter.next();
-        
+
+        Note prev = (Note) iter.next();
+        Note note = (Note) iter.next();
+
         int shiftAndExtendValue;
         int prospRhythmValue;
         int prospPitch;
         int index = 0;
-        
-        while(iter.hasNext())
+
+        while (iter.hasNext()) 
         {
             shiftAndExtendValue = shiftAndMergeHelper(prev, note);
-            
+
             // case: adding previous value to note, removing previous
-            if (shiftAndExtendValue == 1)
+            if (shiftAndExtendValue == 1) 
             {
-                prospRhythmValue = prev.getRhythmValue()+note.getRhythmValue();
-                
-                if (note.isRest())
+                prospRhythmValue = prev.getRhythmValue() + note.getRhythmValue();
+
+                if (note.isRest()) 
                 {
                     Rest prosp = new Rest(prospRhythmValue);
                     fixed.addNote(prosp);
                     index += prospRhythmValue;
-                    System.out.println("Added prosp = "+prosp+" replacing note");
-                }
-                
-                else
+                    //System.out.println("Added prosp = "+prosp+" replacing note");
+                } 
+                else 
                 {
                     prospPitch = note.getPitch();
                     Note prosp = new Note(prospPitch, prospRhythmValue);
                     fixed.addNote(prosp);
                     index += prospRhythmValue;
-                    System.out.println("Added prosp = "+prosp+" replacing note");
-                } 
-                
-                prev = (Note)iter.next();
-                
-                if (iter.hasNext())
+                    //System.out.println("Added prosp = "+prosp+" replacing note");
+                }                    
+
+                prev = (Note) iter.next();
+
+                if (iter.hasNext()) 
                 {
-                    note = (Note)iter.next();
-                }
+                    note = (Note) iter.next();
+                } 
                 else 
                 {
                     break;
                 }
-            }
-            
+            } 
+
             // case: adding note value to previous, removing note
-            else if (shiftAndExtendValue == 0)
+            else if (shiftAndExtendValue == 0) 
             {
-                prospRhythmValue = prev.getRhythmValue()+note.getRhythmValue();
-                
-                if (prev.isRest())
+                prospRhythmValue = prev.getRhythmValue() + note.getRhythmValue();
+
+                if (prev.isRest()) 
                 {
-                   Rest prosp = new Rest(prospRhythmValue);
-                   fixed.addNote(prosp);
-                   index += prospRhythmValue;
-                   System.out.println("Added prosp = "+prosp+" replacing note");
-                }
-                
-                else
+                    Rest prosp = new Rest(prospRhythmValue);
+                    fixed.addNote(prosp);
+                    index += prospRhythmValue;
+                    //System.out.println("Added prosp = "+prosp+" replacing note");
+                } 
+                else 
                 {
                     prospPitch = prev.getPitch();
                     Note prosp = new Note(prospPitch, prospRhythmValue);
                     fixed.addNote(prosp);
                     index += prospRhythmValue;
-                    System.out.println("Added prosp = "+prosp+" replacing prev");
+                    //System.out.println("Added prosp = "+prosp+" replacing prev");
                 }
-                
-                prev = (Note)iter.next();
-                
-                if (iter.hasNext())
+
+                prev = (Note) iter.next();
+
+                if (iter.hasNext()) 
                 {
-                    note = (Note)iter.next();
-                }
+                    note = (Note) iter.next();
+                } 
                 else 
                 {
                     break;
                 }
-            }
-            
-            else if (shiftAndExtendValue == 2)
+            } 
+
+            else if (shiftAndExtendValue == 2) 
             {
                 //TODO: write shift function
-            }
-            
-            // case: no change necessary
-            else
+            } // case: no change necessary
+            else 
             {
-                if (prev.isRest())
+                if (prev.isRest()) 
                 {
-                   Rest prosp = new Rest(prev.getRhythmValue());
-                   fixed.addNote(prosp);
-                   index += prosp.getRhythmValue();
-                   //System.out.println("Added regular = "+prev);
-                }
-                
-                else
+                    Rest prosp = new Rest(prev.getRhythmValue());
+                    fixed.addNote(prosp);
+                    index += prosp.getRhythmValue();
+                    //System.out.println("Added regular = "+prev);
+                } 
+                else 
                 {
                     prospPitch = prev.getPitch();
                     Note prosp = new Note(prospPitch, prev.getRhythmValue());
                     fixed.addNote(prosp);
                     index += prosp.getRhythmValue();
                     //System.out.println("Added regular = "+prev);
-                    }
-                
+                }
+
                 prev = note;
-                note = (Note)iter.next();
+                note = (Note) iter.next();
+                }
             }
-        } 
         
-        System.out.println("Finished shift and extend melody");
+        //System.out.println("Finished shift and extend melody");
         return fixed;
     }
     
@@ -2329,7 +2337,7 @@ public void setAutoFill(boolean fill)
                 // slots.set(nextIndex, null);
                 unitCount--;
 
-                System.out.println("Correcting rests in measure "+((index/measureLength)+1));
+                //System.out.println("Correcting rests in measure "+((index/measureLength)+1));
                 
                 note.setRhythmValue(note.getRhythmValue() + nextNote.getRhythmValue());
                 
@@ -2347,7 +2355,7 @@ public void setAutoFill(boolean fill)
                 nextNote = getNote(nextIndex); 
             }
         }
-        System.out.println("Merge rests quantization completed.");
+        //System.out.println("Merge rests quantization completed.");
     }
 
     /**
@@ -2362,16 +2370,21 @@ public void setAutoFill(boolean fill)
         // in order to apply quantization without modifying original 
         MelodyPart qMelody = original.copy();
         
+        //System.out.println("Calling quantize WITH resolution finder");
+        
         // find best resolution setting
         int resolution = qMelody.getBestResolution();
-        qMelody = original.applyResolution(resolution);
+         qMelody = original.applyResolution(resolution);  
         
         //shift and extend notes and rests towards valid lengths
         qMelody = qMelody.shiftAndMergeMelody();
         
         // merge adjacent rests
         qMelody.mergeAdjacentRests();
-
+        
+        //set alreadyQuantized flag
+        qMelody.setAlreadyQuantized(true);
+        
         return qMelody;
     }
     
@@ -2379,8 +2392,14 @@ public void setAutoFill(boolean fill)
     public static MelodyPart quantizeNoRes(MelodyPart original)
     {
         MelodyPart qMelody = original.copy(); 
+        
+        //System.out.println("Calling quantize WITHOUT resolution finder");
+        
         qMelody.shiftAndMergeMelody();
         qMelody.mergeAdjacentRests();
+        
+         //set alreadyQuantized flag
+        qMelody.setAlreadyQuantized(true);
         
         return qMelody;
     }

@@ -17296,9 +17296,11 @@ public void addTab()
 
  public void addChorus(MelodyPart mp)
    {
-      int keySig = getCurrentStave().getKeySignature();
-
+        Stave s = getCurrentStave(); 
+       
         int progSize = score.getChordProg().size();
+        int keySig = s.getKeySignature();
+        
         if( mp.size() <  progSize)
           {
             // Pad the new melody part with rests so that there is no gap.
@@ -17311,15 +17313,16 @@ public void addTab()
             //score.setLength(mp.size());
             //setBars(score.getBarsPerChorus());
           }
-        score.addPart(mp);
-        partList.add(mp);
-
+        
+      partList.add(mp);
+      score.addPart(mp);
+        
       // reset the current scoreFrame
 
       setupArrays();
 
       getCurrentStave().setKeySignature(keySig);
-
+      
       getCurrentStave().repaint();
    }
 
@@ -23677,21 +23680,40 @@ public void setKconstantSlider(double value)
         // resolution found and other factors of MelodyPart.quantize()
         else if (quantizeString.equals("Best")) 
         {
-            quantizeResolution = originalPart.getBestResolution();
-            quantizedPart = MelodyPart.quantize(originalPart);
-            //System.out.println("Best resolution toString: "+Integer.toString(quantizeResolution));
-            quantizeComboBox.setSelectedItem((Integer.toString(quantizeResolution)));
-            addChorus(quantizedPart); 
+            if (originalPart.getAlreadyQuantized() == false)
+            {
+                quantizeResolution = originalPart.getBestResolution();
+                quantizeComboBox.setSelectedItem((Integer.toString(quantizeResolution)));
+                //System.out.println("Best resolution toString: "+Integer.toString(quantizeResolution));
+                quantizedPart = MelodyPart.quantize(originalPart);
+                addChorus(quantizedPart); 
+            }
+            else
+            {    
+                System.out.println("MelodyPart found to be already quantized.");
+                quantizedPart = MelodyPart.quantizeNoRes(originalPart);
+                //addChorus(quantizedPart); 
+            }
         }
         
         //case: selected integer value, resolution applied
         else 
         {
-            quantizeResolution = getSlotsFromString(quantizeString);
-            quantizedPart = originalPart.applyResolution(quantizeResolution);
-            System.out.println("Applied Resolution = " + quantizeResolution);
-            quantizedPart = MelodyPart.quantizeNoRes(quantizedPart);
-            addChorus(quantizedPart); 
+            if (originalPart.getAlreadyQuantized() == false)
+            {
+                quantizeResolution = getSlotsFromString(quantizeString);
+                quantizedPart = originalPart.applyResolution(quantizeResolution);
+                System.out.println("Applied Resolution = " + quantizeResolution);
+                quantizedPart = MelodyPart.quantizeNoRes(originalPart);
+                addChorus(quantizedPart); 
+            }
+            else
+            {
+                System.out.println("MelodyPart found to be already quantized.");
+                quantizedPart = MelodyPart.quantizeNoRes(originalPart);
+                //addChorus(quantizedPart); 
+            }
+            
         }               
     }//GEN-LAST:event_quantizeComboBoxscaleChosen
 
