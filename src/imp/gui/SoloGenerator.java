@@ -105,14 +105,13 @@ public void setTableColumnWidths()
                 setPreferredWidth(soloTableModel.getColumnWidths(j));
     }
 
-    DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
 
-    for(int j = 1; j < soloTableModel.getColumnCount(); j++)
+    for(int j = 0; j < soloTableModel.getColumnCount(); j++)
     {
+        DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
         renderer.setHorizontalAlignment( soloTableModel.getColumnAdjustments(j));
         soloTable.getColumnModel().getColumn(j).setCellRenderer( renderer );
     }
-    //sectionTable.getColumnModel().getColumn(0).setCellRenderer( sectionCellRenderer );
   }
 
     /**
@@ -1334,9 +1333,14 @@ public class SoloGeneratorTableModel extends DefaultTableModel
     int [] columnWidths = new int [] {
                 55 , 20  , 155   , 7 , 20  , 8,  15
             };
-    int [] columnAdjustment = new int [] {
-                JLabel.CENTER, JLabel.LEFT, JLabel.LEFT, JLabel.RIGHT,
-                JLabel.RIGHT  , JLabel.RIGHT, JLabel.RIGHT, 
+    int [] columnAdjustment = {
+                DefaultTableCellRenderer.LEFT, 
+                DefaultTableCellRenderer.LEFT, 
+                DefaultTableCellRenderer.LEFT, 
+                DefaultTableCellRenderer.RIGHT,
+                DefaultTableCellRenderer.RIGHT, 
+                DefaultTableCellRenderer.RIGHT, 
+                DefaultTableCellRenderer.RIGHT, 
             };
 
     public SoloGeneratorTableModel(Object [][] myTable, String [] columnHeaders)
