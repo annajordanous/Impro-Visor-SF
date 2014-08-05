@@ -23704,7 +23704,7 @@ public void setKconstantSlider(double value)
                 quantizeResolution = getSlotsFromString(quantizeString);
                 quantizedPart = originalPart.applyResolution(quantizeResolution);
                 System.out.println("Applied Resolution = " + quantizeResolution);
-                quantizedPart = MelodyPart.quantizeNoRes(originalPart);
+                quantizedPart = MelodyPart.quantizeNoRes(quantizedPart);
                 addChorus(quantizedPart); 
             }
             else
