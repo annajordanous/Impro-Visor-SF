@@ -2227,7 +2227,7 @@ public class LickgenFrame
         gridBagConstraints.weighty = 0.02;
         grammarLearningPanel.add(windowParametersPanel, gridBagConstraints);
 
-        loadBaseGrammarBtn.setBackground(new java.awt.Color(252, 91, 63));
+        loadBaseGrammarBtn.setBackground(new java.awt.Color(252, 110, 90));
         loadBaseGrammarBtn.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
         loadBaseGrammarBtn.setText("<html><b>Step 1</b>: Load the grammar on which you wish to build, such as _Empty.grammar.  <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If you do nothing, Impro-Visor will build on whatever grammar is current.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This step also clears any accumulated productions from prior use of the learning tool.</html>  ");
         loadBaseGrammarBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -2249,7 +2249,7 @@ public class LickgenFrame
         gridBagConstraints.weighty = 0.05;
         grammarLearningPanel.add(loadBaseGrammarBtn, gridBagConstraints);
 
-        saveGrammarAsButton.setBackground(new java.awt.Color(252, 91, 63));
+        saveGrammarAsButton.setBackground(new java.awt.Color(252, 110, 90));
         saveGrammarAsButton.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
         saveGrammarAsButton.setText("<html><b>Step 2</b>: <b>IMPORTANT</b>: This step will use <b>Save as . . .</b> in the Grammar menu to save your new grammar under a new name, <br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; in case you want to return to the old grammar. <br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; It will also ask you to save your leadsheet if you need it, as the leadsheet window will be used as a workspace.</html>  ");
         saveGrammarAsButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -2270,7 +2270,7 @@ public class LickgenFrame
         gridBagConstraints.weighty = 0.05;
         grammarLearningPanel.add(saveGrammarAsButton, gridBagConstraints);
 
-        openCorpusBtn.setBackground(new java.awt.Color(252, 176, 60));
+        openCorpusBtn.setBackground(new java.awt.Color(252, 196, 80));
         openCorpusBtn.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
         openCorpusBtn.setText("<html><b>Step 4</b>: Select a corpus of solos from which to learn. Each solo is a leadsheet file.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>Note: Selecting any leadsheet file in a folder is equivalent to selecting the entire folder. </b><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The leadsheet you selected will be left in the window at the end.  <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>The process is complete when the last chorus of that leadsheet appears</b>.</html>");
         openCorpusBtn.setActionCommand("<html><b>Step 5</b>: Next select a corpus of solos from which to learn. Each solo is a leadsheet file.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Selecting any file any a folder is equivalent to selecting the entire folder.  <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The leadsheet you selected will be left in the window at the end. The process is over when the last chorus appears.</html>");
@@ -2293,7 +2293,7 @@ public class LickgenFrame
         gridBagConstraints.weighty = 0.05;
         grammarLearningPanel.add(openCorpusBtn, gridBagConstraints);
 
-        toGrammarBtn.setBackground(new java.awt.Color(153, 255, 153));
+        toGrammarBtn.setBackground(new java.awt.Color(130, 217, 151));
         toGrammarBtn.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
         toGrammarBtn.setText("<html><b>Step 5</b>: Click this button to create and save the grammar and Soloist file.  <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;There are two <b>other alternatives</b> at this point: <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a, Quit by closing the window, with no changes. <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b. Return to Step 4 and learn from other corpuses of solos. </html>");
         toGrammarBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -2332,7 +2332,7 @@ public class LickgenFrame
         gridBagConstraints.weighty = 0.05;
         grammarLearningPanel.add(learningStep0Label, gridBagConstraints);
 
-        testGeneration.setBackground(new java.awt.Color(153, 255, 153));
+        testGeneration.setBackground(new java.awt.Color(130, 217, 151));
         testGeneration.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
         testGeneration.setText("<html><b>Step 6</b>: Press this button to generate solos with your Learned grammar</html>");
         testGeneration.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -6457,18 +6457,19 @@ public void extractAbstractMelody()
         if (getUseBricks()) {
             imp.cluster.CreateBrickGrammar.create(notate.getChordProg(),
                     //inFile,
-                    getBrickProductionsWriter(),
+                    brickProductionsWriter,
                     outFile,
                     getNumClusterReps(),
                     getUseRelativeBricks(),
                     getUseAbstractBricks(),
                     notate,
                     this);
+            brickProductionsWriter.getBuffer().setLength(0); //reset for next usage
         } 
         if (getUseWindows()) {
             imp.cluster.CreateGrammar.create(notate.getChordProg(),
                     //inFile,
-                    getWindowProductionsWriter(),
+                    windowProductionsWriter,
                     outFile,
                     getNumClusterReps(),
                     getUseMarkov(),
@@ -6476,6 +6477,7 @@ public void extractAbstractMelody()
                     getUseRelativeWindows(),
                     getUseAbstractWindows(),
                     notate);
+            windowProductionsWriter.getBuffer().setLength(0); //reset for next usage
         }
         setLickGenStatus("Done writing productions to grammar file: " + outFile);
 
