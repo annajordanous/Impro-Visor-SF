@@ -5275,7 +5275,6 @@ public void extractAbstractMelody()
             File f = new File(notate.getGrammarFileName());
             String dir = f.getParentFile().getPath();
             frameFile = dir + File.separator + Directories.accumulatedProductions;
-            //BufferedWriter out = new BufferedWriter(new FileWriter(frameFile, true));
             BufferedWriter out = null;
             if (brickType != null) {
                 out = new BufferedWriter(brickProductionsWriter);
