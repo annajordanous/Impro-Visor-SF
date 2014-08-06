@@ -1747,9 +1747,9 @@ public void updateAllDrumPatterns(String name, String rules)
    * This was introduced so that drum patterns could be transferred from the StyleMixer
    * @param patternString 
    */
-  public void loadDrumPatternFromString(String patternString)
+  public void loadDrumPatternFromString(String patternString, String name)
     {
-      loadDrumPatternFromPolylist(Notate.parseListFromString(patternString));
+      loadDrumPatternFromPolylist(Polylist.PolylistFromString(patternString), name);
     }
   
   /**
@@ -1761,8 +1761,9 @@ public void updateAllDrumPatterns(String name, String rules)
    * @param patternString 
    */
   
-  public void loadDrumPatternFromPolylist(Polylist item)
+  public void loadDrumPatternFromPolylist(Polylist item, String name)
     {
+        //System.out.print("drum list: " + item);
     ArrayList<DrumRuleRep> drArray = new ArrayList<DrumRuleRep>();
     
     //System.out.println("item = " + item);
@@ -1773,11 +1774,13 @@ public void updateAllDrumPatterns(String name, String rules)
             new ArrayList<RepresentativeDrumRules.DrumPattern>();
  
     RepresentativeDrumRules.DrumPattern aDrumPattern = d.makeDrumPattern();
+    aDrumPattern.setName(name);
       
     while( item.nonEmpty() )
       {
         // The first symbol in item.first() is assumed to be "drum",
         // so only the rest is passed to the DrumRuleRep constructor.
+        //DrumRuleRep drumPat = new DrumRuleRep(item.rest());
         
         DrumRuleRep drumPat = new DrumRuleRep(((Polylist)item.first()).rest());
         
@@ -2399,9 +2402,9 @@ public void updateAllDrumPatterns(String name, String rules)
    */
   private void refreshAll()
     {
-//    bassHolderPane.updateUI();
-//    drumHolderPane.updateUI();
-//    chordHolderPane.updateUI();
+    bassHolderPane.updateUI();
+    drumHolderPane.updateUI();
+    chordHolderPane.updateUI();
     }
 
   /**
@@ -2409,7 +2412,7 @@ public void updateAllDrumPatterns(String name, String rules)
    * empty patterns.  Also triggers saving options if changes would be lost when creating
    * a new style.
    */
-  private void newStyle()
+  public void newStyle()
     {
     reset();
     refreshAll();
@@ -8152,32 +8155,40 @@ public void setSelectedColumn(int column)
 int selectedBassColumn = 0;
 int selectedChordColumn = 0;
         
-public void setNextBassPattern(String patternString)
+public void setNextBassPattern(String patternString, String name)
   {
   //System.out.println("Setting bass pattern " + patternString);
     if( selectedBassColumn < 1 )
       {
         selectedBassColumn = getLastSelectedColumn();
       }
-    setCell(stripOuterParens(patternString), getModel().BASS_PATTERN_ROW, selectedBassColumn, SILENT);
+    setCell(patternString, 
+            getModel().BASS_PATTERN_ROW, 
+            selectedBassColumn, 
+            SILENT, 
+            name);
     selectedBassColumn++;
   }
 
-public void setNextChordPattern(String patternString)
+public void setNextChordPattern(String patternString, String name)
   {
   //System.out.println("Setting chord pattern " + patternString);
     if( selectedChordColumn < 1 )
       {
         selectedChordColumn = getLastSelectedColumn();
       }
-    setCell(stripOuterParens(patternString), getModel().CHORD_PATTERN_ROW, selectedChordColumn, SILENT);
+    setCell(patternString, 
+            getModel().CHORD_PATTERN_ROW, 
+            selectedChordColumn, 
+            SILENT,
+            name);
     selectedChordColumn++;
   }
 
-public void setNextDrumPattern(String patternString)
+public void setNextDrumPattern(String patternString, String name)
   {
   //System.out.println("Setting drum pattern " + patternString);
-        loadDrumPatternFromString(stripOuterParens(patternString));
+        loadDrumPatternFromString(stripOuterParens(patternString), name);
   }
 
 public static String stripOuterParens(String arg)
