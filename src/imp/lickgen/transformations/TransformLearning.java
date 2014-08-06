@@ -293,13 +293,13 @@ private int getNoteScore(Note note,
 * @param stop                        the stoping slot to learn from
 * @return Polylist                   form of a Transform
 */  
-public Polylist createBlockTransform(MelodyPart outline, 
-                                     MelodyPart transformed, 
-                                     ChordPart chords, 
-                                     int start, 
-                                     int stop)
+public Transform createBlockTransform(MelodyPart outline, 
+                                      MelodyPart transformed, 
+                                      ChordPart chords, 
+                                      int start, 
+                                      int stop)
 {
-    Polylist transform = new Polylist();
+    Transform transform = new Transform();
     
     for(int slot = start; slot < stop;)
     {
@@ -309,10 +309,10 @@ public Polylist createBlockTransform(MelodyPart outline,
         MelodyPart outlinePart = outline.extract(slot, nextSlot-1,true,true);
         MelodyPart transPart = transformed.extract(slot, nextSlot-1,true,true);
         Chord chord = chords.getCurrentChord(slot);
-        Polylist substitution = createBlockSubstitution(outlinePart, 
-                                                        transPart, 
-                                                        chord);
-        transform = transform.addToEnd(substitution);
+        Substitution substitution = createBlockSubstitution(outlinePart, 
+                                                            transPart, 
+                                                            chord);
+        transform.addSubstitution(substitution);
         slot = nextSlot;
     }
     
@@ -326,9 +326,9 @@ public Polylist createBlockTransform(MelodyPart outline,
 * @param chords                      the chordPart of the section
 * @return Polylist                   form of a Substitution
 */  
-private Polylist createBlockSubstitution(MelodyPart outline, 
-                                         MelodyPart transformed, 
-                                         Chord chord)
+private Substitution createBlockSubstitution(MelodyPart outline, 
+                                             MelodyPart transformed, 
+                                             Chord chord)
 {
     int numNotes = 0;
     int slot = 0;
@@ -337,17 +337,16 @@ private Polylist createBlockSubstitution(MelodyPart outline,
         numNotes++;
         slot = transformed.getNextIndex(slot);
     }
-    Polylist substitution = Polylist.PolylistFromString(
-            "substitution" + 
-            "(name " + chord.getFamily() + "-" + numNotes + "-notes)" + 
-            "(type motif)" + 
-            "(weight 1)");
-    Polylist transformation = createOneNoteBlockTransformation(outline, 
-                                                               transformed, 
-                                                               chord);
-    substitution = substitution.addToEnd(transformation);
     
-    return substitution;
+    Substitution sub = new Substitution();
+    sub.setName(chord.getFamily() + "-" + numNotes + "-notes");
+    
+    Transformation transformation = createOneNoteBlockTransformation(outline, 
+                                                                     transformed, 
+                                                                     chord);
+    sub.addTransformation(transformation);
+    
+    return sub;
 }
 /**
 * Creates a transform that transform the note in outline into the
@@ -357,9 +356,9 @@ private Polylist createBlockSubstitution(MelodyPart outline,
 * @param chords                      the chordPart of the section
 * @return Polylist                   form of a Transform
 */  
-private Polylist createOneNoteBlockTransformation(MelodyPart outline, 
-                                                  MelodyPart transformed, 
-                                                  Chord chord)
+private Transformation createOneNoteBlockTransformation(MelodyPart outline, 
+                                                        MelodyPart transformed, 
+                                                        Chord chord)
 {
     
     Polylist transformation = Polylist.PolylistFromString(
@@ -378,7 +377,11 @@ private Polylist createOneNoteBlockTransformation(MelodyPart outline,
     else
         transformation = transformation.addToEnd(defaultTarget);
     
-    return transformation;
+    Transformation trans = new Transformation();
+    
+    trans.setTransformation(transformation);
+    
+    return trans;
 }
 /**
 * Creates a guard condition for Windowing, or just one note
@@ -561,7 +564,7 @@ private Polylist getTransposeDiatonicCondition(Note note1,
 * @param stop                        the stoping slot to learn from
 * @return Polylist                   form of a Transform
 */  
-public Polylist createTrendTransform(MelodyPart outline, 
+public Transform createTrendTransform(MelodyPart outline, 
                                      MelodyPart transformed, 
                                      ChordPart chords, 
                                      int startingSlot, 
@@ -582,7 +585,7 @@ public Polylist createTrendTransform(MelodyPart outline,
     
     // DON'T CHANGE THIS CODE. IT IS VERY VERY COMPLICATED
     
-    Polylist subs = Polylist.PolylistFromString("");
+    Transform transform = new Transform();
     int varNumber = 1;
     
     Polylist lastNCP = createNCP(transformed.getCurrentNote(startingSlot), 
@@ -655,14 +658,15 @@ public Polylist createTrendTransform(MelodyPart outline,
                     subTransform = subTransform.allButLast();
                     subTransformFrom = subTransformFrom.allButLast();
                 }
-                Polylist substitution = createTrendSubstitution(subOutline, 
-                                                                subTransform, 
-                                                                subTransformFrom, 
-                                                                CHROMATIC_TREND);
+                Substitution substitution = 
+                        createTrendSubstitution(subOutline, 
+                                                subTransform, 
+                                                subTransformFrom, 
+                                                CHROMATIC_TREND);
 
                 if(substitution != null)
                 {
-                    subs = subs.addToEnd(substitution);
+                    transform.addSubstitution(substitution);
                 }
                 if(Math.abs(newChromData) < 1.0)
                 {
@@ -730,7 +734,7 @@ public Polylist createTrendTransform(MelodyPart outline,
         lastOutNCP = (Polylist)subOutline.last();
     }
     
-    return subs;
+    return transform;
 }
 
 /**
@@ -742,24 +746,22 @@ public Polylist createTrendTransform(MelodyPart outline,
 * @param trend                       the trend type 
 * @return Polylist                   form of a Substitution
 */  
-private Polylist createTrendSubstitution(Polylist outlineNCP, 
+private Substitution createTrendSubstitution(Polylist outlineNCP, 
                                          Polylist resultNCP, 
                                          Polylist resultFromNCP, 
                                          int trend)
 {
-    Polylist substitution = Polylist.PolylistFromString(
-            "substitution" + 
-            "(name " + resultNCP.length() + "-changed-GENERATED)" + 
-            "(type motif)" + 
-            "(weight 1)");
+    Substitution sub = new Substitution();
+    sub.setName(resultNCP.length() + "-changed-GENERATED");
     
-    Polylist transformation = createTrendTransformation(outlineNCP, 
-                                                        resultNCP, 
-                                                        resultFromNCP, 
-                                                        trend);
+    Transformation transformation = createTrendTransformation(outlineNCP, 
+                                                              resultNCP, 
+                                                              resultFromNCP, 
+                                                              trend);
     if(transformation == null)
         return null;
-    return substitution.addToEnd(transformation);
+    sub.addTransformation(transformation);
+    return sub;
 }
 /**
 * Creates a transformation from a trend's outline and result
@@ -770,7 +772,7 @@ private Polylist createTrendSubstitution(Polylist outlineNCP,
 * @param trend                       the trend type 
 * @return Polylist                   form of a Transformation
 */ 
-private Polylist createTrendTransformation(Polylist outlineNCP, 
+private Transformation createTrendTransformation(Polylist outlineNCP, 
                                            Polylist resultNCP, 
                                            Polylist resultFromNCP, 
                                            int trend)
@@ -808,7 +810,12 @@ private Polylist createTrendTransformation(Polylist outlineNCP,
                                           trend);
     if(guard == null || target == null)
         return null;
-    return transformation.addToEnd(guard).addToEnd(target);
+    transformation = transformation.addToEnd(guard).addToEnd(target);
+    
+    Transformation trans = new Transformation();
+    trans.setTransformation(transformation);
+    
+    return trans;
 }
 /**
 * Creates a guard condition for a trend's important outline notes

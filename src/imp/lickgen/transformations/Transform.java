@@ -75,6 +75,39 @@ public Transform(String subs)
 }
 
 /**
+ * Create a new transformation with identity substitutions
+ */
+public static Transform makeTransformWithIdentities()
+{
+    Transform transform = new Transform();
+    Substitution motifIdentity = Substitution.makeIdentity("motif");
+    Substitution embIdentity = Substitution.makeIdentity("embellishment");
+    
+    transform.addSubstitution(motifIdentity);
+    transform.addSubstitution(embIdentity);
+    
+    return transform;
+}
+
+/**
+ * Adds a substitution to the list of substitutions
+ * @param sub
+ */
+public void addSubstitution(Substitution sub)
+{
+    substitutions.add(sub);
+}
+
+/**
+ * Remove a substitution from the list of substitutions
+ * @param sub
+ */
+public void removeSubstitution(Substitution sub)
+{
+    substitutions.remove(sub);
+}
+
+/**
  * Applies the substitutions randomly by weight to a melody
  * @param melody        Melody to apply substitutions to
  * @param chords        ChordPart of the melody
@@ -350,7 +383,7 @@ public void toFile(StringBuilder buf)
 public Substitution addNewSubstitution()
 {
     Substitution newSub = new Substitution();
-    substitutions.add(newSub);
+    addSubstitution(newSub);
     hasChanged = true;
     return newSub;
 }

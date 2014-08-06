@@ -316,6 +316,11 @@ public String getDescription()
     return description;
 }
 
+public void setDescription(String des)
+{
+    description = des;
+}
+
 /**
  * 
  * @return whether the transformation has been changed since it was last saved.

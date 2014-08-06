@@ -1065,7 +1065,7 @@ public class TransformPanel extends javax.swing.JPanel {
         if(editRow >= 0)
         {
             Object toDelete = subJTable.getValueAt(editRow, 0);
-            transform.substitutions.remove((Substitution)toDelete);
+            transform.removeSubstitution((Substitution)toDelete);
 
             redrawSubstitutionsList();
             redrawTransformationsList();
@@ -1108,7 +1108,7 @@ public class TransformPanel extends javax.swing.JPanel {
             if(editTransRow >= 0)
             {
                 Object toDelete = transJTable.getValueAt(editTransRow, 0);
-                ((Substitution)toDeleteSub).transformations.remove((Transformation)toDelete);
+                ((Substitution)toDeleteSub).removeTransformation((Transformation)toDelete);
 
                 redrawTransformationsList();
             }
@@ -1142,7 +1142,7 @@ public class TransformPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_saveSubstitutionsButtonActionPerformed
 
     private void createNewSubstitutionsFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createNewSubstitutionsFileButtonActionPerformed
-        Transform newTrans = new Transform();
+        Transform newTrans = Transform.makeTransformWithIdentities();
         String newFilename = "newTransformFile.transform";
         changeTransform(newTrans, newFilename);
     }//GEN-LAST:event_createNewSubstitutionsFileButtonActionPerformed
@@ -1161,7 +1161,7 @@ public class TransformPanel extends javax.swing.JPanel {
                 Transform addTransform = new Transform(transformStr);
                 for(Substitution sub: addTransform.substitutions)
                 {
-                    transform.substitutions.add(sub);
+                    transform.addSubstitution(sub);
                 }
                 transform.hasChanged = true;
                 redrawSubstitutionsList();

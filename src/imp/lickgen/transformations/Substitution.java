@@ -92,6 +92,17 @@ public Substitution (Polylist sub)
     hasChanged = false;
 }
 
+public static Substitution makeIdentity(String type)
+{
+    Substitution sub = new Substitution();
+    sub.setName("identity-" + type);
+    sub.setType(type);
+    Transformation trans = new Transformation();
+    trans.setDescription("identity");
+    sub.addTransformation(trans);
+    return sub;
+}
+
 /**
  * Tries to apply its transformations randomly based on weight 
  * @param notes                 melody part to apply substitution on
@@ -171,8 +182,28 @@ public MelodyPart apply(MelodyPart notes, ChordPart chords, int[] startingSlot)
 public void addNewTransformation()
 {
     Transformation trans = new Transformation();
-    transformations.add(trans);
+    addTransformation(trans);
     hasChanged = true;
+}
+
+/**
+ * Add a transformation to the list of transformations 
+ * @param trans
+ * @return 
+ */
+public void addTransformation(Transformation trans)
+{
+    transformations.add(trans);
+}
+
+/**
+ * Remove a transformation from the list of transformations 
+ * @param trans
+ * @return 
+ */
+public void removeTransformation(Transformation trans)
+{
+    transformations.remove(trans);
 }
 
 /**
