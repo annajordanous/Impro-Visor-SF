@@ -5415,6 +5415,50 @@ public void playSelection(int startIndex, int stopIndex, int loopCount, boolean 
     repaint();
   }
 
+public void playSelection(int startIndex, int stopIndex, int loopCount, boolean useDrums, String message, Style style)
+  {
+    if( startIndex != 0 || !notate.getFirstChorus() )
+      {
+        notate.noCountIn();
+      }
+
+    notate.chordVolumeChanged();
+
+    //System.out.println("*** Play Selection from startIndex = " + startIndex + " to stopIndex = " + stopIndex + ", loopCount = " + loopCount + " " + message);
+
+    int partSize = getChordProg().getSize();
+
+    int chorusStart = partSize * notate.getCurrTabIndex();
+
+    startIndex += chorusStart;
+
+    stopIndex += chorusStart;
+
+    notate.initCurrentPlaybackTab(startIndex);
+
+    notate.setPlaybackStop(stopIndex, "in Stave: playSelection");
+
+    notate.setShowPlayLine(true);
+    notate.setKeyboardPlayback(true);
+    
+    Score score = notate.getScore();
+
+    new PlayScoreCommand(score,
+                         style,
+                         startIndex, 
+                         true,
+                         notate.getMidiSynth(), 
+                         notate, 
+                         loopCount, 
+                         notate.getTransposition(), 
+                         useDrums, 
+                         stopIndex).execute();
+
+    //System.out.println("score = " + score);
+    
+    repaint();
+  }
+
 /**
  * Plays the current selection
  * This is the old way, for which the keyboard does not work.

@@ -7442,6 +7442,7 @@ private void openStyleMixer()
   }
 
     private void saveToStyleMixer(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveToStyleMixer
+        /*
         copyCurrentCells();
         
         openStyleMixer();
@@ -7459,6 +7460,7 @@ private void openStyleMixer()
             }
           styleMixer.copyCellsForStyleMixer(getCopiedCells(), firstRow, instrumentName);
           }
+          */
      
     }//GEN-LAST:event_saveToStyleMixer
 

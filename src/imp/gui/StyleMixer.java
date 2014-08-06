@@ -141,7 +141,16 @@ private LinkedHashMap<String, String> drumRules =
 
 private LinkedHashMap<String, ArrayList<DrumRuleRep>> drumPatterns = 
         new LinkedHashMap<String, ArrayList<DrumRuleRep>>();
+
+private LinkedHashMap<DrumRuleRep, Integer> ruleIndex = 
+        new LinkedHashMap<DrumRuleRep, Integer>();
+
+private ArrayList<String> bassPatternNames = new ArrayList<String>();
+private ArrayList<String> chordPatternNames = new ArrayList<String>();
+
+private ArrayList<String> drumRuleNames = new ArrayList<String>();
 private ArrayList<String> drumPatternNames = new ArrayList<String>();
+
 
 /**
  * Creates new form ExtractionEditor
@@ -249,11 +258,16 @@ public void reset()
 {
     bassTable.setModel(new BassTableModel(columnHeaders, ROW_COUNT));
     chordTable.setModel(new ChordTableModel(columnHeaders, ROW_COUNT));
-    drumTable.setModel(new DrumTableModel(columnHeaders, DRUM_ROW_COUNT));
+    drumTable.setModel(new DrumTableModel(drumColumnHeaders, DRUM_ROW_COUNT));
     
     bassRules = new LinkedHashMap<String, String>();
     chordRules = new LinkedHashMap<String, String>();
     drumRules = new LinkedHashMap<String, String>();
+    
+    drumPatterns = new LinkedHashMap<String, ArrayList<DrumRuleRep>>();
+    drumPatternNames = new ArrayList<String>();
+    drumRuleNames = new ArrayList<String>();
+    ruleIndex = new LinkedHashMap<DrumRuleRep, Integer>();
 }
 
 public StyleEditor newStyleEditor()
@@ -853,7 +867,8 @@ private void copyBassPatternToStyleEditor(java.awt.event.ActionEvent evt)//GEN-F
     }//GEN-LAST:event_deleteDrumPattern
 
     private void playStyleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playStyleButtonActionPerformed
-        notate.playScore();
+        Style tempStyle = makeTempStyle();
+        notate.playScore(tempStyle);
     }//GEN-LAST:event_playStyleButtonActionPerformed
 
     private void copyStyleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyStyleButtonActionPerformed
@@ -1013,7 +1028,7 @@ public void loadFromFile( File file )
         BassPattern curPat = bp.get(i);
         String name = curPat.getName();
         String rule = curPat.forGenerator();       
-               
+              
         int row = bassRules.size();
         
         if( name.equals("") )
@@ -1021,6 +1036,7 @@ public void loadFromFile( File file )
             name = "" + row;
         }
         
+        bassPatternNames.add(name);
         bassRules.put(name, rule);
         //System.out.println("bass rules: " + bassRules);
         
@@ -1036,7 +1052,7 @@ public void loadFromFile( File file )
         ChordPattern curPat = cp.get(i);
         String name = curPat.getName();
         String rule = curPat.forGenerator();
-        
+               
         int row = chordRules.size();
         
         if( name.equals("") )
@@ -1044,6 +1060,7 @@ public void loadFromFile( File file )
             name = "" + row;
         }
         
+        chordPatternNames.add(name);
         chordRules.put(name, rule);
         //System.out.println("chord rules: " + chordRules);
         
@@ -1078,6 +1095,7 @@ public void loadFromFile( File file )
             //System.out.println("drum rule: " + curRep.toString());
             
             int row = drumRules.size();
+            ruleIndex.put(curRep, row);
             
             if( name.equals("") )
             {
@@ -1085,6 +1103,7 @@ public void loadFromFile( File file )
             }
             
             drumRules.put(name, rule);
+            drumRuleNames.add(name);
             
             drumTable.setValueAt(USE_STRING, row, DRUM_USE);
             drumTable.setValueAt(styleName, row, DRUM_STYLE);
@@ -1156,7 +1175,8 @@ public void copySelectedDrumPatternsToStyleEditor()
         for( DrumRuleRep rep: rules )
         {
             //System.out.println("drum rule: " + rep);
-            String useString = getUse(i, rules.indexOf(rep));
+            int repIndex = ruleIndex.get(rep);
+            String useString = (String)drumTable.getValueAt(repIndex, DRUM_USE);
             if( useString.equals(USE_STRING) )
             {
                 drumRules.append(rep.toString().trim());
@@ -1165,22 +1185,6 @@ public void copySelectedDrumPatternsToStyleEditor()
         //System.out.println("drum pattern: " + drumRules);
         //drumRules.append(")");
         styleEditor.setNextDrumPattern(drumRules.toString().trim(), name);
-    }
-}
-
-public String getUse(int drumPattern, int drumRule)
-{
-    if( drumPattern == 0 )
-    {
-        int row = drumRule;
-        String useString = (String)drumTable.getValueAt(row, DRUM_USE);
-        return useString;
-    }
-    else
-    {
-        int row = (drumPattern + 1) * drumRule; //add 1 to get the correct # pattern
-        String useString = (String)drumTable.getValueAt(row, DRUM_USE);
-        return useString;
     }
 }
 
@@ -1412,6 +1416,63 @@ private void playPattern(int type, String string)
            break;
      }
   }
+
+public Style makeTempStyle()
+{
+    StringBuilder buffer = new StringBuilder();
+    //convert all the patterns to a polylist
+    for( int i = 0; i < bassPatternNames.size(); i++ )
+    {
+        String key = bassPatternNames.get(i);
+        String pattern = bassRules.get(key);
+        String useString = (String)bassTable.getValueAt(i, USE);
+        //System.out.println(useString);
+        if( useString.equals(USE_STRING) )
+        {
+            buffer.append("(bass-pattern ");
+            buffer.append("(rules ");
+            buffer.append(pattern);
+            buffer.append(")(weight 10.0))");
+        }      
+    }
+    
+    for( int j = 0; j < chordPatternNames.size(); j++ )
+    {
+        String key = chordPatternNames.get(j);
+        String pattern = chordRules.get(key);
+        String useString = (String)chordTable.getValueAt(j, USE);
+        if( useString.equals(USE_STRING) )
+        {
+            buffer.append("(chord-pattern ");
+            buffer.append("(rules ");
+            buffer.append(pattern);
+            buffer.append(")(weight 10.0))");
+        } 
+    }
+    
+    for( int k = 0; k < drumPatterns.size(); k++ )
+    {
+        String key = drumPatternNames.get(k);
+        buffer.append("(drum-pattern ");
+        ArrayList<DrumRuleRep> drumRules = drumPatterns.get(key);
+        
+        for( DrumRuleRep rep: drumRules )
+        {
+            //System.out.println("drum rule: " + rep);
+            int repIndex = ruleIndex.get(rep);
+            String useString = (String)drumTable.getValueAt(repIndex, DRUM_USE);
+            if( useString.equals(USE_STRING) )
+            {
+                buffer.append(rep.toString().trim());
+            }
+        }
+        buffer.append(")");
+    }
+    String styleString = buffer.toString();
+    Polylist style = Polylist.PolylistFromString(styleString);
+    Style tempStyle = Style.makeStyle(style);
+    return tempStyle;
+}
 
 /**
  * Checks to see if model contains p, using String equivalence as a basis
