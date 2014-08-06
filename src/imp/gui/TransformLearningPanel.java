@@ -402,7 +402,7 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         gridBagConstraints.weighty = 1.0;
         add(step3Panel, gridBagConstraints);
 
-        step4Panel.setBackground(new java.awt.Color(6, 190, 190));
+        step4Panel.setBackground(new java.awt.Color(75, 190, 190));
         step4Panel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Step 4", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
         step4Panel.setToolTipText("");
         step4Panel.setMinimumSize(new java.awt.Dimension(690, 154));
