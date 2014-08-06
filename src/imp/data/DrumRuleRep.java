@@ -59,6 +59,14 @@ public String getSuffix()
   {
     return suffix;
   }
+
+public String toString()
+    {
+        StringBuilder buffer = new StringBuilder();
+        buffer.append(elementType);
+        buffer.append(suffix);
+        return buffer.toString();
+    }
 } // end of inner class Element
 
 
@@ -598,8 +606,64 @@ public int getDuration()
 @Override
 public String toString()
   {
-    return ruleAsList.cons(drumNumber).toString();
+      fixRuleList();
+      StringBuilder buffer = new StringBuilder();
+      buffer.append("(drum ");
+      buffer.append(drumNumber);
+      buffer.append(" ");
+      buffer.append(ruleAsList.toStringSansParens());
+      buffer.append(")");
+      return buffer.toString();
   }
+
+public void fixRuleList()
+{
+        Object ob = ruleAsList.first();
+        if( ob instanceof Polylist )
+        {
+            Polylist item = (Polylist)ob;
+            String dispatcher = (String)item.first();
+            item = item.rest();
+            switch( Leadsheet.lookup(dispatcher, keyword) )
+            {
+                case USE:
+                {
+                    if( item.first() instanceof String )
+                    {
+                        StringBuilder buffer = new StringBuilder();
+                        String name = (String)item.first();
+                        buffer.append("(name ");
+                        buffer.append(name);
+                        buffer.append(")");
+
+                        LinkedHashMap ruleDefinitions = getDefinedRules();
+                        Polylist rules = (Polylist)ruleDefinitions.get(name);
+                        buffer.append(rules.toString());
+                        
+                        String newString = buffer.toString();
+                        //System.out.println("rule list: " + newString);
+                        ruleAsList = Polylist.PolylistFromString(newString);                   
+                    }
+                    break;
+                }
+                default:
+                    break;
+            }
+        }
+}
+
+public String forStyleMixer()
+{
+    StringBuilder buffer = new StringBuilder();
+    buffer.append("");
+    buffer.append(drumNumber);
+    for( Element e: getElements() )
+    {
+        buffer.append(" ");
+        buffer.append(e.toString());
+    }
+    return buffer.toString();
+}
 
 public boolean getStatus()
   {
