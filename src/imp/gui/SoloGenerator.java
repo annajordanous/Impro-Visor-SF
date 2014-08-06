@@ -91,6 +91,7 @@ public class SoloGenerator extends javax.swing.JFrame {
                 int row = soloTable.rowAtPoint(e.getPoint());
               soloTable.getSelectionModel().setSelectionInterval(row,row);
             }
+           
         }
     });
     setTableColumnWidths();
@@ -121,8 +122,7 @@ public void setTableColumnWidths()
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
         nameErrorMessage = new javax.swing.JDialog();
@@ -180,17 +180,13 @@ public void setTableColumnWidths()
         nameErrorMessage.setMinimumSize(new java.awt.Dimension(500, 400));
         nameErrorMessage.getContentPane().setLayout(new java.awt.GridBagLayout());
 
-        nameField.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        nameField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 nameFieldActionPerformed(evt);
             }
         });
-        nameField.addKeyListener(new java.awt.event.KeyAdapter()
-        {
-            public void keyPressed(java.awt.event.KeyEvent evt)
-            {
+        nameField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
                 nameFieldKeyPressed(evt);
             }
         });
@@ -216,10 +212,8 @@ public void setTableColumnWidths()
         nameErrorMessage.getContentPane().add(namePicked, gridBagConstraints);
 
         CancelButton.setText("Cancel");
-        CancelButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        CancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CancelButtonActionPerformed(evt);
             }
         });
@@ -231,10 +225,8 @@ public void setTableColumnWidths()
         nameErrorMessage.getContentPane().add(CancelButton, gridBagConstraints);
 
         OkButton.setText("Ok");
-        OkButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        OkButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 OkButtonActionPerformed(evt);
             }
         });
@@ -278,17 +270,13 @@ public void setTableColumnWidths()
         enteredIncorrectly.getContentPane().add(tryAgain, gridBagConstraints);
 
         cellOkbutton.setText("Ok");
-        cellOkbutton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        cellOkbutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cellOkbuttonActionPerformed(evt);
             }
         });
-        cellOkbutton.addKeyListener(new java.awt.event.KeyAdapter()
-        {
-            public void keyPressed(java.awt.event.KeyEvent evt)
-            {
+        cellOkbutton.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
                 cellOkbuttonKeyPressed(evt);
             }
         });
@@ -340,17 +328,13 @@ public void setTableColumnWidths()
         resetCheck.getContentPane().add(youSure, gridBagConstraints);
 
         YesButton.setText("Yes, Continue");
-        YesButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        YesButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 YesButtonActionPerformed(evt);
             }
         });
-        YesButton.addKeyListener(new java.awt.event.KeyAdapter()
-        {
-            public void keyPressed(java.awt.event.KeyEvent evt)
-            {
+        YesButton.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
                 YesButtonKeyPressed(evt);
             }
         });
@@ -362,10 +346,8 @@ public void setTableColumnWidths()
         resetCheck.getContentPane().add(YesButton, gridBagConstraints);
 
         NoButton.setText("No, Cancel");
-        NoButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        NoButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 NoButtonActionPerformed(evt);
             }
         });
@@ -391,10 +373,8 @@ public void setTableColumnWidths()
         AlreadyNamed.getContentPane().add(OverwriteOption, gridBagConstraints);
 
         YesOverwrite.setText("Yes");
-        YesOverwrite.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        YesOverwrite.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 YesOverwriteActionPerformed(evt);
             }
         });
@@ -406,10 +386,8 @@ public void setTableColumnWidths()
         AlreadyNamed.getContentPane().add(YesOverwrite, gridBagConstraints);
 
         NoOverwrite.setText("No");
-        NoOverwrite.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        NoOverwrite.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 NoOverwriteActionPerformed(evt);
             }
         });
@@ -436,10 +414,8 @@ public void setTableColumnWidths()
         deleteCheck.getContentPane().add(deletesure, gridBagConstraints);
 
         Okdelete.setText("Yes");
-        Okdelete.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        Okdelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 OkdeleteActionPerformed(evt);
             }
         });
@@ -451,10 +427,8 @@ public void setTableColumnWidths()
         deleteCheck.getContentPane().add(Okdelete, gridBagConstraints);
 
         Nodelete.setText("No");
-        Nodelete.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        Nodelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 NodeleteActionPerformed(evt);
             }
         });
@@ -476,17 +450,13 @@ public void setTableColumnWidths()
         setMaximumSize(new java.awt.Dimension(2140, 2140));
         setMinimumSize(new java.awt.Dimension(1000, 563));
         setPreferredSize(new java.awt.Dimension(500, 505));
-        addWindowListener(new java.awt.event.WindowAdapter()
-        {
-            public void windowClosed(java.awt.event.WindowEvent evt)
-            {
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
                 SoloGenerator.this.windowClosed(evt);
             }
         });
-        addKeyListener(new java.awt.event.KeyAdapter()
-        {
-            public void keyPressed(java.awt.event.KeyEvent evt)
-            {
+        addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
                 formKeyPressed(evt);
             }
         });
@@ -495,8 +465,7 @@ public void setTableColumnWidths()
         jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
         soloTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][]
-            {
+            new Object [][] {
                 {null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null},
@@ -508,19 +477,15 @@ public void setTableColumnWidths()
                 {null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null}
             },
-            new String []
-            {
+            new String [] {
                 "Name", "Theme Length", "Theme", "Prob. to Use", "Prob. to Transpose", "Prob. to Invert", "Prob. to Reverse"
             }
-        )
-        {
-            Class[] types = new Class []
-            {
+        ) {
+            Class[] types = new Class [] {
                 java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
             };
 
-            public Class getColumnClass(int columnIndex)
-            {
+            public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
         });
@@ -531,24 +496,18 @@ public void setTableColumnWidths()
         soloTable.setSelectionBackground(javax.swing.UIManager.getDefaults().getColor("CheckBoxMenuItem.selectionBackground"));
         soloTable.setShowGrid(true);
         soloTable.getTableHeader().setReorderingAllowed(false);
-        soloTable.addMouseListener(new java.awt.event.MouseAdapter()
-        {
-            public void mouseClicked(java.awt.event.MouseEvent evt)
-            {
+        soloTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
                 soloTableMouseClicked(evt);
             }
         });
-        soloTable.addComponentListener(new java.awt.event.ComponentAdapter()
-        {
-            public void componentShown(java.awt.event.ComponentEvent evt)
-            {
+        soloTable.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
                 soloTableComponentShown(evt);
             }
         });
-        soloTable.addKeyListener(new java.awt.event.KeyAdapter()
-        {
-            public void keyPressed(java.awt.event.KeyEvent evt)
-            {
+        soloTable.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
                 soloTableKeyPressed(evt);
             }
         });
@@ -574,20 +533,17 @@ public void setTableColumnWidths()
 
         themeList.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         themeList.setModel(themeListModel);
+        themeList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         themeList.setLayoutOrientation(javax.swing.JList.VERTICAL_WRAP);
         themeList.setPreferredSize(null);
         themeList.setVisibleRowCount(30);
-        themeList.addMouseListener(new java.awt.event.MouseAdapter()
-        {
-            public void mouseClicked(java.awt.event.MouseEvent evt)
-            {
+        themeList.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
                 themeListClicked(evt);
             }
         });
-        themeList.addKeyListener(new java.awt.event.KeyAdapter()
-        {
-            public void keyPressed(java.awt.event.KeyEvent evt)
-            {
+        themeList.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
                 themeListKeyPressed(evt);
             }
         });
@@ -619,10 +575,8 @@ public void setTableColumnWidths()
         getContentPane().add(ThemesLabel, gridBagConstraints);
 
         generateSolo.setLabel("Generate Solo");
-        generateSolo.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        generateSolo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 generateSoloActionPerformed(evt);
             }
         });
@@ -635,10 +589,8 @@ public void setTableColumnWidths()
         getContentPane().add(generateSolo, gridBagConstraints);
 
         generateTheme.setLabel("Generate Theme");
-        generateTheme.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        generateTheme.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 generateThemeActionPerformed(evt);
             }
         });
@@ -651,10 +603,8 @@ public void setTableColumnWidths()
         getContentPane().add(generateTheme, gridBagConstraints);
 
         currentSelection.setLabel("Use Current Selection in Leadsheet Window as Theme");
-        currentSelection.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        currentSelection.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 currentSelectionActionPerformed(evt);
             }
         });
@@ -668,10 +618,8 @@ public void setTableColumnWidths()
         getContentPane().add(currentSelection, gridBagConstraints);
 
         playSolo.setLabel("Play Solo");
-        playSolo.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        playSolo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 playSoloActionPerformed(evt);
             }
         });
@@ -685,10 +633,8 @@ public void setTableColumnWidths()
         getContentPane().add(playSolo, gridBagConstraints);
 
         stopPlaying.setLabel("Stop Playing");
-        stopPlaying.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        stopPlaying.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 stopPlayingActionPerformed(evt);
             }
         });
@@ -714,10 +660,8 @@ public void setTableColumnWidths()
         getContentPane().add(SoloGeneratorTitle, gridBagConstraints);
 
         Reset.setText("Reset");
-        Reset.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        Reset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ResetActionPerformed(evt);
             }
         });
@@ -733,10 +677,8 @@ public void setTableColumnWidths()
         themeIntervalTextField.setText("8");
         themeIntervalTextField.setMaximumSize(new java.awt.Dimension(50, 2147483647));
         themeIntervalTextField.setMinimumSize(new java.awt.Dimension(50, 28));
-        themeIntervalTextField.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        themeIntervalTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 themeIntervalTextFieldActionPerformed(evt);
             }
         });
@@ -757,10 +699,8 @@ public void setTableColumnWidths()
         noThemeProbTextField.setText("0.5");
         noThemeProbTextField.setMaximumSize(new java.awt.Dimension(50, 2147483647));
         noThemeProbTextField.setMinimumSize(new java.awt.Dimension(50, 28));
-        noThemeProbTextField.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        noThemeProbTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 noThemeProbTextFieldActionPerformed(evt);
             }
         });
@@ -785,10 +725,8 @@ public void setTableColumnWidths()
         exitMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
         exitMenuItem.setText("Close this window."); // NOI18N
         exitMenuItem.setToolTipText("Closes this window."); // NOI18N
-        exitMenuItem.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        exitMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 exitMenuItemexitMIhandler(evt);
             }
         });
@@ -798,27 +736,21 @@ public void setTableColumnWidths()
 
         windowMenu.setMnemonic('W');
         windowMenu.setText("Window"); // NOI18N
-        windowMenu.addMenuListener(new javax.swing.event.MenuListener()
-        {
-            public void menuSelected(javax.swing.event.MenuEvent evt)
-            {
+        windowMenu.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
                 windowMenuMenuSelected(evt);
             }
-            public void menuDeselected(javax.swing.event.MenuEvent evt)
-            {
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
-            public void menuCanceled(javax.swing.event.MenuEvent evt)
-            {
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
 
         closeWindowMI.setMnemonic('C');
         closeWindowMI.setText("Close Window"); // NOI18N
         closeWindowMI.setToolTipText("Closes the current window (exits program if there are no other windows)"); // NOI18N
-        closeWindowMI.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        closeWindowMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 closeWindowMIActionPerformed(evt);
             }
         });
@@ -827,10 +759,8 @@ public void setTableColumnWidths()
         cascadeMI.setMnemonic('A');
         cascadeMI.setText("Cascade Windows"); // NOI18N
         cascadeMI.setToolTipText("Rearrange windows into a cascade.\n"); // NOI18N
-        cascadeMI.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        cascadeMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cascadeMIActionPerformed(evt);
             }
         });
@@ -1008,75 +938,97 @@ private void playSelection()
     }//GEN-LAST:event_soloTableMouseClicked
 
     private void themeListClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_themeListClicked
+//        
+//        for (int i = 0; i < orderedThemes.size(); i++) { //loop through size of orderedThemes
+//            for (int j = 0; j < soloTable.getRowCount(); j++) {//loop through table
+//                
+//                if (themeList.isSelectedIndex(i) 
+//                   && (getValueAt(j, NAME_COLUMN) == null) 
+//                   && (getValueAt(j,THEME_COLUMN) == null) 
+//                   && (getValueAt(j, LENGTH_COLUMN) == null) 
+//                       )
+//                        {
+//                    //if a theme in the Themes scroll box is clicked and a theme cell is selected
+//                    String name = (String) themeList.getSelectedValue();
+//                    //set name equal to the one clicked in the scroll box
+//                    
+//                    for (Map.Entry pair : allThemes.entrySet()) { 
+//                        //loop through entries in allThemes
+//                        
+//                        if (name == pair.getValue()) 
+//                        { //if the name in the themeList is equal to the name in the entry
+//                            Theme theme = (Theme) pair.getKey(); 
+//                            //set theme equal to the corresponding theme in that entry
+//                            MelodyPart melody = theme.melody; //get the melody of the theme
+//                            Part.PartIterator k = melody.iterator(); //iterate over melody
+//                            String themestring = ""; //set theme as empty to start
+//                            
+//                            while (k.hasNext()) //while you can still iterate through the melody
+//                            {
+//                                Unit unit = k.next();
+//                                if (unit != null) //if next isn't empty
+//                                {
+//                                    themestring += unit.toLeadsheet() + " "; 
+//                                    //add it to the theme in leadsheet notation
+//                                }
+//                            }
+//                            
+//                            setValueAt(name, j, NAME_COLUMN); 
+//                            //paste in the name of theme to the table
+//                          //  setValueAt(theme.ThemeLength + "", j, LENGTH_COLUMN); 
+//                            setValueAt(melody.size() / BEAT + "", j, LENGTH_COLUMN);
+//                            //paste in the theme length
+//                            setValueAt(themestring, j, THEME_COLUMN); 
+//                            //paste in the theme in leadsheet notation
+//
+//                            //in case the length is different than the one typed by the user 
+//                            int n = 0;
+//                            for (int x = 0; x < soloTable.getRowCount(); x++) { //loop through table
+//                                if (getValueAt(x, NAME_COLUMN) != null 
+//                                && ((((String) getValueAt(x, NAME_COLUMN)).equals(name))
+//                                || ((String) getValueAt(x, NAME_COLUMN)).equals(name + "-" + n))
+//                                && (x != j) 
+//                                && (((String) getValueAt(x, THEME_COLUMN)).equals(themestring))  
+//                                        //&& (!((String) getValueAt(x, 1)).equals(theme.ThemeLength + ""))
+//                                        ) {
+//                                    n += 1; //add one to n so if the same theme 
+//                                    //is already in the table it will be differentiated from it
+//                                    //if the names are the same, the rows are different,
+//                                    //the themes are the same, the lengths are different
+//                                    setValueAt(theme.ThemeLength + "", x, LENGTH_COLUMN); 
+//                                    //make the lengths the same 
+//                                    setValueAt(name + "-" + n,j,NAME_COLUMN);
+//                                    // System.out.println(theme.ThemeLength);
+//                                }
+//                            }
+//                        }
+//                    }
+//                   break;
+//                }
+//            }
+//        } 
         
-        for (int i = 0; i < orderedThemes.size(); i++) { //loop through size of orderedThemes
-            for (int j = 0; j < soloTable.getRowCount(); j++) {//loop through table
-                
-                if (themeList.isSelectedIndex(i) 
-                   && (getValueAt(j, NAME_COLUMN) == null) 
-                   && (getValueAt(j,THEME_COLUMN) == null) 
-                   && (getValueAt(j, LENGTH_COLUMN) == null) 
-                       )
-                        {
-                    //if a theme in the Themes scroll box is clicked and a theme cell is selected
+        if (evt.isShiftDown()) {
+           for (int i = 0; i < orderedThemes.size(); i++) { //loop through all saved themes
+                if (themeList.isSelectedIndex(i)) {
                     String name = (String) themeList.getSelectedValue();
-                    //set name equal to the one clicked in the scroll box
-                    
-                    for (Map.Entry pair : allThemes.entrySet()) { 
+                    Score score = new Score(name); 
+                    //create empty score with name of theme selected
+                    for (Map.Entry pair : allThemes.entrySet()) {
                         //loop through entries in allThemes
-                        
-                        if (name == pair.getValue()) 
-                        { //if the name in the themeList is equal to the name in the entry
-                            Theme theme = (Theme) pair.getKey(); 
+
+                        if (name == pair.getValue()) { //if the name in the themeList is equal to the name in the entry
+                            Theme theme = (Theme) pair.getKey();
                             //set theme equal to the corresponding theme in that entry
                             MelodyPart melody = theme.melody; //get the melody of the theme
-                            Part.PartIterator k = melody.iterator(); //iterate over melody
-                            String themestring = ""; //set theme as empty to start
-                            
-                            while (k.hasNext()) //while you can still iterate through the melody
-                            {
-                                Unit unit = k.next();
-                                if (unit != null) //if next isn't empty
-                                {
-                                    themestring += unit.toLeadsheet() + " "; 
-                                    //add it to the theme in leadsheet notation
-                                }
-                            }
-                            
-                            setValueAt(name, j, NAME_COLUMN); 
-                            //paste in the name of theme to the table
-                          //  setValueAt(theme.ThemeLength + "", j, LENGTH_COLUMN); 
-                            setValueAt(melody.size() / BEAT + "", j, LENGTH_COLUMN);
-                            //paste in the theme length
-                            setValueAt(themestring, j, THEME_COLUMN); 
-                            //paste in the theme in leadsheet notation
-
-                            //in case the length is different than the one typed by the user 
-                            int n = 0;
-                            for (int x = 0; x < soloTable.getRowCount(); x++) { //loop through table
-                                if (getValueAt(x, NAME_COLUMN) != null 
-                                && ((((String) getValueAt(x, NAME_COLUMN)).equals(name))
-                                || ((String) getValueAt(x, NAME_COLUMN)).equals(name + "-" + n))
-                                && (x != j) 
-                                && (((String) getValueAt(x, THEME_COLUMN)).equals(themestring))  
-                                        //&& (!((String) getValueAt(x, 1)).equals(theme.ThemeLength + ""))
-                                        ) {
-                                    n += 1; //add one to n so if the same theme 
-                                    //is already in the table it will be differentiated from it
-                                    //if the names are the same, the rows are different,
-                                    //the themes are the same, the lengths are different
-                                    setValueAt(theme.ThemeLength + "", x, LENGTH_COLUMN); 
-                                    //make the lengths the same 
-                                    setValueAt(name + "-" + n,j,NAME_COLUMN);
-                                    // System.out.println(theme.ThemeLength);
-                                }
-                            }
+                            score.addPart(melody);
+                            System.out.println(score);
+                            PatternDisplay.playScore(notate, score, soloGenerator);
                         }
                     }
-                   break;
                 }
-            }
-        }  
+            }  
+        }
     }//GEN-LAST:event_themeListClicked
 
     private void OkButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OkButtonActionPerformed
@@ -1193,27 +1145,76 @@ private void playSelection()
     }//GEN-LAST:event_NodeleteActionPerformed
 
     private void themeListKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_themeListKeyPressed
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            for (int i = 0; i < orderedThemes.size(); i++) { //loop through all saved themes
-                if (themeList.isSelectedIndex(i)) {
+   if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+        for (int i = 0; i < orderedThemes.size(); i++) { //loop through size of orderedThemes
+            for (int j = 0; j < soloTable.getRowCount(); j++) {//loop through table
+                
+                if (themeList.isSelectedIndex(i) 
+                   && (getValueAt(j, NAME_COLUMN) == null) 
+                   && (getValueAt(j,THEME_COLUMN) == null) 
+                   && (getValueAt(j, LENGTH_COLUMN) == null) 
+                       )
+                        {
+                    //if a theme in the Themes scroll box is clicked and a theme cell is selected
                     String name = (String) themeList.getSelectedValue();
-                    Score score = new Score(name); 
-                    //create empty score with name of theme selected
-                    for (Map.Entry pair : allThemes.entrySet()) {
+                    //set name equal to the one clicked in the scroll box
+                    
+                    for (Map.Entry pair : allThemes.entrySet()) { 
                         //loop through entries in allThemes
-
-                        if (name == pair.getValue()) { //if the name in the themeList is equal to the name in the entry
-                            Theme theme = (Theme) pair.getKey();
+                        
+                        if (name == pair.getValue()) 
+                        { //if the name in the themeList is equal to the name in the entry
+                            Theme theme = (Theme) pair.getKey(); 
                             //set theme equal to the corresponding theme in that entry
                             MelodyPart melody = theme.melody; //get the melody of the theme
-                            score.addPart(melody);
-                            System.out.println(score);
-                            PatternDisplay.playScore(notate, score, soloGenerator);
+                            Part.PartIterator k = melody.iterator(); //iterate over melody
+                            String themestring = ""; //set theme as empty to start
+                            
+                            while (k.hasNext()) //while you can still iterate through the melody
+                            {
+                                Unit unit = k.next();
+                                if (unit != null) //if next isn't empty
+                                {
+                                    themestring += unit.toLeadsheet() + " "; 
+                                    //add it to the theme in leadsheet notation
+                                }
+                            }
+                            
+                            setValueAt(name, j, NAME_COLUMN); 
+                            //paste in the name of theme to the table
+                          //  setValueAt(theme.ThemeLength + "", j, LENGTH_COLUMN); 
+                            setValueAt(melody.size() / BEAT + "", j, LENGTH_COLUMN);
+                            //paste in the theme length
+                            setValueAt(themestring, j, THEME_COLUMN); 
+                            //paste in the theme in leadsheet notation
+
+                            //in case the length is different than the one typed by the user 
+                            int n = 0;
+                            for (int x = 0; x < soloTable.getRowCount(); x++) { //loop through table
+                                if (getValueAt(x, NAME_COLUMN) != null 
+                                && ((((String) getValueAt(x, NAME_COLUMN)).equals(name))
+                                || ((String) getValueAt(x, NAME_COLUMN)).equals(name + "-" + n))
+                                && (x != j) 
+                                && (((String) getValueAt(x, THEME_COLUMN)).equals(themestring))  
+                                        //&& (!((String) getValueAt(x, 1)).equals(theme.ThemeLength + ""))
+                                        ) {
+                                    n += 1; //add one to n so if the same theme 
+                                    //is already in the table it will be differentiated from it
+                                    //if the names are the same, the rows are different,
+                                    //the themes are the same, the lengths are different
+                                    setValueAt(theme.ThemeLength + "", x, LENGTH_COLUMN); 
+                                    //make the lengths the same 
+                                    setValueAt(name + "-" + n,j,NAME_COLUMN);
+                                    // System.out.println(theme.ThemeLength);
+                                }
+                            }
                         }
                     }
+                   break;
                 }
             }
         }
+      }
     }//GEN-LAST:event_themeListKeyPressed
 
     private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
@@ -1348,6 +1349,8 @@ static final int INVERT_COLUMN = 5;
 static final int REVERSE_COLUMN = 6; 
 
 static final int ROW_COUNT = 20;
+
+double probnoTheme;
     
 public ThemeListModel themeListModel = new ThemeListModel();
 
@@ -1482,30 +1485,65 @@ public class SoloGeneratorTableModel extends DefaultTableModel
   }
   
  
-//  @Override
-//  public void setValueAt(Object value, int row, int col) {
-//      super.setValueAt(value,row,col);
+  @Override
+  public void setValueAt(Object value, int row, int col) {
+      super.setValueAt(value,row,col);
+      if(themeList.hasFocus())
+      {
+          return;
+      }
+      
+      switch( col )
+      {
+          case NAME_COLUMN:
+              if (soloTable.isCellSelected(row, NAME_COLUMN)
+            && (getValueAt(row, THEME_COLUMN) != null) 
+            && (getValueAt(row, NAME_COLUMN) != null) 
+           // && (getValueAt(i,NAME_COLUMN) != " ")
+                    )
+            { //if name cell is selected, it's not empty and the theme isn't empty
+                System.out.println("lala");
+                namingSaving(row, col, row);
+                return;
+            }
+              break;
+          case LENGTH_COLUMN:
+            break; 
+          case THEME_COLUMN:
+            if ((soloTable.isCellSelected(row, THEME_COLUMN)) 
+            && (getValueAt(row, THEME_COLUMN) != null)
+            && (getValueAt(row,LENGTH_COLUMN) != null)) {
+                updateLength(row, col, row);
+                return;
+            }
+            //for typing in own theme
+            if ((soloTable.isCellSelected(row, THEME_COLUMN)) 
+            && (getValueAt(row, THEME_COLUMN) != null)
+            && (getValueAt(row,LENGTH_COLUMN) == null)
+                    )        
+            { 
+                addLength(row, col, row);
+                return;
+            }
+           break;
+      }
 //      if(!themeList.hasFocus())
 //        enteringValue(row, col);
 //      
-//  }
   }
+}
   
   public void setValueAt(Object value, int row, int col) {
       soloTable.setValueAt(value,row,col);
       if(!themeList.hasFocus())
         enteringValue(row, col);
   }
-  
+
     public Object getValueAt(int row, int col) {
       return soloTable.getValueAt(row,col);
   }
-    public void enteringValue(int row, int col) {
-        for (int i = 0; i < soloTable.getRowCount(); i++) { //loop through table
-            
-            if ((soloTable.isCellSelected(i, THEME_COLUMN)) 
-            && (getValueAt(i, THEME_COLUMN) != null)
-            && (getValueAt(i,LENGTH_COLUMN) != null)) {
+ 
+    public void updateLength(int row, int col, int i) {
                MelodyPart melody = new MelodyPart((String) getValueAt(i, THEME_COLUMN)); 
             
                int themelength = melody.size() / BEAT;
@@ -1529,24 +1567,13 @@ public class SoloGeneratorTableModel extends DefaultTableModel
                             //set the name to empty
                         }
                     }
-                  break;
+                  
               }
                   
             }
-            if ((soloTable.isCellSelected(i, THEME_COLUMN)) 
-            && (getValueAt(i, THEME_COLUMN) != null)
-            && (getValueAt(i,LENGTH_COLUMN) == null)
-                    )        
-            { //if a theme is selected
-//                MelodyPart melody = new MelodyPart((String) getValueAt(i, THEME_COLUMN)); 
-//                int themelength = melody.size() / BEAT;
-//                
-//              if (themelength != getValueAt(i, LENGTH_COLUMN)) {
-//                  soloTable.setValueAt(themelength + "", i, LENGTH_COLUMN);
-//                  System.out.println("equals");
-//                  return ;
-//              }
-            MelodyPart melody = new MelodyPart((String) getValueAt(i, THEME_COLUMN)); 
+    
+    public void addLength(int row, int col, int i) {
+           MelodyPart melody = new MelodyPart((String) getValueAt(i, THEME_COLUMN)); 
             
             int themelength = melody.size() / BEAT;
             
@@ -1576,16 +1603,10 @@ public class SoloGeneratorTableModel extends DefaultTableModel
                         }
                     }
                 }
-             break;
-            }
-            
-            if ((soloTable.isCellSelected(i, NAME_COLUMN))
-            && (getValueAt(i, THEME_COLUMN) != null) 
-            && (getValueAt(i, NAME_COLUMN) != null) 
-           // && (getValueAt(i,NAME_COLUMN) != " ")
-                    ) 
-            { //if name cell is selected, it's not empty and the theme isn't empty
-            MelodyPart melody = new MelodyPart((String) getValueAt(i, THEME_COLUMN)); 
+    }
+    
+    public void namingSaving(int row, int col, int i) {
+          MelodyPart melody = new MelodyPart((String) getValueAt(i, THEME_COLUMN)); 
             
             int themelength = melody.size() / BEAT;
             
@@ -1650,10 +1671,42 @@ public class SoloGeneratorTableModel extends DefaultTableModel
                             saveRules(fileName);
                         }
                     }
-                    break;
+                   
 
 
                 }
+    }
+    
+    public void enteringValue(int row, int col) {
+        for (int i = 0; i < soloTable.getRowCount(); i++) { //loop through table
+            //updating length
+            if ((soloTable.isCellSelected(i, THEME_COLUMN)) 
+            && (getValueAt(i, THEME_COLUMN) != null)
+            && (getValueAt(i,LENGTH_COLUMN) != null)) {
+                updateLength(row, col, i);
+                return;
+            }
+            //for typing in own theme
+            if ((soloTable.isCellSelected(i, THEME_COLUMN)) 
+            && (getValueAt(i, THEME_COLUMN) != null)
+            && (getValueAt(i,LENGTH_COLUMN) == null)
+                    )        
+            { 
+                addLength(row, col, i);
+                return;
+            }
+            
+            //naming and saving
+            System.out.println("Naming" + i + " " + getValueAt(i, THEME_COLUMN) + " " + getValueAt(i, NAME_COLUMN));
+            if (soloTable.isCellSelected(i, NAME_COLUMN)
+            && (getValueAt(i, THEME_COLUMN) != null) 
+            && (getValueAt(i, NAME_COLUMN) != null) 
+           // && (getValueAt(i,NAME_COLUMN) != " ")
+                    )
+            { //if name cell is selected, it's not empty and the theme isn't empty
+                System.out.println("lala");
+                namingSaving(row, col, i);
+                return;
             }
         }
         
@@ -2068,12 +2121,20 @@ Random random;
         //set the variables the the very first themeUse and theme in the list to start with
         MelodyPart chosentheme = themeUses.get(0).theme.melody;
         ThemeUse chosenthemeUse = themeUses.get(0);
-
-
-        for (int i = length; i <= notate.getScoreLength() - length; i += length) { 
+        
+        //use Theme Use Interval from text field
+        int themeInterval = new Integer(themeIntervalTextField.getText());
+        int themeIntervalUse = themeInterval * 120;
+        
+        for (int i = length; i <= notate.getScoreLength() - themeIntervalUse; i += themeIntervalUse) { 
             //loop through the remaining length of the score
-
-            int themei = random.nextInt(10 * probUselist.size() + 1);
+//            Double noThemevalue = 10*Double.valueOf(noThemeProbTextField.getText());
+//            String noThemestring = noThemevalue.toString();
+//            System.out.println(noThemestring);
+//            System.out.println(probUsetotal);
+//            Integer noThemeint = Integer.getInteger(noThemestring);
+//            System.out.println(noThemeint);
+            int themei = random.nextInt(10*probUselist.size()+1);
             System.out.println(themei);
            // testDialog.insert(System.out.println(themei),0);
             //pick a random number from 0 inclusive to 10*the probability list size
@@ -2148,7 +2209,7 @@ Random random;
             }
 
             //this interval is for not using any theme at all    
-            if ((themei <= 10 * themeUses.size()) && (themei >= probUsetotal)) {
+            if ((themei <= 10* themeUses.size()) && (themei >= probUsetotal)) {
                 System.out.println("noTheme");
                 generateSolohelper2(themeLength, solo);
             }
