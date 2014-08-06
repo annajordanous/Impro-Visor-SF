@@ -18864,6 +18864,24 @@ public void playScore()
         playScoreBody(0);
       }
     }
+
+public void playScore(Style style)
+{
+    slotDelay =
+            (int) (midiSynth.getTotalSlots() * (1e6 * trackerDelay / midiSynth.getTotalMicroseconds()));
+
+    totalSlots = midiSynth.getTotalSlots();
+
+    //System.out.println("slotDelay = " + slotDelay + ", totalSlots = " + totalSlots);
+
+    totalSlotsElapsed = 0;
+    previousSynthSlot = 0;
+
+    improvMelodyIndex = 0;
+    
+    establishCountIn();
+    playScoreBody(0, style);
+}
   
 
 /**
@@ -18932,6 +18950,50 @@ public void playScoreBody(int startAt)
     setMode(Mode.PLAYING);
     }
 
+
+public void playScoreBody(int startAt, Style style)
+    {
+      if( playingPaused() )
+      {
+      Trace.log(2, "Notate: playScore() - unpausing");
+
+      pauseScore();
+      }
+    else
+      {
+      Trace.log(2, "Notate: playScore() - starting or restarting playback");
+
+      // makes playback indicator always visible
+      // set to false upon user scroll
+
+      autoScrollOnPlayback = true;
+
+      if( playingStopped() )
+        {
+        // possible loss of precision below: check this
+        startAt = (int)playbackManager.getMicrosecondsFromSlider();
+
+        clearKeyboard();
+        clearVoicingEntryTF();
+        resetChordDisplay();
+        }
+
+      // reset playback offset
+
+      initCurrentPlaybackTab(0, 0);
+        //sets up a Timer to handle audio capture
+      if (useAudioInputMI.isSelected())
+        {
+            setMode(Mode.RECORDING);
+//            startAudioTimer();
+//            System.out.println("Capture timer started.");
+        }
+
+        getStaveAtTab(0).playSelection(startAt, score.getTotalLength() - 1, getLoopCount(), true, "playScoreBody", style);
+      //getCurrentStave().play(startAt);
+      }
+    setMode(Mode.PLAYING);
+    }
 
 /**
  * Play a score, not necessarily the one in this Notate window.

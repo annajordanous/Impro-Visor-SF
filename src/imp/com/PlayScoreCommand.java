@@ -20,6 +20,7 @@
 package imp.com;
 
 import imp.Constants;
+import static imp.Constants.ENDSCORE;
 import imp.data.*;
 import imp.util.MidiPlayListener;
 
@@ -136,6 +137,29 @@ public PlayScoreCommand(Score score,
     preExecute();
   }
 
+public PlayScoreCommand(Score score,
+                        Style style,
+                        long startTime,
+                        boolean swing,
+                        MidiSynth ms,
+                        MidiPlayListener listener,
+                        int loopCount,
+                        int transposition,
+                        boolean useDrums,
+                        int endLimitIndex)
+  {
+    this.score = score;
+    this.swing = swing;
+    this.ms = ms;
+    this.startTime = startTime;
+    this.listener = listener;
+    this.loopCount = loopCount;
+    this.transposition = transposition;
+    this.useDrums = useDrums;
+    this.endLimitIndex = endLimitIndex;
+    preExecute(style);
+  }
+
 /**
  * Plays the Score
  */
@@ -177,6 +201,64 @@ public final void preExecute()
 
         SectionInfo info = new SectionInfo(chords);
         info.setStyle(swing ? "no-style-but-swing" : "no-style");
+        chords.setSectionInfo(info);
+      }
+
+    if( swing )
+      {
+        score.makeSwing();
+      }
+
+    ms.setPlayListener(listener);
+
+    // Note that the value of loopCount is 1 less than the number of loops
+    // desired. That is, a value of 0 loops once, 1 loops twice, etc.
+
+    offset = score.getCountInOffset();
+
+    startTime = startTime == 0 ? 0 : startTime + offset;
+
+    endLimitIndex = endLimitIndex == ENDSCORE ? ENDSCORE : endLimitIndex + offset; // unsure about this!
+  }
+
+public final void preExecute(Style style)
+  {
+//    Trace.log(3,
+//              "executing PlayScoreCommand, startTime = " + startTime 
+//              + ", endLimitIndex = " + endLimitIndex
+//              + ", loopCount = " + loopCount
+//              + " useDrums = " + useDrums);
+    score = score.copy();
+
+    ChordPart chords = score.getChordProg();
+
+    // Use plain style for note entry
+
+    if( !useDrums && chords.size() != 0 )
+      {
+        // If there is no chord on the slot starting the selection,
+        // we try to find the previous chord and use it.
+
+        int startSlot = (int) (startTime % chords.size());
+
+        if( chords.getChord(startSlot) == null )
+          {
+            for( int i = startSlot - 1; i >= 0; i-- )
+              {
+                Chord previousChord = chords.getChord(i);
+
+                if( previousChord != null )
+                  {
+                    Chord copy = previousChord.copy();
+                    copy.setRhythmValue(oneNoteChordPlayValue);
+                    chords.setChord(startSlot, copy);
+                    break;
+                  }
+              }
+          }
+
+        SectionInfo info = new SectionInfo(chords);
+        info.setStyle(style);
         chords.setSectionInfo(info);
       }
 
