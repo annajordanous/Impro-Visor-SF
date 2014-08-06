@@ -792,6 +792,7 @@ public class CreateGrammar implements imp.Constants {
         //only add a rule to this list of rules if it's not a duplicate of any previous rules
         ArrayList<Polylist> rulesList = new ArrayList<Polylist>();
         String input = inWriter.toString();
+        inWriter.flush(); //clear productions so we're ready to go for next time
         String[] rules = input.split("\n");
         for (int i = 0; i < rules.length; i++) {
             String rule = rules[i];
@@ -815,9 +816,7 @@ public class CreateGrammar implements imp.Constants {
             }
             if (isUnique) {
                 rulesList.add(newRule);
-            } else {
-                System.out.println("Duplicate rule: " + newRule);
-            }
+            } //else System.out.println("duplicate rule: " + newRule);
         }
 
         Polylist[] rulesArray = new Polylist[rulesList.size()];
@@ -834,6 +833,7 @@ public class CreateGrammar implements imp.Constants {
         
         ArrayList<String> stringsList = new ArrayList<String>();
         String input = inWriter.toString();
+        inWriter.flush(); //clear productions so we're ready to go for next time
         String[] inputStrings = input.split("\n");
         for (int i = 0; i < inputStrings.length; ++i) {
             boolean isUnique = true;
@@ -847,9 +847,7 @@ public class CreateGrammar implements imp.Constants {
             }
             if (isUnique) {
                 stringsList.add(inputStrings[i]);
-            } else {
-                System.out.println("Duplicate rule string: " + inputStrings[i]);
-            }
+            } //else System.out.println("duplicate rule string: " + inputStrings[i]);
         }
         String[] ruleStrings = new String[stringsList.size()];
         for (int j = 0; j < stringsList.size(); ++j) {
