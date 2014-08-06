@@ -700,14 +700,14 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         int stop = notate.getCurrentSelectionEnd();
         MelodyPart outline = notate.getCurrentMelodyPart();
         ChordPart chords = notate.getChordProg();
-        Polylist transformList = 
+        Transform transform = 
                 transformLearning.createBlockTransform(outline, 
                                                        original.copy(), 
                                                        chords, 
                                                        start, 
                                                        stop);
         
-        return new Transform(transformList.toStringSansParens());
+        return transform;
     }
     /**
      * Learns transformations by going through the notes in a melody
@@ -722,14 +722,14 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         int stop = notate.getCurrentSelectionEnd();
         MelodyPart outline = notate.getCurrentMelodyPart();
         ChordPart chords = notate.getChordProg();
-        Polylist transformList = 
+        Transform transform = 
                 transformLearning.createTrendTransform(outline, 
                                                        original.copy(), 
                                                        chords, 
                                                        start, 
                                                        stop);
         
-        return new Transform(transformList.toStringSansParens());
+        return transform;
     }
     /**
      * Goes through each note in the original melody and if it equals the note 
