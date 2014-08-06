@@ -938,75 +938,76 @@ private void playSelection()
     }//GEN-LAST:event_soloTableMouseClicked
 
     private void themeListClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_themeListClicked
-//        
-//        for (int i = 0; i < orderedThemes.size(); i++) { //loop through size of orderedThemes
-//            for (int j = 0; j < soloTable.getRowCount(); j++) {//loop through table
-//                
-//                if (themeList.isSelectedIndex(i) 
-//                   && (getValueAt(j, NAME_COLUMN) == null) 
-//                   && (getValueAt(j,THEME_COLUMN) == null) 
-//                   && (getValueAt(j, LENGTH_COLUMN) == null) 
-//                       )
-//                        {
-//                    //if a theme in the Themes scroll box is clicked and a theme cell is selected
-//                    String name = (String) themeList.getSelectedValue();
-//                    //set name equal to the one clicked in the scroll box
-//                    
-//                    for (Map.Entry pair : allThemes.entrySet()) { 
-//                        //loop through entries in allThemes
-//                        
-//                        if (name == pair.getValue()) 
-//                        { //if the name in the themeList is equal to the name in the entry
-//                            Theme theme = (Theme) pair.getKey(); 
-//                            //set theme equal to the corresponding theme in that entry
-//                            MelodyPart melody = theme.melody; //get the melody of the theme
-//                            Part.PartIterator k = melody.iterator(); //iterate over melody
-//                            String themestring = ""; //set theme as empty to start
-//                            
-//                            while (k.hasNext()) //while you can still iterate through the melody
-//                            {
-//                                Unit unit = k.next();
-//                                if (unit != null) //if next isn't empty
-//                                {
-//                                    themestring += unit.toLeadsheet() + " "; 
-//                                    //add it to the theme in leadsheet notation
-//                                }
-//                            }
-//                            
-//                            setValueAt(name, j, NAME_COLUMN); 
-//                            //paste in the name of theme to the table
-//                          //  setValueAt(theme.ThemeLength + "", j, LENGTH_COLUMN); 
-//                            setValueAt(melody.size() / BEAT + "", j, LENGTH_COLUMN);
-//                            //paste in the theme length
-//                            setValueAt(themestring, j, THEME_COLUMN); 
-//                            //paste in the theme in leadsheet notation
-//
-//                            //in case the length is different than the one typed by the user 
-//                            int n = 0;
-//                            for (int x = 0; x < soloTable.getRowCount(); x++) { //loop through table
-//                                if (getValueAt(x, NAME_COLUMN) != null 
-//                                && ((((String) getValueAt(x, NAME_COLUMN)).equals(name))
-//                                || ((String) getValueAt(x, NAME_COLUMN)).equals(name + "-" + n))
-//                                && (x != j) 
-//                                && (((String) getValueAt(x, THEME_COLUMN)).equals(themestring))  
-//                                        //&& (!((String) getValueAt(x, 1)).equals(theme.ThemeLength + ""))
-//                                        ) {
-//                                    n += 1; //add one to n so if the same theme 
-//                                    //is already in the table it will be differentiated from it
-//                                    //if the names are the same, the rows are different,
-//                                    //the themes are the same, the lengths are different
-//                                    setValueAt(theme.ThemeLength + "", x, LENGTH_COLUMN); 
-//                                    //make the lengths the same 
-//                                    setValueAt(name + "-" + n,j,NAME_COLUMN);
-//                                    // System.out.println(theme.ThemeLength);
-//                                }
-//                            }
-//                        }
-//                    }
-//                   break;
-//                }
-//            }
-//        } 
+        if (!evt.isShiftDown()) { 
+        for (int i = 0; i < orderedThemes.size(); i++) { //loop through size of orderedThemes
+            for (int j = 0; j < soloTable.getRowCount(); j++) {//loop through table
+                
+                if (themeList.isSelectedIndex(i) 
+                   && (getValueAt(j, NAME_COLUMN) == null) 
+                   && (getValueAt(j,THEME_COLUMN) == null) 
+                   && (getValueAt(j, LENGTH_COLUMN) == null) 
+                       )
+                        {
+                    //if a theme in the Themes scroll box is clicked and a theme cell is selected
+                    String name = (String) themeList.getSelectedValue();
+                    //set name equal to the one clicked in the scroll box
+                    
+                    for (Map.Entry pair : allThemes.entrySet()) { 
+                        //loop through entries in allThemes
+                        
+                        if (name == pair.getValue()) 
+                        { //if the name in the themeList is equal to the name in the entry
+                            Theme theme = (Theme) pair.getKey(); 
+                            //set theme equal to the corresponding theme in that entry
+                            MelodyPart melody = theme.melody; //get the melody of the theme
+                            Part.PartIterator k = melody.iterator(); //iterate over melody
+                            String themestring = ""; //set theme as empty to start
+                            
+                            while (k.hasNext()) //while you can still iterate through the melody
+                            {
+                                Unit unit = k.next();
+                                if (unit != null) //if next isn't empty
+                                {
+                                    themestring += unit.toLeadsheet() + " "; 
+                                    //add it to the theme in leadsheet notation
+                                }
+                            }
+                            
+                            setValueAt(name, j, NAME_COLUMN); 
+                            //paste in the name of theme to the table
+                          //  setValueAt(theme.ThemeLength + "", j, LENGTH_COLUMN); 
+                            setValueAt(melody.size() / BEAT + "", j, LENGTH_COLUMN);
+                            //paste in the theme length
+                            setValueAt(themestring, j, THEME_COLUMN); 
+                            //paste in the theme in leadsheet notation
+
+                            //in case the length is different than the one typed by the user 
+                            int n = 0;
+                            for (int x = 0; x < soloTable.getRowCount(); x++) { //loop through table
+                                if (getValueAt(x, NAME_COLUMN) != null 
+                                && ((((String) getValueAt(x, NAME_COLUMN)).equals(name))
+                                || ((String) getValueAt(x, NAME_COLUMN)).equals(name + "-" + n))
+                                && (x != j) 
+                                && (((String) getValueAt(x, THEME_COLUMN)).equals(themestring))  
+                                        //&& (!((String) getValueAt(x, 1)).equals(theme.ThemeLength + ""))
+                                        ) {
+                                    n += 1; //add one to n so if the same theme 
+                                    //is already in the table it will be differentiated from it
+                                    //if the names are the same, the rows are different,
+                                    //the themes are the same, the lengths are different
+                                    setValueAt(theme.ThemeLength + "", x, LENGTH_COLUMN); 
+                                    //make the lengths the same 
+                                    setValueAt(name + "-" + n,j,NAME_COLUMN);
+                                    // System.out.println(theme.ThemeLength);
+                                }
+                            }
+                        }
+                    }
+                   break;
+                }
+            }
+          }   
+        }
         
         if (evt.isShiftDown()) {
            for (int i = 0; i < orderedThemes.size(); i++) { //loop through all saved themes
@@ -1145,76 +1146,76 @@ private void playSelection()
     }//GEN-LAST:event_NodeleteActionPerformed
 
     private void themeListKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_themeListKeyPressed
-   if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-        for (int i = 0; i < orderedThemes.size(); i++) { //loop through size of orderedThemes
-            for (int j = 0; j < soloTable.getRowCount(); j++) {//loop through table
-                
-                if (themeList.isSelectedIndex(i) 
-                   && (getValueAt(j, NAME_COLUMN) == null) 
-                   && (getValueAt(j,THEME_COLUMN) == null) 
-                   && (getValueAt(j, LENGTH_COLUMN) == null) 
-                       )
-                        {
-                    //if a theme in the Themes scroll box is clicked and a theme cell is selected
-                    String name = (String) themeList.getSelectedValue();
-                    //set name equal to the one clicked in the scroll box
-                    
-                    for (Map.Entry pair : allThemes.entrySet()) { 
-                        //loop through entries in allThemes
-                        
-                        if (name == pair.getValue()) 
-                        { //if the name in the themeList is equal to the name in the entry
-                            Theme theme = (Theme) pair.getKey(); 
-                            //set theme equal to the corresponding theme in that entry
-                            MelodyPart melody = theme.melody; //get the melody of the theme
-                            Part.PartIterator k = melody.iterator(); //iterate over melody
-                            String themestring = ""; //set theme as empty to start
-                            
-                            while (k.hasNext()) //while you can still iterate through the melody
-                            {
-                                Unit unit = k.next();
-                                if (unit != null) //if next isn't empty
-                                {
-                                    themestring += unit.toLeadsheet() + " "; 
-                                    //add it to the theme in leadsheet notation
-                                }
-                            }
-                            
-                            setValueAt(name, j, NAME_COLUMN); 
-                            //paste in the name of theme to the table
-                          //  setValueAt(theme.ThemeLength + "", j, LENGTH_COLUMN); 
-                            setValueAt(melody.size() / BEAT + "", j, LENGTH_COLUMN);
-                            //paste in the theme length
-                            setValueAt(themestring, j, THEME_COLUMN); 
-                            //paste in the theme in leadsheet notation
-
-                            //in case the length is different than the one typed by the user 
-                            int n = 0;
-                            for (int x = 0; x < soloTable.getRowCount(); x++) { //loop through table
-                                if (getValueAt(x, NAME_COLUMN) != null 
-                                && ((((String) getValueAt(x, NAME_COLUMN)).equals(name))
-                                || ((String) getValueAt(x, NAME_COLUMN)).equals(name + "-" + n))
-                                && (x != j) 
-                                && (((String) getValueAt(x, THEME_COLUMN)).equals(themestring))  
-                                        //&& (!((String) getValueAt(x, 1)).equals(theme.ThemeLength + ""))
-                                        ) {
-                                    n += 1; //add one to n so if the same theme 
-                                    //is already in the table it will be differentiated from it
-                                    //if the names are the same, the rows are different,
-                                    //the themes are the same, the lengths are different
-                                    setValueAt(theme.ThemeLength + "", x, LENGTH_COLUMN); 
-                                    //make the lengths the same 
-                                    setValueAt(name + "-" + n,j,NAME_COLUMN);
-                                    // System.out.println(theme.ThemeLength);
-                                }
-                            }
-                        }
-                    }
-                   break;
-                }
-            }
-        }
-      }
+//   if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+//        for (int i = 0; i < orderedThemes.size(); i++) { //loop through size of orderedThemes
+//            for (int j = 0; j < soloTable.getRowCount(); j++) {//loop through table
+//                
+//                if (themeList.isSelectedIndex(i) 
+//                   && (getValueAt(j, NAME_COLUMN) == null) 
+//                   && (getValueAt(j,THEME_COLUMN) == null) 
+//                   && (getValueAt(j, LENGTH_COLUMN) == null) 
+//                       )
+//                        {
+//                    //if a theme in the Themes scroll box is clicked and a theme cell is selected
+//                    String name = (String) themeList.getSelectedValue();
+//                    //set name equal to the one clicked in the scroll box
+//                    
+//                    for (Map.Entry pair : allThemes.entrySet()) { 
+//                        //loop through entries in allThemes
+//                        
+//                        if (name == pair.getValue()) 
+//                        { //if the name in the themeList is equal to the name in the entry
+//                            Theme theme = (Theme) pair.getKey(); 
+//                            //set theme equal to the corresponding theme in that entry
+//                            MelodyPart melody = theme.melody; //get the melody of the theme
+//                            Part.PartIterator k = melody.iterator(); //iterate over melody
+//                            String themestring = ""; //set theme as empty to start
+//                            
+//                            while (k.hasNext()) //while you can still iterate through the melody
+//                            {
+//                                Unit unit = k.next();
+//                                if (unit != null) //if next isn't empty
+//                                {
+//                                    themestring += unit.toLeadsheet() + " "; 
+//                                    //add it to the theme in leadsheet notation
+//                                }
+//                            }
+//                            
+//                            setValueAt(name, j, NAME_COLUMN); 
+//                            //paste in the name of theme to the table
+//                          //  setValueAt(theme.ThemeLength + "", j, LENGTH_COLUMN); 
+//                            setValueAt(melody.size() / BEAT + "", j, LENGTH_COLUMN);
+//                            //paste in the theme length
+//                            setValueAt(themestring, j, THEME_COLUMN); 
+//                            //paste in the theme in leadsheet notation
+//
+//                            //in case the length is different than the one typed by the user 
+//                            int n = 0;
+//                            for (int x = 0; x < soloTable.getRowCount(); x++) { //loop through table
+//                                if (getValueAt(x, NAME_COLUMN) != null 
+//                                && ((((String) getValueAt(x, NAME_COLUMN)).equals(name))
+//                                || ((String) getValueAt(x, NAME_COLUMN)).equals(name + "-" + n))
+//                                && (x != j) 
+//                                && (((String) getValueAt(x, THEME_COLUMN)).equals(themestring))  
+//                                        //&& (!((String) getValueAt(x, 1)).equals(theme.ThemeLength + ""))
+//                                        ) {
+//                                    n += 1; //add one to n so if the same theme 
+//                                    //is already in the table it will be differentiated from it
+//                                    //if the names are the same, the rows are different,
+//                                    //the themes are the same, the lengths are different
+//                                    setValueAt(theme.ThemeLength + "", x, LENGTH_COLUMN); 
+//                                    //make the lengths the same 
+//                                    setValueAt(name + "-" + n,j,NAME_COLUMN);
+//                                    // System.out.println(theme.ThemeLength);
+//                                }
+//                            }
+//                        }
+//                    }
+//                   break;
+//                }
+//            }
+//        }
+//      }
     }//GEN-LAST:event_themeListKeyPressed
 
     private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
@@ -2128,13 +2129,13 @@ Random random;
         
         for (int i = length; i <= notate.getScoreLength() - themeIntervalUse; i += themeIntervalUse) { 
             //loop through the remaining length of the score
-//            Double noThemevalue = 10*Double.valueOf(noThemeProbTextField.getText());
-//            String noThemestring = noThemevalue.toString();
-//            System.out.println(noThemestring);
-//            System.out.println(probUsetotal);
-//            Integer noThemeint = Integer.getInteger(noThemestring);
-//            System.out.println(noThemeint);
-            int themei = random.nextInt(10*probUselist.size()+1);
+            
+            Integer noThemevalue = (int)(10*Double.valueOf(noThemeProbTextField.getText()));
+            String noThemestring = noThemevalue.toString();
+            System.out.println(noThemestring);
+            System.out.println(probUsetotal);
+            
+            int themei = random.nextInt(probUsetotal + noThemevalue);
             System.out.println(themei);
            // testDialog.insert(System.out.println(themei),0);
             //pick a random number from 0 inclusive to 10*the probability list size
@@ -2147,8 +2148,6 @@ Random random;
             //so if the random number chosen is in that interval, then that first theme is used
             if (themei <= 10 * probUselist.get(0) - 1) {
                 System.out.println("Theme1");
-                chosenthemeUse = themeUses.get(0);
-                chosentheme = themeUses.get(0).theme.melody;
                 MelodyPart adjustedTheme = generateSolohelper(chosenthemeUse, chosentheme, solo, cm);
 
                 //this if takes care of the case if the index is out of bounds
@@ -2209,7 +2208,7 @@ Random random;
             }
 
             //this interval is for not using any theme at all    
-            if ((themei <= 10* themeUses.size()) && (themei >= probUsetotal)) {
+            if ((themei <= probUsetotal) && (themei >= probUsetotal + noThemevalue)) {
                 System.out.println("noTheme");
                 generateSolohelper2(themeLength, solo);
             }
