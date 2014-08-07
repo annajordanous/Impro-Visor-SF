@@ -7917,7 +7917,7 @@ boolean saveConstructionLineState;
         standardToolbar.add(smartEntryButton);
 
         quantizeComboBox.setMaximumRowCount(24);
-        quantizeComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "-", "Best", "1", "3/4", "1/2", "1/3", "1/4", "1/6", "1/8", "1/10", "1/16", "1/24", "1/32", "1/48", "1/96", "1/240", "1/480" }));
+        quantizeComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "-", "Best", "1/4", "1/3", "1/2", "3/4", "1", "3/2", "2", "5/2", "4", "6", "8", "12", "24", "60", "120" }));
         quantizeComboBox.setToolTipText("Quantize melody to specified number of subdivisions per beat (for MIDI input)."); // NOI18N
         quantizeComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Snap", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Dialog", 0, 10))); // NOI18N
         quantizeComboBox.setMaximumSize(new java.awt.Dimension(90, 45));
@@ -23790,13 +23790,13 @@ public void setKconstantSlider(double value)
         setNoteLength();
     }
     
-    public int getSlotsFromString(String s)
+   public int getSlotsFromString(String s)
     {
-        if (s.equals("1"))
+        if (s.equals("1/4"))
         {
             return 480;
         }
-        else if (s.equals("3/4"))
+        else if (s.equals("1/3"))
         {
             return 360;
         }
@@ -23804,51 +23804,51 @@ public void setKconstantSlider(double value)
         {
             return 240;
         }
-        else if (s.equals("1/3"))
+        else if (s.equals("3/4"))
         {
             return 160;
         }
-        else if (s.equals("1/4"))
+        else if (s.equals("1"))
         {
             return 120;
         }
-        else if (s.equals("1/6"))
+        else if (s.equals("3/2"))
         {
             return 80;
         }
-        else if (s.equals("1/8"))
+        else if (s.equals("2"))
         {
             return 60;
         }
-        else if (s.equals("1/10"))
+        else if (s.equals("5/2"))
         {
             return 40;
         }
-        else if (s.equals("1/16"))
+        else if (s.equals("4"))
         {
             return 30;
         }
-        else if (s.equals("1/24"))
+        else if (s.equals("6"))
         {
             return 20;
         }
-        else if (s.equals("1/32"))
+        else if (s.equals("8"))
         {
             return 15;
         }
-        else if (s.equals("1/48"))
+        else if (s.equals("12"))
         {
             return 10;
         }
-         else if (s.equals("1/96"))
+         else if (s.equals("24"))
         {
             return 5;
         }
-         else if (s.equals("1/240"))
+         else if (s.equals("60"))
         {
             return 2;
         } 
-         else if (s.equals("1/480"))
+         else if (s.equals("120"))
         {
             return 1;
         }
