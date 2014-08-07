@@ -82,7 +82,8 @@ public static final Color BASS_COLOR = Color.orange;
 public static final Color CHORD_COLOR = Color.green;
 public static final Color DRUM_COLOR = Color.yellow;
 
-public static final String USE_STRING = "yes";
+public static final Boolean USE_TRUE = true;
+public static final Boolean USE_FALSE = false;
 
 public static final int USE = 0;
 public static final int STYLE = 1;
@@ -200,6 +201,19 @@ public class BassTableModel extends DefaultTableModel
     {
         return canEdit [columnIndex];
     }
+    
+    @Override
+    public Class<?> getColumnClass(int column)
+    {
+        if( column == USE )
+        {
+            return Boolean.class;
+        }
+        else
+        {
+            return Object.class;
+        }
+    }
 }
 
 public class ChordTableModel extends DefaultTableModel
@@ -223,6 +237,19 @@ public class ChordTableModel extends DefaultTableModel
     {
         return canEdit [columnIndex];
     }
+    
+    @Override
+    public Class<?> getColumnClass(int column)
+    {
+        if( column == USE )
+        {
+            return Boolean.class;
+        }
+        else
+        {
+            return Object.class;
+        }
+    }
 }
 
 public class DrumTableModel extends DefaultTableModel
@@ -245,6 +272,19 @@ public class DrumTableModel extends DefaultTableModel
     public boolean isCellEditable(int rowIndex, int columnIndex) 
     {
         return canEdit [columnIndex];
+    }
+    
+    @Override
+    public Class<?> getColumnClass(int column)
+    {
+        if( column == DRUM_USE )
+        {
+            return Boolean.class;
+        }
+        else
+        {
+            return Object.class;
+        }
     }
 }
 
@@ -846,22 +886,25 @@ private void copyBassPatternToStyleEditor(java.awt.event.ActionEvent evt)//GEN-F
   }//GEN-LAST:event_copyBassPatternToStyleEditor
 
     private void deleteBassPattern(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBassPattern
-       bassTableModel.removeRow(bassTable.getSelectedRow());
        String name = (String)bassTable.getValueAt(bassTable.getSelectedRow(), NAME);
+       bassTableModel.removeRow(bassTable.getSelectedRow());  
        bassRules.remove(name);
+       bassPatternNames.remove(name);
     }//GEN-LAST:event_deleteBassPattern
 
     private void deleteChordPattern(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteChordPattern
-       chordTableModel.removeRow(chordTable.getSelectedRow());
        String name = (String)chordTable.getValueAt(chordTable.getSelectedRow(), NAME);
+       chordTableModel.removeRow(chordTable.getSelectedRow()); 
        chordRules.remove(name);
+       chordPatternNames.remove(name);
     }//GEN-LAST:event_deleteChordPattern
 
     private void deleteDrumPattern(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteDrumPattern
        int row = drumTable.getSelectedRow();
-       drumTableModel.removeRow(row);
        String name = (String)drumTable.getValueAt(row, DRUM_NAME);
+       drumTableModel.removeRow(row);
        drumRules.remove(name);
+       drumRuleNames.remove(name);
     }//GEN-LAST:event_deleteDrumPattern
 
     private void playStyleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playStyleButtonActionPerformed
@@ -888,6 +931,8 @@ private void copyBassPatternToStyleEditor(java.awt.event.ActionEvent evt)//GEN-F
 
     private void clearMixerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearMixerButtonActionPerformed
         reset();
+        //initComponents();
+        //initComponents2();
     }//GEN-LAST:event_clearMixerButtonActionPerformed
 
     private void bassTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bassTableMouseClicked
@@ -1038,7 +1083,7 @@ public void loadFromFile( File file )
         bassRules.put(name, rule);
         //System.out.println("bass rules: " + bassRules);
         
-        bassTable.setValueAt(USE_STRING, row, USE); //set use cell
+        bassTable.setValueAt(USE_TRUE, row, USE); //set use cell
         bassTable.setValueAt(styleName, row, STYLE); //set style name cell
         bassTable.setValueAt(name, row, NAME); // set pattern name
         bassTable.setValueAt(rule, row, PATTERN); //set pattern
@@ -1062,7 +1107,7 @@ public void loadFromFile( File file )
         chordRules.put(name, rule);
         //System.out.println("chord rules: " + chordRules);
         
-        chordTable.setValueAt(USE_STRING, row, USE); //set use cell
+        chordTable.setValueAt(USE_TRUE, row, USE); //set use cell
         chordTable.setValueAt(styleName, row, STYLE); //set style name cell
         chordTable.setValueAt(name, row, NAME); // set pattern name
         chordTable.setValueAt(rule, row, PATTERN); //set pattern
@@ -1103,7 +1148,7 @@ public void loadFromFile( File file )
             drumRules.put(name, rule);
             drumRuleNames.add(name);
             
-            drumTable.setValueAt(USE_STRING, row, DRUM_USE);
+            drumTable.setValueAt(USE_TRUE, row, DRUM_USE);
             drumTable.setValueAt(styleName, row, DRUM_STYLE);
             drumTable.setValueAt(patternName, row, DRUM_PATTERN_NAME);
             drumTable.setValueAt(name, row, DRUM_NAME);
@@ -1134,8 +1179,8 @@ public void copySelectedBassPatternsToStyleEditor()
 {
     for(int i = 0; i < bassRules.size(); i++)
      {
-         String useString = (String)bassTable.getValueAt(i, USE);
-         if( useString.equals(USE_STRING) )
+         Boolean useValue = (Boolean)bassTable.getValueAt(i, USE);
+         if( useValue )
          {
              String name = (String)bassTable.getValueAt(i, NAME);
              if( name.matches("[0-9]+") )
@@ -1152,8 +1197,8 @@ public void copySelectedChordPatternsToStyleEditor()
 {
     for(int i = 0; i < chordRules.size(); i++)
     {
-        String useString = (String)chordTable.getValueAt(i, USE);
-        if( useString.equals(USE_STRING) )
+        Boolean useValue = (Boolean)chordTable.getValueAt(i, USE);
+        if( useValue )
         {
             String name = (String)chordTable.getValueAt(i, NAME);
             if( name.matches("[0-9]+") )
@@ -1184,8 +1229,8 @@ public void copySelectedDrumPatternsToStyleEditor()
         {
             //System.out.println("drum rule: " + rep);
             int repIndex = ruleIndex.get(rep);
-            String useString = (String)drumTable.getValueAt(repIndex, DRUM_USE);
-            if( useString.equals(USE_STRING) )
+            Boolean useValue = (Boolean)drumTable.getValueAt(repIndex, DRUM_USE);
+            if( useValue )
             {
                 drumRules.append(rep.toString().trim());
             }
@@ -1235,6 +1280,7 @@ public void copyCellsForStyleMixer(Polylist cells, int rowNumber, String instrum
     // cells are organized by column, so put each column into an array 
     // element.
     
+      
     Polylist column[] = new Polylist[cells.length()];
     
     int j = 0;
@@ -1444,9 +1490,9 @@ public Style makeTempStyle()
     {
         String key = bassPatternNames.get(i);
         String pattern = bassRules.get(key);
-        String useString = (String)bassTable.getValueAt(i, USE);
+        Boolean useValue = (Boolean)bassTable.getValueAt(i, USE);
         //System.out.println(useString);
-        if( useString.equals(USE_STRING) )
+        if( useValue )
         {
             buffer.append("(bass-pattern ");
             buffer.append("(rules ");
@@ -1459,8 +1505,8 @@ public Style makeTempStyle()
     {
         String key = chordPatternNames.get(j);
         String pattern = chordRules.get(key);
-        String useString = (String)chordTable.getValueAt(j, USE);
-        if( useString.equals(USE_STRING) )
+        Boolean useValue = (Boolean)chordTable.getValueAt(j, USE);
+        if( useValue )
         {
             buffer.append("(chord-pattern ");
             buffer.append("(rules ");
@@ -1479,8 +1525,8 @@ public Style makeTempStyle()
         {
             //System.out.println("drum rule: " + rep);
             int repIndex = ruleIndex.get(rep);
-            String useString = (String)drumTable.getValueAt(repIndex, DRUM_USE);
-            if( useString.equals(USE_STRING) )
+            Boolean useValue = (Boolean)drumTable.getValueAt(k, USE);
+            if( useValue )
             {
                 buffer.append(rep.toString().trim());
             }
