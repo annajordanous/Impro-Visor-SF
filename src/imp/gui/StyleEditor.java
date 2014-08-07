@@ -214,9 +214,12 @@ public class StyleEditor
   private PatternSet allDrumPatterns;
   
   /* The patterns that are saved with the file */
-  public LinkedHashMap definedBassRules;
-  public LinkedHashMap definedChordRules;
-  public LinkedHashMap definedDrumRules;
+  public LinkedHashMap definedBassRules = 
+          new LinkedHashMap<String, Polylist>();
+  public LinkedHashMap definedChordRules = 
+          new LinkedHashMap<String, Polylist>();
+  public LinkedHashMap definedDrumRules = 
+          new LinkedHashMap<String, Polylist>();
 
   /* array of percussion instrument names */
   
@@ -1022,10 +1025,14 @@ public void updateAllDrumPatterns(String name, String rules)
   
   public void getDefinedRules(StringBuilder buffer)
   {
-      Iterator bass = definedBassRules.keySet().iterator();
-      while( bass.hasNext() )
+      System.out.println("definedrules: " + definedBassRules);
+      if( !definedBassRules.isEmpty() )
       {
-          try
+        Iterator bass = definedBassRules.keySet().iterator();
+        System.out.println("keyset: " + definedBassRules.keySet());
+        while( bass.hasNext() )
+        {
+           try
           {
               String name = (String)bass.next();
               Polylist rules = (Polylist)definedBassRules.get(name);
@@ -1042,11 +1049,14 @@ public void updateAllDrumPatterns(String name, String rules)
           {
               
           }
+        } 
       }
       
-      Iterator chord = definedChordRules.keySet().iterator();
-      while( chord.hasNext() )
+      if( !definedChordRules.isEmpty() )
       {
+        Iterator chord = definedChordRules.keySet().iterator();
+        while( chord.hasNext() )
+        {
           try
           {
               String name = (String)chord.next();
@@ -1064,11 +1074,14 @@ public void updateAllDrumPatterns(String name, String rules)
           {
               
           }
+        }
       }
       
-      Iterator drum = definedDrumRules.keySet().iterator();
-      while( drum.hasNext() )
+      if( !definedDrumRules.isEmpty() )
       {
+        Iterator drum = definedDrumRules.keySet().iterator();
+        while( drum.hasNext() )
+        {
           try
           {
               String name = (String)drum.next();
@@ -1086,6 +1099,7 @@ public void updateAllDrumPatterns(String name, String rules)
           {
               
           }
+        }
       }
   }
 
@@ -1297,7 +1311,7 @@ public void updateAllDrumPatterns(String name, String rules)
     {
     MIDIBeast.newSave();
     String name = file.getName();
-
+    
     try
       {
       BufferedWriter out = new BufferedWriter(new FileWriter(file));
@@ -1306,6 +1320,7 @@ public void updateAllDrumPatterns(String name, String rules)
       try
         {
         name = name.substring(0, name.length() - 4);
+        //System.out.println("name: " + name);
         }
       catch( ArrayIndexOutOfBoundsException e )
         {
@@ -1320,8 +1335,10 @@ public void updateAllDrumPatterns(String name, String rules)
 
       String attributes = getAttributes();
       buffer.append(attributes);
+      //System.out.println("attributes: " + buffer);
       
       getDefinedRules(buffer);
+      //System.out.println(buffer);
 
       if( isInstrumentIncluded(StyleTableModel.BASS_PATTERN_ROW) )
         {
@@ -1329,6 +1346,7 @@ public void updateAllDrumPatterns(String name, String rules)
         }
 
       getDrumPatterns(buffer);
+      System.out.println(buffer);
 
       if( isInstrumentIncluded(StyleTableModel.CHORD_PATTERN_ROW) )
         {

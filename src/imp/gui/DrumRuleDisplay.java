@@ -136,7 +136,7 @@ public String getSaveRule()
     buffer.append(instrumentName);
     if( getDefinedRules().containsKey(getName()))
     {
-        buffer.append("(use ");
+        buffer.append(" (use ");
         buffer.append(getName());
         buffer.append(")");
     }
