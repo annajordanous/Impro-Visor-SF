@@ -572,7 +572,7 @@
         <Component class="javax.swing.JTextArea" name="themeUsageTextArea">
           <Properties>
             <Property name="columns" type="int" value="20"/>
-            <Property name="rows" type="int" value="128"/>
+            <Property name="rows" type="int" value="70"/>
           </Properties>
         </Component>
       </SubComponents>

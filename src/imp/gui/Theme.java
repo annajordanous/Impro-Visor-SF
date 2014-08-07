@@ -133,7 +133,6 @@ public class Theme {
          while (melodyElements.hasMoreElements()) { //while there are more notes
            Object current =  melodyElements.nextElement();//get next note
              String currentString = current.toString(); //convert it to String
-             System.out.println(currentString.charAt(1));
              melodyString += currentString + " "; //add the note to the melodyString
             // System.out.println(melodyString);
          }  
