@@ -150,12 +150,12 @@ public void setTableColumnWidths()
         deletesure = new javax.swing.JLabel();
         Okdelete = new javax.swing.JButton();
         Nodelete = new javax.swing.JButton();
-        testDialog = new javax.swing.JDialog();
-        textArea1 = new java.awt.TextArea();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        soloTableScrollPane = new javax.swing.JScrollPane();
         soloTable = new javax.swing.JTable();
-        jScrollPane3 = new javax.swing.JScrollPane();
+        themeListScrollPane = new javax.swing.JScrollPane();
         themeList = new javax.swing.JList();
+        themeUsageScrollPane = new javax.swing.JScrollPane();
+        themeUsageTextArea = new javax.swing.JTextArea();
         ThemesLabel = new java.awt.Label();
         generateSolo = new java.awt.Button();
         generateTheme = new java.awt.Button();
@@ -439,17 +439,12 @@ public void setTableColumnWidths()
         gridBagConstraints.insets = new java.awt.Insets(18, 71, 135, 0);
         deleteCheck.getContentPane().add(Nodelete, gridBagConstraints);
 
-        testDialog.getContentPane().setLayout(new java.awt.GridLayout(1, 0));
-
-        textArea1.setEditable(false);
-        textArea1.setSize(new java.awt.Dimension(100, 200));
-        testDialog.getContentPane().add(textArea1);
-
         setLocation(new java.awt.Point(10, 10));
         setLocationByPlatform(true);
-        setMaximumSize(new java.awt.Dimension(2140, 2140));
-        setMinimumSize(new java.awt.Dimension(1000, 563));
-        setPreferredSize(new java.awt.Dimension(500, 505));
+        setMaximumSize(new java.awt.Dimension(2140, 800));
+        setMinimumSize(new java.awt.Dimension(1000, 500));
+        setPreferredSize(new java.awt.Dimension(800, 630));
+        setSize(new java.awt.Dimension(1000, 600));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 SoloGenerator.this.windowClosed(evt);
@@ -462,7 +457,10 @@ public void setTableColumnWidths()
         });
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
-        jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        soloTableScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        soloTableScrollPane.setMaximumSize(new java.awt.Dimension(32767, 400));
+        soloTableScrollPane.setMinimumSize(new java.awt.Dimension(23, 350));
+        soloTableScrollPane.setPreferredSize(new java.awt.Dimension(469, 200));
 
         soloTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -492,6 +490,7 @@ public void setTableColumnWidths()
         soloTable.setAlignmentY(1.0F);
         soloTable.setColumnSelectionAllowed(true);
         soloTable.setGridColor(new java.awt.Color(0, 0, 0));
+        soloTable.setMinimumSize(new java.awt.Dimension(105, 200));
         soloTable.setPreferredSize(null);
         soloTable.setSelectionBackground(javax.swing.UIManager.getDefaults().getColor("CheckBoxMenuItem.selectionBackground"));
         soloTable.setShowGrid(true);
@@ -511,25 +510,24 @@ public void setTableColumnWidths()
                 soloTableKeyPressed(evt);
             }
         });
-        jScrollPane1.setViewportView(soloTable);
+        soloTableScrollPane.setViewportView(soloTable);
         soloTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.gridwidth = 5;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.ipadx = 888;
-        gridBagConstraints.ipady = 537;
+        gridBagConstraints.ipadx = 600;
+        gridBagConstraints.ipady = -100;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(18, 37, 0, 0);
-        getContentPane().add(jScrollPane1, gridBagConstraints);
+        gridBagConstraints.weightx = 0.8;
+        gridBagConstraints.weighty = 0.3;
+        gridBagConstraints.insets = new java.awt.Insets(18, 35, 10, 0);
+        getContentPane().add(soloTableScrollPane, gridBagConstraints);
 
-        jScrollPane3.setMaximumSize(new java.awt.Dimension(0, 0));
-        jScrollPane3.setMinimumSize(new java.awt.Dimension(0, 0));
-        jScrollPane3.setPreferredSize(new java.awt.Dimension(150, 100));
+        themeListScrollPane.setMaximumSize(new java.awt.Dimension(0, 0));
+        themeListScrollPane.setMinimumSize(new java.awt.Dimension(0, 0));
+        themeListScrollPane.setPreferredSize(new java.awt.Dimension(100, 100));
 
         themeList.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         themeList.setModel(themeListModel);
@@ -547,29 +545,43 @@ public void setTableColumnWidths()
                 themeListKeyPressed(evt);
             }
         });
-        jScrollPane3.setViewportView(themeList);
+        themeListScrollPane.setViewportView(themeList);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 5;
         gridBagConstraints.gridy = 3;
+        gridBagConstraints.ipadx = 250;
+        gridBagConstraints.ipady = 290;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 0.3;
+        gridBagConstraints.insets = new java.awt.Insets(9, 0, 5, 45);
+        getContentPane().add(themeListScrollPane, gridBagConstraints);
+
+        themeUsageScrollPane.setMinimumSize(new java.awt.Dimension(300, 100));
+
+        themeUsageTextArea.setColumns(20);
+        themeUsageTextArea.setRows(128);
+        themeUsageScrollPane.setViewportView(themeUsageTextArea);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.gridheight = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.ipadx = 466;
-        gridBagConstraints.ipady = 648;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(9, 18, 0, 38);
-        getContentPane().add(jScrollPane3, gridBagConstraints);
+        gridBagConstraints.weightx = 0.6;
+        gridBagConstraints.weighty = 0.3;
+        gridBagConstraints.insets = new java.awt.Insets(0, 10, 5, 0);
+        getContentPane().add(themeUsageScrollPane, gridBagConstraints);
 
         ThemesLabel.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         ThemesLabel.setText("Themes");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 5;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridheight = 2;
-        gridBagConstraints.ipady = 9;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipady = 5;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(23, 78, 0, 0);
         getContentPane().add(ThemesLabel, gridBagConstraints);
@@ -583,9 +595,9 @@ public void setTableColumnWidths()
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.ipadx = 373;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(23, 57, 0, 0);
+        gridBagConstraints.insets = new java.awt.Insets(23, 35, 0, 0);
         getContentPane().add(generateSolo, gridBagConstraints);
 
         generateTheme.setLabel("Generate Theme");
@@ -596,10 +608,10 @@ public void setTableColumnWidths()
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.ipadx = 358;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(9, 57, 0, 0);
+        gridBagConstraints.insets = new java.awt.Insets(23, 35, 0, 0);
         getContentPane().add(generateTheme, gridBagConstraints);
 
         currentSelection.setLabel("Use Current Selection in Leadsheet Window as Theme");
@@ -610,11 +622,10 @@ public void setTableColumnWidths()
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 5;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.ipadx = 133;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(18, 53, 0, 0);
+        gridBagConstraints.insets = new java.awt.Insets(10, 35, 0, 0);
         getContentPane().add(currentSelection, gridBagConstraints);
 
         playSolo.setLabel("Play Solo");
@@ -625,11 +636,10 @@ public void setTableColumnWidths()
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 6;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.ipadx = 412;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(10, 53, 0, 0);
+        gridBagConstraints.insets = new java.awt.Insets(10, 35, 0, 0);
         getContentPane().add(playSolo, gridBagConstraints);
 
         stopPlaying.setLabel("Stop Playing");
@@ -640,11 +650,10 @@ public void setTableColumnWidths()
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 7;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.ipadx = 391;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(10, 50, 0, 0);
+        gridBagConstraints.insets = new java.awt.Insets(10, 35, 0, 0);
         getContentPane().add(stopPlaying, gridBagConstraints);
 
         SoloGeneratorTitle.setFont(new java.awt.Font("Lucida Grande", 1, 36)); // NOI18N
@@ -666,12 +675,11 @@ public void setTableColumnWidths()
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 6;
-        gridBagConstraints.gridy = 7;
-        gridBagConstraints.gridheight = 2;
+        gridBagConstraints.gridx = 5;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.ipadx = 32;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(18, 18, 28, 0);
+        gridBagConstraints.insets = new java.awt.Insets(10, 15, 0, 0);
         getContentPane().add(Reset, gridBagConstraints);
 
         themeIntervalTextField.setText("8");
@@ -706,7 +714,7 @@ public void setTableColumnWidths()
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         getContentPane().add(noThemeProbTextField, gridBagConstraints);
 
@@ -714,7 +722,7 @@ public void setTableColumnWidths()
         noThemeProbLabel.setText("No-Theme Prob.");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.ipadx = 5;
         getContentPane().add(noThemeProbLabel, gridBagConstraints);
 
@@ -831,6 +839,9 @@ private void playSelection()
                 use.probInvert = Double.valueOf((String) getValueAt(i, INVERT_COLUMN));
                 use.probReverse = Double.valueOf((String) getValueAt(i, REVERSE_COLUMN));
                 themeUses.add(use); // add a new ThemeUse to the arraylist with respective elements
+                if (getValueAt(i, NAME_COLUMN)!= null) {
+                    use.theme.name = (String)getValueAt(i,NAME_COLUMN); 
+                }
                 
                 System.out.println(use);
                 }
@@ -1436,10 +1447,10 @@ public class SoloGeneratorTableModel extends DefaultTableModel
                 soloTable.setValueAt(null, i, NAME_COLUMN);
                 soloTable.setValueAt(null,i, LENGTH_COLUMN);
                 soloTable.setValueAt(null,i,THEME_COLUMN); 
-                soloTable.setValueAt(1,i,USE_COLUMN);
-                soloTable.setValueAt(0,i,TRANSPOSE_COLUMN);
-                soloTable.setValueAt(0,i,INVERT_COLUMN);
-                soloTable.setValueAt(0,i, REVERSE_COLUMN);
+                soloTable.setValueAt("1",i,USE_COLUMN);
+                soloTable.setValueAt("0",i,TRANSPOSE_COLUMN);
+                soloTable.setValueAt("0",i,INVERT_COLUMN);
+                soloTable.setValueAt("0",i, REVERSE_COLUMN);
                 
                
                 
@@ -1503,7 +1514,6 @@ public class SoloGeneratorTableModel extends DefaultTableModel
            // && (getValueAt(i,NAME_COLUMN) != " ")
                     )
             { //if name cell is selected, it's not empty and the theme isn't empty
-                System.out.println("lala");
                 namingSaving(row, col, row);
                 return;
             }
@@ -2069,6 +2079,7 @@ Random random;
         
 
     public void generateSolo(ArrayList<ThemeUse> themeUses, CommandManager cm) {
+        themeUsageTextArea.setText(null);
         System.out.println("start");
         System.out.println(themeUses);
         // create four empty lists to start for all the probabilities
@@ -2120,8 +2131,6 @@ Random random;
         }
 
         //set the variables the the very first themeUse and theme in the list to start with
-        MelodyPart chosentheme = themeUses.get(0).theme.melody;
-        ThemeUse chosenthemeUse = themeUses.get(0);
         
         //use Theme Use Interval from text field
         int themeInterval = new Integer(themeIntervalTextField.getText());
@@ -2130,14 +2139,10 @@ Random random;
         for (int i = length; i <= notate.getScoreLength() - themeIntervalUse; i += themeIntervalUse) { 
             //loop through the remaining length of the score
             
-            Integer noThemevalue = (int)(10*Double.valueOf(noThemeProbTextField.getText()));
-            String noThemestring = noThemevalue.toString();
-            System.out.println(noThemestring);
-            System.out.println(probUsetotal);
+            Integer noThemevalue = (int)(10*themeUses.size()*Double.valueOf(noThemeProbTextField.getText()));
             
             int themei = random.nextInt(probUsetotal + noThemevalue);
             System.out.println(themei);
-           // testDialog.insert(System.out.println(themei),0);
             //pick a random number from 0 inclusive to 10*the probability list size
             //since all the elements in the list are multpled by 10, the size has to be multiplied by 10 too
 
@@ -2148,6 +2153,9 @@ Random random;
             //so if the random number chosen is in that interval, then that first theme is used
             if (themei <= 10 * probUselist.get(0) - 1) {
                 System.out.println("Theme1");
+                MelodyPart chosentheme = themeUses.get(0).theme.melody;
+                ThemeUse chosenthemeUse = themeUses.get(0);
+                themeUsageTextArea.append(chosenthemeUse.theme.name + "\n");
                 MelodyPart adjustedTheme = generateSolohelper(chosenthemeUse, chosentheme, solo, cm);
 
                 //this if takes care of the case if the index is out of bounds
@@ -2170,8 +2178,9 @@ Random random;
                 //the interval for the second ThemeUse
                 if ((themei >= A) && (themei <= B - 1)) {
                     System.out.println("Theme2");
-                    chosenthemeUse = themeUses.get(1);
-                    chosentheme = themeUses.get(1).theme.melody;
+                    ThemeUse chosenthemeUse = themeUses.get(1);
+                    MelodyPart chosentheme = themeUses.get(1).theme.melody;
+                    themeUsageTextArea.append(chosenthemeUse.theme.name + "\n");
                     MelodyPart adjustedTheme = generateSolohelper(chosenthemeUse, chosentheme, solo, cm);
 
                     if (i + adjustedTheme.size() >= solo.getSize()) {
@@ -2191,8 +2200,9 @@ Random random;
 
                         if ((themei >= A) && (themei <= B - 1)) {
                             System.out.println("SubsequentThemes!");
-                            chosenthemeUse = themeUses.get(k);
-                            chosentheme = themeUses.get(k).theme.melody;
+                            ThemeUse chosenthemeUse = themeUses.get(k);
+                            MelodyPart chosentheme = themeUses.get(k).theme.melody;
+                            themeUsageTextArea.append(chosenthemeUse.theme.name + "\n");
                             MelodyPart adjustedTheme = generateSolohelper(chosenthemeUse, chosentheme, solo, cm);
 
                             if (i + adjustedTheme.size() >= solo.getSize()) {
@@ -2208,8 +2218,9 @@ Random random;
             }
 
             //this interval is for not using any theme at all    
-            if ((themei <= probUsetotal) && (themei >= probUsetotal + noThemevalue)) {
+            if ((themei <= probUsetotal + noThemevalue) && (themei >= probUsetotal)) {
                 System.out.println("noTheme");
+                themeUsageTextArea.append("No Theme"+ "\n");
                 generateSolohelper2(themeLength, solo);
             }
         }
@@ -2270,8 +2281,6 @@ Random random;
     private java.awt.Button generateTheme;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JPopupMenu.Separator jSeparator5;
     private javax.swing.JDialog nameErrorMessage;
     private javax.swing.JTextField nameField;
@@ -2282,12 +2291,14 @@ Random random;
     private javax.swing.JDialog resetCheck;
     private javax.swing.JMenuBar roadmapMenuBar;
     private javax.swing.JTable soloTable;
+    private javax.swing.JScrollPane soloTableScrollPane;
     private java.awt.Button stopPlaying;
-    private javax.swing.JDialog testDialog;
-    private java.awt.TextArea textArea1;
     private javax.swing.JLabel themeIntervalLabel;
     private javax.swing.JTextField themeIntervalTextField;
     private javax.swing.JList themeList;
+    private javax.swing.JScrollPane themeListScrollPane;
+    private javax.swing.JScrollPane themeUsageScrollPane;
+    private javax.swing.JTextArea themeUsageTextArea;
     private javax.swing.JLabel tryAgain;
     private javax.swing.JLabel typedWrong;
     private javax.swing.JMenu windowMenu;
