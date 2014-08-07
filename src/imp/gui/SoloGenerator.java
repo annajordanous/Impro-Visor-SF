@@ -1369,8 +1369,8 @@ public ThemeListModel themeListModel = new ThemeListModel();
   
 private SoloGeneratorTableModel soloTableModel = new SoloGeneratorTableModel (
         new Object [][] {
-                {null, null, null, "1", "0", "0", "0"},
-                {null, null, null, "1", "0", "0", "0"},
+                {null, null, null, ".5", ".6", ".3", ".4"},
+                {null, null, null, ".6", ".5", ".2", ".3"},
                 {null, null, null, "1", "0", "0", "0"},
                 {null, null, null, "1", "0", "0", "0"},
                 {null, null, null, "1", "0", "0", "0"},
@@ -2004,7 +2004,7 @@ Random random;
         if (Notate.bernoulli(chosenthemeUse.probTranspose)) {
             // if a random number is greater than the probability not to transpose theme
             System.out.println("Transpose");
-            themeUsageTextArea.append("Theme was transposed\n");
+            themeUsageTextArea.append(" and was transposed\n");
             ChordPart chordProg = notate.getChordProg(); //get current chord progression
             int rise = PitchClass.findRise(PitchClass.getPitchClass(chordProg.getCurrentChord(0).getRoot()),
                     PitchClass.getPitchClass(chordProg.getCurrentChord(length).getRoot()));
@@ -2039,14 +2039,14 @@ Random random;
         if (Notate.bernoulli(chosenthemeUse.probInvert))
         { // if a random number is greater than the probability not to invert the theme
             System.out.println("Invert");
-            themeUsageTextArea.append("Theme was inverted\n");
+            themeUsageTextArea.append(" and was inverted\n");
         }
         cm.execute(new InvertCommand(adjustedTheme, 0, length, false)); //invert theme
 
         if (Notate.bernoulli(chosenthemeUse.probReverse))
         { // if a random number is greater than the probability not to reverse the theme
             System.out.println("Reverse");
-            themeUsageTextArea.append("Theme was reversed\n");
+            themeUsageTextArea.append(" and was reversed\n");
         cm.execute(new ReverseCommand(adjustedTheme, 0, length, false)); //reverse theme
         }
         
@@ -2122,7 +2122,7 @@ Random random;
         solo.pasteSlots(themeUses.get(index).theme.melody, 0); 
       //  themeUsageTextArea.append(themeUses.get(index).theme.name + "\n");
                // + "used at slot 0\n");
-        themeUsageTextArea.append("Theme with max Use value used first\n");
+        themeUsageTextArea.append("Theme with max Use value used first as is\n");
         //paste theme into solo at starting point
         
         // set totals of probabilities to 0
@@ -2149,7 +2149,7 @@ Random random;
         
         for (int i = length; i <= notate.getScoreLength() - themeIntervalUse; i += themeIntervalUse) { 
             //loop through the remaining length of the score
-            
+             int beat = i/120;
             Integer noThemevalue = (int)(10*themeUses.size()*Double.valueOf(noThemeProbTextField.getText()));
             
             int themei = random.nextInt(probUsetotal + noThemevalue);
@@ -2169,8 +2169,7 @@ Random random;
                 if (chosenthemeUse.theme.name == null) {
                     chosenthemeUse.theme.name = "Theme 1";
                 }
-                themeUsageTextArea.append(chosenthemeUse.theme.name + "\n");
-                        //"used at slot " + i + "\n");
+                themeUsageTextArea.append(chosenthemeUse.theme.name + "used at beat " + beat + "\n");
                 MelodyPart adjustedTheme = generateSolohelper(chosenthemeUse, chosentheme, solo, cm);
                 
                 //this if takes care of the case if the index is out of bounds
@@ -2198,7 +2197,7 @@ Random random;
                     if (chosenthemeUse.theme.name == null) {
                     chosenthemeUse.theme.name = "Theme 2";
                 }
-                    themeUsageTextArea.append(chosenthemeUse.theme.name + "\n");
+                    themeUsageTextArea.append(chosenthemeUse.theme.name + "used at beat " + beat + "\n");
                             //"used at slot " + i + "\n");
                     MelodyPart adjustedTheme = generateSolohelper(chosenthemeUse, chosentheme, solo, cm);
 
@@ -2224,7 +2223,7 @@ Random random;
                              if (chosenthemeUse.theme.name == null) {
                           chosenthemeUse.theme.name = "Theme " + k;
                           }
-                            themeUsageTextArea.append(chosenthemeUse.theme.name + "\n");
+                            themeUsageTextArea.append(chosenthemeUse.theme.name +  "used at beat " + beat + "\n");
                                     //"used at slot "+ i + "\n");
                             MelodyPart adjustedTheme = generateSolohelper(chosenthemeUse, chosentheme, solo, cm);
 
@@ -2243,7 +2242,7 @@ Random random;
             //this interval is for not using any theme at all    
             if ((themei <= probUsetotal + noThemevalue) && (themei >= probUsetotal)) {
                 System.out.println("noTheme");
-                themeUsageTextArea.append("No Theme " + "\n");
+                themeUsageTextArea.append("No theme was used at beat " + beat + "\n");
                       //  + "//used at slot "+ i + "\n");
                 generateSolohelper2(themeLength, solo);
             }
