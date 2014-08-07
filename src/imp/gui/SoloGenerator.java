@@ -843,18 +843,6 @@ private void playSelection()
                     use.theme.name = (String)getValueAt(i,NAME_COLUMN); 
                 }
                 
-                if (getValueAt(i, NAME_COLUMN) == null) {
-                    int x = 0;
-                    for (int j = 0; j < soloTable.getRowCount(); j++) {
-                        if ((getValueAt(j, NAME_COLUMN) == null) 
-                         && (getValueAt(j, THEME_COLUMN) != null)
-                         && (getValueAt(j, LENGTH_COLUMN) != null)) {
-                            x += 1;
-                        }
-                    }
-                    use.theme.name = "Theme " + x + " " ; 
-                }
-                
                 System.out.println(use);
                 }
               }
@@ -1469,6 +1457,7 @@ public class SoloGeneratorTableModel extends DefaultTableModel
          //   }
         }
         fireTableDataChanged();
+        themeUsageTextArea.setText(null);
     }
      
 
@@ -2131,8 +2120,9 @@ Random random;
         imp.ImproVisor.setPlayEntrySounds(false); //don't play insertions yet
 
         solo.pasteSlots(themeUses.get(index).theme.melody, 0); 
-        themeUsageTextArea.append(themeUses.get(index).theme.name + "\n");
+      //  themeUsageTextArea.append(themeUses.get(index).theme.name + "\n");
                // + "used at slot 0\n");
+        themeUsageTextArea.append("Theme with max Use value used first");
         //paste theme into solo at starting point
         
         // set totals of probabilities to 0
@@ -2176,10 +2166,13 @@ Random random;
                 System.out.println("Theme1");
                 MelodyPart chosentheme = themeUses.get(0).theme.melody;
                 ThemeUse chosenthemeUse = themeUses.get(0);
+                if (chosenthemeUse.theme.name == null) {
+                    chosenthemeUse.theme.name = "Theme 1";
+                }
                 themeUsageTextArea.append(chosenthemeUse.theme.name + "\n");
                         //"used at slot " + i + "\n");
                 MelodyPart adjustedTheme = generateSolohelper(chosenthemeUse, chosentheme, solo, cm);
-
+                
                 //this if takes care of the case if the index is out of bounds
                 if (i + adjustedTheme.size() >= solo.getSize()) {
                     generateSolohelper2(themeLength, solo);
@@ -2202,6 +2195,9 @@ Random random;
                     System.out.println("Theme2");
                     ThemeUse chosenthemeUse = themeUses.get(1);
                     MelodyPart chosentheme = themeUses.get(1).theme.melody;
+                    if (chosenthemeUse.theme.name == null) {
+                    chosenthemeUse.theme.name = "Theme 2";
+                }
                     themeUsageTextArea.append(chosenthemeUse.theme.name + "\n");
                             //"used at slot " + i + "\n");
                     MelodyPart adjustedTheme = generateSolohelper(chosenthemeUse, chosentheme, solo, cm);
@@ -2225,6 +2221,9 @@ Random random;
                             System.out.println("SubsequentThemes!");
                             ThemeUse chosenthemeUse = themeUses.get(k);
                             MelodyPart chosentheme = themeUses.get(k).theme.melody;
+                             if (chosenthemeUse.theme.name == null) {
+                          chosenthemeUse.theme.name = "Theme " + k;
+                          }
                             themeUsageTextArea.append(chosenthemeUse.theme.name + "\n");
                                     //"used at slot "+ i + "\n");
                             MelodyPart adjustedTheme = generateSolohelper(chosenthemeUse, chosentheme, solo, cm);
