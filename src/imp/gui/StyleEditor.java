@@ -1025,11 +1025,11 @@ public void updateAllDrumPatterns(String name, String rules)
   
   public void getDefinedRules(StringBuilder buffer)
   {
-      System.out.println("definedrules: " + definedBassRules);
+      //System.out.println("definedrules: " + definedBassRules);
       if( !definedBassRules.isEmpty() )
       {
         Iterator bass = definedBassRules.keySet().iterator();
-        System.out.println("keyset: " + definedBassRules.keySet());
+        //System.out.println("keyset: " + definedBassRules.keySet());
         while( bass.hasNext() )
         {
            try
@@ -1346,7 +1346,7 @@ public void updateAllDrumPatterns(String name, String rules)
         }
 
       getDrumPatterns(buffer);
-      System.out.println(buffer);
+      //System.out.println(buffer);
 
       if( isInstrumentIncluded(StyleTableModel.CHORD_PATTERN_ROW) )
         {
@@ -3729,7 +3729,7 @@ public void updateAllDrumPatterns(String name, String rules)
         jScrollPane4 = new javax.swing.JScrollPane();
         drumPatternList = new javax.swing.JList();
         patternButtonPanel = new javax.swing.JPanel();
-        savePatternButton = new javax.swing.JButton();
+        definePatternButton = new javax.swing.JButton();
         removePatternButton = new javax.swing.JButton();
         closeButtonPanel = new javax.swing.JPanel();
         stopPlaying = new javax.swing.JButton();
@@ -3787,7 +3787,7 @@ public void updateAllDrumPatterns(String name, String rules)
         patternHelp.setColumns(20);
         patternHelp.setFont(new java.awt.Font("Lucida Console", 0, 13)); // NOI18N
         patternHelp.setRows(5);
-        patternHelp.setText("Help for the Patterns in Style Editor & Extractor\n\nEach pattern is defined by a set of rules.  The rules are similar to\nleadsheet notation, except the pitch is replaced with a capital letter\nindicating the rule.  Each pattern also has a weight that determines how\noften that pattern is used in relation to other patterns of the same length.\n\nNote: The notation is case-sensitive.\n\nThe duration of a specific note in the pattern is specified by numbers, \nas in the leadsheet notation:\n\n    1  = whole note\n    2  = half note\n    4  = quarter note\n    8  = eighth note\n    16 = sixteenth note\n    32 = thirty-second note\n\nFollowing a number by a dot (.) multiplies the value by 1.5. \n\nFollowing a number by /3 gives the value of a triplet (2/3 of the original value).\n\n**Swing values\n   - There are two forms of swing: melody swing and accompaniment swing.\n   - The accompaniment swing controls the swing value of the bass, chords, and percussion.\n   - The melody swing controls the swing of the melody, which is what appears on the lead sheet.\n   - The reason for there being two swings is because of the style extraction process.\n\tWhen a style is extracted, the rhythms are taken verbatim from the MIDI--and,\n\tin the case that there is some swing in the MIDI performance, there is already\n\ta swing value incorporated into the extracted accompaniment style.\n\tThus, for the melody to match the accompaniment, it is necessary to be\n\table to adjust both the swing for the accompaniment as well as the swing for\n\tthe melody.\n\n\n**Editing Patterns in Style Editor & Extractor (See editing cells for more capabilities)\n   - To exclude certain patterns from a style, uncheck the include button \n      or delete with the cut pattern option.\n   - Preview each pattern by clicking the table cell once.  Make sure the \"play\" toggle is set to on.\n\n");
+        patternHelp.setText("Help for the Patterns in Style Editor & Extractor\n\nEach pattern is defined by a set of rules.  The rules are similar to\nleadsheet notation, except the pitch is replaced with a capital letter\nindicating the rule.  Each pattern also has a weight that determines how\noften that pattern is used in relation to other patterns of the same length.\n\nNote: The notation is case-sensitive.\n\nThe duration of a specific note in the pattern is specified by numbers, \nas in the leadsheet notation:\n\n    1  = whole note\n    2  = half note\n    4  = quarter note\n    8  = eighth note\n    16 = sixteenth note\n    32 = thirty-second note\n\nFollowing a number by a dot (.) multiplies the value by 1.5. \n\nFollowing a number by /3 gives the value of a triplet (2/3 of the original value).\n\n**Swing values\n   - There are two forms of swing: melody swing and accompaniment swing.\n   - The accompaniment swing controls the swing value of the bass, chords, and percussion.\n   - The melody swing controls the swing of the melody, which is what appears on the lead sheet.\n   - The reason for there being two swings is because of the style extraction process.\n\tWhen a style is extracted, the rhythms are taken verbatim from the MIDI--and,\n\tin the case that there is some swing in the MIDI performance, there is already\n\ta swing value incorporated into the extracted accompaniment style.\n\tThus, for the melody to match the accompaniment, it is necessary to be\n\table to adjust both the swing for the accompaniment as well as the swing for\n\tthe melody.\n\n\n**Editing Patterns in Style Editor & Extractor\n   - Double click on the table cell which you want to edit.\n   - To exclude certain patterns from a style, uncheck the include button \n      or delete with the cut pattern option.\n   - Preview each pattern by clicking the table cell once.  Make sure the \"play\" toggle is set to on.\n\n");
         generalPane.setViewportView(patternHelp);
 
         helpTabbedPane.addTab("General", generalPane);
@@ -3798,7 +3798,7 @@ public void updateAllDrumPatterns(String name, String rules)
         menuList1.setColumns(20);
         menuList1.setFont(new java.awt.Font("Lucida Console", 0, 13)); // NOI18N
         menuList1.setRows(5);
-        menuList1.setText("Menu items:\n\n* Adding new patterns to a cell\n\tClick on the cell you want to edit\n\tIf it is empty:\n\t\tType the name and pattern you want to insert into the cell in the define patterns fields.\n\t\tThen press enter to put the pattern in the cell.\n\t\tTo add a pattern from the list of the defined patterns, double click it in the list.\n\tIf it isn't empty:\n\t\tYou can do the same as if it is empty.\n\t\tCan also edit the contents within the mirrored patterns fields. \t\t\t\n\n* Adding patterns to defined patterns list\n\tWrite the name and pattern in the define pattern fields, then click define.\n\tClick a cell in the table to have the pattern and name appear in their fields, then click\n\tdefine.\n\n* Playing\n       Clicking a cell ............................................ plays the corresponding pattern\n       Control-clicking a precussion cell ......................... plays all percussion patterns\n       in that column together, which is the way the pattern will sound when used in accompaniment.\n\nNOTE: Currently the user must ensure that all patterns in a column are the same length (number of beats).\nIn the future, we will provide better automation for this.\n\n*Edit\n       Add Column................. add a new pattern column\n       Add Row.................... add a new percussion instrument row \n       Copy Pattern............... copy the selected pattern\n       Cut Pattern................ cut the selected pattern\n       Paste...................... paste the pattern\n \nArbitrary blocks in the spreadsheet can be cut and pasted. \nUnlike some spreadsheets, however, you must pre-select the area for pasting.\nThe cut or copied cell contents will tile the area into which you paste.\nIf the cut or copied block is larger than the paste area, it will be truncated.\n");
+        menuList1.setText("Menu items:\n\n* Playing\n       Clicking a cell ............................................ plays the corresponding pattern\n       Control-clicking a precussion cell ......................... plays all percussion patterns\n       in that column together, which is the way the pattern will sound when used in accompaniment.\n\nNOTE: Currently the user must ensure that all patterns in a column are the same length (number of beats).\nIn the future, we will provide better automation for this.\n\n*Edit\n       Add Column................. add a new pattern column\n       Add Row.................... add a new percussion instrument row \n       Copy Pattern............... copy the selected pattern\n       Cut Pattern................ cut the selected pattern\n       Paste...................... paste the pattern\n \nArbitrary blocks in the spreadsheet can be cut and pasted. \nUnlike some spreadsheets, however, you must pre-select the area for pasting.\nThe cut or copied cell contents will tile the area into which you paste.\nIf the cut or copied block is larger than the paste area, it will be truncated.\n");
         editingPane.setViewportView(menuList1);
 
         helpTabbedPane.addTab("Editing cells", editingPane);
@@ -3833,7 +3833,7 @@ public void updateAllDrumPatterns(String name, String rules)
         chordText.setColumns(20);
         chordText.setFont(new java.awt.Font("Lucida Console", 0, 13)); // NOI18N
         chordText.setRows(5);
-        chordText.setText("\n**Chord Patterns\n\nChord patterns determine only the rhythm of the chord accompaniment. (The \nvoicings to use are decided based on a voice-leading algorithm.)\n\nChord patterns use the following rules:\n\nXd      Strike the whole chord for duration, d\n\nRd      A rest for duration, d\n\n(X n d) A specific note from the first scale given for a chord in\n        the vocabulary. For example (X 5 4) will give a quarter-note\n        on the fifth-degree of the scale. Degrees can range from\n\t1 to 13. This can be used to make arpeggiated chord patterns.\n");
+        chordText.setText("\n**Chord Patterns\n\nChord patterns determine only the rhythm of the chord accompaniment. (The \nvoicings to use are decided based on a voice-leading algorithm.)\n\nChord patterns use the following rules:\n\nXd      Strike the whole chord for duration, d\n\nRd      A rest for duration, d\n\n(X n d) A specific note from the first scale given for a chord in\n        the vocabulary. For example (X 5 4) will give a quarter-note\n        on the fifth-degree of the scale. Degrees can range from\n\t1 to 13.\n");
         chordPane.setViewportView(chordText);
 
         helpTabbedPane.addTab("Chords", chordPane);
@@ -3845,7 +3845,7 @@ public void updateAllDrumPatterns(String name, String rules)
         percussionText.setColumns(20);
         percussionText.setFont(new java.awt.Font("Lucida Console", 0, 13)); // NOI18N
         percussionText.setRows(5);
-        percussionText.setText("**Percussion Patterns\n\nWhole percussion patterns can be named with the name row in the table.\n\nPercussion patterns are a bit more complicated in that for one pattern you must\nspecify a drumline for each drum you want in the pattern.  Here is the\nformat for a drumline specification:\n\n(drum DRUM-MIDI-NUMBER RULE RULE ...)\n\nYou can also specify the drum by using the name with underscores instead of\nspaces. Example:\n\n(drum Acoustic_Bass_Drum RULE RULE ...)\n\nDrum patterns use the following rules:\n\nXd       Strike the drum for duration, d\nRd       A rest for duration, d\n\nGeneral MIDI Percussion Numbers:\n\n35      Acoustic Bass Drum      59      Ride Cymbal 2\n36      Bass Drum 1             60      Hi Bongo\n37      Side Stick              61      Low Bongo\n38      Acoustic Snare          62      Mute Hi Conga\n39      Hand Clap               63      Open Hi Conga\n40      Electric Snare          64      Low Conga\n41      Low Floor Tom           65      High Timbale\n42      Closed Hi-Hat           66      Low Timbale\n43      High Floor Tom          67      High Agogo\n44      Pedal Hi-Hat            68      Low Agogo\n45      Low Tom                 69      Cabasa\n46      Open Hi-Hat             70      Maracas\n47      Low-Mid Tom             71      Short Whistle\n48      Hi-Mid Tom              72      Long Whistle\n49      Crash Cymbal 1          73      Short Guiro\n50      High Tom                74      Long Guiro\n51      Ride Cymbal 1           75      Claves\n52      Chinese Cymbal          76      Hi Wood Block\n53      Ride Bell               77      Low Wood Block\n54      Tambourine              78      Mute Cuica\n55      Splash Cymbal           79      Open Cuica\n56      Cowbell                 80      Mute Triangle\n57      Crash Cymbal 2          81      Open Triangle\n58      Vibraslap\n");
+        percussionText.setText("**Percussion Patterns\n\nPercussion patterns are a bit more complicated in that for one pattern you must\nspecify a drumline for each drum you want in the pattern.  Here is the\nformat for a drumline specification:\n\n(drum DRUM-MIDI-NUMBER RULE RULE ...)\n\nYou can also specify the drum by using the name with underscores instead of\nspaces. Example:\n\n(drum Acoustic_Bass_Drum RULE RULE ...)\n\nDrum patterns use the following rules:\n\nXd       Strike the drum for duration, d\nRd       A rest for duration, d\n\nGeneral MIDI Percussion Numbers:\n\n35      Acoustic Bass Drum      59      Ride Cymbal 2\n36      Bass Drum 1             60      Hi Bongo\n37      Side Stick              61      Low Bongo\n38      Acoustic Snare          62      Mute Hi Conga\n39      Hand Clap               63      Open Hi Conga\n40      Electric Snare          64      Low Conga\n41      Low Floor Tom           65      High Timbale\n42      Closed Hi-Hat           66      Low Timbale\n43      High Floor Tom          67      High Agogo\n44      Pedal Hi-Hat            68      Low Agogo\n45      Low Tom                 69      Cabasa\n46      Open Hi-Hat             70      Maracas\n47      Low-Mid Tom             71      Short Whistle\n48      Hi-Mid Tom              72      Long Whistle\n49      Crash Cymbal 1          73      Short Guiro\n50      High Tom                74      Long Guiro\n51      Ride Cymbal 1           75      Claves\n52      Chinese Cymbal          76      Hi Wood Block\n53      Ride Bell               77      Low Wood Block\n54      Tambourine              78      Mute Cuica\n55      Splash Cymbal           79      Open Cuica\n56      Cowbell                 80      Mute Triangle\n57      Crash Cymbal 2          81      Open Triangle\n58      Vibraslap\n");
         percussionPane.setViewportView(percussionText);
 
         helpTabbedPane.addTab("Percussion", percussionPane);
@@ -5148,8 +5148,8 @@ public void updateAllDrumPatterns(String name, String rules)
         weightLabel.setText("Weight");
         weightLabel.setToolTipText("Computed number of beats\n");
         weightLabel.setMaximumSize(new java.awt.Dimension(100, 14));
-        weightLabel.setMinimumSize(new java.awt.Dimension(80, 14));
-        weightLabel.setPreferredSize(new java.awt.Dimension(80, 14));
+        weightLabel.setMinimumSize(new java.awt.Dimension(100, 14));
+        weightLabel.setPreferredSize(new java.awt.Dimension(100, 14));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 0;
@@ -5284,8 +5284,8 @@ public void updateAllDrumPatterns(String name, String rules)
 
         weightField2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         weightField2.setMaximumSize(new java.awt.Dimension(200, 2147483647));
-        weightField2.setMinimumSize(new java.awt.Dimension(80, 22));
-        weightField2.setPreferredSize(new java.awt.Dimension(80, 22));
+        weightField2.setMinimumSize(new java.awt.Dimension(100, 22));
+        weightField2.setPreferredSize(new java.awt.Dimension(100, 22));
         weightField2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 weightField2ActionPerformed(evt);
@@ -5392,8 +5392,8 @@ public void updateAllDrumPatterns(String name, String rules)
 
         weightField1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         weightField1.setMaximumSize(new java.awt.Dimension(200, 2147483647));
-        weightField1.setMinimumSize(new java.awt.Dimension(80, 22));
-        weightField1.setPreferredSize(new java.awt.Dimension(80, 22));
+        weightField1.setMinimumSize(new java.awt.Dimension(100, 22));
+        weightField1.setPreferredSize(new java.awt.Dimension(100, 22));
         weightField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 weightField1ActionPerformed(evt);
@@ -5505,8 +5505,8 @@ public void updateAllDrumPatterns(String name, String rules)
 
         weightField0.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         weightField0.setMaximumSize(new java.awt.Dimension(200, 2147483647));
-        weightField0.setMinimumSize(new java.awt.Dimension(80, 22));
-        weightField0.setPreferredSize(new java.awt.Dimension(80, 22));
+        weightField0.setMinimumSize(new java.awt.Dimension(100, 22));
+        weightField0.setPreferredSize(new java.awt.Dimension(100, 22));
         weightField0.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 weightField0ActionPerformed(evt);
@@ -5696,17 +5696,22 @@ public void updateAllDrumPatterns(String name, String rules)
 
         patternButtonPanel.setLayout(new java.awt.GridBagLayout());
 
-        savePatternButton.setText("Define");
-        savePatternButton.setToolTipText("Click to add what is in the define fields to the list of defined patterns");
-        savePatternButton.addMouseListener(new java.awt.event.MouseAdapter() {
+        definePatternButton.setText("Define");
+        definePatternButton.setToolTipText("Click to add what is in the define fields to the list of defined patterns");
+        definePatternButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 definePatternButtonMouseClicked(evt);
+            }
+        });
+        definePatternButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                definePatternButtonActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
-        patternButtonPanel.add(savePatternButton, gridBagConstraints);
+        patternButtonPanel.add(definePatternButton, gridBagConstraints);
 
         removePatternButton.setText("Remove");
         removePatternButton.setToolTipText("Click to remove this pattern from the defined patterns list");
@@ -6140,6 +6145,7 @@ public void updateAllDrumPatterns(String name, String rules)
           updateMirror(recentRows[0], recentColumns[0], revisedContent);
         }
         //System.out.println("push: " + pushField0.getText());
+        requestFocusInWindow();
       }
 }//GEN-LAST:event_styleTextField0ActionPerformed
 
@@ -6163,6 +6169,7 @@ public void updateAllDrumPatterns(String name, String rules)
         {
         updateMirror(recentRows[1], recentColumns[1], revisedContent);
         }
+      requestFocusInWindow();
     }
 }//GEN-LAST:event_styleTextField1ActionPerformed
 
@@ -6186,6 +6193,7 @@ public void updateAllDrumPatterns(String name, String rules)
         {
         updateMirror(recentRows[2], recentColumns[2], revisedContent);
         }
+      requestFocusInWindow();
       }
 }//GEN-LAST:event_styleTextField2ActionPerformed
 
@@ -7861,6 +7869,10 @@ private void openStyleMixer()
         }  
     }//GEN-LAST:event_weightField0ActionPerformed
 
+    private void definePatternButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_definePatternButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_definePatternButtonActionPerformed
+
 private void usePianoRoll()
 {
   int selectedColumns[] = columnModel.getSelectedColumns();
@@ -7966,6 +7978,7 @@ public void unusePianoRoll()
     private javax.swing.JMenuItem cutCellsMI;
     private javax.swing.JButton cutColumnButton;
     private javax.swing.JButton cutRowButton;
+    private javax.swing.JButton definePatternButton;
     private javax.swing.JTextField denomField;
     private javax.swing.JPanel drumHolderPane;
     private javax.swing.JList drumPatternList;
@@ -8051,7 +8064,6 @@ public void unusePianoRoll()
     private javax.swing.JLabel rowLabel;
     private javax.swing.JPanel rowPanel;
     private javax.swing.JButton saveButton;
-    private javax.swing.JButton savePatternButton;
     private javax.swing.JMenuItem saveStyleAs;
     private javax.swing.JButton saveStyleBtn;
     private javax.swing.JButton saveStyleBtn1;
