@@ -6145,7 +6145,7 @@ public void updateAllDrumPatterns(String name, String rules)
           updateMirror(recentRows[0], recentColumns[0], revisedContent);
         }
         //System.out.println("push: " + pushField0.getText());
-        requestFocusInWindow();
+        styleTextField0.requestFocusInWindow();
       }
 }//GEN-LAST:event_styleTextField0ActionPerformed
 
@@ -6169,7 +6169,7 @@ public void updateAllDrumPatterns(String name, String rules)
         {
         updateMirror(recentRows[1], recentColumns[1], revisedContent);
         }
-      requestFocusInWindow();
+      styleTextField1.requestFocusInWindow();
     }
 }//GEN-LAST:event_styleTextField1ActionPerformed
 
@@ -6193,7 +6193,7 @@ public void updateAllDrumPatterns(String name, String rules)
         {
         updateMirror(recentRows[2], recentColumns[2], revisedContent);
         }
-      requestFocusInWindow();
+      styleTextField2.requestFocusInWindow();
       }
 }//GEN-LAST:event_styleTextField2ActionPerformed
 
@@ -7642,7 +7642,7 @@ private void openStyleMixer()
             updateDrumList();
             updateAllDrumPatterns(definedName, definedPattern);
         }
-        
+        patternField.requestFocusInWindow();
     }//GEN-LAST:event_definePatternButtonMouseClicked
 
     private void removePatternButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_removePatternButtonMouseClicked
