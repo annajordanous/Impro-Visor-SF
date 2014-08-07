@@ -118,9 +118,9 @@ private ChordTableModel chordTableModel =
 private DrumTableModel drumTableModel =
         new DrumTableModel(drumColumnHeaders, DRUM_ROW_COUNT);
 
-public static final int ROW_COUNT = 100;
+public static final int ROW_COUNT = 200;
 
-public static final int DRUM_ROW_COUNT = 300;
+public static final int DRUM_ROW_COUNT = 400;
 
 // Used to load styles into the mixer
 private JFileChooser openStyle = new JFileChooser();
@@ -171,15 +171,12 @@ public StyleMixer(java.awt.Frame parent,
     drumTable.setModel(drumTableModel);
     
     styleDir = ImproVisor.getStyleDirectory();
-    //rawRulesModelBass       = new DefaultListModel();
-    //rawRulesModelChord      = new DefaultListModel();
-    //rawRulesModelDrum       = new DefaultListModel();
 
     initComponents2();
     setSize(900, 425);
 
-    SpinnerModel model = new SpinnerNumberModel(1, 1, 100, 1);
-    loadStyleMixerPatterns();
+    //SpinnerModel model = new SpinnerNumberModel(1, 1, 100, 1);
+    //loadStyleMixerPatterns();
   }
 
 public class BassTableModel extends DefaultTableModel
@@ -282,6 +279,7 @@ public StyleEditor newStyleEditor()
     return m;
 }
 
+/*
 public void setBass()
   {
     styleMixerPanel.setBackground(Color.orange);
@@ -344,7 +342,7 @@ public void setDrumRawRules()
 //      }
 //    return drumPattern;
 //  }
-
+*/
 
 private void initComponents2()
   {
@@ -1114,6 +1112,13 @@ public void loadFromFile( File file )
     }
 }
 
+/**
+ * Displays the selected pattern and name in the fields above the
+ * instrument tables
+ * @param color
+ * @param name
+ * @param pattern 
+ */
 public void updateMixerMirror(Color color, String name, String pattern)
 {
         nameField.setBackground(color);
@@ -1122,6 +1127,9 @@ public void updateMixerMirror(Color color, String name, String pattern)
         patternField.setText(pattern);
 }
 
+/**
+ * Used to copy the patterns for each instrument to the style editor
+ */
 public void copySelectedBassPatternsToStyleEditor()
 {
     for(int i = 0; i < bassRules.size(); i++)
@@ -1188,6 +1196,8 @@ public void copySelectedDrumPatternsToStyleEditor()
     }
 }
 
+/*
+
 public Object getKey( Set keySet, int i )
 {
     int count = 0;
@@ -1204,6 +1214,7 @@ public Object getKey( Set keySet, int i )
     }
     return key;
 }
+*/
 
 //public int getPatternIndex( int i, int patternSize )
 //{
@@ -1212,6 +1223,8 @@ public Object getKey( Set keySet, int i )
 
 
 /**
+ * Currently NOT used because of the changes to the style mixer
+ * Could eventually be modified to copy patterns into the instrument tables
  * Copy a rectangle of cells for copying to the Style Mixer
  * @param cells
  * @param rowNumber
@@ -1300,6 +1313,9 @@ public void copyCellsForStyleMixer(Polylist cells, int rowNumber, String instrum
     saveStylePatterns();
   }
 
+  /*
+   * Only used in the method above, which isn't used currently
+   */
   public void saveStylePatterns()
     {
     String eol = System.getProperty( "line.separator" );
@@ -1347,6 +1363,9 @@ public void copyCellsForStyleMixer(Polylist cells, int rowNumber, String instrum
       }
     }
   
+  /*
+   * Not used currently
+   */
   private void loadStyleMixerPatterns()
   {
   File mixerFile = ImproVisor.getStyleMixerFile();
