@@ -115,6 +115,23 @@ public static void convertToImpPart(jm.music.data.Phrase phrase,
 
 
 /**
+ * Compute the slot corresponding to time given a quantum
+ * @param time
+ * @param quantum
+ * @return 
+ */
+
+public static int quantize(double time, int quantum)
+  {
+    return quantum*(int)Math.ceil((time*FACTOR)/quantum);
+  }
+
+public static int quantizeDown(double time, int quantum)
+  {
+    return quantum*(int)Math.floor((time*FACTOR)/quantum);
+  }
+
+/**
  * Convert notes in jm Note array to Impro-Visor notes and add them to melody part.
  * @param origNoteArray
  * @param time
@@ -131,92 +148,91 @@ public static int noteArray2ImpPart(ArrayList<jm.music.data.Note> origNoteArray,
   {
     //System.out.println("\nquantum = " + quantum);
     
-        // jMusic iterator to parse out and return input notes to add one by one to 
-        // Improvisor's MelodyPart
+    // Counter for the number of notes lost in the quantization process
+    
+    int notesLost = 0;
+    
+    // The time from the jMusic part and the slot in the Impro-Visor part
+    // are tracked separately:
+    //     For jMusic incoming notes' rhythmValues are doubles that are added
+    //         for approximate continuous time.
+    //     For Impro-Visor outgoing notes' rhythmValues are ints that are added
+    //         to keep track of slots.
+    
+    // jMusic iterator to parse out and return input notes to add one by one to 
+    // Improvisor's MelodyPart
     Iterator<jm.music.data.Note> origNotes = origNoteArray.iterator();
 
-        // variable that keeps track of the longest note found to fit in the slot
-        // under consideration (optimizing so shorter notes are, if necessary, 
-        // lost instead)
-        Note longest = new Note(1);
-
-        // variable to keep track of the end of the last placed note in the 
-        // Improvisor part
-    int endLastNote = slot;
-
-        // variable to keep track of the notes lost for a given quantum  
-        int notesLost = 0;
-
-        while (origNotes.hasNext()) 
+    int usedUpToSlot = slot;
+    
+    while( origNotes.hasNext() )
       {
-            // converting the continous time of jMusic closer to Improvisor's 
-            // slot-based time system
-            double scaledTime = time * FACTOR;
-
-            // variable to store the note under current consideration
-        jm.music.data.Note note = origNotes.next();
-
-            // gets original rhythm value of note under consideration, in case of
-            // later truncation
-        double origRhythmValue = note.getRhythmValue();
-
-            // System.out.println("\nslot: "+slot+" scaledTime: "+scaledTime+" note: "+note);
-
-            if (!note.isRest()) 
+        // Catch up the number of slots up to quantized time.
+        int timeInSlots = quantizeDown(time, quantum);
+        slot = Math.max(slot, timeInSlots);
+        
+        // Get the next Note to be placed, or a rest.
+        jm.music.data.Note longNote = origNotes.next();
+        
+        //System.out.println("time = " + time + " note = " + longNote);
+        time += longNote.getRhythmValue();
+        
+        if( !longNote.isRest() )
           {
-                // rests in the original are ignored, but rests in the new part are
-                // created when a note end is strictly less than the next note onset            
-                if (slot >= scaledTime + quantum) 
+          while( time*FACTOR < slot + quantum && origNotes.hasNext() )
+            {
+            // The note starting at time is placeable in the current slot.
+            jm.music.data.Note note = origNotes.next();
+            //System.out.println("time = " + time + " note = " + note);
+            
+            // Account for the time elapsed in that note (or rest).
+            time += note.getRhythmValue();
+            
+            // Incoming rests are ignored, except that time is still advanced
+            // on account of them.
+            
+            if( !note.isRest() )
               {
-                    // the current note cannot be placed in the current quantum, 
-                    // so it is ignored
-                notesLost++;
-
-                    //System.out.println("slot: "+slot+" > scaledTime: "+scaledTime+" lost");
-              }
-            else
-              {
-              // "catch up" slot to scaledTime
-              if( slot < scaledTime )
+              // If the current note is longer than the previous long one
+              // replace the long note in the slot with the current one.
+              if( note.getRhythmValue() > longNote.getRhythmValue() )
                 {
-                  slot = quantum*(int)Math.ceil(scaledTime/quantum);
-                }
-              
-              if( scaledTime <= (slot + quantum) )
-                {
-                        // the current note cannot be placed in the current quantum, 
-                        // so it is ignored
-
-                //System.out.println("slot: " + slot + " endLastNote: " + endLastNote + " note lost");
-
-                        if (slot >= endLastNote) 
-                  {
-                  // Using this slot should not cut into the previous note.
-                  int duration = quantum*(int)Math.ceil((origRhythmValue*FACTOR)/quantum);
-                  int pitch = note.getPitch();
-                  Note newNote = new Note(pitch, duration);
-                  int gap = slot - endLastNote;
-                  if( gap > 0 )
-                    {
-                    // Fill in gap with rest if needed
-                    partOut.addRest(new Rest(gap));
-                    }
-                  partOut.addNote(newNote);
-                  endLastNote = slot + duration;
-                  //System.out.println("slot: " + slot + " endLastNote " + endLastNote + " placing: " + newNote);
-                  slot = endLastNote;
-                  }
+                //System.out.println("losing " + longNote);
+                longNote = note;
+                // The note replaced is thus lost.
                 }
               else
                 {
-                notesLost++;
+                //System.out.println("losing " + note);
                 }
+              notesLost++;
               }
             }
-          time += origRhythmValue;
+          // No further notes starting at time is not placeable in the current slot.
+          // Therefore we will place the longest placeable note in the current slot.
+          int duration = quantize(longNote.getRhythmValue(), quantum);
+          int pitch = longNote.getPitch();
+        
+          // However, we may need to place a rest first, to fill the intervening
+          // gap between the end of the previous note and the current slot.
+          
+          if( slot > usedUpToSlot )
+            {
+              partOut.addRest(new Rest(slot-usedUpToSlot));
+            }
+          // Place the new note.
+          Note newNote = new Note(pitch, duration);
+          //System.out.println("slot = " + slot + " adding pitch = " + pitch 
+          // + " duration = " + duration + " " + newNote + "\n");
+          partOut.addNote(newNote);
+          
+          // Update the slot to reflect the end of the note just placed.
+          slot += duration;
+          usedUpToSlot = slot;
           }
+      }
 
-    //System.out.println("notes lost in quantization: " + notesLost);
+    System.out.println("notes lost in quantization: " + notesLost);
     return slot;
   }
 
