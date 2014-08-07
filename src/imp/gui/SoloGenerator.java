@@ -2122,7 +2122,7 @@ Random random;
         solo.pasteSlots(themeUses.get(index).theme.melody, 0); 
       //  themeUsageTextArea.append(themeUses.get(index).theme.name + "\n");
                // + "used at slot 0\n");
-        themeUsageTextArea.append("Theme with max Use value used first");
+        themeUsageTextArea.append("Theme with max Use value used first\n");
         //paste theme into solo at starting point
         
         // set totals of probabilities to 0
