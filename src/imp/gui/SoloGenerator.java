@@ -561,7 +561,7 @@ public void setTableColumnWidths()
         themeUsageScrollPane.setMinimumSize(new java.awt.Dimension(300, 100));
 
         themeUsageTextArea.setColumns(20);
-        themeUsageTextArea.setRows(128);
+        themeUsageTextArea.setRows(70);
         themeUsageScrollPane.setViewportView(themeUsageTextArea);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -841,6 +841,18 @@ private void playSelection()
                 themeUses.add(use); // add a new ThemeUse to the arraylist with respective elements
                 if (getValueAt(i, NAME_COLUMN)!= null) {
                     use.theme.name = (String)getValueAt(i,NAME_COLUMN); 
+                }
+                
+                if (getValueAt(i, NAME_COLUMN) == null) {
+                    int x = 0;
+                    for (int j = 0; j < soloTable.getRowCount(); j++) {
+                        if ((getValueAt(j, NAME_COLUMN) == null) 
+                         && (getValueAt(j, THEME_COLUMN) != null)
+                         && (getValueAt(j, LENGTH_COLUMN) != null)) {
+                            x += 1;
+                        }
+                    }
+                    use.theme.name = "Theme " + x + " " ; 
                 }
                 
                 System.out.println(use);
@@ -1708,7 +1720,6 @@ public class SoloGeneratorTableModel extends DefaultTableModel
             }
             
             //naming and saving
-            System.out.println("Naming" + i + " " + getValueAt(i, THEME_COLUMN) + " " + getValueAt(i, NAME_COLUMN));
             if (soloTable.isCellSelected(i, NAME_COLUMN)
             && (getValueAt(i, THEME_COLUMN) != null) 
             && (getValueAt(i, NAME_COLUMN) != null) 
@@ -1906,6 +1917,7 @@ public MelodyPart fillMelody(int beatValue,
     return result;
   } 
 
+//in progress
 public void ExpandCommand(Polylist list) {
      Polylist melodyList = (Polylist)list.last(); //get polylist of the melody
          Polylist melodyNotes = (Polylist)melodyList.rest(); //get the notes in a polylist
@@ -2003,6 +2015,7 @@ Random random;
         if (Notate.bernoulli(chosenthemeUse.probTranspose)) {
             // if a random number is greater than the probability not to transpose theme
             System.out.println("Transpose");
+            themeUsageTextArea.append("Theme was transposed\n");
             ChordPart chordProg = notate.getChordProg(); //get current chord progression
             int rise = PitchClass.findRise(PitchClass.getPitchClass(chordProg.getCurrentChord(0).getRoot()),
                     PitchClass.getPitchClass(chordProg.getCurrentChord(length).getRoot()));
@@ -2037,15 +2050,21 @@ Random random;
         if (Notate.bernoulli(chosenthemeUse.probInvert))
         { // if a random number is greater than the probability not to invert the theme
             System.out.println("Invert");
+            themeUsageTextArea.append("Theme was inverted\n");
         }
         cm.execute(new InvertCommand(adjustedTheme, 0, length, false)); //invert theme
 
         if (Notate.bernoulli(chosenthemeUse.probReverse))
         { // if a random number is greater than the probability not to reverse the theme
             System.out.println("Reverse");
-        }
+            themeUsageTextArea.append("Theme was reversed\n");
         cm.execute(new ReverseCommand(adjustedTheme, 0, length, false)); //reverse theme
-
+        }
+        
+//        else {
+//           themeUsageTextArea.append("Theme was left as is\n"); 
+//         }
+//        
         ChordPart themeChords = notate.getChordProg().extract(length, length + length);
         //set chords of theme to be the chordpart extracted from length to length +length
         cm.execute(new RectifyPitchesCommand(adjustedTheme, 0, length, themeChords, false, false)); 
@@ -2112,6 +2131,8 @@ Random random;
         imp.ImproVisor.setPlayEntrySounds(false); //don't play insertions yet
 
         solo.pasteSlots(themeUses.get(index).theme.melody, 0); 
+        themeUsageTextArea.append(themeUses.get(index).theme.name + "\n");
+               // + "used at slot 0\n");
         //paste theme into solo at starting point
         
         // set totals of probabilities to 0
@@ -2156,6 +2177,7 @@ Random random;
                 MelodyPart chosentheme = themeUses.get(0).theme.melody;
                 ThemeUse chosenthemeUse = themeUses.get(0);
                 themeUsageTextArea.append(chosenthemeUse.theme.name + "\n");
+                        //"used at slot " + i + "\n");
                 MelodyPart adjustedTheme = generateSolohelper(chosenthemeUse, chosentheme, solo, cm);
 
                 //this if takes care of the case if the index is out of bounds
@@ -2181,6 +2203,7 @@ Random random;
                     ThemeUse chosenthemeUse = themeUses.get(1);
                     MelodyPart chosentheme = themeUses.get(1).theme.melody;
                     themeUsageTextArea.append(chosenthemeUse.theme.name + "\n");
+                            //"used at slot " + i + "\n");
                     MelodyPart adjustedTheme = generateSolohelper(chosenthemeUse, chosentheme, solo, cm);
 
                     if (i + adjustedTheme.size() >= solo.getSize()) {
@@ -2203,6 +2226,7 @@ Random random;
                             ThemeUse chosenthemeUse = themeUses.get(k);
                             MelodyPart chosentheme = themeUses.get(k).theme.melody;
                             themeUsageTextArea.append(chosenthemeUse.theme.name + "\n");
+                                    //"used at slot "+ i + "\n");
                             MelodyPart adjustedTheme = generateSolohelper(chosenthemeUse, chosentheme, solo, cm);
 
                             if (i + adjustedTheme.size() >= solo.getSize()) {
@@ -2220,7 +2244,8 @@ Random random;
             //this interval is for not using any theme at all    
             if ((themei <= probUsetotal + noThemevalue) && (themei >= probUsetotal)) {
                 System.out.println("noTheme");
-                themeUsageTextArea.append("No Theme"+ "\n");
+                themeUsageTextArea.append("No Theme " + "\n");
+                      //  + "//used at slot "+ i + "\n");
                 generateSolohelper2(themeLength, solo);
             }
         }
