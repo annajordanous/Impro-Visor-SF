@@ -93,8 +93,6 @@ public class MelodyPart
   };
 */
   
-  public boolean alreadyQuantized = false;
-  
   private static int melodyPartNumber = 0;
   
   private String id;
@@ -118,16 +116,6 @@ public class MelodyPart
     {
     return volume;
     }
-  
-   public boolean getAlreadyQuantized()
-  {
-      return alreadyQuantized;
-  }
-  
-  public void setAlreadyQuantized(boolean b)
-  {
-      alreadyQuantized = b;
-  }
 
   /**
    * Creates an empty MelodyPart.
@@ -1987,7 +1975,7 @@ public void setAutoFill(boolean fill)
     }
     
     /**
-     * calculates the distance between a note and the closest known Note
+     * calculates the distance between a note and the closest known Note rhythmically
      * @param Note note
      * @return int cost
      */
@@ -2062,7 +2050,9 @@ public void setAutoFill(boolean fill)
         int median = m.getMedianNoteLength();
         int cost = m.getMelodyCost();
         
-        wCost = (diff*median)+cost;
+        //System.out.println("diff: "+diff+", median: "+median+", cost: "+cost);
+        
+        wCost = ((diff)*median)+(cost);
         
         return wCost;
     }
@@ -2096,6 +2086,8 @@ public void setAutoFill(boolean fill)
             appliedRes = melody.applyResolution(knownResolutionValue[i]);
             //calculates the weighted cost for the given resolution
             cost = appliedRes.getWeightedMelodyCost(initialNoteSum);
+            
+            //System.out.println("applied "+knownResolutionValue[i]+", cost "+cost);
             
             if (cost < lowestCost)
             {
@@ -2160,7 +2152,7 @@ public void setAutoFill(boolean fill)
             isLongRelatively = (prevLength/noteLength) >= 4;
         }
         
-        // extend cases, where prospective length is valid, but note length and 
+        // case: prospective length is valid, but note length and 
         // previous length are not valid
         if (isProspValidLength)
         {
@@ -2181,12 +2173,6 @@ public void setAutoFill(boolean fill)
                 return 0;
             }
         }
-        
-            // TODO: shift case statement
-//            if (...)
-//            {
-//                return 2;
-//            }
 
         return -1;
     }
@@ -2204,7 +2190,6 @@ public void setAutoFill(boolean fill)
         int shiftAndExtendValue;
         int prospRhythmValue;
         int prospPitch;
-        int index = 0;
 
         while (iter.hasNext()) 
         {
@@ -2219,7 +2204,6 @@ public void setAutoFill(boolean fill)
                 {
                     Rest prosp = new Rest(prospRhythmValue);
                     fixed.addNote(prosp);
-                    index += prospRhythmValue;
                     //System.out.println("Added prosp = "+prosp+" replacing note");
                 } 
                 else 
@@ -2227,7 +2211,6 @@ public void setAutoFill(boolean fill)
                     prospPitch = note.getPitch();
                     Note prosp = new Note(prospPitch, prospRhythmValue);
                     fixed.addNote(prosp);
-                    index += prospRhythmValue;
                     //System.out.println("Added prosp = "+prosp+" replacing note");
                 }                    
 
@@ -2252,7 +2235,6 @@ public void setAutoFill(boolean fill)
                 {
                     Rest prosp = new Rest(prospRhythmValue);
                     fixed.addNote(prosp);
-                    index += prospRhythmValue;
                     //System.out.println("Added prosp = "+prosp+" replacing note");
                 } 
                 else 
@@ -2260,7 +2242,6 @@ public void setAutoFill(boolean fill)
                     prospPitch = prev.getPitch();
                     Note prosp = new Note(prospPitch, prospRhythmValue);
                     fixed.addNote(prosp);
-                    index += prospRhythmValue;
                     //System.out.println("Added prosp = "+prosp+" replacing prev");
                 }
 
@@ -2276,17 +2257,12 @@ public void setAutoFill(boolean fill)
                 }
             } 
 
-            else if (shiftAndExtendValue == 2) 
-            {
-                //TODO: write shift function
-            } // case: no change necessary
             else 
             {
                 if (prev.isRest()) 
                 {
                     Rest prosp = new Rest(prev.getRhythmValue());
                     fixed.addNote(prosp);
-                    index += prosp.getRhythmValue();
                     //System.out.println("Added regular = "+prev);
                 } 
                 else 
@@ -2294,7 +2270,6 @@ public void setAutoFill(boolean fill)
                     prospPitch = prev.getPitch();
                     Note prosp = new Note(prospPitch, prev.getRhythmValue());
                     fixed.addNote(prosp);
-                    index += prosp.getRhythmValue();
                     //System.out.println("Added regular = "+prev);
                 }
 
@@ -2382,9 +2357,6 @@ public void setAutoFill(boolean fill)
         // merge adjacent rests
         qMelody.mergeAdjacentRests();
         
-        //set alreadyQuantized flag
-        qMelody.setAlreadyQuantized(true);
-        
         return qMelody;
     }
     
@@ -2397,9 +2369,6 @@ public void setAutoFill(boolean fill)
         
         qMelody.shiftAndMergeMelody();
         qMelody.mergeAdjacentRests();
-        
-         //set alreadyQuantized flag
-        qMelody.setAlreadyQuantized(true);
         
         return qMelody;
     }

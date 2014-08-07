@@ -7917,7 +7917,7 @@ boolean saveConstructionLineState;
         standardToolbar.add(smartEntryButton);
 
         quantizeComboBox.setMaximumRowCount(24);
-        quantizeComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "-", "Best", "1/4", "1/3", "1/2", "3/4", "1", "3/2", "2", "5/2", "4", "6", "8", "12", "24", "60", "120" }));
+        quantizeComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "-", "Best", "1/4", "1/3", "1/2", "3/4", "1", "3/2", "2", "3", "4", "6", "8", "12", "24", "60", "120" }));
         quantizeComboBox.setToolTipText("Quantize melody to specified number of subdivisions per beat (for MIDI input)."); // NOI18N
         quantizeComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Snap", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Dialog", 0, 10))); // NOI18N
         quantizeComboBox.setMaximumSize(new java.awt.Dimension(90, 45));
@@ -23742,40 +23742,21 @@ public void setKconstantSlider(double value)
         // resolution found and other factors of MelodyPart.quantize()
         else if (quantizeString.equals("Best")) 
         {
-            if (originalPart.getAlreadyQuantized() == false)
-            {
-                quantizeResolution = originalPart.getBestResolution();
-                quantizeComboBox.setSelectedItem((Integer.toString(quantizeResolution)));
-                //System.out.println("Best resolution toString: "+Integer.toString(quantizeResolution));
-                quantizedPart = MelodyPart.quantize(originalPart);
-                addChorus(quantizedPart); 
-            }
-            else
-            {    
-                System.out.println("MelodyPart found to be already quantized.");
-                quantizedPart = MelodyPart.quantizeNoRes(originalPart);
-                //addChorus(quantizedPart); 
-            }
+            quantizeResolution = originalPart.getBestResolution();
+            quantizeComboBox.setSelectedItem((Integer.toString(quantizeResolution)));
+            System.out.println("Best resolution toString: "+Integer.toString(quantizeResolution));
+            quantizedPart = MelodyPart.quantize(originalPart);
+            addChorus(quantizedPart);
         }
         
         //case: selected integer value, resolution applied
         else 
         {
-            if (originalPart.getAlreadyQuantized() == false)
-            {
-                quantizeResolution = getSlotsFromString(quantizeString);
-                quantizedPart = originalPart.applyResolution(quantizeResolution);
-                System.out.println("Applied Resolution = " + quantizeResolution);
-                quantizedPart = MelodyPart.quantizeNoRes(quantizedPart);
-                addChorus(quantizedPart); 
-            }
-            else
-            {
-                System.out.println("MelodyPart found to be already quantized.");
-                quantizedPart = MelodyPart.quantizeNoRes(originalPart);
-                //addChorus(quantizedPart); 
-            }
-            
+            quantizeResolution = getSlotsFromString(quantizeString);
+            quantizedPart = originalPart.applyResolution(quantizeResolution);
+            System.out.println("Applied Resolution = " + quantizeResolution);
+            quantizedPart = MelodyPart.quantizeNoRes(quantizedPart);
+            addChorus(quantizedPart);           
         }               
     }//GEN-LAST:event_quantizeComboBoxscaleChosen
 
@@ -23820,7 +23801,7 @@ public void setKconstantSlider(double value)
         {
             return 60;
         }
-        else if (s.equals("5/2"))
+        else if (s.equals("3"))
         {
             return 40;
         }
