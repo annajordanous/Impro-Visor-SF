@@ -196,7 +196,13 @@ public class NoteConverter {
         return relativePitchMelody.toString();
     }
     
-    //given a slice of melody as a MelodyPart, convert it to a series of relative pitches
+     /**
+     * melPartToRelativePitch 
+     * Convert a MelodyPart to a sequence of relative pitches
+     *
+     * @param melPart the melody part that needs to be converted
+     * @param chordPart the corresponding chords
+     */
     public static String melPartToRelativePitch(MelodyPart melPart, ChordPart chordPart) {
         StringBuilder relMel = new StringBuilder();
         int totalDuration = 0;
@@ -216,6 +222,13 @@ public class NoteConverter {
         return relMel.toString();
     }
 
+     /**
+     * noteToAbstract 
+     * Convert a note in a tune to an abstract pitch
+     *
+     * @param noteIndex the index of the note in the tune that needs to be converted
+     * @param notate used to get all the tune's information
+     */
     public static Polylist noteToAbstract(int noteIndex, Notate notate) {
         //get type of note
         ChordPart chordProg = notate.getChordProg();
@@ -263,7 +276,17 @@ public class NoteConverter {
         return rhythmString;
     }
 
-    public static String melodyToAbstract(MelodyPart melPart, ChordPart chordPart, boolean isSongStart, Notate notate, LickGen lickgen) {
+     /**
+     * melodyToAbstract 
+     * Convert a MelodyPart to abstract melody
+     *
+     * @param melPart the melody that will be converted
+     * @param chordPart the corresponding chords
+     * @param isSongStart if this MelodyPart is from the start of the song
+     * @param notate we set its status
+     * @param lickgen to get note types, etc.
+     */
+    public static String melodyToAbstract(MelodyPart melPart, ChordPart chordPart, boolean isSongStart, LickGen lickgen) {
         if (melPart.melodyIsEmpty(0, melPart.getSize())) {
             StringBuilder sb = new StringBuilder();
             Note n = new Note(72, 1);

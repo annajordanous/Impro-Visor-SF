@@ -47,11 +47,13 @@ public class CreateBrickGrammar {
     
     private static int MEASURE_LENGTH; //so we can determine if bricks start on measures
     
-    //HYBRID GRAMMARS: TRY USING DIFFERENT BUFFEREDWRITERS FOR BRICK AND WINDOW PRODUCTIONS
-    
-    /**
-     * processByBrick Scan the tune one brick at a time and write info to an
-     * output file
+   /**
+     * processByBrick 
+     * Process corpus one brick at a time
+     *
+     * @param notate used to get melody information from leadsheet
+     * @param chorusNumber which chorus of the tune we want to process
+     * @param frame used to write productions
      */
     public static void processByBrick(Notate notate, int chorusNumber, LickgenFrame frame) {
         //step 1: roadmap the tune to find out what bricks it uses and where
@@ -61,7 +63,6 @@ public class CreateBrickGrammar {
         }
         //PartIterator iterates through choruses Score.size() Score.getPart()
         MEASURE_LENGTH = notate.getCurrentMelodyPart().getMeasureLength();
-        //for (StaveScrollPane ssp : notate.getStaveScrollPane()) {
         StaveScrollPane ssp = notate.getStaveScrollPane()[chorusNumber];
             Stave s = ssp.getStave();
             MelodyPart melPart = notate.getMelodyPart(s);
@@ -91,7 +92,6 @@ public class CreateBrickGrammar {
                     String blockAbstract = NoteConverter.melodyToAbstract(blockMelody, 
                                                                                 blockChords, 
                                                                                 (i == 0), 
-                                                                                notate, 
                                                                                 notate.getLickGen());
                     int location = totalDuration % melPart.size(); //tell production writing method how far we are
                                                                    //in a given chorus and which chorus
@@ -106,8 +106,6 @@ public class CreateBrickGrammar {
                 }
                 totalDuration += currentBlock.getDuration();
             }
-            //chorusCount++;
-        //}
         
         //for convenience (to make it easier to refer to a specific brick type), store brick types in array
         brickKindsArray = new String[brickKinds.size()];
@@ -134,11 +132,13 @@ public class CreateBrickGrammar {
      * together by similarity within types of harmonic bricks
      *
      * @param chordProg the chord progression
-     * @param infile the file we're getting initial rules from
+     * @param inWriter the StringWriter we're getting initial rules from
      * @param outfile the file we're writing the grammar to
      * @param repsPerCluster how many representatives to choose from each kind
      * of cluster
-     * @param notate used to process melody by brick
+     * @param useRelative whether or not we're using relative pitches
+     * @param useAbstract whether or not we're using abstract melodies
+     * @param notate we set its status
      */
     public static void create(ChordPart chordProg,
             StringWriter inWriter,
@@ -146,8 +146,7 @@ public class CreateBrickGrammar {
             int repsPerCluster,
             boolean useRelative,
             boolean useAbstract,
-            Notate notate,
-            LickgenFrame frame) {
+            Notate notate) {
         
         //do processing by brick
         if (brickKindsArray.length == 0) { //must be a pretty strange tune for this to happen...
@@ -198,10 +197,18 @@ public class CreateBrickGrammar {
         notate.setLickGenStatus("Wrote " + rules.length + " grammar rules.");
 
         //note: no need for a .soloist file
-        writeBrickGrammar(useRelative, useAbstract, outFile, notate);
+        writeBrickGrammar(useRelative, useAbstract, outFile);
     }
 
-    public static void writeBrickGrammar(boolean useRelative, boolean useAbstract, String outfile, Notate notate) {
+    /**
+     * writeBrickGrammar
+     * Write the grammar to a file
+     *
+     * @param useRelative whether or not we're using relative pitch
+     * @param useAbstract whether or not we're using abstract melodies
+     * @param outfile the file we're writing the grammar to
+     */
+    public static void writeBrickGrammar(boolean useRelative, boolean useAbstract, String outfile) {
         try {
             BufferedWriter out = new BufferedWriter(new FileWriter(outfile, true));
             //overhead rules that specify how many duration slots to subtract off for bricks of different durations
@@ -239,6 +246,14 @@ public class CreateBrickGrammar {
         }
     }
     
+    /**
+     * writeRule
+     * actually write a rule out
+     *
+     * @param rule the rule we're writing out
+     * @param rep the data point whose information needs to be written
+     * @param out the BufferedWriter we're writing to
+     */
     public static void writeRule(String rule, DataPoint rep, BufferedWriter out) {
         try {
             out.write("(rule (BRICK "
