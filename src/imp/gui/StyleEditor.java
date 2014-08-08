@@ -628,19 +628,21 @@ public void updateAllDrumPatterns(String name, String rules)
         {
             ArrayList<DrumRuleDisplay> drumRules = 
                     drumPattern.getDrumRules();
-            for (DrumRuleDisplay drum : drumRules) {
+            for( int i=0; i<drumRules.size(); i++ ) 
+            {
+                DrumRuleDisplay drum = drumRules.get(i);
                 String drumText = drum.getPatternText();
                 //System.out.println("drum: " + drum.getInstrument());
                 //System.out.println("drum index: " + drumRules.indexOf(drum));
                 
                 if( rules.equals(drumText) )
                 {
-                    drum.setDisplayText(drumText, name);
+                    //drum.setDisplayText(drumText, name);
                     
                     int col = allDrumPatterns.indexOf(drumPattern);
                     int row = drumRules.indexOf(drum)
                               + StyleTableModel.FIRST_PERCUSSION_INSTRUMENT_ROW;
-                    setCell(drumText, row, col, SILENT, name);
+                    setCell(rules, row, col, SILENT, name);
                 }
             }
         }
@@ -5703,11 +5705,6 @@ public void updateAllDrumPatterns(String name, String rules)
                 definePatternButtonMouseClicked(evt);
             }
         });
-        definePatternButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                definePatternButtonActionPerformed(evt);
-            }
-        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
@@ -7615,6 +7612,7 @@ private void openStyleMixer()
         definedPattern = patternField.getText();
         Color background = patternField.getBackground();
         setCell(definedPattern, currentRow, currentColumn, PLAY, nameField3.getText());
+        patternField.requestFocusInWindow();
     }//GEN-LAST:event_patternFieldActionPerformed
 
     private void definePatternButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_definePatternButtonMouseClicked
@@ -7642,7 +7640,6 @@ private void openStyleMixer()
             updateDrumList();
             updateAllDrumPatterns(definedName, definedPattern);
         }
-        patternField.requestFocusInWindow();
     }//GEN-LAST:event_definePatternButtonMouseClicked
 
     private void removePatternButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_removePatternButtonMouseClicked
@@ -7868,10 +7865,6 @@ private void openStyleMixer()
             updateMirror(recentRows[0], recentColumns[0], display.toString());
         }  
     }//GEN-LAST:event_weightField0ActionPerformed
-
-    private void definePatternButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_definePatternButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_definePatternButtonActionPerformed
 
 private void usePianoRoll()
 {
