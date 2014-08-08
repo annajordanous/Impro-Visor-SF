@@ -54,6 +54,7 @@ import polya.Tokenizer;
 /**
  *
  * @author David Morrison, Robert Keller
+ * Includes additions from Mark Heimann to support additional grammars
  */
 public class LickgenFrame
         extends javax.swing.JFrame
@@ -5218,8 +5219,6 @@ public void extractAbstractMelody()
                      <= (numMeasures) * slotsPerSection;
                     i++ )
               {
-                //System.out.println("Window: " + window);
-                //System.out.println("i: " + i);
                 String production = addMeasureToAbstractMelody(
                         start + (i * slotsPerSection) + (window * BEAT),
                         measureWindow,
@@ -6462,8 +6461,7 @@ public void extractAbstractMelody()
                     getNumClusterReps(),
                     getUseRelativeBricks(),
                     getUseAbstractBricks(),
-                    notate,
-                    this);
+                    notate);
             brickProductionsWriter.getBuffer().setLength(0); //reset for next usage
         } 
         if (getUseWindows()) {
