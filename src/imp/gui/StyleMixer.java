@@ -293,9 +293,13 @@ public class DrumTableModel extends DefaultTableModel
  */
 public void reset()
 {
-    bassTable.setModel(new BassTableModel(columnHeaders, ROW_COUNT));
-    chordTable.setModel(new ChordTableModel(columnHeaders, ROW_COUNT));
-    drumTable.setModel(new DrumTableModel(drumColumnHeaders, DRUM_ROW_COUNT));
+    bassTableModel = new BassTableModel(columnHeaders, ROW_COUNT);
+    chordTableModel = new ChordTableModel(columnHeaders, ROW_COUNT);
+    drumTableModel = new DrumTableModel(drumColumnHeaders, DRUM_ROW_COUNT);
+    
+    bassTable.setModel(bassTableModel);
+    chordTable.setModel(chordTableModel);
+    drumTable.setModel(drumTableModel);
     
     bassRules = new LinkedHashMap<String, String>();
     chordRules = new LinkedHashMap<String, String>();
