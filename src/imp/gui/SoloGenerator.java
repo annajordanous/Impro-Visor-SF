@@ -142,10 +142,6 @@ public void setTableColumnWidths()
         youSure = new javax.swing.JLabel();
         YesButton = new javax.swing.JButton();
         NoButton = new javax.swing.JButton();
-        AlreadyNamed = new javax.swing.JDialog();
-        OverwriteOption = new javax.swing.JLabel();
-        YesOverwrite = new javax.swing.JButton();
-        NoOverwrite = new javax.swing.JButton();
         deleteCheck = new javax.swing.JDialog();
         deletesure = new javax.swing.JLabel();
         Okdelete = new javax.swing.JButton();
@@ -359,44 +355,6 @@ public void setTableColumnWidths()
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(31, 76, 150, 0);
         resetCheck.getContentPane().add(NoButton, gridBagConstraints);
-
-        AlreadyNamed.setBounds(new java.awt.Rectangle(22, 22, 22, 22));
-        AlreadyNamed.getContentPane().setLayout(new java.awt.GridBagLayout());
-
-        OverwriteOption.setText("This theme already has a name. Would you like to overwrite it? ");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(120, 20, 0, 22);
-        AlreadyNamed.getContentPane().add(OverwriteOption, gridBagConstraints);
-
-        YesOverwrite.setText("Yes");
-        YesOverwrite.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                YesOverwriteActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(18, 84, 147, 0);
-        AlreadyNamed.getContentPane().add(YesOverwrite, gridBagConstraints);
-
-        NoOverwrite.setText("No");
-        NoOverwrite.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                NoOverwriteActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(18, 70, 147, 0);
-        AlreadyNamed.getContentPane().add(NoOverwrite, gridBagConstraints);
 
         deleteCheck.setBounds(new java.awt.Rectangle(22, 22, 22, 22));
         deleteCheck.setMinimumSize(new java.awt.Dimension(450, 350));
@@ -843,7 +801,6 @@ private void playSelection()
                     use.theme.name = (String)getValueAt(i,NAME_COLUMN); 
                 }
                 
-                System.out.println(use);
                 }
               }
            }
@@ -878,7 +835,8 @@ private void playSelection()
 //            int themelength = melody.size() / BEAT;
 //            setValueAt(themelength + "", j, LENGTH_COLUMN);
 //            
-            for (Map.Entry pair : allThemes.entrySet()) { //loop through all the entry sets of {Theme,name} in allThemes
+            for (Map.Entry pair : allThemes.entrySet()) { 
+                //loop through all the entry sets of {Theme,name} in allThemes
                 Theme ThemeKey = (Theme) pair.getKey(); //get the Theme of each entry
                 
                 if (melody.toString().equals(ThemeKey.melody.toString())) { 
@@ -1009,7 +967,6 @@ private void playSelection()
                                     setValueAt(theme.ThemeLength + "", x, LENGTH_COLUMN); 
                                     //make the lengths the same 
                                     setValueAt(name + "-" + n,j,NAME_COLUMN);
-                                    // System.out.println(theme.ThemeLength);
                                 }
                             }
                         }
@@ -1034,7 +991,6 @@ private void playSelection()
                             //set theme equal to the corresponding theme in that entry
                             MelodyPart melody = theme.melody; //get the melody of the theme
                             score.addPart(melody);
-                            System.out.println(score);
                             PatternDisplay.playScore(notate, score, soloGenerator);
                         }
                     }
@@ -1092,50 +1048,6 @@ private void playSelection()
         resetCheck.setVisible(false);
     }//GEN-LAST:event_NoButtonActionPerformed
 
-    private void YesOverwriteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_YesOverwriteActionPerformed
-        MelodyPart theme = null; 
-        for (int j = 0; j < soloTable.getRowCount(); j++) { 
-
-            if (soloTable.isCellSelected(j,NAME_COLUMN)) {
-                theme = (MelodyPart)getValueAt(j,THEME_COLUMN);
-            }
-            
-        for (Map.Entry pair : allThemes.entrySet()) {
-            Theme KeyTheme = (Theme)pair.getKey();
-            
-                 if (theme == KeyTheme.melody) {
-                     allThemes.put(KeyTheme, nameField.getText());
-                    ensureThemeArray(); 
-                    setValueAt(nameField.getText(),j,NAME_COLUMN);
-                  }
-                 
-            }
-        }
-
-    }//GEN-LAST:event_YesOverwriteActionPerformed
-
-    private void NoOverwriteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NoOverwriteActionPerformed
-        AlreadyNamed.setVisible(false);
-        MelodyPart theme = null;
-        
-        for (int j = 0; j < soloTable.getRowCount(); j++) { 
-            
-            if (soloTable.isCellSelected(j,NAME_COLUMN)) {
-                theme = (MelodyPart)getValueAt(j,THEME_COLUMN);
-            }
-            
-        for (Map.Entry pair : allThemes.entrySet()) {
-            Theme KeyTheme = (Theme)pair.getKey();
-            
-                 if (theme == KeyTheme.melody) {
-                   String name =  (String)pair.getValue();
-                   setValueAt(name, j, NAME_COLUMN);
-                  }
-                 
-            }
-        }
-    }//GEN-LAST:event_NoOverwriteActionPerformed
-
     private void OkdeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OkdeleteActionPerformed
        int index = soloTable.getSelectedRow();
        soloTableModel.removeRow(index);
@@ -1143,7 +1055,6 @@ private void playSelection()
        for (int i = 0; i < soloTable.getColumnCount(); i++){
            
            if (soloTable.isCellSelected(index,i)) {
-               System.out.println("delete");
                setValueAt(null,index,i);
            }
            
@@ -1157,76 +1068,7 @@ private void playSelection()
     }//GEN-LAST:event_NodeleteActionPerformed
 
     private void themeListKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_themeListKeyPressed
-//   if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-//        for (int i = 0; i < orderedThemes.size(); i++) { //loop through size of orderedThemes
-//            for (int j = 0; j < soloTable.getRowCount(); j++) {//loop through table
-//                
-//                if (themeList.isSelectedIndex(i) 
-//                   && (getValueAt(j, NAME_COLUMN) == null) 
-//                   && (getValueAt(j,THEME_COLUMN) == null) 
-//                   && (getValueAt(j, LENGTH_COLUMN) == null) 
-//                       )
-//                        {
-//                    //if a theme in the Themes scroll box is clicked and a theme cell is selected
-//                    String name = (String) themeList.getSelectedValue();
-//                    //set name equal to the one clicked in the scroll box
-//                    
-//                    for (Map.Entry pair : allThemes.entrySet()) { 
-//                        //loop through entries in allThemes
-//                        
-//                        if (name == pair.getValue()) 
-//                        { //if the name in the themeList is equal to the name in the entry
-//                            Theme theme = (Theme) pair.getKey(); 
-//                            //set theme equal to the corresponding theme in that entry
-//                            MelodyPart melody = theme.melody; //get the melody of the theme
-//                            Part.PartIterator k = melody.iterator(); //iterate over melody
-//                            String themestring = ""; //set theme as empty to start
-//                            
-//                            while (k.hasNext()) //while you can still iterate through the melody
-//                            {
-//                                Unit unit = k.next();
-//                                if (unit != null) //if next isn't empty
-//                                {
-//                                    themestring += unit.toLeadsheet() + " "; 
-//                                    //add it to the theme in leadsheet notation
-//                                }
-//                            }
-//                            
-//                            setValueAt(name, j, NAME_COLUMN); 
-//                            //paste in the name of theme to the table
-//                          //  setValueAt(theme.ThemeLength + "", j, LENGTH_COLUMN); 
-//                            setValueAt(melody.size() / BEAT + "", j, LENGTH_COLUMN);
-//                            //paste in the theme length
-//                            setValueAt(themestring, j, THEME_COLUMN); 
-//                            //paste in the theme in leadsheet notation
-//
-//                            //in case the length is different than the one typed by the user 
-//                            int n = 0;
-//                            for (int x = 0; x < soloTable.getRowCount(); x++) { //loop through table
-//                                if (getValueAt(x, NAME_COLUMN) != null 
-//                                && ((((String) getValueAt(x, NAME_COLUMN)).equals(name))
-//                                || ((String) getValueAt(x, NAME_COLUMN)).equals(name + "-" + n))
-//                                && (x != j) 
-//                                && (((String) getValueAt(x, THEME_COLUMN)).equals(themestring))  
-//                                        //&& (!((String) getValueAt(x, 1)).equals(theme.ThemeLength + ""))
-//                                        ) {
-//                                    n += 1; //add one to n so if the same theme 
-//                                    //is already in the table it will be differentiated from it
-//                                    //if the names are the same, the rows are different,
-//                                    //the themes are the same, the lengths are different
-//                                    setValueAt(theme.ThemeLength + "", x, LENGTH_COLUMN); 
-//                                    //make the lengths the same 
-//                                    setValueAt(name + "-" + n,j,NAME_COLUMN);
-//                                    // System.out.println(theme.ThemeLength);
-//                                }
-//                            }
-//                        }
-//                    }
-//                   break;
-//                }
-//            }
-//        }
-//      }
+
     }//GEN-LAST:event_themeListKeyPressed
 
     private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
@@ -1235,7 +1077,6 @@ private void playSelection()
 
     private void nameFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nameFieldKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-             System.out.println("name");
              if (orderedThemes.contains(nameField.getText())) 
         { //if the user enters a name that is already in orderedThemes
             nameErrorMessage.setVisible(true); //same error message pops up
@@ -1369,8 +1210,8 @@ public ThemeListModel themeListModel = new ThemeListModel();
   
 private SoloGeneratorTableModel soloTableModel = new SoloGeneratorTableModel (
         new Object [][] {
-                {null, null, null, ".5", ".6", ".3", ".4"},
-                {null, null, null, ".6", ".5", ".2", ".3"},
+                {null, null, null, "1", "0", "0", "0"},
+                {null, null, null, "1", "0", "0", "0"},
                 {null, null, null, "1", "0", "0", "0"},
                 {null, null, null, "1", "0", "0", "0"},
                 {null, null, null, "1", "0", "0", "0"},
@@ -1621,17 +1462,13 @@ public class SoloGeneratorTableModel extends DefaultTableModel
           MelodyPart melody = new MelodyPart((String) getValueAt(i, THEME_COLUMN)); 
             
             int themelength = melody.size() / BEAT;
-            
-                System.out.println(melody);
                 String name = (String) getValueAt(i, NAME_COLUMN);
-                System.out.println(name);
                 String themestring = (String) getValueAt(i, THEME_COLUMN);
                 MelodyPart themeMelody = new MelodyPart(themestring);
                 Theme theme = Theme.makeTheme(name,themeMelody);
                 
                 if (orderedThemes.contains(name))
                 { //if the user types a name already in the list
-                    System.out.println("contains");
                     nameErrorMessage.setVisible(true); 
                     //give name error message to rename the theme
                 } 
@@ -1641,13 +1478,9 @@ public class SoloGeneratorTableModel extends DefaultTableModel
                         // loop through the entries of allThemes
                         Theme ThemeKey = (Theme) pair.getKey(); 
                         //get the Theme of each entry
-                        System.out.println(ThemeKey.melody);
 
                         if (melody.toString().equals(ThemeKey.melody.toString())) 
                         { //if the melody of the Theme is the same as the one in the table
-//                     System.out.println("themeproblem");
-//                     AlreadyNamed.setVisible(true); 
-                            System.out.println("same");
                             addTheme(theme); //add the theme to the list
                             saveRules(fileName);
                             //   soloTable.setValueAt(pair.getValue(), i, 0); 
@@ -1678,7 +1511,6 @@ public class SoloGeneratorTableModel extends DefaultTableModel
                         }
                         
                         else { //if there is no melody that matches the one in the table
-                            System.out.println("Adding");
                             addTheme(theme);
                             saveRules(fileName);
                         }
@@ -1715,7 +1547,6 @@ public class SoloGeneratorTableModel extends DefaultTableModel
            // && (getValueAt(i,NAME_COLUMN) != " ")
                     )
             { //if name cell is selected, it's not empty and the theme isn't empty
-                System.out.println("lala");
                 namingSaving(row, col, i);
                 return;
             }
@@ -1764,7 +1595,6 @@ public void addTheme(Theme theme)
     {
         ensureThemeArray();
         int orderedThemesIndex = orderedThemes.size() - 1;
-        System.out.println(allThemes);
         System.out.println(orderedThemes);
         String name = theme.name;
         for (int i = 0; i < soloTable.getRowCount(); i++) {
@@ -1779,8 +1609,6 @@ public void addTheme(Theme theme)
             //  allThemesIndex = allThemes.indexOf(theme);
         }
         System.out.println(orderedThemes);
-        System.out.println(allThemes);
-        System.out.println("here");
        //saveRules(fileName);
     }
 
@@ -1906,7 +1734,7 @@ public MelodyPart fillMelody(int beatValue,
     return result;
   } 
 
-//in progress
+//work in progress
 public void ExpandCommand(Polylist list) {
      Polylist melodyList = (Polylist)list.last(); //get polylist of the melody
          Polylist melodyNotes = (Polylist)melodyList.rest(); //get the notes in a polylist
@@ -1948,7 +1776,6 @@ public void ExpandCommand(Polylist list) {
         for (int x = 0; x < soloTable.getRowCount(); x++) { //loop through the rows of the table
             if ((getValueAt(x, LENGTH_COLUMN) != null)
            &&  (!isInteger((String) getValueAt(x, LENGTH_COLUMN)))) {
-                System.out.println("error");
                 enteredIncorrectly.setVisible(true);
               } 
             else {
@@ -2000,11 +1827,14 @@ Random random;
         int length = chosentheme.size(); // get length of theme
         MelodyPart adjustedTheme = chosentheme.copy(); //made a copy of the theme
         imp.ImproVisor.setPlayEntrySounds(false); //don't play yet
-
+        int unmodified = 0; 
+        int multipleuse = 0;
+        
         if (Notate.bernoulli(chosenthemeUse.probTranspose)) {
             // if a random number is greater than the probability not to transpose theme
+            multipleuse += 1;
             System.out.println("Transpose");
-            themeUsageTextArea.append(" and was transposed\n");
+            themeUsageTextArea.append("transposed");
             ChordPart chordProg = notate.getChordProg(); //get current chord progression
             int rise = PitchClass.findRise(PitchClass.getPitchClass(chordProg.getCurrentChord(0).getRoot()),
                     PitchClass.getPitchClass(chordProg.getCurrentChord(length).getRoot()));
@@ -2034,31 +1864,55 @@ Random random;
                 cm.execute(new ShiftPitchesCommand(rise, adjustedTheme, 0, length, 0, 128, notate.getScore().getKeySignature()));
             }
             //shift theme pitches by the rise in semitones
+        } 
+        
+        else {
+            unmodified += 1;
         }
 
         if (Notate.bernoulli(chosenthemeUse.probInvert))
         { // if a random number is greater than the probability not to invert the theme
+            multipleuse += 1;
+            if (multipleuse == 2) {
+                themeUsageTextArea.append(", and inverted");
+            }
             System.out.println("Invert");
-            themeUsageTextArea.append(" and was inverted\n");
+            if (!(multipleuse == 2)) {
+               themeUsageTextArea.append("inverted"); 
+            }
+            cm.execute(new InvertCommand(adjustedTheme, 0, length, false)); //invert theme
+            
         }
-        cm.execute(new InvertCommand(adjustedTheme, 0, length, false)); //invert theme
+        
+        else {
+            unmodified += 1;
+        }
 
         if (Notate.bernoulli(chosenthemeUse.probReverse))
         { // if a random number is greater than the probability not to reverse the theme
+            multipleuse += 1;
             System.out.println("Reverse");
-            themeUsageTextArea.append(" and was reversed\n");
+            if (multipleuse == 1) {
+             themeUsageTextArea.append("reversed");
+            }
+            if (multipleuse != 1) {
+                 themeUsageTextArea.append(", and reversed");
+            }
         cm.execute(new ReverseCommand(adjustedTheme, 0, length, false)); //reverse theme
+        } 
+        
+        else {
+            unmodified += 1;
         }
         
-//        else {
-//           themeUsageTextArea.append("Theme was left as is\n"); 
-//         }
-//        
+        if ( unmodified == 3){
+           themeUsageTextArea.append("unmodified"); 
+         }
+        themeUsageTextArea.append("\n");
         ChordPart themeChords = notate.getChordProg().extract(length, length + length);
         //set chords of theme to be the chordpart extracted from length to length +length
         cm.execute(new RectifyPitchesCommand(adjustedTheme, 0, length, themeChords, false, false)); 
         //resolve pitches of the theme
-        System.out.println("paste");
         solo.setSize(solo.getSize() + length); 
         //set size of solo to the existing length of the solo plus the length of the theme
         return adjustedTheme;
@@ -2088,7 +1942,6 @@ Random random;
 
     public void generateSolo(ArrayList<ThemeUse> themeUses, CommandManager cm) {
         themeUsageTextArea.setText(null);
-        System.out.println("start");
         System.out.println(themeUses);
         // create four empty lists to start for all the probabilities
         List<Double> probUselist = new ArrayList(Arrays.asList());
@@ -2100,7 +1953,6 @@ Random random;
         //themeuse and add it to the corresponding empty list
         for (int i = 0; i < themeUses.size(); i++) {
             probUselist.add(themeUses.get(i).probUse);
-         // System.out.println(themeUses.get(i).probUse);
             probTransposelist.add(themeUses.get(i).probTranspose);
             probInvertlist.add(themeUses.get(i).probInvert);
             probReverselist.add(themeUses.get(i).probReverse);
@@ -2109,7 +1961,6 @@ Random random;
        
         // find max of probability use to use that corresponding theme first
         double max = Collections.max(probUselist);
-       // System.out.println(max);
         int index = probUselist.indexOf(max); //get the index of the max
         int length = themeUses.get(index).theme.melody.getSize(); 
         //get length of theme
@@ -2167,9 +2018,9 @@ Random random;
                 MelodyPart chosentheme = themeUses.get(0).theme.melody;
                 ThemeUse chosenthemeUse = themeUses.get(0);
                 if (chosenthemeUse.theme.name == null) {
-                    chosenthemeUse.theme.name = "Theme 1";
+                    chosenthemeUse.theme.name = "Theme 1 ";
                 }
-                themeUsageTextArea.append(chosenthemeUse.theme.name + "used at beat " + beat + "\n");
+                themeUsageTextArea.append( "Beat " + beat + ": " + chosenthemeUse.theme.name );
                 MelodyPart adjustedTheme = generateSolohelper(chosenthemeUse, chosentheme, solo, cm);
                 
                 //this if takes care of the case if the index is out of bounds
@@ -2191,13 +2042,13 @@ Random random;
 
                 //the interval for the second ThemeUse
                 if ((themei >= A) && (themei <= B - 1)) {
-                    System.out.println("Theme2");
+                    System.out.println("Theme 2");
                     ThemeUse chosenthemeUse = themeUses.get(1);
                     MelodyPart chosentheme = themeUses.get(1).theme.melody;
                     if (chosenthemeUse.theme.name == null) {
-                    chosenthemeUse.theme.name = "Theme 2";
+                    chosenthemeUse.theme.name = "Theme 2 ";
                 }
-                    themeUsageTextArea.append(chosenthemeUse.theme.name + "used at beat " + beat + "\n");
+                    themeUsageTextArea.append("Beat " + beat + ": " + chosenthemeUse.theme.name);
                             //"used at slot " + i + "\n");
                     MelodyPart adjustedTheme = generateSolohelper(chosenthemeUse, chosentheme, solo, cm);
 
@@ -2217,13 +2068,13 @@ Random random;
                         B += 10 * probUselist.get(k + 1);
 
                         if ((themei >= A) && (themei <= B - 1)) {
-                            System.out.println("SubsequentThemes!");
+                            System.out.println("Theme" + k);
                             ThemeUse chosenthemeUse = themeUses.get(k);
                             MelodyPart chosentheme = themeUses.get(k).theme.melody;
                              if (chosenthemeUse.theme.name == null) {
                           chosenthemeUse.theme.name = "Theme " + k;
                           }
-                            themeUsageTextArea.append(chosenthemeUse.theme.name +  "used at beat " + beat + "\n");
+                            themeUsageTextArea.append("Beat " + beat + ": " + chosenthemeUse.theme.name);
                                     //"used at slot "+ i + "\n");
                             MelodyPart adjustedTheme = generateSolohelper(chosenthemeUse, chosentheme, solo, cm);
 
@@ -2241,8 +2092,8 @@ Random random;
 
             //this interval is for not using any theme at all    
             if ((themei <= probUsetotal + noThemevalue) && (themei >= probUsetotal)) {
-                System.out.println("noTheme");
-                themeUsageTextArea.append("No theme was used at beat " + beat + "\n");
+                System.out.println("no Theme");
+                themeUsageTextArea.append("Beat " + beat + ": No Theme used\n");
                       //  + "//used at slot "+ i + "\n");
                 generateSolohelper2(themeLength, solo);
             }
@@ -2278,20 +2129,16 @@ Random random;
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JDialog AlreadyNamed;
     private javax.swing.JButton CancelButton;
     private javax.swing.JButton NoButton;
-    private javax.swing.JButton NoOverwrite;
     private javax.swing.JButton Nodelete;
     private javax.swing.JButton OkButton;
     private javax.swing.JButton Okdelete;
-    private javax.swing.JLabel OverwriteOption;
     private javax.swing.JButton Reset;
     private javax.swing.JLabel Resettable;
     private java.awt.Label SoloGeneratorTitle;
     private java.awt.Label ThemesLabel;
     private javax.swing.JButton YesButton;
-    private javax.swing.JButton YesOverwrite;
     private javax.swing.JMenuItem cascadeMI;
     private javax.swing.JButton cellOkbutton;
     private javax.swing.JLabel chooseName;
