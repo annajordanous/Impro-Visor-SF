@@ -2080,8 +2080,8 @@ public Critic getCritic()
         stepKeyboardMI = new javax.swing.JMenuItem();
         openLeadsheetEditorMI = new javax.swing.JMenuItem();
         lickGeneratorMI = new javax.swing.JMenuItem();
-        soloGeneratorMI = new javax.swing.JMenuItem();
         styleGenerator1 = new javax.swing.JMenuItem();
+        soloGeneratorMI = new javax.swing.JMenuItem();
         voicingTestMI = new javax.swing.JMenuItem();
         pianoKeyboardMI = new javax.swing.JMenuItem();
         roadmapMenu = new javax.swing.JMenu();
@@ -9752,18 +9752,6 @@ public Critic getCritic()
         });
         utilitiesMenu.add(lickGeneratorMI);
 
-        soloGeneratorMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_H, java.awt.event.InputEvent.CTRL_MASK));
-        soloGeneratorMI.setText("Solo Generator");
-        soloGeneratorMI.setToolTipText("Control panel for solo generation");
-        soloGeneratorMI.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                soloGeneratorMIActionPerformed(evt);
-            }
-        });
-        utilitiesMenu.add(soloGeneratorMI);
-
         styleGenerator1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Y, java.awt.event.InputEvent.CTRL_MASK));
         styleGenerator1.setMnemonic('S');
         styleGenerator1.setText("Style Editor & Extractor");
@@ -9776,6 +9764,18 @@ public Critic getCritic()
             }
         });
         utilitiesMenu.add(styleGenerator1);
+
+        soloGeneratorMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_H, java.awt.event.InputEvent.CTRL_MASK));
+        soloGeneratorMI.setText("Theme Weaver");
+        soloGeneratorMI.setToolTipText("Control panel for solo generation");
+        soloGeneratorMI.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                soloGeneratorMIActionPerformed(evt);
+            }
+        });
+        utilitiesMenu.add(soloGeneratorMI);
 
         voicingTestMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.CTRL_MASK));
         voicingTestMI.setMnemonic('v');
@@ -23227,8 +23227,8 @@ private boolean isDotted = false;
 
     private void soloGeneratorMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_soloGeneratorMIActionPerformed
     {//GEN-HEADEREND:event_soloGeneratorMIActionPerformed
-        SoloGenerator soloGenerator = new SoloGenerator(lickgen, this, cm);
-        soloGenerator.setVisible(true);
+        ThemeWeaver themeWeaver = new ThemeWeaver(lickgen, this, cm);
+        themeWeaver.setVisible(true);
     }//GEN-LAST:event_soloGeneratorMIActionPerformed
 
 int quantizeResolution = 60;
