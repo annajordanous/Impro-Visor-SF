@@ -776,7 +776,7 @@ public void setTableColumnWidths()
         });
         fileMenu.add(loadThemesMI);
 
-        saveAsAdvice.setText("Save Vocabulary As");
+        saveAsAdvice.setText("Save Themes As");
         saveAsAdvice.setToolTipText("Save the current vocabulary in a file.");
         saveAsAdvice.addActionListener(new java.awt.event.ActionListener()
         {
@@ -1794,7 +1794,7 @@ public void saveRules(File file)
     }
   } 
 
-private void loadFromFile(File file) {
+public void loadFromFile(File file) {
     java.io.FileInputStream themeStream;
 
         try {

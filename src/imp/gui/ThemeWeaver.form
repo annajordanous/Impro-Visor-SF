@@ -271,7 +271,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="saveAsAdvice">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Save Vocabulary As"/>
+                <Property name="text" type="java.lang.String" value="Save Themes As"/>
                 <Property name="toolTipText" type="java.lang.String" value="Save the current vocabulary in a file."/>
               </Properties>
               <Events>
