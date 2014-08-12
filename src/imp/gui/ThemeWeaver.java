@@ -963,7 +963,7 @@ private void playSelection()
                                     //is already in the table it will be differentiated from it
                                     //if the names are the same, the rows are different,
                                     //the themes are the same, the lengths are different
-                                    setValueAt(theme.ThemeLength + "", x, LENGTH_COLUMN); 
+                                    setValueAt(melody.size() / BEAT + "", x, LENGTH_COLUMN); 
                                     //make the lengths the same 
                                     setValueAt(name + "-" + n,j,NAME_COLUMN);
                                 }
