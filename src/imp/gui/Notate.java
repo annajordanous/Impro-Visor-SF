@@ -4727,6 +4727,7 @@ public Critic getCritic()
         cancelLickTitle.setText("Cancel");
         cancelLickTitle.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         cancelLickTitle.setDefaultCapable(false);
+        cancelLickTitle.setOpaque(true);
         cancelLickTitle.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -4748,6 +4749,7 @@ public Critic getCritic()
         okSaveButton.setText("Save This");
         okSaveButton.setToolTipText("Saves the item in the vocabulary file.");
         okSaveButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        okSaveButton.setOpaque(true);
         okSaveButton.setSelected(true);
         okSaveButton.addActionListener(new java.awt.event.ActionListener()
         {
