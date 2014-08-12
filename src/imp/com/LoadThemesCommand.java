@@ -74,27 +74,10 @@ public class LoadThemesCommand implements Command, Runnable {
      * Reads the File into the ThemeWeaver.
      */
     public void run() {
+        themeWeaver.loadFromFile(file);
         FileInputStream adviceStream = null;
  
-       try {
-            adviceStream = new FileInputStream(file);
-        } catch(Exception e) {
-            //e.printStackTrace();
-        }
 
-        Tokenizer in = new Tokenizer(adviceStream);
-        Object ob;
-        Polylist rules = new Polylist();
- 
-        while( (ob = in.nextSexp()) != Tokenizer.eof ) {
-            if( (ob instanceof Polylist) && ((Polylist)ob).nonEmpty() ) {
-                 String loading = (String)((Polylist)ob).first();
-
-                rules = rules.cons((Polylist)ob);	// FIX: Need more form checking here.
-            }
-        }
-
-        //themeWeaver.setRules(rules.reverse());
     }
 
     
