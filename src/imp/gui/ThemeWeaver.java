@@ -62,6 +62,7 @@ import java.io.FileOutputStream;
 import java.io.FileInputStream;
 import polya.Tokenizer;
 import imp.data.Score;
+import java.awt.Color;
 import javax.swing.table.DefaultTableCellRenderer;
 import polya.PolylistEnum;
 /**
@@ -132,8 +133,7 @@ public void setTableColumnWidths()
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
         nameErrorMessage = new javax.swing.JDialog();
@@ -173,8 +173,8 @@ public void setTableColumnWidths()
         generateSoloJButton = new javax.swing.JButton();
         generateThemeJButton = new javax.swing.JButton();
         currentSelectionJButton = new javax.swing.JButton();
-        playSoloJButton = new javax.swing.JButton();
-        stopPlayingJButton = new javax.swing.JButton();
+        stopPlaytoggle = new javax.swing.JToggleButton();
+        deleteRowbutton = new javax.swing.JButton();
         roadmapMenuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
         loadThemesMI = new javax.swing.JMenuItem();
@@ -189,17 +189,13 @@ public void setTableColumnWidths()
         nameErrorMessage.setMinimumSize(new java.awt.Dimension(500, 400));
         nameErrorMessage.getContentPane().setLayout(new java.awt.GridBagLayout());
 
-        nameField.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        nameField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 nameFieldActionPerformed(evt);
             }
         });
-        nameField.addKeyListener(new java.awt.event.KeyAdapter()
-        {
-            public void keyPressed(java.awt.event.KeyEvent evt)
-            {
+        nameField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
                 nameFieldKeyPressed(evt);
             }
         });
@@ -225,10 +221,8 @@ public void setTableColumnWidths()
         nameErrorMessage.getContentPane().add(namePicked, gridBagConstraints);
 
         CancelButton.setText("Cancel");
-        CancelButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        CancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CancelButtonActionPerformed(evt);
             }
         });
@@ -240,10 +234,8 @@ public void setTableColumnWidths()
         nameErrorMessage.getContentPane().add(CancelButton, gridBagConstraints);
 
         OkButton.setText("Ok");
-        OkButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        OkButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 OkButtonActionPerformed(evt);
             }
         });
@@ -287,17 +279,13 @@ public void setTableColumnWidths()
         enteredIncorrectly.getContentPane().add(tryAgain, gridBagConstraints);
 
         cellOkbutton.setText("Ok");
-        cellOkbutton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        cellOkbutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cellOkbuttonActionPerformed(evt);
             }
         });
-        cellOkbutton.addKeyListener(new java.awt.event.KeyAdapter()
-        {
-            public void keyPressed(java.awt.event.KeyEvent evt)
-            {
+        cellOkbutton.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
                 cellOkbuttonKeyPressed(evt);
             }
         });
@@ -349,17 +337,13 @@ public void setTableColumnWidths()
         resetCheck.getContentPane().add(youSure, gridBagConstraints);
 
         YesButton.setText("Yes, Continue");
-        YesButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        YesButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 YesButtonActionPerformed(evt);
             }
         });
-        YesButton.addKeyListener(new java.awt.event.KeyAdapter()
-        {
-            public void keyPressed(java.awt.event.KeyEvent evt)
-            {
+        YesButton.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
                 YesButtonKeyPressed(evt);
             }
         });
@@ -371,10 +355,8 @@ public void setTableColumnWidths()
         resetCheck.getContentPane().add(YesButton, gridBagConstraints);
 
         NoButton.setText("No, Cancel");
-        NoButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        NoButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 NoButtonActionPerformed(evt);
             }
         });
@@ -403,10 +385,8 @@ public void setTableColumnWidths()
         deleteCheck.getContentPane().add(deletesure, gridBagConstraints);
 
         Okdelete.setText("Yes");
-        Okdelete.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        Okdelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 OkdeleteActionPerformed(evt);
             }
         });
@@ -418,10 +398,8 @@ public void setTableColumnWidths()
         deleteCheck.getContentPane().add(Okdelete, gridBagConstraints);
 
         Nodelete.setText("No");
-        Nodelete.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        Nodelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 NodeleteActionPerformed(evt);
             }
         });
@@ -438,17 +416,13 @@ public void setTableColumnWidths()
         setMinimumSize(new java.awt.Dimension(1000, 500));
         setPreferredSize(new java.awt.Dimension(800, 630));
         setSize(new java.awt.Dimension(1000, 600));
-        addWindowListener(new java.awt.event.WindowAdapter()
-        {
-            public void windowClosed(java.awt.event.WindowEvent evt)
-            {
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
                 ThemeWeaver.this.windowClosed(evt);
             }
         });
-        addKeyListener(new java.awt.event.KeyAdapter()
-        {
-            public void keyPressed(java.awt.event.KeyEvent evt)
-            {
+        addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
                 formKeyPressed(evt);
             }
         });
@@ -460,8 +434,7 @@ public void setTableColumnWidths()
         soloTableScrollPane.setPreferredSize(new java.awt.Dimension(469, 200));
 
         soloTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][]
-            {
+            new Object [][] {
                 {null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null},
@@ -473,19 +446,15 @@ public void setTableColumnWidths()
                 {null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null}
             },
-            new String []
-            {
+            new String [] {
                 "Name", "Theme Length", "Theme", "Prob. to Use", "Prob. to Transpose", "Prob. to Invert", "Prob. to Reverse"
             }
-        )
-        {
-            Class[] types = new Class []
-            {
+        ) {
+            Class[] types = new Class [] {
                 java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
             };
 
-            public Class getColumnClass(int columnIndex)
-            {
+            public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
         });
@@ -497,24 +466,18 @@ public void setTableColumnWidths()
         soloTable.setSelectionBackground(javax.swing.UIManager.getDefaults().getColor("CheckBoxMenuItem.selectionBackground"));
         soloTable.setShowGrid(true);
         soloTable.getTableHeader().setReorderingAllowed(false);
-        soloTable.addMouseListener(new java.awt.event.MouseAdapter()
-        {
-            public void mouseClicked(java.awt.event.MouseEvent evt)
-            {
+        soloTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
                 soloTableMouseClicked(evt);
             }
         });
-        soloTable.addComponentListener(new java.awt.event.ComponentAdapter()
-        {
-            public void componentShown(java.awt.event.ComponentEvent evt)
-            {
+        soloTable.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
                 soloTableComponentShown(evt);
             }
         });
-        soloTable.addKeyListener(new java.awt.event.KeyAdapter()
-        {
-            public void keyPressed(java.awt.event.KeyEvent evt)
-            {
+        soloTable.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
                 soloTableKeyPressed(evt);
             }
         });
@@ -523,7 +486,7 @@ public void setTableColumnWidths()
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.gridwidth = 5;
         gridBagConstraints.ipadx = 600;
         gridBagConstraints.ipady = -100;
@@ -543,17 +506,13 @@ public void setTableColumnWidths()
         themeList.setLayoutOrientation(javax.swing.JList.VERTICAL_WRAP);
         themeList.setPreferredSize(null);
         themeList.setVisibleRowCount(30);
-        themeList.addMouseListener(new java.awt.event.MouseAdapter()
-        {
-            public void mouseClicked(java.awt.event.MouseEvent evt)
-            {
+        themeList.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
                 themeListClicked(evt);
             }
         });
-        themeList.addKeyListener(new java.awt.event.KeyAdapter()
-        {
-            public void keyPressed(java.awt.event.KeyEvent evt)
-            {
+        themeList.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
                 themeListKeyPressed(evt);
             }
         });
@@ -561,7 +520,7 @@ public void setTableColumnWidths()
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 5;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.ipadx = 250;
         gridBagConstraints.ipady = 290;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
@@ -578,7 +537,7 @@ public void setTableColumnWidths()
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.gridheight = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
@@ -612,16 +571,14 @@ public void setTableColumnWidths()
 
         Reset.setText("Reset");
         Reset.setToolTipText("Clears the table of all themes currently entered");
-        Reset.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        Reset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ResetActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 5;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.ipadx = 32;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(10, 15, 0, 0);
@@ -630,10 +587,8 @@ public void setTableColumnWidths()
         themeIntervalTextField.setText("8");
         themeIntervalTextField.setMaximumSize(new java.awt.Dimension(50, 2147483647));
         themeIntervalTextField.setMinimumSize(new java.awt.Dimension(50, 28));
-        themeIntervalTextField.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        themeIntervalTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 themeIntervalTextFieldActionPerformed(evt);
             }
         });
@@ -655,10 +610,8 @@ public void setTableColumnWidths()
         noThemeProbTextField.setText("0.5");
         noThemeProbTextField.setMaximumSize(new java.awt.Dimension(50, 2147483647));
         noThemeProbTextField.setMinimumSize(new java.awt.Dimension(50, 28));
-        noThemeProbTextField.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        noThemeProbTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 noThemeProbTextFieldActionPerformed(evt);
             }
         });
@@ -678,10 +631,8 @@ public void setTableColumnWidths()
 
         generateSoloJButton.setText("Generate Solo");
         generateSoloJButton.setToolTipText("Creates a solo from the themes in the table and displays and plays the solo in the leadsheet window");
-        generateSoloJButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        generateSoloJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 generateSoloJButtonActionPerformed(evt);
             }
         });
@@ -695,16 +646,14 @@ public void setTableColumnWidths()
 
         generateThemeJButton.setText("Generate Theme");
         generateThemeJButton.setToolTipText("Generates a theme for every non empty length cell in the table that doesn't have a corresponding theme");
-        generateThemeJButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        generateThemeJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 generateThemeJButtonActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 2.0;
         gridBagConstraints.insets = new java.awt.Insets(0, 35, 0, 0);
@@ -712,28 +661,9 @@ public void setTableColumnWidths()
 
         currentSelectionJButton.setText("Use Current Selection in Leadsheet Window as Theme");
         currentSelectionJButton.setToolTipText("Adds the selection from the window into the first empty theme cell in the table");
-        currentSelectionJButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        currentSelectionJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 currentSelectionJButtonActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 2.0;
-        gridBagConstraints.insets = new java.awt.Insets(10, 35, 0, 0);
-        getContentPane().add(currentSelectionJButton, gridBagConstraints);
-
-        playSoloJButton.setText("Play Solo");
-        playSoloJButton.setToolTipText("Plays solo shown in the leadsheet window from the beginning");
-        playSoloJButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                playSoloJButtonActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -742,24 +672,34 @@ public void setTableColumnWidths()
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 2.0;
         gridBagConstraints.insets = new java.awt.Insets(10, 35, 0, 0);
-        getContentPane().add(playSoloJButton, gridBagConstraints);
+        getContentPane().add(currentSelectionJButton, gridBagConstraints);
 
-        stopPlayingJButton.setText("Stop Playing");
-        stopPlayingJButton.setToolTipText("Stops playing the current solo in the leadsheet window");
-        stopPlayingJButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                stopPlayingJButtonActionPerformed(evt);
+        stopPlaytoggle.setBackground(new java.awt.Color(255, 255, 255));
+        stopPlaytoggle.setText("Stop Playing");
+        stopPlaytoggle.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stopPlaytoggleActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(0, 35, 0, 0);
+        getContentPane().add(stopPlaytoggle, gridBagConstraints);
+
+        deleteRowbutton.setText("Delete Selected Row");
+        deleteRowbutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteRowbuttonActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 6;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 2.0;
         gridBagConstraints.insets = new java.awt.Insets(0, 35, 0, 0);
-        getContentPane().add(stopPlayingJButton, gridBagConstraints);
+        getContentPane().add(deleteRowbutton, gridBagConstraints);
 
         fileMenu.setText("File"); // NOI18N
         fileMenu.setMaximumSize(new java.awt.Dimension(50, 40));
@@ -767,10 +707,8 @@ public void setTableColumnWidths()
 
         loadThemesMI.setText("Load Themes File");
         loadThemesMI.setToolTipText("Load a new vocabulary.");
-        loadThemesMI.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        loadThemesMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 loadThemesMIActionPerformed(evt);
             }
         });
@@ -778,10 +716,8 @@ public void setTableColumnWidths()
 
         saveAsAdvice.setText("Save Themes As");
         saveAsAdvice.setToolTipText("Save the current vocabulary in a file.");
-        saveAsAdvice.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        saveAsAdvice.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveAsThemesActionPerformed(evt);
             }
         });
@@ -790,10 +726,8 @@ public void setTableColumnWidths()
         exitMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
         exitMenuItem.setText("Close this window."); // NOI18N
         exitMenuItem.setToolTipText("Closes this window."); // NOI18N
-        exitMenuItem.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        exitMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 exitMenuItemexitMIhandler(evt);
             }
         });
@@ -803,27 +737,21 @@ public void setTableColumnWidths()
 
         windowMenu.setMnemonic('W');
         windowMenu.setText("Window"); // NOI18N
-        windowMenu.addMenuListener(new javax.swing.event.MenuListener()
-        {
-            public void menuSelected(javax.swing.event.MenuEvent evt)
-            {
+        windowMenu.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
                 windowMenuMenuSelected(evt);
             }
-            public void menuDeselected(javax.swing.event.MenuEvent evt)
-            {
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
-            public void menuCanceled(javax.swing.event.MenuEvent evt)
-            {
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
 
         closeWindowMI.setMnemonic('C');
         closeWindowMI.setText("Close Window"); // NOI18N
         closeWindowMI.setToolTipText("Closes the current window (exits program if there are no other windows)"); // NOI18N
-        closeWindowMI.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        closeWindowMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 closeWindowMIActionPerformed(evt);
             }
         });
@@ -832,10 +760,8 @@ public void setTableColumnWidths()
         cascadeMI.setMnemonic('A');
         cascadeMI.setText("Cascade Windows"); // NOI18N
         cascadeMI.setToolTipText("Rearrange windows into a cascade.\n"); // NOI18N
-        cascadeMI.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        cascadeMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cascadeMIActionPerformed(evt);
             }
         });
@@ -1259,14 +1185,6 @@ private void playSelection()
       }
     }//GEN-LAST:event_currentSelectionJButtonActionPerformed
 
-    private void playSoloJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playSoloJButtonActionPerformed
-         playSelection();
-    }//GEN-LAST:event_playSoloJButtonActionPerformed
-
-    private void stopPlayingJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopPlayingJButtonActionPerformed
-       stopPlaying();
-    }//GEN-LAST:event_stopPlayingJButtonActionPerformed
-
     private void loadThemesMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_loadThemesMIActionPerformed
     {//GEN-HEADEREND:event_loadThemesMIActionPerformed
 
@@ -1325,6 +1243,29 @@ private void playSelection()
         }
     }//GEN-LAST:event_saveAsThemesActionPerformed
 
+    private void stopPlaytoggleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopPlaytoggleActionPerformed
+      
+        soloPlaying = stopPlaytoggle.isSelected();
+        if (soloPlaying) {
+            stopPlaytoggle.setText("<html><center>Play</center></html>");
+
+            stopPlaying();
+        } else {
+            soloPlaying = false;
+            stopPlaytoggle.setSelected(false);
+            stopPlaytoggle.setText("<html><center>Stop Playing</center></html>");
+            playSelection();
+        }
+  
+    }//GEN-LAST:event_stopPlaytoggleActionPerformed
+
+    private void deleteRowbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteRowbuttonActionPerformed
+        int index = soloTable.getSelectedRow();
+          soloTableModel.removeRow(index);
+        
+    }//GEN-LAST:event_deleteRowbuttonActionPerformed
+
+boolean soloPlaying = false;
 
 protected ThemeWeaver themeWeaver;
 
@@ -2307,6 +2248,7 @@ Random random;
     private javax.swing.JMenuItem closeWindowMI;
     private javax.swing.JButton currentSelectionJButton;
     private javax.swing.JDialog deleteCheck;
+    private javax.swing.JButton deleteRowbutton;
     private javax.swing.JLabel deletesure;
     private javax.swing.JDialog enteredIncorrectly;
     private javax.swing.JButton generateSoloJButton;
@@ -2320,13 +2262,12 @@ Random random;
     private javax.swing.JLabel namePicked;
     private javax.swing.JLabel noThemeProbLabel;
     private javax.swing.JTextField noThemeProbTextField;
-    private javax.swing.JButton playSoloJButton;
     private javax.swing.JDialog resetCheck;
     private javax.swing.JMenuBar roadmapMenuBar;
     private javax.swing.JMenuItem saveAsAdvice;
     private javax.swing.JTable soloTable;
     private javax.swing.JScrollPane soloTableScrollPane;
-    private javax.swing.JButton stopPlayingJButton;
+    private javax.swing.JToggleButton stopPlaytoggle;
     private javax.swing.JLabel themeIntervalLabel;
     private javax.swing.JTextField themeIntervalTextField;
     private javax.swing.JList themeList;
