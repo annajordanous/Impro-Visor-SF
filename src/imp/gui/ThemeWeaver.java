@@ -2067,7 +2067,7 @@ Random random;
         }
         
         if ( unmodified == 3){
-           themeUsageTextArea.append("unmodified"); 
+           themeUsageTextArea.append(" unmodified"); 
          }
         themeUsageTextArea.append("\n");
         ChordPart themeChords = notate.getChordProg().extract(length, length + length);
@@ -2109,14 +2109,19 @@ Random random;
         List<Double> probTransposelist = new ArrayList(Arrays.asList());
         List<Double> probInvertlist = new ArrayList(Arrays.asList());
         List<Double> probReverselist = new ArrayList(Arrays.asList());
-
+        int d = 0;
         //loop through the themeUses list and get the probabilities for each
         //themeuse and add it to the corresponding empty list
         for (int i = 0; i < themeUses.size(); i++) {
             probUselist.add(themeUses.get(i).probUse);
             probTransposelist.add(themeUses.get(i).probTranspose);
             probInvertlist.add(themeUses.get(i).probInvert);
-            probReverselist.add(themeUses.get(i).probReverse);
+            probReverselist.add(themeUses.get(i).probReverse); 
+            //give names to themes that don't have one for text area
+            if (themeUses.get(i).theme.name == null) {
+                d += 1;
+                themeUses.get(i).theme.name = "Theme " + d;
+            }
         }
         
        
@@ -2132,9 +2137,6 @@ Random random;
         imp.ImproVisor.setPlayEntrySounds(false); //don't play insertions yet
 
         solo.pasteSlots(themeUses.get(index).theme.melody, 0); 
-      //  themeUsageTextArea.append(themeUses.get(index).theme.name + "\n");
-               // + "used at slot 0\n");
-        themeUsageTextArea.append("Theme with max Use value used first as is\n");
         //paste theme into solo at starting point
         
         // set totals of probabilities to 0
@@ -2165,22 +2167,21 @@ Random random;
             Integer noThemevalue = (int)(10*themeUses.size()*Double.valueOf(noThemeProbTextField.getText()));
             
             int themei = random.nextInt(probUsetotal + noThemevalue);
-            System.out.println(themei);
+            System.out.println(themei); 
             //pick a random number from 0 inclusive to 10*the probability list size
             //since all the elements in the list are multpled by 10, the size has to be multiplied by 10 too
-
+            
+            int n = 0;
+            
             //To implement the probabilities I broke up the size of the list times 10 into intervals
             //the first interval is from 0 to to the first probability - 1 
             //so that way the number of slots in that interval is equal
             //to that first probability times 10
             //so if the random number chosen is in that interval, then that first theme is used
             if (themei <= 10 * probUselist.get(0) - 1) {
-                System.out.println("Theme1");
+                System.out.println("Theme 1");
                 MelodyPart chosentheme = themeUses.get(0).theme.melody;
                 ThemeUse chosenthemeUse = themeUses.get(0);
-                if (chosenthemeUse.theme.name == null) {
-                    chosenthemeUse.theme.name = "Theme 1 ";
-                }
                 themeUsageTextArea.append( "Beat " + beat + ": " + chosenthemeUse.theme.name );
                 MelodyPart adjustedTheme = generateSolohelper(chosenthemeUse, chosentheme, solo, cm);
                 
@@ -2197,18 +2198,14 @@ Random random;
             //if the themeUses size is more than one themeuse then the other intervals have to be accounted for 
             
             else if (themeUses.size() > 1) {
-
                 double A = 10 * probUselist.get(0);
                 double B = 10 * probUselist.get(0) + 10 * probUselist.get(1);
-
+                
                 //the interval for the second ThemeUse
                 if ((themei >= A) && (themei <= B - 1)) {
                     System.out.println("Theme 2");
                     ThemeUse chosenthemeUse = themeUses.get(1);
                     MelodyPart chosentheme = themeUses.get(1).theme.melody;
-                    if (chosenthemeUse.theme.name == null) {
-                    chosenthemeUse.theme.name = "Theme 2 ";
-                }
                     themeUsageTextArea.append("Beat " + beat + ": " + chosenthemeUse.theme.name);
                             //"used at slot " + i + "\n");
                     MelodyPart adjustedTheme = generateSolohelper(chosenthemeUse, chosentheme, solo, cm);
@@ -2221,20 +2218,24 @@ Random random;
                         solo.pasteSlots(adjustedTheme, i);
                     }
                  }
-                
+//                
                 else {
                     //this loop covers the rest of the intervals
                     for (int k = 1; k < probUselist.size() - 1; k++) {
                         A += 10 * probUselist.get(k);
                         B += 10 * probUselist.get(k + 1);
-
+                        
                         if ((themei >= A) && (themei <= B - 1)) {
-                            System.out.println("Theme" + k);
-                            ThemeUse chosenthemeUse = themeUses.get(k);
-                            MelodyPart chosentheme = themeUses.get(k).theme.melody;
-                             if (chosenthemeUse.theme.name == null) {
-                          chosenthemeUse.theme.name = "Theme " + k;
-                          }
+                            System.out.println("subsequentthemes");
+                            int x = k + 2;
+                            System.out.println("Theme " + x);
+                            System.out.println(n);
+                            ThemeUse chosenthemeUse = themeUses.get(k+1);
+                            MelodyPart chosentheme = themeUses.get(k+1).theme.melody;
+                             if ((chosenthemeUse.theme.name == null) && (n == k - 1)) {
+                                 chosenthemeUse.theme.name = "Theme " + k; 
+                                 String text = themeUsageTextArea.getText();
+                          } 
                             themeUsageTextArea.append("Beat " + beat + ": " + chosenthemeUse.theme.name);
                                     //"used at slot "+ i + "\n");
                             MelodyPart adjustedTheme = generateSolohelper(chosenthemeUse, chosentheme, solo, cm);
