@@ -192,7 +192,7 @@ public boolean playMe(double swingVal, int loopCount, double tempo)
     }
   
   
-   public static void playScore(Notate notate, Score score, SoloGenerator soloGenerator)
+   public static void playScore(Notate notate, Score score, ThemeWeaver themeWeaver)
     {
     MidiSynth synth = notate.getMidiSynth();
 
