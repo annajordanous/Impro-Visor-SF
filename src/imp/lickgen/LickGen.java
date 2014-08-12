@@ -1067,7 +1067,11 @@ private void accumulateProbs(Polylist tones, double categoryProb, double p[])
 
 public Polylist generateRhythmFromGrammar(int startSlot, int slots)
   {
-    return grammar.run(startSlot, slots, notate);
+    return grammar.run(startSlot, 
+                       slots, 
+                       notate, 
+                       notate.getImprovisorTradeFirst(),
+                       notate.getTradingQuantum());
 
   }
 

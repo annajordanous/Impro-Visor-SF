@@ -548,6 +548,16 @@ public class Score implements Constants, Serializable {
         return metre;
     }
     
+    public int getBeatsPerMeasure()
+      {
+        return metre[0]/(metre[1]/4);
+      }
+    
+    public int getSlotsPerMeasure()
+      {
+        return BEAT*getBeatsPerMeasure();
+      }
+    
     /**
      * Sets the key signature of the Score
      * @param keySig            the key signature to set the Score to

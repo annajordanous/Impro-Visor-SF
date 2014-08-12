@@ -23,6 +23,7 @@ import imp.brickdictionary.Block;
 import imp.data.Chord;
 import imp.data.ChordPart;
 import imp.data.MelodyPart;
+import imp.data.Note;
 import imp.data.Part.PartIterator;
 import imp.gui.Notate;
 import static imp.lickgen.Terminals.getDuration;
@@ -100,82 +101,110 @@ int numSlotsToFill;
 
 
 /**
- * Applies grammar rules to generate a melody
- *
- * @param data the number of slots to be filled
- * @return
+ * 
+ * @param startSlot
+ * @param initialNumSlots
+ * @param myNotate
+ * @param improVisorFirst
+ * @param tradingQuantum
+ * @return 
  */
-// This code is kind of hacked. First stack should be called in a functional style.
-// The other issue is that applyRules sometimes fails when run on a generated
-// grammar. We have tried to arrange this failure to take the form of an exception,
-// and will then simply try again, until a terminal string is generated.
-public Polylist run(int startSlot, int initialNumSlots, Notate myNotate)
+public Polylist run(int startSlot,
+                    int initialNumSlots,
+                    Notate myNotate,
+                    boolean improVisorFirst,
+                    int tradingQuantum)
   {
     currentSlot = startSlot;
     chordSlot = startSlot;
-    numSlotsToFill = initialNumSlots;
+    int totalSlotsToFill = initialNumSlots;
     notate = myNotate;
 
     terminalBuffer = new PolylistBuffer();
     int stage = 0;
 
-    quotaReached = numSlotsToFill == 0;
-    
-    while( !quotaReached )
+    while( totalSlotsToFill > 0 )
       {
-        // Start a new stage, with the start symbol and number of slots to fill
-        // as the argument on an initial goal.
-        
-        try
+        numSlotsToFill = Math.min(tradingQuantum, totalSlotsToFill);
+        quotaReached = numSlotsToFill <= 0;
+
+        if( !improVisorFirst )
           {
-            stage++;
-            Polylist stack = addStart(numSlotsToFill);
+            String fillRests = Note.getDurationString(tradingQuantum);
+            terminalBuffer.append("R" + fillRests);
+            chordSlot += tradingQuantum;
+          }
 
-            if( stack == null )
+        while( !quotaReached )
+          {
+            // Start a new stage, with the start symbol and number of slots to fill
+            // as the argument on an initial goal.
+
+            try
               {
-                return Polylist.nil;    // In case no grammar
-              }
-
-            //System.out.println("\nStage " + stage + " generation starts with " + stack + " terminalBuffer length " + getDurationAbstractMelody(terminalBuffer));
-
-            // stack is a list representing the undeveloped frontier of the rhs tree
-            // symbols in stack are expanded one at a time, left-to-right
-            // As non-terminal are expanded, the RHS replaces the non-terminal
-            // on the left of stack.
-            // If the top of stack is a terminal, it is flipped over onto 
-            // accumulator, and then appended to terminalBuffer.
-
-            // So the combination of terminalBuffer and stack represent the total
-            // frontier of the rhs tree.
-            // The variable terminalBuffer is modified implicitly within applyRules.
-
-            while( !quotaReached && stack.nonEmpty() )
-              {
-                // System.out.println("stack = " + stack);  // Shows rhs.
-                stack = applyRules(stack);
+                stage++;
+                Polylist stack = addStart(numSlotsToFill);
 
                 if( stack == null )
                   {
-                    throw new RuleApplicationException();
+                    return Polylist.nil;    // In case no grammar
+                  }
+
+                //System.out.println("\nStage " + stage + " generation starts with " + stack + " terminalBuffer length " + getDurationAbstractMelody(terminalBuffer));
+
+                // stack is a list representing the undeveloped frontier of the rhs tree
+                // symbols in stack are expanded one at a time, left-to-right
+                // As non-terminal are expanded, the RHS replaces the non-terminal
+                // on the left of stack.
+                // If the top of stack is a terminal, it is flipped over onto 
+                // accumulator, and then appended to terminalBuffer.
+
+                // So the combination of terminalBuffer and stack represent the total
+                // frontier of the rhs tree.
+                // The variable terminalBuffer is modified implicitly within applyRules.
+
+                while( !quotaReached && stack.nonEmpty() )
+                  {
+                    // System.out.println("stack = " + stack);  // Shows rhs.
+                    stack = applyRules(stack);
+
+                    if( stack == null )
+                      {
+                        throw new RuleApplicationException();
+                      }
+                  }
+
+                if( traceLevel > 1 )
+                  {
+                    showFrontier(stack);
                   }
               }
-            
-           if( traceLevel > 1 )
-             {
-             showFrontier(stack);
-             }           
-           }
-        catch( RuleApplicationException e )
-          {
-            if( ErrorLogWithResponse.log(ErrorLog.SEVERE, "Problem applying rules: " + e) )
+            catch( RuleApplicationException e )
               {
-                return null;
+                if( ErrorLogWithResponse.log(ErrorLog.SEVERE, "Problem applying rules: " + e) )
+                  {
+                    return null;
+                  }
               }
-          }
-      }
-    //ySystem.out.println("completed in " + stage + " stages" + ". terminalBuffer length " + getDurationAbstractMelody(terminalBuffer));
 
-    return terminalBuffer.toPolylist();
+          }
+
+        int paddingSlots = numSlotsToFill;
+        if( improVisorFirst )
+          {
+            paddingSlots += tradingQuantum;
+          }
+        if( paddingSlots > 0 )
+          {
+            String fillRests = Note.getDurationString(paddingSlots);
+            terminalBuffer.append("R" + fillRests);
+            chordSlot += paddingSlots;
+          }
+        //System.out.println("completed in " + stage + " stages" + ". terminalBuffer " + terminalBuffer.toPolylist());
+        totalSlotsToFill -= 2 * tradingQuantum;
+      }
+    return Terminals.truncateAbstractMelody(terminalBuffer.toPolylist(), initialNumSlots);
+
   }
 
 /**
@@ -506,7 +535,7 @@ public Polylist applyRules(Polylist stack) throws RuleApplicationException
 
 private void showFrontier(Polylist gen)
   {
-    System.out.print("| " + terminalBuffer.toPolylist() + " | " + gen + " | ");
+    System.out.println("| " + terminalBuffer.toPolylist() + " | " + gen + " | ");
   }
 
 /**
