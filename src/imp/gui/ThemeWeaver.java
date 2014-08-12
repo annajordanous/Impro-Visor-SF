@@ -175,6 +175,7 @@ public void setTableColumnWidths()
         currentSelectionJButton = new javax.swing.JButton();
         stopPlaytoggle = new javax.swing.JToggleButton();
         deleteRowbutton = new javax.swing.JButton();
+        deleteThemebutton = new javax.swing.JButton();
         roadmapMenuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
         loadThemesMI = new javax.swing.JMenuItem();
@@ -578,10 +579,10 @@ public void setTableColumnWidths()
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 5;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 6;
         gridBagConstraints.ipadx = 32;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(10, 15, 0, 0);
+        gridBagConstraints.insets = new java.awt.Insets(10, 75, 0, 0);
         getContentPane().add(Reset, gridBagConstraints);
 
         themeIntervalTextField.setText("8");
@@ -627,6 +628,7 @@ public void setTableColumnWidths()
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.ipadx = 5;
+        gridBagConstraints.insets = new java.awt.Insets(0, 40, 0, 0);
         getContentPane().add(noThemeProbLabel, gridBagConstraints);
 
         generateSoloJButton.setText("Generate Solo");
@@ -700,6 +702,21 @@ public void setTableColumnWidths()
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(0, 35, 0, 0);
         getContentPane().add(deleteRowbutton, gridBagConstraints);
+
+        deleteThemebutton.setText("Delete Theme from file");
+        deleteThemebutton.setPreferredSize(new java.awt.Dimension(78, 29));
+        deleteThemebutton.setSize(new java.awt.Dimension(0, 0));
+        deleteThemebutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteThemebuttonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 5;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.ipadx = 32;
+        gridBagConstraints.insets = new java.awt.Insets(-25, 15, 0, 45);
+        getContentPane().add(deleteThemebutton, gridBagConstraints);
 
         fileMenu.setText("File"); // NOI18N
         fileMenu.setMaximumSize(new java.awt.Dimension(50, 40));
@@ -792,9 +809,8 @@ private void playSelection()
         int index = soloTable.getSelectedRow();
         int col = soloTable.getSelectedColumn();
         if (evt.getKeyCode() == KeyEvent.VK_DELETE) {
-          //  deleteCheck.setVisible(true);
-          soloTableModel.removeRow(index);
-          return;
+            soloTableModel.removeRow(index);
+            
         }
 
         if (evt.getKeyCode() == KeyEvent.VK_INSERT) {
@@ -1265,6 +1281,25 @@ private void playSelection()
         
     }//GEN-LAST:event_deleteRowbuttonActionPerformed
 
+    private void deleteThemebuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteThemebuttonActionPerformed
+    
+        String name = (String) themeList.getSelectedValue();
+            for (int j = 0; j < soloTable.getRowCount(); j ++) {
+                if (soloTable.getValueAt(j, NAME_COLUMN) == name ) {
+                    soloTable.setValueAt(null, j, NAME_COLUMN);
+                    soloTable.setValueAt(null, j, LENGTH_COLUMN);
+                    soloTable.setValueAt(null, j, THEME_COLUMN);
+                }
+            }
+            
+            for (int i = 0; i < orderedThemes.size(); i++) {
+                if (themeList.isSelectedIndex(i)) {
+                    deleteTheme(name);
+                }
+            } 
+            
+    }//GEN-LAST:event_deleteThemebuttonActionPerformed
+
 boolean soloPlaying = false;
 
 protected ThemeWeaver themeWeaver;
@@ -1714,6 +1749,25 @@ public void addTheme(Theme theme)
        //saveRules(fileName);
     }
 
+public void deleteTheme(String name) {
+//    for (int i = 0; i < orderedThemes.size(); i++) {
+//       if (themeList.isSelectedIndex(i)) {
+           orderedThemes.remove(name);
+           System.out.println(orderedThemes);
+            for (Map.Entry pair : allThemes.entrySet()) { 
+                        //loop through entries in allThemes
+                        
+                        if (name == pair.getValue()) 
+                        { //if the name in the themeList is equal to the name in the entry
+                            Theme theme = (Theme) pair.getKey(); 
+                            //set theme equal to the corresponding theme in that entry
+                             allThemes.remove(theme);
+                             System.out.println(allThemes);
+                        }
+            }
+    saveRules(fileName);
+    loadFromFile(fileName);
+}
 
 File fileName = ImproVisor.getThemesFile();
 
@@ -2249,6 +2303,7 @@ Random random;
     private javax.swing.JButton currentSelectionJButton;
     private javax.swing.JDialog deleteCheck;
     private javax.swing.JButton deleteRowbutton;
+    private javax.swing.JButton deleteThemebutton;
     private javax.swing.JLabel deletesure;
     private javax.swing.JDialog enteredIncorrectly;
     private javax.swing.JButton generateSoloJButton;
