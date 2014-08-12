@@ -25963,6 +25963,11 @@ public int getBeatValue()
     return beatValue;
   }
 
+public int getBeatsPerMeasure()
+  {
+    return score.getBeatsPerMeasure();
+  }
+
 /**
  * Open a new RoadMapFrame and transfer all chords in the chorus to it.
  *
