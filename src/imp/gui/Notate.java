@@ -4883,6 +4883,7 @@ public Critic getCritic()
         ignoreDuplicate.setText("Ignore This One");
         ignoreDuplicate.setToolTipText("Do not save the duplicate in the vocabulary.");
         ignoreDuplicate.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        ignoreDuplicate.setOpaque(true);
         ignoreDuplicate.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -4907,6 +4908,7 @@ public Critic getCritic()
         saveDuplicate.setToolTipText("Saves the lick in the vocabulary");
         saveDuplicate.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         saveDuplicate.setDefaultCapable(false);
+        saveDuplicate.setOpaque(true);
         saveDuplicate.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -4964,6 +4966,7 @@ public Critic getCritic()
         overwriteLickButton.setText("Overwrite Lick");
         overwriteLickButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         overwriteLickButton.setDefaultCapable(false);
+        overwriteLickButton.setOpaque(true);
         overwriteLickButton.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
