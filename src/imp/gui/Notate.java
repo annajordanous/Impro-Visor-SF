@@ -23887,9 +23887,6 @@ private void populateNotateGrammarMenu()
         // Setup grammar menu items involving trading
         notateGrammarMenu.removeAll();
 
-        notateGrammarMenu.add(new JSeparator());
-        notateGrammarMenu.add(new JLabel("Trading"));
-        
         whetherToTradeCheckBox.setText("Trade");
         whetherToTradeCheckBox.setSelected(whetherToTrade);
         whetherToTradeCheckBox.addActionListener(new ActionListener()
@@ -23922,7 +23919,8 @@ private void populateNotateGrammarMenu()
           }
 
         notateGrammarMenu.add(new JSeparator());
-        
+        notateGrammarMenu.add(new JLabel("Grammars:"));
+       
         // Add names of grammar files
 
         for( int i = 0; i < fileName.length; i++ )
