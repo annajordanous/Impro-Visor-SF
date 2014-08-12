@@ -1070,6 +1070,7 @@ public Polylist generateRhythmFromGrammar(int startSlot, int slots)
     return grammar.run(startSlot, 
                        slots, 
                        notate, 
+                       notate.getWhetherToTrade(),
                        notate.getImprovisorTradeFirst(),
                        notate.getTradingQuantum());
 
