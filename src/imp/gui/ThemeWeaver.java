@@ -22,9 +22,11 @@ package imp.gui;
 import static imp.Constants.BEAT;
 import imp.com.CommandManager;
 import imp.com.InvertCommand;
+import imp.com.LoadThemesCommand;
 import imp.com.PlayScoreCommand;
 import imp.com.RectifyPitchesCommand;
 import imp.com.ReverseCommand;
+import imp.com.SaveThemesCommand;
 import imp.com.ShiftPitchesCommand;
 import imp.data.ChordPart;
 import imp.data.MelodyPart;
@@ -33,6 +35,7 @@ import imp.data.NoteSymbol;
 import imp.data.Part;
 import imp.data.PitchClass;
 import imp.data.Unit;
+import imp.util.ThemesFilter;
 import polya.Polylist;
 import imp.lickgen.LickGen;
 import java.awt.event.KeyEvent;
@@ -43,6 +46,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Arrays;
 import javax.swing.AbstractListModel;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import java.util.List;
 import java.util.Random;
@@ -57,7 +61,6 @@ import java.io.PrintStream;
 import java.io.FileOutputStream;
 import java.io.FileInputStream;
 import polya.Tokenizer;
-import imp.gui.PatternDisplay;
 import imp.data.Score;
 import javax.swing.table.DefaultTableCellRenderer;
 import polya.PolylistEnum;
@@ -69,7 +72,12 @@ public class ThemeWeaver extends javax.swing.JFrame {
     
  String TITLE = "Theme Weaver";
  LickgenFrame lickgenFrame;
-
+ 
+ private static String themesExt = ".themes";
+ public String themesFile = "My" + themesExt;
+ JFileChooser themesfc;
+ private File savedThemes;
+ 
     /**
      * Creates new form ThemeWeaver
      */
@@ -95,6 +103,8 @@ public class ThemeWeaver extends javax.swing.JFrame {
         }
     });
     setTableColumnWidths();
+    
+    themesfc = new JFileChooser();
     loadFromFile(fileName);
     }
 
@@ -167,6 +177,8 @@ public void setTableColumnWidths()
         stopPlayingJButton = new javax.swing.JButton();
         roadmapMenuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
+        loadThemesMI = new javax.swing.JMenuItem();
+        saveAsAdvice = new javax.swing.JMenuItem();
         javax.swing.JMenuItem exitMenuItem = new javax.swing.JMenuItem();
         windowMenu = new javax.swing.JMenu();
         closeWindowMI = new javax.swing.JMenuItem();
@@ -753,6 +765,28 @@ public void setTableColumnWidths()
         fileMenu.setMaximumSize(new java.awt.Dimension(50, 40));
         fileMenu.setPreferredSize(new java.awt.Dimension(50, 21));
 
+        loadThemesMI.setText("Load Themes File");
+        loadThemesMI.setToolTipText("Load a new vocabulary.");
+        loadThemesMI.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                loadThemesMIActionPerformed(evt);
+            }
+        });
+        fileMenu.add(loadThemesMI);
+
+        saveAsAdvice.setText("Save Vocabulary As");
+        saveAsAdvice.setToolTipText("Save the current vocabulary in a file.");
+        saveAsAdvice.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                saveAsThemesActionPerformed(evt);
+            }
+        });
+        fileMenu.add(saveAsAdvice);
+
         exitMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
         exitMenuItem.setText("Close this window."); // NOI18N
         exitMenuItem.setToolTipText("Closes this window."); // NOI18N
@@ -1232,6 +1266,64 @@ private void playSelection()
     private void stopPlayingJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopPlayingJButtonActionPerformed
        stopPlaying();
     }//GEN-LAST:event_stopPlayingJButtonActionPerformed
+
+    private void loadThemesMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_loadThemesMIActionPerformed
+    {//GEN-HEADEREND:event_loadThemesMIActionPerformed
+
+        themesfc.setDialogTitle("Load Themes File");
+
+        themesfc.resetChoosableFileFilters();
+
+        themesfc.addChoosableFileFilter(new ThemesFilter());
+
+        if( themesfc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION )
+        {
+            cm.execute(new LoadThemesCommand(themesfc.getSelectedFile(), this, notate));
+        }
+
+        savedThemes = themesfc.getSelectedFile();
+    }//GEN-LAST:event_loadThemesMIActionPerformed
+
+    private void saveAsThemesActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_saveAsThemesActionPerformed
+    {//GEN-HEADEREND:event_saveAsThemesActionPerformed
+
+        if( themesfc == null )
+        {
+            return;
+        }
+
+        themesfc.setDialogTitle("Save Themes As");
+        themesfc.setCurrentDirectory(ImproVisor.getVocabDirectory());
+
+        // If never saved before, used the name specified in vocFile.
+        // Otherwise use previous file.
+
+        if( savedThemes == null )
+        {
+            themesfc.setSelectedFile(new File(themesFile));
+        }
+
+        themesfc.resetChoosableFileFilters();
+        themesfc.addChoosableFileFilter(new ThemesFilter());
+
+        if( themesfc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION )
+        {
+            if( themesfc.getSelectedFile().getName().endsWith(themesExt) )
+            {
+                new SaveThemesCommand(themesfc.getSelectedFile(), this).execute();
+
+                savedThemes = themesfc.getSelectedFile();
+            }
+            else
+            {
+                String file = themesfc.getSelectedFile().getAbsolutePath() + themesExt;
+
+                savedThemes = new File(file);
+
+                new SaveThemesCommand(savedThemes, this).execute();
+            }
+        }
+    }//GEN-LAST:event_saveAsThemesActionPerformed
 
 
 protected ThemeWeaver themeWeaver;
@@ -2221,6 +2313,7 @@ Random random;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPopupMenu.Separator jSeparator5;
+    private javax.swing.JMenuItem loadThemesMI;
     private javax.swing.JDialog nameErrorMessage;
     private javax.swing.JTextField nameField;
     private javax.swing.JLabel namePicked;
@@ -2229,6 +2322,7 @@ Random random;
     private javax.swing.JButton playSoloJButton;
     private javax.swing.JDialog resetCheck;
     private javax.swing.JMenuBar roadmapMenuBar;
+    private javax.swing.JMenuItem saveAsAdvice;
     private javax.swing.JTable soloTable;
     private javax.swing.JScrollPane soloTableScrollPane;
     private javax.swing.JButton stopPlayingJButton;
