@@ -3821,6 +3821,7 @@
               </Border>
             </Property>
             <Property name="defaultCapable" type="boolean" value="false"/>
+            <Property name="opaque" type="boolean" value="true"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cancelLickTitleActionPerformed"/>
@@ -3843,6 +3844,7 @@
                 <BevelBorder/>
               </Border>
             </Property>
+            <Property name="opaque" type="boolean" value="true"/>
             <Property name="selected" type="boolean" value="true"/>
           </Properties>
           <Events>
