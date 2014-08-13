@@ -163,6 +163,7 @@ public class NoteConverter {
         int totalChordDurationInMelody = allChords.get(0).getRhythmValue(); 
         int totalNoteDurationInMelody = 0; //total number of slots that have gone by in this measure up to this note
         for (int i = 1; i < exactMelodyData.length; i += 2) {
+            //System.out.println("exactMelodyData[" + i + "]: " + exactMelodyData[i] + " " + exactMelodyData[i+1]);
             int pitch = Integer.parseInt(exactMelodyData[i]); //every odd index item is a note
             int duration = Integer.parseInt(exactMelodyData[i + 1]); //every even index item (after 0) is a duration
             try {
@@ -240,11 +241,17 @@ public class NoteConverter {
      */
     public static Polylist melodyPart2Relative(MelodyPart melody, ChordPart chordProg, int chordSlot)
       {
-       int slotsPerSection = 480; // FIX: This is not universal
        ArrayList<Integer> melodyData = melody.getArrayListForm();
+       return melodyPart2Relative(melodyData, chordProg, chordSlot);
+      }
+    
+     public static Polylist melodyPart2Relative(ArrayList<Integer> melodyData, ChordPart chordProg, int chordSlot)
+      {
+       int slotsPerSection = 480; // FIX: This is not universal
        StringBuilder buffer = new StringBuilder();
         // Note: Blank is critical in next statement.
-        buffer.append(chordSlot + " ");
+        buffer.append(chordSlot);
+        buffer.append(" ");
         for( Integer s: melodyData )
           {
             buffer.append(s);
@@ -256,6 +263,23 @@ public class NoteConverter {
         return Polylist.PolylistFromString(relativePitchMelody);
       }
     
+      public static Polylist melodyPart2RelativeString(ArrayList<String> melodyData, ChordPart chordProg, int chordSlot)
+      {
+       int slotsPerSection = 480; // FIX: This is not universal
+       StringBuilder buffer = new StringBuilder();
+        // Note: Blank is critical in next statement.
+
+        for( String s: melodyData )
+          {
+            buffer.append(s);
+            buffer.append(" ");
+          }
+        String melString = buffer.toString();
+        System.out.println("melString = " + melString);
+        String relativePitchMelody = NoteConverter.melStringToRelativePitch(slotsPerSection, chordProg, melString);
+        return Polylist.PolylistFromString(relativePitchMelody);
+      }
+         
     
      /**
      * noteToAbstract 
