@@ -1154,6 +1154,10 @@ private void playSelection()
         }
         generateSolo(themeUses, cm);
         playSelection();
+         soloPlaying = false;
+            stopPlaytoggle.setSelected(false);
+            stopPlaytoggle.setText("<html><center>Stop Playing</center></html>");
+            playSelection();
     }//GEN-LAST:event_generateSoloJButtonActionPerformed
 
     private void generateThemeJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateThemeJButtonActionPerformed
@@ -2166,6 +2170,7 @@ Random random;
 
         solo.pasteSlots(themeUses.get(index).theme.melody, 0); 
         //paste theme into solo at starting point
+        themeUsageTextArea.append("Bar 1: " + themeUses.get(index).theme.name + "\n");
         
         // set totals of probabilities to 0
         int probUsetotal = 0;
@@ -2192,6 +2197,7 @@ Random random;
         for (int i = length; i <= notate.getScoreLength() - themeIntervalUse; i += themeIntervalUse) { 
             //loop through the remaining length of the score
              int beat = i/120;
+             int bar = 1 + (beat/notate.getBeatsPerMeasure());
             Integer noThemevalue = (int)(10*themeUses.size()*Double.valueOf(noThemeProbTextField.getText()));
             
             int themei = random.nextInt(probUsetotal + noThemevalue);
@@ -2210,7 +2216,7 @@ Random random;
                 System.out.println("Theme 1");
                 MelodyPart chosentheme = themeUses.get(0).theme.melody;
                 ThemeUse chosenthemeUse = themeUses.get(0);
-                themeUsageTextArea.append( "Beat " + beat + ": " + chosenthemeUse.theme.name );
+                themeUsageTextArea.append( "Bar " + bar + ": " + chosenthemeUse.theme.name );
                 MelodyPart adjustedTheme = generateSolohelper(chosenthemeUse, chosentheme, solo, cm);
                 
                 //this if takes care of the case if the index is out of bounds
@@ -2234,7 +2240,7 @@ Random random;
                     System.out.println("Theme 2");
                     ThemeUse chosenthemeUse = themeUses.get(1);
                     MelodyPart chosentheme = themeUses.get(1).theme.melody;
-                    themeUsageTextArea.append("Beat " + beat + ": " + chosenthemeUse.theme.name);
+                    themeUsageTextArea.append("Bar " + bar + ": " + chosenthemeUse.theme.name);
                             //"used at slot " + i + "\n");
                     MelodyPart adjustedTheme = generateSolohelper(chosenthemeUse, chosentheme, solo, cm);
 
@@ -2264,7 +2270,7 @@ Random random;
                                  chosenthemeUse.theme.name = "Theme " + k; 
                                  String text = themeUsageTextArea.getText();
                           } 
-                            themeUsageTextArea.append("Beat " + beat + ": " + chosenthemeUse.theme.name);
+                            themeUsageTextArea.append("Bar " + bar + ": " + chosenthemeUse.theme.name);
                                     //"used at slot "+ i + "\n");
                             MelodyPart adjustedTheme = generateSolohelper(chosenthemeUse, chosentheme, solo, cm);
 
@@ -2283,7 +2289,7 @@ Random random;
             //this interval is for not using any theme at all    
             if ((themei <= probUsetotal + noThemevalue) && (themei >= probUsetotal)) {
                 System.out.println("no Theme");
-                themeUsageTextArea.append("Beat " + beat + ": No Theme used\n");
+                themeUsageTextArea.append("Bar " + bar + ": No Theme used\n");
                       //  + "//used at slot "+ i + "\n");
                 generateSolohelper2(themeLength, solo);
             }
