@@ -23951,27 +23951,6 @@ private void populateNotateGrammarMenu()
       }
   }
 
-/**
- * Clear productions saved in file.
- */
-public void clearAccumulatedProductions()
-  {
-    String outFile = getGrammarFileName();
-    File f = new File(outFile);
-    File f2 = new File(f.getParentFile().getPath() + File.separator + Directories.accumulatedProductions);
-    if( f2.exists() )
-      {
-        System.gc();
-        boolean deleted = f2.delete();
-        while( !deleted )
-          {
-            deleted = f2.delete();
-            //System.out.println(deleted);
-          }
-      }
-
-    setLickGenStatus("Accumulated productions cleared.");
-  }
 
 public boolean rootEqualBassCheckboxChecked()
   {

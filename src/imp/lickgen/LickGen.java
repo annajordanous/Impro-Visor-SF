@@ -525,7 +525,8 @@ private void addMelody(MelodyPart melpart,
     }
     
 /**
- * Takes an outline, builds an abstract melody and fills it
+ * Takes an outline, builds an abstract melody and fills it.
+ * It calls fillMelody twice.
  */
 
 private MelodyPart buildSolo(Vector<ClusterSet> outline)
@@ -572,8 +573,16 @@ private MelodyPart buildSolo(Vector<ClusterSet> outline)
         point1 = first.getRandomDataPoint();
         currentAbstractMelody = point1.getAbstractMelody();
         currentSection = Polylist.PolylistFromString(currentAbstractMelody);
-        melpart = fillMelody(mMinPitch, mMaxPitch, mMinInterval, mMaxInterval, mBeatValue,
-                             mLeapProb, currentSection, mChordProg, startIndex, mAvoidRepeats);
+        melpart = fillMelody(mMinPitch, 
+                             mMaxPitch, 
+                             mMinInterval, 
+                             mMaxInterval, 
+                             mBeatValue,
+                             mLeapProb, 
+                             currentSection, 
+                             mChordProg, 
+                             startIndex, 
+                             mAvoidRepeats);
       }
     while( goesOutOfBounds(melpart) );
 
@@ -639,8 +648,16 @@ private MelodyPart buildSolo(Vector<ClusterSet> outline)
             currentSection = Polylist.PolylistFromString(currentAbstractMelody);
             //System.out.println("Abstract melody: " + currentAbstractMelody);
             //System.out.println("Abstract mel: " + currentAbstractMelody);
-            curr = fillMelody(mMinPitch, mMaxPitch, mMinInterval, mMaxInterval, mBeatValue,
-                              mLeapProb, currentSection, mChordProg, startIndex, mAvoidRepeats);
+            curr = fillMelody(mMinPitch, 
+                              mMaxPitch, 
+                              mMinInterval, 
+                              mMaxInterval, 
+                              mBeatValue,
+                              mLeapProb, 
+                              currentSection, 
+                              mChordProg, 
+                              startIndex, 
+                              mAvoidRepeats);
             counter++;
           }
         while( goesOutOfBounds(curr) && counter < MELODY_GEN_LIMIT );
@@ -1469,10 +1486,24 @@ public Note[] makeTriad (Note base, int inversion) {
 	putInRange(actualReturnTriad[2]);
 
 	return actualReturnTriad;
-
 }
 
-
+/**
+ * This fillMelody is called by LickgenFrame, ThemeWeaver, and
+ * twice elsewhere in this class (LickGen).
+ * 
+ * @param minPitch
+ * @param maxPitch
+ * @param minInterval
+ * @param maxInterval
+ * @param beatValue
+ * @param leapProb
+ * @param rhythmString
+ * @param chordProg
+ * @param start
+ * @param avoidRepeats
+ * @return 
+ */
 
 public MelodyPart fillMelody(int minPitch, 
                              int maxPitch, 
@@ -1720,8 +1751,12 @@ public MelodyPart fillPartOfMelody(int minPitch,
  * @param part
  * @param rhythmString
  */
-private void addNote(Note note, MelodyPart part, Polylist rhythmString,
-                     boolean avoidRepeats, String reason, Object item)
+private void addNote(Note note, 
+                     MelodyPart part, 
+                     Polylist rhythmString,
+                     boolean avoidRepeats, 
+                     String reason, 
+                     Object item)
   {
     //System.out.println("addNote " + note);
     int slotsInserted = note.getRhythmValue();
@@ -1809,7 +1844,8 @@ private void addNote(Note note, MelodyPart part, Polylist rhythmString,
   }
 
 /**
- * Fill in a given rhythm with notes.
+ * Fill in a given abstract melody with notes.
+ * This fillMelody is called from LickGen once only.
  */
 
 public boolean fillMelody(MelodyPart lick, 
