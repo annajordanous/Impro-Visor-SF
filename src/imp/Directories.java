@@ -61,11 +61,6 @@ public static String profileDirName = "grammars";
 
 
 /**
- * Standard file name for accumulated productions used in grammar learning
- */
-public static String accumulatedProductions = "accumulatedProductions.cache";
-
-/**
  * Name of standard sub-directory for styles
  */
 public static String styleDirName = "styles";
