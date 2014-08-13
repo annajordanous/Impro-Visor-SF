@@ -62,6 +62,7 @@ import java.io.FileOutputStream;
 import java.io.FileInputStream;
 import polya.Tokenizer;
 import imp.data.Score;
+import imp.lickgen.NoteConverter;
 import java.awt.Color;
 import javax.swing.table.DefaultTableCellRenderer;
 import polya.PolylistEnum;
@@ -1159,11 +1160,35 @@ private void playSelection()
         generateTheme();
     }//GEN-LAST:event_generateThemeJButtonActionPerformed
 
+
+    
     private void currentSelectionJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_currentSelectionJButtonActionPerformed
         // int index = soloTable.getSelectedRow();
-        MelodyPart sel = notate.getCurrentStave().getDisplayPart().extract(
+        MelodyPart sel = notate.getCurrentStave().getMelodyPart().extract(
                 notate.getCurrentSelectionStart(),
                 notate.getCurrentSelectionEnd());
+
+        // The commented-out code below illustrates how we can get the relative-pitch
+        // melody from a selection, then use it over other chords at other parts
+        // of the progression. Moreover, the shape of the original melody
+        // will be roughly maintained (except for possible octave displacements).
+        // We could use the relative-pitch melody as the Theme in lieu of the
+        // absolute pitch one we are now using.
+//        Polylist relativePitchMelody = 
+//            NoteConverter.melodyPart2Relative(sel, 
+//                                              notate.getChordProg(), 
+//                                              notate.getCurrentSelectionStart());
+//
+//        System.out.println("FYI: relative pitch melody: "+ relativePitchMelody);
+//        
+//        MelodyPart gen = fillMelody(BEAT, 
+//                                    relativePitchMelody, 
+//                                    notate.getChordProg(),  
+//                                    notate.getCurrentSelectionStart());
+//        
+//        System.out.println("FYI: filled melody: "+ gen);
+       
+        
         Part.PartIterator i = sel.iterator();
         String theme = "";
         while (i.hasNext()) {
@@ -1870,7 +1895,15 @@ public static boolean isDouble(String s) {
     return true;
 }
   
-// \
+/**
+ * This fillMelody is called in three places within ThemeWeaver.
+ * 
+ * @param beatValue
+ * @param rhythmString
+ * @param chordProg
+ * @param start
+ * @return 
+ */
 public MelodyPart fillMelody(int beatValue,
                              Polylist rhythmString, 
                              ChordPart chordProg,
