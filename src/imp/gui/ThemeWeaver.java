@@ -1290,10 +1290,11 @@ private void playSelection()
     private void stopPlaytoggleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopPlaytoggleActionPerformed
       
         soloPlaying = stopPlaytoggle.isSelected();
+        
         if (soloPlaying) {
             stopPlaytoggle.setText("<html><center>Play Solo</center></html>");
-
-            stopPlaying();
+             stopPlaying();
+             
         } else {
             soloPlaying = false;
             stopPlaytoggle.setSelected(false);
@@ -1312,6 +1313,8 @@ private void playSelection()
     private void deleteThemebuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteThemebuttonActionPerformed
     
         String name = (String) themeList.getSelectedValue();
+        
+        //delete the desired theme from the table
             for (int j = 0; j < soloTable.getRowCount(); j ++) {
                 if (soloTable.getValueAt(j, NAME_COLUMN) == name ) {
                     soloTable.setValueAt(null, j, NAME_COLUMN);
@@ -1320,6 +1323,7 @@ private void playSelection()
                 }
             }
             
+            //delete the selected theme from file
             for (int i = 0; i < orderedThemes.size(); i++) {
                 if (themeList.isSelectedIndex(i)) {
                     deleteTheme(name);
@@ -1561,129 +1565,117 @@ public class SoloGeneratorTableModel extends DefaultTableModel
       return soloTable.getValueAt(row,col);
   }
  
+    //if a theme is edited 
     public void updateLength(int row, int col, int i) {
-               MelodyPart melody = new MelodyPart((String) getValueAt(i, THEME_COLUMN)); 
-            
-               int themelength = melody.size() / BEAT;
-               
-              if (themelength != getValueAt(i,LENGTH_COLUMN)){
-                  soloTable.setValueAt(themelength + "", i, LENGTH_COLUMN); 
-                  for (Map.Entry pair : allThemes.entrySet()) { 
-                        //loop through all the entry sets of {Theme,name} in allThemes
-                        Theme ThemeKey = (Theme) pair.getKey(); 
-                        //get the Theme of each entry
+        MelodyPart melody = new MelodyPart((String) getValueAt(i, THEME_COLUMN));
 
-                        if (melody.toString().equals(ThemeKey.melody.toString())) 
-                        { //if the melody in allThemes is the name as the melody in the table
-                            soloTable.setValueAt(pair.getValue(), i, NAME_COLUMN);
-                            //set the name to the one that matches that theme
-                        } 
-                        
-                        else 
-                        {// if there is no matching theme in allThemes
-                            soloTable.setValueAt(null, i, NAME_COLUMN); 
-                            //set the name to empty
-                        }
-                    }
-                  
-              }
-                  
-            }
-    
-    public void addLength(int row, int col, int i) {
-           MelodyPart melody = new MelodyPart((String) getValueAt(i, THEME_COLUMN)); 
-            
-            int themelength = melody.size() / BEAT;
-            
-             if ((getValueAt(i, NAME_COLUMN) == null))
-                { //if there is no name
-                    soloTable.setValueAt(themelength + "", i, LENGTH_COLUMN); 
-                    //set themelength in the table
-                  } 
-//                
-                else { //if there is already a name
-                    soloTable.setValueAt(themelength + "", i, LENGTH_COLUMN);
-                    for (Map.Entry pair : allThemes.entrySet()) { 
-                        //loop through all the entry sets of {Theme,name} in allThemes
-                        Theme ThemeKey = (Theme) pair.getKey(); 
-                        //get the Theme of each entry
+        int themelength = melody.size() / BEAT;
 
-                        if (melody.toString().equals(ThemeKey.melody.toString())) 
-                        { //if the melody in allThemes is the name as the melody in the table
-                            soloTable.setValueAt(pair.getValue(), i, NAME_COLUMN);
-                            //set the name to the one that matches that theme
-                        } 
-                        
-                        else 
-                        {// if there is no matching theme in allThemes
-                            soloTable.setValueAt(null, i, NAME_COLUMN); 
-                            //set the name to empty
-                        }
-                    }
+        if (themelength != getValueAt(i, LENGTH_COLUMN)) {
+            soloTable.setValueAt(themelength + "", i, LENGTH_COLUMN);
+            for (Map.Entry pair : allThemes.entrySet()) {
+                //loop through all the entry sets of {Theme,name} in allThemes
+                Theme ThemeKey = (Theme) pair.getKey();
+                //get the Theme of each entry
+
+                if (melody.toString().equals(ThemeKey.melody.toString())) { //if the melody in allThemes is the name as the melody in the table
+                    soloTable.setValueAt(pair.getValue(), i, NAME_COLUMN);
+                    //set the name to the one that matches that theme
+                } else {// if there is no matching theme in allThemes
+                    soloTable.setValueAt(null, i, NAME_COLUMN);
+                    //set the name to empty
                 }
+            }
+
+        }
+
     }
     
-    public void namingSaving(int row, int col, int i) {
-          MelodyPart melody = new MelodyPart((String) getValueAt(i, THEME_COLUMN)); 
+    //if a theme is typed in 
+    public void addLength(int row, int col, int i) {
+        MelodyPart melody = new MelodyPart((String) getValueAt(i, THEME_COLUMN));
+
+        int themelength = melody.size() / BEAT;
+
+        if ((getValueAt(i, NAME_COLUMN) == null)) { //if there is no name
+            soloTable.setValueAt(themelength + "", i, LENGTH_COLUMN);
+            //set themelength in the table
             
-            int themelength = melody.size() / BEAT;
-                String name = (String) getValueAt(i, NAME_COLUMN);
-                String themestring = (String) getValueAt(i, THEME_COLUMN);
-                MelodyPart themeMelody = new MelodyPart(themestring);
-                Theme theme = Theme.makeTheme(name,themeMelody);
-                
-                if (orderedThemes.contains(name))
-                { //if the user types a name already in the list
-                    nameErrorMessage.setVisible(true); 
-                    //give name error message to rename the theme
-                } 
-                
-                else {
-                    for (Map.Entry pair : allThemes.entrySet().toArray(new Map.Entry[0])) {
-                        // loop through the entries of allThemes
-                        Theme ThemeKey = (Theme) pair.getKey(); 
-                        //get the Theme of each entry
+        } else { //if there is already a name
+            soloTable.setValueAt(themelength + "", i, LENGTH_COLUMN);
+            for (Map.Entry pair : allThemes.entrySet()) {
+                //loop through all the entry sets of {Theme,name} in allThemes
+                Theme ThemeKey = (Theme) pair.getKey();
+                //get the Theme of each entry
 
-                        if (melody.toString().equals(ThemeKey.melody.toString())) 
-                        { //if the melody of the Theme is the same as the one in the table
-                            addTheme(theme); //add the theme to the list
-                            saveRules(fileName);
-                            //   soloTable.setValueAt(pair.getValue(), i, 0); 
-                            //set the name to the one in the list(what is was before user changed it)
-                            for (int k = 0; k < soloTable.getRowCount(); k++) { //loop through table
+                if (melody.toString().equals(ThemeKey.melody.toString())) { //if the melody in allThemes is the name as the melody in the table
+                    soloTable.setValueAt(pair.getValue(), i, NAME_COLUMN);
+                    //set the name to the one that matches that theme
+                } else {// if there is no matching theme in allThemes
+                    soloTable.setValueAt(null, i, NAME_COLUMN);
+                    //set the name to empty
+                }
+            }
+        }
+    }
+    
+    //when a theme is named
+    public void namingSaving(int row, int col, int i) {
+        MelodyPart melody = new MelodyPart((String) getValueAt(i, THEME_COLUMN));
 
-                                if ((getValueAt(k, NAME_COLUMN) == null)
+        int themelength = melody.size() / BEAT;
+        String name = (String) getValueAt(i, NAME_COLUMN);
+        String themestring = (String) getValueAt(i, THEME_COLUMN);
+        MelodyPart themeMelody = new MelodyPart(themestring);
+        Theme theme = Theme.makeTheme(name, themeMelody);
+
+        if (orderedThemes.contains(name)) { //if the user types a name already in the list
+            nameErrorMessage.setVisible(true);
+            //give name error message to rename the theme
+            
+        } else {
+            for (Map.Entry pair : allThemes.entrySet().toArray(new Map.Entry[0])) {
+                // loop through the entries of allThemes
+                Theme ThemeKey = (Theme) pair.getKey();
+                //get the Theme of each entry
+
+                if (melody.toString().equals(ThemeKey.melody.toString())) { //if the melody of the Theme is the same as the one in the table
+                    addTheme(theme); //add the theme to the list
+                    saveRules(fileName);
+                    //   soloTable.setValueAt(pair.getValue(), i, 0); 
+                    //set the name to the one in the list(what is was before user changed it)
+                    for (int k = 0; k < soloTable.getRowCount(); k++) { //loop through table
+
+                        if ((getValueAt(k, NAME_COLUMN) == null)
                                 && (getValueAt(k, LENGTH_COLUMN) == null)
-                                && (getValueAt(k, THEME_COLUMN) == null)) 
-                                { //if there is a null row (besides probabilities)
-                                    soloTable.setValueAt(name, k, NAME_COLUMN); 
-                                    //set name to one user typed
-                                    soloTable.setValueAt(themestring, k, THEME_COLUMN);
-                                    //set theme to the one 
+                                && (getValueAt(k, THEME_COLUMN) == null)) { //if there is a null row (besides probabilities)
+                            soloTable.setValueAt(name, k, NAME_COLUMN);
+                            //set name to one user typed
+                            soloTable.setValueAt(themestring, k, THEME_COLUMN);
+                            //set theme to the one 
 
-                                    if (!(row == i && col == LENGTH_COLUMN)) {
-                                        soloTable.setValueAt(getValueAt(i, LENGTH_COLUMN), k, LENGTH_COLUMN); 
-                                        //set the themelength
-                                    }
-                                    break;
-                                }
+                            if (!(row == i && col == LENGTH_COLUMN)) {
+                                soloTable.setValueAt(getValueAt(i, LENGTH_COLUMN), k, LENGTH_COLUMN);
+                                //set the themelength
                             }
-                            
-                            soloTable.setValueAt(pair.getValue(), i, NAME_COLUMN); 
-                            //set the name to the one in the list(what is was before user changed it)
-                            nameErrorMessage.setVisible(false);
                             break;
                         }
-                        
-                        else { //if there is no melody that matches the one in the table
-                            addTheme(theme);
-                            saveRules(fileName);
-                        }
                     }
-                   
 
-
+                    soloTable.setValueAt(pair.getValue(), i, NAME_COLUMN);
+                    //set the name to the one in the list(what is was before user changed it)
+                    nameErrorMessage.setVisible(false);
+                    break;
+                    
+                } else { //if there is no melody that matches the one in the table
+                    addTheme(theme);
+                    saveRules(fileName);
                 }
+            }
+
+
+
+        }
     }
     
     public void enteringValue(int row, int col) {
@@ -1756,34 +1748,38 @@ private static LinkedHashMap<Theme, String> allThemes = new LinkedHashMap<Theme,
            orderedThemes = new ArrayList<String>(allThemes.values());
             }       
       }
+    
 public void addTheme(Theme theme)
     {
         ensureThemeArray();
         int orderedThemesIndex = orderedThemes.size() - 1;
         System.out.println(orderedThemes);
         String name = theme.name;
+        
         for (int i = 0; i < soloTable.getRowCount(); i++) {
-            //  Theme theme = allThemes.get(themestring);
             if ( (!orderedThemes.contains(name))) {
+                // if ordered themes doesn't already have it, add to both 
+                //orderedThemes and allThemes
                 orderedThemes.add(name);
                 allThemes.put(theme, name);
             }
-
+            // reset themeListModel so it will update to add the new theme
             themeListModel.reset();
             orderedThemesIndex = orderedThemes.indexOf(theme);
-            //  allThemesIndex = allThemes.indexOf(theme);
         }
         System.out.println(orderedThemes);
-       //saveRules(fileName);
     }
+
+//creates empty lists to be used for deleting a theme
 private static ArrayList<String> orderedThemescopy = new ArrayList<String>();
 private static LinkedHashMap<Theme, String> allThemescopy = new LinkedHashMap<Theme, String>();
 
+//delete a theme from a file based on the string name shown in the Themes scroll box
 public void deleteTheme(String name) {
     
     for (int i = 0; i < orderedThemes.size(); i++) {
+        
         if (!orderedThemes.get(i).equals(name)) {
-            System.out.println(orderedThemes.get(i));
             orderedThemescopy.add(orderedThemes.get(i));
         }
     }
@@ -1798,18 +1794,19 @@ public void deleteTheme(String name) {
             Theme theme = (Theme) pair.getKey();
             //set theme equal to the corresponding theme in that entry
             allThemescopy.put(theme, (String) pair.getValue());
-            System.out.println(allThemescopy);
         }
     }
 
     allThemes = allThemescopy;
-
+    System.out.println(allThemes);
+    
     saveRules(fileName);
     loadFromFile(fileName);
 }
 
 File fileName = ImproVisor.getThemesFile();
 
+//saving themes into My.themes
 public void saveRules(File file)
   {
    try
@@ -1828,6 +1825,7 @@ public void saveRules(File file)
     }
   } 
 
+//load the themes in My.themes into the Theme Weaver window
 public void loadFromFile(File file) {
     java.io.FileInputStream themeStream;
 
@@ -2151,18 +2149,22 @@ Random random;
         List<Double> probTransposelist = new ArrayList(Arrays.asList());
         List<Double> probInvertlist = new ArrayList(Arrays.asList());
         List<Double> probReverselist = new ArrayList(Arrays.asList());
-        int d = 0;
+        
+        int n = 0;
+        
         //loop through the themeUses list and get the probabilities for each
         //themeuse and add it to the corresponding empty list
         for (int i = 0; i < themeUses.size(); i++) {
+            
             probUselist.add(themeUses.get(i).probUse);
             probTransposelist.add(themeUses.get(i).probTranspose);
             probInvertlist.add(themeUses.get(i).probInvert);
             probReverselist.add(themeUses.get(i).probReverse); 
+            
             //give names to themes that don't have one for text area
             if (themeUses.get(i).theme.name == null) {
-                d += 1;
-                themeUses.get(i).theme.name = "Theme " + d;
+                n += 1;
+                themeUses.get(i).theme.name = "Theme " + n;
             }
         }
         
@@ -2180,7 +2182,7 @@ Random random;
 
         solo.pasteSlots(themeUses.get(index).theme.melody, 0); 
         //paste theme into solo at starting point
-        themeUsageTextArea.append("Bar 1: " + themeUses.get(index).theme.name + "\n");
+        themeUsageTextArea.append("Bar 1: " + themeUses.get(index).theme.name + " unmodified \n");
         
         // set totals of probabilities to 0
         int probUsetotal = 0;
@@ -2215,7 +2217,6 @@ Random random;
             //pick a random number from 0 inclusive to 10*the probability list size
             //since all the elements in the list are multpled by 10, the size has to be multiplied by 10 too
             
-            int n = 0;
             
             //To implement the probabilities I broke up the size of the list times 10 into intervals
             //the first interval is from 0 to to the first probability - 1 
@@ -2271,17 +2272,9 @@ Random random;
                         
                         if ((themei >= A) && (themei <= B - 1)) {
                             System.out.println("subsequentthemes");
-                            int x = k + 2;
-                            System.out.println("Theme " + x);
-                            System.out.println(n);
                             ThemeUse chosenthemeUse = themeUses.get(k+1);
-                            MelodyPart chosentheme = themeUses.get(k+1).theme.melody;
-                             if ((chosenthemeUse.theme.name == null) && (n == k - 1)) {
-                                 chosenthemeUse.theme.name = "Theme " + k; 
-                                 String text = themeUsageTextArea.getText();
-                          } 
+                            MelodyPart chosentheme = themeUses.get(k+1).theme.melody; 
                             themeUsageTextArea.append("Bar " + bar + ": " + chosenthemeUse.theme.name);
-                                    //"used at slot "+ i + "\n");
                             MelodyPart adjustedTheme = generateSolohelper(chosenthemeUse, chosentheme, solo, cm);
 
                             if (i + adjustedTheme.size() >= solo.getSize()) {
