@@ -704,9 +704,8 @@ public void setTableColumnWidths()
         gridBagConstraints.insets = new java.awt.Insets(0, 35, 0, 0);
         getContentPane().add(deleteRowbutton, gridBagConstraints);
 
-        deleteThemebutton.setText("Delete Theme from file");
+        deleteThemebutton.setText("Delete Theme From File");
         deleteThemebutton.setPreferredSize(new java.awt.Dimension(78, 29));
-        deleteThemebutton.setSize(new java.awt.Dimension(0, 0));
         deleteThemebutton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 deleteThemebuttonActionPerformed(evt);
@@ -1292,7 +1291,7 @@ private void playSelection()
       
         soloPlaying = stopPlaytoggle.isSelected();
         if (soloPlaying) {
-            stopPlaytoggle.setText("<html><center>Play</center></html>");
+            stopPlaytoggle.setText("<html><center>Play Solo</center></html>");
 
             stopPlaying();
         } else {
