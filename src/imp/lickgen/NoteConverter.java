@@ -141,7 +141,11 @@ public class NoteConverter {
         return testConvert.toString().equals(xNote);
     }
 
-    //returns a string representation of a relative pitch melody, given a melody (use this, for example in writing productions)
+    /**
+     * returns a string representation of a relative pitch melody, 
+     * given a melody (use this, for example in writing productions)
+     * Called once, from LickgenFrame.writeProduction.
+     */
     public static String melStringToRelativePitch(int slotsPerSection, ChordPart chordProg, String exactMelody) {
         ArrayList<Chord> allChords = chordProg.getChords();
 
@@ -222,6 +226,37 @@ public class NoteConverter {
         return relMel.toString();
     }
 
+    /**
+     * Convert a MelodyPart over a ChordPart starting at a certain slot into
+     * a relative-pitch melody. This is cumbersome, but was done after NoteConverter
+     * was built. A lot of trouble could be avoided by not using strings.
+     * Note that the chordSlot applies only to the ChordPart.
+     * The melody is assumed to start in slot 0.
+     * Added by Bob Keller 12 August 2014.
+     * 
+     * @param melody
+     * @param chords
+     * @param chordSlot 
+     */
+    public static Polylist melodyPart2Relative(MelodyPart melody, ChordPart chordProg, int chordSlot)
+      {
+       int slotsPerSection = 480; // FIX: This is not universal
+       ArrayList<Integer> melodyData = melody.getArrayListForm();
+       StringBuilder buffer = new StringBuilder();
+        // Note: Blank is critical in next statement.
+        buffer.append(chordSlot + " ");
+        for( Integer s: melodyData )
+          {
+            buffer.append(s);
+            buffer.append(" ");
+          }
+        String melString = buffer.toString();
+        //System.out.println("melString = " + melString);
+        String relativePitchMelody = NoteConverter.melStringToRelativePitch(slotsPerSection, chordProg, melString);
+        return Polylist.PolylistFromString(relativePitchMelody);
+      }
+    
+    
      /**
      * noteToAbstract 
      * Convert a note in a tune to an abstract pitch

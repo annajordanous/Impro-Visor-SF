@@ -1718,18 +1718,30 @@ public int getInitialBeatsRest()
       buffer.append(" ");
       }
     }
-  return buffer.toString ();
+  return buffer.toString();
   }
 
- //Unfinished
-//public void insertPartAt(int start, int finish, MelodyPart insert)
-//  {
-//    int j = 0;
-//    for( int i = start; i <= finish; i++, j++ )
-//      {
-//        slots.set(i, insert.getUnit(j));
-//      }
-//  }
+ /**
+  * Get the melody as a list of just note symbols in leadsheet notation
+  * @return 
+  */
+public ArrayList<Integer> getArrayListForm()
+  {
+  ArrayList<Integer> result = new ArrayList<Integer>();
+
+  int n = slots.size();
+
+  for( int i = 0; i < n; i++ )
+    {
+    Note note = (Note)slots.get(i);
+    if( note != null )
+      {
+        result.add(note.getPitch());
+        result.add(note.getRhythmValue());
+      }
+    }
+  return result;
+  }
 
 
 /**

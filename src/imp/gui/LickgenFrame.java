@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application.
  *
- * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College XML export code
+ * Copyright (C) 2005-2014 Robert Keller and Harvey Mudd College XML export code
  * is also Copyright (C) 2009-2010 Nicolas Froment (aka Lasconic).
  *
  * Impro-Visor is free software; you can redistribute it and/or modifyc it under
@@ -26,7 +26,6 @@
  */
 package imp.gui;
 
-import imp.Directories;
 import imp.ImproVisor;
 import imp.cluster.PolylistComparer;
 import imp.com.*;
