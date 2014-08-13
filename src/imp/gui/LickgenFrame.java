@@ -225,6 +225,9 @@ public class LickgenFrame
         rhythmPanel = new javax.swing.JPanel();
         rhythmScrollPane = new javax.swing.JScrollPane();
         rhythmField = new javax.swing.JTextArea();
+        relativePanel = new javax.swing.JPanel();
+        relativeScrollPane = new javax.swing.JScrollPane();
+        relativeField = new javax.swing.JTextArea();
         lickGenerationButtonsPanel = new javax.swing.JPanel();
         generateLickButton = new javax.swing.JButton();
         genRhythmButton = new javax.swing.JButton();
@@ -414,9 +417,11 @@ public class LickgenFrame
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         generatorPane.setBackground(new java.awt.Color(218, 215, 215));
-        generatorPane.setMinimumSize(new java.awt.Dimension(900, 700));
-        generatorPane.setPreferredSize(new java.awt.Dimension(950, 700));
+        generatorPane.setMinimumSize(new java.awt.Dimension(1100, 700));
+        generatorPane.setPreferredSize(new java.awt.Dimension(1100, 700));
 
+        lickGenPanel.setMinimumSize(new java.awt.Dimension(1450, 903));
+        lickGenPanel.setPreferredSize(new java.awt.Dimension(1450, 903));
         lickGenPanel.setLayout(new java.awt.GridBagLayout());
 
         rhythmPanel.setBackground(new java.awt.Color(218, 215, 215));
@@ -448,12 +453,46 @@ public class LickgenFrame
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 0.5;
         lickGenPanel.add(rhythmPanel, gridBagConstraints);
+
+        relativePanel.setBackground(new java.awt.Color(218, 215, 215));
+        relativePanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Relative-Pitch Melody", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
+        relativePanel.setMinimumSize(new java.awt.Dimension(850, 200));
+        relativePanel.setPreferredSize(new java.awt.Dimension(850, 200));
+        relativePanel.setLayout(new java.awt.GridBagLayout());
+
+        relativeScrollPane.setBorder(null);
+        relativeScrollPane.setMinimumSize(new java.awt.Dimension(223, 180));
+        relativeScrollPane.setPreferredSize(new java.awt.Dimension(223, 180));
+
+        relativeField.setColumns(20);
+        relativeField.setLineWrap(true);
+        relativeField.setRows(500);
+        relativeField.setBorder(null);
+        relativeField.setMinimumSize(new java.awt.Dimension(800, 100));
+        relativeField.setPreferredSize(new java.awt.Dimension(800, 1000));
+        relativeScrollPane.setViewportView(relativeField);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 0.2;
+        relativePanel.add(relativeScrollPane, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 0.5;
+        lickGenPanel.add(relativePanel, gridBagConstraints);
 
         lickGenerationButtonsPanel.setBackground(new java.awt.Color(218, 215, 215));
         lickGenerationButtonsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Lick Generation and Extraction", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
@@ -515,8 +554,8 @@ public class LickgenFrame
         gridBagConstraints.weightx = 1.0;
         lickGenerationButtonsPanel.add(fillMelodyButton, gridBagConstraints);
 
-        getAbstractMelodyButton.setText("Extract Abstract Melody");
-        getAbstractMelodyButton.setToolTipText("Extract the rhythm from the leadsheet.");
+        getAbstractMelodyButton.setText("Extract Abstract Melody and Relative Pitches");
+        getAbstractMelodyButton.setToolTipText("Extract the abstract melody and the relative-pitch melody from the leadsheet selection.");
         getAbstractMelodyButton.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -3470,6 +3509,12 @@ public class LickgenFrame
         rhythmField.setCaretPosition(0);
         rhythmScrollPane.getViewport().setViewPosition(new Point(0, 0));
     }
+    
+    public void setRelativeFieldText(String string) {
+        relativeField.setText(string);
+        relativeField.setCaretPosition(0);
+        relativeScrollPane.getViewport().setViewPosition(new Point(0, 0));
+    }  
 
     /**
      * Interface to fillMelody in LickGen
@@ -5457,6 +5502,11 @@ public void extractAbstractMelody()
       {
         setRhythmFieldText(production.toString());
       }
+    
+    MelodyPart segment = notate.getCurrentMelodyPart().extract(selStart, selEnd);
+    ChordPart chords = notate.getChordProg().extract(selStart, selEnd);
+    Polylist relativePitchMelody = NoteConverter.melodyPart2Relative(segment, chords, selStart);
+    setRelativeFieldText(relativePitchMelody.toString());
   }
 
 /**
@@ -6110,6 +6160,8 @@ public void addProduction(String production, int measureWindow, double prob) //f
                                                             maxDuration,
                                                             restProb).toString());
           }
+        
+        
     }//GEN-LAST:event_genRhythmButtonActionPerformed
 
     private void generateLickButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_generateLickButtonActionPerformed
@@ -6399,6 +6451,9 @@ private void updateUseSoloist()
     private javax.swing.JCheckBox recurrentCheckbox;
     private javax.swing.JButton regenerateHeadDataBtn;
     private javax.swing.JButton regenerateLickForSoloButton;
+    private javax.swing.JTextArea relativeField;
+    private javax.swing.JPanel relativePanel;
+    private javax.swing.JScrollPane relativeScrollPane;
     private javax.swing.JMenuItem reloadGrammarMI1;
     private javax.swing.JButton removeLayerFromTableButton;
     private javax.swing.JButton resetDefaultValuesButton;
