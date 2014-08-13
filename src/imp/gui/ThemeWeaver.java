@@ -1777,23 +1777,34 @@ public void addTheme(Theme theme)
         System.out.println(orderedThemes);
        //saveRules(fileName);
     }
+private static ArrayList<String> orderedThemescopy = new ArrayList<String>();
+private static LinkedHashMap<Theme, String> allThemescopy = new LinkedHashMap<Theme, String>();
 
 public void deleteTheme(String name) {
-//    for (int i = 0; i < orderedThemes.size(); i++) {
-//       if (themeList.isSelectedIndex(i)) {
-           orderedThemes.remove(name);
-           System.out.println(orderedThemes);
-            for (Map.Entry pair : allThemes.entrySet()) { 
-                        //loop through entries in allThemes
-                        
-                        if (name == pair.getValue()) 
-                        { //if the name in the themeList is equal to the name in the entry
-                            Theme theme = (Theme) pair.getKey(); 
-                            //set theme equal to the corresponding theme in that entry
-                             allThemes.remove(theme);
-                             System.out.println(allThemes);
-                        }
-            }
+    
+    for (int i = 0; i < orderedThemes.size(); i++) {
+        if (!orderedThemes.get(i).equals(name)) {
+            System.out.println(orderedThemes.get(i));
+            orderedThemescopy.add(orderedThemes.get(i));
+        }
+    }
+
+    orderedThemes = orderedThemescopy;
+    System.out.println(orderedThemes);
+
+    for (Map.Entry pair : allThemes.entrySet()) {
+        //loop through entries in allThemes
+
+        if (name != pair.getValue()) { //if the name in the themeList is equal to the name in the entry
+            Theme theme = (Theme) pair.getKey();
+            //set theme equal to the corresponding theme in that entry
+            allThemescopy.put(theme, (String) pair.getValue());
+            System.out.println(allThemescopy);
+        }
+    }
+
+    allThemes = allThemescopy;
+
     saveRules(fileName);
     loadFromFile(fileName);
 }
