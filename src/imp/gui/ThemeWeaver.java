@@ -907,7 +907,7 @@ private void playSelection()
                                     //the themes are the same, the lengths are different
                                     setValueAt(melody.size() / BEAT + "", x, LENGTH_COLUMN); 
                                     //make the lengths the same 
-                                    setValueAt(name + "-" + n,j,NAME_COLUMN);
+                                    setValueAt(name + "- " + n,j,NAME_COLUMN);
                                 }
                             }
                         }
@@ -1314,14 +1314,19 @@ private void playSelection()
     
         String name = (String) themeList.getSelectedValue();
         
+        
         //delete the desired theme from the table
             for (int j = 0; j < soloTable.getRowCount(); j ++) {
-                if (soloTable.getValueAt(j, NAME_COLUMN) == name ) {
+               System.out.println(name + "- " + j);
+                if ((soloTable.getValueAt(j, NAME_COLUMN) == name ) 
+                 || (soloTable.getValueAt(j,NAME_COLUMN) == name.concat("- ") + j)) {
                     soloTable.setValueAt(null, j, NAME_COLUMN);
                     soloTable.setValueAt(null, j, LENGTH_COLUMN);
                     soloTable.setValueAt(null, j, THEME_COLUMN);
                 }
             }
+        
+        
             
             //delete the selected theme from file
             for (int i = 0; i < orderedThemes.size(); i++) {
@@ -1776,32 +1781,39 @@ private static LinkedHashMap<Theme, String> allThemescopy = new LinkedHashMap<Th
 
 //delete a theme from a file based on the string name shown in the Themes scroll box
 public void deleteTheme(String name) {
-    
-    for (int i = 0; i < orderedThemes.size(); i++) {
-        
-        if (!orderedThemes.get(i).equals(name)) {
-            orderedThemescopy.add(orderedThemes.get(i));
-        }
-    }
-
-    orderedThemes = orderedThemescopy;
-    System.out.println(orderedThemes);
-
+    System.out.println("deleting");
+    orderedThemes.remove(name);
     for (Map.Entry pair : allThemes.entrySet()) {
-        //loop through entries in allThemes
-
-        if (name != pair.getValue()) { //if the name in the themeList is equal to the name in the entry
-            Theme theme = (Theme) pair.getKey();
-            //set theme equal to the corresponding theme in that entry
-            allThemescopy.put(theme, (String) pair.getValue());
+        if (name.equals(pair.getValue())) { //if the name in the themeList is equal to the name in the entry
+            Theme theme = (Theme) pair.getKey(); 
+            allThemes.remove(theme);
+            break;
         }
     }
-
-    allThemes = allThemescopy;
-    System.out.println(allThemes);
-    
+//        System.out.println(orderedThemes.size());
+//        if (!orderedThemes.get(i).equals(name)) {
+//            orderedThemescopy.add(orderedThemes.get(i));
+//        }
+//    }
+//
+//    orderedThemes = orderedThemescopy;
+//    System.out.println(orderedThemes);
+//
+//    for (Map.Entry pair : allThemes.entrySet()) {
+//        //loop through entries in allThemes
+//
+//        if (name != pair.getValue()) { //if the name in the themeList is equal to the name in the entry
+//            Theme theme = (Theme) pair.getKey();
+//            //set theme equal to the corresponding theme in that entry
+//            allThemescopy.put(theme, (String) pair.getValue());
+//        }
+//    }
+//
+//    allThemes = allThemescopy;
+//    System.out.println(allThemes);
+     
     saveRules(fileName);
-    loadFromFile(fileName);
+    themeListModel.reset();
 }
 
 File fileName = ImproVisor.getThemesFile();
