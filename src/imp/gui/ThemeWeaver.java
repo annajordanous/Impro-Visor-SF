@@ -1781,8 +1781,9 @@ private static LinkedHashMap<Theme, String> allThemescopy = new LinkedHashMap<Th
 
 //delete a theme from a file based on the string name shown in the Themes scroll box
 public void deleteTheme(String name) {
-    System.out.println("deleting");
+    
     orderedThemes.remove(name);
+    
     for (Map.Entry pair : allThemes.entrySet()) {
         if (name.equals(pair.getValue())) { //if the name in the themeList is equal to the name in the entry
             Theme theme = (Theme) pair.getKey(); 
@@ -2255,47 +2256,30 @@ Random random;
             //if the themeUses size is more than one themeuse then the other intervals have to be accounted for 
             
             else if (themeUses.size() > 1) {
-                double A = 10 * probUselist.get(0);
-                double B = 10 * probUselist.get(0) + 10 * probUselist.get(1);
-                
-                //the interval for the second ThemeUse
-                if ((themei >= A) && (themei <= B - 1)) {
-                    System.out.println("Theme 2");
-                    ThemeUse chosenthemeUse = themeUses.get(1);
-                    MelodyPart chosentheme = themeUses.get(1).theme.melody;
-                    themeUsageTextArea.append("Bar " + bar + ": " + chosenthemeUse.theme.name);
-                            //"used at slot " + i + "\n");
-                    MelodyPart adjustedTheme = generateSolohelper(chosenthemeUse, chosentheme, solo, cm);
 
-                    if (i + adjustedTheme.size() >= solo.getSize()) {
-                        generateSolohelper2(themeLength, solo);
-                    } 
-                    
-                    else {
-                        solo.pasteSlots(adjustedTheme, i);
-                    }
-                 }
-//                
-                else {
-                    //this loop covers the rest of the intervals
-                    for (int k = 1; k < probUselist.size() - 1; k++) {
-                        A += 10 * probUselist.get(k);
-                        B += 10 * probUselist.get(k + 1);
+
+                double A = 0;
+                double B = 10 * probUselist.get(0);
+
+                //this loop covers the rest of the intervals
+                for (int k = 0; k < probUselist.size() - 1; k++) {
+                    A += 10 * probUselist.get(k);
+                    B += 10 * probUselist.get(k + 1);
+
+                    if ((themei >= A) && (themei <= B - 1)) {
                         
-                        if ((themei >= A) && (themei <= B - 1)) {
-                            System.out.println("subsequentthemes");
-                            ThemeUse chosenthemeUse = themeUses.get(k+1);
-                            MelodyPart chosentheme = themeUses.get(k+1).theme.melody; 
-                            themeUsageTextArea.append("Bar " + bar + ": " + chosenthemeUse.theme.name);
-                            MelodyPart adjustedTheme = generateSolohelper(chosenthemeUse, chosentheme, solo, cm);
+                        int x = k + 2;
+                        System.out.println("Theme " + x);
+                        ThemeUse chosenthemeUse = themeUses.get(k + 1);
+                        MelodyPart chosentheme = themeUses.get(k + 1).theme.melody;
+                        themeUsageTextArea.append("Bar " + bar + ": " + chosenthemeUse.theme.name);
+                        MelodyPart adjustedTheme = generateSolohelper(chosenthemeUse, chosentheme, solo, cm);
 
-                            if (i + adjustedTheme.size() >= solo.getSize()) {
-                                generateSolohelper2(themeLength, solo);
-                            } 
+                        if (i + adjustedTheme.size() >= solo.getSize()) {
+                            generateSolohelper2(themeLength, solo);
                             
-                            else {
-                                solo.pasteSlots(adjustedTheme, i);
-                            }
+                        } else {
+                            solo.pasteSlots(adjustedTheme, i);
                         }
                     }
                 }
