@@ -844,7 +844,19 @@ private void playSelection()
     }//GEN-LAST:event_ResetActionPerformed
 
     private void soloTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_soloTableMouseClicked
+        if (evt.isShiftDown()) {
+            int index = soloTable.getSelectedRow(); 
+            
+            String name = (String) getValueAt(index, NAME_COLUMN);
+            Score score = new Score(name);
+            
+            String themeString = (String) getValueAt(index, THEME_COLUMN);
+            MelodyPart melody = new MelodyPart(themeString);
+            
+            score.addPart(melody);
+            PatternDisplay.playScore(notate, score, themeWeaver);
 
+        }
     }//GEN-LAST:event_soloTableMouseClicked
 
     private void themeListClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_themeListClicked
