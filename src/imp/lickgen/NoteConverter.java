@@ -57,8 +57,8 @@ public class NoteConverter {
     //dominant (i.e. Mixolydian)
     private static final String[] dominantScaleDegrees = {"1", "b2", "2", "b3", "3", "4", "#4", "5", "#5", "6", "7", "#7"};
     //half diminished
-    //note: 6 half steps above the root has to be b5--otherwise, what do you call a perfect 5?
-    private static final String[] halfDimScaleDegrees = {"1", "b2", "2", "3", "#3", "4", "b5", "5", "b6", "6", "7", "#7"};
+    //note: 6 half steps above the root has to be b5--otherwise, what do you call a perfect 5? No, I think it should be 5.
+    private static final String[] halfDimScaleDegrees = {"1", "2", "#2", "3", "#3", "4", "5", "#5", "6", "#6", "7", "#7"};
     //diminished
     //note: 8 half steps above root is a 6th because a fully diminished 7th is the same intervals as a major 6th
     //so also, nine half steps becomes a seventh
