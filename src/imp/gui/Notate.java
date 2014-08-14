@@ -6885,6 +6885,7 @@ public Critic getCritic()
         cancelTruncate.setText("Cancel truncation");
         cancelTruncate.setToolTipText("Do not truncate the part.");
         cancelTruncate.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        cancelTruncate.setOpaque(true);
         cancelTruncate.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -6909,6 +6910,7 @@ public Critic getCritic()
         acceptTruncate.setToolTipText("Truncates the part as specified.");
         acceptTruncate.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         acceptTruncate.setDefaultCapable(false);
+        acceptTruncate.setOpaque(true);
         acceptTruncate.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
