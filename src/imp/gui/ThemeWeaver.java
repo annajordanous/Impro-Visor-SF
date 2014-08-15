@@ -1583,34 +1583,17 @@ public class SoloGeneratorTableModel extends DefaultTableModel
                 // loop through the entries of allThemes
                 Theme ThemeKey = (Theme) pair.getKey();
                 //get the Theme of each entry
-
+                String nameValue = (String) pair.getValue();
+                //get the name of each entry
+                
                 if (melody.toString().equals(ThemeKey.melody.toString())) { 
-                //if the melody of the Theme is the same as the one in the table
                     
-                    addTheme(theme); //add the theme to the list
-                    saveRules(fileName);
+                    deleteTheme(nameValue); //delete the old theme
+                    addTheme(theme); //add the new one
                     
-                    for (int k = 0; k < soloTable.getRowCount(); k++) { //loop through table
-
-                        if ((getValueAt(k, NAME_COLUMN) == null)
-                         && (getValueAt(k, LENGTH_COLUMN) == null)
-                         && (getValueAt(k, THEME_COLUMN) == null)) {
-                         //if there is a null row (besides probabilities)
-                            soloTable.setValueAt(name, k, NAME_COLUMN);
-                            //set name to one user typed
-                            soloTable.setValueAt(themestring, k, THEME_COLUMN);
-                            //set theme to the one 
-
-                            if (!(row == i && col == LENGTH_COLUMN)) {
-                                soloTable.setValueAt(getValueAt(i, LENGTH_COLUMN), k, LENGTH_COLUMN);
-                                //set the themelength
-                            }
-                            break;
-                        }
-                    }
-
-                    soloTable.setValueAt(pair.getValue(), i, NAME_COLUMN);
-                    //set the name to the one in the list(what is was before user changed it)
+                    saveRules(fileName); 
+                    themeListModel.reset();
+                    
                     nameErrorMessage.setVisible(false);
                     break;
                     
@@ -1644,9 +1627,7 @@ public class SoloGeneratorTableModel extends DefaultTableModel
             //naming and saving
             if (soloTable.isCellSelected(i, NAME_COLUMN)
             && (getValueAt(i, THEME_COLUMN) != null) 
-            && (getValueAt(i, NAME_COLUMN) != null) 
-           // && (getValueAt(i,NAME_COLUMN) != " ")
-                    )
+            && (getValueAt(i, NAME_COLUMN) != null))
             { //if name cell is selected, it's not empty and the theme isn't empty
                 namingSaving(row, col, i);
                 return;
