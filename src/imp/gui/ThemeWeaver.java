@@ -1060,40 +1060,37 @@ private void playSelection()
         //create an empty array of themeUses
 
         for (int i = 0; i < soloTable.getRowCount(); i++) { //loop through table
-            { 
-                if ((getValueAt(i,THEME_COLUMN) == null)
-                 && (getValueAt(i, LENGTH_COLUMN) != null)) { 
+            
+                if ((getValueAt(i, THEME_COLUMN) == null)
+                 && (getValueAt(i, LENGTH_COLUMN) != null)) {
                     //if theme cell is empty and length isn't
-                     enteredIncorrectly.setVisible(true); //show error message
+                    enteredIncorrectly.setVisible(true); //show error message
                     break;
+                    
+                } else if (getValueAt(i, THEME_COLUMN) != null) {
+                    if ((isDouble((String) getValueAt(i, 3)) == false)
+                     || (isDouble((String) getValueAt(i, 4)) == false)
+                     || (isDouble((String) getValueAt(i, 5)) == false)
+                     || (isDouble((String) getValueAt(i, 6)) == false)) {
+                        //if theme cell not empty but weighted values are entered wrong
+                        enteredIncorrectly.setVisible(true); //show error message 
+                        break;
+                        
+                    } else { //if all cells are entered correctly, form theme uses
+                        ThemeUse use = new ThemeUse(new MelodyPart((String) getValueAt(i, THEME_COLUMN)));
+                        use.probUse = Double.valueOf((String) getValueAt(i, USE_COLUMN));
+                        use.probTranspose = Double.valueOf((String) getValueAt(i, TRANSPOSE_COLUMN));
+                        use.probInvert = Double.valueOf((String) getValueAt(i, INVERT_COLUMN));
+                        use.probReverse = Double.valueOf((String) getValueAt(i, REVERSE_COLUMN));
+                        themeUses.add(use); // add a new ThemeUse to the arraylist with respective elements
+
+                        if (getValueAt(i, NAME_COLUMN) != null) {
+                            //if the theme has a name assign it to the theme
+                            use.theme.name = (String) getValueAt(i, NAME_COLUMN);
+                        }
+                    }
                 }
-                
-               else if (getValueAt(i, THEME_COLUMN) != null) { 
-                    if ((isDouble((String) getValueAt(i, 3)) == false) 
-              || (isDouble((String) getValueAt(i, 4)) == false)
-              || (isDouble((String) getValueAt(i, 5)) == false) 
-              || (isDouble((String) getValueAt(i, 6)) == false)) {
-                //if theme cell not empty but weighted values are entered wrong
-                enteredIncorrectly.setVisible(true); //show error message 
-                break;
             }
-               else { //if all cells are entered correctly, form theme uses
-                ThemeUse use = new ThemeUse(new MelodyPart((String) getValueAt(i, THEME_COLUMN)));
-                use.probUse = Double.valueOf((String) getValueAt(i, USE_COLUMN));
-                use.probTranspose = Double.valueOf((String) getValueAt(i, TRANSPOSE_COLUMN));
-                use.probInvert = Double.valueOf((String) getValueAt(i, INVERT_COLUMN));
-                use.probReverse = Double.valueOf((String) getValueAt(i, REVERSE_COLUMN));
-                themeUses.add(use); // add a new ThemeUse to the arraylist with respective elements
-                
-                if (getValueAt(i, NAME_COLUMN)!= null) {
-                    //if the theme has a name assign it to the theme
-                    use.theme.name = (String)getValueAt(i,NAME_COLUMN); 
-                }
-                
-                }
-              }
-           }
-        }
         
         generateSolo(themeUses, cm);
         playSelection();
@@ -1567,39 +1564,41 @@ public class SoloGeneratorTableModel extends DefaultTableModel
     //when a theme is named
     public void namingSaving(int row, int col, int i) {
         MelodyPart melody = new MelodyPart((String) getValueAt(i, THEME_COLUMN));
-
+        
         int themelength = melody.size() / BEAT;
         String name = (String) getValueAt(i, NAME_COLUMN);
         String themestring = (String) getValueAt(i, THEME_COLUMN);
         MelodyPart themeMelody = new MelodyPart(themestring);
-        Theme theme = Theme.makeTheme(name, themeMelody);
+        Theme theme = Theme.makeTheme(name.trim(), themeMelody);
 
         if (orderedThemes.contains(name)) { //if the user types a name already in the list
             nameErrorMessage.setVisible(true);
             //give name error message to rename the theme
             
         } else {
-            for (Map.Entry pair : allThemes.entrySet().toArray(new Map.Entry[0])) {
-                // loop through the entries of allThemes
-                Theme ThemeKey = (Theme) pair.getKey();
-                //get the Theme of each entry
-                String nameValue = (String) pair.getValue();
-                //get the name of each entry
-                
-                if (melody.toString().equals(ThemeKey.melody.toString())) { 
-                    
-                    deleteTheme(nameValue); //delete the old theme
-                    addTheme(theme); //add the new one
-                    
-                    saveRules(fileName); 
-                    themeListModel.reset();
-                    
-                    nameErrorMessage.setVisible(false);
-                    break;
-                    
-                } else { //if there is no melody that matches the one in the table
-                    addTheme(theme);
-                    saveRules(fileName);
+            if (!name.trim().isEmpty()) { //if the name is not whitespace
+                for (Map.Entry pair : allThemes.entrySet().toArray(new Map.Entry[0])) {
+                    // loop through the entries of allThemes
+                    Theme ThemeKey = (Theme) pair.getKey();
+                    //get the Theme of each entry
+                    String nameValue = (String) pair.getValue();
+                    //get the name of each entry
+
+                    if (melody.toString().equals(ThemeKey.melody.toString())) {
+
+                        deleteTheme(nameValue); //delete the old theme
+                        addTheme(theme); //add the new one
+
+                        saveRules(fileName);
+                        themeListModel.reset();
+
+                        nameErrorMessage.setVisible(false);
+                        break;
+
+                    } else { //if there is no melody that matches the one in the table
+                        addTheme(theme);
+                        saveRules(fileName);
+                    }
                 }
             }
         }
@@ -1684,10 +1683,6 @@ public void addTheme(Theme theme)
             orderedThemesIndex = orderedThemes.indexOf(theme);
         }
     }
-
-//creates empty lists to be used for deleting a theme
-private static ArrayList<String> orderedThemescopy = new ArrayList<String>();
-private static LinkedHashMap<Theme, String> allThemescopy = new LinkedHashMap<Theme, String>();
 
 
 //delete a theme from a file based on the string name shown in the Themes scroll box
