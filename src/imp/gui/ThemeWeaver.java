@@ -861,9 +861,9 @@ private void playSelection()
                                 int n = 0;
                                 
                                 for (int x = 0; x < soloTable.getRowCount(); x++) { //loop through table
-                                    if (getValueAt(x, NAME_COLUMN) != null
+                                    if ((getValueAt(x, NAME_COLUMN) != null)
                                     && ((((String) getValueAt(x, NAME_COLUMN)).equals(name))
-                                    || ((String) getValueAt(x, NAME_COLUMN)).equals(name + "-" + n))
+                                    || ((String) getValueAt(x, NAME_COLUMN)).equals(name + "- " + n))
                                     && (x != j)
                                     && (((String) getValueAt(x, THEME_COLUMN)).equals(themestring))
                                         ) {
@@ -875,6 +875,11 @@ private void playSelection()
                                         setValueAt(melody.size() / BEAT + "", x, LENGTH_COLUMN);
                                         //make the lengths the same 
                                         setValueAt(name + "- " + n, j, NAME_COLUMN);
+                                        
+                                        //make a copy of the theme and add it to the file and scroll box
+                                        Theme copy = Theme.makeTheme(name + "- " + n,melody);
+                                        addTheme(copy);
+                                        saveRules(fileName);
                                     }
                                 }
                             }
@@ -1521,7 +1526,8 @@ public class SoloGeneratorTableModel extends DefaultTableModel
                 Theme ThemeKey = (Theme) pair.getKey();
                 //get the Theme of each entry
 
-                if (melody.toString().equals(ThemeKey.melody.toString())) { //if the melody in allThemes is the name as the melody in the table
+                if (melody.toString().equals(ThemeKey.melody.toString())) { 
+                //if the melody in allThemes is the name as the melody in the table
                     soloTable.setValueAt(pair.getValue(), i, NAME_COLUMN);
                     //set the name to the one that matches that theme
                     
@@ -1550,7 +1556,8 @@ public class SoloGeneratorTableModel extends DefaultTableModel
                 Theme ThemeKey = (Theme) pair.getKey();
                 //get the Theme of each entry
 
-                if (melody.toString().equals(ThemeKey.melody.toString())) { //if the melody in allThemes is the name as the melody in the table
+                if (melody.toString().equals(ThemeKey.melody.toString())) { 
+                //if the melody in allThemes is the name as the melody in the table
                     soloTable.setValueAt(pair.getValue(), i, NAME_COLUMN);
                     //set the name to the one that matches that theme
                 } else {// if there is no matching theme in allThemes
@@ -1691,7 +1698,8 @@ public void deleteTheme(String name) {
     orderedThemes.remove(name);
     
     for (Map.Entry pair : allThemes.entrySet()) {
-        if (name.equals(pair.getValue())) { //if the name in the themeList is equal to the name in the entry
+        if (name.equals(pair.getValue())) { 
+        //if the name in the themeList is equal to the name in the entry
             Theme theme = (Theme) pair.getKey(); 
             allThemes.remove(theme);
             break;
