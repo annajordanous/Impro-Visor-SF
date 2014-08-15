@@ -460,6 +460,7 @@ public void setTableColumnWidths()
                 return types [columnIndex];
             }
         });
+        soloTable.setToolTipText("shift-click a cell in a row of a theme to listen to it");
         soloTable.setAlignmentY(1.0F);
         soloTable.setColumnSelectionAllowed(true);
         soloTable.setGridColor(new java.awt.Color(0, 0, 0));
@@ -505,6 +506,7 @@ public void setTableColumnWidths()
         themeList.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         themeList.setModel(themeListModel);
         themeList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        themeList.setToolTipText("shift-click a theme to listen to it");
         themeList.setLayoutOrientation(javax.swing.JList.VERTICAL_WRAP);
         themeList.setPreferredSize(null);
         themeList.setVisibleRowCount(30);
@@ -656,7 +658,7 @@ public void setTableColumnWidths()
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 2.0;
         gridBagConstraints.insets = new java.awt.Insets(0, 35, 0, 0);
@@ -671,7 +673,7 @@ public void setTableColumnWidths()
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 6;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 2.0;
         gridBagConstraints.insets = new java.awt.Insets(10, 35, 0, 0);
@@ -699,9 +701,9 @@ public void setTableColumnWidths()
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 6;
+        gridBagConstraints.gridy = 7;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(0, 35, 0, 0);
+        gridBagConstraints.insets = new java.awt.Insets(-20, 35, 0, 0);
         getContentPane().add(deleteRowbutton, gridBagConstraints);
 
         deleteThemebutton.setText("Delete Theme From File");
@@ -2154,6 +2156,7 @@ Random random;
 
 
         Part.PartIterator j = lick.iterator(); //iterate over lick
+        lick.setSize(themeLength);
         while (j.hasNext()) //while any lick is left
         {
             Unit unit = j.next();
