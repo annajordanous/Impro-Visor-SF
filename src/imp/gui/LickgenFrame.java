@@ -232,6 +232,7 @@ public class LickgenFrame
         generateLickButton = new javax.swing.JButton();
         genRhythmButton = new javax.swing.JButton();
         fillMelodyButton = new javax.swing.JButton();
+        fillRelativePitchMelodyButton = new javax.swing.JButton();
         getAbstractMelodyButton = new javax.swing.JButton();
         getSelRhythmButton = new javax.swing.JButton();
         playLickButton = new javax.swing.JButton();
@@ -500,8 +501,8 @@ public class LickgenFrame
         lickGenerationButtonsPanel.setPreferredSize(new java.awt.Dimension(300, 230));
         lickGenerationButtonsPanel.setLayout(new java.awt.GridBagLayout());
 
-        generateLickButton.setText("Generate Melody");
         generateLickButton.setToolTipText("Generate a melody using the current grammar.");
+        generateLickButton.setLabel("Generate and Fill Melody");
         generateLickButton.setMaximumSize(new java.awt.Dimension(135, 29));
         generateLickButton.setMinimumSize(new java.awt.Dimension(135, 29));
         generateLickButton.setPreferredSize(new java.awt.Dimension(135, 29));
@@ -515,13 +516,13 @@ public class LickgenFrame
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         lickGenerationButtonsPanel.add(generateLickButton, gridBagConstraints);
 
-        genRhythmButton.setText("Generate Abstract Melody Only");
         genRhythmButton.setToolTipText("Generate the rhythm pattern for a lick, without the actual notes.");
+        genRhythmButton.setLabel("Generate without Filling");
         genRhythmButton.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -530,9 +531,9 @@ public class LickgenFrame
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         lickGenerationButtonsPanel.add(genRhythmButton, gridBagConstraints);
@@ -549,13 +550,30 @@ public class LickgenFrame
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         lickGenerationButtonsPanel.add(fillMelodyButton, gridBagConstraints);
 
-        getAbstractMelodyButton.setText("Extract Abstract Melody and Relative Pitches");
+        fillRelativePitchMelodyButton.setToolTipText("Fill the notes for the given pattern.");
+        fillRelativePitchMelodyButton.setLabel("Fill Relative-Pitch Melody");
+        fillRelativePitchMelodyButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                fillRelativePitchMelodyButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        lickGenerationButtonsPanel.add(fillRelativePitchMelodyButton, gridBagConstraints);
+
         getAbstractMelodyButton.setToolTipText("Extract the abstract melody and the relative-pitch melody from the leadsheet selection.");
+        getAbstractMelodyButton.setLabel("Extract Abstract and Relative-Pitch Melodies from Leadsheet");
         getAbstractMelodyButton.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -571,8 +589,8 @@ public class LickgenFrame
         gridBagConstraints.weightx = 1.0;
         lickGenerationButtonsPanel.add(getAbstractMelodyButton, gridBagConstraints);
 
-        getSelRhythmButton.setText("Extract Rhythm");
         getSelRhythmButton.setToolTipText("Extract the rhythm from the leadsheet.");
+        getSelRhythmButton.setLabel("Extract Rhythm Only");
         getSelRhythmButton.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -6111,38 +6129,51 @@ public void addProduction(String production, int measureWindow, double prob) //f
 
     private void fillMelodyButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_fillMelodyButtonActionPerformed
     {//GEN-HEADEREND:event_fillMelodyButtonActionPerformed
-        String r = rhythmField.getText().trim();
-        if (r.equals(""))
-        {
-            return; // no text specified
-        }
-        if (r.charAt(0) != '(')
-        {
-            r = "(".concat(r);
-        }
-
-        if (r.charAt(r.length() - 1) != ')')
-        {
-            r = r.concat(")");
-        }
-
-        setRhythmFieldText(r);
-
-        Polylist rhythm = new Polylist();
-        StringReader rhythmReader = new StringReader(r);
-        Tokenizer in = new Tokenizer(rhythmReader);
-        Object ob;
-
-        while ((ob = in.nextSexp()) != Tokenizer.eof)
-        {
-            if (ob instanceof Polylist)
-            {
-                rhythm = (Polylist) ob;
-            }
-        }
-
-        notate.generateAndPutLick(rhythm);
+        fillMelodyFromText(rhythmField.getText());
     }//GEN-LAST:event_fillMelodyButtonActionPerformed
+
+/**
+ * Fill an abstract or relative-pitch melody from text, such as acquired from
+ * either abstract melody or relative pitch melody field.
+ * If the text is not already a Polylist, this will first make a Polylist
+ * out of it.
+ *
+ * @param r
+ */
+public void fillMelodyFromText(String r)
+  {
+    r = r.trim();
+    if( r.equals("") )
+      {
+        return; // no text specified
+      }
+    if( r.charAt(0) != '(' )
+      {
+        r = "(".concat(r);
+      }
+
+    if( r.charAt(r.length() - 1) != ')' )
+      {
+        r = r.concat(")");
+      }
+
+    setRhythmFieldText(r);
+
+    Polylist rhythm = new Polylist();
+    StringReader rhythmReader = new StringReader(r);
+    Tokenizer in = new Tokenizer(rhythmReader);
+    Object ob;
+
+    while( (ob = in.nextSexp()) != Tokenizer.eof )
+      {
+        if( ob instanceof Polylist )
+          {
+            rhythm = (Polylist) ob;
+          }
+      }
+
+    notate.generateAndPutLick(rhythm);
+  }
 
     private void genRhythmButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_genRhythmButtonActionPerformed
     {//GEN-HEADEREND:event_genRhythmButtonActionPerformed
@@ -6168,6 +6199,11 @@ public void addProduction(String production, int measureWindow, double prob) //f
     {//GEN-HEADEREND:event_generateLickButtonActionPerformed
         notate.generateFromButton();
     }//GEN-LAST:event_generateLickButtonActionPerformed
+
+    private void fillRelativePitchMelodyButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_fillRelativePitchMelodyButtonActionPerformed
+    {//GEN-HEADEREND:event_fillRelativePitchMelodyButtonActionPerformed
+       fillMelodyFromText(relativeField.getText());
+    }//GEN-LAST:event_fillRelativePitchMelodyButtonActionPerformed
 
 private void updateUseSoloist()
   {
@@ -6367,6 +6403,7 @@ private void updateUseSoloist()
     private javax.swing.JLabel epochLimitLabel;
     private javax.swing.JTextField epochLimitTextField;
     private javax.swing.JButton fillMelodyButton;
+    private javax.swing.JButton fillRelativePitchMelodyButton;
     private javax.swing.JLabel finalLabel;
     private javax.swing.JButton forwardGradeSoloButton;
     private javax.swing.JTextField gapField;
