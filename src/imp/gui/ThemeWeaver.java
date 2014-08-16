@@ -892,11 +892,13 @@ private void playSelection()
                                         Theme copy = Theme.makeTheme(name + "- " + n,melody);
                                         addTheme(copy);
                                         saveRules(fileName);
+                                        break;
                                     }
                                 }
+                                break;
                             }
                         }
-                        break;
+                       break;
                     }
                 }
             }
@@ -1337,7 +1339,10 @@ double probnoTheme;
     
 public ThemeListModel themeListModel = new ThemeListModel();
 
-  
+Random random; 
+
+File fileName = ImproVisor.getThemesFile();
+
 private SoloGeneratorTableModel soloTableModel = new SoloGeneratorTableModel (
         new Object [][] {
                 {null, null, null, null, null, null, null},
@@ -1456,8 +1461,7 @@ public class SoloGeneratorTableModel extends DefaultTableModel
     }
     
   
-
-  @Override
+ @Override
    public Class getColumnClass(int column)
   {
        switch(column)
@@ -1467,8 +1471,7 @@ public class SoloGeneratorTableModel extends DefaultTableModel
        }
        return Object.class;
   }
-  
- 
+
   @Override
   public void setValueAt(Object value, int row, int col) {
       super.setValueAt(value,row,col);
@@ -1510,7 +1513,7 @@ public class SoloGeneratorTableModel extends DefaultTableModel
             }
            break;
       }    
-  }
+   }
 }
   
   public void setValueAt(Object value, int row, int col) {
@@ -1720,8 +1723,6 @@ public void deleteTheme(String name) {
     themeListModel.reset();
 }
 
-File fileName = ImproVisor.getThemesFile();
-
 //saving themes into My.themes
     public void saveRules(File file) {
         try {
@@ -1880,16 +1881,16 @@ public void ExpandCommand(Polylist list) {
     public MelodyPart generateTheme() { 
         for (int x = 0; x < soloTable.getRowCount(); x++) { //loop through the rows of the table
             if ((getValueAt(x, LENGTH_COLUMN) != null)
-           &&  (!isInteger((String) getValueAt(x, LENGTH_COLUMN)))) {
+             && (!isInteger((String) getValueAt(x, LENGTH_COLUMN)))) {
                 enteredIncorrectly.setVisible(true);
               } 
             else {
                 
                if  (((soloTable.isCellSelected(x, LENGTH_COLUMN)) 
-                && (getValueAt(x, LENGTH_COLUMN) != null))
-                || ((getValueAt(x, LENGTH_COLUMN) != null) 
-                && (getValueAt(x,THEME_COLUMN) == null))){
-                 //if the theme length cell is selected and has something in it 
+                  && (getValueAt(x, LENGTH_COLUMN) != null))
+                  || ((getValueAt(x, LENGTH_COLUMN) != null) 
+                  && (getValueAt(x,THEME_COLUMN) == null))){
+                   //if the theme length cell is selected and has something in it 
                  // or if there is something in a length cell and has no theme
                    
                    //set default values for weighted values
@@ -1931,7 +1932,6 @@ public void ExpandCommand(Polylist list) {
         return null;
     }
 
-Random random;
 
        public MelodyPart generateSolohelper(ThemeUse chosenthemeUse, MelodyPart chosentheme, MelodyPart solo, CommandManager cm) {
         int length = chosentheme.size(); // get length of theme
@@ -1991,8 +1991,7 @@ Random random;
                themeUsageTextArea.append("inverted"); 
             }
             cm.execute(new InvertCommand(adjustedTheme, 0, length, false)); //invert theme
-            
-        }
+           }
         
            else {
                unmodified += 1;
@@ -2155,7 +2154,6 @@ Random random;
             //if the themeUses size is more than one themeuse then the other intervals have to be accounted for 
             
             else if (themeUses.size() > 1) {
-
 
                 double A = 0;
                 double B = 10 * probUselist.get(0);
