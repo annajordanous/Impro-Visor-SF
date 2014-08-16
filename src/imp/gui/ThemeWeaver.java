@@ -826,6 +826,18 @@ private void playSelection()
                     //if a theme in the Themes scroll box is clicked and a theme
                     //cell is selected and there is an empty row
                     
+                    if ((getValueAt(j, USE_COLUMN) == null)
+                     && (getValueAt(j,TRANSPOSE_COLUMN) == null)
+                     && (getValueAt(j,INVERT_COLUMN) == null)
+                     && (getValueAt(j,REVERSE_COLUMN) == null)) {
+                    // if the weighted value cells are null
+                    //set default values for weighted values
+                    soloTable.setValueAt("1",j,USE_COLUMN);
+                    soloTable.setValueAt("0",j,TRANSPOSE_COLUMN);
+                    soloTable.setValueAt("0",j,INVERT_COLUMN);
+                    soloTable.setValueAt("0",j, REVERSE_COLUMN);
+                    }
+                    
                     String name = (String) themeList.getSelectedValue();
                     //set name equal to the one clicked in the scroll box
                     
@@ -1328,26 +1340,26 @@ public ThemeListModel themeListModel = new ThemeListModel();
   
 private SoloGeneratorTableModel soloTableModel = new SoloGeneratorTableModel (
         new Object [][] {
-                {null, null, null, "1", "0", "0", "0"},
-                {null, null, null, "1", "0", "0", "0"},
-                {null, null, null, "1", "0", "0", "0"},
-                {null, null, null, "1", "0", "0", "0"},
-                {null, null, null, "1", "0", "0", "0"},
-                {null, null, null, "1", "0", "0", "0"},
-                {null, null, null, "1", "0", "0", "0"},
-                {null, null, null, "1", "0", "0", "0"},
-                {null, null, null, "1", "0", "0", "0"},
-                {null, null, null, "1", "0", "0", "0"},
-                {null, null, null, "1", "0", "0", "0"},
-                {null, null, null, "1", "0", "0", "0"},
-                {null, null, null, "1", "0", "0", "0"},
-                {null, null, null, "1", "0", "0", "0"},
-                {null, null, null, "1", "0", "0", "0"},
-                {null, null, null, "1", "0", "0", "0"},
-                {null, null, null, "1", "0", "0", "0"},
-                {null, null, null, "1", "0", "0", "0"},
-                {null, null, null, "1", "0", "0", "0"},
-                {null, null, null, "1", "0", "0", "0"}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
                 "Name", "Length", "Theme", "Use", "Transpose", "Invert", "Reverse"
@@ -1408,10 +1420,10 @@ public class SoloGeneratorTableModel extends DefaultTableModel
                 soloTable.setValueAt(null, i, NAME_COLUMN);
                 soloTable.setValueAt(null,i, LENGTH_COLUMN);
                 soloTable.setValueAt(null,i,THEME_COLUMN); 
-                soloTable.setValueAt("1",i,USE_COLUMN);
-                soloTable.setValueAt("0",i,TRANSPOSE_COLUMN);
-                soloTable.setValueAt("0",i,INVERT_COLUMN);
-                soloTable.setValueAt("0",i, REVERSE_COLUMN);
+                soloTable.setValueAt(null,i,USE_COLUMN);
+                soloTable.setValueAt(null,i,TRANSPOSE_COLUMN);
+                soloTable.setValueAt(null,i,INVERT_COLUMN);
+                soloTable.setValueAt(null,i, REVERSE_COLUMN);
            
         }
         
@@ -1522,7 +1534,7 @@ public class SoloGeneratorTableModel extends DefaultTableModel
             soloTable.setValueAt(themelength + "", i, LENGTH_COLUMN);
             
             for (Map.Entry pair : allThemes.entrySet()) {
-                //loop through all the entry sets of {Theme,name} in allThemes
+            //loop through all the entry sets of {Theme,name} in allThemes
                 Theme ThemeKey = (Theme) pair.getKey();
                 //get the Theme of each entry
 
@@ -1584,6 +1596,7 @@ public class SoloGeneratorTableModel extends DefaultTableModel
             
         } else {
             if (!name.trim().isEmpty()) { //if the name is not whitespace
+                
                 for (Map.Entry pair : allThemes.entrySet().toArray(new Map.Entry[0])) {
                     // loop through the entries of allThemes
                     Theme ThemeKey = (Theme) pair.getKey();
@@ -1643,7 +1656,7 @@ public class SoloGeneratorTableModel extends DefaultTableModel
   
 
 
-private static LinkedHashMap<Theme, String> allThemes = new LinkedHashMap<Theme, String>();
+ private static LinkedHashMap<Theme, String> allThemes = new LinkedHashMap<Theme, String>();
  private static ArrayList<String> orderedThemes = null;
  int allThemesIndex = allThemes.size() - 1;
   
@@ -1666,11 +1679,8 @@ private static LinkedHashMap<Theme, String> allThemes = new LinkedHashMap<Theme,
     
     private static void ensureThemeArray()
       {
-            {
-                
-           orderedThemes = new ArrayList<String>(allThemes.values());
-            }       
-      }
+            orderedThemes = new ArrayList<String>(allThemes.values());
+       }
     
 public void addTheme(Theme theme)
     {
@@ -1680,7 +1690,7 @@ public void addTheme(Theme theme)
         
         for (int i = 0; i < soloTable.getRowCount(); i++) {
             if ( (!orderedThemes.contains(name))) {
-                // if ordered themes doesn't already have it, add to both 
+            // if ordered themes doesn't already have it, add to both 
                 //orderedThemes and allThemes
                 orderedThemes.add(name);
                 allThemes.put(theme, name);
@@ -1713,23 +1723,20 @@ public void deleteTheme(String name) {
 File fileName = ImproVisor.getThemesFile();
 
 //saving themes into My.themes
-public void saveRules(File file)
-  {
-   try
-    {
-    java.io.PrintStream out = new PrintStream(new FileOutputStream(file)); 
-  //  .... iterate over your Themes structure calling showForm(out) on each
-     for (Map.Entry pair : allThemes.entrySet()) {
-            Theme key = (Theme)pair.getKey();
-            key.showForm(System.out);
-            key.showForm(out);
+    public void saveRules(File file) {
+        try {
+            java.io.PrintStream out = new PrintStream(new FileOutputStream(file));
+            
+            for (Map.Entry pair : allThemes.entrySet()) {
+                Theme key = (Theme) pair.getKey();
+                key.showForm(System.out);
+                key.showForm(out);
+            }
+            
+        } catch (IOException e) {
+            ErrorLog.log(ErrorLog.SEVERE, "Saving themes in file failed: " + file);
+        }
     }
-    }
-  catch( IOException e )
-    {
-    ErrorLog.log(ErrorLog.SEVERE, "Saving themes in file failed: " + file);
-    }
-  } 
 
 //load the themes in My.themes into the Theme Weaver window
 public void loadFromFile(File file) {
@@ -1865,7 +1872,6 @@ public void ExpandCommand(Polylist list) {
                  melodyString += newNote + " "; //add the note to the melodyString
                  
              }
-            // System.out.println(melodyString);
          }  
          System.out.println(melodyString);
          MelodyPart melody = new MelodyPart(melodyString); //create a MelodyPart of the string
@@ -1885,6 +1891,13 @@ public void ExpandCommand(Polylist list) {
                 && (getValueAt(x,THEME_COLUMN) == null))){
                  //if the theme length cell is selected and has something in it 
                  // or if there is something in a length cell and has no theme
+                   
+                   //set default values for weighted values
+                    soloTable.setValueAt("1",x,USE_COLUMN);
+                    soloTable.setValueAt("0",x,TRANSPOSE_COLUMN);
+                    soloTable.setValueAt("0",x,INVERT_COLUMN);
+                    soloTable.setValueAt("0",x, REVERSE_COLUMN);
+                    
                     int Length = notate.intFromStringInRange((String) getValueAt(x, LENGTH_COLUMN), 0, 100, themeLength); 
                     //get length from tablek
                     themeLength = BEAT * Length;
@@ -1981,30 +1994,33 @@ Random random;
             
         }
         
-        else {
-            unmodified += 1;
-        }
+           else {
+               unmodified += 1;
+           }
 
-        if (Notate.bernoulli(chosenthemeUse.probReverse))
-        { // if a random number is greater than the probability not to reverse the theme
-            multipleuse += 1;
-            System.out.println("Reverse");
-            if (multipleuse == 1) {
-             themeUsageTextArea.append("reversed");
-            }
-            if (multipleuse != 1) {
-                 themeUsageTextArea.append(", and reversed");
-            }
-        cm.execute(new ReverseCommand(adjustedTheme, 0, length, false)); //reverse theme
-        } 
+           if (Notate.bernoulli(chosenthemeUse.probReverse)) { 
+           // if a random number is greater than the probability not to reverse the theme
+               multipleuse += 1;
+               System.out.println("Reverse");
+               
+               if (multipleuse == 1) {
+                   themeUsageTextArea.append("reversed");
+               }
+               
+               if (multipleuse != 1) {
+                   themeUsageTextArea.append(", and reversed");
+               }
+               
+               cm.execute(new ReverseCommand(adjustedTheme, 0, length, false)); //reverse theme
+               
+           } else {
+               unmodified += 1;
+           }
+
+           if (unmodified == 3) {
+               themeUsageTextArea.append(" unmodified");
+           }
         
-        else {
-            unmodified += 1;
-        }
-        
-        if ( unmodified == 3){
-           themeUsageTextArea.append(" unmodified"); 
-         }
         themeUsageTextArea.append("\n");
         ChordPart themeChords = notate.getChordProg().extract(length, length + length);
         //set chords of theme to be the chordpart extracted from length to length +length
