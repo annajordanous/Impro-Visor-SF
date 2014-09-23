@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2014 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -233,6 +233,15 @@ public long getTotalMicrosecondsWithCountIn()
   }
 
 
+public long getMicrosecondsRemaining()
+  {
+    if( sequencer == null )
+      {
+        return 0;
+      }
+    return getTotalMicrosecondsWithCountIn() - getMicrosecond();    
+  }
+
 public long getSlotsPerMicrosecond()
 {
     return sequencer.getTickLength();
@@ -356,6 +365,10 @@ public boolean finishedPlaying()
     return sequencer == null || sequencer.getTickPosition() >= sequencer.getTickLength()-1;
   }
 
+public boolean almostFinishedPlaying(int n)
+  {
+    return sequencer == null || sequencer.getTickPosition() - sequencer.getTickLength()-1 >= -n;
+  }
 
 public void play(Score score,
                  long startTime,

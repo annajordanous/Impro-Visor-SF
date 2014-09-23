@@ -1164,7 +1164,7 @@ public class LickgenFrame
         generationGapLabel.getAccessibleContext().setAccessibleDescription("");
 
         gapField.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        gapField.setText("0.99");
+        gapField.setText("4.0");
         gapField.setToolTipText("Sets the leading gap between when the next lick is generated and the previous one ends.");
         gapField.setMaximumSize(new java.awt.Dimension(45, 24));
         gapField.setMinimumSize(new java.awt.Dimension(45, 24));
