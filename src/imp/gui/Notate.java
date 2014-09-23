@@ -7664,7 +7664,7 @@ public Critic getCritic()
         useSubstitutorCheckBox.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         standardToolbar.add(useSubstitutorCheckBox);
 
-        generationGapSpinner.setModel(new javax.swing.SpinnerNumberModel(0.99d, -20.0d, 20.0d, 0.01d));
+        generationGapSpinner.setModel(new javax.swing.SpinnerNumberModel(4.0d, -20.0d, 20.0d, 0.01d));
         generationGapSpinner.setToolTipText("Specifies the lead time, in beats, for generating next chorus before the end of the current chorus, if Recur is toggled on.");
         generationGapSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Lead Beats", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 10))); // NOI18N
         generationGapSpinner.setInheritsPopupMenu(true);
@@ -13670,6 +13670,11 @@ public boolean putLick(MelodyPart lick)
     // Formerly used SafePasteCommand, then DynamicPasteCommand, both of which
     // carry unnecessary baggage.
 
+    while( midiSynth != null && midiSynth.isRunning() && midiSynth.getMicrosecondsRemaining() > 110000 )
+      {
+      // Busy-wait          
+      }
+    
     getMelodyPart(stave).newPasteOver(lick, getCurrentSelectionStart(stave));
 
     if( lickgenFrame.rectifySelected() )
