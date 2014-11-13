@@ -27,6 +27,7 @@ import imp.data.MelodyPart;
 import imp.data.Note;
 import imp.data.NoteSymbol;
 import imp.gui.Notate;
+import imp.gui.TransformPanel;
 import polya.*;
 import java.util.*;
 /**
@@ -113,7 +114,7 @@ public void removeSubstitution(Substitution sub)
  * @param chords        ChordPart of the melody
  * @return the transformed melody
  */
-public MelodyPart applySubstitutionsToMelodyPart(MelodyPart melody, ChordPart chords)
+public MelodyPart applySubstitutionsToMelodyPart(MelodyPart melody, ChordPart chords, TransformPanel transformPanel)
 {
     startingNotes = melody.copy();
     
@@ -138,7 +139,10 @@ public MelodyPart applySubstitutionsToMelodyPart(MelodyPart melody, ChordPart ch
     {
         if(subs.size()>0)
         {
-            transformed = applySubstitutionType(subs, transMelody, chords);
+            transformed = applySubstitutionType(subs, 
+                                                transMelody, 
+                                                chords,
+                                                transformPanel);
             transMelody = transformed.copy();
         }
         
@@ -156,7 +160,8 @@ public MelodyPart applySubstitutionsToMelodyPart(MelodyPart melody, ChordPart ch
  */
 private MelodyPart applySubstitutionType(ArrayList<Substitution> substitutions, 
                                          MelodyPart transNotes, 
-                                         ChordPart chords)
+                                         ChordPart chords,
+                                         TransformPanel transformPanel)
 {
     
     
@@ -216,7 +221,7 @@ private MelodyPart applySubstitutionType(ArrayList<Substitution> substitutions,
             {
                 System.out.println("\t\tTrying sub: " + sub.getName());
             }
-            substituted = sub.apply(transNotes, chords, startingSlot);
+            substituted = sub.apply(transNotes, chords, startingSlot, transformPanel);
             if(substituted != null)
             {
                 break;
