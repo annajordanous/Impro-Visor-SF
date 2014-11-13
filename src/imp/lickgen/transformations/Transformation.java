@@ -27,6 +27,7 @@ import imp.data.MelodyPart;
 import imp.data.Note;
 import imp.data.NoteSymbol;
 import imp.data.Unit;
+import imp.gui.TransformPanel;
 import imp.util.ErrorLog;
 import polya.*;
 import java.util.*;
@@ -138,7 +139,10 @@ public boolean setTransformation(Polylist trans)
  * @param startingSlot      slot to start applying at
  * @return                  transformed melody
  */
-public MelodyPart apply(MelodyPart notes, ChordPart chords, int startingSlot)
+public MelodyPart apply(MelodyPart notes, 
+                        ChordPart chords, 
+                        int startingSlot,
+                        TransformPanel transformPanel)
 {
     Evaluate eval = new Evaluate(new Polylist());
 
@@ -240,7 +244,7 @@ public MelodyPart apply(MelodyPart notes, ChordPart chords, int startingSlot)
     // if the before and after duration are different, return null since 
     // transforming this melody will not keep time the same.
     // else return the transformed melody. 
-    if(totalDurBefore != totalDurFinal)
+    if(totalDurBefore != totalDurFinal && transformPanel.enforceDuration())
     {
         if(debug)
         {

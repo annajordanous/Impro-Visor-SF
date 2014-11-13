@@ -243,6 +243,7 @@ public class TransformPanel extends javax.swing.JPanel {
         saveSubstitutionsButton = new javax.swing.JButton();
         SubstitutorParametersPanel = new javax.swing.JPanel();
         substitutorRectifyCheckBox = new javax.swing.JCheckBox();
+        enforceDurationCheckBox = new javax.swing.JCheckBox();
         useSubstitutionsButtonsPanel = new javax.swing.JPanel();
         applySubstitutionsButton = new javax.swing.JButton();
         revertSubstitutionsButton = new javax.swing.JButton();
@@ -424,9 +425,19 @@ public class TransformPanel extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
         SubstitutorParametersPanel.add(substitutorRectifyCheckBox, gridBagConstraints);
+
+        enforceDurationCheckBox.setSelected(true);
+        enforceDurationCheckBox.setText("Enforce Duration Equality");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.FIRST_LINE_START;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
+        SubstitutorParametersPanel.add(enforceDurationCheckBox, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
@@ -1217,6 +1228,7 @@ public class TransformPanel extends javax.swing.JPanel {
     private javax.swing.JButton editSubstitutionNameButton;
     private javax.swing.JLabel embTotalLabel;
     private javax.swing.JLabel embTotalWeightValueLabel;
+    private javax.swing.JCheckBox enforceDurationCheckBox;
     private javax.swing.JScrollPane functionNamePane;
     private javax.swing.JPanel functionNamePanel;
     private javax.swing.JPanel functionTypeSelectionPanel;
@@ -1384,6 +1396,11 @@ public class TransformPanel extends javax.swing.JPanel {
         return transform.hasChanged();
     }
     
+    public boolean enforceDuration()
+    {
+        return enforceDurationCheckBox.isSelected();
+    }
+    
     /**
      * If a substitution name is in the process of being edited, the process is
      * stopped. 
@@ -1442,7 +1459,8 @@ public class TransformPanel extends javax.swing.JPanel {
                                                   stop));
             
             MelodyPart transformedPart = transform.applySubstitutionsToMelodyPart(melody,
-                                                                                  chords);
+                                                                                  chords,
+                                                                                  this);
             
 
             pasteOver(notate.getMelodyPart(stave), transformedPart, start);

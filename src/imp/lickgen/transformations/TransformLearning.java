@@ -588,6 +588,8 @@ public Transform createTrendTransform(MelodyPart outline,
     Transform transform = new Transform();
     int varNumber = 1;
     
+    // For Chromatic
+    
     Polylist lastNCP = createNCP(transformed.getCurrentNote(startingSlot), 
                                  chords.getCurrentChord(startingSlot), 
                                  startingSlot);
@@ -606,7 +608,7 @@ public Transform createTrendTransform(MelodyPart outline,
     
     
     double chromTrendData = NO_CHROMATIC_DATA;
-    String diatTrendData = NO_DIATONIC_DATA;
+    
     int addLastToFrom = 1;
     for(int slot = transformed.getNextIndex(startingSlot); 
             slot < endingSlot; 
@@ -631,7 +633,7 @@ public Transform createTrendTransform(MelodyPart outline,
             
         double newChromData = (curNote.getPitch() - lastNote.getPitch())/2.0;
         if(chromTrendData != NO_CHROMATIC_DATA && 
-                Math.abs(chromTrendData - newChromData) < 1.5)
+                Math.abs(chromTrendData - newChromData) < 1.0)
         {
             addLastToFrom++;
             chromTrendData = newChromData;
@@ -734,6 +736,139 @@ public Transform createTrendTransform(MelodyPart outline,
         lastOutNCP = (Polylist)subOutline.last();
     }
     
+    
+    //Now for Diatonic
+    lastNCP = createNCP(transformed.getCurrentNote(startingSlot), 
+                            chords.getCurrentChord(startingSlot), 
+                            startingSlot);
+    
+    lastOutNCP = createNCP(outline.getCurrentNote(startingSlot), 
+                            chords.getCurrentChord(startingSlot), 
+                            startingSlot, 
+                            varNumber++);
+    
+    subOutline = Polylist.PolylistFromString("").addToEnd(lastOutNCP);
+    subTransform = Polylist.PolylistFromString("").addToEnd(lastNCP);
+    
+    subTransformFrom = Polylist.PolylistFromString("");
+    outlineNoteSlot = outline.getNextIndex(startingSlot);
+   
+    addLastToFrom = 1;
+    
+    String diatTrendData = NO_DIATONIC_DATA;
+    for(int slot = transformed.getNextIndex(startingSlot); 
+            slot < endingSlot; 
+            slot = transformed.getNextIndex(slot))
+    {
+        
+        
+        Note lastNote = (Note)lastNCP.first();
+        Chord lastChord = (Chord)lastNCP.second();
+        
+        Note curNote = transformed.getCurrentNote(slot);
+        Chord curChord = chords.getCurrentChord(slot);
+        Polylist curNCP = createNCP(curNote, curChord, slot);
+        
+        int newOutSlot = outline.getCurrentNoteIndex(slot);
+        Note outNote = outline.getCurrentNote(newOutSlot);
+        Chord outChord = chords.getCurrentChord(newOutSlot);
+        Polylist newOutNCP = createNCP(outNote, 
+                                       outChord, 
+                                       newOutSlot, 
+                                       varNumber);
+            
+        String newDiatData = NO_DIATONIC_DATA;
+        Evaluate eval = new Evaluate(new Polylist());
+        Object result = eval.absoluteRelPitchDiff(curNote, lastNote, curChord);
+        double newChromData = (curNote.getPitch() - lastNote.getPitch())/2.0;
+        if(result != null && Math.abs(newChromData) > 0.5)
+            newDiatData = result.toString();
+        
+        if(!diatTrendData.equals(NO_DIATONIC_DATA) && 
+                isDiatonicTrendConsistent(diatTrendData, newDiatData))
+        {
+            addLastToFrom++;
+            diatTrendData = newDiatData;
+            subTransform = subTransform.addToEnd(curNCP);
+        }
+        else if(diatTrendData == NO_DIATONIC_DATA && 
+                curNote.nonRest())
+        {
+            addLastToFrom++;
+            diatTrendData = newDiatData;
+            subTransform = subTransform.addToEnd(curNCP);
+        }
+        else 
+        {
+            // create substitution for the trend that just ended
+            if(addLastToFrom > 1)
+            {
+                for(int i = 0; i < addLastToFrom; i++)
+                    subTransformFrom = subTransformFrom.addToEnd(lastOutNCP);
+
+                if(lastNote.samePitch((Note)lastOutNCP.first()))
+                {
+                    subTransform = subTransform.allButLast();
+                    subTransformFrom = subTransformFrom.allButLast();
+                }
+                Substitution substitution = 
+                        createTrendSubstitution(subOutline, 
+                                                subTransform, 
+                                                subTransformFrom, 
+                                                DIATONIC_TREND);
+
+                if(substitution != null)
+                {
+                    transform.addSubstitution(substitution);
+                }
+                // reset data but a note before because it has a valid trend
+                // with the current note
+
+                // not best implementation, could just set to newDiatData
+                // and just move everything up a note
+                diatTrendData = NO_DIATONIC_DATA;
+                slot = transformed.getPrevIndex(slot);
+                curNCP = lastNCP;
+                addLastToFrom = 1;
+                varNumber = 1;
+                newOutNCP = createNCP((Note)lastOutNCP.first(), 
+                                      (Chord)lastOutNCP.second(), 
+                                      (Integer)lastOutNCP.third(), 
+                                      varNumber++);
+                newOutSlot = (Integer)lastOutNCP.third();
+                outlineNoteSlot = outline.getNextIndex((Integer)newOutNCP.third());
+                subTransform = new Polylist(lastNCP, new Polylist());
+                subOutline = new Polylist(newOutNCP, new Polylist());
+                subTransformFrom = Polylist.PolylistFromString("");
+            }
+            else
+            {
+                // reset data
+                diatTrendData = NO_DIATONIC_DATA;
+                addLastToFrom = 1;
+                varNumber = 1;
+                newOutNCP = createNCP((Note)newOutNCP.first(), 
+                                      (Chord)newOutNCP.second(), 
+                                      (Integer)newOutNCP.third(), 
+                                      varNumber++);
+                outlineNoteSlot = outline.getNextIndex((Integer)newOutNCP.third());
+                subTransform = new Polylist(curNCP, new Polylist());
+                subOutline = new Polylist(newOutNCP, new Polylist());
+                subTransformFrom = Polylist.PolylistFromString("");
+            }
+        }
+        
+        if(newOutSlot >= outlineNoteSlot)
+        {
+            outlineNoteSlot = outline.getNextIndex(newOutSlot);
+            subOutline = subOutline.addToEnd(newOutNCP);
+            varNumber++;
+        }
+        
+        lastNCP = curNCP;
+        lastOutNCP = (Polylist)subOutline.last();
+    }
+    
     return transform;
 }
 
@@ -752,7 +887,7 @@ private Substitution createTrendSubstitution(Polylist outlineNCP,
                                          int trend)
 {
     Substitution sub = new Substitution();
-    sub.setName(resultNCP.length() + "-changed-GENERATED");
+    sub.setName(resultNCP.length() + "-changed-GENERATED"+((trend == CHROMATIC_TREND)? "-CHROMATIC": "-DIATONIC"));
     
     Transformation transformation = createTrendTransformation(outlineNCP, 
                                                               resultNCP, 
@@ -1053,6 +1188,11 @@ private Polylist getTrendTargetNotes(Polylist firstOutlineNCP,
         
         return targetNotes;
     }
+
+private boolean isDiatonicTrendConsistent(String oldTrend, String newTrend)
+{
+    return oldTrend.startsWith("-") ^ newTrend.startsWith("-");
+}
 
 /**
 * Creates a Note Chord Pair that also contains the slot of the note

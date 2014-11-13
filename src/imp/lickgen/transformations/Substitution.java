@@ -24,6 +24,7 @@ package imp.lickgen.transformations;
 import imp.data.ChordPart;
 import imp.data.MelodyPart;
 import imp.data.Note;
+import imp.gui.TransformPanel;
 import polya.*;
 import java.util.*;
 /**
@@ -111,7 +112,10 @@ public static Substitution makeIdentity(String type)
  * @return                      the transformed notes, or null if no 
  *                              transformations can be applied. 
  */
-public MelodyPart apply(MelodyPart notes, ChordPart chords, int[] startingSlot)
+public MelodyPart apply(MelodyPart notes, 
+                        ChordPart chords, 
+                        int[] startingSlot, 
+                        TransformPanel transformPanel)
 {
     // for weighted random shuffling
     
@@ -144,7 +148,7 @@ public MelodyPart apply(MelodyPart notes, ChordPart chords, int[] startingSlot)
         {
             System.out.println("\t\t\tTrying trans: " + trans.getDescription());
         }
-        MelodyPart result = trans.apply(notes, chords, newStartingSlot);
+        MelodyPart result = trans.apply(notes, chords, newStartingSlot, transformPanel);
 
         if(!(result == null))
         {
@@ -156,8 +160,10 @@ public MelodyPart apply(MelodyPart notes, ChordPart chords, int[] startingSlot)
             if(!trans.changesFirstNote() && notes.getPrevIndex(newStartingSlot) > -1)
                 startingSlot[0] = notes.getPrevIndex(newStartingSlot);
             
-            for(int i = 0; i < trans.numSourceNotes(); i++)
-                newStartingSlot = notes.getNextIndex(newStartingSlot);
+            //for(int i = 0; i < trans.numSourceNotes(); i++)
+                //newStartingSlot = notes.getNextIndex(newStartingSlot);
+            
+            newStartingSlot += result.size();
             
             startingSlot[1] = newStartingSlot;
             
