@@ -145,7 +145,7 @@
       <Properties>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-            <TitledBorder title="Select Substitution List">
+            <TitledBorder title="Select Transformation Class List">
               <Font PropertyName="font" name="Lucida Grande" size="13" style="1"/>
             </TitledBorder>
           </Border>
@@ -224,7 +224,7 @@
       <Properties>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-            <TitledBorder title="Substitution Parameters">
+            <TitledBorder title="Transform Parameters">
               <Font PropertyName="font" name="Lucida Grande" size="13" style="1"/>
             </TitledBorder>
           </Border>
@@ -285,7 +285,7 @@
       <Properties>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-            <TitledBorder title="Use Substitutions">
+            <TitledBorder title="Use Transformation Classes">
               <Font PropertyName="font" name="Lucida Grande" size="13" style="1"/>
             </TitledBorder>
           </Border>
@@ -307,8 +307,8 @@
       <SubComponents>
         <Component class="javax.swing.JButton" name="applySubstitutionsButton">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Apply Substitutions to Melody"/>
-            <Property name="toolTipText" type="java.lang.String" value="Apply the below substitutions to the selected melody"/>
+            <Property name="text" type="java.lang.String" value="Apply Classes to Melody"/>
+            <Property name="toolTipText" type="java.lang.String" value="Apply the below transformation classes to the selected melody"/>
             <Property name="enabled" type="boolean" value="false"/>
             <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[10000, 23]"/>
@@ -325,7 +325,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="revertSubstitutionsButton">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Revert Substitutions "/>
+            <Property name="text" type="java.lang.String" value="Revert Application"/>
             <Property name="toolTipText" type="java.lang.String" value="Undo Apply Substitutions"/>
             <Property name="enabled" type="boolean" value="false"/>
             <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -380,7 +380,7 @@
       <Properties>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-            <TitledBorder title="Substitutions">
+            <TitledBorder title="Transform Classes">
               <Font PropertyName="font" name="Lucida Grande" size="13" style="1"/>
             </TitledBorder>
           </Border>
@@ -402,7 +402,7 @@
       <SubComponents>
         <Component class="javax.swing.JButton" name="addSubsFromOtherFileButton">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Add Subs From Other File"/>
+            <Property name="text" type="java.lang.String" value="Add Classes From Other File"/>
             <Property name="toolTipText" type="java.lang.String" value="Add all the substitutions in another transform file to the current transform"/>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
@@ -417,7 +417,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="createNewSubstitutionButton">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Create New Substitution"/>
+            <Property name="text" type="java.lang.String" value="Create New Transform Class"/>
             <Property name="toolTipText" type="java.lang.String" value="Create a new substitution with no transformations that will be added to the currrent transform"/>
             <Property name="enabled" type="boolean" value="false"/>
             <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
@@ -444,7 +444,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="editSubstitutionNameButton">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Edit Substitution Name"/>
+            <Property name="text" type="java.lang.String" value="Edit Transform Class Name"/>
             <Property name="toolTipText" type="java.lang.String" value="Edit the name of a substitution"/>
             <Property name="enabled" type="boolean" value="false"/>
             <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
@@ -471,7 +471,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="deleteSubstitutionButton">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Delete Substitution"/>
+            <Property name="text" type="java.lang.String" value="Delete Class"/>
             <Property name="toolTipText" type="java.lang.String" value="Delete the selected substitution from the transform"/>
             <Property name="enabled" type="boolean" value="false"/>
             <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
@@ -498,7 +498,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="substitutionFromLabel">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Substitutions From: "/>
+            <Property name="text" type="java.lang.String" value="Transform Classes From: "/>
             <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[10000, 20]"/>
             </Property>
@@ -734,7 +734,7 @@
       <SubComponents>
         <Component class="javax.swing.JLabel" name="transformationSubstitutionNameLabel">
           <Properties>
-            <Property name="text" type="java.lang.String" value="For Substitution:"/>
+            <Property name="text" type="java.lang.String" value="For Transformation Class:"/>
             <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[400, 20]"/>
             </Property>
@@ -929,7 +929,7 @@
           <Properties>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                <TitledBorder title="Transformations Functions">
+                <TitledBorder title="Transformation Functions">
                   <Font PropertyName="font" name="Lucida Grande" size="12" style="1"/>
                 </TitledBorder>
               </Border>
