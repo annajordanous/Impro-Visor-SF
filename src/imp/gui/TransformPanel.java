@@ -346,7 +346,7 @@ public class TransformPanel extends javax.swing.JPanel {
 
         setLayout(new java.awt.GridBagLayout());
 
-        selectSubstitutionsButtonsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Select Substitution List", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
+        selectSubstitutionsButtonsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Select Transformation Class List", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
         selectSubstitutionsButtonsPanel.setMinimumSize(new java.awt.Dimension(230, 130));
         selectSubstitutionsButtonsPanel.setPreferredSize(new java.awt.Dimension(230, 130));
         selectSubstitutionsButtonsPanel.setLayout(new java.awt.GridBagLayout());
@@ -406,7 +406,7 @@ public class TransformPanel extends javax.swing.JPanel {
         gridBagConstraints.weightx = 1.0;
         add(selectSubstitutionsButtonsPanel, gridBagConstraints);
 
-        SubstitutorParametersPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Substitution Parameters", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
+        SubstitutorParametersPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Transform Parameters", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
         SubstitutorParametersPanel.setMinimumSize(new java.awt.Dimension(180, 60));
         SubstitutorParametersPanel.setPreferredSize(new java.awt.Dimension(180, 60));
         SubstitutorParametersPanel.setLayout(new java.awt.GridBagLayout());
@@ -447,13 +447,13 @@ public class TransformPanel extends javax.swing.JPanel {
         gridBagConstraints.weightx = 1.0;
         add(SubstitutorParametersPanel, gridBagConstraints);
 
-        useSubstitutionsButtonsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Use Substitutions", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
+        useSubstitutionsButtonsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Use Transformation Classes", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
         useSubstitutionsButtonsPanel.setMinimumSize(new java.awt.Dimension(230, 130));
         useSubstitutionsButtonsPanel.setPreferredSize(new java.awt.Dimension(230, 130));
         useSubstitutionsButtonsPanel.setLayout(new java.awt.GridBagLayout());
 
-        applySubstitutionsButton.setText("Apply Substitutions to Melody");
-        applySubstitutionsButton.setToolTipText("Apply the below substitutions to the selected melody");
+        applySubstitutionsButton.setText("Apply Classes to Melody");
+        applySubstitutionsButton.setToolTipText("Apply the below transformation classes to the selected melody");
         applySubstitutionsButton.setEnabled(false);
         applySubstitutionsButton.setMaximumSize(new java.awt.Dimension(10000, 23));
         applySubstitutionsButton.addActionListener(new java.awt.event.ActionListener() {
@@ -470,7 +470,7 @@ public class TransformPanel extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(4, 0, 4, 0);
         useSubstitutionsButtonsPanel.add(applySubstitutionsButton, gridBagConstraints);
 
-        revertSubstitutionsButton.setText("Revert Substitutions ");
+        revertSubstitutionsButton.setText("Revert Application");
         revertSubstitutionsButton.setToolTipText("Undo Apply Substitutions");
         revertSubstitutionsButton.setEnabled(false);
         revertSubstitutionsButton.setMaximumSize(new java.awt.Dimension(10000, 23));
@@ -522,12 +522,12 @@ public class TransformPanel extends javax.swing.JPanel {
         gridBagConstraints.weightx = 1.0;
         add(useSubstitutionsButtonsPanel, gridBagConstraints);
 
-        substitutionsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Substitutions", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
+        substitutionsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Transform Classes", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
         substitutionsPanel.setMinimumSize(new java.awt.Dimension(490, 500));
         substitutionsPanel.setPreferredSize(new java.awt.Dimension(490, 500));
         substitutionsPanel.setLayout(new java.awt.GridBagLayout());
 
-        addSubsFromOtherFileButton.setText("Add Subs From Other File");
+        addSubsFromOtherFileButton.setText("Add Classes From Other File");
         addSubsFromOtherFileButton.setToolTipText("Add all the substitutions in another transform file to the current transform");
         addSubsFromOtherFileButton.setEnabled(false);
         addSubsFromOtherFileButton.addActionListener(new java.awt.event.ActionListener() {
@@ -544,7 +544,7 @@ public class TransformPanel extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 7);
         substitutionsPanel.add(addSubsFromOtherFileButton, gridBagConstraints);
 
-        createNewSubstitutionButton.setText("Create New Substitution");
+        createNewSubstitutionButton.setText("Create New Transform Class");
         createNewSubstitutionButton.setToolTipText("Create a new substitution with no transformations that will be added to the currrent transform");
         createNewSubstitutionButton.setEnabled(false);
         createNewSubstitutionButton.setMargin(new java.awt.Insets(2, 5, 2, 5));
@@ -566,7 +566,7 @@ public class TransformPanel extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(4, 6, 0, 0);
         substitutionsPanel.add(createNewSubstitutionButton, gridBagConstraints);
 
-        editSubstitutionNameButton.setText("Edit Substitution Name");
+        editSubstitutionNameButton.setText("Edit Transform Class Name");
         editSubstitutionNameButton.setToolTipText("Edit the name of a substitution");
         editSubstitutionNameButton.setEnabled(false);
         editSubstitutionNameButton.setMargin(new java.awt.Insets(2, 4, 2, 4));
@@ -588,7 +588,7 @@ public class TransformPanel extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(4, 4, 0, 4);
         substitutionsPanel.add(editSubstitutionNameButton, gridBagConstraints);
 
-        deleteSubstitutionButton.setText("Delete Substitution");
+        deleteSubstitutionButton.setText("Delete Class");
         deleteSubstitutionButton.setToolTipText("Delete the selected substitution from the transform");
         deleteSubstitutionButton.setEnabled(false);
         deleteSubstitutionButton.setMargin(new java.awt.Insets(2, 4, 2, 4));
@@ -610,7 +610,7 @@ public class TransformPanel extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(4, 0, 0, 7);
         substitutionsPanel.add(deleteSubstitutionButton, gridBagConstraints);
 
-        substitutionFromLabel.setText("Substitutions From: ");
+        substitutionFromLabel.setText("Transform Classes From: ");
         substitutionFromLabel.setMaximumSize(new java.awt.Dimension(10000, 20));
         substitutionFromLabel.setMinimumSize(new java.awt.Dimension(300, 20));
         substitutionFromLabel.setPreferredSize(new java.awt.Dimension(300, 20));
@@ -763,7 +763,7 @@ public class TransformPanel extends javax.swing.JPanel {
         transformationsPanel.setPreferredSize(new java.awt.Dimension(490, 500));
         transformationsPanel.setLayout(new java.awt.GridBagLayout());
 
-        transformationSubstitutionNameLabel.setText("For Substitution:");
+        transformationSubstitutionNameLabel.setText("For Transformation Class:");
         transformationSubstitutionNameLabel.setMaximumSize(new java.awt.Dimension(400, 20));
         transformationSubstitutionNameLabel.setMinimumSize(new java.awt.Dimension(400, 20));
         transformationSubstitutionNameLabel.setPreferredSize(new java.awt.Dimension(400, 20));
@@ -915,7 +915,7 @@ public class TransformPanel extends javax.swing.JPanel {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         transformationsPanel.add(totalTransformationsWeightsPanel, gridBagConstraints);
 
-        transformationsFunctionsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Transformations Functions", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 12))); // NOI18N
+        transformationsFunctionsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Transformation Functions", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 12))); // NOI18N
         transformationsFunctionsPanel.setMinimumSize(new java.awt.Dimension(80, 51));
         transformationsFunctionsPanel.setPreferredSize(new java.awt.Dimension(80, 51));
         transformationsFunctionsPanel.setLayout(new java.awt.GridBagLayout());
@@ -1058,7 +1058,7 @@ public class TransformPanel extends javax.swing.JPanel {
                 subJTable.setEditingRow(-1);
                 redrawSubstitutionsList();
                 redrawTransformationsList();
-                editSubstitutionNameButton.setText("Save Substitution Name");
+                editSubstitutionNameButton.setText("Save Transformation Class Name");
             }
         }
         else
@@ -1344,7 +1344,7 @@ public class TransformPanel extends javax.swing.JPanel {
         
         
         filename = newFilename;
-        substitutionFromLabel.setText("Substitutions From: " + filename);
+        substitutionFromLabel.setText("Transformation Classes From: " + filename);
         savedMelodies = new Stack();
         revertSubstitutionsButton.setEnabled(false);
         reapplySubstitutionsButton.setEnabled(false);
@@ -1378,7 +1378,7 @@ public class TransformPanel extends javax.swing.JPanel {
                 saveTransformFile(chooser.getSelectedFile().getAbsolutePath() + EXTENSION);
               }
             transform.hasChanged = false;
-            substitutionFromLabel.setText("Substitutions From: " + filename);
+            substitutionFromLabel.setText("Transfromation Classes From: " + filename);
             return true;
           }
         else
@@ -1408,7 +1408,7 @@ public class TransformPanel extends javax.swing.JPanel {
     private void resetEditNameButton()
     {
         editSubstitutionRow = -1;
-        editSubstitutionNameButton.setText("Edit Substitution Name");
+        editSubstitutionNameButton.setText("Edit Transformation Class Name");
     }
     
     /**
@@ -1554,7 +1554,7 @@ public class TransformPanel extends javax.swing.JPanel {
         // save changes to name before continuing.
         if(filename != null && filename.length() > 0)
         {
-            substitutionFromLabel.setText("Substitutions From: " + filename);
+            substitutionFromLabel.setText("Transformation Classes From: " + filename);
         }
         createNewSubstitutionButton.setEnabled((editSubstitutionRow < 0));
         addSubsFromOtherFileButton.setEnabled((editSubstitutionRow < 0));
@@ -1678,7 +1678,7 @@ public class TransformPanel extends javax.swing.JPanel {
                 }
             });
         }
-        transformationSubstitutionNameLabel.setText("For Substitution: " + subName);
+        transformationSubstitutionNameLabel.setText("For Transformation Class: " + subName);
         transTotalWeightValueLabel.setText(((totalSubWeight > 0)? 
                                             (totalSubWeight): 
                                             "") + "");
@@ -2033,7 +2033,7 @@ public class SubNameEditField extends javax.swing.JTextField
         editSubstitutionRow = -1;
         redrawSubstitutionsList();
         redrawTransformationsList();
-        editSubstitutionNameButton.setText("Edit Substitution Name");
+        editSubstitutionNameButton.setText("Edit Transformation Class Name");
     }
 
     public void insertUpdate(DocumentEvent e) {
