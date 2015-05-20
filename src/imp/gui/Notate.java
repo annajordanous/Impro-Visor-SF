@@ -7658,10 +7658,14 @@ public Critic getCritic()
         });
         standardToolbar.add(improviseButton);
 
-        useSubstitutorCheckBox.setText("Sub");
+        useSubstitutorCheckBox.setToolTipText("Transform generated melody line when checked.");
         useSubstitutorCheckBox.setFocusable(false);
         useSubstitutorCheckBox.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        useSubstitutorCheckBox.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        useSubstitutorCheckBox.setLabel("Xfm");
+        useSubstitutorCheckBox.setMaximumSize(new java.awt.Dimension(40, 32));
+        useSubstitutorCheckBox.setMinimumSize(new java.awt.Dimension(40, 32));
+        useSubstitutorCheckBox.setPreferredSize(new java.awt.Dimension(40, 32));
+        useSubstitutorCheckBox.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
         standardToolbar.add(useSubstitutorCheckBox);
 
         generationGapSpinner.setModel(new javax.swing.SpinnerNumberModel(4.0d, -20.0d, 20.0d, 0.01d));
