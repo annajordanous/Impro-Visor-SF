@@ -885,15 +885,10 @@ public Notate(Score score, Advisor adv, ImproVisor impro, int x, int y)
           {
             int row = sectionTable.rowAtPoint(e.getPoint());
             sectionTable.getSelectionModel().setSelectionInterval(row, row);
-            nWaySplitComboBoxModel.createItems(row);
-            nWaySplitComboBox.setSelectedItem("");
           }
       }
 
     });
-
-
-    nWaySplitComboBox.setModel(nWaySplitComboBoxModel);
 
     replaceWithPhi.setState(false);
     replaceWithDelta.setState(false);
@@ -2325,11 +2320,11 @@ public Critic getCritic()
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         currentStyleTab.add(styleListScrollPane, gridBagConstraints);
 
-        newSectionButton.setText("Split Selected Section\n");
-        newSectionButton.setToolTipText("Splits the currently-selected Section approximately in two. Then set Starting Measure on second Section.");
-        newSectionButton.setMaximumSize(new java.awt.Dimension(134, 23));
-        newSectionButton.setMinimumSize(new java.awt.Dimension(134, 23));
-        newSectionButton.setPreferredSize(new java.awt.Dimension(134, 23));
+        newSectionButton.setText("Sub-Divide Section ");
+        newSectionButton.setToolTipText("Sub-divides the currently-selected section into the specified number of segments, if possible, setting starting measures appropriately.");
+        newSectionButton.setMaximumSize(new java.awt.Dimension(134, 40));
+        newSectionButton.setMinimumSize(new java.awt.Dimension(134, 40));
+        newSectionButton.setPreferredSize(new java.awt.Dimension(134, 40));
         newSectionButton.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -2357,11 +2352,11 @@ public Critic getCritic()
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         currentStyleTab.add(sectionLabel, gridBagConstraints);
 
-        delSectionButton.setText("Delete Selected Section");
+        delSectionButton.setText("Delete Section");
         delSectionButton.setToolTipText("Deletes the selected section.");
-        delSectionButton.setMaximumSize(new java.awt.Dimension(135, 23));
-        delSectionButton.setMinimumSize(new java.awt.Dimension(135, 23));
-        delSectionButton.setPreferredSize(new java.awt.Dimension(135, 23));
+        delSectionButton.setMaximumSize(new java.awt.Dimension(100, 40));
+        delSectionButton.setMinimumSize(new java.awt.Dimension(100, 40));
+        delSectionButton.setPreferredSize(new java.awt.Dimension(100, 40));
         delSectionButton.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -2465,6 +2460,9 @@ public Critic getCritic()
         currentStyleTab.add(SectionTableScrollPane, gridBagConstraints);
 
         usePreviousStyleButton.setText("Use Previous Style");
+        usePreviousStyleButton.setMaximumSize(new java.awt.Dimension(158, 40));
+        usePreviousStyleButton.setMinimumSize(new java.awt.Dimension(158, 40));
+        usePreviousStyleButton.setPreferredSize(new java.awt.Dimension(158, 40));
         usePreviousStyleButton.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -2479,10 +2477,13 @@ public Critic getCritic()
         gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 5);
         currentStyleTab.add(usePreviousStyleButton, gridBagConstraints);
 
-        nWaySplitComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        nWaySplitComboBox.setMaximumSize(new java.awt.Dimension(135, 23));
-        nWaySplitComboBox.setMinimumSize(new java.awt.Dimension(135, 23));
-        nWaySplitComboBox.setPreferredSize(new java.awt.Dimension(135, 23));
+        nWaySplitComboBox.setMaximumRowCount(11);
+        nWaySplitComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", " " }));
+        nWaySplitComboBox.setToolTipText("Number of ways to sub-divide section.");
+        nWaySplitComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Sub-divisions", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 11))); // NOI18N
+        nWaySplitComboBox.setMaximumSize(new java.awt.Dimension(75, 50));
+        nWaySplitComboBox.setMinimumSize(new java.awt.Dimension(75, 50));
+        nWaySplitComboBox.setPreferredSize(new java.awt.Dimension(75, 50));
         nWaySplitComboBox.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -10332,18 +10333,34 @@ private void setSectionParameters()
     sectionTableModel.tableRefresh();
   }
 
+/**
+ * Split or sub-divide section
+ * @param evt 
+ */
     private void newSectionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newSectionButtonActionPerformed
         int index = sectionTable.getSelectedRow();
-        if( index < 0 )
+        if( index < 0 || index >= sectionInfo.size() )
           {
             return;
           }
-        sectionTableModel.addARow();
-        sectionInfo.newSection(index);
+        
+        // +2 because elements are 2, 3, ...., 12
+        
+        int split = nWaySplitComboBox.getSelectedIndex() + 2;
+
+        if( !sectionInfo.nWaySplit(index, split) )
+          {
+            // Not possible to split into the indicated number
+            return;
+          }
+
+        for( int j = 0; j < split; j++ )
+          {
+            sectionTableModel.addARow();
+          }
+
         sectionTableModel.tableRefresh();
         sectionTable.getSelectionModel().setSelectionInterval(index, index);
-        nWaySplitComboBoxModel.createItems(index);
-        nWaySplitComboBox.setSelectedItem("");
     }//GEN-LAST:event_newSectionButtonActionPerformed
 
     private void delSectionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delSectionButtonActionPerformed
@@ -10363,8 +10380,6 @@ private void setSectionParameters()
           {
             sectionTable.getSelectionModel().setSelectionInterval(index, index);
           }
-        nWaySplitComboBoxModel.createItems(index);
-        nWaySplitComboBox.setSelectedItem("");
     }//GEN-LAST:event_delSectionButtonActionPerformed
 
 public void toCritic()
@@ -10456,8 +10471,6 @@ private void turnStepInputOff()
         updateStyleList(style, currentIndex);
         sectionTableModel.tableRefresh();
         sectionTable.getSelectionModel().setSelectionInterval(currentIndex, currentIndex);
-        //nWaySplitComboBoxModel.createItems(currentIndex);
-        //nWaySplitComboBox.setSelectedItem("");
     }//GEN-LAST:event_styleListValueChanged
 
     private void defDrumVolSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_defDrumVolSliderStateChanged
@@ -12589,7 +12602,7 @@ public void tableRefresh()
   {
     int index = sectionTable.getSelectionModel().getLeadSelectionIndex();
     fireTableDataChanged();
-    if( index >= 0 )
+    if( index >= 0 && index < sectionInfo.size() )
       {
         if( index == sectionInfo.size() )
           {
@@ -12606,7 +12619,7 @@ public void tableReset()
   {
     sectionInfo = score.getChordProg().getSectionInfo().copy();
 
-    tableRefresh();
+    //tableRefresh();
   }
 
 @Override
@@ -12809,36 +12822,40 @@ public Object getSelectedItem()
 
 public void createItems(int row)
   {
-    int bars = (Integer) (sectionTableModel.getValueAt(row, 3));
-    //System.out.println(bars+"");
-    if( bars == 1 )
-      {
-        items = new ArrayList<String>();
-      }
-    else if( bars - 1 < items.size() )
-      {
-        while( bars < Integer.parseInt(items.get(items.size() - 1)) )
-          {
-            items.remove(items.size() - 1);
-          }
-      }
-    else if( bars - 1 > items.size() )
-      {
-        int temp = items.isEmpty() ? 1 : Integer.parseInt(items.get(items.size() - 1));
-        for( int j = temp + 1; j <= bars; j++ )
-          {
-            items.add("" + j);
-          }
-      }
-
-    //checkItems();
-    splitRefresh();
   }
 
-public void splitRefresh()
-  {
-    fireContentsChanged(this, 0, getSize());
-  }
+//public void createItems(int row)
+//  {
+//    int bars = (Integer) (sectionTableModel.getValueAt(row, 3));
+//    //System.out.println(bars+"");
+//    if( bars == 1 )
+//      {
+//        items = new ArrayList<String>();
+//      }
+//    else if( bars - 1 < items.size() )
+//      {
+//        while( bars < Integer.parseInt(items.get(items.size() - 1)) )
+//          {
+//            items.remove(items.size() - 1);
+//          }
+//      }
+//    else if( bars - 1 > items.size() )
+//      {
+//        int temp = items.isEmpty() ? 1 : Integer.parseInt(items.get(items.size() - 1));
+//        for( int j = temp + 1; j <= bars; j++ )
+//          {
+//            items.add("" + j);
+//          }
+//      }
+//
+//    //checkItems();
+//    splitRefresh();
+//  }
+//
+//public void splitRefresh()
+//  {
+//    fireContentsChanged(this, 0, getSize());
+//  }
 
 }
 
@@ -15212,6 +15229,10 @@ public void updateStyleList(Style style, int currentIndex)
           {
             sectionInfo.modifySection(style, 0, false);
           }
+        else if( currentIndex >= sectionInfo.size() )
+          {
+            sectionInfo.modifySection(style, sectionInfo.size() - 1, false);
+          }
         else
           {
             sectionInfo.modifySection(style, currentIndex, false);
@@ -16104,8 +16125,6 @@ private void setPrefsDialog()
       }
     sectionTableModel.tableRefresh();
     sectionTable.getSelectionModel().setSelectionInterval(0, 0);
-    nWaySplitComboBoxModel.createItems(0);
-    nWaySplitComboBox.setSelectedItem("");
   }
 
 public void setRoadMapCheckBox(boolean value)
@@ -22619,8 +22638,6 @@ private void recentStyleListValueChanged(javax.swing.event.ListSelectionEvent ev
 
       sectionTableModel.tableRefresh();
       sectionTable.getSelectionModel().setSelectionInterval(currentIndex, currentIndex);
-      nWaySplitComboBoxModel.createItems(currentIndex);
-      nWaySplitComboBox.setSelectedItem("");
   }//GEN-LAST:event_recentStyleListValueChanged
 
 private void clearHistoryMIrevertLeadsheetActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_clearHistoryMIrevertLeadsheetActionPerformed
@@ -22799,8 +22816,6 @@ private int indexOfLastChordPlayed = 0;
         record.setUsePreviousStyle();
         sectionTableModel.tableRefresh();
         sectionTable.getSelectionModel().setSelectionInterval(index, index);
-        nWaySplitComboBoxModel.createItems(index);
-        nWaySplitComboBox.setSelectedItem("");
     }//GEN-LAST:event_usePreviousStyleButtonActionPerformed
 
 private void setUseImproviseCheckBox()
@@ -22892,29 +22907,10 @@ public void setKconstantSlider(double value)
     //k_constantSlider.setValue(intValue);
   }
 
+boolean firstTime = true;
+
     private void nWaySplitComboBoxActionHandler(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nWaySplitComboBoxActionHandler
-        int index = sectionTable.getSelectionModel().getLeadSelectionIndex();
 
-        int split = nWaySplitComboBox.getSelectedIndex() + 2;
-
-        if( index < 0 || index >= sectionInfo.size() || split < 2 )
-          {
-            return;
-          }
-
-        //System.out.println("SPLIT: " + split);
-        //*
-        for( int j = 0; j < split; j++ )
-          {
-            sectionTableModel.addARow();
-          }
-
-        sectionInfo.nWaySplit(index, split);
-
-        sectionTableModel.tableRefresh();
-        sectionTable.getSelectionModel().setSelectionInterval(index, index);
-        nWaySplitComboBoxModel.createItems(index);
-        nWaySplitComboBox.setSelectedItem("");
     }//GEN-LAST:event_nWaySplitComboBoxActionHandler
 
     private void noteCursorBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_noteCursorBtnActionPerformed
