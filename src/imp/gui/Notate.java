@@ -7659,13 +7659,14 @@ public Critic getCritic()
         });
         standardToolbar.add(improviseButton);
 
+        useSubstitutorCheckBox.setFont(new java.awt.Font("Dialog", 0, 10)); // NOI18N
         useSubstitutorCheckBox.setToolTipText("Transform generated melody line when checked.");
         useSubstitutorCheckBox.setFocusable(false);
         useSubstitutorCheckBox.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         useSubstitutorCheckBox.setLabel("Xfm");
-        useSubstitutorCheckBox.setMaximumSize(new java.awt.Dimension(40, 32));
-        useSubstitutorCheckBox.setMinimumSize(new java.awt.Dimension(40, 32));
-        useSubstitutorCheckBox.setPreferredSize(new java.awt.Dimension(40, 32));
+        useSubstitutorCheckBox.setMaximumSize(new java.awt.Dimension(30, 32));
+        useSubstitutorCheckBox.setMinimumSize(new java.awt.Dimension(30, 32));
+        useSubstitutorCheckBox.setPreferredSize(new java.awt.Dimension(30, 32));
         useSubstitutorCheckBox.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
         standardToolbar.add(useSubstitutorCheckBox);
 
@@ -7761,12 +7762,13 @@ public Critic getCritic()
         standardToolbar.add(smartEntryButton);
 
         quantizeComboBox.setMaximumRowCount(24);
-        quantizeComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "-", "Best", "1/4", "1/3", "1/2", "3/4", "1", "3/2", "2", "3", "4", "6", "8", "12", "24", "60", "120" }));
+        quantizeComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1/4", "1/3", "1/2", "3/4", "1", "3/2", "2", "3", "4", "6", "8", "12", "24", "60", "120" }));
+        quantizeComboBox.setSelectedIndex(14);
         quantizeComboBox.setToolTipText("Quantize melody to specified number of subdivisions per beat (for MIDI input)."); // NOI18N
-        quantizeComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Snap", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Dialog", 0, 10))); // NOI18N
+        quantizeComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Quantize to", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Dialog", 0, 10))); // NOI18N
         quantizeComboBox.setMaximumSize(new java.awt.Dimension(90, 45));
         quantizeComboBox.setMinimumSize(new java.awt.Dimension(90, 45));
-        quantizeComboBox.setPreferredSize(new java.awt.Dimension(750, 45));
+        quantizeComboBox.setPreferredSize(new java.awt.Dimension(90, 45));
         quantizeComboBox.setRequestFocusEnabled(false);
         quantizeComboBox.addMouseListener(new java.awt.event.MouseAdapter()
         {
@@ -23259,29 +23261,36 @@ int quantizeResolution = 60;
 
         quantizeString = ((String) quantizeComboBox.getSelectedItem());
 
-        // case: nothing valid selected, attempt to select null option
-        if( quantizeString.equals("-") )
-          {
-            System.out.println("Please make a valid selection.");
-          }
-        // case: selected option to quantize the string according to the best 
-        // resolution found and other factors of MelodyPart.quantize()
-        else if( quantizeString.equals("Best") )
-          {
-            quantizeResolution = originalPart.getBestResolution();
-            quantizeComboBox.setSelectedItem((Integer.toString(quantizeResolution)));
-            System.out.println("Best resolution toString: " + Integer.toString(quantizeResolution));
-            quantizedPart = MelodyPart.quantize(originalPart);
-            addChorus(quantizedPart);
-          }
-        //case: selected integer value, resolution applied
-        else
+// Due to misuse of iterator in quantize and quantizeNoRes,
+// this doesn't really work.
+//        // case: nothing valid selected, attempt to select null option
+//        if( quantizeString.equals("-") )
+//          {
+//            System.out.println("Please make a valid selection.");
+//          }
+//        // case: selected option to quantize the string according to the best 
+//        // resolution found and other factors of MelodyPart.quantize()
+//        
+//        else if( quantizeString.equals("Best") )
+//          {
+//            quantizeResolution = originalPart.getBestResolution();
+//            quantizeComboBox.setSelectedItem((Integer.toString(quantizeResolution)));
+//            System.out.println("Best resolution toString: " + Integer.toString(quantizeResolution));
+//            quantizedPart = MelodyPart.quantize(originalPart);
+//            addChorus(quantizedPart);
+//          }
+//        //case: selected integer value, resolution applied
+//        else
           {
             quantizeResolution = getSlotsFromString(quantizeString);
-            quantizedPart = originalPart.applyResolution(quantizeResolution);
-            System.out.println("Applied Resolution = " + quantizeResolution);
-            quantizedPart = MelodyPart.quantizeNoRes(quantizedPart);
-            addChorus(quantizedPart);
+            if( quantizeResolution > 0 )
+              {
+              quantizedPart = originalPart.applyResolution(quantizeResolution);
+              //System.out.println("Applied Resolution = " + quantizeResolution);
+              // Doesn't work; see above
+              //quantizedPart = MelodyPart.quantizeNoRes(quantizedPart);
+              addChorus(quantizedPart);
+              }
           }
     }//GEN-LAST:event_quantizeComboBoxscaleChosen
 
