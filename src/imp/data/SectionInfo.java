@@ -193,13 +193,18 @@ public class SectionInfo implements Constants, Serializable {
      * q = m/n
      * r = m%n
      */
-    public void nWaySplit(int index, int split) {
+    public boolean nWaySplit(int index, int split) {
         int m;        
         if(index + 1 < size())
             m = getSectionMeasure(index + 1) - getSectionMeasure(index);
         else
             m = measures() - getSectionMeasure(index) + 1;
-        int q = (int)(m/split);
+        //System.out.println("m = " + m + ", split = " + split);        
+        if( m < split )
+          {
+            return false;
+          }
+        int q = m/split;
         int r = m%split;
         
         SectionRecord delete = getSectionRecordByIndex(index);
@@ -216,6 +221,8 @@ public class SectionInfo implements Constants, Serializable {
             records.add(index + j, new SectionRecord(styleName, newIndex, isPhrase));
             newIndex = measureToSlotIndex(slotIndexToMeasure(newIndex) + q);
         }
+        
+        return true;
     }
     
     public Integer getPrevSectionIndex(int n) {
