@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2014 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2015 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -47,7 +47,6 @@ import java.awt.event.MouseEvent;
 import java.util.Arrays;
 import javax.swing.AbstractListModel;
 import javax.swing.JFileChooser;
-import javax.swing.JLabel;
 import java.util.List;
 import java.util.Random;
 import java.util.Collections;
@@ -62,8 +61,6 @@ import java.io.FileOutputStream;
 import java.io.FileInputStream;
 import polya.Tokenizer;
 import imp.data.Score;
-import imp.lickgen.NoteConverter;
-import java.awt.Color;
 import javax.swing.table.DefaultTableCellRenderer;
 import polya.PolylistEnum;
 /**
@@ -96,6 +93,7 @@ public class ThemeWeaver extends javax.swing.JFrame {
     soloTable.setModel(soloTableModel);
     soloTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     soloTable.addMouseListener(new MouseAdapter() {
+        @Override
         public void mouseReleased(MouseEvent e) {
             if(e.getClickCount() >= 1) {
                 int row = soloTable.rowAtPoint(e.getPoint());
@@ -1010,8 +1008,6 @@ private void playSelection()
             }
             nameErrorMessage.setVisible(false); //close the error window
         }
-                                  
-
     }//GEN-LAST:event_nameFieldKeyPressed
 
     private void cellOkbuttonKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cellOkbuttonKeyPressed
@@ -1509,7 +1505,6 @@ public class SoloGeneratorTableModel extends DefaultTableModel
             && (getValueAt(row, THEME_COLUMN) != null)
             && (getValueAt(row,LENGTH_COLUMN) == null)){ 
                 addLength(row, col, row);
-                return;
             }
            break;
       }    
@@ -1844,7 +1839,7 @@ public MelodyPart fillMelody(int beatValue,
 //work in progress
 public void ExpandCommand(Polylist list) {
      Polylist melodyList = (Polylist)list.last(); //get polylist of the melody
-         Polylist melodyNotes = (Polylist)melodyList.rest(); //get the notes in a polylist
+         Polylist melodyNotes = melodyList.rest(); //get the notes in a polylist
          
          PolylistEnum melodyElements = melodyNotes.elements(); //get the notes as elements
          
