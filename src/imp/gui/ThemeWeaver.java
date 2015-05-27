@@ -779,7 +779,7 @@ private void playSelection()
             
             if( col == THEME_COLUMN && getValueAt(index,THEME_COLUMN) != null )
               {
-                System.out.println("Theme at row " + index + " entered");
+                //System.out.println("Theme at row " + index + " entered");
                 MelodyPart melody = new MelodyPart((String) getValueAt(index, THEME_COLUMN)); 
                 int themeLengthBeats = melody.getSize()/BEAT;
                 soloTable.setValueAt(themeLengthBeats + "", index, LENGTH_COLUMN);
@@ -1275,7 +1275,7 @@ private void playSelection()
         
             //delete the desired theme from the table
             for (int j = 0; j < soloTable.getRowCount(); j ++) {
-               System.out.println(name.concat ("- ") + j);
+               //System.out.println(name.concat ("- ") + j);
                 if ((soloTable.getValueAt(j, NAME_COLUMN) == name ) 
                  || (soloTable.getValueAt(j,NAME_COLUMN) == name.concat("- 1"))) {
                     soloTable.setValueAt(null, j, NAME_COLUMN);
@@ -1730,7 +1730,7 @@ public void deleteTheme(String name) {
             
             for (Map.Entry pair : allThemes.entrySet()) {
                 Theme key = (Theme) pair.getKey();
-                key.showForm(System.out);
+                //key.showForm(System.out);
                 key.showForm(out);
             }
             
@@ -1758,8 +1758,8 @@ public void loadFromFile(File file) {
                 Polylist themePoly = (Polylist)ob;
                 Theme theme = new Theme(themePoly);
                 addTheme(theme);
-                System.out.println("adding " + theme);
-                System.out.println(orderedThemes);
+                //System.out.println("adding " + theme);
+                //System.out.println(orderedThemes);
             }
         }
     }
@@ -1856,10 +1856,10 @@ public void ExpandCommand(Polylist list) {
              if (currentString.length() == 2) {
              int intValue = Integer.parseInt(currentString.charAt(1) + "");
              int newValue = intValue/2;
-            System.out.println(newValue);
-            System.out.println(currentString.charAt(0));
+            //System.out.println(newValue);
+            //System.out.println(currentString.charAt(0));
              String newNote = currentString.charAt(0) + newValue + "";
-            //  System.out.println(newNote);
+            // System.out.println(newNote);
              melodyString += newNote + " "; //add the note to the melodyString
              }
              else if (currentString.length() == 3) {
@@ -1874,7 +1874,7 @@ public void ExpandCommand(Polylist list) {
                  
              }
          }  
-         System.out.println(melodyString);
+         //System.out.println(melodyString);
          MelodyPart melody = new MelodyPart(melodyString); //create a MelodyPart of the string
 }
 
@@ -1943,7 +1943,7 @@ public void ExpandCommand(Polylist list) {
         if (Notate.bernoulli(chosenthemeUse.probTranspose)) {
             // if a random number is greater than the probability not to transpose theme
             multipleuse += 1;
-            System.out.println("Transpose");
+            //System.out.println("Transpose");
             themeUsageTextArea.append("transposed");
             ChordPart chordProg = notate.getChordProg(); //get current chord progression
             int rise = PitchClass.findRise(PitchClass.getPitchClass(chordProg.getCurrentChord(0).getRoot()),
@@ -1986,7 +1986,7 @@ public void ExpandCommand(Polylist list) {
             if (multipleuse == 2) {
                 themeUsageTextArea.append(", and inverted");
             }
-            System.out.println("Invert");
+            //System.out.println("Invert");
             if (!(multipleuse == 2)) {
                themeUsageTextArea.append("inverted"); 
             }
@@ -2000,7 +2000,7 @@ public void ExpandCommand(Polylist list) {
            if (Notate.bernoulli(chosenthemeUse.probReverse)) { 
            // if a random number is greater than the probability not to reverse the theme
                multipleuse += 1;
-               System.out.println("Reverse");
+               //System.out.println("Reverse");
                
                if (multipleuse == 1) {
                    themeUsageTextArea.append("reversed");
@@ -2055,7 +2055,7 @@ public void ExpandCommand(Polylist list) {
 
     public void generateSolo(ArrayList<ThemeUse> themeUses, CommandManager cm) {
         themeUsageTextArea.setText(null);
-        System.out.println(themeUses);
+        //System.out.println(themeUses);
         // create four empty lists to start for all the probabilities
         List<Double> probUselist = new ArrayList(Arrays.asList());
         List<Double> probTransposelist = new ArrayList(Arrays.asList());
@@ -2124,7 +2124,7 @@ public void ExpandCommand(Polylist list) {
              Integer noThemevalue = (int)(10*themeUses.size()*Double.valueOf(noThemeProbTextField.getText()));
             
             int themei = random.nextInt(probUsetotal + noThemevalue);
-            System.out.println(themei); 
+            //System.out.println(themei); 
             //pick a random number from 0 inclusive to 10*the probability list size
             //since all the elements in the list are multpled by 10, the size has to be multiplied by 10 too
             
@@ -2135,7 +2135,7 @@ public void ExpandCommand(Polylist list) {
             //to that first probability times 10
             //so if the random number chosen is in that interval, then that first theme is used
             if (themei <= 10 * probUselist.get(0) - 1) {
-                System.out.println("Theme 1");
+                //System.out.println("Theme 1");
                 MelodyPart chosentheme = themeUses.get(0).theme.melody;
                 ThemeUse chosenthemeUse = themeUses.get(0);
                 themeUsageTextArea.append( "Bar " + bar + ": " + chosenthemeUse.theme.name );
@@ -2166,7 +2166,7 @@ public void ExpandCommand(Polylist list) {
                     if ((themei >= A) && (themei <= B - 1)) {
                         
                         int x = k + 2;
-                        System.out.println("Theme " + x);
+                        //System.out.println("Theme " + x);
                         ThemeUse chosenthemeUse = themeUses.get(k + 1);
                         MelodyPart chosentheme = themeUses.get(k + 1).theme.melody;
                         themeUsageTextArea.append("Bar " + bar + ": " + chosenthemeUse.theme.name);
@@ -2184,7 +2184,7 @@ public void ExpandCommand(Polylist list) {
 
             //this interval is for not using any theme at all    
             if ((themei <= probUsetotal + noThemevalue) && (themei >= probUsetotal)) {
-                System.out.println("no Theme");
+                //System.out.println("no Theme");
                 themeUsageTextArea.append("Bar " + bar + ": No Theme used\n");
                 generateSolohelper2(themeLength, solo);
             }
