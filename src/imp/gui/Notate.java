@@ -7664,15 +7664,15 @@ public Critic getCritic()
         useSubstitutorCheckBox.setFocusable(false);
         useSubstitutorCheckBox.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         useSubstitutorCheckBox.setLabel("Xfm");
-        useSubstitutorCheckBox.setMaximumSize(new java.awt.Dimension(30, 32));
-        useSubstitutorCheckBox.setMinimumSize(new java.awt.Dimension(30, 32));
-        useSubstitutorCheckBox.setPreferredSize(new java.awt.Dimension(30, 32));
+        useSubstitutorCheckBox.setMaximumSize(new java.awt.Dimension(30, 30));
+        useSubstitutorCheckBox.setMinimumSize(new java.awt.Dimension(30, 30));
+        useSubstitutorCheckBox.setPreferredSize(new java.awt.Dimension(30, 30));
         useSubstitutorCheckBox.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
         standardToolbar.add(useSubstitutorCheckBox);
 
         generationGapSpinner.setModel(new javax.swing.SpinnerNumberModel(4.0d, -20.0d, 20.0d, 0.01d));
         generationGapSpinner.setToolTipText("Specifies the lead time, in beats, for generating next chorus before the end of the current chorus, if Recur is toggled on.");
-        generationGapSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Lead Beats", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 10))); // NOI18N
+        generationGapSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Lead", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 10))); // NOI18N
         generationGapSpinner.setInheritsPopupMenu(true);
         generationGapSpinner.setMaximumSize(new java.awt.Dimension(70, 45));
         generationGapSpinner.setMinimumSize(new java.awt.Dimension(70, 45));
