@@ -7677,6 +7677,7 @@ public Critic getCritic()
         generationGapSpinner.setMaximumSize(new java.awt.Dimension(70, 45));
         generationGapSpinner.setMinimumSize(new java.awt.Dimension(70, 45));
         generationGapSpinner.setPreferredSize(new java.awt.Dimension(70, 45));
+        generationGapSpinner.setValue(0.5);
         generationGapSpinner.addChangeListener(new javax.swing.event.ChangeListener()
         {
             public void stateChanged(javax.swing.event.ChangeEvent evt)
@@ -13688,16 +13689,9 @@ public boolean putLick(MelodyPart lick)
 
     Stave stave = getCurrentStave();
 
-    // Ideally, would wait here
+    // Ideally, would wait for previous generation to finish before starting
+    // a new one, but attempts to do this have been unsuccessful so far.
 
-    // Formerly used SafePasteCommand, then DynamicPasteCommand, both of which
-    // carry unnecessary baggage.
-
-    while( midiSynth != null && midiSynth.isRunning() && midiSynth.getMicrosecondsRemaining() > 110000 )
-      {
-      // Busy-wait          
-      }
-    
     getMelodyPart(stave).newPasteOver(lick, getCurrentSelectionStart(stave));
 
     if( lickgenFrame.rectifySelected() )
