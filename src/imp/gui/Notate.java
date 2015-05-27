@@ -345,7 +345,7 @@ private JFileChooser grammarfc;
 /**
  * The width of the main frame
  */
-public static final int NOTATE_WIDTH = 1100;
+public static final int NOTATE_WIDTH = 1130;
 /**
  * Index of the current tab
  */
