@@ -418,8 +418,8 @@ public class LickgenFrame
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         generatorPane.setBackground(new java.awt.Color(218, 215, 215));
-        generatorPane.setMinimumSize(new java.awt.Dimension(1100, 700));
-        generatorPane.setPreferredSize(new java.awt.Dimension(1100, 700));
+        generatorPane.setMinimumSize(new java.awt.Dimension(1200, 700));
+        generatorPane.setPreferredSize(new java.awt.Dimension(1200, 700));
 
         lickGenPanel.setMinimumSize(new java.awt.Dimension(1450, 903));
         lickGenPanel.setPreferredSize(new java.awt.Dimension(1450, 903));
@@ -456,7 +456,7 @@ public class LickgenFrame
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
-        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weightx = 0.3;
         gridBagConstraints.weighty = 0.5;
         lickGenPanel.add(rhythmPanel, gridBagConstraints);
 
@@ -491,20 +491,21 @@ public class LickgenFrame
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
-        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weightx = 0.7;
         gridBagConstraints.weighty = 0.5;
         lickGenPanel.add(relativePanel, gridBagConstraints);
 
         lickGenerationButtonsPanel.setBackground(new java.awt.Color(218, 215, 215));
         lickGenerationButtonsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Lick Generation and Extraction", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
-        lickGenerationButtonsPanel.setMinimumSize(new java.awt.Dimension(300, 230));
+        lickGenerationButtonsPanel.setMaximumSize(new java.awt.Dimension(400, 400));
+        lickGenerationButtonsPanel.setMinimumSize(new java.awt.Dimension(300, 200));
         lickGenerationButtonsPanel.setPreferredSize(new java.awt.Dimension(300, 230));
         lickGenerationButtonsPanel.setLayout(new java.awt.GridBagLayout());
 
         generateLickButton.setToolTipText("Generate a melody using the current grammar.");
         generateLickButton.setLabel("Generate and Fill Melody");
-        generateLickButton.setMaximumSize(new java.awt.Dimension(135, 29));
-        generateLickButton.setMinimumSize(new java.awt.Dimension(135, 29));
+        generateLickButton.setMaximumSize(new java.awt.Dimension(180, 29));
+        generateLickButton.setMinimumSize(new java.awt.Dimension(180, 29));
         generateLickButton.setPreferredSize(new java.awt.Dimension(135, 29));
         generateLickButton.addActionListener(new java.awt.event.ActionListener()
         {
@@ -523,6 +524,9 @@ public class LickgenFrame
 
         genRhythmButton.setToolTipText("Generate the rhythm pattern for a lick, without the actual notes.");
         genRhythmButton.setLabel("Generate without Filling");
+        genRhythmButton.setMaximumSize(new java.awt.Dimension(180, 29));
+        genRhythmButton.setMinimumSize(new java.awt.Dimension(180, 29));
+        genRhythmButton.setPreferredSize(new java.awt.Dimension(180, 29));
         genRhythmButton.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -540,6 +544,7 @@ public class LickgenFrame
 
         fillMelodyButton.setText("Fill Abstract Melody");
         fillMelodyButton.setToolTipText("Fill the notes for the given pattern.");
+        fillMelodyButton.setPreferredSize(new java.awt.Dimension(180, 29));
         fillMelodyButton.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -574,6 +579,9 @@ public class LickgenFrame
 
         getAbstractMelodyButton.setToolTipText("Extract the abstract melody and the relative-pitch melody from the leadsheet selection.");
         getAbstractMelodyButton.setLabel("Extract Abstract and Relative-Pitch Melodies from Leadsheet");
+        getAbstractMelodyButton.setMaximumSize(new java.awt.Dimension(360, 29));
+        getAbstractMelodyButton.setMinimumSize(new java.awt.Dimension(360, 29));
+        getAbstractMelodyButton.setPreferredSize(new java.awt.Dimension(360, 29));
         getAbstractMelodyButton.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -591,6 +599,7 @@ public class LickgenFrame
 
         getSelRhythmButton.setToolTipText("Extract the rhythm from the leadsheet.");
         getSelRhythmButton.setLabel("Extract Rhythm Only");
+        getSelRhythmButton.setPreferredSize(new java.awt.Dimension(360, 29));
         getSelRhythmButton.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)

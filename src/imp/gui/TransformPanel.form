@@ -168,7 +168,7 @@
         <Component class="javax.swing.JButton" name="createNewSubstitutionsFileButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Create New Transform File"/>
-            <Property name="toolTipText" type="java.lang.String" value="Create a new empty transform with no subsitutions"/>
+            <Property name="toolTipText" type="java.lang.String" value="Create a new empty transform file with no classes."/>
             <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[10000, 23]"/>
             </Property>
@@ -185,7 +185,7 @@
         <Component class="javax.swing.JButton" name="openSubstitutionsFileButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Open Transform File"/>
-            <Property name="toolTipText" type="java.lang.String" value="Open transform file from grammars folder"/>
+            <Property name="toolTipText" type="java.lang.String" value="Open transform file from grammars folder."/>
             <Property name="autoscrolls" type="boolean" value="true"/>
             <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[10000, 23]"/>
@@ -203,7 +203,7 @@
         <Component class="javax.swing.JButton" name="saveSubstitutionsButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Save Current Transform"/>
-            <Property name="toolTipText" type="java.lang.String" value="Save the substitutions below into a transform file"/>
+            <Property name="toolTipText" type="java.lang.String" value="Save the transformations below into a file."/>
             <Property name="enabled" type="boolean" value="false"/>
             <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[10000, 23]"/>
@@ -307,8 +307,8 @@
       <SubComponents>
         <Component class="javax.swing.JButton" name="applySubstitutionsButton">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Apply Classes to Melody"/>
-            <Property name="toolTipText" type="java.lang.String" value="Apply the below transformation classes to the selected melody"/>
+            <Property name="text" type="java.lang.String" value="Transform Melody"/>
+            <Property name="toolTipText" type="java.lang.String" value="Apply the transformation classes below to the selected melody."/>
             <Property name="enabled" type="boolean" value="false"/>
             <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[10000, 23]"/>
@@ -326,7 +326,7 @@
         <Component class="javax.swing.JButton" name="revertSubstitutionsButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Revert Application"/>
-            <Property name="toolTipText" type="java.lang.String" value="Undo Apply Substitutions"/>
+            <Property name="toolTipText" type="java.lang.String" value="Undo transformations that were applied.&#xa;"/>
             <Property name="enabled" type="boolean" value="false"/>
             <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[10000, 23]"/>
@@ -344,7 +344,7 @@
         <Component class="javax.swing.JButton" name="reapplySubstitutionsButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Re-Apply"/>
-            <Property name="toolTipText" type="java.lang.String" value="Revert Substitutions and Apply again"/>
+            <Property name="toolTipText" type="java.lang.String" value="Revert transformations and Apply again."/>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <Events>
@@ -359,7 +359,7 @@
         <Component class="javax.swing.JButton" name="cleanTransformButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Clean Transform File"/>
-            <Property name="toolTipText" type="java.lang.String" value="remove duplicate substitutions but add their weights together"/>
+            <Property name="toolTipText" type="java.lang.String" value="Remove duplicate classes, but add their weights together."/>
             <Property name="enabled" type="boolean" value="false"/>
             <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[10000, 23]"/>
@@ -403,7 +403,7 @@
         <Component class="javax.swing.JButton" name="addSubsFromOtherFileButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Add Classes From Other File"/>
-            <Property name="toolTipText" type="java.lang.String" value="Add all the substitutions in another transform file to the current transform"/>
+            <Property name="toolTipText" type="java.lang.String" value="Add all the classes in another transform file to the current set."/>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <Events>
@@ -418,7 +418,7 @@
         <Component class="javax.swing.JButton" name="createNewSubstitutionButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Create New Transform Class"/>
-            <Property name="toolTipText" type="java.lang.String" value="Create a new substitution with no transformations that will be added to the currrent transform"/>
+            <Property name="toolTipText" type="java.lang.String" value="Create a new class with no transformations that will be added to the currrent set."/>
             <Property name="enabled" type="boolean" value="false"/>
             <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
               <Insets value="[2, 5, 2, 5]"/>
@@ -445,7 +445,7 @@
         <Component class="javax.swing.JButton" name="editSubstitutionNameButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Edit Transform Class Name"/>
-            <Property name="toolTipText" type="java.lang.String" value="Edit the name of a substitution"/>
+            <Property name="toolTipText" type="java.lang.String" value="Edit the name of a class."/>
             <Property name="enabled" type="boolean" value="false"/>
             <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
               <Insets value="[2, 4, 2, 4]"/>
@@ -472,7 +472,7 @@
         <Component class="javax.swing.JButton" name="deleteSubstitutionButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Delete Class"/>
-            <Property name="toolTipText" type="java.lang.String" value="Delete the selected substitution from the transform"/>
+            <Property name="toolTipText" type="java.lang.String" value="Delete the selected class from the set."/>
             <Property name="enabled" type="boolean" value="false"/>
             <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
               <Insets value="[2, 4, 2, 4]"/>
@@ -754,7 +754,7 @@
         <Component class="javax.swing.JButton" name="createNewTransformationButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Create New Transformation"/>
-            <Property name="toolTipText" type="java.lang.String" value="Create a new empty transform that will be added to the selected substitution"/>
+            <Property name="toolTipText" type="java.lang.String" value="Create a new empty transform that will be added to the selected class."/>
             <Property name="enabled" type="boolean" value="false"/>
             <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
               <Insets value="[2, 7, 2, 7]"/>
@@ -772,7 +772,7 @@
         <Component class="javax.swing.JButton" name="editSelectedTransformationButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Edit Transformation"/>
-            <Property name="toolTipText" type="java.lang.String" value="Edit the grammar for the selected transform"/>
+            <Property name="toolTipText" type="java.lang.String" value="Edit the grammar for the selected transform."/>
             <Property name="enabled" type="boolean" value="false"/>
             <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
               <Insets value="[2, 7, 2, 7]"/>
@@ -790,7 +790,7 @@
         <Component class="javax.swing.JButton" name="deleteTransformationButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Delete Transformation"/>
-            <Property name="toolTipText" type="java.lang.String" value="Delete the selected transform from the selected substitution"/>
+            <Property name="toolTipText" type="java.lang.String" value="Delete the selected transform from the selected class."/>
             <Property name="enabled" type="boolean" value="false"/>
             <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
               <Insets value="[2, 7, 2, 7]"/>
@@ -993,7 +993,7 @@
         <Component class="javax.swing.JButton" name="substitutorPlayLeadsheetButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Play Selection"/>
-            <Property name="toolTipText" type="java.lang.String" value="Play the selected melody in the leadsheet"/>
+            <Property name="toolTipText" type="java.lang.String" value="Play the selected melody in the leadsheet."/>
             <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[10000, 23]"/>
             </Property>
@@ -1016,7 +1016,7 @@
         <Component class="javax.swing.JButton" name="substitutorStopLeadsheetButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Stop Playback"/>
-            <Property name="toolTipText" type="java.lang.String" value="Stop leadsheet playback"/>
+            <Property name="toolTipText" type="java.lang.String" value="Stop leadsheet playback."/>
             <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[10000, 23]"/>
             </Property>
@@ -1033,7 +1033,7 @@
         <Component class="javax.swing.JButton" name="substitutorSaveLeadsheetButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Save"/>
-            <Property name="toolTipText" type="java.lang.String" value="Save current lick"/>
+            <Property name="toolTipText" type="java.lang.String" value="Save current lick."/>
             <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[10000, 23]"/>
             </Property>
