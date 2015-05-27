@@ -1,8 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application.
  *
- * Copyright (C) 2005-2014 Robert Keller and Harvey Mudd College XML export code
- * is also Copyright (C) 2009-2010 Nicolas Froment (aka Lasconic).
+ * Copyright (C) 2005-2015 Robert Keller and Harvey Mudd College.
  *
  * Impro-Visor is free software; you can redistribute it and/or modifyc it under
  * the terms of the GNU General Public License as published by the Free Software
@@ -3481,6 +3480,7 @@ public class LickgenFrame
                     });
 
                     prefs[j].addFocusListener(new java.awt.event.FocusAdapter() {
+                        @Override
                         public void focusLost(java.awt.event.FocusEvent evt) {
                             verifyProbs();
                         }

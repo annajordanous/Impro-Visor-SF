@@ -1,9 +1,9 @@
 <project name="Impro-Visor" default="compile" basedir=".">
 
 <description>
-Build-file for Impro-Visor 6.0
+Build-file for Impro-Visor 7.0
 
-Copyright (C) 2005-2013 Robert Keller and Harvey Mudd College
+Copyright (C) 2005-2015 Robert Keller and Harvey Mudd College
 
 Impro-Visor is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -22,11 +22,11 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
     
 <target name="init">
     <property name="appName"                value="Impro-Visor"              />
-    <property name="distDir"                value="improvisor600"            />
-    <property name="dist-mac"               value="improvisor600-mac"        />
-    <property name="dist-win"               value="improvisor600-win"        />
-    <property name="zipName"                value="improvisor600.zip"        />
-    <property name="zipMacName"             value="improvisor600mac.zip"     />
+    <property name="distDir"                value="improvisor700"            />
+    <property name="dist-mac"               value="improvisor700-mac"        />
+    <property name="dist-win"               value="improvisor700-win"        />
+    <property name="zipName"                value="improvisor700.zip"        />
+    <property name="zipMacName"             value="improvisor700mac.zip"     />
     <property name="miscDir"                value="improvisor"               />
     <property name="srcDir"                 value="src"                      />
     <property name="impDir"                 value="src/imp"                  />
@@ -313,7 +313,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 </target>
 
 <target name="zipSrc" depends="cleanSrc" description="zips up the source">
-    <zip destfile="improvisor600-src.zip" basedir="${srcDir}" />
+    <zip destfile="improvisor700-src.zip" basedir="${srcDir}" />
 </target>
 
 <target name="cleanJavadoc" depends="init" description="">
