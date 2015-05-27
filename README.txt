@@ -1,6 +1,6 @@
 
-Welcome to Impro-Visor (Improvisation Advisor) Version 6.0,
-from Prof. Bob Keller at Harvey Mudd College, 14 June 2014.
+Welcome to Impro-Visor (Improvisation Advisor) Version 7.0,
+from Prof. Bob Keller at Harvey Mudd College, 27 May 2015.
 
 Release notes for this version may be found at the end.
 
@@ -79,8 +79,8 @@ I am pleased to acknowledge contributions from the following developers:
  Zachary Merritt, Xanda Schofield, August Toman-Yih, David Halpern,
  Jack Davison, Audrey Musselman-Brown, Kevin Choi, Brian Howell, 
  Caitlin Chen, Nicolas Chung, Anna Turner, Hayden Blauzvern, 
- Nate Tarrh, Brian Kwak, Kelly Lee, Willem Engen, Eric Chicot
-
+ Nate Tarrh, Brian Kwak, Kelly Lee, Willem Engen, Eric Chicot,
+ Mark Heimann, Nava Dallal, Carli Lessard, Alex Putman, Becki Yukman
 We hope you enjoy using the program. 
 
 Sincerely,
@@ -91,6 +91,24 @@ Harvey Mudd College
 Claremont, CA 91711
 
 keller@cs.hmc.edu
+
+===============================================================================
+Release notes for Impro-Visor 7.0
+
+There is a new grammar learning method based on relative pitches.
+
+There is new solo generation method based on transformations from a basic
+melody.
+
+The former Solo Generator has been enhanced to become the Theme Weaver.
+
+There is a menu for quantize a melody to a specified number of sub-divisions
+of a beat. This can be used to clean up melodies that are played by a human
+in real-time on a MIDI instrument.
+
+There are some new elements, such as arpeggiation, in the style pattern editor.
+
+The section sub-divider interface has been changed slightly.
 
 ===============================================================================
 Release notes for Impro-Visor 6.0
