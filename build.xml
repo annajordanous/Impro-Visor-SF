@@ -172,7 +172,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
         <fileset dir="" includes="LICENSE.txt README.txt" />
     </copy>
     <copy todir="${distDir}/grammars">
-        <fileset dir="${grammarDir}" includes="**/*.grammar **/*.soloist **/HeadData.data" />
+        <fileset dir="${grammarDir}" includes="**/*.grammar **/*.transform **/*.soloist **/HeadData.data" />
     </copy>
     <copy todir="${distDir}/vocab">
         <fileset dir="${vocabDir}" includes="**/*.prefs" />
