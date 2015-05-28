@@ -81,6 +81,7 @@ I am pleased to acknowledge contributions from the following developers:
  Caitlin Chen, Nicolas Chung, Anna Turner, Hayden Blauzvern, 
  Nate Tarrh, Brian Kwak, Kelly Lee, Willem Engen, Eric Chicot,
  Mark Heimann, Nava Dallal, Carli Lessard, Alex Putman, Becki Yukman
+
 We hope you enjoy using the program. 
 
 Sincerely,
@@ -100,13 +101,19 @@ There is a new grammar learning method based on relative pitches.
 There is new solo generation method based on transformations from a basic
 melody.
 
-The former Solo Generator has been enhanced to become the Theme Weaver.
+Trading can now be done with any grammar, not just ones designated for trading.
+
+The former Solo Generator has been enhanced to become the Theme Weaver. There
+is still a bit of work to be done on it.
 
 There is a menu for quantize a melody to a specified number of sub-divisions
 of a beat. This can be used to clean up melodies that are played by a human
 in real-time on a MIDI instrument.
 
 There are some new elements, such as arpeggiation, in the style pattern editor.
+
+Individual style patterns (rather than just whole styles) can be named and
+included by reference rather than by literally copying them.
 
 The section sub-divider interface has been changed slightly.
 
