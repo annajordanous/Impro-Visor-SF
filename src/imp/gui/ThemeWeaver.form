@@ -516,12 +516,12 @@
     <Component class="java.awt.Label" name="SoloGeneratorTitle">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Lucida Grande" size="36" style="1"/>
+          <Font name="Lucida Grande" size="24" style="1"/>
         </Property>
         <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[327, 327]"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Theme Weaver"/>
+        <Property name="text" type="java.lang.String" value="Theme Weaver (work in progress)&#xa;"/>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
