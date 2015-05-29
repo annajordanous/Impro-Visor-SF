@@ -22043,7 +22043,7 @@ private void pauseMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
 }//GEN-LAST:event_pauseMIActionPerformed
 
 private void notateGrammarMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_notateGrammarMenuActionPerformed
-    populateNotateGrammarMenu();
+    //populateNotateGrammarMenu();
 }//GEN-LAST:event_notateGrammarMenuActionPerformed
 
 private void notateGrammarMenuStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_notateGrammarMenuStateChanged
@@ -23302,7 +23302,7 @@ int quantizeResolution = 60;
 
     private void notateGrammarMenuMousePressed(java.awt.event.MouseEvent evt)//GEN-FIRST:event_notateGrammarMenuMousePressed
     {//GEN-HEADEREND:event_notateGrammarMenuMousePressed
-        populateNotateGrammarMenu();
+        //populateNotateGrammarMenu();
     }//GEN-LAST:event_notateGrammarMenuMousePressed
 
     private void tradingMenuActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_tradingMenuActionPerformed
@@ -23903,7 +23903,7 @@ public int getTradingQuantum()
 
 
 /**
- * Populate the grammar menu in the Notate window
+ * Populate the Trading menu
  */
 private void populateTradingMenu()
   {
