@@ -35,6 +35,7 @@ import imp.data.NoteSymbol;
 import imp.data.Part;
 import imp.data.PitchClass;
 import imp.data.Unit;
+import imp.lickgen.NoteConverter;
 import imp.util.ThemesFilter;
 import polya.Polylist;
 import imp.lickgen.LickGen;
@@ -1226,19 +1227,19 @@ private void closeWindow()
         // will be roughly maintained (except for possible octave displacements).
         // We could use the relative-pitch melody as the Theme in lieu of the
         // absolute pitch one we are now using.
-//        Polylist relativePitchMelody = 
-//            NoteConverter.melodyPart2Relative(sel, 
-//                                              notate.getChordProg(), 
-//                                              notate.getCurrentSelectionStart());
-//
-//        System.out.println("FYI: relative pitch melody: "+ relativePitchMelody);
-//        
-//        MelodyPart gen = fillMelody(BEAT, 
-//                                    relativePitchMelody, 
-//                                    notate.getChordProg(),  
-//                                    notate.getCurrentSelectionStart());
-//        
-//        System.out.println("FYI: filled melody: "+ gen);
+        Polylist relativePitchMelody = 
+            NoteConverter.melodyPart2Relative(sel, 
+                                              notate.getChordProg(), 
+                                              notate.getCurrentSelectionStart());
+
+        System.out.println("FYI: relative pitch melody: "+ relativePitchMelody);
+        
+        MelodyPart gen = fillMelody(BEAT, 
+                                    relativePitchMelody, 
+                                    notate.getChordProg(),  
+                                    notate.getCurrentSelectionStart());
+        
+        System.out.println("FYI: filled melody: "+ gen);
 
 
         Part.PartIterator i = sel.iterator();
