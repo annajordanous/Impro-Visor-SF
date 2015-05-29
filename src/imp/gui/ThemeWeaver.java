@@ -68,6 +68,7 @@ import polya.PolylistEnum;
  *
  * @author David Morrison, Nava Dallal
  */
+@SuppressWarnings("serial")
 public class ThemeWeaver extends javax.swing.JFrame
 {
 
@@ -882,7 +883,6 @@ private void playSelection()
 
             score.addPart(melody);
             PatternDisplay.playScore(notate, score, themeWeaver);
-
           }
     }//GEN-LAST:event_soloTableMouseClicked
 
@@ -1043,7 +1043,6 @@ private void playSelection()
 
     private void CancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelButtonActionPerformed
         nameErrorMessage.setVisible(false);
-
     }//GEN-LAST:event_CancelButtonActionPerformed
 
     private void cellOkbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cellOkbuttonActionPerformed
@@ -1072,18 +1071,15 @@ private void playSelection()
     private void nameFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nameFieldKeyPressed
         if( evt.getKeyCode() == KeyEvent.VK_ENTER )
           {
-
             if( orderedThemes.contains(nameField.getText()) )
               {
                 //if the user enters a name that is already in orderedThemes
                 nameErrorMessage.setVisible(true); //same error message pops up
-
               }
             else
               {
                 for( int i = 0; i < soloTable.getRowCount(); i++ )
                   {// loop through table
-
                     if( soloTable.isCellSelected(i, NAME_COLUMN) )
                       {
                         setValueAt(nameField.getText(), i, NAME_COLUMN);
@@ -1147,7 +1143,7 @@ private void closeWindow()
 
         for( WindowMenuItem w : WindowRegistry.getWindows() )
           {
-            windowMenu.add(w.getMI(this));       // these are static, and calling getMI updates the name on them too in case the window title changed
+            windowMenu.add(w.getMI(this)); // these are static, and calling getMI updates the name on them too in case the window title changed
           }
         windowMenu.repaint();
     }//GEN-LAST:event_windowMenuMenuSelected
@@ -1169,14 +1165,12 @@ private void closeWindow()
 
         for( int i = 0; i < soloTable.getRowCount(); i++ )
           { //loop through table
-
             if( (getValueAt(i, THEME_COLUMN) == null)
                     && (getValueAt(i, LENGTH_COLUMN) != null) )
               {
                 //if theme cell is empty and length isn't
                 enteredIncorrectly.setVisible(true); //show error message
                 break;
-
               }
             else if( getValueAt(i, THEME_COLUMN) != null )
               {
@@ -1188,7 +1182,6 @@ private void closeWindow()
                     //if theme cell not empty but weighted values are entered wrong
                     enteredIncorrectly.setVisible(true); //show error message 
                     break;
-
                   }
                 else
                   { //if all cells are entered correctly, form theme uses
@@ -1263,7 +1256,6 @@ private void closeWindow()
                 setValueAt(theme, j, THEME_COLUMN);
                 setValueAt(sel.getSize() / BEAT + "", j, LENGTH_COLUMN);
 
-
                 MelodyPart melody = new MelodyPart((String) getValueAt(j, THEME_COLUMN));
 
                 for( Map.Entry pair : allThemes.entrySet() )
@@ -1276,7 +1268,6 @@ private void closeWindow()
                         //if the melody in allThemes is the name as the melody in the table
                         setValueAt(pair.getValue(), j, NAME_COLUMN);
                         //set the name to the one that matches that theme
-
                       }
                     else
                       {// if there is no matching theme in allThemes
@@ -1290,7 +1281,6 @@ private void closeWindow()
 
     private void loadThemesMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_loadThemesMIActionPerformed
     {//GEN-HEADEREND:event_loadThemesMIActionPerformed
-
         themesfc.setDialogTitle("Load Themes File");
 
         themesfc.resetChoosableFileFilters();
@@ -1307,7 +1297,6 @@ private void closeWindow()
 
     private void saveAsThemesActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_saveAsThemesActionPerformed
     {//GEN-HEADEREND:event_saveAsThemesActionPerformed
-
         if( themesfc == null )
           {
             return;
@@ -1347,14 +1336,12 @@ private void closeWindow()
     }//GEN-LAST:event_saveAsThemesActionPerformed
 
     private void stopPlaytoggleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopPlaytoggleActionPerformed
-
         soloPlaying = stopPlaytoggle.isSelected();
 
         if( soloPlaying )
           {
             stopPlaytoggle.setText("<html><center>Play Solo</center></html>");
             stopPlaying();
-
           }
         else
           {
@@ -1363,19 +1350,16 @@ private void closeWindow()
             stopPlaytoggle.setText("<html><center>Stop Playing</center></html>");
             playSelection();
           }
-
     }//GEN-LAST:event_stopPlaytoggleActionPerformed
 
     private void deleteRowbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteRowbuttonActionPerformed
         int index = soloTable.getSelectedRow();
         soloTableModel.removeRow(index);
-
     }//GEN-LAST:event_deleteRowbuttonActionPerformed
 
     private void deleteThemebuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteThemebuttonActionPerformed
 
         String name = (String) themeList.getSelectedValue();
-
 
         //delete the desired theme from the table
         for( int j = 0; j < soloTable.getRowCount(); j++ )
@@ -1390,8 +1374,6 @@ private void closeWindow()
               }
           }
 
-
-
         //delete the selected theme from file
         for( int i = 0; i < orderedThemes.size(); i++ )
           {
@@ -1400,7 +1382,6 @@ private void closeWindow()
                 deleteTheme(name);
               }
           }
-
     }//GEN-LAST:event_deleteThemebuttonActionPerformed
 
 boolean soloPlaying = false;
@@ -1567,7 +1548,6 @@ public void tableRefresh()
         soloTable.setValueAt(null, i, TRANSPOSE_COLUMN);
         soloTable.setValueAt(null, i, INVERT_COLUMN);
         soloTable.setValueAt(null, i, REVERSE_COLUMN);
-
       }
 
     fireTableDataChanged();
@@ -1629,7 +1609,6 @@ public void setValueAt(Object value, int row, int col)
                     && (getValueAt(row, NAME_COLUMN) != null) )
               {
                 namingSaving(row, col, row);
-                return;
               }
             break;
 
@@ -1696,7 +1675,6 @@ public void updateLength(int row, int col, int i)
                 //if the melody in allThemes is the name as the melody in the table
                 soloTable.setValueAt(pair.getValue(), i, NAME_COLUMN);
                 //set the name to the one that matches that theme
-
               }
             else
               {// if there is no matching theme in allThemes
@@ -1718,7 +1696,6 @@ public void addLength(int row, int col, int i)
       { //if there is no name
         soloTable.setValueAt(themelength + "", i, LENGTH_COLUMN);
         //set themelength in the table
-
       }
     else
       { //if there is already a name
@@ -1759,7 +1736,6 @@ public void namingSaving(int row, int col, int i)
       { //if the user types a name already in the list
         nameErrorMessage.setVisible(true);
         //give name error message to rename the theme
-
       }
     else
       {
@@ -1776,7 +1752,6 @@ public void namingSaving(int row, int col, int i)
 
                 if( melody.toString().equals(ThemeKey.melody.toString()) )
                   {
-
                     deleteTheme(nameValue); //delete the old theme
                     addTheme(theme); //add the new one
 
@@ -1785,7 +1760,6 @@ public void namingSaving(int row, int col, int i)
 
                     nameErrorMessage.setVisible(false);
                     break;
-
                   }
                 else
                   { //if there is no melody that matches the one in the table
@@ -1879,7 +1853,6 @@ public void addTheme(Theme theme)
 //delete a theme from a file based on the string name shown in the Themes scroll box
 public void deleteTheme(String name)
   {
-
     orderedThemes.remove(name);
 
     for( Map.Entry pair : allThemes.entrySet() )
@@ -1910,7 +1883,6 @@ public void saveRules(File file)
             //key.showForm(System.out);
             key.showForm(out);
           }
-
       }
     catch( IOException e )
       {
@@ -1975,7 +1947,6 @@ public void adjust()
   {
     fireIntervalAdded(this, 0, getSize());
   }
-
 }
 
 public static boolean isInteger(String s)
@@ -2028,7 +1999,6 @@ public MelodyPart fillMelody(int beatValue,
                                            chordProg,
                                            start,
                                            avoidRepeats);
-
     return result;
   }
 
@@ -2067,7 +2037,6 @@ public void ExpandCommand(Polylist list)
             int newValue = currentString.charAt(3) / 2;
             String newNote = currentString.charAt(0) + currentString.charAt(1) + currentString.charAt(2) + newValue + "";
             melodyString += newNote + " "; //add the note to the melodyString
-
           }
       }
     //System.out.println(melodyString);
@@ -2085,7 +2054,6 @@ public MelodyPart generateTheme()
           }
         else
           {
-
             if( ((soloTable.isCellSelected(x, LENGTH_COLUMN))
                     && (getValueAt(x, LENGTH_COLUMN) != null))
                     || ((getValueAt(x, LENGTH_COLUMN) != null)
@@ -2218,7 +2186,6 @@ public MelodyPart generateSolohelper(ThemeUse chosenthemeUse, MelodyPart chosent
           }
 
         cm.execute(new ReverseCommand(adjustedTheme, 0, length, false)); //reverse theme
-
       }
     else
       {
@@ -2238,7 +2205,6 @@ public MelodyPart generateSolohelper(ThemeUse chosenthemeUse, MelodyPart chosent
     solo.setSize(solo.getSize() + length);
     //set size of solo to the existing length of the solo plus the length of the theme
     return adjustedTheme;
-
   }
 
 public void generateSolohelper2(int themeLength, MelodyPart solo)
@@ -2279,7 +2245,6 @@ public void generateSolo(ArrayList<ThemeUse> themeUses, CommandManager cm)
     //themeuse and add it to the corresponding empty list
     for( int i = 0; i < themeUses.size(); i++ )
       {
-
         probUselist.add(themeUses.get(i).probUse);
         probTransposelist.add(themeUses.get(i).probTranspose);
         probInvertlist.add(themeUses.get(i).probInvert);
@@ -2371,7 +2336,6 @@ public void generateSolo(ArrayList<ThemeUse> themeUses, CommandManager cm)
         //if the themeUses size is more than one themeuse then the other intervals have to be accounted for 
         else if( themeUses.size() > 1 )
           {
-
             double A = 0;
             double B = 10 * probUselist.get(0);
 
@@ -2408,7 +2372,7 @@ public void generateSolo(ArrayList<ThemeUse> themeUses, CommandManager cm)
         if( (themei <= probUsetotal + noThemevalue) && (themei >= probUsetotal) )
           {
             //System.out.println("no Theme");
-            themeUsageTextArea.append("Bar " + bar + ": No Theme used\n");
+            themeUsageTextArea.append("Bar " + bar + ": Used grammar\n");
             generateSolohelper2(themeLength, solo);
           }
       }

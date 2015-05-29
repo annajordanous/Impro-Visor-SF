@@ -1047,39 +1047,44 @@ public void delUnit(int unitIndex)
       {
         return;
       }
-    
-    Unit unit = slots.get(unitIndex);
-
-    if( unit != null )
+    // FIX: he try-catch is because there is an occasional out-of-range error
+    // for the index. This is clearly a hack to avoid being affected by it.
+    try
       {
-        //Trace.log(0, "delUnit at " + unitIndex + ", was " + unit);
+        Unit unit = slots.get(unitIndex);
 
-        int rv = unit.getRhythmValue();
-        slots.set(unitIndex, null);
-        unitCount--;
-        Unit prevUnit = getPrevUnit(unitIndex);
+        if( unit != null )
+          {
+            //Trace.log(0, "delUnit at " + unitIndex + ", was " + unit);
 
-        //Trace.log(3, "prevUnit = " + prevUnit);
+            int rv = unit.getRhythmValue();
+            slots.set(unitIndex, null);
+            unitCount--;
+            Unit prevUnit = getPrevUnit(unitIndex);
 
-        // If there was a Unit before it, we need to adjust its rv.
-        
-        if( prevUnit != null )
-          {
-            //Trace.log(0, "in delUnit, setting rhythmValue");
-            prevUnit.setRhythmValue(prevUnit.getRhythmValue() + rv);
+            //Trace.log(3, "prevUnit = " + prevUnit);
+
+            // If there was a Unit before it, we need to adjust its rv.
+
+            if( prevUnit != null )
+              {
+                //Trace.log(0, "in delUnit, setting rhythmValue");
+                prevUnit.setRhythmValue(prevUnit.getRhythmValue() + rv);
+              }
+            // If there was no Unit before it, then we just deleted the
+            // 0 slot, which must never be empty, so put something appropriate there.
+            else if( this instanceof imp.data.MelodyPart )
+              {
+                setUnit(0, new Rest());
+              }
+            else if( this instanceof imp.data.ChordPart )
+              {
+                setUnit(0, new Chord(NOCHORD));
+              }
           }
-        
-        // If there was no Unit before it, then we just deleted the
-        // 0 slot, which must never be empty, so put something appropriate there.
-        
-        else if( this instanceof imp.data.MelodyPart )
-          {
-            setUnit(0, new Rest());
-          }
-        else if( this instanceof imp.data.ChordPart )
-          {
-            setUnit(0, new Chord(NOCHORD));
-          }
+      }
+    catch( Exception e )
+      {
       }
   }
 

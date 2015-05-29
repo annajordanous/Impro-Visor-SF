@@ -1,5 +1,5 @@
 /**
- * * This Java Class is part of the Impro-Visor Application.
+ * This Java Class is part of the Impro-Visor Application.
  *
  * Copyright (C) 2005-2015 Robert Keller and Harvey Mudd College XML export code
  * is also Copyright (C) 2009-2015 Nicolas Froment (aka Lasconic).
@@ -23,7 +23,6 @@ package imp.gui;
 import imp.Constants;
 import imp.Constants.ExtractMode;
 import imp.Constants.StaveType;
-import imp.Directories;
 import imp.ImproVisor;
 import imp.RecentFiles;
 import imp.audio.AudioSettings;
@@ -36,7 +35,6 @@ import imp.data.*;
 import imp.data.musicXML.ChordDescription;
 import imp.lickgen.LickGen;
 import imp.neuralnet.*;
-import imp.roadmap.RoadMap;
 import imp.roadmap.RoadMapFrame;
 import imp.util.*;
 import java.awt.*;
@@ -269,6 +267,10 @@ private String chordToInsert = null;
  */
 private LickGen lickgen;
 private ArrayList<String> melodyData = new ArrayList<String>();
+/**
+ * Theme Weaver
+ */
+private ThemeWeaver themeWeaver = null;
 /**
  * this will be set to true during extraction of all measures in a corpus
  */
@@ -23247,7 +23249,10 @@ private boolean isDotted = false;
 
     private void soloGeneratorMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_soloGeneratorMIActionPerformed
     {//GEN-HEADEREND:event_soloGeneratorMIActionPerformed
-        ThemeWeaver themeWeaver = new ThemeWeaver(lickgen, this, cm);
+        if( themeWeaver == null )
+          {
+          themeWeaver = new ThemeWeaver(lickgen, this, cm);
+          }
         themeWeaver.setVisible(true);
     }//GEN-LAST:event_soloGeneratorMIActionPerformed
 
