@@ -8671,10 +8671,18 @@
             </MenuItem>
           </SubComponents>
         </Menu>
+        <Menu class="javax.swing.JMenu" name="tradingMenu">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Trading"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tradingMenuActionPerformed"/>
+          </Events>
+        </Menu>
         <Menu class="javax.swing.JMenu" name="notateGrammarMenu">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="getDefaultGrammarName() + &quot; grammar&quot;" type="code"/>
+              <Connection code="getDefaultGrammarName()" type="code"/>
             </Property>
           </Properties>
           <Events>

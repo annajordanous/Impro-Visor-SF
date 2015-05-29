@@ -1,8 +1,8 @@
 /**
  * * This Java Class is part of the Impro-Visor Application.
  *
- * Copyright (C) 2005-2014 Robert Keller and Harvey Mudd College XML export code
- * is also Copyright (C) 2009-2014 Nicolas Froment (aka Lasconic).
+ * Copyright (C) 2005-2015 Robert Keller and Harvey Mudd College XML export code
+ * is also Copyright (C) 2009-2015 Nicolas Froment (aka Lasconic).
  *
  * Impro-Visor is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
@@ -896,6 +896,7 @@ public Notate(Score score, Advisor adv, ImproVisor impro, int x, int y)
     critic = new Critic();
     lickgenFrame = new LickgenFrame(this, lickgen, cm);
 
+    populateTradingMenu();
     populateNotateGrammarMenu();
 
     postInitComponents();
@@ -1075,7 +1076,7 @@ public static void setDefaultButton(JDialog dialog, JButton button)
  */
 public void postInitComponents()
   {
-    notateGrammarMenu.setText(getDefaultGrammarName() + " grammar");
+    notateGrammarMenu.setText(getDefaultGrammarName());
 
     voicingTestFrame.pack();
 
@@ -2085,6 +2086,7 @@ public Critic getCritic()
         emptyRoadMapMI = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         createRoadMapCheckBox = new javax.swing.JCheckBoxMenuItem();
+        tradingMenu = new javax.swing.JMenu();
         notateGrammarMenu = new javax.swing.JMenu();
         windowMenu = new javax.swing.JMenu();
         closeWindowMI = new javax.swing.JMenuItem();
@@ -9873,7 +9875,17 @@ public Critic getCritic()
 
         menuBar.add(roadmapMenu);
 
-        notateGrammarMenu.setText(getDefaultGrammarName() + " grammar");
+        tradingMenu.setText("Trading");
+        tradingMenu.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                tradingMenuActionPerformed(evt);
+            }
+        });
+        menuBar.add(tradingMenu);
+
+        notateGrammarMenu.setText(getDefaultGrammarName());
         notateGrammarMenu.addMouseListener(new java.awt.event.MouseAdapter()
         {
             public void mousePressed(java.awt.event.MouseEvent evt)
@@ -10945,7 +10957,7 @@ public void openGrammar()
 
 public void setGrammar(String grammarName)
   {
-    notateGrammarMenu.setText(grammarName + " grammar");
+    notateGrammarMenu.setText(grammarName);
     String extendedName = grammarName + GrammarFilter.EXTENSION;
     grammarFilename = ImproVisor.getGrammarDirectory() + File.separator + extendedName;
     lickgen.loadGrammar(grammarFilename);
@@ -23293,6 +23305,11 @@ int quantizeResolution = 60;
         populateNotateGrammarMenu();
     }//GEN-LAST:event_notateGrammarMenuMousePressed
 
+    private void tradingMenuActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_tradingMenuActionPerformed
+    {//GEN-HEADEREND:event_tradingMenuActionPerformed
+        populateTradingMenu();
+    }//GEN-LAST:event_tradingMenuActionPerformed
+
 private void updateDottedAndTriplet()
   {
     isDotted = noteLenDottedCheckBox.isSelected();
@@ -23776,11 +23793,18 @@ public void keyPressed(java.awt.event.KeyEvent evt)
     getCurrentStaveActionHandler().keyPressed(evt);
   }
 
+private void tradingMenuAction(java.awt.event.ActionEvent evt)
+  {
+    JMenuItem item = (JMenuItem) evt.getSource();
+    String stem = item.getText();
+    tradingMenu.setText(stem);
+  }
+
 private void notateGrammarMenuAction(java.awt.event.ActionEvent evt)
   {
     JMenuItem item = (JMenuItem) evt.getSource();
     String stem = item.getText();
-    notateGrammarMenu.setText(stem + " grammar");
+    notateGrammarMenu.setText(stem);
     String extendedName = stem + GrammarFilter.EXTENSION;
     grammarFilename = ImproVisor.getGrammarDirectory() + File.separator + extendedName;
     lickgen.loadGrammar(grammarFilename);
@@ -23877,6 +23901,50 @@ public int getTradingQuantum()
     return tradingQuantum[tradingIndex]*score.getSlotsPerMeasure();
   }
 
+
+/**
+ * Populate the grammar menu in the Notate window
+ */
+private void populateTradingMenu()
+  {
+    whetherToTradeCheckBox.setText("Trade");
+    whetherToTradeCheckBox.setSelected(whetherToTrade);
+    
+    whetherToTradeCheckBox.addActionListener(new ActionListener()
+    {
+    public void actionPerformed(ActionEvent event)
+      {
+        whetherToTrade = !whetherToTrade;
+        whetherToTradeCheckBox.setSelected(whetherToTrade);
+      }
+
+    });
+
+    tradingCheckBox.setText("Impro-Visor first");
+    tradingCheckBox.setSelected(improVisorFirst);
+    
+    tradingCheckBox.addActionListener(new ActionListener()
+    {
+    public void actionPerformed(ActionEvent event)
+      {
+        improVisorFirst = !improVisorFirst;
+        tradingCheckBox.setSelected(improVisorFirst);
+      }
+
+    });
+
+    tradingMenu.removeAll();
+    tradingMenu.add(whetherToTradeCheckBox);
+    tradingMenu.add(tradingCheckBox);
+
+    for( int i = 0; i < tradingOption.length; i++ )
+      {
+        tradingMenu.add(quantumSelectionCheckBox[i]);
+        quantumSelectionCheckBox[i].setSelected(i == tradingIndex);
+      }
+  }
+
+
 /**
  * Populate the grammar menu in the Notate window
  */
@@ -23902,39 +23970,7 @@ private void populateNotateGrammarMenu()
         // Setup grammar menu items involving trading
         notateGrammarMenu.removeAll();
 
-        whetherToTradeCheckBox.setText("Trade");
-        whetherToTradeCheckBox.setSelected(whetherToTrade);
-        whetherToTradeCheckBox.addActionListener(new ActionListener()
-        {
-        public void actionPerformed(ActionEvent event)
-          {
-            whetherToTrade = !whetherToTradeCheckBox.isSelected();
-            whetherToTradeCheckBox.setSelected(whetherToTrade);
-          }
-        });
-        
-        tradingCheckBox.setText("Impro-Visor first");
-        tradingCheckBox.setSelected(improVisorFirst);
-        tradingCheckBox.addActionListener(new ActionListener()
-        {
-        public void actionPerformed(ActionEvent event)
-          {
-            improVisorFirst = !tradingCheckBox.isSelected();
-            tradingCheckBox.setSelected(improVisorFirst);
-          }
-        });
-
-        notateGrammarMenu.add(whetherToTradeCheckBox);
-        notateGrammarMenu.add(tradingCheckBox);
-
-        for( int i = 0; i < tradingOption.length; i++ )
-          {
-            notateGrammarMenu.add(quantumSelectionCheckBox[i]);
-            quantumSelectionCheckBox[i].setSelected(i == tradingIndex);
-          }
-
-        notateGrammarMenu.add(new JSeparator());
-        notateGrammarMenu.add(new JLabel("Grammars:"));
+       notateGrammarMenu.add(new JLabel("Grammar"));
        
         // Add names of grammar files
 
@@ -25598,6 +25634,7 @@ private ImageIcon pauseButton =
     private javax.swing.JPanel trackerDelayPanel;
     private javax.swing.JTextField trackerDelayTextField;
     private javax.swing.JTextField trackerDelayTextField2;
+    private javax.swing.JMenu tradingMenu;
     private javax.swing.JMenuItem transposeBothDownSemitone;
     private javax.swing.JMenuItem transposeBothUpSemitone;
     private javax.swing.JMenuItem transposeChordsDownSemitone;
