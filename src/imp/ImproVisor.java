@@ -532,16 +532,22 @@ public static void openFirstTimeDialog(Notate notate)
  */
 public static void establishUserDirectory(File homeDir)
   {
-    System.out.println("Creating new folder for impro-visor files: " + Directories.improHome);
+    System.out.println("Creating new folder in your home directory for impro-visor files: " + Directories.improHome);
 
-    homeDir.mkdir();
-
-    copyDir(Directories.vocabDirName,        homeDir);
-    copyDir(Directories.leadsheetDirName,    homeDir);
-    copyDir(Directories.grammarDirName,      homeDir);
-    copyDir(Directories.styleDirName,        homeDir);
-    copyDir(Directories.styleExtractDirName, homeDir);
-    copyDir(Directories.midiDirName,         homeDir);
+    if( homeDir.mkdir() )
+      {
+      copyDir(Directories.vocabDirName,        homeDir);
+      copyDir(Directories.leadsheetDirName,    homeDir);
+      copyDir(Directories.grammarDirName,      homeDir);
+      copyDir(Directories.styleDirName,        homeDir);
+      copyDir(Directories.styleExtractDirName, homeDir);
+      copyDir(Directories.midiDirName,         homeDir);
+      }
+    else
+      {
+        System.err.println("Fatal Error: Necessary folder creation in home directory failed.");
+        System.exit(1);
+      }
   }
 
 /**
