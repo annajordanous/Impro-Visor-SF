@@ -1660,7 +1660,7 @@ public void updateLength(int row, int col, int i)
 
     int themelength = melody.size() / BEAT;
 
-    if( themelength != getValueAt(i, LENGTH_COLUMN) )
+    if( themelength != (Integer) getValueAt(i, LENGTH_COLUMN) )
       {
         //if the lengths are different
         soloTable.setValueAt(themelength + "", i, LENGTH_COLUMN);
@@ -2305,7 +2305,7 @@ public void generateSolo(ArrayList<ThemeUse> themeUses, CommandManager cm)
         Integer noThemevalue = (int) (10 * themeUses.size() * Double.valueOf(noThemeProbTextField.getText()));
 
         int themei = random.nextInt(probUsetotal + noThemevalue);
-        //System.out.println(themei); 
+        //System.out.println("themi = " +themei); 
         //pick a random number from 0 inclusive to 10*the probability list size
         //since all the elements in the list are multpled by 10, the size has to be multiplied by 10 too
 
@@ -2315,27 +2315,27 @@ public void generateSolo(ArrayList<ThemeUse> themeUses, CommandManager cm)
         //so that way the number of slots in that interval is equal
         //to that first probability times 10
         //so if the random number chosen is in that interval, then that first theme is used
-        if( themei <= 10 * probUselist.get(0) - 1 )
-          {
-            //System.out.println("Theme 1");
-            MelodyPart chosentheme = themeUses.get(0).theme.melody;
-            ThemeUse chosenthemeUse = themeUses.get(0);
-            themeUsageTextArea.append("Bar " + bar + ": " + chosenthemeUse.theme.name);
-            MelodyPart adjustedTheme = generateSolohelper(chosenthemeUse, chosentheme, solo, cm);
-
-            //this if takes care of the case if the index is out of bounds
-            if( i + adjustedTheme.size() >= solo.getSize() )
-              {
-                generateSolohelper2(themeLength, solo);
-              }
-            else
-              {
-                // if there is no index out of bounds issue, then add the adjusted theme into the solo
-                solo.pasteSlots(adjustedTheme, i);
-              }
-          }
-        //if the themeUses size is more than one themeuse then the other intervals have to be accounted for 
-        else if( themeUses.size() > 1 )
+//        if( themei <= 10 * probUselist.get(0) - 1 )
+//          {
+//            //System.out.println("Theme 1");
+//            MelodyPart chosentheme = themeUses.get(0).theme.melody;
+//            ThemeUse chosenthemeUse = themeUses.get(0);
+//            themeUsageTextArea.append("Bar " + bar + ": " + chosenthemeUse.theme.name);
+//            MelodyPart adjustedTheme = generateSolohelper(chosenthemeUse, chosentheme, solo, cm);
+//
+//            //this if takes care of the case if the index is out of bounds
+//            if( i + adjustedTheme.size() >= solo.getSize() )
+//              {
+//                generateSolohelper2(themeLength, solo);
+//              }
+//            else
+//              {
+//                // if there is no index out of bounds issue, then add the adjusted theme into the solo
+//                solo.pasteSlots(adjustedTheme, i);
+//              }
+//          }
+//        //if the themeUses size is more than one themeuse then the other intervals have to be accounted for 
+//        else if( themeUses.size() > 1 )
           {
             double A = 0;
             double B = 10 * probUselist.get(0);
@@ -2348,8 +2348,6 @@ public void generateSolo(ArrayList<ThemeUse> themeUses, CommandManager cm)
 
                 if( (themei >= A) && (themei <= B - 1) )
                   {
-
-                    int x = k + 2;
                     //System.out.println("Theme " + x);
                     ThemeUse chosenthemeUse = themeUses.get(k + 1);
                     MelodyPart chosentheme = themeUses.get(k + 1).theme.melody;
