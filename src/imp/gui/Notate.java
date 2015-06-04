@@ -26584,4 +26584,18 @@ public QuantumSelectionCheckBox(int i)
   }
 } //QuantumSelectionCheckBox
 
+/**
+ * Return the first note in the score, or null if there is none.
+ * @return 
+ */
+public Note getFirstNote()
+  {
+    if( score == null )
+      {
+        return null;
+      }
+    
+    return score.getFirstNote();
+  }
+
 } //Notate
