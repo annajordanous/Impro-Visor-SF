@@ -1621,6 +1621,11 @@ public void updateAllDrumPatterns(String name, String rules)
         return;
       }
     
+    if( s.length() < 1 )
+      {
+        return; // To escape possible exception with s.substring below
+      }
+    
     savedStyle = file;
     ImproVisor.setRecentStyleFile(file);
     
