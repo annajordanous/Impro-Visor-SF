@@ -1228,4 +1228,23 @@ public void addChord(Chord chord)
   {
     chordProg.addChord(chord);
   }
+
+/**
+ * Return first Note in melody, or null if there is no note
+ */
+public Note getFirstNote()
+  {
+    ListIterator<MelodyPart> i = partList.listIterator();
+
+    while( i.hasNext() )
+      {
+        Note note = i.next().getFirstNote();
+        if( note != null )
+          {
+            return note;
+          }
+      }
+
+    return null;  // TEMP!
+  }
 }
