@@ -22329,6 +22329,10 @@ public void playAndCaptureChordAtIndex(int index)
     playChordAtIndex(index);
   }
 
+public void chordStepForwardDo(){
+    chordStepForwardButton.doClick();
+}
+
 private void chordStepForwardButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chordStepForwardButtonActionPerformed
     int currIndex;
     int nextChordIndex = 0;
@@ -22484,6 +22488,10 @@ private void chordStepForwardButtonActionPerformed(java.awt.event.ActionEvent ev
           }
       }
 }//GEN-LAST:event_chordStepForwardButtonActionPerformed
+
+public void chordStepBackDo(){
+    chordStepBackButton.doClick();
+}
 
 private void chordStepBackButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chordStepBackButtonActionPerformed
     int currChordIndex;
@@ -22808,6 +22816,10 @@ private void midiRecordSnapChanged(javax.swing.event.ChangeEvent evt)//GEN-FIRST
     }//GEN-LAST:event_stepKeyboardMIActionPerformed
 
 private int indexOfLastChordPlayed = 0;
+
+public void chordReplayDo(){
+    chordReplayButton.doClick();
+}
 
     private void chordReplayButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chordReplayButtonActionPerformed
 

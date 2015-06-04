@@ -197,6 +197,10 @@ public class VoicingKeyboard extends javax.swing.JFrame {
         presentChordDisplay = new javax.swing.JLabel();
         ctrlShiftClickExtLabel = new javax.swing.JLabel();
         playChordButton = new javax.swing.JButton();
+        jToolBar1 = new javax.swing.JToolBar();
+        chordStepBackButton = new javax.swing.JButton();
+        chordReplayButton = new javax.swing.JButton();
+        chordStepForwardButton = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         optionsMenu = new javax.swing.JMenu();
         clearKeyboardMI = new javax.swing.JMenuItem();
@@ -226,6 +230,8 @@ public class VoicingKeyboard extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Keyboard");
         setAlwaysOnTop(true);
+        setMinimumSize(new java.awt.Dimension(1045, 310));
+        setPreferredSize(new java.awt.Dimension(1045, 310));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
@@ -247,360 +253,396 @@ public class VoicingKeyboard extends javax.swing.JFrame {
         });
 
         keyA0.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/whitekey.jpg"))); // NOI18N
+        keyboardLP.add(keyA0);
         keyA0.setBounds(0, 0, 20, 120);
-        keyboardLP.add(keyA0, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         keyB0.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/whitekey.jpg"))); // NOI18N
+        keyboardLP.add(keyB0);
         keyB0.setBounds(20, 0, 20, 120);
-        keyboardLP.add(keyB0, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         keyC1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/whitekey.jpg"))); // NOI18N
+        keyboardLP.add(keyC1);
         keyC1.setBounds(40, 0, 20, 120);
-        keyboardLP.add(keyC1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         keyD1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/whitekey.jpg"))); // NOI18N
+        keyboardLP.add(keyD1);
         keyD1.setBounds(60, 0, 20, 120);
-        keyboardLP.add(keyD1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         keyE1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/whitekey.jpg"))); // NOI18N
+        keyboardLP.add(keyE1);
         keyE1.setBounds(80, 0, 20, 120);
-        keyboardLP.add(keyE1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         keyF1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/whitekey.jpg"))); // NOI18N
+        keyboardLP.add(keyF1);
         keyF1.setBounds(100, 0, 20, 120);
-        keyboardLP.add(keyF1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         keyG1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/whitekey.jpg"))); // NOI18N
+        keyboardLP.add(keyG1);
         keyG1.setBounds(120, 0, 20, 120);
-        keyboardLP.add(keyG1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         keyA1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/whitekey.jpg"))); // NOI18N
+        keyboardLP.add(keyA1);
         keyA1.setBounds(140, 0, 20, 120);
-        keyboardLP.add(keyA1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         keyB1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/whitekey.jpg"))); // NOI18N
+        keyboardLP.add(keyB1);
         keyB1.setBounds(160, 0, 20, 120);
-        keyboardLP.add(keyB1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         keyC2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/whitekey.jpg"))); // NOI18N
+        keyboardLP.add(keyC2);
         keyC2.setBounds(180, 0, 20, 120);
-        keyboardLP.add(keyC2, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         keyD2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/whitekey.jpg"))); // NOI18N
+        keyboardLP.add(keyD2);
         keyD2.setBounds(200, 0, 20, 120);
-        keyboardLP.add(keyD2, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         keyE2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/whitekey.jpg"))); // NOI18N
+        keyboardLP.add(keyE2);
         keyE2.setBounds(220, 0, 20, 120);
-        keyboardLP.add(keyE2, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         keyF2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/whitekey.jpg"))); // NOI18N
+        keyboardLP.add(keyF2);
         keyF2.setBounds(240, 0, 20, 120);
-        keyboardLP.add(keyF2, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         keyG2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/whitekey.jpg"))); // NOI18N
+        keyboardLP.add(keyG2);
         keyG2.setBounds(260, 0, 20, 120);
-        keyboardLP.add(keyG2, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         keyA2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/whitekey.jpg"))); // NOI18N
+        keyboardLP.add(keyA2);
         keyA2.setBounds(280, 0, 20, 120);
-        keyboardLP.add(keyA2, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         keyB2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/whitekey.jpg"))); // NOI18N
+        keyboardLP.add(keyB2);
         keyB2.setBounds(300, 0, 20, 120);
-        keyboardLP.add(keyB2, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         keyC3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/whitekey.jpg"))); // NOI18N
+        keyboardLP.add(keyC3);
         keyC3.setBounds(320, 0, 20, 120);
-        keyboardLP.add(keyC3, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         keyD3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/whitekey.jpg"))); // NOI18N
+        keyboardLP.add(keyD3);
         keyD3.setBounds(340, 0, 20, 120);
-        keyboardLP.add(keyD3, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         keyE3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/whitekey.jpg"))); // NOI18N
+        keyboardLP.add(keyE3);
         keyE3.setBounds(360, 0, 20, 120);
-        keyboardLP.add(keyE3, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         keyF3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/whitekey.jpg"))); // NOI18N
+        keyboardLP.add(keyF3);
         keyF3.setBounds(380, 0, 20, 120);
-        keyboardLP.add(keyF3, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         keyG3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/whitekey.jpg"))); // NOI18N
+        keyboardLP.add(keyG3);
         keyG3.setBounds(400, 0, 20, 120);
-        keyboardLP.add(keyG3, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         keyA3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/whitekey.jpg"))); // NOI18N
+        keyboardLP.add(keyA3);
         keyA3.setBounds(420, 0, 20, 120);
-        keyboardLP.add(keyA3, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         keyB3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/whitekey.jpg"))); // NOI18N
+        keyboardLP.add(keyB3);
         keyB3.setBounds(440, 0, 20, 120);
-        keyboardLP.add(keyB3, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         keyC4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/whitekey.jpg"))); // NOI18N
+        keyboardLP.add(keyC4);
         keyC4.setBounds(460, 0, 20, 120);
-        keyboardLP.add(keyC4, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         keyD4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/whitekey.jpg"))); // NOI18N
+        keyboardLP.add(keyD4);
         keyD4.setBounds(480, 0, 20, 120);
-        keyboardLP.add(keyD4, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         keyE4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/whitekey.jpg"))); // NOI18N
+        keyboardLP.add(keyE4);
         keyE4.setBounds(500, 0, 20, 120);
-        keyboardLP.add(keyE4, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         keyF4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/whitekey.jpg"))); // NOI18N
+        keyboardLP.add(keyF4);
         keyF4.setBounds(520, 0, 20, 120);
-        keyboardLP.add(keyF4, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         keyG4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/whitekey.jpg"))); // NOI18N
+        keyboardLP.add(keyG4);
         keyG4.setBounds(540, 0, 20, 120);
-        keyboardLP.add(keyG4, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         keyA4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/whitekey.jpg"))); // NOI18N
+        keyboardLP.add(keyA4);
         keyA4.setBounds(560, 0, 20, 120);
-        keyboardLP.add(keyA4, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         keyB4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/whitekey.jpg"))); // NOI18N
+        keyboardLP.add(keyB4);
         keyB4.setBounds(580, 0, 20, 120);
-        keyboardLP.add(keyB4, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         keyC5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/whitekey.jpg"))); // NOI18N
+        keyboardLP.add(keyC5);
         keyC5.setBounds(600, 0, 20, 120);
-        keyboardLP.add(keyC5, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         keyD5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/whitekey.jpg"))); // NOI18N
+        keyboardLP.add(keyD5);
         keyD5.setBounds(620, 0, 20, 120);
-        keyboardLP.add(keyD5, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         keyE5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/whitekey.jpg"))); // NOI18N
+        keyboardLP.add(keyE5);
         keyE5.setBounds(640, 0, 20, 120);
-        keyboardLP.add(keyE5, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         keyF5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/whitekey.jpg"))); // NOI18N
+        keyboardLP.add(keyF5);
         keyF5.setBounds(660, 0, 20, 120);
-        keyboardLP.add(keyF5, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         keyG5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/whitekey.jpg"))); // NOI18N
+        keyboardLP.add(keyG5);
         keyG5.setBounds(680, 0, 20, 120);
-        keyboardLP.add(keyG5, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         keyA5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/whitekey.jpg"))); // NOI18N
+        keyboardLP.add(keyA5);
         keyA5.setBounds(700, 0, 20, 120);
-        keyboardLP.add(keyA5, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         keyB5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/whitekey.jpg"))); // NOI18N
+        keyboardLP.add(keyB5);
         keyB5.setBounds(720, 0, 20, 120);
-        keyboardLP.add(keyB5, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         keyC6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/whitekey.jpg"))); // NOI18N
+        keyboardLP.add(keyC6);
         keyC6.setBounds(740, 0, 20, 120);
-        keyboardLP.add(keyC6, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         keyD6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/whitekey.jpg"))); // NOI18N
+        keyboardLP.add(keyD6);
         keyD6.setBounds(760, 0, 20, 120);
-        keyboardLP.add(keyD6, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         keyE6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/whitekey.jpg"))); // NOI18N
+        keyboardLP.add(keyE6);
         keyE6.setBounds(780, 0, 20, 120);
-        keyboardLP.add(keyE6, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         keyF6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/whitekey.jpg"))); // NOI18N
+        keyboardLP.add(keyF6);
         keyF6.setBounds(800, 0, 20, 120);
-        keyboardLP.add(keyF6, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         keyG6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/whitekey.jpg"))); // NOI18N
+        keyboardLP.add(keyG6);
         keyG6.setBounds(820, 0, 20, 120);
-        keyboardLP.add(keyG6, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         keyA6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/whitekey.jpg"))); // NOI18N
+        keyboardLP.add(keyA6);
         keyA6.setBounds(840, 0, 20, 120);
-        keyboardLP.add(keyA6, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         keyB6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/whitekey.jpg"))); // NOI18N
+        keyboardLP.add(keyB6);
         keyB6.setBounds(860, 0, 20, 120);
-        keyboardLP.add(keyB6, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         keyC7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/whitekey.jpg"))); // NOI18N
+        keyboardLP.add(keyC7);
         keyC7.setBounds(880, 0, 20, 120);
-        keyboardLP.add(keyC7, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         keyD7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/whitekey.jpg"))); // NOI18N
+        keyboardLP.add(keyD7);
         keyD7.setBounds(900, 0, 20, 120);
-        keyboardLP.add(keyD7, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         keyE7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/whitekey.jpg"))); // NOI18N
+        keyboardLP.add(keyE7);
         keyE7.setBounds(920, 0, 20, 120);
-        keyboardLP.add(keyE7, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         keyF7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/whitekey.jpg"))); // NOI18N
+        keyboardLP.add(keyF7);
         keyF7.setBounds(940, 0, 20, 120);
-        keyboardLP.add(keyF7, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         keyG7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/whitekey.jpg"))); // NOI18N
+        keyboardLP.add(keyG7);
         keyG7.setBounds(960, 0, 20, 120);
-        keyboardLP.add(keyG7, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         keyA7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/whitekey.jpg"))); // NOI18N
+        keyboardLP.add(keyA7);
         keyA7.setBounds(980, 0, 20, 120);
-        keyboardLP.add(keyA7, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         keyB7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/whitekey.jpg"))); // NOI18N
+        keyboardLP.add(keyB7);
         keyB7.setBounds(1000, 0, 20, 120);
-        keyboardLP.add(keyB7, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         keyC8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/whitekey.jpg"))); // NOI18N
+        keyboardLP.add(keyC8);
         keyC8.setBounds(1020, 0, 20, 120);
-        keyboardLP.add(keyC8, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         keyBb0.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/blackkey.jpg"))); // NOI18N
+        keyboardLP.add(keyBb0);
         keyBb0.setBounds(13, 0, 14, 80);
-        keyboardLP.add(keyBb0, javax.swing.JLayeredPane.PALETTE_LAYER);
+        keyboardLP.setLayer(keyBb0, javax.swing.JLayeredPane.PALETTE_LAYER);
 
         keyCsharp1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/blackkey.jpg"))); // NOI18N
+        keyboardLP.add(keyCsharp1);
         keyCsharp1.setBounds(53, 0, 14, 80);
-        keyboardLP.add(keyCsharp1, javax.swing.JLayeredPane.PALETTE_LAYER);
+        keyboardLP.setLayer(keyCsharp1, javax.swing.JLayeredPane.PALETTE_LAYER);
 
         keyEb1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/blackkey.jpg"))); // NOI18N
+        keyboardLP.add(keyEb1);
         keyEb1.setBounds(73, 0, 14, 80);
-        keyboardLP.add(keyEb1, javax.swing.JLayeredPane.PALETTE_LAYER);
+        keyboardLP.setLayer(keyEb1, javax.swing.JLayeredPane.PALETTE_LAYER);
 
         keyFsharp1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/blackkey.jpg"))); // NOI18N
+        keyboardLP.add(keyFsharp1);
         keyFsharp1.setBounds(113, 0, 14, 80);
-        keyboardLP.add(keyFsharp1, javax.swing.JLayeredPane.PALETTE_LAYER);
+        keyboardLP.setLayer(keyFsharp1, javax.swing.JLayeredPane.PALETTE_LAYER);
 
         keyGsharp1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/blackkey.jpg"))); // NOI18N
+        keyboardLP.add(keyGsharp1);
         keyGsharp1.setBounds(133, 0, 14, 80);
-        keyboardLP.add(keyGsharp1, javax.swing.JLayeredPane.PALETTE_LAYER);
+        keyboardLP.setLayer(keyGsharp1, javax.swing.JLayeredPane.PALETTE_LAYER);
 
         keyBb1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/blackkey.jpg"))); // NOI18N
+        keyboardLP.add(keyBb1);
         keyBb1.setBounds(153, 0, 14, 80);
-        keyboardLP.add(keyBb1, javax.swing.JLayeredPane.PALETTE_LAYER);
+        keyboardLP.setLayer(keyBb1, javax.swing.JLayeredPane.PALETTE_LAYER);
 
         keyCsharp2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/blackkey.jpg"))); // NOI18N
+        keyboardLP.add(keyCsharp2);
         keyCsharp2.setBounds(193, 0, 14, 80);
-        keyboardLP.add(keyCsharp2, javax.swing.JLayeredPane.PALETTE_LAYER);
+        keyboardLP.setLayer(keyCsharp2, javax.swing.JLayeredPane.PALETTE_LAYER);
 
         keyEb2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/blackkey.jpg"))); // NOI18N
+        keyboardLP.add(keyEb2);
         keyEb2.setBounds(213, 0, 14, 80);
-        keyboardLP.add(keyEb2, javax.swing.JLayeredPane.PALETTE_LAYER);
+        keyboardLP.setLayer(keyEb2, javax.swing.JLayeredPane.PALETTE_LAYER);
 
         keyFsharp2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/blackkey.jpg"))); // NOI18N
+        keyboardLP.add(keyFsharp2);
         keyFsharp2.setBounds(253, 0, 14, 80);
-        keyboardLP.add(keyFsharp2, javax.swing.JLayeredPane.PALETTE_LAYER);
+        keyboardLP.setLayer(keyFsharp2, javax.swing.JLayeredPane.PALETTE_LAYER);
 
         keyGsharp2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/blackkey.jpg"))); // NOI18N
+        keyboardLP.add(keyGsharp2);
         keyGsharp2.setBounds(273, 0, 14, 80);
-        keyboardLP.add(keyGsharp2, javax.swing.JLayeredPane.PALETTE_LAYER);
+        keyboardLP.setLayer(keyGsharp2, javax.swing.JLayeredPane.PALETTE_LAYER);
 
         keyBb2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/blackkey.jpg"))); // NOI18N
+        keyboardLP.add(keyBb2);
         keyBb2.setBounds(293, 0, 14, 80);
-        keyboardLP.add(keyBb2, javax.swing.JLayeredPane.PALETTE_LAYER);
+        keyboardLP.setLayer(keyBb2, javax.swing.JLayeredPane.PALETTE_LAYER);
 
         keyCsharp3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/blackkey.jpg"))); // NOI18N
+        keyboardLP.add(keyCsharp3);
         keyCsharp3.setBounds(333, 0, 14, 80);
-        keyboardLP.add(keyCsharp3, javax.swing.JLayeredPane.PALETTE_LAYER);
+        keyboardLP.setLayer(keyCsharp3, javax.swing.JLayeredPane.PALETTE_LAYER);
 
         keyEb3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/blackkey.jpg"))); // NOI18N
+        keyboardLP.add(keyEb3);
         keyEb3.setBounds(353, 0, 14, 80);
-        keyboardLP.add(keyEb3, javax.swing.JLayeredPane.PALETTE_LAYER);
+        keyboardLP.setLayer(keyEb3, javax.swing.JLayeredPane.PALETTE_LAYER);
 
         keyFsharp3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/blackkey.jpg"))); // NOI18N
+        keyboardLP.add(keyFsharp3);
         keyFsharp3.setBounds(393, 0, 14, 80);
-        keyboardLP.add(keyFsharp3, javax.swing.JLayeredPane.PALETTE_LAYER);
+        keyboardLP.setLayer(keyFsharp3, javax.swing.JLayeredPane.PALETTE_LAYER);
 
         keyGsharp3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/blackkey.jpg"))); // NOI18N
+        keyboardLP.add(keyGsharp3);
         keyGsharp3.setBounds(413, 0, 14, 80);
-        keyboardLP.add(keyGsharp3, javax.swing.JLayeredPane.PALETTE_LAYER);
+        keyboardLP.setLayer(keyGsharp3, javax.swing.JLayeredPane.PALETTE_LAYER);
 
         keyBb3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/blackkey.jpg"))); // NOI18N
+        keyboardLP.add(keyBb3);
         keyBb3.setBounds(433, 0, 14, 80);
-        keyboardLP.add(keyBb3, javax.swing.JLayeredPane.PALETTE_LAYER);
+        keyboardLP.setLayer(keyBb3, javax.swing.JLayeredPane.PALETTE_LAYER);
 
         keyCsharp4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/blackkey.jpg"))); // NOI18N
+        keyboardLP.add(keyCsharp4);
         keyCsharp4.setBounds(473, 0, 14, 80);
-        keyboardLP.add(keyCsharp4, javax.swing.JLayeredPane.PALETTE_LAYER);
+        keyboardLP.setLayer(keyCsharp4, javax.swing.JLayeredPane.PALETTE_LAYER);
 
         keyEb4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/blackkey.jpg"))); // NOI18N
+        keyboardLP.add(keyEb4);
         keyEb4.setBounds(493, 0, 14, 80);
-        keyboardLP.add(keyEb4, javax.swing.JLayeredPane.PALETTE_LAYER);
+        keyboardLP.setLayer(keyEb4, javax.swing.JLayeredPane.PALETTE_LAYER);
 
         keyFsharp4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/blackkey.jpg"))); // NOI18N
+        keyboardLP.add(keyFsharp4);
         keyFsharp4.setBounds(533, 0, 14, 80);
-        keyboardLP.add(keyFsharp4, javax.swing.JLayeredPane.PALETTE_LAYER);
+        keyboardLP.setLayer(keyFsharp4, javax.swing.JLayeredPane.PALETTE_LAYER);
 
         keyGsharp4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/blackkey.jpg"))); // NOI18N
+        keyboardLP.add(keyGsharp4);
         keyGsharp4.setBounds(553, 0, 14, 80);
-        keyboardLP.add(keyGsharp4, javax.swing.JLayeredPane.PALETTE_LAYER);
+        keyboardLP.setLayer(keyGsharp4, javax.swing.JLayeredPane.PALETTE_LAYER);
 
         keyBb4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/blackkey.jpg"))); // NOI18N
+        keyboardLP.add(keyBb4);
         keyBb4.setBounds(573, 0, 14, 80);
-        keyboardLP.add(keyBb4, javax.swing.JLayeredPane.PALETTE_LAYER);
+        keyboardLP.setLayer(keyBb4, javax.swing.JLayeredPane.PALETTE_LAYER);
 
         keyCsharp5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/blackkey.jpg"))); // NOI18N
+        keyboardLP.add(keyCsharp5);
         keyCsharp5.setBounds(613, 0, 14, 80);
-        keyboardLP.add(keyCsharp5, javax.swing.JLayeredPane.PALETTE_LAYER);
+        keyboardLP.setLayer(keyCsharp5, javax.swing.JLayeredPane.PALETTE_LAYER);
 
         keyEb5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/blackkey.jpg"))); // NOI18N
+        keyboardLP.add(keyEb5);
         keyEb5.setBounds(633, 0, 14, 80);
-        keyboardLP.add(keyEb5, javax.swing.JLayeredPane.PALETTE_LAYER);
+        keyboardLP.setLayer(keyEb5, javax.swing.JLayeredPane.PALETTE_LAYER);
 
         keyFsharp5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/blackkey.jpg"))); // NOI18N
+        keyboardLP.add(keyFsharp5);
         keyFsharp5.setBounds(673, 0, 14, 80);
-        keyboardLP.add(keyFsharp5, javax.swing.JLayeredPane.PALETTE_LAYER);
+        keyboardLP.setLayer(keyFsharp5, javax.swing.JLayeredPane.PALETTE_LAYER);
 
         keyGsharp5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/blackkey.jpg"))); // NOI18N
+        keyboardLP.add(keyGsharp5);
         keyGsharp5.setBounds(693, 0, 14, 80);
-        keyboardLP.add(keyGsharp5, javax.swing.JLayeredPane.PALETTE_LAYER);
+        keyboardLP.setLayer(keyGsharp5, javax.swing.JLayeredPane.PALETTE_LAYER);
 
         keyBb5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/blackkey.jpg"))); // NOI18N
+        keyboardLP.add(keyBb5);
         keyBb5.setBounds(713, 0, 14, 80);
-        keyboardLP.add(keyBb5, javax.swing.JLayeredPane.PALETTE_LAYER);
+        keyboardLP.setLayer(keyBb5, javax.swing.JLayeredPane.PALETTE_LAYER);
 
         keyCsharp6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/blackkey.jpg"))); // NOI18N
+        keyboardLP.add(keyCsharp6);
         keyCsharp6.setBounds(753, 0, 14, 80);
-        keyboardLP.add(keyCsharp6, javax.swing.JLayeredPane.PALETTE_LAYER);
+        keyboardLP.setLayer(keyCsharp6, javax.swing.JLayeredPane.PALETTE_LAYER);
 
         keyEb6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/blackkey.jpg"))); // NOI18N
+        keyboardLP.add(keyEb6);
         keyEb6.setBounds(773, 0, 14, 80);
-        keyboardLP.add(keyEb6, javax.swing.JLayeredPane.PALETTE_LAYER);
+        keyboardLP.setLayer(keyEb6, javax.swing.JLayeredPane.PALETTE_LAYER);
 
         keyFsharp6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/blackkey.jpg"))); // NOI18N
+        keyboardLP.add(keyFsharp6);
         keyFsharp6.setBounds(813, 0, 14, 80);
-        keyboardLP.add(keyFsharp6, javax.swing.JLayeredPane.PALETTE_LAYER);
+        keyboardLP.setLayer(keyFsharp6, javax.swing.JLayeredPane.PALETTE_LAYER);
 
         keyGsharp6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/blackkey.jpg"))); // NOI18N
+        keyboardLP.add(keyGsharp6);
         keyGsharp6.setBounds(833, 0, 14, 80);
-        keyboardLP.add(keyGsharp6, javax.swing.JLayeredPane.PALETTE_LAYER);
+        keyboardLP.setLayer(keyGsharp6, javax.swing.JLayeredPane.PALETTE_LAYER);
 
         keyBb6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/blackkey.jpg"))); // NOI18N
+        keyboardLP.add(keyBb6);
         keyBb6.setBounds(853, 0, 14, 80);
-        keyboardLP.add(keyBb6, javax.swing.JLayeredPane.PALETTE_LAYER);
+        keyboardLP.setLayer(keyBb6, javax.swing.JLayeredPane.PALETTE_LAYER);
 
         keyCsharp7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/blackkey.jpg"))); // NOI18N
+        keyboardLP.add(keyCsharp7);
         keyCsharp7.setBounds(893, 0, 14, 80);
-        keyboardLP.add(keyCsharp7, javax.swing.JLayeredPane.PALETTE_LAYER);
+        keyboardLP.setLayer(keyCsharp7, javax.swing.JLayeredPane.PALETTE_LAYER);
 
         keyEb7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/blackkey.jpg"))); // NOI18N
+        keyboardLP.add(keyEb7);
         keyEb7.setBounds(913, 0, 14, 80);
-        keyboardLP.add(keyEb7, javax.swing.JLayeredPane.PALETTE_LAYER);
+        keyboardLP.setLayer(keyEb7, javax.swing.JLayeredPane.PALETTE_LAYER);
 
         keyFsharp7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/blackkey.jpg"))); // NOI18N
+        keyboardLP.add(keyFsharp7);
         keyFsharp7.setBounds(953, 0, 14, 80);
-        keyboardLP.add(keyFsharp7, javax.swing.JLayeredPane.PALETTE_LAYER);
+        keyboardLP.setLayer(keyFsharp7, javax.swing.JLayeredPane.PALETTE_LAYER);
 
         keyGsharp7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/blackkey.jpg"))); // NOI18N
+        keyboardLP.add(keyGsharp7);
         keyGsharp7.setBounds(973, 0, 14, 80);
-        keyboardLP.add(keyGsharp7, javax.swing.JLayeredPane.PALETTE_LAYER);
+        keyboardLP.setLayer(keyGsharp7, javax.swing.JLayeredPane.PALETTE_LAYER);
 
         keyBb7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/blackkey.jpg"))); // NOI18N
+        keyboardLP.add(keyBb7);
         keyBb7.setBounds(993, 0, 14, 80);
-        keyboardLP.add(keyBb7, javax.swing.JLayeredPane.PALETTE_LAYER);
+        keyboardLP.setLayer(keyBb7, javax.swing.JLayeredPane.PALETTE_LAYER);
 
         pointerC4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/pointer.png"))); // NOI18N
+        keyboardLP.add(pointerC4);
         pointerC4.setBounds(460, 120, 19, 30);
-        keyboardLP.add(pointerC4, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -613,7 +655,7 @@ public class VoicingKeyboard extends javax.swing.JFrame {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 2;
         getContentPane().add(jPanel1, gridBagConstraints);
 
         chordRootNoteLabel.setText("Bass note indicated in blue.");
@@ -622,7 +664,7 @@ public class VoicingKeyboard extends javax.swing.JFrame {
         chordRootNoteLabel.setPreferredSize(new java.awt.Dimension(400, 14));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         getContentPane().add(chordRootNoteLabel, gridBagConstraints);
 
@@ -632,7 +674,7 @@ public class VoicingKeyboard extends javax.swing.JFrame {
         ctrlClicktoChangeRootLabel.setPreferredSize(new java.awt.Dimension(450, 14));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         getContentPane().add(ctrlClicktoChangeRootLabel, gridBagConstraints);
 
@@ -643,7 +685,7 @@ public class VoicingKeyboard extends javax.swing.JFrame {
         futureChordDisplay.setPreferredSize(new java.awt.Dimension(485, 20));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         getContentPane().add(futureChordDisplay, gridBagConstraints);
 
@@ -655,7 +697,7 @@ public class VoicingKeyboard extends javax.swing.JFrame {
         pastChordDisplay.setPreferredSize(new java.awt.Dimension(375, 20));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         getContentPane().add(pastChordDisplay, gridBagConstraints);
 
@@ -667,7 +709,7 @@ public class VoicingKeyboard extends javax.swing.JFrame {
         presentChordDisplay.setPreferredSize(new java.awt.Dimension(175, 20));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 110);
         getContentPane().add(presentChordDisplay, gridBagConstraints);
 
@@ -677,7 +719,7 @@ public class VoicingKeyboard extends javax.swing.JFrame {
         ctrlShiftClickExtLabel.setPreferredSize(new java.awt.Dimension(400, 14));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         getContentPane().add(ctrlShiftClickExtLabel, gridBagConstraints);
 
@@ -694,10 +736,64 @@ public class VoicingKeyboard extends javax.swing.JFrame {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 50);
         getContentPane().add(playChordButton, gridBagConstraints);
+
+        jToolBar1.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1), javax.swing.BorderFactory.createEmptyBorder(3, 3, 1, 1)));
+        jToolBar1.setFloatable(false);
+
+        chordStepBackButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/icons/playReversedGreen.gif"))); // NOI18N
+        chordStepBackButton.setToolTipText("Move back to the previous chord (without playing).\n");
+        chordStepBackButton.setBorder(javax.swing.BorderFactory.createBevelBorder(0));
+        chordStepBackButton.setFocusable(false);
+        chordStepBackButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        chordStepBackButton.setMaximumSize(new java.awt.Dimension(30, 30));
+        chordStepBackButton.setMinimumSize(new java.awt.Dimension(30, 30));
+        chordStepBackButton.setPreferredSize(new java.awt.Dimension(30, 30));
+        chordStepBackButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        chordStepBackButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chordStepBackButtonActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(chordStepBackButton);
+
+        chordReplayButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/icons/replayGreen.gif"))); // NOI18N
+        chordReplayButton.setToolTipText("Replays chord.");
+        chordReplayButton.setBorder(javax.swing.BorderFactory.createBevelBorder(0));
+        chordReplayButton.setFocusable(false);
+        chordReplayButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        chordReplayButton.setMaximumSize(new java.awt.Dimension(30, 30));
+        chordReplayButton.setMinimumSize(new java.awt.Dimension(30, 30));
+        chordReplayButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        chordReplayButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chordReplayButtonActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(chordReplayButton);
+
+        chordStepForwardButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/icons/playGreen.gif"))); // NOI18N
+        chordStepForwardButton.setToolTipText("Move to, and play, the next chord.");
+        chordStepForwardButton.setBorder(javax.swing.BorderFactory.createBevelBorder(0));
+        chordStepForwardButton.setFocusable(false);
+        chordStepForwardButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        chordStepForwardButton.setMaximumSize(new java.awt.Dimension(30, 30));
+        chordStepForwardButton.setMinimumSize(new java.awt.Dimension(30, 30));
+        chordStepForwardButton.setPreferredSize(new java.awt.Dimension(30, 30));
+        chordStepForwardButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        chordStepForwardButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chordStepForwardButtonActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(chordStepForwardButton);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        getContentPane().add(jToolBar1, gridBagConstraints);
 
         optionsMenu.setText("Options");
 
@@ -858,12 +954,12 @@ public class VoicingKeyboard extends javax.swing.JFrame {
         windowMenu.setMnemonic('W');
         windowMenu.setText("Window");
         windowMenu.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                windowMenuMenuSelected(evt);
+            }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
-            }
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                windowMenuMenuSelected(evt);
             }
         });
 
@@ -2113,6 +2209,18 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRS
         closeWindow();
     }//GEN-LAST:event_formWindowClosing
 
+    private void chordStepBackButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chordStepBackButtonActionPerformed
+        notate.chordStepBackDo();
+    }//GEN-LAST:event_chordStepBackButtonActionPerformed
+
+    private void chordReplayButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chordReplayButtonActionPerformed
+        notate.chordReplayDo();
+    }//GEN-LAST:event_chordReplayButtonActionPerformed
+
+    private void chordStepForwardButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chordStepForwardButtonActionPerformed
+        notate.chordStepForwardDo();
+    }//GEN-LAST:event_chordStepForwardButtonActionPerformed
+
 private void playChordButtonKeyTyped(java.awt.event.KeyEvent evt) {                                         
 }                                  
 
@@ -2406,7 +2514,10 @@ private void forcePaint()
     private javax.swing.JMenuItem addToSequenceMI;
     private javax.swing.JMenuItem cascadeMI;
     private javax.swing.JMenuItem chordModeMI;
+    private javax.swing.JButton chordReplayButton;
     private javax.swing.JLabel chordRootNoteLabel;
+    private javax.swing.JButton chordStepBackButton;
+    private javax.swing.JButton chordStepForwardButton;
     private javax.swing.JMenuItem clearKeyboardMI;
     private javax.swing.JMenuItem closeWindowMI;
     private javax.swing.JLabel ctrlClicktoChangeRootLabel;
@@ -2417,6 +2528,7 @@ private void forcePaint()
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JToolBar jToolBar1;
     private javax.swing.JLabel keyA0;
     private javax.swing.JLabel keyA1;
     private javax.swing.JLabel keyA2;
