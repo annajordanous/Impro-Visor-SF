@@ -163,6 +163,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     /** Default style name */
     public String styleName = "swing";
     
+    
     /** Style of this piece */
     public Style style = Advisor.getStyle(styleName);
         
@@ -246,8 +247,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
         addBrickDialog = new javax.swing.JDialog();
@@ -383,6 +383,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         showKeysCheckBoxMI = new javax.swing.JCheckBoxMenuItem();
         showBrickNamesCheckBoxMI = new javax.swing.JCheckBoxMenuItem();
         showJoinsCheckBoxMI = new javax.swing.JCheckBoxMenuItem();
+        showStartingNoteCheckBoxMI = new javax.swing.JCheckBoxMenuItem();
         replaceWithPhiCheckBoxMI = new javax.swing.JCheckBoxMenuItem();
         replaceWithDeltaCheckBoxMI = new javax.swing.JCheckBoxMenuItem();
         windowMenu = new javax.swing.JMenu();
@@ -417,17 +418,13 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
 
         dialogNameField.setToolTipText("Enter the name of the new brick type. If it is the same as an existing brick type, the Variant field will be enabled."); // NOI18N
         dialogNameField.setName("dialogNameField"); // NOI18N
-        dialogNameField.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        dialogNameField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 dialogNameFieldActionPerformed(evt);
             }
         });
-        dialogNameField.addKeyListener(new java.awt.event.KeyAdapter()
-        {
-            public void keyReleased(java.awt.event.KeyEvent evt)
-            {
+        dialogNameField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
                 dialogNameFieldKeyReleased(evt);
             }
         });
@@ -440,10 +437,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
 
         dialogAcceptButton.setText("Accept"); // NOI18N
         dialogAcceptButton.setName("dialogAcceptButton"); // NOI18N
-        dialogAcceptButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        dialogAcceptButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 dialogAccepted(evt);
             }
         });
@@ -456,10 +451,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         dialogCancelButton.setText("Cancel\n"); // NOI18N
         dialogCancelButton.setDefaultCapable(false);
         dialogCancelButton.setName("dialogCancelButton"); // NOI18N
-        dialogCancelButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        dialogCancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 dialogCancelButtondialogAccepted(evt);
             }
         });
@@ -481,10 +474,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         dialogKeyComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "C", "B", "Bb", "A", "Ab", "G", "Gb", "F", "E", "Eb", "D", "Db" }));
         dialogKeyComboBox.setName("dialogKeyComboBox"); // NOI18N
         dialogKeyComboBox.setPreferredSize(new java.awt.Dimension(74, 200));
-        dialogKeyComboBox.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        dialogKeyComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 dialogKeyComboBoxActionPerformed(evt);
             }
         });
@@ -538,7 +529,6 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         chordChangeDialog.setMinimumSize(new java.awt.Dimension(300, 100));
         chordChangeDialog.setModal(true);
         chordChangeDialog.setName("chordChangeDialog"); // NOI18N
-        chordChangeDialog.setPreferredSize(new java.awt.Dimension(300, 100));
         chordChangeDialog.setResizable(false);
         chordChangeDialog.getContentPane().setLayout(new java.awt.GridBagLayout());
 
@@ -546,10 +536,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         chordDialogNameField.setMinimumSize(new java.awt.Dimension(14, 20));
         chordDialogNameField.setName("chordDialogNameField"); // NOI18N
         chordDialogNameField.setPreferredSize(new java.awt.Dimension(42, 20));
-        chordDialogNameField.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        chordDialogNameField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 chordDialogNameFieldActionPerformed(evt);
             }
         });
@@ -562,10 +550,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
 
         chordDialogAcceptButton.setText("Accept"); // NOI18N
         chordDialogAcceptButton.setName("chordDialogAcceptButton"); // NOI18N
-        chordDialogAcceptButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        chordDialogAcceptButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 chordDialogAcceptButtonActionPerformed(evt);
             }
         });
@@ -593,10 +579,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         prefDialogCancelButton.setMinimumSize(new java.awt.Dimension(145, 29));
         prefDialogCancelButton.setName("prefDialogCancelButton"); // NOI18N
         prefDialogCancelButton.setPreferredSize(new java.awt.Dimension(145, 29));
-        prefDialogCancelButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        prefDialogCancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 prefDialogCancelButtonActionPerformed(evt);
             }
         });
@@ -605,10 +589,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         prefDialogAcceptButton1.setText("Accept Changes"); // NOI18N
         prefDialogAcceptButton1.setToolTipText("Accept the changes as indicated."); // NOI18N
         prefDialogAcceptButton1.setName("prefDialogAcceptButton1"); // NOI18N
-        prefDialogAcceptButton1.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        prefDialogAcceptButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 prefDialogAcceptButton1ActionPerformed(evt);
             }
         });
@@ -638,10 +620,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         jPanel1.add(jLabel6, gridBagConstraints);
 
         prefDialogTitleField.setName("prefDialogTitleField"); // NOI18N
-        prefDialogTitleField.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        prefDialogTitleField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 titleBoxActionPerformed(evt);
             }
         });
@@ -676,10 +656,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         lowerMetre.setToolTipText("Lower time signature"); // NOI18N
         lowerMetre.setName("lowerMetre"); // NOI18N
         lowerMetre.setPreferredSize(new java.awt.Dimension(50, 28));
-        lowerMetre.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        lowerMetre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 lowerMetreActionPerformed(evt);
             }
         });
@@ -695,28 +673,21 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         brickDictionaryFrame.setAlwaysOnTop(true);
         brickDictionaryFrame.setMinimumSize(new java.awt.Dimension(200, 400));
         brickDictionaryFrame.setName("brickDictionaryFrame"); // NOI18N
-        brickDictionaryFrame.addWindowListener(new java.awt.event.WindowAdapter()
-        {
-            public void windowClosing(java.awt.event.WindowEvent evt)
-            {
+        brickDictionaryFrame.addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
                 brickDictionaryFrameWindowClosing(evt);
             }
         });
-        brickDictionaryFrame.addComponentListener(new java.awt.event.ComponentAdapter()
-        {
-            public void componentShown(java.awt.event.ComponentEvent evt)
-            {
+        brickDictionaryFrame.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
                 brickDictionaryFrameComponentShown(evt);
             }
-            public void componentHidden(java.awt.event.ComponentEvent evt)
-            {
+            public void componentHidden(java.awt.event.ComponentEvent evt) {
                 brickDictionaryFrameComponentHidden(evt);
             }
         });
-        brickDictionaryFrame.addKeyListener(new java.awt.event.KeyAdapter()
-        {
-            public void keyReleased(java.awt.event.KeyEvent evt)
-            {
+        brickDictionaryFrame.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
                 keyPressedInDictionaryFrame(evt);
             }
         });
@@ -734,35 +705,26 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         libraryTree.setRootVisible(false);
         libraryTree.setShowsRootHandles(true);
         libraryTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
-        libraryTree.addMouseListener(new java.awt.event.MouseAdapter()
-        {
-            public void mouseClicked(java.awt.event.MouseEvent evt)
-            {
+        libraryTree.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
                 libraryTreeMouseClicked(evt);
             }
         });
-        libraryTree.addTreeExpansionListener(new javax.swing.event.TreeExpansionListener()
-        {
-            public void treeExpanded(javax.swing.event.TreeExpansionEvent evt)
-            {
-                libraryTreeTreeExpanded(evt);
-            }
-            public void treeCollapsed(javax.swing.event.TreeExpansionEvent evt)
-            {
+        libraryTree.addTreeExpansionListener(new javax.swing.event.TreeExpansionListener() {
+            public void treeCollapsed(javax.swing.event.TreeExpansionEvent evt) {
                 libraryTreeTreeCollapsed(evt);
             }
+            public void treeExpanded(javax.swing.event.TreeExpansionEvent evt) {
+                libraryTreeTreeExpanded(evt);
+            }
         });
-        libraryTree.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener()
-        {
-            public void valueChanged(javax.swing.event.TreeSelectionEvent evt)
-            {
+        libraryTree.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener() {
+            public void valueChanged(javax.swing.event.TreeSelectionEvent evt) {
                 libraryTreeSelected(evt);
             }
         });
-        libraryTree.addKeyListener(new java.awt.event.KeyAdapter()
-        {
-            public void keyPressed(java.awt.event.KeyEvent evt)
-            {
+        libraryTree.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
                 keyPressedDictionaryTree(evt);
             }
         });
@@ -784,10 +746,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         keyComboBox.setMinimumSize(new java.awt.Dimension(52, 54));
         keyComboBox.setName("keyComboBox"); // NOI18N
         keyComboBox.setPreferredSize(new java.awt.Dimension(52, 54));
-        keyComboBox.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        keyComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 keyComboBoxActionPerformed(evt);
             }
         });
@@ -807,10 +767,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         deleteButton.setMinimumSize(new java.awt.Dimension(115, 40));
         deleteButton.setName("deleteButton"); // NOI18N
         deleteButton.setPreferredSize(new java.awt.Dimension(147, 40));
-        deleteButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        deleteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 deleteButtonActionPerformed(evt);
             }
         });
@@ -831,10 +789,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         reloadButton.setMinimumSize(new java.awt.Dimension(115, 40));
         reloadButton.setName("reloadButton"); // NOI18N
         reloadButton.setPreferredSize(new java.awt.Dimension(115, 40));
-        reloadButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        reloadButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 reloadButtonActionPerformed(evt);
             }
         });
@@ -854,10 +810,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         durationComboBox.setMinimumSize(new java.awt.Dimension(52, 54));
         durationComboBox.setName("durationComboBox"); // NOI18N
         durationComboBox.setPreferredSize(new java.awt.Dimension(52, 54));
-        durationComboBox.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        durationComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 durationComboBoxdurationChosen(evt);
             }
         });
@@ -874,21 +828,16 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         setTitle("Road Map\n"); // NOI18N
         setMinimumSize(new java.awt.Dimension(800, 600));
         setName("Form"); // NOI18N
-        addWindowListener(new java.awt.event.WindowAdapter()
-        {
-            public void windowClosing(java.awt.event.WindowEvent evt)
-            {
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
                 roadMapWindowClosing(evt);
             }
-            public void windowActivated(java.awt.event.WindowEvent evt)
-            {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
                 formWindowActivated(evt);
             }
         });
-        addComponentListener(new java.awt.event.ComponentAdapter()
-        {
-            public void componentResized(java.awt.event.ComponentEvent evt)
-            {
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentResized(java.awt.event.ComponentEvent evt) {
                 formComponentResized(evt);
             }
         });
@@ -911,10 +860,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         fileStepBackBtn.setMinimumSize(new java.awt.Dimension(30, 30));
         fileStepBackBtn.setName("fileStepBackBtn"); // NOI18N
         fileStepBackBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        fileStepBackBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        fileStepBackBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fileStepBackBtnActionPerformed(evt);
             }
         });
@@ -930,10 +877,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         fileStepForwardBtn.setName("fileStepForwardBtn"); // NOI18N
         fileStepForwardBtn.setPreferredSize(new java.awt.Dimension(30, 30));
         fileStepForwardBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        fileStepForwardBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        fileStepForwardBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fileStepForwardBtnActionPerformed(evt);
             }
         });
@@ -949,17 +894,13 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         scaleComboBox.setMinimumSize(new java.awt.Dimension(80, 30));
         scaleComboBox.setName("scaleComboBox"); // NOI18N
         scaleComboBox.setPreferredSize(new java.awt.Dimension(80, 30));
-        scaleComboBox.addMouseListener(new java.awt.event.MouseAdapter()
-        {
-            public void mouseReleased(java.awt.event.MouseEvent evt)
-            {
+        scaleComboBox.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
                 scaleComboBoxscaleComboReleased(evt);
             }
         });
-        scaleComboBox.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        scaleComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 scaleComboBoxscaleChosen(evt);
             }
         });
@@ -976,10 +917,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         breakButton.setName("breakButton"); // NOI18N
         breakButton.setPreferredSize(new java.awt.Dimension(50, 30));
         breakButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        breakButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        breakButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 breakButtonPressed(evt);
             }
         });
@@ -996,10 +935,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         flattenButton.setName("flattenButton"); // NOI18N
         flattenButton.setPreferredSize(new java.awt.Dimension(50, 30));
         flattenButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        flattenButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        flattenButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 flattenButtonPressed(evt);
             }
         });
@@ -1016,10 +953,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         selectAllBricksButton.setName("selectAllBricksButton"); // NOI18N
         selectAllBricksButton.setPreferredSize(new java.awt.Dimension(60, 30));
         selectAllBricksButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        selectAllBricksButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        selectAllBricksButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 selectAllBricksButtonPressed(evt);
             }
         });
@@ -1036,10 +971,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         analyzeButton.setName("analyzeButton"); // NOI18N
         analyzeButton.setPreferredSize(new java.awt.Dimension(60, 30));
         analyzeButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        analyzeButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        analyzeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 analyzeButtonPressed(evt);
             }
         });
@@ -1056,10 +989,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         newBrickButton.setName("newBrickButton"); // NOI18N
         newBrickButton.setPreferredSize(new java.awt.Dimension(90, 30));
         newBrickButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        newBrickButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        newBrickButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 newBrickButtonPressed(evt);
             }
         });
@@ -1078,10 +1009,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         keyColorationButton.setOpaque(true);
         keyColorationButton.setPreferredSize(new java.awt.Dimension(40, 30));
         keyColorationButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        keyColorationButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        keyColorationButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 keyColorationButtonActionPerformed(evt);
             }
         });
@@ -1104,10 +1033,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         allVolumeToolBarSlider.setMinimumSize(new java.awt.Dimension(120, 20));
         allVolumeToolBarSlider.setName("allVolumeToolBarSlider"); // NOI18N
         allVolumeToolBarSlider.setPreferredSize(new java.awt.Dimension(120, 20));
-        allVolumeToolBarSlider.addChangeListener(new javax.swing.event.ChangeListener()
-        {
-            public void stateChanged(javax.swing.event.ChangeEvent evt)
-            {
+        allVolumeToolBarSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 allVolumeToolBarSliderStateChanged(evt);
             }
         });
@@ -1131,10 +1058,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         loopToggleButton.setOpaque(true);
         loopToggleButton.setPreferredSize(new java.awt.Dimension(60, 30));
         loopToggleButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        loopToggleButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        loopToggleButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 loopToggleButtonPressed(evt);
             }
         });
@@ -1151,10 +1076,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         playButton.setMinimumSize(new java.awt.Dimension(30, 30));
         playButton.setName("playButton"); // NOI18N
         playButton.setPreferredSize(new java.awt.Dimension(40, 30));
-        playButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        playButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 playButtonPressed(evt);
             }
         });
@@ -1171,10 +1094,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         stopButton.setMinimumSize(new java.awt.Dimension(40, 30));
         stopButton.setName("stopButton"); // NOI18N
         stopButton.setPreferredSize(new java.awt.Dimension(35, 30));
-        stopButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        stopButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 stopButtonPressed(evt);
             }
         });
@@ -1192,10 +1113,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         playOnClickToggleButton.setOpaque(true);
         playOnClickToggleButton.setPreferredSize(new java.awt.Dimension(60, 30));
         playOnClickToggleButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        playOnClickToggleButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        playOnClickToggleButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 playOnClickToggleButtonPressed(evt);
             }
         });
@@ -1219,28 +1138,21 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         tempoSet.setMinimumSize(new java.awt.Dimension(30, 20));
         tempoSet.setName("tempoSet"); // NOI18N
         tempoSet.setPreferredSize(new java.awt.Dimension(30, 20));
-        tempoSet.addMouseListener(new java.awt.event.MouseAdapter()
-        {
-            public void mousePressed(java.awt.event.MouseEvent evt)
-            {
+        tempoSet.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
                 tempoSetMousePressed(evt);
             }
         });
-        tempoSet.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        tempoSet.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tempoSetActionPerformed(evt);
             }
         });
-        tempoSet.addFocusListener(new java.awt.event.FocusAdapter()
-        {
-            public void focusGained(java.awt.event.FocusEvent evt)
-            {
+        tempoSet.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
                 tempoSetFocusGained(evt);
             }
-            public void focusLost(java.awt.event.FocusEvent evt)
-            {
+            public void focusLost(java.awt.event.FocusEvent evt) {
                 tempoSetFocusLost(evt);
             }
         });
@@ -1262,10 +1174,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         tempoSlider.setMinimumSize(new java.awt.Dimension(36, 20));
         tempoSlider.setName("tempoSlider"); // NOI18N
         tempoSlider.setPreferredSize(new java.awt.Dimension(100, 20));
-        tempoSlider.addChangeListener(new javax.swing.event.ChangeListener()
-        {
-            public void stateChanged(javax.swing.event.ChangeEvent evt)
-            {
+        tempoSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 tempoSliderStateChanged(evt);
             }
         });
@@ -1286,10 +1196,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         styleComboBox.setMinimumSize(new java.awt.Dimension(100, 30));
         styleComboBox.setName("styleComboBox"); // NOI18N
         styleComboBox.setPreferredSize(new java.awt.Dimension(100, 30));
-        styleComboBox.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        styleComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 styleChosen(evt);
             }
         });
@@ -1311,17 +1219,13 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         barsPerLineComboBox.setMinimumSize(new java.awt.Dimension(80, 30));
         barsPerLineComboBox.setName("barsPerLineComboBox"); // NOI18N
         barsPerLineComboBox.setPreferredSize(new java.awt.Dimension(80, 30));
-        barsPerLineComboBox.addMouseListener(new java.awt.event.MouseAdapter()
-        {
-            public void mouseReleased(java.awt.event.MouseEvent evt)
-            {
+        barsPerLineComboBox.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
                 barsPerLineComboBoxscaleComboReleased(evt);
             }
         });
-        barsPerLineComboBox.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        barsPerLineComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 barsPerLineComboBoxscaleChosen(evt);
             }
         });
@@ -1337,17 +1241,13 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         featureWidthSlider.setMinimumSize(new java.awt.Dimension(100, 40));
         featureWidthSlider.setName("featureWidthSlider"); // NOI18N
         featureWidthSlider.setPreferredSize(new java.awt.Dimension(100, 40));
-        featureWidthSlider.addMouseListener(new java.awt.event.MouseAdapter()
-        {
-            public void mouseClicked(java.awt.event.MouseEvent evt)
-            {
+        featureWidthSlider.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
                 featureWidthSliderMouseClicked(evt);
             }
         });
-        featureWidthSlider.addChangeListener(new javax.swing.event.ChangeListener()
-        {
-            public void stateChanged(javax.swing.event.ChangeEvent evt)
-            {
+        featureWidthSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 featureWidthSliderChanged(evt);
             }
         });
@@ -1369,10 +1269,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         roadMapTextEntry.setMinimumSize(new java.awt.Dimension(600, 45));
         roadMapTextEntry.setName("roadMapTextEntry"); // NOI18N
         roadMapTextEntry.setPreferredSize(new java.awt.Dimension(900, 45));
-        roadMapTextEntry.addKeyListener(new java.awt.event.KeyAdapter()
-        {
-            public void keyPressed(java.awt.event.KeyEvent evt)
-            {
+        roadMapTextEntry.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
                 textualEntryKeyPressed(evt);
             }
         });
@@ -1394,10 +1292,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         roadMapStatus.setName("roadMapStatus"); // NOI18N
         roadMapStatus.setPreferredSize(new java.awt.Dimension(300, 45));
         roadMapStatus.setRequestFocusEnabled(false);
-        roadMapStatus.addKeyListener(new java.awt.event.KeyAdapter()
-        {
-            public void keyPressed(java.awt.event.KeyEvent evt)
-            {
+        roadMapStatus.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
                 roadMapStatustextualEntryKeyPressed(evt);
             }
         });
@@ -1416,36 +1312,27 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         roadMapScrollPane.setName("roadMapScrollPane"); // NOI18N
         roadMapScrollPane.setPreferredSize(new java.awt.Dimension(2500, 900));
         roadMapScrollPane.setRequestFocusEnabled(false);
-        roadMapScrollPane.addMouseListener(new java.awt.event.MouseAdapter()
-        {
-            public void mouseReleased(java.awt.event.MouseEvent evt)
-            {
+        roadMapScrollPane.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
                 roadMapScrollPaneroadMapReleased(evt);
             }
-            public void mouseClicked(java.awt.event.MouseEvent evt)
-            {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
                 roadMapScrollPaneroadMapClicked(evt);
             }
         });
-        roadMapScrollPane.addMouseMotionListener(new java.awt.event.MouseMotionAdapter()
-        {
-            public void mouseMoved(java.awt.event.MouseEvent evt)
-            {
+        roadMapScrollPane.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
                 roadMapScrollPaneMouseMoved(evt);
             }
-            public void mouseDragged(java.awt.event.MouseEvent evt)
-            {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
                 roadMapScrollPaneroadMapDragged(evt);
             }
         });
-        roadMapScrollPane.addKeyListener(new java.awt.event.KeyAdapter()
-        {
-            public void keyPressed(java.awt.event.KeyEvent evt)
-            {
+        roadMapScrollPane.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
                 roadMapScrollPaneroadMapKeyPressed(evt);
             }
-            public void keyReleased(java.awt.event.KeyEvent evt)
-            {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
                 roadMapScrollPaneroadMapKeyReleased(evt);
             }
         });
@@ -1467,17 +1354,13 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         previewScrollPane.setMinimumSize(new java.awt.Dimension(900, 100));
         previewScrollPane.setName("previewScrollPane"); // NOI18N
         previewScrollPane.setPreferredSize(new java.awt.Dimension(1200, 100));
-        previewScrollPane.addMouseListener(new java.awt.event.MouseAdapter()
-        {
-            public void mouseReleased(java.awt.event.MouseEvent evt)
-            {
+        previewScrollPane.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
                 previewScrollPanepreviewPaneReleased(evt);
             }
         });
-        previewScrollPane.addMouseMotionListener(new java.awt.event.MouseMotionAdapter()
-        {
-            public void mouseDragged(java.awt.event.MouseEvent evt)
-            {
+        previewScrollPane.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
                 previewScrollPanepreviewPaneDragged(evt);
             }
         });
@@ -1498,12 +1381,9 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         clearButton.setMaximumSize(new java.awt.Dimension(46, 30));
         clearButton.setMinimumSize(new java.awt.Dimension(46, 30));
         clearButton.setName("clearButton"); // NOI18N
-        clearButton.setOpaque(true);
         clearButton.setPreferredSize(new java.awt.Dimension(46, 30));
-        clearButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        clearButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 clearButtonActionPerformed(evt);
             }
         });
@@ -1522,12 +1402,9 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         insertBrickButton.setMaximumSize(new java.awt.Dimension(46, 38));
         insertBrickButton.setMinimumSize(new java.awt.Dimension(46, 38));
         insertBrickButton.setName("insertBrickButton"); // NOI18N
-        insertBrickButton.setOpaque(true);
         insertBrickButton.setPreferredSize(new java.awt.Dimension(46, 38));
-        insertBrickButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        insertBrickButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 insertBrickButtonActionPerformed(evt);
             }
         });
@@ -1551,10 +1428,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         openLeadsheetMI.setText("Open a leadsheet in parent window."); // NOI18N
         openLeadsheetMI.setToolTipText("Open a leadsheet in the parent leadsheet window."); // NOI18N
         openLeadsheetMI.setName("openLeadsheetMI"); // NOI18N
-        openLeadsheetMI.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        openLeadsheetMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 openLeadsheetMIActionPerformed(evt);
             }
         });
@@ -1564,10 +1439,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         printRoadMapMI.setText("Print RoadMap");
         printRoadMapMI.setToolTipText("Print the contents of this roadmap."); // NOI18N
         printRoadMapMI.setName("printRoadMapMI"); // NOI18N
-        printRoadMapMI.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        printRoadMapMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 printRoadMapMIActionPerformed(evt);
             }
         });
@@ -1577,10 +1450,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         saveAsToNewLeadsheetMI.setText("Save As to a new leadsheet.\n"); // NOI18N
         saveAsToNewLeadsheetMI.setToolTipText("Create a new leadsheet and store all chords in it."); // NOI18N
         saveAsToNewLeadsheetMI.setName("saveAsToNewLeadsheetMI"); // NOI18N
-        saveAsToNewLeadsheetMI.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        saveAsToNewLeadsheetMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveAsToNewLeadsheetMIaction(evt);
             }
         });
@@ -1590,10 +1461,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         saveToNewLeadsheetMI.setText("Save to the new leadsheet."); // NOI18N
         saveToNewLeadsheetMI.setToolTipText("Store entire contents in the newly-created leadsheet."); // NOI18N
         saveToNewLeadsheetMI.setName("saveToNewLeadsheetMI"); // NOI18N
-        saveToNewLeadsheetMI.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        saveToNewLeadsheetMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveToNewLeadsheetMIaction(evt);
             }
         });
@@ -1603,10 +1472,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         exitMenuItem.setText("Close this window."); // NOI18N
         exitMenuItem.setToolTipText("Closes this window."); // NOI18N
         exitMenuItem.setName("exitMenuItem"); // NOI18N
-        exitMenuItem.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        exitMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 exitMIhandler(evt);
             }
         });
@@ -1620,10 +1487,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         selectAllMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_MASK));
         selectAllMenuItem.setText("Select All"); // NOI18N
         selectAllMenuItem.setName("selectAllMenuItem"); // NOI18N
-        selectAllMenuItem.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        selectAllMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 selectAllMenuItemClicked(evt);
             }
         });
@@ -1633,10 +1498,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         unselectAllMenuItem.setText("Unselect All"); // NOI18N
         unselectAllMenuItem.setToolTipText("Unselects any selected bricks."); // NOI18N
         unselectAllMenuItem.setName("unselectAllMenuItem"); // NOI18N
-        unselectAllMenuItem.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        unselectAllMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 unselectAllMenuItemClicked(evt);
             }
         });
@@ -1648,10 +1511,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         undoMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, 0));
         undoMenuItem.setText("Undo"); // NOI18N
         undoMenuItem.setName("undoMenuItem"); // NOI18N
-        undoMenuItem.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        undoMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 undoMenuItemActionPerformed(evt);
             }
         });
@@ -1660,10 +1521,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         redoMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Y, 0));
         redoMenuItem.setText("Redo"); // NOI18N
         redoMenuItem.setName("redoMenuItem"); // NOI18N
-        redoMenuItem.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        redoMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 redoMenuItemActionPerformed(evt);
             }
         });
@@ -1675,10 +1534,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         cutMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, 0));
         cutMenuItem.setText("Cut"); // NOI18N
         cutMenuItem.setName("cutMenuItem"); // NOI18N
-        cutMenuItem.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        cutMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cutMenuItemActionPerformed(evt);
             }
         });
@@ -1687,10 +1544,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         copyMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, 0));
         copyMenuItem.setText("Copy"); // NOI18N
         copyMenuItem.setName("copyMenuItem"); // NOI18N
-        copyMenuItem.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        copyMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 copyMenuItemActionPerformed(evt);
             }
         });
@@ -1699,10 +1554,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         pasteMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, 0));
         pasteMenuItem.setText("Paste"); // NOI18N
         pasteMenuItem.setName("pasteMenuItem"); // NOI18N
-        pasteMenuItem.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        pasteMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 pasteMenuItemActionPerformed(evt);
             }
         });
@@ -1714,10 +1567,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         deleteMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_BACK_SPACE, 0));
         deleteMenuItem.setText("Delete Selection"); // NOI18N
         deleteMenuItem.setName("deleteMenuItem"); // NOI18N
-        deleteMenuItem.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        deleteMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 deleteMenuItemActionPerformed(evt);
             }
         });
@@ -1727,10 +1578,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         flattenMenuItem.setText("Flatten Selection"); // NOI18N
         flattenMenuItem.setToolTipText("Repeatedly break the selection until there are only chords, with no composite bricks.\n"); // NOI18N
         flattenMenuItem.setName("flattenMenuItem"); // NOI18N
-        flattenMenuItem.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        flattenMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 flattenMenuItemActionPerformed(evt);
             }
         });
@@ -1739,10 +1588,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         breakMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_B, 0));
         breakMenuItem.setText("Break Selection"); // NOI18N
         breakMenuItem.setName("breakMenuItem"); // NOI18N
-        breakMenuItem.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        breakMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 breakMenuItemActionPerformed(evt);
             }
         });
@@ -1751,10 +1598,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         copyToTextMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_J, 0));
         copyToTextMenuItem.setText("Copy Selection to Text Window");
         copyToTextMenuItem.setName("copyToTextMenuItem"); // NOI18N
-        copyToTextMenuItem.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        copyToTextMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 copyToTextMenuItemActionPerformed(evt);
             }
         });
@@ -1767,10 +1612,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         analyzeMenuItem.setText("Analyze Selection"); // NOI18N
         analyzeMenuItem.setToolTipText("Performs a brick analysis on the selected chords, or on all chords if nothing selected."); // NOI18N
         analyzeMenuItem.setName("analyzeMenuItem"); // NOI18N
-        analyzeMenuItem.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        analyzeMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 analyzeMenuItemActionPerformed(evt);
             }
         });
@@ -1784,10 +1627,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         transposeDownMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, 0));
         transposeDownMenuItem.setText("Transpose Selection Up Semitone"); // NOI18N
         transposeDownMenuItem.setName("transposeDownMenuItem"); // NOI18N
-        transposeDownMenuItem.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        transposeDownMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 transposeDownMenuItemActionPerformed(evt);
             }
         });
@@ -1796,10 +1637,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         transposeUpMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, 0));
         transposeUpMenuItem.setText("Transpose Selection Down Semitone"); // NOI18N
         transposeUpMenuItem.setName("transposeUpMenuItem"); // NOI18N
-        transposeUpMenuItem.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        transposeUpMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 transposeUpMenuItemActionPerformed(evt);
             }
         });
@@ -1813,10 +1652,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         toggleSectionMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, 0));
         toggleSectionMenuItem.setText("Toggle Section"); // NOI18N
         toggleSectionMenuItem.setName("toggleSectionMenuItem"); // NOI18N
-        toggleSectionMenuItem.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        toggleSectionMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 toggleSectionMenuItemActionPerformed(evt);
             }
         });
@@ -1825,10 +1662,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         togglePhraseMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, java.awt.event.InputEvent.SHIFT_MASK));
         togglePhraseMenuItem.setText("Toggle Phrase"); // NOI18N
         togglePhraseMenuItem.setName("togglePhraseMenuItem"); // NOI18N
-        togglePhraseMenuItem.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        togglePhraseMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 togglePhraseMenuItemActionPerformed(evt);
             }
         });
@@ -1839,27 +1674,21 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         dictionaryMenu.setMnemonic('W');
         dictionaryMenu.setText("Dictionary"); // NOI18N
         dictionaryMenu.setName("dictionaryMenu"); // NOI18N
-        dictionaryMenu.addMenuListener(new javax.swing.event.MenuListener()
-        {
-            public void menuSelected(javax.swing.event.MenuEvent evt)
-            {
+        dictionaryMenu.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
                 dictionaryMenuMenuSelected(evt);
-            }
-            public void menuDeselected(javax.swing.event.MenuEvent evt)
-            {
-            }
-            public void menuCanceled(javax.swing.event.MenuEvent evt)
-            {
             }
         });
 
         brickLibraryMenuItem.setText("Brick Dictionary"); // NOI18N
         brickLibraryMenuItem.setToolTipText("Opens the dictionary of all currently-defined bricks."); // NOI18N
         brickLibraryMenuItem.setName("brickLibraryMenuItem"); // NOI18N
-        brickLibraryMenuItem.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        brickLibraryMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 brickLibraryMenuItemActionPerformed(evt);
             }
         });
@@ -1874,10 +1703,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         dictionaryEditorMI.setText("Dictionary Textual Editor"); // NOI18N
         dictionaryEditorMI.setToolTipText("Open a text editor for the Brick Dictionary."); // NOI18N
         dictionaryEditorMI.setName("dictionaryEditorMI"); // NOI18N
-        dictionaryEditorMI.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        dictionaryEditorMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 dictionaryEditorMIActionPerformed(evt);
             }
         });
@@ -1886,10 +1713,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         saveDictionaryAsMI.setText("Save Dictionary as ..."); // NOI18N
         saveDictionaryAsMI.setToolTipText("Save the current dictionary under a new name."); // NOI18N
         saveDictionaryAsMI.setName("saveDictionaryAsMI"); // NOI18N
-        saveDictionaryAsMI.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        saveDictionaryAsMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveDictionaryAsMIActionPerformed(evt);
             }
         });
@@ -1901,26 +1726,20 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         preferencesMenu.setText("Preferences"); // NOI18N
         preferencesMenu.setToolTipText("Set preferences for this roadmap."); // NOI18N
         preferencesMenu.setName("preferencesMenu"); // NOI18N
-        preferencesMenu.addMenuListener(new javax.swing.event.MenuListener()
-        {
-            public void menuSelected(javax.swing.event.MenuEvent evt)
-            {
+        preferencesMenu.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
                 preferencesMenuMenuSelected(evt);
-            }
-            public void menuDeselected(javax.swing.event.MenuEvent evt)
-            {
-            }
-            public void menuCanceled(javax.swing.event.MenuEvent evt)
-            {
             }
         });
 
         preferencesMenuItem.setText("Roadmap Preferences"); // NOI18N
         preferencesMenuItem.setName("preferencesMenuItem"); // NOI18N
-        preferencesMenuItem.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        preferencesMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 preferencesMenuItemActionPerformed(evt);
             }
         });
@@ -1933,10 +1752,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         fixedColorsRadioBtn.setSelected(true);
         fixedColorsRadioBtn.setText("Absolute Colors"); // NOI18N
         fixedColorsRadioBtn.setName("fixedColorsRadioBtn"); // NOI18N
-        fixedColorsRadioBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        fixedColorsRadioBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fixedColorsRadioBtnActionPerformed(evt);
             }
         });
@@ -1945,10 +1762,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         colorationPreferencesButtonGroup.add(relativeToCbutton);
         relativeToCbutton.setText("Relative to C"); // NOI18N
         relativeToCbutton.setName("relativeToCbutton"); // NOI18N
-        relativeToCbutton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        relativeToCbutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 relativeToCbuttonActionPerformed(evt);
             }
         });
@@ -1957,10 +1772,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         colorationPreferencesButtonGroup.add(relativeToBbutton);
         relativeToBbutton.setText("Relative to B"); // NOI18N
         relativeToBbutton.setName("relativeToBbutton"); // NOI18N
-        relativeToBbutton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        relativeToBbutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 relativeToBbuttonActionPerformed(evt);
             }
         });
@@ -1969,10 +1782,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         colorationPreferencesButtonGroup.add(relativeToBbbutton);
         relativeToBbbutton.setText("Relative to Bb"); // NOI18N
         relativeToBbbutton.setName("relativeToBbbutton"); // NOI18N
-        relativeToBbbutton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        relativeToBbbutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 relativeToBbbuttonActionPerformed(evt);
             }
         });
@@ -1981,10 +1792,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         colorationPreferencesButtonGroup.add(relativeToAbutton);
         relativeToAbutton.setText("Relative to A"); // NOI18N
         relativeToAbutton.setName("relativeToAbutton"); // NOI18N
-        relativeToAbutton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        relativeToAbutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 relativeToAbuttonActionPerformed(evt);
             }
         });
@@ -1993,10 +1802,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         colorationPreferencesButtonGroup.add(relativeToAbbutton);
         relativeToAbbutton.setText("Relative to Ab"); // NOI18N
         relativeToAbbutton.setName("relativeToAbbutton"); // NOI18N
-        relativeToAbbutton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        relativeToAbbutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 relativeToAbbuttonActionPerformed(evt);
             }
         });
@@ -2005,10 +1812,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         colorationPreferencesButtonGroup.add(relativeToGbutton);
         relativeToGbutton.setText("Relative to G"); // NOI18N
         relativeToGbutton.setName("relativeToGbutton"); // NOI18N
-        relativeToGbutton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        relativeToGbutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 relativeToGbuttonActionPerformed(evt);
             }
         });
@@ -2017,10 +1822,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         colorationPreferencesButtonGroup.add(relativeTGbbutton);
         relativeTGbbutton.setText("Relative to Gb"); // NOI18N
         relativeTGbbutton.setName("relativeTGbbutton"); // NOI18N
-        relativeTGbbutton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        relativeTGbbutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 relativeTGbbuttonActionPerformed(evt);
             }
         });
@@ -2029,10 +1832,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         colorationPreferencesButtonGroup.add(relativeToFbutton);
         relativeToFbutton.setText("Relative to F"); // NOI18N
         relativeToFbutton.setName("relativeToFbutton"); // NOI18N
-        relativeToFbutton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        relativeToFbutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 relativeToFbuttonActionPerformed(evt);
             }
         });
@@ -2041,10 +1842,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         colorationPreferencesButtonGroup.add(relativeToEbutton);
         relativeToEbutton.setText("Relative to E"); // NOI18N
         relativeToEbutton.setName("relativeToEbutton"); // NOI18N
-        relativeToEbutton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        relativeToEbutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 relativeToEbuttonActionPerformed(evt);
             }
         });
@@ -2053,10 +1852,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         colorationPreferencesButtonGroup.add(relativeToEbbutton);
         relativeToEbbutton.setText("Relative to Eb"); // NOI18N
         relativeToEbbutton.setName("relativeToEbbutton"); // NOI18N
-        relativeToEbbutton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        relativeToEbbutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 relativeToEbbuttonActionPerformed(evt);
             }
         });
@@ -2065,10 +1862,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         colorationPreferencesButtonGroup.add(relativeToDbutton);
         relativeToDbutton.setText("Relative to D"); // NOI18N
         relativeToDbutton.setName("relativeToDbutton"); // NOI18N
-        relativeToDbutton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        relativeToDbutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 relativeToDbuttonActionPerformed(evt);
             }
         });
@@ -2077,10 +1872,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         colorationPreferencesButtonGroup.add(relativeToDbbutton);
         relativeToDbbutton.setText("Relative to Db"); // NOI18N
         relativeToDbbutton.setName("relativeToDbbutton"); // NOI18N
-        relativeToDbbutton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        relativeToDbbutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 relativeToDbbuttonActionPerformed(evt);
             }
         });
@@ -2095,10 +1888,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         noRomanNumeralsBtn.setSelected(true);
         noRomanNumeralsBtn.setText("Do Not Display"); // NOI18N
         noRomanNumeralsBtn.setName("noRomanNumeralsBtn"); // NOI18N
-        noRomanNumeralsBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        noRomanNumeralsBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 noRomanNumeralsBtnActionPerformed(evt);
             }
         });
@@ -2107,10 +1898,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         romanNumeralPreferencesButtonGroup.add(romanNumeralRelativeToCbutton);
         romanNumeralRelativeToCbutton.setText("Relative to C"); // NOI18N
         romanNumeralRelativeToCbutton.setName("romanNumeralRelativeToCbutton"); // NOI18N
-        romanNumeralRelativeToCbutton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        romanNumeralRelativeToCbutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 romanNumeralRelativeToCbuttonActionPerformed(evt);
             }
         });
@@ -2119,10 +1908,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         romanNumeralPreferencesButtonGroup.add(romanNumeralRelativeToBbutton);
         romanNumeralRelativeToBbutton.setText("Relative to B"); // NOI18N
         romanNumeralRelativeToBbutton.setName("romanNumeralRelativeToBbutton"); // NOI18N
-        romanNumeralRelativeToBbutton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        romanNumeralRelativeToBbutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 romanNumeralRelativeToBbuttonActionPerformed(evt);
             }
         });
@@ -2131,10 +1918,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         romanNumeralPreferencesButtonGroup.add(romanNumeralRelativeToBbbutton);
         romanNumeralRelativeToBbbutton.setText("Relative to Bb"); // NOI18N
         romanNumeralRelativeToBbbutton.setName("romanNumeralRelativeToBbbutton"); // NOI18N
-        romanNumeralRelativeToBbbutton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        romanNumeralRelativeToBbbutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 romanNumeralRelativeToBbbuttonActionPerformed(evt);
             }
         });
@@ -2143,10 +1928,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         romanNumeralPreferencesButtonGroup.add(romanNumeralRelativeToAbutton);
         romanNumeralRelativeToAbutton.setText("Relative to A"); // NOI18N
         romanNumeralRelativeToAbutton.setName("romanNumeralRelativeToAbutton"); // NOI18N
-        romanNumeralRelativeToAbutton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        romanNumeralRelativeToAbutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 romanNumeralRelativeToAbuttonActionPerformed(evt);
             }
         });
@@ -2155,10 +1938,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         romanNumeralPreferencesButtonGroup.add(romanNumeralRelativeToAbbutton);
         romanNumeralRelativeToAbbutton.setText("Relative to Ab"); // NOI18N
         romanNumeralRelativeToAbbutton.setName("romanNumeralRelativeToAbbutton"); // NOI18N
-        romanNumeralRelativeToAbbutton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        romanNumeralRelativeToAbbutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 romanNumeralRelativeToAbbuttonActionPerformed(evt);
             }
         });
@@ -2167,10 +1948,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         romanNumeralPreferencesButtonGroup.add(romanNumeralRelativeToGbutton);
         romanNumeralRelativeToGbutton.setText("Relative to G"); // NOI18N
         romanNumeralRelativeToGbutton.setName("romanNumeralRelativeToGbutton"); // NOI18N
-        romanNumeralRelativeToGbutton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        romanNumeralRelativeToGbutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 romanNumeralRelativeToGbuttonActionPerformed(evt);
             }
         });
@@ -2179,10 +1958,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         romanNumeralPreferencesButtonGroup.add(romanNumeralRelativeTGbbutton);
         romanNumeralRelativeTGbbutton.setText("Relative to Gb"); // NOI18N
         romanNumeralRelativeTGbbutton.setName("romanNumeralRelativeTGbbutton"); // NOI18N
-        romanNumeralRelativeTGbbutton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        romanNumeralRelativeTGbbutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 romanNumeralRelativeTGbbuttonActionPerformed(evt);
             }
         });
@@ -2191,10 +1968,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         romanNumeralPreferencesButtonGroup.add(romanNumeralRelativeToFbutton);
         romanNumeralRelativeToFbutton.setText("Relative to F"); // NOI18N
         romanNumeralRelativeToFbutton.setName("romanNumeralRelativeToFbutton"); // NOI18N
-        romanNumeralRelativeToFbutton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        romanNumeralRelativeToFbutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 romanNumeralRelativeToFbuttonActionPerformed(evt);
             }
         });
@@ -2203,10 +1978,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         romanNumeralPreferencesButtonGroup.add(romanNumeralRelativeToEbutton);
         romanNumeralRelativeToEbutton.setText("Relative to E"); // NOI18N
         romanNumeralRelativeToEbutton.setName("romanNumeralRelativeToEbutton"); // NOI18N
-        romanNumeralRelativeToEbutton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        romanNumeralRelativeToEbutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 romanNumeralRelativeToEbuttonActionPerformed(evt);
             }
         });
@@ -2215,10 +1988,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         romanNumeralPreferencesButtonGroup.add(romanNumeralRelativeToEbbutton);
         romanNumeralRelativeToEbbutton.setText("Relative to Eb"); // NOI18N
         romanNumeralRelativeToEbbutton.setName("romanNumeralRelativeToEbbutton"); // NOI18N
-        romanNumeralRelativeToEbbutton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        romanNumeralRelativeToEbbutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 romanNumeralRelativeToEbbuttonActionPerformed(evt);
             }
         });
@@ -2227,10 +1998,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         romanNumeralPreferencesButtonGroup.add(romanNumeralRelativeToDbutton);
         romanNumeralRelativeToDbutton.setText("Relative to D"); // NOI18N
         romanNumeralRelativeToDbutton.setName("romanNumeralRelativeToDbutton"); // NOI18N
-        romanNumeralRelativeToDbutton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        romanNumeralRelativeToDbutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 romanNumeralRelativeToDbuttonActionPerformed(evt);
             }
         });
@@ -2239,10 +2008,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         romanNumeralPreferencesButtonGroup.add(romanNumeralRelativeToDbbutton);
         romanNumeralRelativeToDbbutton.setText("Relative to Db"); // NOI18N
         romanNumeralRelativeToDbbutton.setName("romanNumeralRelativeToDbbutton"); // NOI18N
-        romanNumeralRelativeToDbbutton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        romanNumeralRelativeToDbbutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 romanNumeralRelativeToDbbuttonActionPerformed(evt);
             }
         });
@@ -2254,10 +2021,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         showKeysCheckBoxMI.setText("Show Keys"); // NOI18N
         showKeysCheckBoxMI.setToolTipText("Indicate whether to show keys."); // NOI18N
         showKeysCheckBoxMI.setName("showKeysCheckBoxMI"); // NOI18N
-        showKeysCheckBoxMI.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        showKeysCheckBoxMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 showKeysCheckBoxMIActionPerformed(evt);
             }
         });
@@ -2267,10 +2032,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         showBrickNamesCheckBoxMI.setText("Show Brick Names"); // NOI18N
         showBrickNamesCheckBoxMI.setToolTipText("Indicate whether to show the names of bricks."); // NOI18N
         showBrickNamesCheckBoxMI.setName("showBrickNamesCheckBoxMI"); // NOI18N
-        showBrickNamesCheckBoxMI.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        showBrickNamesCheckBoxMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 showBrickNamesCheckBoxMIActionPerformed(evt);
             }
         });
@@ -2280,22 +2043,29 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         showJoinsCheckBoxMI.setText("Show Joins"); // NOI18N
         showJoinsCheckBoxMI.setToolTipText("Indicate whether to show joins between bricks."); // NOI18N
         showJoinsCheckBoxMI.setName("showJoinsCheckBoxMI"); // NOI18N
-        showJoinsCheckBoxMI.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        showJoinsCheckBoxMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 showJoinsCheckBoxMIActionPerformed(evt);
             }
         });
         preferencesMenu.add(showJoinsCheckBoxMI);
 
+        showStartingNoteCheckBoxMI.setSelected(true);
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("imp/roadmap/Bundle"); // NOI18N
+        showStartingNoteCheckBoxMI.setText(bundle.getString("RoadMapFrame.showStartingNoteCheckBoxMI.text")); // NOI18N
+        showStartingNoteCheckBoxMI.setName("showStartingNoteCheckBoxMI"); // NOI18N
+        showStartingNoteCheckBoxMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showStartingNoteCheckBoxMIActionPerformed(evt);
+            }
+        });
+        preferencesMenu.add(showStartingNoteCheckBoxMI);
+
         replaceWithPhiCheckBoxMI.setSelected(true);
         replaceWithPhiCheckBoxMI.setText("Use \u03D5 for m7b5");
         replaceWithPhiCheckBoxMI.setName("replaceWithPhiCheckBoxMI"); // NOI18N
-        replaceWithPhiCheckBoxMI.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        replaceWithPhiCheckBoxMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 replaceWithPhiCheckBoxMIActionPerformed(evt);
             }
         });
@@ -2304,10 +2074,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         replaceWithDeltaCheckBoxMI.setSelected(true);
         replaceWithDeltaCheckBoxMI.setText("Use \u0394 for M7");
         replaceWithDeltaCheckBoxMI.setName("replaceWithDeltaCheckBoxMI"); // NOI18N
-        replaceWithDeltaCheckBoxMI.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        replaceWithDeltaCheckBoxMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 replaceWithDeltaCheckBoxMIActionPerformed(evt);
             }
         });
@@ -2318,17 +2086,13 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         windowMenu.setMnemonic('W');
         windowMenu.setText("Window"); // NOI18N
         windowMenu.setName("windowMenu"); // NOI18N
-        windowMenu.addMenuListener(new javax.swing.event.MenuListener()
-        {
-            public void menuSelected(javax.swing.event.MenuEvent evt)
-            {
+        windowMenu.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
                 windowMenuMenuSelected(evt);
-            }
-            public void menuDeselected(javax.swing.event.MenuEvent evt)
-            {
-            }
-            public void menuCanceled(javax.swing.event.MenuEvent evt)
-            {
             }
         });
 
@@ -2336,10 +2100,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         closeWindowMI.setText("Close Window"); // NOI18N
         closeWindowMI.setToolTipText("Closes the current window (exits program if there are no other windows)"); // NOI18N
         closeWindowMI.setName("closeWindowMI"); // NOI18N
-        closeWindowMI.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        closeWindowMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 closeWindowMIActionPerformed(evt);
             }
         });
@@ -2349,10 +2111,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         cascadeMI.setText("Cascade Windows"); // NOI18N
         cascadeMI.setToolTipText("Rearrange windows into a cascade.\n"); // NOI18N
         cascadeMI.setName("cascadeMI"); // NOI18N
-        cascadeMI.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        cascadeMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cascadeMIActionPerformed(evt);
             }
         });
@@ -2370,10 +2130,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         playMenu.setText("Play"); // NOI18N
         playMenu.setToolTipText("Select type of playing."); // NOI18N
         playMenu.setName("playMenu"); // NOI18N
-        playMenu.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        playMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 playMenuActionPerformed(evt);
             }
         });
@@ -2382,10 +2140,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         playSelectionMI.setText("Play Selection"); // NOI18N
         playSelectionMI.setToolTipText("Play only the selection."); // NOI18N
         playSelectionMI.setName("playSelectionMI"); // NOI18N
-        playSelectionMI.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        playSelectionMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 playSelectionMIActionPerformed(evt);
             }
         });
@@ -2396,10 +2152,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         playAllMI.setText("Play All"); // NOI18N
         playAllMI.setToolTipText("Play the entire chorus."); // NOI18N
         playAllMI.setName("playAllMI"); // NOI18N
-        playAllMI.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        playAllMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 playAllMIActionPerformed(evt);
             }
         });
@@ -2409,10 +2163,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         stopPlayMI.setText("Stop Playback"); // NOI18N
         stopPlayMI.setToolTipText("Stop the current playing."); // NOI18N
         stopPlayMI.setName("stopPlayMI"); // NOI18N
-        stopPlayMI.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        stopPlayMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 stopPlayMIActionPerformed(evt);
             }
         });
@@ -3216,6 +2968,11 @@ private void playOnClickToggleButtonPressed(java.awt.event.ActionEvent evt)//GEN
         if(!roadMapTextEntry.isFocusOwner()) copySelectionToTextWindow();
     }//GEN-LAST:event_copyToTextMenuItemActionPerformed
 
+    private void showStartingNoteCheckBoxMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showStartingNoteCheckBoxMIActionPerformed
+        settings.showStartingNote = showStartingNoteCheckBoxMI.getState();
+        roadMapPanel.draw();
+    }//GEN-LAST:event_showStartingNoteCheckBoxMIActionPerformed
+
 private Notate.StyleComboBoxModel getStyleMenuModel()
   {
     return styleComboBoxModel;
@@ -3447,11 +3204,13 @@ public void setVolumeSlider(int volume)
     /** Sets the roadmap and frame title to the given string */
     public void setRoadMapTitle(String title)
     {
+        
         setTitle(roadMapTitlePrefix + title);
         roadMapTitle = title;
         roadMapPanel.draw();
     }
     
+   
     /** Returns the current graphical settings */
     public RoadMapSettings getSettings()
     {
@@ -4089,6 +3848,7 @@ public void setVolumeSlider(int volume)
     private javax.swing.JCheckBoxMenuItem showBrickNamesCheckBoxMI;
     private javax.swing.JCheckBoxMenuItem showJoinsCheckBoxMI;
     private javax.swing.JCheckBoxMenuItem showKeysCheckBoxMI;
+    private javax.swing.JCheckBoxMenuItem showStartingNoteCheckBoxMI;
     private javax.swing.JButton stopButton;
     private javax.swing.JMenuItem stopPlayMI;
     private javax.swing.JComboBox styleComboBox;
@@ -4812,6 +4572,9 @@ private void setShowJoins(boolean value)
     //System.out.println("showJoins = " + value);
     settings.showJoins = value;
   }
+private void setShowStartingNote(){
+    
+}
 
 public void setStyle(Style style)
   {
@@ -4870,4 +4633,14 @@ public void reset()
   {
     roadMapPanel.reset();
   }
+
+public Note getFirstNote()
+{
+    return notate.getFirstNote();
+}
+
+public String getComposer()
+{
+    return notate.getComposer();
+}
 }

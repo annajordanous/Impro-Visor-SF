@@ -1229,8 +1229,12 @@ public void addChord(Chord chord)
     chordProg.addChord(chord);
   }
 
+
+
+
 /**
  * Return first Note in melody, or null if there is no note
+ * @return 
  */
 public Note getFirstNote()
   {
