@@ -19,12 +19,14 @@
  */
 
 package imp.roadmap;
-
+import imp.gui.Notate;
 import imp.brickdictionary.*;
 import imp.data.Chord;
+import imp.data.Note;
 import imp.data.PitchClass;
 import imp.util.ErrorLog;
 import java.awt.*;
+import java.awt.Font.*;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.StringWriter;
@@ -78,7 +80,7 @@ public class RoadMapPanel extends JPanel {
     
     /** Roadmap. Stores the chords and junk. */
     private RoadMap roadMap = new RoadMap();
-    
+   
     /** Graphic representation of the roadmap */
     private ArrayList<GraphicBrick> graphicMap = new ArrayList<GraphicBrick>();
     
@@ -881,6 +883,10 @@ protected void addBlocks(ArrayList<Block> blocks, Boolean selectBlocks)
          {
          drawKeyMap();
          }
+       if ( settings.showStartingNote)
+       {
+      drawStartingNote();
+       }
        if(view.isPlaying()) {
            drawPlaySection();
            setPlayLine(view.getMidiSlot() - view.getMidiSlot()%(settings.slotsPerBeat/2));
@@ -978,10 +984,14 @@ protected void addBlocks(ArrayList<Block> blocks, Boolean selectBlocks)
     private void drawText()
     {
         //Graphics g = buffer.getGraphics();
-        g.setFont(settings.titleFont);
-        g.setColor(settings.textColor);
-        g.drawString(view.roadMapTitle, settings.xOffset, settings.yOffset - settings.lineSpacing);
-        
+       g.setFont(settings.titleFont);
+       g.setColor(settings.textColor);
+       g.drawString(view.roadMapTitle, settings.xOffset, settings.yOffset - settings.lineSpacing);
+       String composerName = view.getComposer(); 
+       g.setFont(settings.basicFont);
+       g.drawString( composerName, 
+                     settings.xOffset, 
+                     settings.yOffset - settings.lineSpacing / 2);
         /* 
         g.setFont(settings.basicFont);
         FontMetrics metrics = g.getFontMetrics();
@@ -1196,6 +1206,21 @@ protected void addBlocks(ArrayList<Block> blocks, Boolean selectBlocks)
               //briankwak
               g2d.drawString(margin + keyName, x+2, y+fontOffset);
               }
+    }
+   private void drawStartingNote()
+    { 
+       g.setFont(settings.titleFont);
+       g.setColor(Color.BLACK);
+       
+      Note firstNote = view.getFirstNote();
+      if (firstNote != null)
+      {
+      
+        g.drawString("Starting Note: " + firstNote.getPitchClassName(), 
+                     settings.getLineLength()-settings.measureLength, 
+                     settings.yOffset - settings.lineSpacing);
+    }
+        
     }
         
     /** Draws the rollover */

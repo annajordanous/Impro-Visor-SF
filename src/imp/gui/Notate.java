@@ -25763,7 +25763,6 @@ public QuantumSelectionCheckBox(int i)
     });
   }
 } //QuantumSelectionCheckBox
-
 /**
  * Return the first note in the score, or null if there is none.
  * @return 
@@ -25778,4 +25777,8 @@ public Note getFirstNote()
     return score.getFirstNote();
   }
 
+public String getComposer()
+{
+    return score.getComposer();
+}
 } //Notate
