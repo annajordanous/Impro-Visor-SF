@@ -20796,6 +20796,9 @@ public void adjustSelection()
       }
   }
 
+int cycCount = 0;
+int shufCount = 0;
+
 /**
  * Original version of generate: does not return MelodyPart
  *
@@ -20805,6 +20808,35 @@ public void adjustSelection()
  */
 public void originalGenerate(LickGen lickgen, int improviseStartSlot, int improviseEndSlot)
   {
+      //shuffle grammar for cycle and shuffle here?
+    //use pointer
+    
+    //GrammarFilter.EXTENSION
+    if (ifCycle){
+        String temp = null;
+        temp = gramList.get(cycCount).substring(0, gramList.get(cycCount).length() - GrammarFilter.EXTENSION.length());
+        notateGrammarMenu.setText(temp + "(Cycle)");
+        grammarFilename = ImproVisor.getGrammarDirectory() + File.separator + gramList.get(cycCount);
+        lickgen.loadGrammar(grammarFilename);
+        lickgenFrame.resetTriageParameters(false);
+        Preferences.setPreference(Preferences.DEFAULT_GRAMMAR_FILE, gramList.get(cycCount));
+        cycCount++;
+        if (cycCount == gramList.size()){cycCount = 0;} 
+    }
+    
+    if (ifShuffle){
+       
+        String temp = null;
+        temp = shufGramList.get(shufCount).substring(0, shufGramList.get(shufCount).length() - GrammarFilter.EXTENSION.length());
+        notateGrammarMenu.setText(temp + "(Shuffle)");
+        grammarFilename = ImproVisor.getGrammarDirectory() + File.separator + shufGramList.get(shufCount);
+        lickgen.loadGrammar(grammarFilename);
+        lickgenFrame.resetTriageParameters(false);
+        Preferences.setPreference(Preferences.DEFAULT_GRAMMAR_FILE, shufGramList.get(shufCount));
+        shufCount++;
+        if (shufCount == shufGramList.size()){shufCount = 0;} 
+    }
+
     saveConstructionLineState = showConstructionLinesMI.isSelected();
     // Don't construction show lines while generating
     setShowConstructionLinesAndBoxes(false);
@@ -22996,8 +23028,29 @@ private void tradingMenuAction(java.awt.event.ActionEvent evt)
     tradingMenu.setText(stem);
   }
 
+boolean ifCycle = false;
+boolean ifShuffle = false;
+//action for cycle/shuffle buttons
+private void notateGrammarMenuActOpt(java.awt.event.ActionEvent evt)
+  { 
+    JMenuItem item = (JMenuItem) evt.getSource();
+    String stem = item.getText();
+    if (stem.equals("Cycle")){ifCycle = true; ifShuffle = false; shufCount = 0;
+    }
+    if (stem.equals("Shuffle")){ifShuffle = true; ifCycle = false; cycCount = 0;
+        Collections.shuffle(shufGramList);
+    }
+
+    notateGrammarMenu.setText(stem);
+  }
+
 private void notateGrammarMenuAction(java.awt.event.ActionEvent evt)
   {
+    group.clearSelection();
+    ifCycle = false;
+    ifShuffle = false;
+    cycCount = 0;
+    shufCount = 0;
     JMenuItem item = (JMenuItem) evt.getSource();
     String stem = item.getText();
     notateGrammarMenu.setText(stem);
@@ -23007,6 +23060,7 @@ private void notateGrammarMenuAction(java.awt.event.ActionEvent evt)
     lickgenFrame.resetTriageParameters(false);
     Preferences.setPreference(Preferences.DEFAULT_GRAMMAR_FILE, extendedName);
   }
+
 
 public void openCorpus()
   {
@@ -23141,9 +23195,12 @@ private void populateTradingMenu()
   }
 
 
-/**
- * Populate the grammar menu in the Notate window
- */
+ArrayList<String> gramList = new ArrayList<String>();
+ArrayList<String> shufGramList = new ArrayList<String>();
+JCheckBoxMenuItem cycle = new JCheckBoxMenuItem("Cycle");
+JCheckBoxMenuItem shuffle = new JCheckBoxMenuItem("Shuffle");
+ButtonGroup group = new ButtonGroup();
+
 private void populateNotateGrammarMenu()
   {
     File directory = ImproVisor.getGrammarDirectory();
@@ -23165,8 +23222,31 @@ private void populateNotateGrammarMenu()
 
         // Setup grammar menu items involving trading
         notateGrammarMenu.removeAll();
+        notateGrammarMenu.add(new JLabel("Grammar"));
+        
+       //Add Cycle and Shuffle options at top
+       
+       cycle.addActionListener(new java.awt.event.ActionListener() {
 
-       notateGrammarMenu.add(new JLabel("Grammar"));
+            public void actionPerformed(ActionEvent e) {
+                notateGrammarMenuActOpt(e);
+            }
+        });
+       
+       shuffle.addActionListener(new java.awt.event.ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+                notateGrammarMenuActOpt(e);
+            }
+        });
+       
+       group.add(cycle);
+       group.add(shuffle);
+       notateGrammarMenu.add(cycle);
+       notateGrammarMenu.add(shuffle);
+       
+       grammarMenuSeparator = new javax.swing.JSeparator();
+       notateGrammarMenu.add(grammarMenuSeparator);
        
         // Add names of grammar files
 
@@ -23176,6 +23256,9 @@ private void populateNotateGrammarMenu()
 
             if( name.endsWith(GrammarFilter.EXTENSION) )
               {
+                gramList.add(name);  
+                shufGramList.add(name);
+                  
                 int len = name.length();
                 String stem = name.substring(0, len - GrammarFilter.EXTENSION.length());
                 JMenuItem item = new JMenuItem(stem);
@@ -23188,10 +23271,13 @@ private void populateNotateGrammarMenu()
                   }
 
                 });
+                
               }
           }
       }
   }
+
+
 
 
 public boolean rootEqualBassCheckboxChecked()
@@ -24882,7 +24968,10 @@ private ImageIcon pauseButton =
     private javax.swing.JMenu windowMenu;
     private javax.swing.JSeparator windowMenuSeparator;
     // End of variables declaration//GEN-END:variables
-
+    private javax.swing.JSeparator grammarMenuSeparator;
+    // Real end of variables declaration
+    
+    
 public int getIgnoreDuplicateLick()
   {
 
