@@ -780,12 +780,20 @@ public boolean isSectionStart(int index)
   
 }
 
+/**
+ * Returns ArrayList of indices of section starts that are
+ * not phrases.
+ * @return 
+ */
 public ArrayList<Integer> getSectionStartIndices()
 {
   ArrayList<Integer> result = new ArrayList<Integer>();
   for( SectionRecord record: records )
     {
-      result.add(record.getIndex());
+      if( !record.getIsPhrase() )
+        {
+        result.add(record.getIndex());
+        }
     }
     return result;
 }
