@@ -875,6 +875,19 @@ public Notate(Score score, Advisor adv, ImproVisor impro, int x, int y)
 
 
     initComponents();
+    //For Guide Line Generator
+    //Add scale degree checkboxes to arraylist
+    scaleDegrees = new ArrayList<JCheckBoxMenuItem>();
+    //Degree 3 is the default start degree
+    //It is initally set to selected (elsewhere)
+    startDegree = degree3;
+    scaleDegrees.add(degree1);
+    scaleDegrees.add(degree2);
+    scaleDegrees.add(degree3);
+    scaleDegrees.add(degree4);
+    scaleDegrees.add(degree5);
+    scaleDegrees.add(degree6);
+    scaleDegrees.add(degree7);
 
     sectionTable.setModel(sectionTableModel);
     sectionTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -2049,6 +2062,14 @@ public Critic getCritic()
         ascending = new javax.swing.JMenuItem();
         descending = new javax.swing.JMenuItem();
         noPreference = new javax.swing.JMenuItem();
+        selectScaleDegree = new javax.swing.JMenu();
+        degree1 = new javax.swing.JCheckBoxMenuItem();
+        degree2 = new javax.swing.JCheckBoxMenuItem();
+        degree3 = new javax.swing.JCheckBoxMenuItem();
+        degree4 = new javax.swing.JCheckBoxMenuItem();
+        degree5 = new javax.swing.JCheckBoxMenuItem();
+        degree6 = new javax.swing.JCheckBoxMenuItem();
+        degree7 = new javax.swing.JCheckBoxMenuItem();
         roadmapMenu = new javax.swing.JMenu();
         roadMapThisAnalyze = new javax.swing.JMenuItem();
         reAnalyzeMI = new javax.swing.JMenuItem();
@@ -8079,20 +8100,6 @@ public Critic getCritic()
         scoreTab.setBackground(new java.awt.Color(255, 255, 255));
         scoreTab.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         scoreTab.setOpaque(true);
-        scoreTab.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                scoreTabMousePressed(evt);
-            }
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                scoreTabMouseReleased(evt);
-            }
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                scoreTabMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                mouseEnteredTabPanel(evt);
-            }
-        });
         scoreTab.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 scoreTabStateChanged(evt);
@@ -8101,6 +8108,20 @@ public Critic getCritic()
         scoreTab.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseDragged(java.awt.event.MouseEvent evt) {
                 scoreTabMouseDragged(evt);
+            }
+        });
+        scoreTab.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                scoreTabMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                mouseEnteredTabPanel(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                scoreTabMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                scoreTabMouseReleased(evt);
             }
         });
         scoreTab.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -9060,6 +9081,67 @@ public Critic getCritic()
         });
         generateGuideToneLine.add(noPreference);
 
+        selectScaleDegree.setText("Start on Scale Degree");
+
+        degree1.setText("1");
+        degree1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                degree1ActionPerformed(evt);
+            }
+        });
+        selectScaleDegree.add(degree1);
+
+        degree2.setText("2");
+        degree2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                degree2ActionPerformed(evt);
+            }
+        });
+        selectScaleDegree.add(degree2);
+
+        degree3.setSelected(true);
+        degree3.setText("3");
+        degree3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                degree3ActionPerformed(evt);
+            }
+        });
+        selectScaleDegree.add(degree3);
+
+        degree4.setText("4");
+        degree4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                degree4ActionPerformed(evt);
+            }
+        });
+        selectScaleDegree.add(degree4);
+
+        degree5.setText("5");
+        degree5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                degree5ActionPerformed(evt);
+            }
+        });
+        selectScaleDegree.add(degree5);
+
+        degree6.setText("6");
+        degree6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                degree6ActionPerformed(evt);
+            }
+        });
+        selectScaleDegree.add(degree6);
+
+        degree7.setText("7");
+        degree7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                degree7ActionPerformed(evt);
+            }
+        });
+        selectScaleDegree.add(degree7);
+
+        generateGuideToneLine.add(selectScaleDegree);
+
         utilitiesMenu.add(generateGuideToneLine);
 
         menuBar.add(utilitiesMenu);
@@ -9118,11 +9200,6 @@ public Critic getCritic()
         menuBar.add(tradingMenu);
 
         notateGrammarMenu.setText(getDefaultGrammarName());
-        notateGrammarMenu.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                notateGrammarMenuMousePressed(evt);
-            }
-        });
         notateGrammarMenu.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 notateGrammarMenuStateChanged(evt);
@@ -9135,6 +9212,11 @@ public Critic getCritic()
             }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 notateGrammarMenuMenuSelected(evt);
+            }
+        });
+        notateGrammarMenu.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                notateGrammarMenuMousePressed(evt);
             }
         });
         notateGrammarMenu.addActionListener(new java.awt.event.ActionListener() {
@@ -22548,23 +22630,63 @@ int quantizeResolution = 60;
     }//GEN-LAST:event_tradingMenuActionPerformed
 
     private void ascendingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ascendingActionPerformed
-        GuideLineGenerator guideLine = new GuideLineGenerator(score.getChordProg(), 1);
+        GuideLineGenerator guideLine = new GuideLineGenerator(score.getChordProg(), 1, startDegree.getText());
         MelodyPart guideToneLine = guideLine.makeGuideLine();
         addChorus(guideToneLine);
     }//GEN-LAST:event_ascendingActionPerformed
 
     private void descendingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_descendingActionPerformed
-        GuideLineGenerator guideLine = new GuideLineGenerator(score.getChordProg(), -1);
+        GuideLineGenerator guideLine = new GuideLineGenerator(score.getChordProg(), -1, startDegree.getText());
         MelodyPart guideToneLine = guideLine.makeGuideLine();
         addChorus(guideToneLine);
     }//GEN-LAST:event_descendingActionPerformed
 
     private void noPreferenceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_noPreferenceActionPerformed
-        GuideLineGenerator guideLine = new GuideLineGenerator(score.getChordProg(), 0);
+        GuideLineGenerator guideLine = new GuideLineGenerator(score.getChordProg(), 0, startDegree.getText());
         MelodyPart guideToneLine = guideLine.makeGuideLine();
         addChorus(guideToneLine);
     }//GEN-LAST:event_noPreferenceActionPerformed
 
+    private void degree7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_degree7ActionPerformed
+        unselectAllExcept((JCheckBoxMenuItem)evt.getSource());
+    }//GEN-LAST:event_degree7ActionPerformed
+
+    private void degree1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_degree1ActionPerformed
+        unselectAllExcept((JCheckBoxMenuItem)evt.getSource());
+    }//GEN-LAST:event_degree1ActionPerformed
+
+    private void degree2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_degree2ActionPerformed
+        unselectAllExcept((JCheckBoxMenuItem)evt.getSource());
+    }//GEN-LAST:event_degree2ActionPerformed
+
+    private void degree3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_degree3ActionPerformed
+        unselectAllExcept((JCheckBoxMenuItem)evt.getSource());
+    }//GEN-LAST:event_degree3ActionPerformed
+
+    private void degree4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_degree4ActionPerformed
+        unselectAllExcept((JCheckBoxMenuItem)evt.getSource());
+    }//GEN-LAST:event_degree4ActionPerformed
+
+    private void degree5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_degree5ActionPerformed
+        unselectAllExcept((JCheckBoxMenuItem)evt.getSource());
+    }//GEN-LAST:event_degree5ActionPerformed
+
+    private void degree6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_degree6ActionPerformed
+        unselectAllExcept((JCheckBoxMenuItem)evt.getSource());
+    }//GEN-LAST:event_degree6ActionPerformed
+    
+    //For Guide Line Generator
+    //Unselect all check boxes except for the one passed in
+    private void unselectAllExcept(JCheckBoxMenuItem checked){
+        checked.setSelected(true);
+        startDegree = checked;
+        for(JCheckBoxMenuItem box : scaleDegrees){
+            if(!box.equals(checked)){
+                box.setSelected(false);
+            }
+        }
+    }
+    
 private void updateDottedAndTriplet()
   {
     isDotted = noteLenDottedCheckBox.isSelected();
@@ -24299,6 +24421,11 @@ private ImageIcon playButton =
         new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/play.gif"));
 private ImageIcon pauseButton =
         new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/pause.gif"));
+
+//Adding ArrayList of JCheckBoxMenuItem for use in Guide Line Generator
+//so that only one box can be checked at a time
+private ArrayList<JCheckBoxMenuItem> scaleDegrees;
+private JCheckBoxMenuItem startDegree;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel OpenHelpText;
     private javax.swing.JButton ReloadSuperColliderButton;
@@ -24480,6 +24607,13 @@ private ImageIcon pauseButton =
     private javax.swing.JPanel defaultStaveTypePanel;
     private javax.swing.JTextField defaultTempoTF;
     private javax.swing.JPanel defaultsTab;
+    private javax.swing.JCheckBoxMenuItem degree1;
+    private javax.swing.JCheckBoxMenuItem degree2;
+    private javax.swing.JCheckBoxMenuItem degree3;
+    private javax.swing.JCheckBoxMenuItem degree4;
+    private javax.swing.JCheckBoxMenuItem degree5;
+    private javax.swing.JCheckBoxMenuItem degree6;
+    private javax.swing.JCheckBoxMenuItem degree7;
     private javax.swing.JButton delSectionButton;
     private javax.swing.JButton delTabBtn;
     private javax.swing.JCheckBox delTabCheckBox;
@@ -24898,6 +25032,7 @@ private ImageIcon pauseButton =
     private javax.swing.JTable sectionTable;
     private javax.swing.JLabel selectAStyleLabel;
     private javax.swing.JMenuItem selectAllMI;
+    private javax.swing.JMenu selectScaleDegree;
     private javax.swing.JCheckBox sendSetBankCheckBox;
     private javax.swing.JToggleButton showAdviceButton;
     private javax.swing.JCheckBoxMenuItem showBracketsAllMeasuresMI;
