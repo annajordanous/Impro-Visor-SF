@@ -2045,7 +2045,10 @@ public Critic getCritic()
         soloGeneratorMI = new javax.swing.JMenuItem();
         voicingTestMI = new javax.swing.JMenuItem();
         pianoKeyboardMI = new javax.swing.JMenuItem();
-        generateGuideToneLine = new javax.swing.JMenuItem();
+        generateGuideToneLine = new javax.swing.JMenu();
+        ascending = new javax.swing.JMenuItem();
+        descending = new javax.swing.JMenuItem();
+        noPreference = new javax.swing.JMenuItem();
         roadmapMenu = new javax.swing.JMenu();
         roadMapThisAnalyze = new javax.swing.JMenuItem();
         reAnalyzeMI = new javax.swing.JMenuItem();
@@ -4526,7 +4529,6 @@ public Critic getCritic()
         cancelLickTitle.setText("Cancel");
         cancelLickTitle.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         cancelLickTitle.setDefaultCapable(false);
-        cancelLickTitle.setOpaque(true);
         cancelLickTitle.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelLickTitleActionPerformed(evt);
@@ -4546,7 +4548,6 @@ public Critic getCritic()
         okSaveButton.setText("Save This");
         okSaveButton.setToolTipText("Saves the item in the vocabulary file.");
         okSaveButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        okSaveButton.setOpaque(true);
         okSaveButton.setSelected(true);
         okSaveButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -4664,7 +4665,6 @@ public Critic getCritic()
         ignoreDuplicate.setText("Ignore This One");
         ignoreDuplicate.setToolTipText("Do not save the duplicate in the vocabulary.");
         ignoreDuplicate.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        ignoreDuplicate.setOpaque(true);
         ignoreDuplicate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ignoreDuplicateActionPerformed(evt);
@@ -4687,7 +4687,6 @@ public Critic getCritic()
         saveDuplicate.setToolTipText("Saves the lick in the vocabulary");
         saveDuplicate.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         saveDuplicate.setDefaultCapable(false);
-        saveDuplicate.setOpaque(true);
         saveDuplicate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveDuplicateActionPerformed(evt);
@@ -4743,7 +4742,6 @@ public Critic getCritic()
         overwriteLickButton.setText("Overwrite Lick");
         overwriteLickButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         overwriteLickButton.setDefaultCapable(false);
-        overwriteLickButton.setOpaque(true);
         overwriteLickButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 overwriteLickButtonActionPerformed(evt);
@@ -6515,7 +6513,6 @@ public Critic getCritic()
         cancelTruncate.setText("Cancel truncation");
         cancelTruncate.setToolTipText("Do not truncate the part.");
         cancelTruncate.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        cancelTruncate.setOpaque(true);
         cancelTruncate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelTruncateActionPerformed(evt);
@@ -6538,7 +6535,6 @@ public Critic getCritic()
         acceptTruncate.setToolTipText("Truncates the part as specified.");
         acceptTruncate.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         acceptTruncate.setDefaultCapable(false);
-        acceptTruncate.setOpaque(true);
         acceptTruncate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 acceptTruncateActionPerformed(evt);
@@ -8060,7 +8056,6 @@ public Critic getCritic()
         clearButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         clearButton.setMaximumSize(new java.awt.Dimension(46, 38));
         clearButton.setMinimumSize(new java.awt.Dimension(46, 38));
-        clearButton.setOpaque(true);
         clearButton.setPreferredSize(new java.awt.Dimension(46, 38));
         clearButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -8162,12 +8157,12 @@ public Critic getCritic()
 
         openRecentLeadsheetMenu.setText("Open Recent Leadsheet (same window)");
         openRecentLeadsheetMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                populateRecentFileMenu(evt);
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                populateRecentFileMenu(evt);
             }
         });
 
@@ -8183,12 +8178,12 @@ public Critic getCritic()
 
         openRecentLeadsheetNewWindowMenu.setText("Open Recent Leadsheet (new window)");
         openRecentLeadsheetNewWindowMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                populateRecentLeadsheetNewWindow(evt);
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                populateRecentLeadsheetNewWindow(evt);
             }
         });
 
@@ -9040,11 +9035,31 @@ public Critic getCritic()
         utilitiesMenu.add(pianoKeyboardMI);
 
         generateGuideToneLine.setText("Generate Guide Tone Line");
-        generateGuideToneLine.addActionListener(new java.awt.event.ActionListener() {
+
+        ascending.setText("Ascending");
+        ascending.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                generateGuideToneLineActionPerformed(evt);
+                ascendingActionPerformed(evt);
             }
         });
+        generateGuideToneLine.add(ascending);
+
+        descending.setText("Descending");
+        descending.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                descendingActionPerformed(evt);
+            }
+        });
+        generateGuideToneLine.add(descending);
+
+        noPreference.setText("No Preference");
+        noPreference.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                noPreferenceActionPerformed(evt);
+            }
+        });
+        generateGuideToneLine.add(noPreference);
+
         utilitiesMenu.add(generateGuideToneLine);
 
         menuBar.add(utilitiesMenu);
@@ -9114,12 +9129,12 @@ public Critic getCritic()
             }
         });
         notateGrammarMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                notateGrammarMenuMenuSelected(evt);
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                notateGrammarMenuMenuSelected(evt);
             }
         });
         notateGrammarMenu.addActionListener(new java.awt.event.ActionListener() {
@@ -9132,12 +9147,12 @@ public Critic getCritic()
         windowMenu.setMnemonic('W');
         windowMenu.setText("Window");
         windowMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                windowMenuMenuSelected(evt);
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                windowMenuMenuSelected(evt);
             }
         });
 
@@ -22532,11 +22547,23 @@ int quantizeResolution = 60;
         populateTradingMenu();
     }//GEN-LAST:event_tradingMenuActionPerformed
 
-    private void generateGuideToneLineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateGuideToneLineActionPerformed
-        GuideLineGenerator guideLine = new GuideLineGenerator(score.getChordProg());
+    private void ascendingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ascendingActionPerformed
+        GuideLineGenerator guideLine = new GuideLineGenerator(score.getChordProg(), 1);
         MelodyPart guideToneLine = guideLine.makeGuideLine();
         addChorus(guideToneLine);
-    }//GEN-LAST:event_generateGuideToneLineActionPerformed
+    }//GEN-LAST:event_ascendingActionPerformed
+
+    private void descendingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_descendingActionPerformed
+        GuideLineGenerator guideLine = new GuideLineGenerator(score.getChordProg(), -1);
+        MelodyPart guideToneLine = guideLine.makeGuideLine();
+        addChorus(guideToneLine);
+    }//GEN-LAST:event_descendingActionPerformed
+
+    private void noPreferenceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_noPreferenceActionPerformed
+        GuideLineGenerator guideLine = new GuideLineGenerator(score.getChordProg(), 0);
+        MelodyPart guideToneLine = guideLine.makeGuideLine();
+        addChorus(guideToneLine);
+    }//GEN-LAST:event_noPreferenceActionPerformed
 
 private void updateDottedAndTriplet()
   {
@@ -24304,6 +24331,7 @@ private ImageIcon pauseButton =
     private javax.swing.ButtonGroup approachColorBtnGrp;
     private javax.swing.JLabel approachToneLabel;
     private javax.swing.JCheckBox approachTones;
+    private javax.swing.JMenuItem ascending;
     private javax.swing.JLabel audioInputLabel;
     private javax.swing.JLabel audioInputLabel1;
     private javax.swing.JLabel audioInputLabel2;
@@ -24463,6 +24491,7 @@ private ImageIcon pauseButton =
     private javax.swing.JDialog deleteVoicingDialog;
     private javax.swing.JLabel deleteVoicingLabel;
     private javax.swing.JButton deleteVoicingOKButton;
+    private javax.swing.JMenuItem descending;
     private javax.swing.JPanel devicesTab;
     private javax.swing.JButton drawButton;
     private javax.swing.JCheckBox drawChordTonesCheckBox;
@@ -24511,7 +24540,7 @@ private ImageIcon pauseButton =
     private javax.swing.JComboBox frameSizeComboBox1;
     private javax.swing.JToggleButton freezeLayoutButton;
     private javax.swing.JPanel generalContourTab;
-    private javax.swing.JMenuItem generateGuideToneLine;
+    private javax.swing.JMenu generateGuideToneLine;
     private javax.swing.JMenuItem generateLickInSelection;
     private javax.swing.JSpinner generationGapSpinner;
     private javax.swing.ButtonGroup generatorButtonGroup;
@@ -24723,6 +24752,7 @@ private ImageIcon pauseButton =
     private javax.swing.JButton newVoicingSaveButton;
     private javax.swing.JComboBox newVoicingTypeCB;
     private javax.swing.JLabel newVoicingTypeLabel;
+    private javax.swing.JMenuItem noPreference;
     private javax.swing.JMenu notateGrammarMenu;
     private javax.swing.JLabel noteColoringLabel;
     private javax.swing.JButton noteCursorBtn;
