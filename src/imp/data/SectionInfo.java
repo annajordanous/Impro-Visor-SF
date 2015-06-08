@@ -788,11 +788,23 @@ public boolean isSectionStart(int index)
 public ArrayList<Integer> getSectionStartIndices()
 {
   ArrayList<Integer> result = new ArrayList<Integer>();
+  boolean isStart = true; //The first Section Record must be a Section Start
+  
   for( SectionRecord record: records )
     {
-      if( !record.getIsPhrase() )
-        {
-        result.add(record.getIndex());
+        if(isStart==true){
+            result.add(record.getIndex());
+        }
+        if(!record.getIsPhrase()){
+            //Any Section Record that follows a Section Record that is
+            //not a phrase must be a Section Start
+            isStart = true;
+        }
+        else{
+            //Otherwise, if a Section Record is a Phrase, i.e.,
+            //ends with a breath mark as opposed to a double bar line,
+            //the next Section Record cannot be a Section Start
+            isStart = false;
         }
     }
     return result;
