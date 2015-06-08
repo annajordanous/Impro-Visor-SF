@@ -20905,15 +20905,13 @@ int shufCount = 0;
  */
 public void originalGenerate(LickGen lickgen, int improviseStartSlot, int improviseEndSlot)
   {
-      //shuffle grammar for cycle and shuffle here?
-    //use pointer
     
-    //GrammarFilter.EXTENSION
     if (ifCycle){
         String temp = null;
         temp = gramList.get(cycCount).substring(0, gramList.get(cycCount).length() - GrammarFilter.EXTENSION.length());
         notateGrammarMenu.setText(temp + "(Cycle)");
         grammarFilename = ImproVisor.getGrammarDirectory() + File.separator + gramList.get(cycCount);
+        fullName = gramList.get(cycCount);
         lickgen.loadGrammar(grammarFilename);
         lickgenFrame.resetTriageParameters(false);
         Preferences.setPreference(Preferences.DEFAULT_GRAMMAR_FILE, gramList.get(cycCount));
@@ -20927,12 +20925,14 @@ public void originalGenerate(LickGen lickgen, int improviseStartSlot, int improv
         temp = shufGramList.get(shufCount).substring(0, shufGramList.get(shufCount).length() - GrammarFilter.EXTENSION.length());
         notateGrammarMenu.setText(temp + "(Shuffle)");
         grammarFilename = ImproVisor.getGrammarDirectory() + File.separator + shufGramList.get(shufCount);
+        fullName = shufGramList.get(shufCount);
         lickgen.loadGrammar(grammarFilename);
         lickgenFrame.resetTriageParameters(false);
         Preferences.setPreference(Preferences.DEFAULT_GRAMMAR_FILE, shufGramList.get(shufCount));
         shufCount++;
-        if (shufCount == shufGramList.size()){shufCount = 0;} 
+        if (shufCount == shufGramList.size()){shufCount = 0; Collections.shuffle(shufGramList);} 
     }
+
 
     saveConstructionLineState = showConstructionLinesMI.isSelected();
     // Don't construction show lines while generating
@@ -23185,30 +23185,48 @@ private void notateGrammarMenuActOpt(java.awt.event.ActionEvent evt)
     JMenuItem item = (JMenuItem) evt.getSource();
     String stem = item.getText();
     if (stem.equals("Cycle")){ifCycle = true; ifShuffle = false; shufCount = 0;
+        for (int x = 0; x < gramList.size(); x++){
+        if (gramList.get(x).equals(fullName)){
+            cycCount = x;
+        }
+    }
+        String temp = gramList.get(cycCount).substring(0, gramList.get(cycCount).length() - GrammarFilter.EXTENSION.length());
+        notateGrammarMenu.setText(temp + "(Cycle)");
     }
     if (stem.equals("Shuffle")){ifShuffle = true; ifCycle = false; cycCount = 0;
         Collections.shuffle(shufGramList);
+        for (int x = 0; x < shufGramList.size(); x++){
+            if (fullName.equals(shufGramList.get(x))){
+                shufCount = x;
+            }
+        }
+        String temp = shufGramList.get(shufCount).substring(0, shufGramList.get(shufCount).length() - GrammarFilter.EXTENSION.length());
+        notateGrammarMenu.setText(temp + "(Shuffle)");
     }
-
-    notateGrammarMenu.setText(stem);
   }
 
+String fullName = getDefaultGrammarName() + GrammarFilter.EXTENSION;
 private void notateGrammarMenuAction(java.awt.event.ActionEvent evt)
   {
     group.clearSelection();
     ifCycle = false;
     ifShuffle = false;
-    cycCount = 0;
     shufCount = 0;
     JMenuItem item = (JMenuItem) evt.getSource();
     String stem = item.getText();
     notateGrammarMenu.setText(stem);
-    String extendedName = stem + GrammarFilter.EXTENSION;
-    grammarFilename = ImproVisor.getGrammarDirectory() + File.separator + extendedName;
+    fullName = stem + GrammarFilter.EXTENSION;
+    grammarFilename = ImproVisor.getGrammarDirectory() + File.separator + fullName;
     lickgen.loadGrammar(grammarFilename);
     lickgenFrame.resetTriageParameters(false);
-    Preferences.setPreference(Preferences.DEFAULT_GRAMMAR_FILE, extendedName);
+    Preferences.setPreference(Preferences.DEFAULT_GRAMMAR_FILE, fullName);
+
+    if (stem.startsWith("_")){
+        cycCount = 0;
+        shufCount = 0;
+    }
   }
+
 
 
 public void openCorpus()
@@ -23405,8 +23423,10 @@ private void populateNotateGrammarMenu()
 
             if( name.endsWith(GrammarFilter.EXTENSION) )
               {
-                gramList.add(name);  
-                shufGramList.add(name);
+                if( !name.startsWith("_")){
+                    gramList.add(name);
+                    shufGramList.add(name);
+                }
                   
                 int len = name.length();
                 String stem = name.substring(0, len - GrammarFilter.EXTENSION.length());
