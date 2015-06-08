@@ -71,12 +71,13 @@ public class GuideLineGenerator {
     private final int DESCENDING = -1;
     private final int NOPREFERENCE = 0;
     
+    private final String startDegree;
     
-    
-    public GuideLineGenerator(ChordPart inputChordPart, int direction) 
+    public GuideLineGenerator(ChordPart inputChordPart, int direction, String startDegree) 
     {
         chordPart = inputChordPart;
         this.direction = direction;
+        this.startDegree = startDegree;
     }
     
     //returns a MelodyPart that is a guide tone line based on the ChordPart
@@ -137,9 +138,9 @@ public class GuideLineGenerator {
             Chord currentChord = chordPart.getChord(index);
             
             //DEBUGGING
-           if(startIndices.contains(new Integer(index))){
-               System.out.println("Index: "+index+";\tisSectionStart: "+chordPart.getSectionInfo().isSectionStart(index)+";\tChord: "+currentChord.getName()+";\tMeasure:"+chordPart.getSectionInfo().slotIndexToMeasure(index));
-           }
+//           if(startIndices.contains(new Integer(index))){
+//               System.out.println("Index: "+index+";\tisSectionStart: "+chordPart.getSectionInfo().isSectionStart(index)+";\tChord: "+currentChord.getName()+";\tMeasure:"+chordPart.getSectionInfo().slotIndexToMeasure(index));
+//           }
             
             //END DEBUGGING
             //System.out.println("currentChord = " + currentChord);
@@ -160,24 +161,24 @@ public class GuideLineGenerator {
     
     
     //Picks a note of the chord to be the seed for the guide tone line
-    //currently, just chooses the 2nd note in the spelling, usually the 3rd
-    //puts it in a reasonable range (currently 
+    //currently, starts on the user-selected scale degree
     private Note firstNote(Chord c){
-        Polylist noteList = c.getSpell();
-        
-        NoteSymbol third;
-        if( noteList.length() < 2 ){
-            third = (NoteSymbol) noteList.first();
-        }
-        else{
-            third = (NoteSymbol) noteList.second();
-        }
-        
-        PitchClass pc = third.getPitchClass();
-        //Currently using octave 1, not sure if this should change or not
-        int octave = direction==ASCENDING?0:1;
-        NoteSymbol ns = new NoteSymbol(pc, octave, c.getRhythmValue());
-        return ns.toNote();
+        return scaleDegreeToNote(startDegree, c);
+//        Polylist noteList = c.getSpell();
+//        
+//        NoteSymbol third;
+//        if( noteList.length() < 2 ){
+//            third = (NoteSymbol) noteList.first();
+//        }
+//        else{
+//            third = (NoteSymbol) noteList.second();
+//        }
+//        
+//        PitchClass pc = third.getPitchClass();
+//        //Currently using octave 1, not sure if this should change or not
+//        int octave = direction==ASCENDING?0:1;
+//        NoteSymbol ns = new NoteSymbol(pc, octave, c.getRhythmValue());
+//        return ns.toNote();
     }
     
     //choose the best possible next note
@@ -354,6 +355,8 @@ public class GuideLineGenerator {
         return fiveNextNotes;
     }
     
+    //IMPORTANT: does not specify whether to represent note as sharp or flat
+    //if there is ambiguity - I think it defaults to sharp...
     private Note scaleDegreeToNote(String degree, Chord c){
         PitchClass rootPc = c.getRootPitchClass();
         int octave = direction==ASCENDING?0:1;
