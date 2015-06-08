@@ -157,15 +157,17 @@ public class RoadMapSettings {
     public boolean showKeys = true;
     
     /**
-     * Returns the length of the block in the current settings
-     * @param block the block
-     * @return the length
+     * whether to show the starting note from the leadsheet or not
+     * 
      */
     public boolean showStartingNote = true;
+    
     /**
      * whether to show the starting note from the leadsheet or not
      * 
      */
+    public boolean showVariants = true;
+    
     public int getBlockLength(Block block)
     {
         return (int) (block.getDuration() * measureLength)/getSlotsPerMeasure();

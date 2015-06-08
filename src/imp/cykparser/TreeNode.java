@@ -205,7 +205,39 @@ public class TreeNode {
         isEnd = t.isSectionEnd();
         height = t.getHeight() + 1;
     }
-    
+     /** TreeNode / 7 (Unary Brick w/ variant type)
+     * Makes a TreeNode for a Unary Brick
+     *
+     * @param sym, a String of the Node symbol
+     * @param type, a String of the Node's type
+     * @param m, a String describing the Node's mode
+     * @param t, the TreeNode whose block is the center of this TreeNode
+     * @param co, the cost
+     * @param k, the key of the block
+     * @param variant, a String of the variant of the block
+     */
+    public TreeNode(String sym, String type, String m, 
+                    TreeNode t, double co, long k, String variant)
+    {
+        child1 = null;
+        child2 = null;
+        symbol = sym;
+        
+        ArrayList<Block> subBlocks = new ArrayList<Block>();
+        subBlocks.addAll(t.getBlocks());
+        
+        chords = new ArrayList<ChordBlock>();
+        chords.addAll(t.getChords());
+        
+        block = new Brick(sym, variant, k, type, subBlocks, m);
+        key = k;
+
+        cost = co;
+        toPrint = !(type.equals(CYKParser.INVISIBLE));
+
+        isEnd = t.isSectionEnd();
+        height = t.getHeight() + 1;
+    }
     
     
     /** TreeNode / 7 (Brick)
@@ -250,7 +282,48 @@ public class TreeNode {
             height = c1.getHeight();
         height++;
     }
-    
+    /** TreeNode / 8 (Brick w/ variant type)
+     * Makes a TreeNode for a nonterminal
+     *
+     * @param sym, a String of the Node symbol
+     * @param type, a String of the Node's type
+     * @param m, a String describing the Node's mode
+     * @param c1, the first child TreeNode
+     * @param c2, the second child TreeNode
+     * @param co, the cost
+     * @param k, the key of the block
+     */
+    public TreeNode(String sym, String type, String m, 
+                    TreeNode c1, TreeNode c2, 
+                    double co, long k, String variant)
+    {
+        child1 = c1;
+        child2 = c2;
+        symbol = sym;
+        
+        ArrayList<Block> subBlocks = new ArrayList<Block>();
+        subBlocks.addAll(c1.getBlocks());
+        subBlocks.addAll(c2.getBlocks());
+        
+        chords = new ArrayList<ChordBlock>();
+        chords.addAll(c1.getChords());
+        chords.addAll(c2.getChords());
+        
+        block = new Brick(sym, variant, k, type, subBlocks, m);
+        key = k;
+
+        cost = co;
+        toPrint = !(type.equals(CYKParser.INVISIBLE));
+
+        isEnd = c2.isSectionEnd();
+        isSub = (c1.isSub() || c2.isSub());
+
+        if (c1.getHeight() < c2.getHeight())
+            height = c2.getHeight();
+        else
+            height = c1.getHeight();
+        height++;
+    }
     
     /** TreeNode / 2 (Multiple blocks)
      * Creates a TreeNode whose name won't be printed for the purposes

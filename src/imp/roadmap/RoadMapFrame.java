@@ -384,6 +384,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         showBrickNamesCheckBoxMI = new javax.swing.JCheckBoxMenuItem();
         showJoinsCheckBoxMI = new javax.swing.JCheckBoxMenuItem();
         showStartingNoteCheckBoxMI = new javax.swing.JCheckBoxMenuItem();
+        showVariantsCheckBoxMI = new javax.swing.JCheckBoxMenuItem();
         replaceWithPhiCheckBoxMI = new javax.swing.JCheckBoxMenuItem();
         replaceWithDeltaCheckBoxMI = new javax.swing.JCheckBoxMenuItem();
         windowMenu = new javax.swing.JMenu();
@@ -2061,6 +2062,16 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         });
         preferencesMenu.add(showStartingNoteCheckBoxMI);
 
+        showVariantsCheckBoxMI.setSelected(true);
+        showVariantsCheckBoxMI.setText(bundle.getString("RoadMapFrame.showVariantsCheckBoxMI.text")); // NOI18N
+        showVariantsCheckBoxMI.setName("showVariantsCheckBoxMI"); // NOI18N
+        showVariantsCheckBoxMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showVariantsCheckBoxMIActionPerformed(evt);
+            }
+        });
+        preferencesMenu.add(showVariantsCheckBoxMI);
+
         replaceWithPhiCheckBoxMI.setSelected(true);
         replaceWithPhiCheckBoxMI.setText("Use \u03D5 for m7b5");
         replaceWithPhiCheckBoxMI.setName("replaceWithPhiCheckBoxMI"); // NOI18N
@@ -2973,6 +2984,11 @@ private void playOnClickToggleButtonPressed(java.awt.event.ActionEvent evt)//GEN
         roadMapPanel.draw();
     }//GEN-LAST:event_showStartingNoteCheckBoxMIActionPerformed
 
+    private void showVariantsCheckBoxMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showVariantsCheckBoxMIActionPerformed
+       settings.showVariants = showVariantsCheckBoxMI.getState(); // TODO add your handling code here:
+       roadMapPanel.draw();
+    }//GEN-LAST:event_showVariantsCheckBoxMIActionPerformed
+
 private Notate.StyleComboBoxModel getStyleMenuModel()
   {
     return styleComboBoxModel;
@@ -3849,6 +3865,7 @@ public void setVolumeSlider(int volume)
     private javax.swing.JCheckBoxMenuItem showJoinsCheckBoxMI;
     private javax.swing.JCheckBoxMenuItem showKeysCheckBoxMI;
     private javax.swing.JCheckBoxMenuItem showStartingNoteCheckBoxMI;
+    private javax.swing.JCheckBoxMenuItem showVariantsCheckBoxMI;
     private javax.swing.JButton stopButton;
     private javax.swing.JMenuItem stopPlayMI;
     private javax.swing.JComboBox styleComboBox;

@@ -64,7 +64,7 @@ public class BinaryProduction extends AbstractProduction {
     private boolean arbitrary = false; // whether the brick contains a block of
                                        // arbitrary duration
     private boolean familyMatch = false; // if match is made with chord family
-    
+    private String variant; // the variant type of the block
     
     // BinaryProduction Constructors // 
     
@@ -101,6 +101,41 @@ public class BinaryProduction extends AbstractProduction {
         checkArbitrary(b2);
     }
     
+    /** Standard constructor w/ variant
+     * Constructs a BinaryProduction from two blocks and circumstantial data
+     * 
+     * @param h, a String describing the "head" symbol, or the name of the 
+     *        resulting Brick the rule produces
+     * @param t, a String describing type of Brick formed
+     * @param k, a long denoting the key of the resulting Brick
+     * @param b1, the first Block forming the resulting Brick
+     * @param b2, the second Block forming the resulting brick
+     * @param p, a boolean describing whether this Brick should be seen by users
+     * @param m, a String describing the mode of the Brick
+     * @param bricks, a BrickLibrary
+     * @param v, a String of the variant type of the Brick
+     */
+    public BinaryProduction(String h, String t, long k, Block b1, Block b2, boolean p,
+            String m, BrickLibrary bricks, String v)
+    {
+        head = h;
+        type = t;
+        
+        key1 = modKeys(b1.getKey() - k);
+        name1 = b1.getSymbol();
+        dur1 = b1.getDuration(); 
+        key2 = modKeys(b2.getKey() - k);
+        name2 = b2.getSymbol();
+        dur2 = b2.getDuration();
+        toPrint = p;
+        mode = m;
+        cost = bricks.getCost(type);
+        duration = dur1 + dur2;
+        checkArbitrary(b1);
+        checkArbitrary(b2);
+        variant = v;
+    }
+    
     /** Higher-level constructor
      * Constructs a BinaryProduction from a BinaryProduction of the first part 
      * of the Brick and a Block of the second part of the Brick.
@@ -132,6 +167,41 @@ public class BinaryProduction extends AbstractProduction {
         duration = dur1 + dur2;
         if (pStart.isArbitrary()) setArbitrary(true);
         checkArbitrary(b);
+    }
+    
+    /** Higher-level constructor w/ variant
+     * Constructs a BinaryProduction from a BinaryProduction of the first part 
+     * of the Brick and a Block of the second part of the Brick.
+     * 
+     * @param h, a String describing the "head" symbol, or the name of the 
+     *        resulting Brick the rule produces
+     * @param t, a String describing type of Brick formed
+     * @param k, a long denoting the key of the resulting Brick
+     * @param pStart, a BinaryProduction describing the first Block of this 
+     *        production's Brick
+     * @param b, the second Block forming the resulting Brick
+     * @param p, a boolean describing whether this Brick should be seen by users
+     * @param m, a String describing the mode of the Brick
+     * @param bricks, a BrickLibrary
+     */
+    public BinaryProduction(String h, String t, long k, BinaryProduction pStart, 
+            Block b, boolean p, String m, BrickLibrary bricks, String v) {
+        head = h;
+        type = t;
+        key1 = 0;
+        name1 = pStart.getHead();
+        dur1 = pStart.getDuration();
+        key2 = modKeys(b.getKey() - k);
+        name2 = b.getSymbol();
+        dur2 = b.getDuration();
+        toPrint = p;
+        mode = m;
+        cost = bricks.getCost(type);
+        duration = dur1 + dur2;
+        variant = v;
+        if (pStart.isArbitrary()) setArbitrary(true);
+        checkArbitrary(b);
+        
     }
     
     // Getters for a BinaryProduction //
@@ -324,6 +394,10 @@ public class BinaryProduction extends AbstractProduction {
      */
     public void setArbitrary(boolean arbitrary) {
         this.arbitrary = arbitrary;
+    }
+    public String getVariant()
+    {
+        return variant;
     }
     // end of BinaryProduction class
 }

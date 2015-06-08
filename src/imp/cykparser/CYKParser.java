@@ -277,7 +277,7 @@ public class CYKParser
                   {
                   UnaryProduction u = new UnaryProduction(name, b.getType(), 
                                         b.getKey(), sb0,
-                                        true, mode, lib);
+                                        true, mode, lib, b.getVariant());
                   terminalRules.add(u);
                   }
             }
@@ -295,7 +295,7 @@ public class CYKParser
                   {
                   BinaryProduction p = new BinaryProduction(name, b.getType(), 
                                          b.getKey(), sb0, sb1, 
-                                         true, mode, lib);
+                                         true, mode, lib, b.getVariant());
                   nonterminalRules.add(p);
                   }
             }
@@ -314,18 +314,21 @@ public class CYKParser
                 currentName = name + b.getVariant() + "1";
                 BinaryProduction[] prods = new BinaryProduction[size];
                 prods[0] = new BinaryProduction(currentName, INVISIBLE, b.getKey(),
-                        subBlocks.get(0), subBlocks.get(1), false, mode, lib);
+                        subBlocks.get(0), subBlocks.get(1), false, mode, lib, 
+                        b.getVariant());
                 nonterminalRules.add(prods[0]);
                 // second through next to last rules
                 for (int i = 2; i < size - 1; i++) {
                     currentName = name + b.getVariant() + i;
                     prods[i-1] = new BinaryProduction(currentName, INVISIBLE,
-                            b.getKey(), prods[i-2], subBlocks.get(i), false, mode, lib);
+                            b.getKey(), prods[i-2], subBlocks.get(i), false, 
+                            mode, lib, b.getVariant());
                     nonterminalRules.add(prods[i-1]);
                 }
                 // final rule
                 prods[size-2] = new BinaryProduction(name, b.getType(), b.getKey(),
-                        prods[size-3], subBlocks.get(size-1), true, mode, lib);
+                        prods[size-3], subBlocks.get(size-1), true, mode, lib, 
+                        b.getVariant());
                 nonterminalRules.add(prods[size-2]);
             }
         
@@ -494,7 +497,8 @@ public class CYKParser
                     long cost = SUB_COST;
                     TreeNode newNode = new TreeNode(rule.getHead(),
                                     rule.getType(), rule.getMode(), 
-                                    t, match.cost + cost, match.chordDiff);
+                                    t, match.cost + cost, match.chordDiff, 
+                                    rule.getVariant());
                     unaries.add(newNode);
                 }
             }
@@ -590,7 +594,7 @@ private void findNonterminal(int row, int col)
                                     TreeNode newNode = new TreeNode(rule.getHead(),
                                                                     rule.getType(), rule.getMode(),
                                                                     symbol1, symbol2, match.cost + cost, 
-                                                                    match.chordDiff);
+                                                                    match.chordDiff, rule.getVariant());
                                     // Have gotten NullPointerException here. RK
                                     if( cykTable[row][col] != null )
                                       {
@@ -639,7 +643,8 @@ private void findNonterminal(int row, int col)
                     if (match.familyMatch) cost += SUB_COST;
                     TreeNode newNode = new TreeNode(rule.getHead(),
                                     rule.getType(), rule.getMode(), 
-                                    t, match.cost + cost, match.chordDiff);
+                                    t, match.cost + cost, match.chordDiff, 
+                                    rule.getVariant());
                     unaries.add(newNode);
                 }
             }
