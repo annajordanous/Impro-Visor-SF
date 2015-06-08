@@ -46,7 +46,7 @@ public class UnaryProduction extends AbstractProduction {
     private String mode = "";   // the mode of the brick in the production
     private boolean toPrint;    // whether the brick is a user-side viewable one
     private boolean familyMatch = false; // whether the brick is matched by family
-    
+    private String variant;
     
     // NOTE: Assumes it's a production in C
     /** Unary Production / 6
@@ -70,7 +70,29 @@ public class UnaryProduction extends AbstractProduction {
         cost = bricks.getCost(type);
         duration = b.getDuration();
     }
- 
+    /** Unary Production / 7 w/ variant
+     * Standard constructor based upon a block and production data
+     * @param h, the head symbol (a String)
+     * @param t, the type of production (a String)
+     * @param b, the composing Block
+     * @param p, whether the production results in a printable Brick
+     * @param m, the mode (a String)
+     * @param v, the variant of the block (a String)
+     */
+    public UnaryProduction(String h, String t, long k, Block b, boolean p,
+            String m, BrickLibrary bricks, String v)
+    {
+        head = h;
+        type = t;
+        key = k; 
+        name = b.getSymbol();
+        termKey = b.getKey();
+        toPrint = p;
+        mode = m;
+        cost = bricks.getCost(type);
+        duration = b.getDuration();
+        variant = v;
+    }
     public String getHead() {
         return head;
     }
@@ -161,6 +183,10 @@ public class UnaryProduction extends AbstractProduction {
     private long modKeys(long i) {
         return (i + TOTAL_SEMITONES)%TOTAL_SEMITONES;
     }
-      
+    
+    public String getVariant()
+    {
+        return variant;
+    }
     // end of UnaryProduction class
 }
