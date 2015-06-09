@@ -235,9 +235,12 @@ private MelodyPart applySubstitutionType(ArrayList<Substitution> substitutions,
         // as is and try to apply to the next note. 
         if(substituted == null)
         {
-            Note addNote = transNotes.getNote(initSlot);
             MelodyPart temp = new MelodyPart();
-            temp.addNote(addNote);
+            Note addNote = transNotes.getNote(initSlot);
+            if( addNote != null )
+              {
+              temp.addNote(addNote);
+              }
             transNotes.pasteOver(temp, initSlot);
             startingSlot[0] = transNotes.getNextIndex(initSlot);
         }
