@@ -72,12 +72,18 @@ public class GuideLineGenerator {
     private final int NOPREFERENCE = 0;
     
     private final String startDegree;
+    private final boolean mix;
     
     public GuideLineGenerator(ChordPart inputChordPart, int direction, String startDegree) 
     {
         chordPart = inputChordPart;
         this.direction = direction;
         this.startDegree = startDegree;
+        if(startDegree.equals("mix")){
+            mix=true;
+        }else{
+            mix=false;
+        }
     }
     
     //returns a MelodyPart that is a guide tone line based on the ChordPart
@@ -123,7 +129,18 @@ public class GuideLineGenerator {
         ArrayList<Integer> durations = chordPart.getChordDurations();
         
         int index = startIndices.get(0);
-        Note prevNote = firstNote(firstChord);
+        Note prevFirstNote, prevSecondNote, prevNote;
+        prevFirstNote = null;
+        prevSecondNote = null;
+        prevNote = null;
+        if(mix){
+            prevFirstNote = scaleDegreeToNote("3", firstChord);
+            prevFirstNote.setRhythmValue(firstChord.getRhythmValue()/2);
+            prevSecondNote = scaleDegreeToNote("7", firstChord);
+            prevSecondNote.setRhythmValue(firstChord.getRhythmValue()/2);
+        }else{
+            prevNote = firstNote(firstChord);
+        }
         
         //DEBUGGING
        /* System.out.println("Start Indices (generated using getSectionStartIndices):");
@@ -145,14 +162,38 @@ public class GuideLineGenerator {
             //END DEBUGGING
             //System.out.println("currentChord = " + currentChord);
             if(startIndices.contains(new Integer(index))){
-                Note first = firstNote(currentChord);
-                guideLine.add(first);
-                prevNote = first;
+                if(mix){
+                    Note FirstNote = scaleDegreeToNote("3", currentChord);
+                    FirstNote.setRhythmValue(currentChord.getRhythmValue()/2);
+                    Note SecondNote = scaleDegreeToNote("7", currentChord);
+                    SecondNote.setRhythmValue(currentChord.getRhythmValue()/2);
+                    guideLine.add(FirstNote);
+                    guideLine.add(SecondNote);
+                    prevFirstNote = FirstNote;
+                    prevSecondNote = SecondNote;
+                }else{
+                    Note first = firstNote(currentChord);
+                    guideLine.add(first);
+                    prevNote = first;
+                }
+                
             }
             else{
-                Note noteToAdd = nextNote(prevNote, currentChord);
-                guideLine.add(noteToAdd);
-                prevNote = noteToAdd;
+                if(mix){
+                    Note firstNoteToAdd = nextNote(prevFirstNote, currentChord);
+                    firstNoteToAdd.setRhythmValue(currentChord.getRhythmValue()/2);
+                    Note secondNoteToAdd = nextNote(prevSecondNote, currentChord);
+                    secondNoteToAdd.setRhythmValue(currentChord.getRhythmValue()/2);
+                    guideLine.add(firstNoteToAdd);
+                    guideLine.add(secondNoteToAdd);
+                    prevFirstNote = firstNoteToAdd;
+                    prevSecondNote = secondNoteToAdd;
+                }else{
+                    Note noteToAdd = nextNote(prevNote, currentChord);
+                    guideLine.add(noteToAdd);
+                    prevNote = noteToAdd;
+                }
+                
             }
             index+=duration;
         }
