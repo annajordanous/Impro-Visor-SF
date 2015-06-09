@@ -2070,6 +2070,7 @@ public Critic getCritic()
         degree5 = new javax.swing.JCheckBoxMenuItem();
         degree6 = new javax.swing.JCheckBoxMenuItem();
         degree7 = new javax.swing.JCheckBoxMenuItem();
+        mixLines = new javax.swing.JMenuItem();
         roadmapMenu = new javax.swing.JMenu();
         roadMapThisAnalyze = new javax.swing.JMenuItem();
         reAnalyzeMI = new javax.swing.JMenuItem();
@@ -9141,6 +9142,14 @@ public Critic getCritic()
         selectScaleDegree.add(degree7);
 
         generateGuideToneLine.add(selectScaleDegree);
+
+        mixLines.setText("Mix 3-7 and 7-3 lines");
+        mixLines.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mixLinesActionPerformed(evt);
+            }
+        });
+        generateGuideToneLine.add(mixLines);
 
         utilitiesMenu.add(generateGuideToneLine);
 
@@ -22674,6 +22683,12 @@ int quantizeResolution = 60;
     private void degree6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_degree6ActionPerformed
         unselectAllExcept((JCheckBoxMenuItem)evt.getSource());
     }//GEN-LAST:event_degree6ActionPerformed
+
+    private void mixLinesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mixLinesActionPerformed
+        GuideLineGenerator guideLine = new GuideLineGenerator(score.getChordProg(), 0, "mix");
+        MelodyPart guideToneLine = guideLine.makeGuideLine();
+        addChorus(guideToneLine);
+    }//GEN-LAST:event_mixLinesActionPerformed
     
     //For Guide Line Generator
     //Unselect all check boxes except for the one passed in
@@ -24888,6 +24903,7 @@ private JCheckBoxMenuItem startDegree;
     private javax.swing.JSpinner midiRecordSnapSpinner;
     private javax.swing.JFrame midiStyleSpec;
     private javax.swing.JSpinner minPitchSpinner1;
+    private javax.swing.JMenuItem mixLines;
     private javax.swing.JButton mixerBtn;
     private javax.swing.JDialog mixerDialog;
     private javax.swing.JMenuItem mostRecentLeadsheetMI;
