@@ -2080,6 +2080,7 @@ public Critic getCritic()
         degree7 = new javax.swing.JCheckBoxMenuItem();
         oneLine = new javax.swing.JMenuItem();
         mixLines = new javax.swing.JMenuItem();
+        guideToneLine = new javax.swing.JMenuItem();
         roadmapMenu = new javax.swing.JMenu();
         roadMapThisAnalyze = new javax.swing.JMenuItem();
         reAnalyzeMI = new javax.swing.JMenuItem();
@@ -9174,6 +9175,14 @@ public Critic getCritic()
         generateGuideToneLine.add(mixLines);
 
         utilitiesMenu.add(generateGuideToneLine);
+
+        guideToneLine.setText("Guide Tone Line");
+        guideToneLine.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                guideToneLineActionPerformed(evt);
+            }
+        });
+        utilitiesMenu.add(guideToneLine);
 
         menuBar.add(utilitiesMenu);
 
@@ -22660,40 +22669,6 @@ int quantizeResolution = 60;
         populateTradingMenu();
     }//GEN-LAST:event_tradingMenuActionPerformed
 
-    private void degree7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_degree7ActionPerformed
-        unselectAllExcept((JCheckBoxMenuItem)evt.getSource(), scaleDegrees, false);
-    }//GEN-LAST:event_degree7ActionPerformed
-
-    private void degree1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_degree1ActionPerformed
-        unselectAllExcept((JCheckBoxMenuItem)evt.getSource(), scaleDegrees, false);
-    }//GEN-LAST:event_degree1ActionPerformed
-
-    private void degree2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_degree2ActionPerformed
-        unselectAllExcept((JCheckBoxMenuItem)evt.getSource(), scaleDegrees, false);
-    }//GEN-LAST:event_degree2ActionPerformed
-
-    private void degree3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_degree3ActionPerformed
-        unselectAllExcept((JCheckBoxMenuItem)evt.getSource(), scaleDegrees, false);
-    }//GEN-LAST:event_degree3ActionPerformed
-
-    private void degree4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_degree4ActionPerformed
-        unselectAllExcept((JCheckBoxMenuItem)evt.getSource(), scaleDegrees, false);
-    }//GEN-LAST:event_degree4ActionPerformed
-
-    private void degree5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_degree5ActionPerformed
-        unselectAllExcept((JCheckBoxMenuItem)evt.getSource(), scaleDegrees, false);
-    }//GEN-LAST:event_degree5ActionPerformed
-
-    private void degree6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_degree6ActionPerformed
-        unselectAllExcept((JCheckBoxMenuItem)evt.getSource(), scaleDegrees, false);
-    }//GEN-LAST:event_degree6ActionPerformed
-
-    private void mixLinesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mixLinesActionPerformed
-        GuideLineGenerator guideLine = new GuideLineGenerator(score.getChordProg(), boxToDirection(direction), "mix", true);
-        MelodyPart guideToneLine = guideLine.makeGuideLine();
-        addChorus(guideToneLine);
-    }//GEN-LAST:event_mixLinesActionPerformed
-
     //For GuideLineGenerator
     private int boxToDirection(JCheckBoxMenuItem d){
         if(d.equals(noPreference)){
@@ -22707,11 +22682,50 @@ int quantizeResolution = 60;
         }
     }
     
+    private void guideToneLineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guideToneLineActionPerformed
+        GuideToneLineDialog dialogbox = new GuideToneLineDialog(this, false);
+        dialogbox.setVisible(true);
+    }//GEN-LAST:event_guideToneLineActionPerformed
+
+    private void mixLinesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mixLinesActionPerformed
+        GuideLineGenerator guideLine = new GuideLineGenerator(score.getChordProg(), boxToDirection(direction), "mix", true);
+        MelodyPart guideToneLine = guideLine.makeGuideLine();
+        addChorus(guideToneLine);
+    }//GEN-LAST:event_mixLinesActionPerformed
+
     private void oneLineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_oneLineActionPerformed
         GuideLineGenerator guideLine = new GuideLineGenerator(score.getChordProg(), boxToDirection(direction), startDegree.getText(), false);
         MelodyPart guideToneLine = guideLine.makeGuideLine();
         addChorus(guideToneLine);
     }//GEN-LAST:event_oneLineActionPerformed
+
+    private void degree7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_degree7ActionPerformed
+        unselectAllExcept((JCheckBoxMenuItem)evt.getSource(), scaleDegrees, false);
+    }//GEN-LAST:event_degree7ActionPerformed
+
+    private void degree6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_degree6ActionPerformed
+        unselectAllExcept((JCheckBoxMenuItem)evt.getSource(), scaleDegrees, false);
+    }//GEN-LAST:event_degree6ActionPerformed
+
+    private void degree5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_degree5ActionPerformed
+        unselectAllExcept((JCheckBoxMenuItem)evt.getSource(), scaleDegrees, false);
+    }//GEN-LAST:event_degree5ActionPerformed
+
+    private void degree4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_degree4ActionPerformed
+        unselectAllExcept((JCheckBoxMenuItem)evt.getSource(), scaleDegrees, false);
+    }//GEN-LAST:event_degree4ActionPerformed
+
+    private void degree3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_degree3ActionPerformed
+        unselectAllExcept((JCheckBoxMenuItem)evt.getSource(), scaleDegrees, false);
+    }//GEN-LAST:event_degree3ActionPerformed
+
+    private void degree2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_degree2ActionPerformed
+        unselectAllExcept((JCheckBoxMenuItem)evt.getSource(), scaleDegrees, false);
+    }//GEN-LAST:event_degree2ActionPerformed
+
+    private void degree1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_degree1ActionPerformed
+        unselectAllExcept((JCheckBoxMenuItem)evt.getSource(), scaleDegrees, false);
+    }//GEN-LAST:event_degree1ActionPerformed
 
     private void noPreferenceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_noPreferenceActionPerformed
         unselectAllExcept((JCheckBoxMenuItem)evt.getSource(), directions, true);
@@ -24768,6 +24782,7 @@ private JCheckBoxMenuItem direction;
     private javax.swing.JRadioButton greenColorBtn;
     private javax.swing.JLabel greenLabel;
     private javax.swing.JRadioButton greenOtherBtn;
+    private javax.swing.JMenuItem guideToneLine;
     private javax.swing.JMenuItem helpAboutMI;
     private javax.swing.JMenuItem helpMI;
     private javax.swing.JMenu helpMenu;
