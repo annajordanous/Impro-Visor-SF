@@ -74,11 +74,14 @@ public class GuideLineGenerator {
     private final String startDegree;
     private final boolean mix;
     
-    public GuideLineGenerator(ChordPart inputChordPart, int direction, String startDegree) 
+    private final boolean alternating;
+    
+    public GuideLineGenerator(ChordPart inputChordPart, int direction, String startDegree, boolean alternating) 
     {
         chordPart = inputChordPart;
         this.direction = direction;
         this.startDegree = startDegree;
+        this.alternating = alternating;
         if(startDegree.equals("mix")){
             mix=true;
         }else{
@@ -133,6 +136,7 @@ public class GuideLineGenerator {
         prevFirstNote = null;
         prevSecondNote = null;
         prevNote = null;
+        boolean threeFirst = true;
         if(mix){
             prevFirstNote = scaleDegreeToNote("3", firstChord);
             prevFirstNote.setRhythmValue(firstChord.getRhythmValue()/2);
@@ -171,6 +175,9 @@ public class GuideLineGenerator {
                     guideLine.add(SecondNote);
                     prevFirstNote = FirstNote;
                     prevSecondNote = SecondNote;
+                    if(alternating){
+                        threeFirst = false;
+                    }
                 }else{
                     Note first = firstNote(currentChord);
                     guideLine.add(first);
@@ -184,8 +191,14 @@ public class GuideLineGenerator {
                     firstNoteToAdd.setRhythmValue(currentChord.getRhythmValue()/2);
                     Note secondNoteToAdd = nextNote(prevSecondNote, currentChord);
                     secondNoteToAdd.setRhythmValue(currentChord.getRhythmValue()/2);
-                    guideLine.add(firstNoteToAdd);
-                    guideLine.add(secondNoteToAdd);
+                    if(threeFirst){
+                        guideLine.add(firstNoteToAdd);
+                        guideLine.add(secondNoteToAdd);
+                    }else{
+                        guideLine.add(secondNoteToAdd);
+                        guideLine.add(firstNoteToAdd);
+                    }
+                    threeFirst = !threeFirst;
                     prevFirstNote = firstNoteToAdd;
                     prevSecondNote = secondNoteToAdd;
                 }else{
