@@ -8612,30 +8612,38 @@
                 <Property name="text" type="java.lang.String" value="Generate Guide Tone Line"/>
               </Properties>
               <SubComponents>
-                <MenuItem class="javax.swing.JMenuItem" name="ascending">
+                <Menu class="javax.swing.JMenu" name="jMenu3">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Ascending"/>
+                    <Property name="text" type="java.lang.String" value="Direction"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ascendingActionPerformed"/>
-                  </Events>
-                </MenuItem>
-                <MenuItem class="javax.swing.JMenuItem" name="descending">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="Descending"/>
-                  </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="descendingActionPerformed"/>
-                  </Events>
-                </MenuItem>
-                <MenuItem class="javax.swing.JMenuItem" name="noPreference">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="No Preference"/>
-                  </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="noPreferenceActionPerformed"/>
-                  </Events>
-                </MenuItem>
+                  <SubComponents>
+                    <MenuItem class="javax.swing.JCheckBoxMenuItem" name="ascending">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="Ascending"/>
+                      </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ascendingActionPerformed"/>
+                      </Events>
+                    </MenuItem>
+                    <MenuItem class="javax.swing.JCheckBoxMenuItem" name="descending">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="Descending"/>
+                      </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="descendingActionPerformed"/>
+                      </Events>
+                    </MenuItem>
+                    <MenuItem class="javax.swing.JCheckBoxMenuItem" name="noPreference">
+                      <Properties>
+                        <Property name="selected" type="boolean" value="true"/>
+                        <Property name="text" type="java.lang.String" value="No Preference"/>
+                      </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="noPreferenceActionPerformed"/>
+                      </Events>
+                    </MenuItem>
+                  </SubComponents>
+                </Menu>
                 <Menu class="javax.swing.JMenu" name="selectScaleDegree">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Start on Scale Degree"/>
@@ -8700,9 +8708,17 @@
                     </MenuItem>
                   </SubComponents>
                 </Menu>
+                <MenuItem class="javax.swing.JMenuItem" name="oneLine">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Generate One Line"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="oneLineActionPerformed"/>
+                  </Events>
+                </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="mixLines">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Mix 3-7 and 7-3 lines"/>
+                    <Property name="text" type="java.lang.String" value="Generate Two Lines"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mixLinesActionPerformed"/>
