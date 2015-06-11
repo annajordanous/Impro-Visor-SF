@@ -41,13 +41,16 @@ public class GuideLineGenerator {
     
     //The chords used to create the guide tone line
     private final ChordPart chordPart;
-    //Which way the line is shaped
-    private final int direction;
     
-    //range that guide tone line is restricted to
-    //should change to whatever improvisor uses
-    private final int lowLimit = Constants.F3;
-    private final int highLimit = Constants.C6;
+    //Direction the user wants the guide tone line to go
+    //The direction of the guide tone line is reset to the original direction
+    //at the beginning of each section
+    private final int originalDirection;
+    
+    //Actual direction of the guide tone line
+    //Initialized to be the originalDirection, but
+    //can be changed if the guide tone line threatens to go too high/low
+    private int direction;
     
     //constants that correspond to the integers that represent direction
     private final int ASCENDING = 1;
@@ -64,11 +67,14 @@ public class GuideLineGenerator {
     private final boolean mix;
     //Determines the shape of the two lines
     private final boolean alternating;
+    //MIDI values of lower and upper limits for guide tone line
+    private final int lowLimit, highLimit;
     
     
-    public GuideLineGenerator(ChordPart inputChordPart, int direction, String startDegree, boolean alternating) 
+    public GuideLineGenerator(ChordPart inputChordPart, int direction, String startDegree, boolean alternating, int lowLimit, int highLimit) 
     {
         chordPart = inputChordPart;
+        this.originalDirection = direction;
         this.direction = direction;
         this.startDegree = startDegree;
         this.alternating = alternating;
@@ -77,6 +83,8 @@ public class GuideLineGenerator {
         }else{
             mix=false;
         }
+        this.lowLimit = lowLimit;
+        this.highLimit = highLimit;
     }
     
     /**
@@ -121,21 +129,52 @@ public class GuideLineGenerator {
         
         for(Integer duration : durations){
             Chord currentChord = chordPart.getChord(index);
-            
+            Note noteToAdd;
             if(startIndices.contains(index)){
-                Note first = firstNote(currentChord);
-                guideLine.add(first);
-                prevNote = first;
+                //at the start of each section, restore direction
+                //to the user's original intended direction
+                direction = originalDirection;
+                //call firstNote method (as oppossed to nextNote method)
+                noteToAdd = firstNote(currentChord);
             }
             else {
-                Note noteToAdd = nextNote(prevNote, currentChord);
-                guideLine.add(noteToAdd);
-                prevNote = noteToAdd;
+                noteToAdd = nextNote(prevNote, currentChord);
             }
+            guideLine.add(noteToAdd);
+            possibleDirectionSwitch(noteToAdd);
+            prevNote = noteToAdd;
             index+=duration;
         }
         
         return guideLine;
+    }
+    
+    public void possibleDirectionSwitch(Note n){
+        int inRange = inRange(n.getPitch(), lowLimit, highLimit);
+        if(inRange!=0){
+            if(inRange==-1){
+                direction = ASCENDING;
+            }else if(inRange==1){
+                direction = DESCENDING;
+            }
+        }
+    }
+    
+    /**
+     * returns whether or not a number lies in a given range
+     * @param n number to test
+     * @param low low end of range
+     * @param high high end of range
+     * @return 1 if n is above the range, -1 if below, 0 if within
+     */
+    private static int inRange(int n, int low, int high){
+        int toreturn = 0;
+        if(n>=high){
+            toreturn = 1;
+        }else if(n<=low){
+            toreturn = -1;
+        }
+        return toreturn;
     }
     
     /**
@@ -157,6 +196,8 @@ public class GuideLineGenerator {
         
         Note prevFirstNote = scaleDegreeToNote(THREE, firstChord);
         Note prevSecondNote = scaleDegreeToNote(SEVEN, firstChord);
+        Note firstNoteToAdd;
+        Note secondNoteToAdd;
         boolean threeFirst = true;
         
         prevFirstNote.setRhythmValue(firstChord.getRhythmValue()/2);
@@ -166,41 +207,46 @@ public class GuideLineGenerator {
             Chord currentChord = chordPart.getChord(index);
             
             if(startIndices.contains(index)){
+                //sections always start on degree three
+                threeFirst = true;
+                //at the beginning of each section, restore direction to user's orignal choice
+                direction = originalDirection;
+                
                 //Set the two next notes to be half the length of the chord
-                Note firstNote = scaleDegreeToNote(THREE, currentChord);
-                firstNote.setRhythmValue(currentChord.getRhythmValue()/2);
-                Note secondNote = scaleDegreeToNote(SEVEN, currentChord);
-                secondNote.setRhythmValue(currentChord.getRhythmValue()/2);
-                
-                guideLine.add(firstNote);
-                guideLine.add(secondNote);
-                
-                prevFirstNote = firstNote;
-                prevSecondNote = secondNote;
-                if(alternating){
-                    threeFirst = false;
-                }
-            }
-            else{
-                Note firstNoteToAdd = nextNote(prevFirstNote, currentChord);
+                firstNoteToAdd = scaleDegreeToNote(THREE, currentChord);
                 firstNoteToAdd.setRhythmValue(currentChord.getRhythmValue()/2);
-                Note secondNoteToAdd = nextNote(prevSecondNote, currentChord);
+                
+                secondNoteToAdd = scaleDegreeToNote(SEVEN, currentChord);
                 secondNoteToAdd.setRhythmValue(currentChord.getRhythmValue()/2);
                 
-                // Alternate the order the notes are added to the guide line
-                if(threeFirst){
-                    guideLine.add(firstNoteToAdd);
-                    guideLine.add(secondNoteToAdd);
-                }else{
-                    guideLine.add(secondNoteToAdd);
-                    guideLine.add(firstNoteToAdd);
-                }
-                
-                threeFirst = !threeFirst;
-                prevFirstNote = firstNoteToAdd;
-                prevSecondNote = secondNoteToAdd;
             }
+            else{
+                firstNoteToAdd = nextNote(prevFirstNote, currentChord);
+                firstNoteToAdd.setRhythmValue(currentChord.getRhythmValue()/2);
+                
+                secondNoteToAdd = nextNote(prevSecondNote, currentChord);
+                secondNoteToAdd.setRhythmValue(currentChord.getRhythmValue()/2);
+            }
+            // Alternate the order the notes are added to the guide line
+            if(threeFirst){
+                guideLine.add(firstNoteToAdd);
+                guideLine.add(secondNoteToAdd);
+            }else{
+                guideLine.add(secondNoteToAdd);
+                guideLine.add(firstNoteToAdd);
+            }
+            //store notes
+            prevFirstNote = firstNoteToAdd;
+            prevSecondNote = secondNoteToAdd;
+            //possibly switch direction if out of range
+            possibleDirectionSwitch(firstNoteToAdd);
+            possibleDirectionSwitch(secondNoteToAdd);
+            //jump ahead to next chord
             index+=duration;
+            //switch which line comes first if alternating
+            if(alternating){
+                threeFirst = !threeFirst;
+            }
         }
         
         return guideLine;

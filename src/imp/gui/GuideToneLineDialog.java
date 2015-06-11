@@ -351,8 +351,11 @@ public class GuideToneLineDialog extends javax.swing.JDialog {
             alternating = true;
         }
         
+        int low = lowLimitSlider.getValue();
+        int high = highLimitSlider.getValue();
+        
         //construct a guide tone line generator, make a guide tone line (melody part), then add it as a new chorus
-        GuideLineGenerator guideLine = new GuideLineGenerator(notate.score.getChordProg(), buttonToDirection(direction), scaleDegString, alternating);
+        GuideLineGenerator guideLine = new GuideLineGenerator(notate.score.getChordProg(), buttonToDirection(direction), scaleDegString, alternating, low, high);
         MelodyPart guideToneLine = guideLine.makeGuideLine();
         notate.addChorus(guideToneLine);
         
