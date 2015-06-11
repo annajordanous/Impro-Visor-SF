@@ -23,6 +23,8 @@ import imp.data.Chord;
 import imp.data.ChordPart;
 import imp.data.MelodyPart;
 import imp.data.Note;
+import imp.data.NoteSymbol;
+import imp.data.PitchClass;
 import imp.data.Unit;
 import imp.gui.Notate;
 import imp.util.ErrorLog;
@@ -119,6 +121,61 @@ public class NoteConverter {
         //Part 3 of the note construction: add the rhythm amount
         relativeNote = relativeNote.addToEnd(noteLength);
         return relativeNote;
+    }
+    
+    /**
+     * scaleDegreeToNote
+     * converts a scale degree to a Note
+     * does not specify accidental - fix this
+     * @param degree the scale degree to be converted
+     * @param chord the chord that the note is over
+     * @param octave the desired octave of the note
+     * @param rhythmValue the desired rhythm value of the note
+     * @return Note corresponding to the given scale degree
+     */
+    public static Note scaleDegreeToNote(String degree, Chord chord, int octave, int rhythmValue){
+        PitchClass pc = scaleDegreeToPitchClass(degree, chord);
+        NoteSymbol ns = new NoteSymbol(pc, octave, rhythmValue);
+        int midi = ns.getMIDI();
+        return new Note(midi, ns.getDuration());
+    }
+    
+    public static PitchClass scaleDegreeToPitchClass(String degree, Chord chord){
+        PitchClass rootPc = chord.getRootPitchClass();
+        int semitonesAboveRoot = indexOf(degree,familyToArray(chord.getFamily()));
+        return PitchClass.transpose(rootPc, semitonesAboveRoot);
+    }
+    
+    private static String [] familyToArray(String family){
+        if(family.equals("minor")){
+            return minorScaleDegrees;
+        }else if(family.equals("minor7")){
+            return minor7ScaleDegrees;
+        }else if(family.equals("major")){
+            return majorScaleDegrees;
+        }else if(family.equals("dominant")
+                ||family.equals("sus4")
+                ||family.equals("alt")){
+            return dominantScaleDegrees;
+        }else if(family.equals("half-diminished")){
+            return halfDimScaleDegrees;
+        }else if(family.equals("diminished")){
+            return dimScaleDegrees;
+        }else if(family.equals("augmented")){
+            return augScaleDegrees;
+        }else{
+            return null;
+        }
+    }
+    
+     private static int indexOf(String degree, String[]scale){
+        int index = -1;
+        for(int i=0; i<scale.length; i++){
+            if(scale[i].equals(degree)){
+                index = i;
+            }
+        }
+        return index;
     }
 
     //method to test that the conversion works
