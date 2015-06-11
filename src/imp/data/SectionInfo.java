@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2013 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2015 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -99,8 +99,6 @@ public class SectionInfo implements Constants, Serializable {
         // why this was needed, but it seems to be causing an undesirable
         // instrument change through an indirect path.
         // It should be revisited.
-
-        //style.setChordInstrument(chords.getInstrument(), "SectionInfo");
 
         addSection(Preferences.getPreference(Preferences.DEFAULT_STYLE), 0, false);
     }
@@ -668,12 +666,10 @@ public long render(MidiSequence seq,
     
     ListIterator<SectionRecord> k = records.listIterator();
     ListIterator<SectionRecord> m = records.listIterator();
-    if( m.hasNext() )
-      {
-        m.next();
-      }
 
-    while( k.hasNext() ) //&& (endLimitIndex == ENDSCORE || endIndex <= endLimitIndex) )
+    endIndex = m.hasNext() ? m.next().getIndex() : chordsSize;
+    
+    while( k.hasNext() && endIndex <= endLimitIndex)
       {
         SectionRecord record = k.next();
         Style style;
@@ -755,30 +751,6 @@ public ArrayList<Block> toBlockList()
     return blocks;
 }
 
-/**
- * Determine whether a given index corresponds to the start of a Section.
- * This is done by iterating through styleIndices, accumulating slot counts,
- * until either the given index coincides with the start of a slot or
- * the accumulated count exceeds the index.
- * @param index
- * @return 
- */
-public boolean isSectionStart(int index)
-{
-    int accumulatedSlots = 0;
-
-    ListIterator<SectionRecord> k = records.listIterator();
-    while( k.hasNext() && index >= accumulatedSlots )
-    {
-        if( index == accumulatedSlots )
-        {
-            return true;
-        }
-        accumulatedSlots += k.next().getIndex();
-    }
-    return false;
-  
-}
 
 /**
  * Returns ArrayList of indices of section starts that are
