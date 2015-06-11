@@ -7,11 +7,9 @@ package imp.gui;
 
 import imp.data.GuideLineGenerator;
 import imp.data.MelodyPart;
-import java.awt.Color;
 import java.util.Enumeration;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
-import javax.swing.ButtonModel;
 import javax.swing.JRadioButton;
 
 /**
@@ -22,6 +20,8 @@ public class GuideToneLineDialog extends javax.swing.JDialog {
 
     /**
      * Creates new form GuideToneLineDialog
+     * @param parent Frame that spawned this dialog box
+     * @param modal true if user cannot access main window until dialog box is closed, false otherwise
      */
     public GuideToneLineDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -79,6 +79,11 @@ public class GuideToneLineDialog extends javax.swing.JDialog {
         numberOfLinesButtons.add(oneLine);
         oneLine.setSelected(true);
         oneLine.setText("One Line");
+        oneLine.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                oneLineActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
@@ -86,6 +91,11 @@ public class GuideToneLineDialog extends javax.swing.JDialog {
 
         numberOfLinesButtons.add(twoLines);
         twoLines.setText("Two Lines");
+        twoLines.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                twoLinesActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
@@ -107,11 +117,6 @@ public class GuideToneLineDialog extends javax.swing.JDialog {
 
         directionButtons.add(descending);
         descending.setText("Descending");
-        descending.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                descendingActionPerformed(evt);
-            }
-        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 0;
@@ -120,11 +125,6 @@ public class GuideToneLineDialog extends javax.swing.JDialog {
         directionButtons.add(noPreference);
         noPreference.setSelected(true);
         noPreference.setText("No Preference");
-        noPreference.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                noPreferenceActionPerformed(evt);
-            }
-        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
@@ -228,36 +228,57 @@ public class GuideToneLineDialog extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void descendingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_descendingActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_descendingActionPerformed
-
-    private void noPreferenceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_noPreferenceActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_noPreferenceActionPerformed
-
     private void generateLineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateLineActionPerformed
+        //Get which options are selected
         JRadioButton numberOfLines = getSelected(numberOfLinesButtons);
         JRadioButton direction = getSelected(directionButtons);
         JRadioButton scaleDeg = getSelected(scaleDegreeButtons);
         
+        //Get paramaters to pass into constructor
         Notate notate = (Notate)this.getParent();
         String scaleDegString = scaleDeg.getText();
         boolean alternating = false;
         
+        //Passing in "mix" as the scaleDegString indicates that two lines should be generated
+        //Right now, the order in which the two lines appear always alternates,
+        //i.e. the line has a trapezoidal shape
         if(numberOfLines.equals(twoLines)){
             scaleDegString = "mix";
             alternating = true;
         }
         
+        //construct a guide tone line generator, make a guide tone line (melody part), then add it as a new chorus
         GuideLineGenerator guideLine = new GuideLineGenerator(notate.score.getChordProg(), buttonToDirection(direction), scaleDegString, alternating);
         MelodyPart guideToneLine = guideLine.makeGuideLine();
         notate.addChorus(guideToneLine);
         
-        
-        
     }//GEN-LAST:event_generateLineActionPerformed
 
+    private void twoLinesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_twoLinesActionPerformed
+        enableButtons(scaleDegreeButtons, false);
+    }//GEN-LAST:event_twoLinesActionPerformed
+
+    /**
+     * 
+     * @param group ButtonGroup to enable/disable
+     * @param enabled true to enable, false to disable
+     */
+    private void enableButtons(ButtonGroup group, boolean enabled){
+        for(Enumeration<AbstractButton> buttons = group.getElements(); buttons.hasMoreElements();){
+            AbstractButton b = buttons.nextElement();
+            b.setEnabled(enabled);
+        }
+    }
+    
+    private void oneLineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_oneLineActionPerformed
+        enableButtons(scaleDegreeButtons, true);
+    }//GEN-LAST:event_oneLineActionPerformed
+
+    /**
+     * returns which JRadioButton in a ButtonGroup is selected
+     * @param group the ButtonGroup from which you want to return the selected button
+     * @return the JRadioButton that is selected
+     */
     private JRadioButton getSelected(ButtonGroup group){
         for(Enumeration<AbstractButton> buttons = group.getElements(); buttons.hasMoreElements();){
             AbstractButton b = buttons.nextElement();
@@ -268,6 +289,11 @@ public class GuideToneLineDialog extends javax.swing.JDialog {
         return null;
     }
     
+    /**
+     * returns the direction associated with the given button
+     * @param b a JRadioButton
+     * @return the direction associated with that button (1 for up, 0 for same, -1 for down)
+     */
     private int buttonToDirection(JRadioButton b){
         if(b.equals(ascending)){
             return 1;

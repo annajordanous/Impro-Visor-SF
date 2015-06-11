@@ -875,12 +875,7 @@ public Notate(Score score, Advisor adv, ImproVisor impro, int x, int y)
 
 
     initComponents();
-    //For Guide Line Generator
-    //Add scale degree checkboxes to arraylist
 
-
-    
-    
     sectionTable.setModel(sectionTableModel);
     sectionTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     sectionTable.addMouseListener(new MouseAdapter()
@@ -22530,29 +22525,18 @@ int quantizeResolution = 60;
     }//GEN-LAST:event_tradingMenuActionPerformed
 
     
-    
+    /**
+     * guideToneLineActionPerformed
+     * Creates a dialog box with guide tone line options
+     * @param evt event triggered when guide tone line menu item is clicked
+     */
     private void guideToneLineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guideToneLineActionPerformed
+        //Create dialog box with guide tone line options
+        //false means not modal, i.e. the user is allowed to click back and forth between the main window and the dialog box
         GuideToneLineDialog dialogbox = new GuideToneLineDialog(this, false);
         dialogbox.setVisible(true);
     }//GEN-LAST:event_guideToneLineActionPerformed
-    
-    //For Guide Line Generator
-    //Unselect all check boxes except for the one passed in
-    //direct is true for direction, false for degree
-    private void unselectAllExcept(JCheckBoxMenuItem checked, ArrayList<JCheckBoxMenuItem> items, boolean direct){
-        checked.setSelected(true);
-        if(direct){
-            direction = checked;
-        }else{
-            startDegree = checked;
-        }
-        for(JCheckBoxMenuItem box : items){
-            if(!box.equals(checked)){
-                box.setSelected(false);
-            }
-        }
-    }
-    
+
 private void updateDottedAndTriplet()
   {
     isDotted = noteLenDottedCheckBox.isSelected();
@@ -24308,12 +24292,6 @@ private ImageIcon playButton =
 private ImageIcon pauseButton =
         new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/pause.gif"));
 
-//Adding ArrayList of JCheckBoxMenuItem for use in Guide Line Generator
-//so that only one box can be checked at a time
-private ArrayList<JCheckBoxMenuItem> scaleDegrees;
-private ArrayList<JCheckBoxMenuItem> directions;
-private JCheckBoxMenuItem startDegree;
-private JCheckBoxMenuItem direction;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel OpenHelpText;
     private javax.swing.JButton ReloadSuperColliderButton;
