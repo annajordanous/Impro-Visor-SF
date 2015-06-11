@@ -7,6 +7,7 @@ package imp.gui;
 
 import imp.data.GuideLineGenerator;
 import imp.data.MelodyPart;
+import java.awt.Color;
 import java.util.Enumeration;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
@@ -24,6 +25,8 @@ public class GuideToneLineDialog extends javax.swing.JDialog {
      */
     public GuideToneLineDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
+        this.setTitle("Generate Guide Tone Line");
+        this.setResizable(false);
         initComponents();
     }
 
@@ -35,15 +38,22 @@ public class GuideToneLineDialog extends javax.swing.JDialog {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
         directionButtons = new javax.swing.ButtonGroup();
         numberOfLinesButtons = new javax.swing.ButtonGroup();
         scaleDegreeButtons = new javax.swing.ButtonGroup();
-        ascending = new javax.swing.JRadioButton();
-        descending = new javax.swing.JRadioButton();
-        noPreference = new javax.swing.JRadioButton();
+        jPanel1 = new javax.swing.JPanel();
+        numberOfLinesLabel = new javax.swing.JLabel();
         oneLine = new javax.swing.JRadioButton();
         twoLines = new javax.swing.JRadioButton();
+        jPanel2 = new javax.swing.JPanel();
+        directionLabel = new javax.swing.JLabel();
+        descending = new javax.swing.JRadioButton();
+        noPreference = new javax.swing.JRadioButton();
+        ascending = new javax.swing.JRadioButton();
+        jPanel3 = new javax.swing.JPanel();
+        scaleDegLabel = new javax.swing.JLabel();
         deg1 = new javax.swing.JRadioButton();
         deg2 = new javax.swing.JRadioButton();
         deg3 = new javax.swing.JRadioButton();
@@ -51,15 +61,49 @@ public class GuideToneLineDialog extends javax.swing.JDialog {
         deg5 = new javax.swing.JRadioButton();
         deg6 = new javax.swing.JRadioButton();
         deg7 = new javax.swing.JRadioButton();
+        jPanel4 = new javax.swing.JPanel();
         generateLine = new javax.swing.JButton();
-        numberOfLinesLabel = new javax.swing.JLabel();
-        directionLabel = new javax.swing.JLabel();
-        scaleDegLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        getContentPane().setLayout(new java.awt.GridBagLayout());
 
-        directionButtons.add(ascending);
-        ascending.setText("Ascending");
+        jPanel1.setLayout(new java.awt.GridBagLayout());
+
+        numberOfLinesLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        numberOfLinesLabel.setText("Number of Lines:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        jPanel1.add(numberOfLinesLabel, gridBagConstraints);
+
+        numberOfLinesButtons.add(oneLine);
+        oneLine.setSelected(true);
+        oneLine.setText("One Line");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        jPanel1.add(oneLine, gridBagConstraints);
+
+        numberOfLinesButtons.add(twoLines);
+        twoLines.setText("Two Lines");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        jPanel1.add(twoLines, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        getContentPane().add(jPanel1, gridBagConstraints);
+
+        jPanel2.setLayout(new java.awt.GridBagLayout());
+
+        directionLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        directionLabel.setText("Direction:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        jPanel2.add(directionLabel, gridBagConstraints);
 
         directionButtons.add(descending);
         descending.setText("Descending");
@@ -68,6 +112,10 @@ public class GuideToneLineDialog extends javax.swing.JDialog {
                 descendingActionPerformed(evt);
             }
         });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 0;
+        jPanel2.add(descending, gridBagConstraints);
 
         directionButtons.add(noPreference);
         noPreference.setSelected(true);
@@ -77,35 +125,88 @@ public class GuideToneLineDialog extends javax.swing.JDialog {
                 noPreferenceActionPerformed(evt);
             }
         });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        jPanel2.add(noPreference, gridBagConstraints);
 
-        numberOfLinesButtons.add(oneLine);
-        oneLine.setSelected(true);
-        oneLine.setText("One Line");
+        directionButtons.add(ascending);
+        ascending.setText("Ascending");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        jPanel2.add(ascending, gridBagConstraints);
 
-        numberOfLinesButtons.add(twoLines);
-        twoLines.setText("Two Lines");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        getContentPane().add(jPanel2, gridBagConstraints);
+
+        jPanel3.setLayout(new java.awt.GridBagLayout());
+
+        scaleDegLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        scaleDegLabel.setText("Start on Scale Degree:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        jPanel3.add(scaleDegLabel, gridBagConstraints);
 
         scaleDegreeButtons.add(deg1);
         deg1.setText("1");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        jPanel3.add(deg1, gridBagConstraints);
 
         scaleDegreeButtons.add(deg2);
         deg2.setText("2");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        jPanel3.add(deg2, gridBagConstraints);
 
         scaleDegreeButtons.add(deg3);
         deg3.setSelected(true);
         deg3.setText("3");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 0;
+        jPanel3.add(deg3, gridBagConstraints);
 
         scaleDegreeButtons.add(deg4);
         deg4.setText("4");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 0;
+        jPanel3.add(deg4, gridBagConstraints);
 
         scaleDegreeButtons.add(deg5);
         deg5.setText("5");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 5;
+        gridBagConstraints.gridy = 0;
+        jPanel3.add(deg5, gridBagConstraints);
 
         scaleDegreeButtons.add(deg6);
         deg6.setText("6");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 6;
+        gridBagConstraints.gridy = 0;
+        jPanel3.add(deg6, gridBagConstraints);
 
         scaleDegreeButtons.add(deg7);
         deg7.setText("7");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 7;
+        gridBagConstraints.gridy = 0;
+        jPanel3.add(deg7, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        getContentPane().add(jPanel3, gridBagConstraints);
+
+        jPanel4.setLayout(new java.awt.GridBagLayout());
 
         generateLine.setText("Generate Guide Tone Line");
         generateLine.addActionListener(new java.awt.event.ActionListener() {
@@ -113,86 +214,18 @@ public class GuideToneLineDialog extends javax.swing.JDialog {
                 generateLineActionPerformed(evt);
             }
         });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        jPanel4.add(generateLine, gridBagConstraints);
 
-        numberOfLinesLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        numberOfLinesLabel.setText("Number of Lines:");
-
-        directionLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        directionLabel.setText("Direction:");
-
-        scaleDegLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        scaleDegLabel.setText("Start on Scale Degree:");
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(77, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(scaleDegLabel)
-                    .addComponent(directionLabel)
-                    .addComponent(numberOfLinesLabel)
-                    .addComponent(generateLine)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(oneLine)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(twoLines))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(deg1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(deg2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(deg3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(deg4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(deg5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(deg6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(deg7))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(ascending)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(descending)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(noPreference)))
-                .addGap(72, 72, 72))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addComponent(numberOfLinesLabel)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(oneLine)
-                    .addComponent(twoLines))
-                .addGap(18, 18, 18)
-                .addComponent(directionLabel)
-                .addGap(14, 14, 14)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(descending)
-                    .addComponent(ascending)
-                    .addComponent(noPreference))
-                .addGap(18, 18, 18)
-                .addComponent(scaleDegLabel)
-                .addGap(12, 12, 12)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(deg1)
-                    .addComponent(deg2)
-                    .addComponent(deg3)
-                    .addComponent(deg4)
-                    .addComponent(deg5)
-                    .addComponent(deg6)
-                    .addComponent(deg7))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
-                .addComponent(generateLine)
-                .addContainerGap())
-        );
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        getContentPane().add(jPanel4, gridBagConstraints);
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void descendingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_descendingActionPerformed
@@ -303,6 +336,10 @@ public class GuideToneLineDialog extends javax.swing.JDialog {
     private javax.swing.ButtonGroup directionButtons;
     private javax.swing.JLabel directionLabel;
     private javax.swing.JButton generateLine;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JRadioButton noPreference;
     private javax.swing.ButtonGroup numberOfLinesButtons;
     private javax.swing.JLabel numberOfLinesLabel;
