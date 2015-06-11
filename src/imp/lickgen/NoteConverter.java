@@ -124,8 +124,7 @@ public class NoteConverter {
     }
     
     /**
-     * scaleDegreeToNote
-     * converts a scale degree to a Note
+     * Converts a scale degree to a Note
      * does not specify accidental - fix this
      * @param degree the scale degree to be converted
      * @param chord the chord that the note is over
@@ -140,12 +139,24 @@ public class NoteConverter {
         return new Note(midi, ns.getDuration());
     }
     
+    /**
+     * Converts a scale degree to a pitch class, to be used to create a note
+     * @param degree the scale degree
+     * @param chord the chord that the scale degree corresponds to
+     * @return Pitch class corresponding to the scale degree and chord
+     */
     public static PitchClass scaleDegreeToPitchClass(String degree, Chord chord){
         PitchClass rootPc = chord.getRootPitchClass();
         int semitonesAboveRoot = indexOf(degree,familyToArray(chord.getFamily()));
         return PitchClass.transpose(rootPc, semitonesAboveRoot);
     }
     
+    /**
+     * Given a scale family, it returns the array with the corresponding scale
+     * degree.
+     * @param family The type of scale
+     * @return The array of the scale degrees
+     */
     private static String [] familyToArray(String family){
         if(family.equals("minor")){
             return minorScaleDegrees;
@@ -168,7 +179,14 @@ public class NoteConverter {
         }
     }
     
-     private static int indexOf(String degree, String[]scale){
+    /**
+     * Given a scale degree, indexOf returns the index of that scale 
+     * degree in a scale
+     * @param degree The scale degree
+     * @param scale The scale that we are using to get the index value
+     * @return 
+     */
+    private static int indexOf(String degree, String[]scale){
         int index = -1;
         for(int i=0; i<scale.length; i++){
             if(scale[i].equals(degree)){
