@@ -23,7 +23,6 @@ package imp.data;
 import imp.Constants;
 import java.util.ArrayList;
 import polya.Polylist;
-import java.util.Iterator;
 import imp.lickgen.NoteConverter;
 
 /**
@@ -86,7 +85,14 @@ public class GuideLineGenerator {
      */
     public MelodyPart makeGuideLine()
     {
-        ArrayList<Note> guideLine = guideLine();
+        ArrayList<Note> guideLine;
+        
+        if(mix){
+            guideLine = twoGuideLine();
+        } else{
+            guideLine = oneGuideLine();
+        }
+        
         MelodyPart guideLineMelody = new MelodyPart();
         for(Note n : guideLine){
             guideLineMelody.addNote(n);
@@ -99,101 +105,107 @@ public class GuideLineGenerator {
      * guide tone line
      * @return ArrayList<Note> The notes of the guide tone line
      */
-    private ArrayList<Note> guideLine ()
-    {     
+    private ArrayList<Note> oneGuideLine()
+    {
         ArrayList<Note> guideLine = new ArrayList<Note>();
         ArrayList<Integer> startIndices = chordPart.getSectionInfo().getSectionStartIndices();
         
         Integer chordIndex = startIndices.get(0);
         Chord firstChord = chordPart.getChord(chordIndex);
-       
         
         ArrayList<Integer> durations = chordPart.getChordDurations();
         
         int index = startIndices.get(0);
         
-        //Note prevFirstNote, prevSecondNote, prevNote;
-        Note prevFirstNote = null;
-        Note prevSecondNote = null;
-        Note prevNote = null;
-        boolean threeFirst = true;
-  
-        if(mix){
-            prevFirstNote = scaleDegreeToNote(THREE, firstChord);
-            prevFirstNote.setRhythmValue(firstChord.getRhythmValue()/2);
-            prevSecondNote = scaleDegreeToNote(SEVEN, firstChord);
-            prevSecondNote.setRhythmValue(firstChord.getRhythmValue()/2);
-        }else{
-            prevNote = firstNote(firstChord);
-        }
-  
-        //DEBUGGING
-       /* System.out.println("Start Indices (generated using getSectionStartIndices):");
-        for(Integer i: startIndices){
-            System.out.println("Index: "+i+";\tisSectionStart: "+chordPart.getSectionInfo().isSectionStart(i)+";\tChord: "+chordPart.getChord(i).getName()+";\tMeasure:"+chordPart.getSectionInfo().slotIndexToMeasure(i));
-        }
-        System.out.println();
-        System.out.println("Start Indices (generated using isSectionStart):");*/
-        //END DEBUGGING
+        Note prevNote = firstNote(firstChord);
         
         for(Integer duration : durations){
             Chord currentChord = chordPart.getChord(index);
             
-            //DEBUGGING
-//           if(startIndices.contains(new Integer(index))){
-//               System.out.println("Index: "+index+";\tisSectionStart: "+chordPart.getSectionInfo().isSectionStart(index)+";\tChord: "+currentChord.getName()+";\tMeasure:"+chordPart.getSectionInfo().slotIndexToMeasure(index));
-//           }
-            
-            //END DEBUGGING
-            //System.out.println("currentChord = " + currentChord);
             if(startIndices.contains(index)){
-                if(mix){
-                    Note firstNote = scaleDegreeToNote(THREE, currentChord);
-                    firstNote.setRhythmValue(currentChord.getRhythmValue()/2);
-                    Note secondNote = scaleDegreeToNote(SEVEN, currentChord);
-                    secondNote.setRhythmValue(currentChord.getRhythmValue()/2);
-                    guideLine.add(firstNote);
-                    guideLine.add(secondNote);
-                    prevFirstNote = firstNote;
-                    prevSecondNote = secondNote;
-                    if(alternating){
-                        threeFirst = false;
-                    }
-                }else{
-                    Note first = firstNote(currentChord);
-                    guideLine.add(first);
-                    prevNote = first;
-                }
-                
+                Note first = firstNote(currentChord);
+                guideLine.add(first);
+                prevNote = first;
             }
-            else{
-                if(mix){
-                    Note firstNoteToAdd = nextNote(prevFirstNote, currentChord);
-                    firstNoteToAdd.setRhythmValue(currentChord.getRhythmValue()/2);
-                    Note secondNoteToAdd = nextNote(prevSecondNote, currentChord);
-                    secondNoteToAdd.setRhythmValue(currentChord.getRhythmValue()/2);
-                    if(threeFirst){
-                        guideLine.add(firstNoteToAdd);
-                        guideLine.add(secondNoteToAdd);
-                    }else{
-                        guideLine.add(secondNoteToAdd);
-                        guideLine.add(firstNoteToAdd);
-                    }
-                    threeFirst = !threeFirst;
-                    prevFirstNote = firstNoteToAdd;
-                    prevSecondNote = secondNoteToAdd;
-                }else{
-                    Note noteToAdd = nextNote(prevNote, currentChord);
-                    guideLine.add(noteToAdd);
-                    prevNote = noteToAdd;
-                }
-                
+            else {
+                Note noteToAdd = nextNote(prevNote, currentChord);
+                guideLine.add(noteToAdd);
+                prevNote = noteToAdd;
             }
             index+=duration;
         }
+        
         return guideLine;
     }
     
+    /**
+     * Used by makeGuideLine() to generate a list of notes to be used in the
+     * guide tone line
+     * @return ArrayList<Note> The notes of the guide tone line
+     */
+    private ArrayList<Note> twoGuideLine()
+    {
+        ArrayList<Note> guideLine = new ArrayList<Note>();
+        ArrayList<Integer> startIndices = chordPart.getSectionInfo().getSectionStartIndices();
+        
+        Integer chordIndex = startIndices.get(0);
+        Chord firstChord = chordPart.getChord(chordIndex);
+        
+        ArrayList<Integer> durations = chordPart.getChordDurations();
+        
+        int index = startIndices.get(0);
+        
+        Note prevFirstNote = scaleDegreeToNote(THREE, firstChord);
+        Note prevSecondNote = scaleDegreeToNote(SEVEN, firstChord);
+        boolean threeFirst = true;
+        
+        prevFirstNote.setRhythmValue(firstChord.getRhythmValue()/2);
+        prevSecondNote.setRhythmValue(firstChord.getRhythmValue()/2);
+        
+        for(Integer duration : durations){
+            Chord currentChord = chordPart.getChord(index);
+            
+            if(startIndices.contains(index)){
+                //Set the two next notes to be half the length of the chord
+                Note firstNote = scaleDegreeToNote(THREE, currentChord);
+                firstNote.setRhythmValue(currentChord.getRhythmValue()/2);
+                Note secondNote = scaleDegreeToNote(SEVEN, currentChord);
+                secondNote.setRhythmValue(currentChord.getRhythmValue()/2);
+                
+                guideLine.add(firstNote);
+                guideLine.add(secondNote);
+                
+                prevFirstNote = firstNote;
+                prevSecondNote = secondNote;
+                if(alternating){
+                    threeFirst = false;
+                }
+            }
+            else{
+                Note firstNoteToAdd = nextNote(prevFirstNote, currentChord);
+                firstNoteToAdd.setRhythmValue(currentChord.getRhythmValue()/2);
+                Note secondNoteToAdd = nextNote(prevSecondNote, currentChord);
+                secondNoteToAdd.setRhythmValue(currentChord.getRhythmValue()/2);
+                
+                // Alternate the order the notes are added to the guide line
+                if(threeFirst){
+                    guideLine.add(firstNoteToAdd);
+                    guideLine.add(secondNoteToAdd);
+                }else{
+                    guideLine.add(secondNoteToAdd);
+                    guideLine.add(firstNoteToAdd);
+                }
+                
+                threeFirst = !threeFirst;
+                prevFirstNote = firstNoteToAdd;
+                prevSecondNote = secondNoteToAdd;
+            }
+            index+=duration;
+        }
+        
+        return guideLine;
+    }
+
     /**
      * Creates the first note for the line to be based off of
      * @param c The first chord of the chord part
