@@ -23,8 +23,8 @@ package imp.data;
 import imp.Constants;
 import java.util.ArrayList;
 import polya.Polylist;
-import static imp.lickgen.NoteConverter.noteToRelativePitch;
 import java.util.Iterator;
+import imp.lickgen.NoteConverter;
 
 /**
  * The GuideLineGenerator class is used to create a leadsheet of guide tones
@@ -40,41 +40,32 @@ import java.util.Iterator;
 
 public class GuideLineGenerator {
     
-    //minor (i.e. melodic minor)
-    private static final String[] minorScaleDegrees = {"1", "b2", "2", "3", "#3", "4", "b5", "5", "b6", "6", "b7", "7"};
-    //minor 7 (i.e. Dorian)
-    private static final String[] minor7ScaleDegrees = {"1", "b2", "2", "3", "#3", "4", "b5", "5", "b6", "6", "7", "#7"};
-    //major (i.e. Ionian)
-    private static final String[] majorScaleDegrees = {"1", "b2", "2", "b3", "3", "4", "#4", "5", "#5", "6", "b7", "7"};
-    //dominant (i.e. Mixolydian)
-    private static final String[] dominantScaleDegrees = {"1", "b2", "2", "b3", "3", "4", "#4", "5", "#5", "6", "7", "#7"};
-    //half diminished
-    //note: 6 half steps above the root has to be b5--otherwise, what do you call a perfect 5? No, I think it should be 5.
-    private static final String[] halfDimScaleDegrees = {"1", "2", "#2", "3", "#3", "4", "5", "#5", "6", "#6", "7", "#7"};
-    //diminished
-    //note: 8 half steps above root is a 6th because a fully diminished 7th is the same intervals as a major 6th
-    //so also, nine half steps becomes a seventh
-    private static final String[] dimScaleDegrees = {"1", "b2", "2", "3", "#3", "4", "b5", "5", "6", "7", "#7", "b8"};
-    //augmented (e.g. major#5)
-    //here, 7 half steps is called a b5 (because it's flat relative to the augmented fifth) even though the interval is a perfect fifth
-    private static final String[] augScaleDegrees = {"1", "b2", "2", "b3", "3", "4", "#4", "b5", "5", "6", "b7", "7"};
-    
-    
+    //The chords used to create the guide tone line
     private final ChordPart chordPart;
+    //Which way the line is shaped
     private final int direction;
+    
     //range that guide tone line is restricted to
     //should change to whatever improvisor uses
     private final int lowLimit = Constants.F3;
     private final int highLimit = Constants.C6;
     
+    //constants that correspond to the integers that represent direction
     private final int ASCENDING = 1;
     private final int DESCENDING = -1;
     private final int NOPREFERENCE = 0;
     
-    private final String startDegree;
-    private final boolean mix;
+    //Scale degrees that are frequently used
+    private final String THREE = "3";
+    private final String SEVEN = "7";
     
+    //Which scale degree to start on
+    private final String startDegree;
+    //Whether or not there is one line or two lines
+    private final boolean mix;
+    //Determines the shape of the two lines
     private final boolean alternating;
+    
     
     public GuideLineGenerator(ChordPart inputChordPart, int direction, String startDegree, boolean alternating) 
     {
@@ -89,7 +80,10 @@ public class GuideLineGenerator {
         }
     }
     
-    //returns a MelodyPart that is a guide tone line based on the ChordPart
+    /**
+     * Creates a MelodyPart that contains the guide tone line.
+     * @return MelodyPart 
+     */
     public MelodyPart makeGuideLine()
     {
         ArrayList<Note> guideLine = guideLine();
@@ -100,28 +94,13 @@ public class GuideLineGenerator {
         return guideLineMelody;
     }
     
-    //returns and ArrayList of Notes that form a guide tone line
+    /**
+     * Used by makeGuideLine() to generate a list of notes to be used in the
+     * guide tone line
+     * @return ArrayList<Note> The notes of the guide tone line
+     */
     private ArrayList<Note> guideLine ()
-    {
-        //old code - not buggy
-        /*ArrayList<Chord> chords = chordPart.getChords();
-        ArrayList<Note> guideLine = new ArrayList<Note>();
-        
-        Chord firstChord = chords.remove(0);
-        Note first = firstNote(firstChord);
-        guideLine.add(first);
-                
-        Note prevNote = first;
-        for(Chord c : chords){
-            Note noteToAdd = nextNote(prevNote,c);
-            guideLine.add(noteToAdd);
-            prevNote = noteToAdd;
-        }
-        
-        return guideLine;*/
-        
-        
-        //new code - buggy?
+    {     
         ArrayList<Note> guideLine = new ArrayList<Note>();
         ArrayList<Integer> startIndices = chordPart.getSectionInfo().getSectionStartIndices();
         
@@ -132,20 +111,22 @@ public class GuideLineGenerator {
         ArrayList<Integer> durations = chordPart.getChordDurations();
         
         int index = startIndices.get(0);
-        Note prevFirstNote, prevSecondNote, prevNote;
-        prevFirstNote = null;
-        prevSecondNote = null;
-        prevNote = null;
+        
+        //Note prevFirstNote, prevSecondNote, prevNote;
+        Note prevFirstNote = null;
+        Note prevSecondNote = null;
+        Note prevNote = null;
         boolean threeFirst = true;
+  
         if(mix){
-            prevFirstNote = scaleDegreeToNote("3", firstChord);
+            prevFirstNote = scaleDegreeToNote(THREE, firstChord);
             prevFirstNote.setRhythmValue(firstChord.getRhythmValue()/2);
-            prevSecondNote = scaleDegreeToNote("7", firstChord);
+            prevSecondNote = scaleDegreeToNote(SEVEN, firstChord);
             prevSecondNote.setRhythmValue(firstChord.getRhythmValue()/2);
         }else{
             prevNote = firstNote(firstChord);
         }
-        
+  
         //DEBUGGING
        /* System.out.println("Start Indices (generated using getSectionStartIndices):");
         for(Integer i: startIndices){
@@ -165,16 +146,16 @@ public class GuideLineGenerator {
             
             //END DEBUGGING
             //System.out.println("currentChord = " + currentChord);
-            if(startIndices.contains(new Integer(index))){
+            if(startIndices.contains(index)){
                 if(mix){
-                    Note FirstNote = scaleDegreeToNote("3", currentChord);
-                    FirstNote.setRhythmValue(currentChord.getRhythmValue()/2);
-                    Note SecondNote = scaleDegreeToNote("7", currentChord);
-                    SecondNote.setRhythmValue(currentChord.getRhythmValue()/2);
-                    guideLine.add(FirstNote);
-                    guideLine.add(SecondNote);
-                    prevFirstNote = FirstNote;
-                    prevSecondNote = SecondNote;
+                    Note firstNote = scaleDegreeToNote(THREE, currentChord);
+                    firstNote.setRhythmValue(currentChord.getRhythmValue()/2);
+                    Note secondNote = scaleDegreeToNote(SEVEN, currentChord);
+                    secondNote.setRhythmValue(currentChord.getRhythmValue()/2);
+                    guideLine.add(firstNote);
+                    guideLine.add(secondNote);
+                    prevFirstNote = firstNote;
+                    prevSecondNote = secondNote;
                     if(alternating){
                         threeFirst = false;
                     }
@@ -213,37 +194,36 @@ public class GuideLineGenerator {
         return guideLine;
     }
     
-    
-    //Picks a note of the chord to be the seed for the guide tone line
-    //currently, starts on the user-selected scale degree
+    /**
+     * Creates the first note for the line to be based off of
+     * @param c The first chord of the chord part
+     * @return Note of the scale degree that is chosen by the user
+     */
     private Note firstNote(Chord c){
         return scaleDegreeToNote(startDegree, c);
-//        Polylist noteList = c.getSpell();
-//        
-//        NoteSymbol third;
-//        if( noteList.length() < 2 ){
-//            third = (NoteSymbol) noteList.first();
-//        }
-//        else{
-//            third = (NoteSymbol) noteList.second();
-//        }
-//        
-//        PitchClass pc = third.getPitchClass();
-//        //Currently using octave 1, not sure if this should change or not
-//        int octave = direction==ASCENDING?0:1;
-//        NoteSymbol ns = new NoteSymbol(pc, octave, c.getRhythmValue());
-//        return ns.toNote();
     }
     
-    //choose the best possible next note
+    /**
+     * Generates the next note in the sequence
+     * @param n The last note chosen for the array part
+     * @param c The next chord in the chord part
+     * @return The next note to be used in the guide tone line
+     */
     private Note nextNote(Note n, Chord c)
     { 
         ArrayList<Note> possibleNotes = possibleNotes(n,c);
         return bestNote(n, c, possibleNotes);
     }
     
-    //return best note in list of possible notes
-     //return best note in list of possible notes
+    /**
+     * Uses scoring to determine the note that will fit best with the previous
+     * note and the current chord
+     * @param n The previous note in the guide tone line
+     * @param c The next chord in the progression
+     * @param possibleNotes The notes in the chord that are closest to the 
+     *                      previous note
+     * @return The note with the best score to fit in the guide tone line
+     */
     private Note bestNote(Note n, Chord c, ArrayList<Note> possibleNotes)
     {
         if(possibleNotes.isEmpty()){
@@ -266,40 +246,23 @@ public class GuideLineGenerator {
             return bestNote;
         }
     }
-    /*
-    private Note bestNote(Note n, Chord c, ArrayList<Note> possibleNotes)
-    {
-        if(possibleNotes.isEmpty()){
-            //SHOULD DEFINITELY CHANGE
-            //currently choosing the third of the chord if there are no
-            //possible notes
-            return firstNote(c);
-        }
-        else{
-            Note bestNote = possibleNotes.get(0);
-            int minDist = distance(n, possibleNotes.get(0));
-            for(Note currNote : possibleNotes){
-                int currDist = distance(n,currNote);
-                //IMPLICIT TIE BREAK, could be <=
-                if(currDist<minDist){
-                    minDist = currDist;
-                    bestNote = currNote;
-                }
-            }
-            return bestNote;
-        }
-    }
-    */
     
-    //lowest score is the best
+    /**
+     * Gives a score for a note based on its distance from the previous note
+     * and which scale degree it is relative to the chord
+     * @param prev the last note in the guide tone line
+     * @param c the chord the note is chosen from
+     * @param note the note being scored
+     * @return The relative score of the note, lower means it is a better fit
+     */
     private double score(Note prev, Chord c, Note note){
-        Polylist pl = noteToRelativePitch(note, c);
+        Polylist pl = NoteConverter.noteToRelativePitch(note, c);
         String degree = (String) pl.second();
         //char accidental = degree.charAt(0);
         double score;
         
         //colorfulness
-        if(degree.contains("3")||degree.contains("7")){
+        if(degree.contains(THREE)||degree.contains(SEVEN)){
             score = 0;
         }else if(degree.contains("5")||degree.contains("9")){
             score = 1;
@@ -354,27 +317,47 @@ public class GuideLineGenerator {
         return score;
     }
     
-    //returns distance in semitones between two notes
-    //order doesn't matter
+    /**
+     * Returns the number of semitones between two notes
+     * @param n1 note one
+     * @param n2 note two
+     * @return the absolute distance in semitones between the two notes
+     */
     private int distance(Note n1, Note n2)
     {
         return Math.abs(n1.getPitch()-n2.getPitch());
     }
     
-    //returns distance in semitones between two notes
-    //positive indicated ascending, negative descending
-    //order matters - first note, second note
+    /**
+     * Returns the number of semitones note two is above note one
+     * Positive indicates note two is above note one, negative means it is below
+     * @param n1 note one
+     * @param n2 note two
+     * @return integer representing the directional distance between two notes
+     */
     private int directionalDist(Note n1, Note n2){
         return n2.getPitch()-n1.getPitch();
     }
     
-    //returns arraylist of possible next notes given one note and next chord
+    /**
+     * Given one note and the next chord, it returns the closest chord tones
+     * to that note
+     * @param n note
+     * @param c chord
+     * @return A list of the chord tones closest to the note
+     */
     private ArrayList<Note> possibleNotes(Note n, Chord c)
     {
         return notesInChord(fiveNotes(n,c.getRhythmValue()),c);
     }
     
-    //return only those notes which belong to the chord (see below)
+    /**
+     * From the five closest notes to another note, it returns a list of which 
+     * ones are in a chord c.
+     * @param fiveNotes ArrayList of five different notes
+     * @param c a chord
+     * @return A list of which of the five notes are in the chord
+     */
     private ArrayList<Note> notesInChord(ArrayList<Note> fiveNotes, Chord c)
     {
         ArrayList<Note> notesInChord = new ArrayList<Note>();
@@ -386,8 +369,12 @@ public class GuideLineGenerator {
         return notesInChord;
     }
     
-    //return whether a note belongs to a chord
-    //use method from other class??
+    /**
+     * Determines whether a given note is in a given chord
+     * @param n note
+     * @param c chord
+     * @return Boolean
+     */
     private boolean belongsTo(Note n, Chord c)
     {
         if( c.getTypeIndex(n) == Constants.CHORD_TONE ){
@@ -398,8 +385,13 @@ public class GuideLineGenerator {
         }
     }
     
-    //returns an ArrayList of five notes
-    //that are within 2 halfsteps of the note
+    /**
+     * Returns an ArrayList of notes that are within two half steps of the 
+     * given note
+     * @param n note
+     * @param rhythmValue length of notes to be put in the list
+     * @return ArrayList of notes
+     */
     private ArrayList<Note> fiveNotes(Note n, int rhythmValue)
     {
         ArrayList<Note> fiveNextNotes = new ArrayList<Note>();
@@ -412,45 +404,10 @@ public class GuideLineGenerator {
     //IMPORTANT: does not specify whether to represent note as sharp or flat
     //if there is ambiguity - I think it defaults to sharp...
     private Note scaleDegreeToNote(String degree, Chord c){
-        PitchClass rootPc = c.getRootPitchClass();
         int octave = direction==ASCENDING?0:1;
-        NoteSymbol rns = new NoteSymbol(rootPc, octave, c.getRhythmValue());
-        int rootMidi = rns.getMIDI();
-        int semitonesAboveRoot = indexOf(degree,familyToArray(c.getFamily()));
-        return new Note(rootMidi+semitonesAboveRoot, c.getRhythmValue());//need to specify sharp or flat - how?
-    }
-    
-    //Should be in NoteConverter.java
-    private String [] familyToArray(String family){
-        if(family.equals("minor")){
-            return minorScaleDegrees;
-        }else if(family.equals("minor7")){
-            return minor7ScaleDegrees;
-        }else if(family.equals("major")){
-            return majorScaleDegrees;
-        }else if(family.equals("dominant")
-                ||family.equals("sus4")
-                ||family.equals("alt")){
-            return dominantScaleDegrees;
-        }else if(family.equals("half-diminished")){
-            return halfDimScaleDegrees;
-        }else if(family.equals("diminished")){
-            return dimScaleDegrees;
-        }else if(family.equals("augmented")){
-            return augScaleDegrees;
-        }else{
-            return null;
+        if(mix && degree.equals(SEVEN)){
+            octave = 0;
         }
-    }
-    
-    private int indexOf(String degree, String[]scale){
-        int index = -1;
-        for(int i=0; i<scale.length; i++){
-            if(scale[i].equals(degree)){
-                index = i;
-            }
-        }
-        return index;
-    }
-    
+        return NoteConverter.scaleDegreeToNote(degree, c, octave, c.getRhythmValue());
+    }  
 }
