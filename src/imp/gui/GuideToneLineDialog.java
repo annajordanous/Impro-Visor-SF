@@ -1,14 +1,28 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * This Java Class is part of the Impro-Visor Application.
+ *
+ * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College XML export code
+ * is also Copyright (C) 2009-2010 Nicolas Froment (aka Lasconic).
+ *
+ * Impro-Visor is free software; you can redistribute it and/or modifyc it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 2 of the License, or (at your option) any later
+ * version.
+ *
+ * Impro-Visor is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of merchantability or fitness
+ * for a particular purpose. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * Impro-Visor; if not, write to the Free Software Foundation, Inc., 51 Franklin
+ * St, Fifth Floor, Boston, MA 02110-1301 USA
  */
 package imp.gui;
 
 import imp.Constants;
 import imp.data.GuideLineGenerator;
 import imp.data.MelodyPart;
-import imp.data.ChordPart;
 import java.util.Enumeration;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
@@ -18,16 +32,16 @@ import imp.data.Note;
 import imp.data.NoteSymbol;
 
 /**
- *
- * @author muddCS15
+ * Display that lets the user control the options for generating a guide 
+ * tone line.
+ * @author Mikayla Konst and Carli Lessard
  */
 public class GuideToneLineDialog extends javax.swing.JDialog implements Constants {
     
     private final Notate notate;
     private final TransformPanel transformationPanel;
     
-    private MelodyPart guideToneLine;
-    private ChordPart chordProg;
+    private Boolean transformed = false;
 
     /**
      * Creates new form GuideToneLineDialog
@@ -39,7 +53,7 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
         this.setTitle("Generate Guide Tone Line");
         this.setResizable(false);
         notate = (Notate)this.getParent();
-        transformationPanel = notate.getLickgenFrame().getTransformPanel();
+        transformationPanel = notate.lickgenFrame.getTransformPanel();
         initComponents();
     }
 
@@ -348,7 +362,8 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
         gridBagConstraints.gridy = 3;
         getContentPane().add(filler4, gridBagConstraints);
 
-        transformLine.setText("Transform Guide Tone Line");
+        transformLine.setText("Generate Solo Over Line");
+        transformLine.setEnabled(false);
         transformLine.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 transformLineActionPerformed(evt);
@@ -356,8 +371,9 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
         });
         transformPanel.add(transformLine);
 
-        revertLine.setText("Revert Transformations");
+        revertLine.setText("Restore Guide Tone Line");
         revertLine.setToolTipText("");
+        revertLine.setEnabled(false);
         revertLine.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 revertLineActionPerformed(evt);
@@ -443,11 +459,16 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
         int high = highLimitSlider.getValue();
         
         //construct a guide tone line generator, make a guide tone line (melody part), then add it as a new chorus
-        chordProg = notate.getChordProg();
-        GuideLineGenerator guideLine = new GuideLineGenerator(chordProg, buttonToDirection(direction), scaleDegString, alternating, low, high, duration);
-        guideToneLine = guideLine.makeGuideLine();
+        GuideLineGenerator guideLine = new GuideLineGenerator(notate.getChordProg(), 
+                                                              buttonToDirection(direction), 
+                                                              scaleDegString, 
+                                                              alternating, 
+                                                              low, high, 
+                                                              duration);
+        MelodyPart guideToneLine = guideLine.makeGuideLine();
         notate.addChorus(guideToneLine);
         
+        transformLine.setEnabled(true);
     }//GEN-LAST:event_generateLineActionPerformed
 
     private int buttonToDuration(JRadioButton b){
@@ -500,7 +521,12 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
     }//GEN-LAST:event_highLimitSliderStateChanged
 
     private void transformLineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transformLineActionPerformed
+        if(transformed){
+            transformationPanel.revertSubs();
+        }
         transformationPanel.applySubstitutions();
+        transformed = true;
+        revertLine.setEnabled(true);
     }//GEN-LAST:event_transformLineActionPerformed
 
     private void revertLineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_revertLineActionPerformed
