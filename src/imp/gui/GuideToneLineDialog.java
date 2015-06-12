@@ -7,6 +7,7 @@ package imp.gui;
 
 import imp.data.GuideLineGenerator;
 import imp.data.MelodyPart;
+import imp.data.ChordPart;
 import java.util.Enumeration;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
@@ -20,6 +21,12 @@ import imp.data.NoteSymbol;
  * @author muddCS15
  */
 public class GuideToneLineDialog extends javax.swing.JDialog {
+    
+    private final Notate notate;
+    private final TransformPanel transformationPanel;
+    
+    private MelodyPart guideToneLine;
+    private ChordPart chordProg;
 
     /**
      * Creates new form GuideToneLineDialog
@@ -30,6 +37,8 @@ public class GuideToneLineDialog extends javax.swing.JDialog {
         super(parent, modal);
         this.setTitle("Generate Guide Tone Line");
         this.setResizable(false);
+        notate = (Notate)this.getParent();
+        transformationPanel = notate.getLickgenFrame().getTransformPanel();
         initComponents();
     }
 
@@ -78,6 +87,9 @@ public class GuideToneLineDialog extends javax.swing.JDialog {
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(20, 20), new java.awt.Dimension(20, 20), new java.awt.Dimension(20, 20));
         filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(20, 20), new java.awt.Dimension(20, 20), new java.awt.Dimension(20, 20));
         filler4 = new javax.swing.Box.Filler(new java.awt.Dimension(20, 20), new java.awt.Dimension(20, 20), new java.awt.Dimension(20, 20));
+        transformPanel = new javax.swing.JPanel();
+        transformLine = new javax.swing.JButton();
+        revertLine = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new java.awt.GridBagLayout());
@@ -328,6 +340,28 @@ public class GuideToneLineDialog extends javax.swing.JDialog {
         gridBagConstraints.gridy = 3;
         getContentPane().add(filler4, gridBagConstraints);
 
+        transformLine.setText("Transform Guide Tone Line");
+        transformLine.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                transformLineActionPerformed(evt);
+            }
+        });
+        transformPanel.add(transformLine);
+
+        revertLine.setText("Revert Transformations");
+        revertLine.setToolTipText("");
+        revertLine.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                revertLineActionPerformed(evt);
+            }
+        });
+        transformPanel.add(revertLine);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 7;
+        getContentPane().add(transformPanel, gridBagConstraints);
+
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
@@ -339,7 +373,7 @@ public class GuideToneLineDialog extends javax.swing.JDialog {
         JRadioButton scaleDeg = getSelected(scaleDegreeButtons);
         
         //Get paramaters to pass into constructor
-        Notate notate = (Notate)this.getParent();
+        //notate = (Notate)this.getParent();
         String scaleDegString = scaleDeg.getText();
         boolean alternating = false;
         
@@ -355,8 +389,9 @@ public class GuideToneLineDialog extends javax.swing.JDialog {
         int high = highLimitSlider.getValue();
         
         //construct a guide tone line generator, make a guide tone line (melody part), then add it as a new chorus
-        GuideLineGenerator guideLine = new GuideLineGenerator(notate.score.getChordProg(), buttonToDirection(direction), scaleDegString, alternating, low, high);
-        MelodyPart guideToneLine = guideLine.makeGuideLine();
+        chordProg = notate.getChordProg();
+        GuideLineGenerator guideLine = new GuideLineGenerator(chordProg, buttonToDirection(direction), scaleDegString, alternating, low, high);
+        guideToneLine = guideLine.makeGuideLine();
         notate.addChorus(guideToneLine);
         
     }//GEN-LAST:event_generateLineActionPerformed
@@ -394,6 +429,14 @@ public class GuideToneLineDialog extends javax.swing.JDialog {
         NoteSymbol ns = NoteSymbol.makeNoteSymbol(n);
         highNote.setText(ns.toString());
     }//GEN-LAST:event_highLimitSliderStateChanged
+
+    private void transformLineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transformLineActionPerformed
+        transformationPanel.applySubstitutions();
+    }//GEN-LAST:event_transformLineActionPerformed
+
+    private void revertLineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_revertLineActionPerformed
+        transformationPanel.revertSubs();
+    }//GEN-LAST:event_revertLineActionPerformed
 
     /**
      * returns which JRadioButton in a ButtonGroup is selected
@@ -502,9 +545,12 @@ public class GuideToneLineDialog extends javax.swing.JDialog {
     private javax.swing.ButtonGroup numberOfLinesButtons;
     private javax.swing.JLabel numberOfLinesLabel;
     private javax.swing.JRadioButton oneLine;
+    private javax.swing.JButton revertLine;
     private javax.swing.JLabel scaleDegLabel;
     private javax.swing.JPanel scaleDegPanel;
     private javax.swing.ButtonGroup scaleDegreeButtons;
+    private javax.swing.JButton transformLine;
+    private javax.swing.JPanel transformPanel;
     private javax.swing.JRadioButton twoLines;
     // End of variables declaration//GEN-END:variables
 }
