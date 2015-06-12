@@ -5,6 +5,7 @@
  */
 package imp.gui;
 
+import imp.Constants;
 import imp.data.GuideLineGenerator;
 import imp.data.MelodyPart;
 import imp.data.ChordPart;
@@ -20,7 +21,7 @@ import imp.data.NoteSymbol;
  *
  * @author muddCS15
  */
-public class GuideToneLineDialog extends javax.swing.JDialog {
+public class GuideToneLineDialog extends javax.swing.JDialog implements Constants {
     
     private final Notate notate;
     private final TransformPanel transformationPanel;
@@ -55,6 +56,7 @@ public class GuideToneLineDialog extends javax.swing.JDialog {
         directionButtons = new javax.swing.ButtonGroup();
         numberOfLinesButtons = new javax.swing.ButtonGroup();
         scaleDegreeButtons = new javax.swing.ButtonGroup();
+        maxDurationButtons = new javax.swing.ButtonGroup();
         linesPanel = new javax.swing.JPanel();
         numberOfLinesLabel = new javax.swing.JLabel();
         oneLine = new javax.swing.JRadioButton();
@@ -90,6 +92,12 @@ public class GuideToneLineDialog extends javax.swing.JDialog {
         transformPanel = new javax.swing.JPanel();
         transformLine = new javax.swing.JButton();
         revertLine = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        noPref = new javax.swing.JRadioButton();
+        whole = new javax.swing.JRadioButton();
+        half = new javax.swing.JRadioButton();
+        quarter = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new java.awt.GridBagLayout());
@@ -248,7 +256,7 @@ public class GuideToneLineDialog extends javax.swing.JDialog {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 6;
+        gridBagConstraints.gridy = 7;
         getContentPane().add(buttonPanel, gridBagConstraints);
 
         lowLimit.setLayout(new java.awt.GridBagLayout());
@@ -283,7 +291,7 @@ public class GuideToneLineDialog extends javax.swing.JDialog {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 5;
         getContentPane().add(lowLimit, gridBagConstraints);
 
         highLimit.setLayout(new java.awt.GridBagLayout());
@@ -321,7 +329,7 @@ public class GuideToneLineDialog extends javax.swing.JDialog {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 6;
         getContentPane().add(highLimit, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -329,7 +337,7 @@ public class GuideToneLineDialog extends javax.swing.JDialog {
         getContentPane().add(filler2, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 7;
+        gridBagConstraints.gridy = 8;
         getContentPane().add(filler1, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -359,8 +367,51 @@ public class GuideToneLineDialog extends javax.swing.JDialog {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 7;
+        gridBagConstraints.gridy = 8;
         getContentPane().add(transformPanel, gridBagConstraints);
+
+        jPanel1.setLayout(new java.awt.GridBagLayout());
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel1.setText("Max Note Duration:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        jPanel1.add(jLabel1, gridBagConstraints);
+
+        maxDurationButtons.add(noPref);
+        noPref.setSelected(true);
+        noPref.setText("No Preference");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        jPanel1.add(noPref, gridBagConstraints);
+
+        maxDurationButtons.add(whole);
+        whole.setText("Whole");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        jPanel1.add(whole, gridBagConstraints);
+
+        maxDurationButtons.add(half);
+        half.setText("Half");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 0;
+        jPanel1.add(half, gridBagConstraints);
+
+        maxDurationButtons.add(quarter);
+        quarter.setText("Quarter");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 0;
+        jPanel1.add(quarter, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 4;
+        getContentPane().add(jPanel1, gridBagConstraints);
 
         pack();
         setLocationRelativeTo(null);
@@ -371,11 +422,14 @@ public class GuideToneLineDialog extends javax.swing.JDialog {
         JRadioButton numberOfLines = getSelected(numberOfLinesButtons);
         JRadioButton direction = getSelected(directionButtons);
         JRadioButton scaleDeg = getSelected(scaleDegreeButtons);
+        JRadioButton maxDur = getSelected(maxDurationButtons);
+        
         
         //Get paramaters to pass into constructor
         //notate = (Notate)this.getParent();
         String scaleDegString = scaleDeg.getText();
         boolean alternating = false;
+        int duration = buttonToDuration(maxDur);
         
         //Passing in "mix" as the scaleDegString indicates that two lines should be generated
         //Right now, the order in which the two lines appear always alternates,
@@ -390,12 +444,27 @@ public class GuideToneLineDialog extends javax.swing.JDialog {
         
         //construct a guide tone line generator, make a guide tone line (melody part), then add it as a new chorus
         chordProg = notate.getChordProg();
-        GuideLineGenerator guideLine = new GuideLineGenerator(chordProg, buttonToDirection(direction), scaleDegString, alternating, low, high);
+        GuideLineGenerator guideLine = new GuideLineGenerator(chordProg, buttonToDirection(direction), scaleDegString, alternating, low, high, duration);
         guideToneLine = guideLine.makeGuideLine();
         notate.addChorus(guideToneLine);
         
     }//GEN-LAST:event_generateLineActionPerformed
 
+    private int buttonToDuration(JRadioButton b){
+        if(b.equals(noPref)){
+            return 0;
+        }else if(b.equals(whole)){
+            return WHOLE;
+        }else if(b.equals(half)){
+            return HALF;
+        }else if(b.equals(quarter)){
+            return QUARTER;
+        }else{
+            //shouldn't happen
+            return 0;
+        }
+    }
+    
     private void twoLinesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_twoLinesActionPerformed
         enableButtons(scaleDegreeButtons, false);
     }//GEN-LAST:event_twoLinesActionPerformed
@@ -532,19 +601,25 @@ public class GuideToneLineDialog extends javax.swing.JDialog {
     private javax.swing.Box.Filler filler3;
     private javax.swing.Box.Filler filler4;
     private javax.swing.JButton generateLine;
+    private javax.swing.JRadioButton half;
     private javax.swing.JLabel highLabel;
     private javax.swing.JPanel highLimit;
     private javax.swing.JSlider highLimitSlider;
     private javax.swing.JLabel highNote;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel linesPanel;
     private javax.swing.JLabel lowLabel;
     private javax.swing.JPanel lowLimit;
     private javax.swing.JSlider lowLimitSlider;
     private javax.swing.JLabel lowNote;
+    private javax.swing.ButtonGroup maxDurationButtons;
+    private javax.swing.JRadioButton noPref;
     private javax.swing.JRadioButton noPreference;
     private javax.swing.ButtonGroup numberOfLinesButtons;
     private javax.swing.JLabel numberOfLinesLabel;
     private javax.swing.JRadioButton oneLine;
+    private javax.swing.JRadioButton quarter;
     private javax.swing.JButton revertLine;
     private javax.swing.JLabel scaleDegLabel;
     private javax.swing.JPanel scaleDegPanel;
@@ -552,5 +627,6 @@ public class GuideToneLineDialog extends javax.swing.JDialog {
     private javax.swing.JButton transformLine;
     private javax.swing.JPanel transformPanel;
     private javax.swing.JRadioButton twoLines;
+    private javax.swing.JRadioButton whole;
     // End of variables declaration//GEN-END:variables
 }

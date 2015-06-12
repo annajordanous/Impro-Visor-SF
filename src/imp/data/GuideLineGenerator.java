@@ -69,9 +69,9 @@ public class GuideLineGenerator {
     private final boolean alternating;
     //MIDI values of lower and upper limits for guide tone line
     private final int lowLimit, highLimit;
+    private final int maxDuration;
     
-    
-    public GuideLineGenerator(ChordPart inputChordPart, int direction, String startDegree, boolean alternating, int lowLimit, int highLimit) 
+    public GuideLineGenerator(ChordPart inputChordPart, int direction, String startDegree, boolean alternating, int lowLimit, int highLimit, int maxDuration) 
     {
         chordPart = inputChordPart;
         this.originalDirection = direction;
@@ -85,6 +85,7 @@ public class GuideLineGenerator {
         }
         this.lowLimit = lowLimit;
         this.highLimit = highLimit;
+        this.maxDuration = maxDuration;
     }
     
     /**
