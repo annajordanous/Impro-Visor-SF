@@ -37,7 +37,7 @@ import imp.lickgen.NoteConverter;
  * 
  */
 
-public class GuideLineGenerator {
+public class GuideLineGenerator implements Constants {
     
     //The chords used to create the guide tone line
     private final ChordPart chordPart;
@@ -70,6 +70,7 @@ public class GuideLineGenerator {
     //MIDI values of lower and upper limits for guide tone line
     private final int lowLimit, highLimit;
     private final int maxDuration;
+    private final boolean durationSpecified;
     
     public GuideLineGenerator(ChordPart inputChordPart, int direction, String startDegree, boolean alternating, int lowLimit, int highLimit, int maxDuration) 
     {
@@ -86,6 +87,66 @@ public class GuideLineGenerator {
         this.lowLimit = lowLimit;
         this.highLimit = highLimit;
         this.maxDuration = maxDuration;
+        if(maxDuration==0){
+            durationSpecified = false;
+        }else{
+            durationSpecified = true;
+        }
+    }
+    
+    /**
+     * tests whether a note's duration is greater than the given duration
+     * @param n1 Note whose duration is being tested
+     * @param duration duration to be tested against
+     * @return true if n1's duration is strictly greater than duration, false otherwise
+     */
+    private boolean greaterThan(Note n1, int duration){
+        int noteDuration = n1.getRhythmValue();
+        if(noteDuration>duration){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
+    /**
+     * Splits up a note into a list of notes so that no note has a duration greater than maxDuration
+     * all notes in the list have the same pitch value as the note passed in
+     * @param n the note to be split up
+     * @return 
+     */
+    private ArrayList<Note> splitUpNote(Note n){
+
+        int pitch = n.getPitch();
+        ArrayList<Note> notes = new ArrayList<Note>();
+        int durationRemaining;
+        for(durationRemaining = n.getRhythmValue(); durationRemaining >= maxDuration; durationRemaining -= maxDuration){
+            notes.add(new Note(pitch, maxDuration));
+        }
+        notes.add(new Note(pitch, durationRemaining));
+        return notes;
+    }
+    
+    /**
+     * Generates a list of notes to add from a note to be split up and a chord
+     * @param note note to be converted to an ArrayList of notes
+     * @param c the chord that the notes are to be played over
+     * @return an ArrayList of notes to be played over the chord generated
+     * using the nextNote method
+     * 
+     */
+    private ArrayList<Note> notesToAdd(Note note, Chord c){
+        ArrayList<Note> notes = splitUpNote(note);
+        ArrayList<Note> notesToAdd = new ArrayList<Note>();
+        Note prevNote = notes.remove(0);
+        notesToAdd.add(prevNote);
+        for(Note n: notes){
+            Note noteToAdd = nextNote(prevNote, c);
+            noteToAdd.setRhythmValue(n.getRhythmValue());
+            notesToAdd.add(noteToAdd);
+            prevNote = noteToAdd;
+        }
+        return notesToAdd;
     }
     
     /**
@@ -141,9 +202,19 @@ public class GuideLineGenerator {
             else {
                 noteToAdd = nextNote(prevNote, currentChord);
             }
-            guideLine.add(noteToAdd);
-            possibleDirectionSwitch(noteToAdd);
-            prevNote = noteToAdd;
+            if(durationSpecified && greaterThan(noteToAdd, maxDuration)){
+                ArrayList<Note> notesToAdd = notesToAdd(noteToAdd, currentChord);
+                for(Note n: notesToAdd){
+                    guideLine.add(n);
+                    possibleDirectionSwitch(n);
+                    prevNote = n;
+                }
+            }else{
+                guideLine.add(noteToAdd);
+                possibleDirectionSwitch(noteToAdd);
+                prevNote = noteToAdd;
+            }
+            
             index+=duration;
         }
         
@@ -228,20 +299,84 @@ public class GuideLineGenerator {
                 secondNoteToAdd = nextNote(prevSecondNote, currentChord);
                 secondNoteToAdd.setRhythmValue(currentChord.getRhythmValue()/2);
             }
-            // Alternate the order the notes are added to the guide line
-            if(threeFirst){
-                guideLine.add(firstNoteToAdd);
-                guideLine.add(secondNoteToAdd);
+            boolean firstNoteTooLong = greaterThan(firstNoteToAdd, maxDuration);
+            boolean secondNoteTooLong = greaterThan(secondNoteToAdd, maxDuration);
+            if(durationSpecified && (firstNoteTooLong || secondNoteTooLong)){
+                if(threeFirst){
+                    if(firstNoteTooLong){
+                        ArrayList<Note> notesToAdd = notesToAdd(firstNoteToAdd, currentChord);
+                        for(Note n: notesToAdd){
+                            guideLine.add(n);
+                            possibleDirectionSwitch(n);
+                            prevFirstNote = n;
+                        }
+                    }else{
+                        guideLine.add(firstNoteToAdd);
+                        possibleDirectionSwitch(firstNoteToAdd);
+                        prevFirstNote = firstNoteToAdd;
+                    }
+                    
+                    if(secondNoteTooLong){
+                        ArrayList<Note> notesToAdd = notesToAdd(secondNoteToAdd, currentChord);
+                        for(Note n: notesToAdd){
+                            guideLine.add(n);
+                            possibleDirectionSwitch(n);
+                            prevSecondNote = n;
+                        }
+                    }else{
+                        guideLine.add(secondNoteToAdd);
+                        possibleDirectionSwitch(secondNoteToAdd);
+                        prevSecondNote = secondNoteToAdd;
+                    }
+                    
+                }else{
+                    if(secondNoteTooLong){
+                        ArrayList<Note> notesToAdd = notesToAdd(secondNoteToAdd, currentChord);
+                        for(Note n: notesToAdd){
+                            guideLine.add(n);
+                            possibleDirectionSwitch(n);
+                            prevSecondNote = n;
+                        }
+                    }else{
+                        guideLine.add(secondNoteToAdd);
+                        possibleDirectionSwitch(secondNoteToAdd);
+                        prevSecondNote = secondNoteToAdd;
+                    }
+                    
+                    if(firstNoteTooLong){
+                        ArrayList<Note> notesToAdd = notesToAdd(firstNoteToAdd, currentChord);
+                        for(Note n: notesToAdd){
+                            guideLine.add(n);
+                            possibleDirectionSwitch(n);
+                            prevFirstNote = n;
+                        }
+                    }else{
+                        guideLine.add(firstNoteToAdd);
+                        possibleDirectionSwitch(firstNoteToAdd);
+                        prevFirstNote = firstNoteToAdd;
+                    }
+                }
+                
             }else{
-                guideLine.add(secondNoteToAdd);
-                guideLine.add(firstNoteToAdd);
+                //add notes
+                // Alternate the order the notes are added to the guide line
+                if(threeFirst){
+                    guideLine.add(firstNoteToAdd);
+                    guideLine.add(secondNoteToAdd);
+                }else{
+                    guideLine.add(secondNoteToAdd);
+                    guideLine.add(firstNoteToAdd);
+                }
+                
+                //store notes
+                prevFirstNote = firstNoteToAdd;
+                prevSecondNote = secondNoteToAdd;
+                
+                //possibly switch direction if out of range
+                possibleDirectionSwitch(firstNoteToAdd);
+                possibleDirectionSwitch(secondNoteToAdd);
             }
-            //store notes
-            prevFirstNote = firstNoteToAdd;
-            prevSecondNote = secondNoteToAdd;
-            //possibly switch direction if out of range
-            possibleDirectionSwitch(firstNoteToAdd);
-            possibleDirectionSwitch(secondNoteToAdd);
+            
             //jump ahead to next chord
             index+=duration;
             //switch which line comes first if alternating
