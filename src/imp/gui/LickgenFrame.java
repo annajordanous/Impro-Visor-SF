@@ -6786,4 +6786,9 @@ public void setLickGenStatus(String string)
         logDialog.append(string + "\n");
       }
   }
+
+public TransformPanel getTransformPanel()
+{
+    return transformTab;
+}
 }
