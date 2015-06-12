@@ -130,13 +130,18 @@ public class NoteConverter {
      * @param chord the chord that the note is over
      * @param octave the desired octave of the note
      * @param rhythmValue the desired rhythm value of the note
-     * @return Note corresponding to the given scale degree
+     * @return Note corresponding to the given scale degree, null if degree not in chord's scale
      */
     public static Note scaleDegreeToNote(String degree, Chord chord, int octave, int rhythmValue){
         PitchClass pc = scaleDegreeToPitchClass(degree, chord);
-        NoteSymbol ns = new NoteSymbol(pc, octave, rhythmValue);
-        int midi = ns.getMIDI();
-        return new Note(midi, ns.getDuration());
+        if(pc!=null){
+            NoteSymbol ns = new NoteSymbol(pc, octave, rhythmValue);
+            int midi = ns.getMIDI();
+            return new Note(midi, ns.getDuration());
+        }else{
+            return null;//degree not in chord's scale
+        }
+        
     }
     
     /**
@@ -144,11 +149,17 @@ public class NoteConverter {
      * @param degree the scale degree
      * @param chord the chord that the scale degree corresponds to
      * @return Pitch class corresponding to the scale degree and chord
+     * null if scale degree isn't in the chord's associated scale
      */
     public static PitchClass scaleDegreeToPitchClass(String degree, Chord chord){
         PitchClass rootPc = chord.getRootPitchClass();
         int semitonesAboveRoot = indexOf(degree,familyToArray(chord.getFamily()));
-        return PitchClass.transpose(rootPc, semitonesAboveRoot);
+        if(semitonesAboveRoot!=-1){
+            return PitchClass.transpose(rootPc, semitonesAboveRoot);
+        }else{
+            return null; //scale degree not in the scale associated with that chord
+        }
+        
     }
     
     /**
@@ -184,7 +195,7 @@ public class NoteConverter {
      * degree in a scale
      * @param degree The scale degree
      * @param scale The scale that we are using to get the index value
-     * @return 
+     * @return index of scale degree in scale array, -1 if not found
      */
     private static int indexOf(String degree, String[]scale){
         int index = -1;
