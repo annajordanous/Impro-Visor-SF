@@ -67,10 +67,16 @@ public class GuideLineGenerator implements Constants {
     private final String NINE = "2";
     private final String EIGHT = "1";
     
+    private final String SHARPFOUR = "#4";
+    private final String FLATFIVE = "b5";
+    private final String FIVE = "5";
+    
     private final String FOURTHREE = "4-3";
     private final String SEVENSIX = "7-6";
     private final String NINEEIGHT = "9-8";
     private final String NOSUSPENSION = "noSus";
+    private final String FOURFIVE = "4-5";
+    private final String SIXFIVE = "6-5";
     
     //Which scale degree to start on
     private final String startDegree;
@@ -192,7 +198,29 @@ public class GuideLineGenerator implements Constants {
                     //add replacement
                     notesToAdd.add(replacement);
                     possibleDirectionSwitch(prevNote);
-                }else{
+                }else if(suspension.equals(FOURFIVE)){
+                    
+                    //Try b5, #4, then 4 in that order
+                    
+                    replacement = scaleDegreeToNote(FLATFIVE, c, noteToAdd, duration);
+                    if(replacement==null){
+                        replacement = scaleDegreeToNote(SHARPFOUR, c, noteToAdd, duration);
+                        if (replacement==null){
+                            replacement = scaleDegreeToNote(FOUR, c, noteToAdd, duration);
+                        }
+                    }
+                    
+                    //add replacement
+                    notesToAdd.add(replacement);
+                    possibleDirectionSwitch(prevNote);
+                }else if(suspension.equals(SIXFIVE)){
+                    replacement = scaleDegreeToNote(SIX, c, noteToAdd, duration);
+                    
+                    //add replacement
+                    notesToAdd.add(replacement);
+                    possibleDirectionSwitch(prevNote);
+                }
+                else{
                     //currently no other suspensions
                 }
             }
@@ -209,6 +237,9 @@ public class GuideLineGenerator implements Constants {
         NoteSymbol ns = NoteSymbol.makeNoteSymbol(closeNote);
         int octave = ns.getOctave(); //NEED TO FIX
         Note closest = NoteConverter.scaleDegreeToNote(degree, chord, octave-1, rhythmValue);
+        if(closest==null){
+            return null;
+        }
         int closestMIDI = closest.getPitch();
         for(int oct = octave-1; oct<=octave+1; oct++){
             Note n = NoteConverter.scaleDegreeToNote(degree, chord, oct, rhythmValue);
@@ -234,7 +265,11 @@ public class GuideLineGenerator implements Constants {
             return SEVENSIX;
         }else if(scaleDegreeToNote(EIGHT, c).getPitchClassName().equals(n2.getPitchClassName())){
             return NINEEIGHT;
-        }else{
+        }else if(scaleDegreeToNote(FIVE, c).getPitchClassName().equals(n2.getPitchClassName())){
+            return SIXFIVE;
+        }
+        else{
+            
             //unfortunately, even those these notes are the same
             //we don't have a suspension for this situation
             return NOSUSPENSION;
