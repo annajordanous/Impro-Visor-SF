@@ -22509,6 +22509,7 @@ int quantizeResolution = 60;
               //System.out.println("Applied Resolution = " + quantizeResolution);
               // Doesn't work; see above
               //quantizedPart = MelodyPart.quantizeNoRes(quantizedPart);
+              quantizedPart.setInstrument(getCurrentMelodyPart().getInstrument()); //fix bug 60
               addChorus(quantizedPart);
               }
           }
