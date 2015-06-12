@@ -58,8 +58,19 @@ public class GuideLineGenerator implements Constants {
     private final int NOPREFERENCE = 0;
     
     //Scale degrees that are frequently used
+    private final String FOUR = "4";
     private final String THREE = "3";
+    
     private final String SEVEN = "7";
+    private final String SIX = "6";
+    
+    private final String NINE = "2";
+    private final String EIGHT = "1";
+    
+    private final String FOURTHREE = "4-3";
+    private final String SEVENSIX = "7-6";
+    private final String NINEEIGHT = "9-8";
+    private final String NOSUSPENSION = "noSus";
     
     //Which scale degree to start on
     private final String startDegree;
@@ -120,15 +131,18 @@ public class GuideLineGenerator implements Constants {
         int pitch = n.getPitch();
         ArrayList<Note> notes = new ArrayList<Note>();
         int durationRemaining;
-        for(durationRemaining = n.getRhythmValue(); durationRemaining >= maxDuration; durationRemaining -= maxDuration){
+        for(durationRemaining = n.getRhythmValue(); durationRemaining > maxDuration; durationRemaining -= maxDuration){
             notes.add(new Note(pitch, maxDuration));
         }
+        
         notes.add(new Note(pitch, durationRemaining));
         return notes;
     }
     
     /**
      * Generates a list of notes to add from a note to be split up and a chord
+     * Possibly switches direction of guide tone line at addition of each note
+     * Replaces repeated 3's, 6's, and 8's with 4-3, 7-6, and 9-8 suspensions
      * @param note note to be converted to an ArrayList of notes
      * @param c the chord that the notes are to be played over
      * @return an ArrayList of notes to be played over the chord generated
@@ -136,17 +150,116 @@ public class GuideLineGenerator implements Constants {
      * 
      */
     private ArrayList<Note> notesToAdd(Note note, Chord c){
+        
         ArrayList<Note> notes = splitUpNote(note);
         ArrayList<Note> notesToAdd = new ArrayList<Note>();
+        
         Note prevNote = notes.remove(0);
+        
         notesToAdd.add(prevNote);
+        possibleDirectionSwitch(prevNote);
         for(Note n: notes){
+            
+            //find next Note, making same notes have really bad scores
             Note noteToAdd = nextNote(prevNote, c, true);
             noteToAdd.setRhythmValue(n.getRhythmValue());
+            //Check if same as last note. If yes, see if a suspension applies
+            String suspension = suspensionCheck(prevNote, noteToAdd, c);
+            
+            if(!suspension.equals(NOSUSPENSION)){
+                int duration = prevNote.getRhythmValue();
+                //remove prevNote
+                notesToAdd.remove(notesToAdd.size()-1);
+                Note replacement;
+                if(suspension.equals(FOURTHREE)){
+                    
+                    replacement = scaleDegreeToNote(FOUR, c, noteToAdd, duration);
+                    
+                    //add replacement
+                    notesToAdd.add(replacement);
+                    possibleDirectionSwitch(prevNote);
+                }else if(suspension.equals(SEVENSIX)){
+                    
+                    replacement = scaleDegreeToNote(SEVEN, c, noteToAdd, duration);
+                    
+                    //add replacement
+                    notesToAdd.add(replacement);
+                    possibleDirectionSwitch(prevNote);
+                }else if(suspension.equals(NINEEIGHT)){
+                    
+                    replacement = scaleDegreeToNote(NINE, c, noteToAdd, duration);
+                    
+                    //add replacement
+                    notesToAdd.add(replacement);
+                    possibleDirectionSwitch(prevNote);
+                }else{
+                    //currently no other suspensions
+                }
+            }
+            //Add note, possibly switch direction of line, store note as prevNote
             notesToAdd.add(noteToAdd);
+            possibleDirectionSwitch(noteToAdd);
             prevNote = noteToAdd;
         }
+        
         return notesToAdd;
+    }
+    
+    private Note scaleDegreeToNote(String degree, Chord chord, Note closeNote, int rhythmValue){
+        NoteSymbol ns = NoteSymbol.makeNoteSymbol(closeNote);
+        int octave = ns.getOctave(); //NEED TO FIX
+        Note closest = NoteConverter.scaleDegreeToNote(degree, chord, octave-1, rhythmValue);
+        int closestMIDI = closest.getPitch();
+        for(int oct = octave-1; oct<=octave+1; oct++){
+            Note n = NoteConverter.scaleDegreeToNote(degree, chord, oct, rhythmValue);
+            int midi = n.getPitch();
+            if(Math.abs(closeNote.getPitch()-midi)<Math.abs(closeNote.getPitch()-closestMIDI)){
+                closestMIDI = midi;
+                closest = n;
+            }
+        }
+        
+        return closest;
+    }
+    
+    
+    
+    private String suspensionCheck(Note n1, Note n2, Chord c){
+        //using getPitchClassName because octaves could differ
+        if(n1.getPitch()!=n2.getPitch()){
+            return NOSUSPENSION;
+        }else if(scaleDegreeToNote(THREE, c).getPitchClassName().equals(n2.getPitchClassName())){
+            return FOURTHREE;
+        }else if(scaleDegreeToNote(SIX, c).getPitchClassName().equals(n2.getPitchClassName())){
+            return SEVENSIX;
+        }else if(scaleDegreeToNote(EIGHT, c).getPitchClassName().equals(n2.getPitchClassName())){
+            return NINEEIGHT;
+        }else{
+            //unfortunately, even those these notes are the same
+            //we don't have a suspension for this situation
+            return NOSUSPENSION;
+        }
+    }
+    
+    
+    
+    private Note getLast(ArrayList<Note> notes){
+        int size = notes.size();
+        if(size>0){
+            return notes.get(size-1);
+        }else{
+            return null; //if list is empty
+        }
+    }
+    
+    private Note removeLast(ArrayList<Note> notes){
+        int size = notes.size();
+        if(size>0){
+            return notes.remove(size-1);
+        }
+        else{
+            return null; //if list is empty
+        }
     }
     
     /**
@@ -203,12 +316,12 @@ public class GuideLineGenerator implements Constants {
                 noteToAdd = nextNote(prevNote, currentChord, false);
             }
             if(durationSpecified && greaterThan(noteToAdd, maxDuration)){
+                
                 ArrayList<Note> notesToAdd = notesToAdd(noteToAdd, currentChord);
                 for(Note n: notesToAdd){
                     guideLine.add(n);
-                    possibleDirectionSwitch(n);
-                    prevNote = n;
                 }
+                prevNote = notesToAdd.get(notesToAdd.size()-1);
             }else{
                 guideLine.add(noteToAdd);
                 possibleDirectionSwitch(noteToAdd);
@@ -307,9 +420,8 @@ public class GuideLineGenerator implements Constants {
                         ArrayList<Note> notesToAdd = notesToAdd(firstNoteToAdd, currentChord);
                         for(Note n: notesToAdd){
                             guideLine.add(n);
-                            possibleDirectionSwitch(n);
-                            prevFirstNote = n;
                         }
+                        prevFirstNote = getLast(notesToAdd);
                     }else{
                         guideLine.add(firstNoteToAdd);
                         possibleDirectionSwitch(firstNoteToAdd);
@@ -320,9 +432,8 @@ public class GuideLineGenerator implements Constants {
                         ArrayList<Note> notesToAdd = notesToAdd(secondNoteToAdd, currentChord);
                         for(Note n: notesToAdd){
                             guideLine.add(n);
-                            possibleDirectionSwitch(n);
-                            prevSecondNote = n;
                         }
+                        prevSecondNote = getLast(notesToAdd);
                     }else{
                         guideLine.add(secondNoteToAdd);
                         possibleDirectionSwitch(secondNoteToAdd);
@@ -334,9 +445,8 @@ public class GuideLineGenerator implements Constants {
                         ArrayList<Note> notesToAdd = notesToAdd(secondNoteToAdd, currentChord);
                         for(Note n: notesToAdd){
                             guideLine.add(n);
-                            possibleDirectionSwitch(n);
-                            prevSecondNote = n;
                         }
+                        prevSecondNote = getLast(notesToAdd);
                     }else{
                         guideLine.add(secondNoteToAdd);
                         possibleDirectionSwitch(secondNoteToAdd);
@@ -347,9 +457,8 @@ public class GuideLineGenerator implements Constants {
                         ArrayList<Note> notesToAdd = notesToAdd(firstNoteToAdd, currentChord);
                         for(Note n: notesToAdd){
                             guideLine.add(n);
-                            possibleDirectionSwitch(n);
-                            prevFirstNote = n;
                         }
+                        prevFirstNote = getLast(notesToAdd);
                     }else{
                         guideLine.add(firstNoteToAdd);
                         possibleDirectionSwitch(firstNoteToAdd);
