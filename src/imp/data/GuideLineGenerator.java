@@ -132,7 +132,7 @@ public class GuideLineGenerator implements Constants {
      * @param note note to be converted to an ArrayList of notes
      * @param c the chord that the notes are to be played over
      * @return an ArrayList of notes to be played over the chord generated
-     * using the nextNote method
+     * using the nextNote method disallowing same note
      * 
      */
     private ArrayList<Note> notesToAdd(Note note, Chord c){
@@ -141,7 +141,7 @@ public class GuideLineGenerator implements Constants {
         Note prevNote = notes.remove(0);
         notesToAdd.add(prevNote);
         for(Note n: notes){
-            Note noteToAdd = nextNote(prevNote, c);
+            Note noteToAdd = nextNote(prevNote, c, true);
             noteToAdd.setRhythmValue(n.getRhythmValue());
             notesToAdd.add(noteToAdd);
             prevNote = noteToAdd;
@@ -200,7 +200,7 @@ public class GuideLineGenerator implements Constants {
                 noteToAdd = firstNote(currentChord);
             }
             else {
-                noteToAdd = nextNote(prevNote, currentChord);
+                noteToAdd = nextNote(prevNote, currentChord, false);
             }
             if(durationSpecified && greaterThan(noteToAdd, maxDuration)){
                 ArrayList<Note> notesToAdd = notesToAdd(noteToAdd, currentChord);
@@ -293,10 +293,10 @@ public class GuideLineGenerator implements Constants {
                 
             }
             else{
-                firstNoteToAdd = nextNote(prevFirstNote, currentChord);
+                firstNoteToAdd = nextNote(prevFirstNote, currentChord, false);
                 firstNoteToAdd.setRhythmValue(currentChord.getRhythmValue()/2);
                 
-                secondNoteToAdd = nextNote(prevSecondNote, currentChord);
+                secondNoteToAdd = nextNote(prevSecondNote, currentChord, false);
                 secondNoteToAdd.setRhythmValue(currentChord.getRhythmValue()/2);
             }
             boolean firstNoteTooLong = greaterThan(firstNoteToAdd, maxDuration);
@@ -403,10 +403,10 @@ public class GuideLineGenerator implements Constants {
      * @param c The next chord in the chord part
      * @return The next note to be used in the guide tone line
      */
-    private Note nextNote(Note n, Chord c)
+    private Note nextNote(Note n, Chord c, boolean disallowSame)
     { 
         ArrayList<Note> possibleNotes = possibleNotes(n,c);
-        return bestNote(n, c, possibleNotes);
+        return bestNote(n, c, possibleNotes, disallowSame);
     }
     
     /**
@@ -418,7 +418,7 @@ public class GuideLineGenerator implements Constants {
      *                      previous note
      * @return The note with the best score to fit in the guide tone line
      */
-    private Note bestNote(Note n, Chord c, ArrayList<Note> possibleNotes)
+    private Note bestNote(Note n, Chord c, ArrayList<Note> possibleNotes, boolean disallowSame)
     {
         if(possibleNotes.isEmpty()){
             //SHOULD DEFINITELY CHANGE
@@ -428,9 +428,23 @@ public class GuideLineGenerator implements Constants {
         }
         else{
             Note bestNote = possibleNotes.get(0);
-            double minScore = score(n, c, possibleNotes.get(0));
+            
+            //initialize minScore
+            double minScore;
+            if(disallowSame){
+                minScore = disallowSameNoteScore(n, c, possibleNotes.get(0));
+            }else{
+                minScore = score(n, c, possibleNotes.get(0));
+            }
+            
             for(Note currNote : possibleNotes){
-                double currScore = score(n,c,currNote);
+                double currScore;
+                if(disallowSame){
+                    currScore = disallowSameNoteScore(n,c,currNote);
+                }else{
+                    currScore = score(n,c,currNote);
+                }
+                
                 //IMPLICIT TIE BREAK, could be <=
                 if(currScore<minScore){
                     minScore = currScore;
@@ -509,6 +523,14 @@ public class GuideLineGenerator implements Constants {
         }
         
         return score;
+    }
+    
+    private double disallowSameNoteScore(Note prev, Chord c, Note note){
+        if(prev.getPitch()==note.getPitch()){
+            return Double.MAX_VALUE;
+        }else{
+            return score(prev, c, note);
+        }
     }
     
     /**
