@@ -117,9 +117,9 @@ public ThemeWeaver(LickGen lickgen, Notate notate, CommandManager cm)
 
     });
     setTableColumnWidths();
-
     themesfc = new JFileChooser();
     loadFromFile(fileName);
+    
   }
 
 public void setTableColumnWidths()
@@ -138,6 +138,9 @@ public void setTableColumnWidths()
         soloTable.getColumnModel().getColumn(j).setCellRenderer(renderer);
       }
   }
+    
+
+
 
 /**
  * This method is called from within the constructor to initialize the form.
@@ -195,6 +198,17 @@ public void setTableColumnWidths()
         javax.swing.JLabel E7Label2 = new javax.swing.JLabel();
         pitchRangeMaxSlider = new javax.swing.JSlider();
         jLabel4 = new javax.swing.JLabel();
+        trans1ComboBox = new javax.swing.JComboBox();
+        trans3ComboBox = new javax.swing.JComboBox();
+        trans4ComboBox = new javax.swing.JComboBox();
+        trans5ComboBox = new javax.swing.JComboBox();
+        TransformationOrder = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        trans2ComboBox = new javax.swing.JComboBox();
         roadmapMenuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
         loadThemesMI = new javax.swing.JMenuItem();
@@ -389,12 +403,13 @@ public void setTableColumnWidths()
         gridBagConstraints.insets = new java.awt.Insets(31, 76, 150, 0);
         resetCheck.getContentPane().add(NoButton, gridBagConstraints);
 
+        setAlwaysOnTop(true);
         setLocation(new java.awt.Point(10, 10));
         setLocationByPlatform(true);
         setMaximumSize(new java.awt.Dimension(1500, 1000));
-        setMinimumSize(new java.awt.Dimension(1500, 900));
+        setMinimumSize(new java.awt.Dimension(1500, 800));
         setPreferredSize(new java.awt.Dimension(1500, 800));
-        setSize(new java.awt.Dimension(1500, 1000));
+        setSize(new java.awt.Dimension(1500, 700));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 ThemeWeaver.this.windowClosed(evt);
@@ -465,7 +480,8 @@ public void setTableColumnWidths()
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 8;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridheight = 6;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.ipadx = 800;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
@@ -498,12 +514,14 @@ public void setTableColumnWidths()
         themeListScrollPane.setViewportView(themeList);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 8;
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 7;
         gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.gridheight = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
         gridBagConstraints.ipadx = 320;
-        gridBagConstraints.ipady = 360;
+        gridBagConstraints.ipady = 200;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 0.3;
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
@@ -516,14 +534,14 @@ public void setTableColumnWidths()
         themeUsageScrollPane.setViewportView(themeUsageTextArea);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 12;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.gridheight = 3;
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 13;
+        gridBagConstraints.gridwidth = 4;
+        gridBagConstraints.gridheight = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 0.6;
         gridBagConstraints.weighty = 0.3;
-        gridBagConstraints.insets = new java.awt.Insets(0, 10, 5, 0);
+        gridBagConstraints.insets = new java.awt.Insets(0, 10, 5, 10);
         getContentPane().add(themeUsageScrollPane, gridBagConstraints);
 
         SoloGeneratorTitle.setFont(new java.awt.Font("Lucida Grande", 1, 24)); // NOI18N
@@ -532,7 +550,7 @@ public void setTableColumnWidths()
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 6;
+        gridBagConstraints.gridwidth = 8;
         gridBagConstraints.ipady = -7;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 15, 0);
@@ -546,8 +564,8 @@ public void setTableColumnWidths()
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 10;
+        gridBagConstraints.gridx = 5;
+        gridBagConstraints.gridy = 11;
         gridBagConstraints.gridheight = 2;
         gridBagConstraints.ipadx = 32;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
@@ -563,7 +581,7 @@ public void setTableColumnWidths()
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridx = 5;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         getContentPane().add(themeIntervalTextField, gridBagConstraints);
@@ -571,7 +589,7 @@ public void setTableColumnWidths()
         themeIntervalLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         themeIntervalLabel.setText("Theme Use Interval");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.ipadx = 5;
         gridBagConstraints.insets = new java.awt.Insets(0, 30, 0, 0);
@@ -586,7 +604,7 @@ public void setTableColumnWidths()
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridx = 5;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         getContentPane().add(noThemeProbTextField, gridBagConstraints);
@@ -594,7 +612,7 @@ public void setTableColumnWidths()
         noThemeProbLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         noThemeProbLabel.setText("No-Theme Prob.");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.ipadx = 5;
         gridBagConstraints.insets = new java.awt.Insets(0, 40, 0, 0);
@@ -624,7 +642,7 @@ public void setTableColumnWidths()
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 12;
+        gridBagConstraints.gridy = 9;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 2.0;
         gridBagConstraints.insets = new java.awt.Insets(0, 35, 0, 0);
@@ -639,7 +657,7 @@ public void setTableColumnWidths()
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 13;
+        gridBagConstraints.gridy = 10;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 2.0;
         gridBagConstraints.insets = new java.awt.Insets(10, 35, 0, 0);
@@ -667,7 +685,7 @@ public void setTableColumnWidths()
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 14;
+        gridBagConstraints.gridy = 13;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(0, 35, 0, 0);
         getContentPane().add(deleteRowbutton, gridBagConstraints);
@@ -680,8 +698,8 @@ public void setTableColumnWidths()
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 9;
+        gridBagConstraints.gridx = 5;
+        gridBagConstraints.gridy = 10;
         gridBagConstraints.ipadx = 32;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 50);
@@ -694,7 +712,7 @@ public void setTableColumnWidths()
         probExpandby2or3.setPaintTicks(true);
         probExpandby2or3.setMinimumSize(new java.awt.Dimension(280, 29));
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridx = 5;
         gridBagConstraints.gridy = 3;
         getContentPane().add(probExpandby2or3, gridBagConstraints);
 
@@ -707,20 +725,20 @@ public void setTableColumnWidths()
         pitchRangeMinSlider.setValue(60);
         pitchRangeMinSlider.setMinimumSize(new java.awt.Dimension(280, 52));
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridx = 5;
         gridBagConstraints.gridy = 4;
         getContentPane().add(pitchRangeMinSlider, gridBagConstraints);
 
         expandBy2Label.setText("Expand by 2");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         getContentPane().add(expandBy2Label, gridBagConstraints);
 
         expandBy3Label.setText("Expand by 3");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridx = 6;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.ipadx = 40;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
@@ -729,28 +747,28 @@ public void setTableColumnWidths()
         pitchRangeMinLabel.setText("Pitch Range Minimum      E2");
         pitchRangeMinLabel.setToolTipText("");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 4;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         getContentPane().add(pitchRangeMinLabel, gridBagConstraints);
         pitchRangeMinLabel.getAccessibleContext().setAccessibleName("Pitch Range Minimum       E2");
 
-        jLabel3.setText("Pitch Range Maximum      E2");
+        jLabel3.setText("Pitch Range Maximum     E2");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 5;
         getContentPane().add(jLabel3, gridBagConstraints);
 
         E7Label1.setText("E7");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridx = 6;
         gridBagConstraints.gridy = 4;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         getContentPane().add(E7Label1, gridBagConstraints);
 
         E7Label2.setText("E7");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridx = 6;
         gridBagConstraints.gridy = 5;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         getContentPane().add(E7Label2, gridBagConstraints);
@@ -763,20 +781,124 @@ public void setTableColumnWidths()
         pitchRangeMaxSlider.setValue(80);
         pitchRangeMaxSlider.setMinimumSize(new java.awt.Dimension(280, 52));
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridx = 5;
         gridBagConstraints.gridy = 5;
         getContentPane().add(pitchRangeMaxSlider, gridBagConstraints);
 
         jLabel4.setFont(new java.awt.Font("Lucida Grande", 1, 18)); // NOI18N
-        jLabel4.setText("                Themes");
+        jLabel4.setText("             Themes                      ");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 7;
+        gridBagConstraints.gridx = 5;
+        gridBagConstraints.gridy = 6;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.ipadx = 10;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(20, 0, 0, 0);
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 40);
         getContentPane().add(jLabel4, gridBagConstraints);
+
+        trans1ComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Transpose", "Invert", "Reverse", "Expand", "Side Slip" }));
+        trans1ComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                trans1ComboBoxActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.ipady = 24;
+        getContentPane().add(trans1ComboBox, gridBagConstraints);
+
+        trans3ComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Reverse", "Expand", "Side Slip" }));
+        trans3ComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                trans3ComboBoxActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.ipady = 24;
+        getContentPane().add(trans3ComboBox, gridBagConstraints);
+
+        trans4ComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Expand", "Side Slip" }));
+        trans4ComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                trans4ComboBoxActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 7;
+        gridBagConstraints.ipady = 24;
+        getContentPane().add(trans4ComboBox, gridBagConstraints);
+
+        trans5ComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Side Slip" }));
+        trans5ComboBox.setToolTipText("");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 8;
+        gridBagConstraints.ipady = 24;
+        getContentPane().add(trans5ComboBox, gridBagConstraints);
+
+        TransformationOrder.setFont(new java.awt.Font("Lucida Grande", 1, 16)); // NOI18N
+        TransformationOrder.setText("Transformation Order");
+        TransformationOrder.setToolTipText("If a transformation is entered more than once, it will use the default order (Transpose, Invert, Reverse, Expand, Side Slip).");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 3;
+        getContentPane().add(TransformationOrder, gridBagConstraints);
+
+        jLabel5.setText("1:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 15, 0, 0);
+        getContentPane().add(jLabel5, gridBagConstraints);
+
+        jLabel6.setText("2:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 15, 0, 0);
+        getContentPane().add(jLabel6, gridBagConstraints);
+
+        jLabel7.setText("3:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 15, 0, 0);
+        getContentPane().add(jLabel7, gridBagConstraints);
+
+        jLabel8.setText("4:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 7;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 15, 0, 0);
+        getContentPane().add(jLabel8, gridBagConstraints);
+
+        jLabel9.setText("5:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 8;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 15, 0, 0);
+        getContentPane().add(jLabel9, gridBagConstraints);
+
+        trans2ComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Invert", "Reverse", "Expand", "Side Slip" }));
+        trans2ComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                trans2ComboBoxActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.ipady = 24;
+        getContentPane().add(trans2ComboBox, gridBagConstraints);
 
         fileMenu.setText("File"); // NOI18N
         fileMenu.setMaximumSize(new java.awt.Dimension(50, 40));
@@ -1442,9 +1564,75 @@ private void closeWindow()
     }//GEN-LAST:event_pitchRangeMaxSliderMouseReleased
 
     private void pitchRangeMaxSliderMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pitchRangeMaxSliderMouseDragged
-
+            
     }//GEN-LAST:event_pitchRangeMaxSliderMouseDragged
 
+    private void trans1ComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_trans1ComboBoxActionPerformed
+        transformNum = 1;
+        adjustItemsInComboBox(trans1ComboBox, trans2ComboBox, 5);
+    }//GEN-LAST:event_trans1ComboBoxActionPerformed
+
+    private void trans2ComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_trans2ComboBoxActionPerformed
+        if (canEnter2)
+        {
+            System.out.println("2");
+            transformNum = 2;
+            adjustItemsInComboBox(trans2ComboBox, trans3ComboBox, 4);
+        }
+    }//GEN-LAST:event_trans2ComboBoxActionPerformed
+
+    private void trans3ComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_trans3ComboBoxActionPerformed
+        if (canEnter3)
+        {
+            System.out.println("3");
+            transformNum = 3;
+            adjustItemsInComboBox(trans3ComboBox, trans4ComboBox, 3);
+        }
+    }//GEN-LAST:event_trans3ComboBoxActionPerformed
+
+    private void trans4ComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_trans4ComboBoxActionPerformed
+        if (canEnter4)
+        {
+            System.out.println("4");
+            transformNum = 4;
+            adjustItemsInComboBox(trans4ComboBox, trans5ComboBox, 2);
+        }
+    }//GEN-LAST:event_trans4ComboBoxActionPerformed
+
+    private void adjustItemsInComboBox(javax.swing.JComboBox box, javax.swing.JComboBox nextBox, int numItems)
+    {
+        itemsLeft.clear();
+        Object chosenItem = box.getSelectedItem();
+        for (int i=0; i<numItems; i++)
+        {
+            Object currItem = box.getItemAt(i);
+            if (!currItem.equals(chosenItem))
+            {
+                itemsLeft.add(currItem);
+            }
+        }
+        nextBox.removeAllItems();
+        for (int i=0; i<numItems-1; i++)
+        {
+            nextBox.addItem(itemsLeft.get(i));
+        }
+        if (transformNum == 1)
+        {
+            canEnter2=true;
+        }
+        else if (transformNum == 2)
+        {
+            canEnter3=true;
+            canEnter2=false;
+        }
+        else if (transformNum == 3)
+        {
+            canEnter4=true;
+            canEnter3=false;
+        }
+    }
+    
+    
 boolean soloPlaying = false;
 protected ThemeWeaver themeWeaver;
 private int themeLength = 8;
@@ -1469,16 +1657,18 @@ static final int REVERSE_COLUMN = 6;
 static final int EXPAND_COLUMN = 7;
 static final int SIDESLIP_COLUMN = 8;
 static final String USE_DEFAULT_VALUE = "1.0";
-static final String TRANSPOSE_DEFAULT_VALUE = "0.5";
-static final String INVERT_DEFAULT_VALUE = "0.5";
-static final String REVERSE_DEFAULT_VALUE = "0.5";
-static final String EXPAND_DEFAULT_VALUE = "0.5";
-static final String SIDESLIP_DEFAULT_VALUE = "0.5";
-private boolean usedTranpose = false;
-private boolean usedInvert = false;
-private boolean usedReverse = false;
-private boolean usedExpand = false;
-private boolean usedSideslip = false;
+static final String TRANSPOSE_DEFAULT_VALUE = "0.0";
+static final String INVERT_DEFAULT_VALUE = "0.0";
+static final String REVERSE_DEFAULT_VALUE = "0.0";
+static final String EXPAND_DEFAULT_VALUE = "0.0";
+static final String SIDESLIP_DEFAULT_VALUE = "0.0";
+private ArrayList<Object> itemsLeft = new ArrayList<Object>();
+private boolean canEnter2 = false;
+private boolean canEnter3 = false;
+private boolean canEnter4 = false;
+private boolean throughOnce = false;
+private int transformNum = 0;
+//private boolean usedSideslip = false;
 private String themeUsageText = "";
 static final int ROW_COUNT = 20;
 double probnoTheme;
@@ -2514,23 +2704,31 @@ public void myGenerateSolo(ArrayList<ThemeUse> themeUses, CommandManager cm)
     minPitch = (int)pitchRangeMinSlider.getValue();
     
     probnoTheme = Double.parseDouble(noThemeProbTextField.getText());
-    MelodyPart solo = new MelodyPart(themeLength);
+    MelodyPart solo = new MelodyPart(0);
     
     imp.ImproVisor.setPlayEntrySounds(false); //don't play insertions yet
     
     //use Theme Use Interval from text field
     int themeInterval = new Integer(themeIntervalTextField.getText());
-   
+    
     int slots = 120;//(int)notate.getTempo();
     
     int themeIntervalUseIncrement = themeInterval * slots; //amount by which we'll increment over the score
     
-    for( int i = 0; i < notate.getScoreLength(); i += themeIntervalUseIncrement )
+    int i=0;
+    while (i<notate.getScoreLength())
     {//increment through and fill the whole score 
+        
+        themeInterval = new Integer(themeIntervalTextField.getText());
         double randProbNT = random.nextDouble();//random number used for no-theme
         
         int beat = i / slots;//this is the beat number that we're on
         int bar = 1 + (beat / notate.getBeatsPerMeasure());//this is the bar number we're on
+        
+        MelodyPart newMelody = new MelodyPart();
+        
+        int increaseIncrement = 0;//keeps track of how i should change accordingly 
+                                        //and how the solo size should change
         
         if (probnoTheme < randProbNT)
         {
@@ -2559,65 +2757,74 @@ public void myGenerateSolo(ArrayList<ThemeUse> themeUses, CommandManager cm)
             }
 
             MelodyPart chosenTheme = chosenThemeUse.getTheme().melody;
-          
-            if(chosenTheme.getSize() > themeIntervalUseIncrement)
-            {//if the theme doesn't fit in the allotted space, use grammar
-                themeUsageTextArea.append("Bar " + bar + ": Used grammar\n");
-                solo.setSize(solo.getSize() + themeIntervalUseIncrement);
-                //set size of solo to the existing length of the solo plus the length of the theme
-                MelodyPart newMelody = generateFromGrammar(themeIntervalUseIncrement, solo, i); 
-                solo.pasteSlots(newMelody, i);
-                //System.out.println("Grammar Doesn't Fit");
+            int originalSize = chosenTheme.getSize();
+            
+            newMelody.setSize(chosenTheme.getSize());
+            //change theme according to given probabilities for transpose, invert, reverse, expand, and side slip
+            newMelody = adjustTheme(chosenTheme, chosenThemeUse, cm, themeInterval);//adjustTheme is a helper method
+            
+            if (newMelody.getSize()+i > notate.getScoreLength())
+            {//if it doesn't fit in allotted score space, stop early
+                
+//                int newMelodySize = notate.getScoreLength()-i;
+//                int randStart = random.nextInt(newMelody.getSize()-newMelodySize);
+//                int randEnd = randStart + newMelodySize;
+//                MelodyPart shortenedMelody = newMelody.extract(randStart, randEnd);
+//                themeUsageTextArea.append("Bar " + bar + ": " + chosenThemeUse.theme.name + ": ");
+//                themeUsageTextArea.append(themeUsageText + ", shortened to fit in solo" + "\n");
+//                newMelody = shortenedMelody;
+//                
+                newMelody = null; 
+                increaseIncrement += themeIntervalUseIncrement;
+                System.out.println("done");
             }
+            else if(newMelody.getSize() > themeIntervalUseIncrement)
+            {//if the theme doesn't fit in the allotted space
+                //reset solo size so it fits
+                themeUsageTextArea.append("Bar " + bar + ": " + chosenThemeUse.theme.name + ": ");
+                themeUsageTextArea.append(themeUsageText + "\n");
+                int numIncrements = newMelody.getSize()/themeIntervalUseIncrement + 1;
+                
+                increaseIncrement += themeIntervalUseIncrement*numIncrements;
+            }
+//            else if (usedSideslip)
+//            {//uses side slip and it fits
+//                increaseIncrement += themeIntervalUseIncrement*2;
+//                themeUsageTextArea.append("Bar " + bar + ": " + chosenThemeUse.theme.name + ": ");
+//                themeUsageTextArea.append(themeUsageText + "\n");
+//                usedSideslip = false;
+//            }
             else
-            {//if the theme does fit in the allotted solo space, adjust and add it 
-                //change theme according to given probabilities for transpose, invert, reverse, expand, and side slip
-                MelodyPart newMelody = adjustTheme(chosenTheme, chosenThemeUse, solo, cm);//adjustTheme is a helper method
-                //set size of solo to the existing length of the solo plus the length of the theme
-                System.out.println(bar);
-                System.out.println(notate.getScoreLength());
-                System.out.println(newMelody.getSize());
-                System.out.println(i);
-                if (usedSideslip && newMelody.getSize()+i > notate.getScoreLength())
-                {//if it tried to use side slip during the last increment, use grammar
-                    //use grammar
-
-                    themeUsageTextArea.append("Bar " + bar + ": Used grammar\n");
-                    solo.setSize(solo.getSize() + themeIntervalUseIncrement);
-                    //set size of solo to the existing length of the solo plus the length of the theme
-                    newMelody = generateFromGrammar(themeIntervalUseIncrement, solo, i); 
-                    solo.pasteSlots(newMelody, i);
-                    usedSideslip = false;
-                }
-                else if (usedSideslip)
-                {//uses side slip and it fits
-                    solo.setSize(solo.getSize() + themeIntervalUseIncrement*2);
-                    themeUsageTextArea.append("Bar " + bar + ": " + chosenThemeUse.theme.name + ": ");
-                    themeUsageTextArea.append(themeUsageText + "\n");
-                    solo.pasteSlots(newMelody, i);
-                    i+=themeIntervalUseIncrement;
-                    usedSideslip = false;
-                }
-                else
-                {//doesn't use side slip
-                    solo.setSize(solo.getSize() + themeIntervalUseIncrement);
-                    themeUsageTextArea.append("Bar " + bar + ": " + chosenThemeUse.theme.name + ": ");
-                    themeUsageTextArea.append(themeUsageText + "\n");
-                    solo.pasteSlots(newMelody, i);
-                }
-                themeUsageText = "";
+            {//it fits properly
+                themeUsageTextArea.append("Bar " + bar + ": " + chosenThemeUse.theme.name + ": ");
+                themeUsageTextArea.append(themeUsageText + "\n");
+                
+                increaseIncrement += themeIntervalUseIncrement;
             }
-        }
+            
+            themeUsageText = "";
+          
+            chosenTheme.setSize(originalSize);
+            
+        }   
         else
         {
-            //no theme, use grammar 
+            //no theme, use
             themeUsageTextArea.append("Bar " + bar + ": Used grammar\n");
-            solo.setSize(solo.getSize() + themeIntervalUseIncrement);
             //set size of solo to the existing length of the solo plus the length of the theme
-            MelodyPart newMelody = generateFromGrammar(themeIntervalUseIncrement, solo, i); 
-            solo.pasteSlots(newMelody, i);
+            newMelody = generateFromGrammar(themeIntervalUseIncrement, solo, i); 
+            increaseIncrement += themeIntervalUseIncrement;
             //System.out.println("Grammar No Theme");
         }
+        
+        solo.setSize(solo.getSize() + increaseIncrement);
+        
+        solo.pasteSlots(newMelody, i);
+        System.out.println("solo "+solo.getSize());
+        System.out.println("score "+notate.getScoreLength());
+        System.out.println("old "+i);
+        i+=increaseIncrement;
+        System.out.println("new "+i);
     }
     
     notate.setCurrentSelectionStart(0); //start selection at beginning
@@ -2633,223 +2840,281 @@ public void myGenerateSolo(ArrayList<ThemeUse> themeUses, CommandManager cm)
 }
 
 //adjustTheme is a helper method for myGenerateSolo
-public MelodyPart adjustTheme(MelodyPart chosenTheme, ThemeUse chosenThemeUse, MelodyPart solo, CommandManager cm)
+public MelodyPart adjustTheme(MelodyPart chosenTheme, ThemeUse chosenThemeUse, CommandManager cm, int themeInterval)
 {
     MelodyPart transposedMelody = chosenTheme.copy();
+    MelodyPart adjustedMelody = chosenTheme.copy();
     int length = chosenTheme.size(); 
     
     imp.ImproVisor.setPlayEntrySounds(false); //don't play yet
     
     int numAdjustments = 0;
-    
-    int themeInterval = new Integer(themeIntervalTextField.getText());
    
     int slots = 120;//(int)notate.getTempo();
     
     int themeIntervalUseIncrement = themeInterval * slots; //amount by which we'll increment over the score
     
-        //transformations are done in the order: transpose, invert, reverse, expand, side slip
-        
-        //decide whether to transpose or not
-        if (Notate.bernoulli(chosenThemeUse.getProbTranspose()) ) 
-        {    //if random number is > the probability of transposing
-            //transpose
-            numAdjustments ++;
-            themeUsageText += "transposed";
-            while (true)
-            {//loop until you find a transposition in range (it will break while loop
-             //                                                        when this happens)
-                //System.out.println("try to transpose");
-                int maxTransposeDist = (maxPitch + minPitch)/2; 
-                    //if pitch is exactly in the center or min and max pitch, 
-                                    //maximum number of steps to reach min and max pitch
-                //decide to move by semitones or whole tone according to set probability
-                if (Notate.bernoulli(probWholeToneTranspose))
-                {//transpose by whole tones
-                    int numWholeSteps = random.nextInt(maxTransposeDist/2);
-      
-                    if (Notate.bernoulli(.5))
-                    {//transpose down by numWholeSteps
-                        
-                        int lowest = lowestNote(transposedMelody)-numWholeSteps*2;
-                  
-                        if (lowest > minPitch)//make sure the new melody will be in range
-                        {
-                            //transpose copy of chosen theme
-                            cm.execute(new ShiftPitchesCommand(-1*numWholeSteps, transposedMelody, 
-                                0, length, 0, 128, notate.getScore().getKeySignature()));
-                            break;
+    Object[] transformOrder = new Object[5];
+    Object trans1 = trans1ComboBox.getSelectedItem();
+    Object trans2 = trans2ComboBox.getSelectedItem();
+    Object trans3 = trans3ComboBox.getSelectedItem();
+    Object trans4 = trans4ComboBox.getSelectedItem();
+    Object trans5 = trans5ComboBox.getSelectedItem();
+    transformOrder[0]=trans1;
+    transformOrder[1]=trans2;
+    transformOrder[2]=trans3;
+    transformOrder[3]=trans4;
+    transformOrder[4]=trans5;
+    if (trans1==null&&trans2==null&&trans3==null&&trans4==null&&trans5==null)
+    {
+        transformOrder[0]="Transpose";
+        transformOrder[1]="Invert";
+        transformOrder[2]="Reverse";
+        transformOrder[3]="Expand";
+        transformOrder[4]="Side Slip";
+    }
+    else if (trans1==null||trans2==null||trans3==null||trans4==null||trans5==null)
+    {
+        //not entered correctly, will use default
+        transformOrder[0]="Transpose";
+        transformOrder[1]="Invert";
+        transformOrder[2]="Reverse";
+        transformOrder[3]="Expand";
+        transformOrder[4]="Side Slip";
+    }
+    int count = 0;
+    while (count < 5)
+    {
+        if (transformOrder[count]=="Transpose")
+        {
+            //decide whether to transpose or not
+            if (Notate.bernoulli(chosenThemeUse.getProbTranspose()) ) 
+            {    //if random number is > the probability of transposing
+                //transpose
+                numAdjustments ++;
+                if (numAdjustments > 1)
+                {
+                    themeUsageText+=", transposed";
+                }
+                else
+                {
+                    themeUsageText+="transposed";
+                }
+                while (true)
+                {//loop until you find a transposition in range (it will break while loop
+                 //                                                        when this happens)
+                    //System.out.println("try to transpose");
+                    int maxTransposeDist = (maxPitch + minPitch)/2; 
+                        //if pitch is exactly in the center or min and max pitch, 
+                                        //maximum number of steps to reach min and max pitch
+                    //decide to move by semitones or whole tone according to set probability
+                    if (Notate.bernoulli(probWholeToneTranspose))
+                    {//transpose by whole tones
+                        int numWholeSteps = random.nextInt(maxTransposeDist/2);
+
+                        if (Notate.bernoulli(.5))
+                        {//transpose down by numWholeSteps
+
+                            int lowest = lowestNote(transposedMelody)-numWholeSteps*2;
+
+                            if (lowest > minPitch)//make sure the new melody will be in range
+                            {
+                                //transpose copy of chosen theme
+                                cm.execute(new ShiftPitchesCommand(-1*numWholeSteps, transposedMelody, 
+                                    0, length, 0, 128, notate.getScore().getKeySignature()));
+                                break;
+                            }
+                            /*else
+                            {
+                                System.out.println("repeat");
+                            }*/
                         }
-                        /*else
-                        {
-                            System.out.println("repeat");
-                        }*/
-                    }
-                    else
-                    {//transpose up by numWholeSteps
-                    
-                        int highest = highestNote(transposedMelody)+numWholeSteps*2;
-                  
-                        if (highest < maxPitch)//make sure the new melody will be in range
-                        {
-                            //transpose copy of chosen theme
-                            cm.execute(new ShiftPitchesCommand(numWholeSteps, transposedMelody, 
-                                0, length, 0, 128, notate.getScore().getKeySignature()));
-                            break;
+                        else
+                        {//transpose up by numWholeSteps
+
+                            int highest = highestNote(transposedMelody)+numWholeSteps*2;
+
+                            if (highest < maxPitch)//make sure the new melody will be in range
+                            {
+                                //transpose copy of chosen theme
+                                cm.execute(new ShiftPitchesCommand(numWholeSteps, transposedMelody, 
+                                    0, length, 0, 128, notate.getScore().getKeySignature()));
+                                break;
+                            }
+                            /*else
+                            {
+                                System.out.println("repeat");
+                            }*/
                         }
-                        /*else
-                        {
-                            System.out.println("repeat");
-                        }*/
+
                     }
 
-                }
-                
-                else
-                {//transpose by semitones
-                    int numHalfSteps = random.nextInt(maxTransposeDist);
-                    if (Notate.bernoulli(.5))
-                    {//transpose down by numWholeSteps
-                        
-                        int lowest = lowestNote(transposedMelody)-numHalfSteps;
-                  
-                        if (lowest > minPitch)//make sure the new melody will be in range
-                        {
-                            //transpose copy of chosen theme
-                            cm.execute(new ShiftPitchesCommand(-1*numHalfSteps, transposedMelody, 
-                                0, length, 0, 128, notate.getScore().getKeySignature()));
-                            break;
+                    else
+                    {//transpose by semitones
+                        int numHalfSteps = random.nextInt(maxTransposeDist);
+                        if (Notate.bernoulli(.5))
+                        {//transpose down by numWholeSteps
+
+                            int lowest = lowestNote(transposedMelody)-numHalfSteps;
+
+                            if (lowest > minPitch)//make sure the new melody will be in range
+                            {
+                                //transpose copy of chosen theme
+                                cm.execute(new ShiftPitchesCommand(-1*numHalfSteps, transposedMelody, 
+                                    0, length, 0, 128, notate.getScore().getKeySignature()));
+                                break;
+                            }
+                            /*else
+                            {
+                                System.out.println("repeat");
+                            }*/
                         }
-                        /*else
-                        {
-                            System.out.println("repeat");
-                        }*/
+                        else
+                        {//transpose up by numWholeSteps
+
+                            int highest = highestNote(transposedMelody)+numHalfSteps*2;
+
+                            if (highest < maxPitch)//make sure the new melody will be in range
+                            {
+                                //transpose copy of chosen theme
+                                cm.execute(new ShiftPitchesCommand(numHalfSteps, transposedMelody, 
+                                    0, length, 0, 128, notate.getScore().getKeySignature()));
+                                break;
+                            }
+                            /*else
+                            {
+                                System.out.println("repeat");
+                            }*/
+                        }
+                    }
+                }
+                adjustedMelody = transposedMelody;
+            }
+        }
+        else if (transformOrder[count]=="Invert")
+        {
+            //decide whether to invert or not
+            if (Notate.bernoulli(chosenThemeUse.getProbInvert()) )
+                //if random number is > the probability of inverting
+            {
+                //invert
+                numAdjustments++;
+                if (numAdjustments > 1)
+                {
+                    themeUsageText+=", inverted";
+                }
+                else
+                {
+                    themeUsageText+="inverted";
+                }
+                cm.execute(new InvertCommand(adjustedMelody, 0, length, false));
+                //System.out.println("Invert");
+            }
+        }
+        else if (transformOrder[count] == "Reverse")
+        {
+            //decide whether to reverse or not
+            if (Notate.bernoulli(chosenThemeUse.getProbReverse()) )
+                //if random number is > the probability of reversing
+            {
+                numAdjustments++;
+                if (numAdjustments > 1)
+                {
+                    themeUsageText+=", reversed";
+                }
+                else
+                {
+                    themeUsageText+="reversed";
+                }
+                //reverse
+                cm.execute(new ReverseCommand(adjustedMelody, 0, length, false));
+                //System.out.println("Reverse");
+            }
+        }
+        else if (transformOrder[count] == "Expand")
+        {
+            //decide whether to expand or not
+            if (Notate.bernoulli(chosenThemeUse.getProbExpand()))
+            {
+                numAdjustments ++;
+                double probExpandBy3 = probExpandby2or3.getValue()/100; 
+                //decide whether to expand by 2 or 3
+                if (Notate.bernoulli(probExpandBy3))
+                {
+                    if (numAdjustments > 1)
+                    {
+                        themeUsageText+=", expanded by 3";
                     }
                     else
-                    {//transpose up by numWholeSteps
-                    
-                        int highest = highestNote(transposedMelody)+numHalfSteps*2;
-                  
-                        if (highest < maxPitch)//make sure the new melody will be in range
-                        {
-                            //transpose copy of chosen theme
-                            cm.execute(new ShiftPitchesCommand(numHalfSteps, transposedMelody, 
-                                0, length, 0, 128, notate.getScore().getKeySignature()));
-                            break;
-                        }
-                        /*else
-                        {
-                            System.out.println("repeat");
-                        }*/
+                    {
+                        themeUsageText+="expanded by 3";
                     }
-                }
-            }
-            chosenTheme = transposedMelody;
-        }
-        
-        //decide whether to invert or not
-        if (Notate.bernoulli(chosenThemeUse.getProbInvert()) )
-            //if random number is > the probability of inverting
-        {
-            //invert
-            numAdjustments++;
-            if (numAdjustments > 1)
-            {
-                themeUsageText+=", inverted";
-            }
-            else
-            {
-                themeUsageText+="inverted";
-            }
-            cm.execute(new InvertCommand(chosenTheme, 0, length, false));
-            //System.out.println("Invert");
-        }
-        
-        //decide whether to reverse or not
-        if (Notate.bernoulli(chosenThemeUse.getProbReverse()) )
-            //if random number is > the probability of reversing
-        {
-            numAdjustments++;
-            if (numAdjustments > 1)
-            {
-                themeUsageText+=", reversed";
-            }
-            else
-            {
-                themeUsageText+="reversed";
-            }
-            //reverse
-            cm.execute(new ReverseCommand(chosenTheme, 0, length, false));
-            //System.out.println("Reverse");
-        }
-        
-        //decide whether to expand or not
-        if (Notate.bernoulli(chosenThemeUse.getProbExpand()))
-        {
-            numAdjustments ++;
-            double probExpandBy3 = probExpandby2or3.getValue()/100; 
-            //decide whether to expand by 2 or 3
-            if (Notate.bernoulli(probExpandBy3))
-            {
-                if (numAdjustments > 1)
-                {
-                    themeUsageText+=", expanded by 3";
+                    //expand by 3
+                    cm.execute(new TimeWarpCommand(adjustedMelody,0,length, true, 3, 1));
                 }
                 else
                 {
-                    themeUsageText+="expanded by 3";
+                    if (numAdjustments > 1)
+                    {
+                        themeUsageText+=", expanded by 2";
+                    }
+                    else
+                    {
+                        themeUsageText+="expanded by 2";
+                    }
+                    //expand by 2
+                    cm.execute(new TimeWarpCommand(adjustedMelody,0,length, true, 2, 1));
                 }
-                //expand by 3
-                cm.execute(new TimeWarpCommand(chosenTheme,0,length, true, 3, 1));
             }
-            else
+        }
+        else if (transformOrder[count] == "Side Slip")
+        {
+            //decide whether to side slip or not
+            if (Notate.bernoulli(chosenThemeUse.getProbSideslip()))
             {
+                numAdjustments ++;
+                //usedSideslip = true;
+                MelodyPart sideslippedMelody = chosenTheme.copy();
                 if (numAdjustments > 1)
                 {
-                    themeUsageText+=", expanded by 2";
+                    themeUsageText+=", side slip";
                 }
                 else
                 {
-                    themeUsageText+="expanded by 2";
+                    themeUsageText+="side slip";
                 }
-                //expand by 2
-                cm.execute(new TimeWarpCommand(chosenTheme,0,length, true, 2, 1));
+                //add two of the same melodies with one transposed up a half step
+                cm.execute(new ShiftPitchesCommand(1, sideslippedMelody, 
+                                    0, length, 0, 128, notate.getScore().getKeySignature()));
+
+                adjustedMelody.setSize(adjustedMelody.getSize()+sideslippedMelody.getSize());
+                adjustedMelody.pasteSlots(sideslippedMelody, adjustedMelody.getSize()/2);
+
             }
         }
-        
-        //decide whether to have an adjacent half step transposition or not
-        if (Notate.bernoulli(chosenThemeUse.getProbSideslip()))
+        count++;
+    }
+    if (numAdjustments == 0)
+    {
+        themeUsageText+=" unmotified";
+    }
+    
+    return adjustedMelody;
+}
+
+private boolean transformDoubled(Object[] transforms)
+{//returns true if any two of the transforms in the array are equal
+    for (int i=0; i<transforms.length; i++)
+    {
+        for (int j=0; j<transforms.length; j++)
         {
-            numAdjustments ++;
-            usedSideslip = true;
-            MelodyPart sideslippedMelody = chosenTheme.copy();
-            if (numAdjustments > 1)
+            if (transforms[i] == transforms[j] && i != j)
             {
-                themeUsageText+=", side slip";
+                return true;
             }
-            else
-            {
-                themeUsageText+="side slip";
-            }
-            //add two of the same melodies with one transposed up a half step
-            cm.execute(new ShiftPitchesCommand(1, sideslippedMelody, 
-                                0, length, 0, 128, notate.getScore().getKeySignature()));
-            
-            chosenTheme.setSize(chosenTheme.getSize()+sideslippedMelody.getSize());
-            for (int i=chosenTheme.getSize()/2; i<chosenTheme.getSize(); i+= themeIntervalUseIncrement)
-            {
-                chosenTheme.pasteSlots(sideslippedMelody, i);
-            }
-           
         }
-        
-        if (numAdjustments == 0)
-        {
-            themeUsageText+=" unmotified";
-        }
-        
-        
-        return chosenTheme;
+    }
+    return false;
 }
 
 public MelodyPart generateFromGrammar(int themeLength, MelodyPart solo, int slotNum)
@@ -2916,6 +3181,7 @@ public int highestNote(MelodyPart melody)
     private javax.swing.JButton Reset;
     private javax.swing.JLabel Resettable;
     private java.awt.Label SoloGeneratorTitle;
+    private javax.swing.JLabel TransformationOrder;
     private javax.swing.JButton YesButton;
     private javax.swing.JMenuItem cascadeMI;
     private javax.swing.JButton cellOkbutton;
@@ -2933,6 +3199,11 @@ public int highestNote(MelodyPart melody)
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPopupMenu.Separator jSeparator5;
     private javax.swing.JMenuItem loadThemesMI;
     private javax.swing.JDialog nameErrorMessage;
@@ -2957,6 +3228,11 @@ public int highestNote(MelodyPart melody)
     private javax.swing.JScrollPane themeListScrollPane;
     private javax.swing.JScrollPane themeUsageScrollPane;
     private javax.swing.JTextArea themeUsageTextArea;
+    private javax.swing.JComboBox trans1ComboBox;
+    private javax.swing.JComboBox trans2ComboBox;
+    private javax.swing.JComboBox trans3ComboBox;
+    private javax.swing.JComboBox trans4ComboBox;
+    private javax.swing.JComboBox trans5ComboBox;
     private javax.swing.JLabel tryAgain;
     private javax.swing.JLabel typedWrong;
     private javax.swing.JMenu windowMenu;
