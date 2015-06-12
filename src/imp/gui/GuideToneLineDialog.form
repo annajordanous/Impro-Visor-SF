@@ -501,7 +501,8 @@
       <SubComponents>
         <Component class="javax.swing.JButton" name="transformLine">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Transform Guide Tone Line"/>
+            <Property name="text" type="java.lang.String" value="Generate Solo Over Line"/>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="transformLineActionPerformed"/>
@@ -509,8 +510,9 @@
         </Component>
         <Component class="javax.swing.JButton" name="revertLine">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Revert Transformations"/>
+            <Property name="text" type="java.lang.String" value="Restore Guide Tone Line"/>
             <Property name="toolTipText" type="java.lang.String" value=""/>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="revertLineActionPerformed"/>
