@@ -119,6 +119,10 @@ public ThemeWeaver(LickGen lickgen, Notate notate, CommandManager cm)
     setTableColumnWidths();
     themesfc = new JFileChooser();
     loadFromFile(fileName);
+//    adjustItemsInComboBox(1,5);
+//    adjustItemsInComboBox(2,4);
+//    adjustItemsInComboBox(3,3);
+//    adjustItemsInComboBox(4,2);
     
   }
 
@@ -163,13 +167,24 @@ public void setTableColumnWidths()
         tryAgain = new javax.swing.JLabel();
         cellOkbutton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         resetCheck = new javax.swing.JDialog();
         Resettable = new javax.swing.JLabel();
         youSure = new javax.swing.JLabel();
         YesButton = new javax.swing.JButton();
         NoButton = new javax.swing.JButton();
+        rangeTooSmall = new javax.swing.JDialog();
+        tryAgain1 = new javax.swing.JLabel();
+        cellOkbutton1 = new javax.swing.JButton();
+        rangeWrong = new javax.swing.JLabel();
+        deleteThemeDialog = new javax.swing.JDialog();
+        areYouSure = new javax.swing.JLabel();
+        yesButton = new javax.swing.JButton();
+        cancelButton = new javax.swing.JButton();
+        rangeWrong1 = new javax.swing.JLabel();
         noRowSelected = new javax.swing.JDialog();
+        tryAgain2 = new javax.swing.JLabel();
+        cellOkbutton2 = new javax.swing.JButton();
+        rangeWrong2 = new javax.swing.JLabel();
         soloTableScrollPane = new javax.swing.JScrollPane();
         soloTable = new javax.swing.JTable();
         themeListScrollPane = new javax.swing.JScrollPane();
@@ -220,6 +235,7 @@ public void setTableColumnWidths()
         jSeparator5 = new javax.swing.JPopupMenu.Separator();
         windowMenuSeparator = new javax.swing.JSeparator();
 
+        nameErrorMessage.setAlwaysOnTop(true);
         nameErrorMessage.setMinimumSize(new java.awt.Dimension(500, 400));
         nameErrorMessage.getContentPane().setLayout(new java.awt.GridBagLayout());
 
@@ -292,6 +308,7 @@ public void setTableColumnWidths()
         gridBagConstraints.insets = new java.awt.Insets(6, 20, 0, 0);
         nameErrorMessage.getContentPane().add(chooseName, gridBagConstraints);
 
+        enteredIncorrectly.setAlwaysOnTop(true);
         enteredIncorrectly.setMinimumSize(new java.awt.Dimension(400, 300));
         enteredIncorrectly.getContentPane().setLayout(new java.awt.GridBagLayout());
 
@@ -300,15 +317,14 @@ public void setTableColumnWidths()
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridwidth = 4;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(80, 24, 0, 21);
+        gridBagConstraints.insets = new java.awt.Insets(80, 0, 0, 0);
         enteredIncorrectly.getContentPane().add(typedWrong, gridBagConstraints);
 
         tryAgain.setText("Please try again.");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.insets = new java.awt.Insets(6, 6, 0, 0);
         enteredIncorrectly.getContentPane().add(tryAgain, gridBagConstraints);
 
@@ -326,29 +342,20 @@ public void setTableColumnWidths()
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 3;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(18, 79, 107, 0);
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.insets = new java.awt.Insets(50, 0, 50, 0);
         enteredIncorrectly.getContentPane().add(cellOkbutton, gridBagConstraints);
 
-        jLabel1.setText("not finished entering contents into a cell, or left a cell");
+        jLabel1.setText("not finished entering contents into a cell, or left a cell blank.");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.gridwidth = 4;
         gridBagConstraints.ipadx = 15;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(12, 24, 0, 21);
+        gridBagConstraints.insets = new java.awt.Insets(10, 5, 10, 0);
         enteredIncorrectly.getContentPane().add(jLabel1, gridBagConstraints);
 
-        jLabel2.setText("blank.");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(6, 24, 0, 0);
-        enteredIncorrectly.getContentPane().add(jLabel2, gridBagConstraints);
-
+        resetCheck.setAlwaysOnTop(true);
         resetCheck.setMinimumSize(new java.awt.Dimension(500, 300));
         resetCheck.getContentPane().setLayout(new java.awt.GridBagLayout());
 
@@ -356,7 +363,7 @@ public void setTableColumnWidths()
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 5;
+        gridBagConstraints.gridwidth = 4;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(96, 39, 0, 77);
         resetCheck.getContentPane().add(Resettable, gridBagConstraints);
@@ -403,13 +410,122 @@ public void setTableColumnWidths()
         gridBagConstraints.insets = new java.awt.Insets(31, 76, 150, 0);
         resetCheck.getContentPane().add(NoButton, gridBagConstraints);
 
+        rangeTooSmall.setAlwaysOnTop(true);
+        rangeTooSmall.setMinimumSize(new java.awt.Dimension(900, 500));
+        rangeTooSmall.getContentPane().setLayout(new java.awt.GridBagLayout());
+
+        tryAgain1.setText("Please reset and try again.");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 2;
+        rangeTooSmall.getContentPane().add(tryAgain1, gridBagConstraints);
+
+        cellOkbutton1.setText("Ok");
+        cellOkbutton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cellOkbutton1ActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.insets = new java.awt.Insets(50, 50, 50, 50);
+        rangeTooSmall.getContentPane().add(cellOkbutton1, gridBagConstraints);
+
+        rangeWrong.setText("The set range is too small for the theme(s) you chose. ");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.ipadx = 15;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(12, 0, 0, 0);
+        rangeTooSmall.getContentPane().add(rangeWrong, gridBagConstraints);
+
+        deleteThemeDialog.setAlwaysOnTop(true);
+        deleteThemeDialog.setMinimumSize(new java.awt.Dimension(900, 500));
+        deleteThemeDialog.getContentPane().setLayout(new java.awt.GridBagLayout());
+
+        areYouSure.setText("Are you sure you want to continue?");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 2;
+        deleteThemeDialog.getContentPane().add(areYouSure, gridBagConstraints);
+
+        yesButton.setText("Yes");
+        yesButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                yesButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.insets = new java.awt.Insets(50, 30, 50, 30);
+        deleteThemeDialog.getContentPane().add(yesButton, gridBagConstraints);
+
+        cancelButton.setText("Cancel");
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
+        deleteThemeDialog.getContentPane().add(cancelButton, gridBagConstraints);
+
+        rangeWrong1.setText("You are about to delete a theme.");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.ipadx = 15;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(12, 24, 0, 21);
+        deleteThemeDialog.getContentPane().add(rangeWrong1, gridBagConstraints);
+
+        noRowSelected.setAlwaysOnTop(true);
+        noRowSelected.setMinimumSize(new java.awt.Dimension(900, 500));
+        noRowSelected.getContentPane().setLayout(new java.awt.GridBagLayout());
+
+        tryAgain2.setText("Please select a row and try again.");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.insets = new java.awt.Insets(10, 0, 10, 0);
+        noRowSelected.getContentPane().add(tryAgain2, gridBagConstraints);
+
+        cellOkbutton2.setText("Ok");
+        cellOkbutton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cellOkbutton2ActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.insets = new java.awt.Insets(50, 50, 50, 50);
+        noRowSelected.getContentPane().add(cellOkbutton2, gridBagConstraints);
+
+        rangeWrong2.setText("No row has been selected.");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.ipadx = 15;
+        gridBagConstraints.insets = new java.awt.Insets(12, 0, 0, 0);
+        noRowSelected.getContentPane().add(rangeWrong2, gridBagConstraints);
+
         setAlwaysOnTop(true);
         setLocation(new java.awt.Point(10, 10));
         setLocationByPlatform(true);
-        setMaximumSize(new java.awt.Dimension(1500, 1000));
-        setMinimumSize(new java.awt.Dimension(1500, 800));
-        setPreferredSize(new java.awt.Dimension(1500, 800));
-        setSize(new java.awt.Dimension(1500, 700));
+        setMaximumSize(new java.awt.Dimension(1600, 1000));
+        setMinimumSize(new java.awt.Dimension(1400, 800));
+        setPreferredSize(new java.awt.Dimension(1600, 800));
+        setSize(new java.awt.Dimension(1600, 700));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 ThemeWeaver.this.windowClosed(evt);
@@ -705,7 +821,7 @@ public void setTableColumnWidths()
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 50);
         getContentPane().add(deleteThemebutton, gridBagConstraints);
 
-        probExpandby2or3.setFont(new java.awt.Font("Lucida Grande", 0, 5)); // NOI18N
+        probExpandby2or3.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
         probExpandby2or3.setMajorTickSpacing(50);
         probExpandby2or3.setMinorTickSpacing(5);
         probExpandby2or3.setPaintLabels(true);
@@ -714,6 +830,7 @@ public void setTableColumnWidths()
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 5;
         gridBagConstraints.gridy = 3;
+        gridBagConstraints.ipady = 10;
         getContentPane().add(probExpandby2or3, gridBagConstraints);
 
         pitchRangeMinSlider.setMajorTickSpacing(10);
@@ -721,9 +838,16 @@ public void setTableColumnWidths()
         pitchRangeMinSlider.setMinorTickSpacing(1);
         pitchRangeMinSlider.setPaintLabels(true);
         pitchRangeMinSlider.setPaintTicks(true);
+        pitchRangeMinSlider.setSnapToTicks(true);
         pitchRangeMinSlider.setToolTipText("");
         pitchRangeMinSlider.setValue(60);
         pitchRangeMinSlider.setMinimumSize(new java.awt.Dimension(280, 52));
+        setSliderLabels(pitchRangeMinSlider);
+        pitchRangeMinSlider.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                pitchRangeMinSliderMouseReleased(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 5;
         gridBagConstraints.gridy = 4;
@@ -745,7 +869,7 @@ public void setTableColumnWidths()
         getContentPane().add(expandBy3Label, gridBagConstraints);
 
         pitchRangeMinLabel.setText("Pitch Range Minimum      E2");
-        pitchRangeMinLabel.setToolTipText("");
+        pitchRangeMinLabel.setToolTipText("Themes will be transposed to fit in the specified range.");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 4;
@@ -754,6 +878,7 @@ public void setTableColumnWidths()
         pitchRangeMinLabel.getAccessibleContext().setAccessibleName("Pitch Range Minimum       E2");
 
         jLabel3.setText("Pitch Range Maximum     E2");
+        jLabel3.setToolTipText("Themes will be transposed to fit in the specified range.");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 5;
@@ -780,6 +905,12 @@ public void setTableColumnWidths()
         pitchRangeMaxSlider.setPaintTicks(true);
         pitchRangeMaxSlider.setValue(80);
         pitchRangeMaxSlider.setMinimumSize(new java.awt.Dimension(280, 52));
+        setSliderLabels(pitchRangeMaxSlider);
+        pitchRangeMaxSlider.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                pitchRangeMaxSliderMouseReleased(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 5;
         gridBagConstraints.gridy = 5;
@@ -796,7 +927,13 @@ public void setTableColumnWidths()
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 40);
         getContentPane().add(jLabel4, gridBagConstraints);
 
-        trans1ComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Transpose", "Invert", "Reverse", "Expand", "Side Slip" }));
+        trans1ComboBox.addItem("Transpose");
+        trans1ComboBox.addItem("Invert");
+        trans1ComboBox.addItem("Reverse");
+        trans1ComboBox.addItem("Expand");
+        trans1ComboBox.addItem("Side Slip");
+        trans1ComboBox.setSelectedItem("Transpose");
+        transformationComboBoxes[0] = trans1ComboBox;
         trans1ComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 trans1ComboBoxActionPerformed(evt);
@@ -808,7 +945,11 @@ public void setTableColumnWidths()
         gridBagConstraints.ipady = 24;
         getContentPane().add(trans1ComboBox, gridBagConstraints);
 
-        trans3ComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Reverse", "Expand", "Side Slip" }));
+        trans3ComboBox.addItem("Reverse");
+        trans3ComboBox.addItem("Expand");
+        trans3ComboBox.addItem("Side Slip");
+        trans3ComboBox.setSelectedItem("Reverse");
+        transformationComboBoxes[2] = trans3ComboBox;
         trans3ComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 trans3ComboBoxActionPerformed(evt);
@@ -820,7 +961,10 @@ public void setTableColumnWidths()
         gridBagConstraints.ipady = 24;
         getContentPane().add(trans3ComboBox, gridBagConstraints);
 
-        trans4ComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Expand", "Side Slip" }));
+        trans4ComboBox.addItem("Expand");
+        trans4ComboBox.addItem("Side Slip");
+        trans4ComboBox.setSelectedItem("Expand");
+        transformationComboBoxes[3] = trans4ComboBox;
         trans4ComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 trans4ComboBoxActionPerformed(evt);
@@ -832,8 +976,10 @@ public void setTableColumnWidths()
         gridBagConstraints.ipady = 24;
         getContentPane().add(trans4ComboBox, gridBagConstraints);
 
-        trans5ComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Side Slip" }));
         trans5ComboBox.setToolTipText("");
+        trans5ComboBox.addItem("Side Slip");
+        trans5ComboBox.setSelectedItem("Side Slip");
+        transformationComboBoxes[4] = trans5ComboBox;
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 8;
@@ -888,7 +1034,12 @@ public void setTableColumnWidths()
         gridBagConstraints.insets = new java.awt.Insets(0, 15, 0, 0);
         getContentPane().add(jLabel9, gridBagConstraints);
 
-        trans2ComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Invert", "Reverse", "Expand", "Side Slip" }));
+        trans2ComboBox.addItem("Invert");
+        trans2ComboBox.addItem("Reverse");
+        trans2ComboBox.addItem("Expand");
+        trans2ComboBox.addItem("Side Slip");
+        trans2ComboBox.setSelectedItem("Invert");
+        transformationComboBoxes[1] = trans2ComboBox;
         trans2ComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 trans2ComboBoxActionPerformed(evt);
@@ -1526,11 +1677,84 @@ private void closeWindow()
 
     private void deleteRowbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteRowbuttonActionPerformed
         int index = soloTable.getSelectedRow();
-        soloTableModel.removeRow(index);
+        if (index >= 0)
+        {
+            soloTableModel.removeRow(index);
+        }
+        else
+        {
+            noRowSelected.setVisible(true);
+        }
     }//GEN-LAST:event_deleteRowbuttonActionPerformed
 
     private void deleteThemebuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteThemebuttonActionPerformed
 
+        deleteThemeDialog.setVisible(true);
+    }//GEN-LAST:event_deleteThemebuttonActionPerformed
+
+    private void pitchRangeMaxSliderMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pitchRangeMaxSliderMouseDragged
+            
+    }//GEN-LAST:event_pitchRangeMaxSliderMouseDragged
+
+    private void trans1ComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_trans1ComboBoxActionPerformed
+        canEnter2 = false;
+        transformNum = 1;
+        adjustItemsInComboBox(1, 5);
+    }//GEN-LAST:event_trans1ComboBoxActionPerformed
+
+    private void trans2ComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_trans2ComboBoxActionPerformed
+        if (canEnter2)
+        {
+            canEnter3=false;
+            System.out.println("2");
+            transformNum = 2;
+            adjustItemsInComboBox(2, 4);
+        }
+    }//GEN-LAST:event_trans2ComboBoxActionPerformed
+
+    private void trans3ComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_trans3ComboBoxActionPerformed
+   
+        if (canEnter3)
+        {
+            canEnter4=false;
+            System.out.println("3");
+            transformNum = 3;
+            adjustItemsInComboBox(3, 3);
+        }
+    }//GEN-LAST:event_trans3ComboBoxActionPerformed
+
+    private void trans4ComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_trans4ComboBoxActionPerformed
+     
+        if (canEnter4)
+        {
+            System.out.println("4");
+            transformNum = 4;
+            adjustItemsInComboBox(4, 2);
+            canEnter2=false;
+            canEnter3=false;
+            canEnter4=false;
+        }
+    }//GEN-LAST:event_trans4ComboBoxActionPerformed
+
+    private void pitchRangeMaxSliderMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pitchRangeMaxSliderMouseReleased
+        if (pitchRangeMaxSlider.getValue() < pitchRangeMinSlider.getValue())
+        {
+            pitchRangeMaxSlider.setValue(pitchRangeMinSlider.getValue());
+        }
+    }//GEN-LAST:event_pitchRangeMaxSliderMouseReleased
+
+    private void pitchRangeMinSliderMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pitchRangeMinSliderMouseReleased
+        if (pitchRangeMinSlider.getValue() > pitchRangeMaxSlider.getValue())
+        {
+            pitchRangeMinSlider.setValue(pitchRangeMaxSlider.getValue());
+        }
+    }//GEN-LAST:event_pitchRangeMinSliderMouseReleased
+
+    private void cellOkbutton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cellOkbutton1ActionPerformed
+        rangeTooSmall.setVisible(false);
+    }//GEN-LAST:event_cellOkbutton1ActionPerformed
+
+    private void yesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_yesButtonActionPerformed
         String name = (String) themeList.getSelectedValue();
 
         //delete the desired theme from the table
@@ -1554,81 +1778,65 @@ private void closeWindow()
                 deleteTheme(name);
               }
           }
-    }//GEN-LAST:event_deleteThemebuttonActionPerformed
+        
+        deleteThemeDialog.setVisible(false);
+        
+    }//GEN-LAST:event_yesButtonActionPerformed
 
-    private void pitchRangeMaxSliderMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pitchRangeMaxSliderMouseReleased
-        if (pitchRangeMaxSlider.getValue() < pitchRangeMinSlider.getValue())
-        {
-            pitchRangeMaxSlider.setValue(pitchRangeMinSlider.getValue());
-        }
-    }//GEN-LAST:event_pitchRangeMaxSliderMouseReleased
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
+        deleteThemeDialog.setVisible(false);
+    }//GEN-LAST:event_cancelButtonActionPerformed
 
-    private void pitchRangeMaxSliderMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pitchRangeMaxSliderMouseDragged
-            
-    }//GEN-LAST:event_pitchRangeMaxSliderMouseDragged
+    private void cellOkbutton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cellOkbutton2ActionPerformed
+        noRowSelected.setVisible(false);
+    }//GEN-LAST:event_cellOkbutton2ActionPerformed
 
-    private void trans1ComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_trans1ComboBoxActionPerformed
-        transformNum = 1;
-        adjustItemsInComboBox(trans1ComboBox, trans2ComboBox, 5);
-    }//GEN-LAST:event_trans1ComboBoxActionPerformed
-
-    private void trans2ComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_trans2ComboBoxActionPerformed
-        if (canEnter2)
-        {
-            System.out.println("2");
-            transformNum = 2;
-            adjustItemsInComboBox(trans2ComboBox, trans3ComboBox, 4);
-        }
-    }//GEN-LAST:event_trans2ComboBoxActionPerformed
-
-    private void trans3ComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_trans3ComboBoxActionPerformed
-        if (canEnter3)
-        {
-            System.out.println("3");
-            transformNum = 3;
-            adjustItemsInComboBox(trans3ComboBox, trans4ComboBox, 3);
-        }
-    }//GEN-LAST:event_trans3ComboBoxActionPerformed
-
-    private void trans4ComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_trans4ComboBoxActionPerformed
-        if (canEnter4)
-        {
-            System.out.println("4");
-            transformNum = 4;
-            adjustItemsInComboBox(trans4ComboBox, trans5ComboBox, 2);
-        }
-    }//GEN-LAST:event_trans4ComboBoxActionPerformed
-
-    private void adjustItemsInComboBox(javax.swing.JComboBox box, javax.swing.JComboBox nextBox, int numItems)
+    private void adjustItemsInComboBox(int start, int numItems)
     {
-        itemsLeft.clear();
-        Object chosenItem = box.getSelectedItem();
-        for (int i=0; i<numItems; i++)
+        for (int i=start-1; i<4; i++)
         {
-            Object currItem = box.getItemAt(i);
-            if (!currItem.equals(chosenItem))
+            System.out.println("i: " + i);
+            itemsLeft.clear();
+            javax.swing.JComboBox currBox = transformationComboBoxes[i];
+            javax.swing.JComboBox nextBox = transformationComboBoxes[i+1];
+            Object chosenItem = currBox.getSelectedItem();
+            for (int j=0; j<numItems; j++)
             {
-                itemsLeft.add(currItem);
+                Object currItem = currBox.getItemAt(j);
+                System.out.println("j" + j);
+                if (!currItem.equals(chosenItem))
+                {
+                    itemsLeft.add(currItem);
+                }
             }
+            nextBox.removeAllItems();
+            for (int j=0; j<numItems-1; j++)
+            {
+                nextBox.addItem(itemsLeft.get(j));
+            }
+            nextBox.setSelectedIndex(0);
+            numItems-=1;
         }
-        nextBox.removeAllItems();
-        for (int i=0; i<numItems-1; i++)
-        {
-            nextBox.addItem(itemsLeft.get(i));
-        }
+        
         if (transformNum == 1)
         {
             canEnter2=true;
         }
         else if (transformNum == 2)
         {
-            canEnter3=true;
             canEnter2=false;
+            canEnter3=true;
         }
         else if (transformNum == 3)
         {
+            canEnter3=false; 
             canEnter4=true;
-            canEnter3=false;
+        }
+        else if (transformNum ==4)
+        {
+            canEnter2=false;
+            canEnter3=false; 
+            canEnter4=false;
         }
     }
     
@@ -1673,6 +1881,8 @@ private String themeUsageText = "";
 static final int ROW_COUNT = 20;
 double probnoTheme;
 public ThemeListModel themeListModel = new ThemeListModel();
+private javax.swing.JComboBox [] transformationComboBoxes = new javax.swing.JComboBox[5];
+
 Random random;
 File fileName = ImproVisor.getThemesFile();
 private SoloGeneratorTableModel soloTableModel = new SoloGeneratorTableModel(
@@ -2123,16 +2333,15 @@ public void deleteTheme(String name)
     orderedThemes.remove(name);
 
     for( Map.Entry pair : allThemes.entrySet() )
-      {
+    {
         if( name.equals(pair.getValue()) )
-          {
+        {
             //if the name in the themeList is equal to the name in the entry
             Theme theme = (Theme) pair.getKey();
             allThemes.remove(theme);
             break;
-          }
-      }
-
+        }
+    }
     saveRules(fileName);
     themeListModel.reset();
   }
@@ -2680,7 +2889,7 @@ private void setSliderLabels(javax.swing.JSlider slider)
     slider.setPaintLabels(true);
     
     Hashtable<Integer, JLabel> table = new Hashtable<Integer, JLabel>();
-    table.put (40, new JLabel(new ImageIcon("E2")));
+    table.put (40, new JLabel(("E2")));
     table.put (50, new JLabel("D3"));
     table.put (60, new JLabel("C4"));
     table.put (70, new JLabel("Bb4"));
@@ -2691,7 +2900,7 @@ private void setSliderLabels(javax.swing.JSlider slider)
     for (int i = 1; i < 8; i++)
     {
         Component c = table.get(i*10+30);
-        c.setFont(new Font(f.getName(), f.getStyle(), 8));
+        c.setFont(new Font(f.getName(), f.getStyle(), 10));
     }
     slider.setLabelTable (table);
 }
@@ -2776,7 +2985,6 @@ public void myGenerateSolo(ArrayList<ThemeUse> themeUses, CommandManager cm)
 //                
                 newMelody = null; 
                 increaseIncrement += themeIntervalUseIncrement;
-                System.out.println("done");
             }
             else if(newMelody.getSize() > themeIntervalUseIncrement)
             {//if the theme doesn't fit in the allotted space
@@ -2819,12 +3027,24 @@ public void myGenerateSolo(ArrayList<ThemeUse> themeUses, CommandManager cm)
         
         solo.setSize(solo.getSize() + increaseIncrement);
         
+        int noteDiff = highestNote(newMelody) - lowestNote(newMelody);
+        int chosenRangeDiff = maxPitch - minPitch;
+        if (noteDiff > chosenRangeDiff)
+        {
+            rangeTooSmall.setVisible(true);
+            stopPlaying();
+            return;
+        }
+        
+        //transpose so the melody fits in the given range
+        if (!inRange(newMelody))
+        {
+            newMelody = adjustToFit(newMelody);
+            themeUsageText = "";
+        }
+        
         solo.pasteSlots(newMelody, i);
-        System.out.println("solo "+solo.getSize());
-        System.out.println("score "+notate.getScoreLength());
-        System.out.println("old "+i);
         i+=increaseIncrement;
-        System.out.println("new "+i);
     }
     
     notate.setCurrentSelectionStart(0); //start selection at beginning
@@ -2839,6 +3059,37 @@ public void myGenerateSolo(ArrayList<ThemeUse> themeUses, CommandManager cm)
     //System.out.println("*************");
 }
 
+private MelodyPart adjustToFit(MelodyPart melody)
+{
+    
+    MelodyPart copy = melody.copy();
+    int length = copy.getSize();
+    int i=0;
+    while (true)
+    {//loop until you find a transposition in range (it will break while loop
+     //                                                        when this happens)
+        int lowest = lowestNote(copy);
+        int highest = highestNote(copy);
+        
+        if (lowest<minPitch)
+        {//transpose up by numWholeSteps
+            cm.execute(new ShiftPitchesCommand(1, copy, 
+                    0, length, 0, 128, notate.getScore().getKeySignature()));
+        }
+        
+        else if (highest>maxPitch)
+        {//transpose down by numWholeSteps
+            cm.execute(new ShiftPitchesCommand(-1, copy, 
+                    0, length, 0, 128, notate.getScore().getKeySignature()));
+        }
+        
+        if (inRange(copy))
+        {
+            return copy;
+        }
+    }
+}
+
 //adjustTheme is a helper method for myGenerateSolo
 public MelodyPart adjustTheme(MelodyPart chosenTheme, ThemeUse chosenThemeUse, CommandManager cm, int themeInterval)
 {
@@ -2851,8 +3102,6 @@ public MelodyPart adjustTheme(MelodyPart chosenTheme, ThemeUse chosenThemeUse, C
     int numAdjustments = 0;
    
     int slots = 120;//(int)notate.getTempo();
-    
-    int themeIntervalUseIncrement = themeInterval * slots; //amount by which we'll increment over the score
     
     Object[] transformOrder = new Object[5];
     Object trans1 = trans1ComboBox.getSelectedItem();
@@ -2873,7 +3122,7 @@ public MelodyPart adjustTheme(MelodyPart chosenTheme, ThemeUse chosenThemeUse, C
         transformOrder[3]="Expand";
         transformOrder[4]="Side Slip";
     }
-    else if (trans1==null||trans2==null||trans3==null||trans4==null||trans5==null)
+    else if (trans1==null||trans2==null||trans3==null||trans4==null||trans5==null||transformDoubled(transformOrder))
     {
         //not entered correctly, will use default
         transformOrder[0]="Transpose";
@@ -2891,6 +3140,7 @@ public MelodyPart adjustTheme(MelodyPart chosenTheme, ThemeUse chosenThemeUse, C
             if (Notate.bernoulli(chosenThemeUse.getProbTranspose()) ) 
             {    //if random number is > the probability of transposing
                 //transpose
+                
                 numAdjustments ++;
                 if (numAdjustments > 1)
                 {
@@ -2900,6 +3150,8 @@ public MelodyPart adjustTheme(MelodyPart chosenTheme, ThemeUse chosenThemeUse, C
                 {
                     themeUsageText+="transposed";
                 }
+                
+                
                 while (true)
                 {//loop until you find a transposition in range (it will break while loop
                  //                                                        when this happens)
@@ -2907,16 +3159,20 @@ public MelodyPart adjustTheme(MelodyPart chosenTheme, ThemeUse chosenThemeUse, C
                     int maxTransposeDist = (maxPitch + minPitch)/2; 
                         //if pitch is exactly in the center or min and max pitch, 
                                         //maximum number of steps to reach min and max pitch
+                    
+                    
                     //decide to move by semitones or whole tone according to set probability
                     if (Notate.bernoulli(probWholeToneTranspose))
                     {//transpose by whole tones
                         int numWholeSteps = random.nextInt(maxTransposeDist/2);
-
+                        
+                        int lowest = lowestNote(transposedMelody)-numWholeSteps*2;
+                        int highest = highestNote(transposedMelody)+numWholeSteps*2;
+                        
                         if (Notate.bernoulli(.5))
                         {//transpose down by numWholeSteps
 
-                            int lowest = lowestNote(transposedMelody)-numWholeSteps*2;
-
+                           
                             if (lowest > minPitch)//make sure the new melody will be in range
                             {
                                 //transpose copy of chosen theme
@@ -2924,15 +3180,9 @@ public MelodyPart adjustTheme(MelodyPart chosenTheme, ThemeUse chosenThemeUse, C
                                     0, length, 0, 128, notate.getScore().getKeySignature()));
                                 break;
                             }
-                            /*else
-                            {
-                                System.out.println("repeat");
-                            }*/
                         }
                         else
                         {//transpose up by numWholeSteps
-
-                            int highest = highestNote(transposedMelody)+numWholeSteps*2;
 
                             if (highest < maxPitch)//make sure the new melody will be in range
                             {
@@ -2941,10 +3191,6 @@ public MelodyPart adjustTheme(MelodyPart chosenTheme, ThemeUse chosenThemeUse, C
                                     0, length, 0, 128, notate.getScore().getKeySignature()));
                                 break;
                             }
-                            /*else
-                            {
-                                System.out.println("repeat");
-                            }*/
                         }
 
                     }
@@ -2964,10 +3210,6 @@ public MelodyPart adjustTheme(MelodyPart chosenTheme, ThemeUse chosenThemeUse, C
                                     0, length, 0, 128, notate.getScore().getKeySignature()));
                                 break;
                             }
-                            /*else
-                            {
-                                System.out.println("repeat");
-                            }*/
                         }
                         else
                         {//transpose up by numWholeSteps
@@ -2981,10 +3223,6 @@ public MelodyPart adjustTheme(MelodyPart chosenTheme, ThemeUse chosenThemeUse, C
                                     0, length, 0, 128, notate.getScore().getKeySignature()));
                                 break;
                             }
-                            /*else
-                            {
-                                System.out.println("repeat");
-                            }*/
                         }
                     }
                 }
@@ -3008,7 +3246,6 @@ public MelodyPart adjustTheme(MelodyPart chosenTheme, ThemeUse chosenThemeUse, C
                     themeUsageText+="inverted";
                 }
                 cm.execute(new InvertCommand(adjustedMelody, 0, length, false));
-                //System.out.println("Invert");
             }
         }
         else if (transformOrder[count] == "Reverse")
@@ -3028,7 +3265,6 @@ public MelodyPart adjustTheme(MelodyPart chosenTheme, ThemeUse chosenThemeUse, C
                 }
                 //reverse
                 cm.execute(new ReverseCommand(adjustedMelody, 0, length, false));
-                //System.out.println("Reverse");
             }
         }
         else if (transformOrder[count] == "Expand")
@@ -3125,6 +3361,7 @@ public MelodyPart generateFromGrammar(int themeLength, MelodyPart solo, int slot
     MelodyPart lick = fillMelody(BEAT, rhythm, notate.getChordProg(), slotNum);
     //create melody
     
+    
     /*Part.PartIterator j = lick.iterator(); //iterate over lick
     lick.setSize(themeLength);
     while( j.hasNext() ) //while any lick is left
@@ -3144,11 +3381,11 @@ public int lowestNote(MelodyPart melody)
 {
     //returns the min pitch in melody 
     int lengthOfMelody = melody.size();
-    int lowestNote = 127;
+    int lowestNote = 128;
     for (int note = 0; note<lengthOfMelody; note++)
     {
         int currentNote = melody.getCurrentNote(note).getPitch();
-        if (currentNote < lowestNote)
+        if (currentNote < lowestNote && !melody.getCurrentNote(note).isRest())
         {
             lowestNote = currentNote;
         }
@@ -3164,7 +3401,7 @@ public int highestNote(MelodyPart melody)
     for (int note = 0; note<lengthOfMelody; note++)
     {
         int currentNote = melody.getCurrentNote(note).getPitch();
-        if (currentNote > highestNote)
+        if (currentNote > highestNote && !melody.getCurrentNote(note).isRest())
         {
             highestNote = currentNote;
         }
@@ -3172,7 +3409,10 @@ public int highestNote(MelodyPart melody)
     return highestNote;
 }  
 
-
+public boolean inRange(MelodyPart melody)
+{
+    return highestNote(melody) <= maxPitch && lowestNote(melody) >= minPitch;
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton CancelButton;
@@ -3183,12 +3423,17 @@ public int highestNote(MelodyPart melody)
     private java.awt.Label SoloGeneratorTitle;
     private javax.swing.JLabel TransformationOrder;
     private javax.swing.JButton YesButton;
+    private javax.swing.JLabel areYouSure;
+    private javax.swing.JButton cancelButton;
     private javax.swing.JMenuItem cascadeMI;
     private javax.swing.JButton cellOkbutton;
+    private javax.swing.JButton cellOkbutton1;
+    private javax.swing.JButton cellOkbutton2;
     private javax.swing.JLabel chooseName;
     private javax.swing.JMenuItem closeWindowMI;
     private javax.swing.JButton currentSelectionJButton;
     private javax.swing.JButton deleteRowbutton;
+    private javax.swing.JDialog deleteThemeDialog;
     private javax.swing.JButton deleteThemebutton;
     private javax.swing.JDialog enteredIncorrectly;
     private javax.swing.JLabel expandBy2Label;
@@ -3196,7 +3441,6 @@ public int highestNote(MelodyPart melody)
     private javax.swing.JButton generateSoloJButton;
     private javax.swing.JButton generateThemeJButton;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -3216,6 +3460,10 @@ public int highestNote(MelodyPart melody)
     private javax.swing.JLabel pitchRangeMinLabel;
     private javax.swing.JSlider pitchRangeMinSlider;
     private javax.swing.JSlider probExpandby2or3;
+    private javax.swing.JDialog rangeTooSmall;
+    private javax.swing.JLabel rangeWrong;
+    private javax.swing.JLabel rangeWrong1;
+    private javax.swing.JLabel rangeWrong2;
     private javax.swing.JDialog resetCheck;
     private javax.swing.JMenuBar roadmapMenuBar;
     private javax.swing.JMenuItem saveAsAdvice;
@@ -3234,9 +3482,12 @@ public int highestNote(MelodyPart melody)
     private javax.swing.JComboBox trans4ComboBox;
     private javax.swing.JComboBox trans5ComboBox;
     private javax.swing.JLabel tryAgain;
+    private javax.swing.JLabel tryAgain1;
+    private javax.swing.JLabel tryAgain2;
     private javax.swing.JLabel typedWrong;
     private javax.swing.JMenu windowMenu;
     private javax.swing.JSeparator windowMenuSeparator;
+    private javax.swing.JButton yesButton;
     private javax.swing.JLabel youSure;
     // End of variables declaration//GEN-END:variables
 }
