@@ -19,6 +19,8 @@
  */
 package imp.lickgen;
 
+import imp.Constants;
+import static imp.Constants.REST;
 import imp.data.Chord;
 import imp.data.ChordPart;
 import imp.data.MelodyPart;
@@ -69,63 +71,6 @@ public class NoteConverter {
     //here, 7 half steps is called a b5 (because it's flat relative to the augmented fifth) even though the interval is a perfect fifth
     private static final String[] augScaleDegrees = {"1", "b2", "2", "b3", "3", "4", "#4", "b5", "5", "6", "b7", "7"};
 
-    
-    
-    
-    //SUSPENSIONS - Used in GuideLineGenerator
-    
-    //SIXFIVE SUSPENSIONS
-    
-    //minor (melodic) -- b6-5
-    private static final String[] minorSixFive = {minorScaleDegrees[8], minorScaleDegrees[7]};//DONE - half step
-    //minor 7 (dorian) -- 6-5
-    private static final String[] minor7SixFive = {minor7ScaleDegrees[9], minor7ScaleDegrees[7]};//DONE - whole step
-    //major (ionian) -- 6-5
-    private static final String[] majorSixFive = {majorScaleDegrees[9], majorScaleDegrees[7]};//DONE - whole step
-    //dominant (mixolydian) -- #5-5
-    private static final String[] dominantSixFive = {dominantScaleDegrees[8], dominantScaleDegrees[7]};//DONE - half step
-    //half diminished -- 6-5
-    private static final String[] halfDimSixFive = {halfDimScaleDegrees[8], halfDimScaleDegrees[6]};//DONE - whole step
-    //diminished -- 6-b5
-    private static final String[] dimSixFive = {dimScaleDegrees[8], dimScaleDegrees[6]};//DONE - whole step
-    //augmented -- b7-5
-    private static final String [] augSixFive = {augScaleDegrees[10], augScaleDegrees[8]};// DONE - whole step (tough call)
-    
-    //FOURTHREE SUSPENSIONS
-    
-    //minor (melodic) -- 4-3
-    private static final String[] minorFourThree = {minorScaleDegrees[5], minorScaleDegrees[3]};//DONE - whole step
-    //minor 7 (dorian) -- 4-3
-    private static final String[] minor7FourThree = {minor7ScaleDegrees[5], minor7ScaleDegrees[3]};//DONE - whole step
-    //major (ionian) -- 4-3
-    private static final String[] majorFourThree = {majorScaleDegrees[5], majorScaleDegrees[4]};//DONE - half step (tough call)
-    //dominant (mixolydian) -- 4-3
-    private static final String[] dominantFourThree = {dominantScaleDegrees[5], dominantScaleDegrees[4]};//DONE - half step
-    //half diminished -- 4-3
-    private static final String[] halfDimFourThree = {halfDimScaleDegrees[5], halfDimScaleDegrees[3]};//DONE - whole step
-    //diminished -- #3-3
-    private static final String[] dimFourThree = {dimScaleDegrees[4], dimScaleDegrees[3]};//DONE - half step
-    //augmented -- 4-3
-    private static final String [] augFourThree = {augScaleDegrees[5], augScaleDegrees[4]};//DONE - half step
-    
-    
-    //NINEEIGHT SUSPENSIONS
-    
-    //minor (melodic) -- 2-1
-    private static final String[] minorNineEight = {minorScaleDegrees[2], minorScaleDegrees[0]};//DONE - whole step
-    //minor 7 (dorian) -- 2-1
-    private static final String[] minor7NineEight = {minor7ScaleDegrees[2], minor7ScaleDegrees[0]};//DONE - whole step
-    //major (ionian) -- 2-1
-    private static final String[] majorNineEight = {majorScaleDegrees[2], majorScaleDegrees[0]};//DONE - whole step
-    //dominant (mixolydian) -- b2-1
-    private static final String[] dominantNineEight = {dominantScaleDegrees[1], dominantScaleDegrees[0]};//DONE - half step
-    //half diminished -- 2-1
-    private static final String[] halfDimNineEight = {halfDimScaleDegrees[1], halfDimScaleDegrees[0]};//DONE - half step
-    //diminished -- b2-1
-    private static final String[] dimNineEight = {dimScaleDegrees[1], dimScaleDegrees[0]};//DONE - half step
-    //augmented -- 2-1
-    private static final String [] augNineEight = {augScaleDegrees[2], augScaleDegrees[0]};//DONE - whole step (tough call)
-    
     /**
      * noteToRelativePitch Conversion of note to relative pitch
      *
@@ -194,9 +139,9 @@ public class NoteConverter {
         if(pc!=null){
             NoteSymbol ns = new NoteSymbol(pc, octave, rhythmValue);
             int midi = ns.getMIDI();
-            return new Note(midi, ns.getDuration());
+            return new Note(midi, rhythmValue);
         }else{
-            return null;//degree not in chord's scale
+            return new Note(REST, Constants.Accidental.NOTHING, rhythmValue);//Chord is NC, return rest
         }
         
     }
@@ -205,18 +150,28 @@ public class NoteConverter {
      * Converts a scale degree to a pitch class, to be used to create a note
      * @param degree the scale degree
      * @param chord the chord that the scale degree corresponds to
-     * @return Pitch class corresponding to the scale degree and chord
-     * null if scale degree isn't in the chord's associated scale
+     * @return Returns pitch class corresponding to the scale degree and chord,
+     * returns pitch class of root if scale degree isn't in the chord's associated scale,
+     * returns null if chord is no chord
      */
     public static PitchClass scaleDegreeToPitchClass(String degree, Chord chord){
-        PitchClass rootPc = chord.getRootPitchClass();
-        int semitonesAboveRoot = indexOf(degree,familyToArray(chord.getFamily()));
-        if(semitonesAboveRoot!=-1){
-            return PitchClass.transpose(rootPc, semitonesAboveRoot);
-        }else{
-            return null; //scale degree not in the scale associated with that chord
+        if(!chord.isNOCHORD()){
+            PitchClass rootPc = chord.getRootPitchClass();
+            String [] array = chordToArray(chord);
+            if(array!=null){
+                int semitonesAboveRoot = indexOf(degree, array);
+                if(semitonesAboveRoot!=-1){
+                    return PitchClass.transpose(rootPc, semitonesAboveRoot);
+                }else{
+                    return rootPc; //scale degree not in the scale associated with that chord, return pitch class of root of chord
+                }
+            }else{
+                return rootPc;//chord family does not have an associated scale, return root of chord
+            }
         }
-        
+        else{
+            return null;//Chord is NC - return null. There is no PitchClass representing a rest, only a pitchClassName, "r", and a pitch, REST (-1)
+        }
     }
     
     /**
@@ -225,7 +180,11 @@ public class NoteConverter {
      * @param family The type of scale
      * @return The array of the scale degrees
      */
-    private static String [] familyToArray(String family){
+    private static String [] chordToArray(Chord c){
+        if(c.isNOCHORD()){
+            return null;//chord is no chord, there is no corresponding array
+        }
+        String family = c.getFamily();
         if(family.equals("minor")){
             return minorScaleDegrees;
         }else if(family.equals("minor7")){
@@ -243,76 +202,10 @@ public class NoteConverter {
         }else if(family.equals("augmented")){
             return augScaleDegrees;
         }else{
-            return null;
+            return null;//chord family is note or bass, return null
         }
     }
-    
-    public static String[] familyToSixFive(String family){
-        if(family.equals("minor")){
-            return minorSixFive;
-        }else if(family.equals("minor7")){
-            return minor7SixFive;
-        }else if(family.equals("major")){
-            return majorSixFive;
-        }else if(family.equals("dominant")
-                ||family.equals("sus4")
-                ||family.equals("alt")){
-            return dominantSixFive;
-        }else if(family.equals("half-diminished")){
-            return halfDimSixFive;
-        }else if(family.equals("diminished")){
-            return dimSixFive;
-        }else if(family.equals("augmented")){
-            return augSixFive;
-        }else{
-            return null;
-        }
-    }
-    
-    public static String[] familyToFourThree(String family){
-        if(family.equals("minor")){
-            return minorFourThree;
-        }else if(family.equals("minor7")){
-            return minor7FourThree;
-        }else if(family.equals("major")){
-            return majorFourThree;
-        }else if(family.equals("dominant")
-                ||family.equals("sus4")
-                ||family.equals("alt")){
-            return dominantFourThree;
-        }else if(family.equals("half-diminished")){
-            return halfDimFourThree;
-        }else if(family.equals("diminished")){
-            return dimFourThree;
-        }else if(family.equals("augmented")){
-            return augFourThree;
-        }else{
-            return null;
-        }
-    }
-    
-    public static String[] familyToNineEight(String family){
-        if(family.equals("minor")){
-            return minorNineEight;
-        }else if(family.equals("minor7")){
-            return minor7NineEight;
-        }else if(family.equals("major")){
-            return majorNineEight;
-        }else if(family.equals("dominant")
-                ||family.equals("sus4")
-                ||family.equals("alt")){
-            return dominantNineEight;
-        }else if(family.equals("half-diminished")){
-            return halfDimNineEight;
-        }else if(family.equals("diminished")){
-            return dimNineEight;
-        }else if(family.equals("augmented")){
-            return augNineEight;
-        }else{
-            return null;
-        }
-    }
-    
+
     /**
      * Given a scale degree, indexOf returns the index of that scale 
      * degree in a scale
