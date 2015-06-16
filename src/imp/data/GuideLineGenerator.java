@@ -169,19 +169,19 @@ public class GuideLineGenerator implements Constants {
         possibleDirectionSwitch(prevNote);
         for(Note n: notes){
             
-            //find next Note, making same notes have really bad scores
+            //find next (chord) tone, making same notes have really bad scores
             Note noteToAdd = nextNote(prevNote, c, DISALLOW_SAME);
             noteToAdd.setRhythmValue(n.getRhythmValue());
             
-            //Old way to deal with same notes - finds "best" color tone
-            /*if(noteToAdd.getPitch()==prevNote.getPitch()){
+            //If the note is still the same, find the "best" color tone
+            if(noteToAdd.getPitch()==prevNote.getPitch()){
                 //recalculate noteToAdd, allowing color tones
                 noteToAdd = nextColorNote(prevNote, c, DISALLOW_SAME);
                 noteToAdd.setRhythmValue(n.getRhythmValue());
-            }*/
+            }
             
             
-            
+            /*
             //Check if same as last note. If yes, see if a suspension applies
             String suspension = suspensionCheck(prevNote, noteToAdd, c);
             
@@ -238,7 +238,7 @@ public class GuideLineGenerator implements Constants {
                     //currently no other suspensions
                 }
             }
-            
+            */
             
             
             
