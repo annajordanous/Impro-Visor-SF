@@ -47,12 +47,16 @@ public ThemeUse(MelodyPart melody)
     theme = new Theme(melody);
 } 
 
-  public ThemeUse(Theme theme, double probUse, double probTranspose, double probInvert)
+  public ThemeUse(Theme theme, double probUse, double probTranspose, double probInvert,
+          double probReverse, double probExpand, double probSideslip)
       {
         this.theme = theme;
         this.probUse = probUse;
         this.probTranspose = probTranspose;
         this.probInvert = probInvert;
+        this.probReverse = probReverse;
+        this.probExpand = probExpand;
+        this.probSideslip = probSideslip;
       }
 
     public Theme getTheme()
