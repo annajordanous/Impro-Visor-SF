@@ -10789,6 +10789,7 @@ void stopPlaying()
     stopPlaying(" unlabeled");
   }
 
+int savNum = 1;
 void stopPlaying(String reason)
   {
     //System.out.println("stopPlaying called in Notate for reason: " + reason);
@@ -10803,7 +10804,91 @@ void stopPlaying(String reason)
     setShowConstructionLinesAndBoxes(showConstructionLinesMI.isSelected());
     //System.out.println("stopPlaying()");
     //requestFocusInWindow();
+    
+    //from here end enables saving improv in the lickgenframe
+    if(lickgenFrame.shouldSaveImp() && improvOn){
+        Notate savNot = cloneLS();
+        while (!melodyList.isEmpty())
+        {
+            savNot.addChorus(melodyList.get(0));
+            melodyList.remove(0);
+        }
+        savNot.score.delPart(0);
+        //savNot.cm.changedSinceLastSave(true);
+        String point = ImproVisor.getLastLeadsheetFileStem();
+        String fin = point.substring(0, point.length()-3);
+        String secFin = fin;
+        //if -1 already
+        if (Character.isDigit(fin.charAt(fin.length()-1))){
+            savNum = Character.getNumericValue(fin.charAt(fin.length()-1));
+            if (fin.endsWith("-"+savNum)){
+                while (fin.endsWith("-"+savNum)){savNum++; fin = point.substring(0, point.length()-2);}
+                secFin = fin.substring(0, fin.length()-2);
+            }
+            else if (fin.endsWith("- "+savNum)){
+                while (fin.endsWith("- "+savNum)){savNum++; fin = point.substring(0, point.length()-3);}
+                secFin = fin.substring(0, fin.length()-3);
+            }
+            else{
+                savNum = 1;
+            }
+        }
+        if (secFin.endsWith(" ")){secFin=secFin.substring(0, secFin.length()-1);}
+        ImproVisor.setLastLeadsheetFileStem(secFin.concat(" - "+savNum+".ls"));
+        savNum = 1;
+        savNot.saveAsLeadsheet();  //or newNotate.makeVisible(this); and 
+        ImproVisor.setLastLeadsheetFileStem(point);
+    }
   }
+
+//testing, wrong place
+public Notate cloneLS()
+{
+    Score newScore = getScore();
+
+    //ensureChordFontSize();
+
+   // int chordFontSize = Integer.valueOf(Preferences.getPreference(Preferences.DEFAULT_CHORD_FONT_SIZE)).intValue();
+
+    //newScore.setChordFontSize(chordFontSize);
+
+    //newScore.setTempo(getDefaultTempo());
+
+    //newScore.setChordProg(new ChordPart());
+
+    //newScore.addPart(new MelodyPart(defaultBarsPerPart * measureLength));
+
+    //newScore.setStyle(Preferences.getPreference(Preferences.DEFAULT_STYLE));
+
+    // open a new window
+    
+    for (int x=1; x<scoreTab.getTabCount(); x++)
+    {
+        newScore.delPart(0);
+    }
+    
+    Notate newNotate =
+            new Notate(newScore,
+                       this.adv,
+                       this.impro,
+                       getX(),
+                       getY());
+
+    newNotate.updatePhiAndDelta(this.getPhiStatus(), this.getDeltaStatus());
+
+    //newNotate.makeVisible(this);//
+
+    newNotate.setPrefsDialog();
+    
+    
+
+    // set the menu and button states
+
+    setItemStates();
+    return newNotate;
+}
+
+
 
 private void setStepInput(boolean active)
   {
@@ -10837,6 +10922,7 @@ private void recordFromMidi()
 
     private void playBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playBtnActionPerformed
         improvisationOn = false;
+        improvOn = false;
         playAll();
     }//GEN-LAST:event_playBtnActionPerformed
 
@@ -20790,6 +20876,9 @@ public void adjustSelection()
 
 int cycCount = 0;
 int shufCount = 0;
+ArrayList<MelodyPart> melodyList = new ArrayList<MelodyPart>();
+MelodyPart pointr = new MelodyPart();
+
 
 /**
  * Original version of generate: does not return MelodyPart
@@ -20800,9 +20889,8 @@ int shufCount = 0;
  */
 public void originalGenerate(LickGen lickgen, int improviseStartSlot, int improviseEndSlot)
   {
-    
     if (ifCycle){
-        String temp = null;
+        String temp;
         temp = gramList.get(cycCount).substring(0, gramList.get(cycCount).length() - GrammarFilter.EXTENSION.length());
         notateGrammarMenu.setText(temp + "(Cycle)");
         grammarFilename = ImproVisor.getGrammarDirectory() + File.separator + gramList.get(cycCount);
@@ -20816,7 +20904,7 @@ public void originalGenerate(LickGen lickgen, int improviseStartSlot, int improv
     
     if (ifShuffle){
        
-        String temp = null;
+        String temp;
         temp = shufGramList.get(shufCount).substring(0, shufGramList.get(shufCount).length() - GrammarFilter.EXTENSION.length());
         notateGrammarMenu.setText(temp + "(Shuffle)");
         grammarFilename = ImproVisor.getGrammarDirectory() + File.separator + shufGramList.get(shufCount);
@@ -20892,6 +20980,7 @@ public void originalGenerate(LickGen lickgen, int improviseStartSlot, int improv
                                         avoidRepeats);
 
         MelodyPart solo = lickgen.generateSoloFromOutline(totalSlots);
+        pointr = solo; //TEST
         if( solo != null )
           {
             rhythm = lickgen.getRhythmFromSoloist(); //get the abstract melody for display
@@ -20923,6 +21012,7 @@ public void originalGenerate(LickGen lickgen, int improviseStartSlot, int improv
             rhythm = lickgen.generateRhythmFromGrammar(improviseStartSlot, totalSlots);
 
             MelodyPart lick = generateLick(rhythm, improviseStartSlot, improviseEndSlot);
+            pointr = lick;//TEST
 
             if( lick != null )
               {
@@ -21017,6 +21107,7 @@ public void originalGenerate(LickGen lickgen, int improviseStartSlot, int improv
           }
 
         MelodyPart lick = generateLick(rhythm, improviseStartSlot, improviseEndSlot);
+        pointr = lick; //test
 
         // Critical point for recurrent generation
         if( lick != null )
@@ -21069,6 +21160,10 @@ public void originalGenerate(LickGen lickgen, int improviseStartSlot, int improv
       {
         enableRecording(); // TRIAL
       }
+
+    if (lickgenFrame.shouldSaveImp()){
+        melodyList.add(pointr);
+    } 
   }
 
 /**
@@ -22669,10 +22764,12 @@ public void textRequestFocus()
 
 int improviseStartSlot, improviseEndSlot;
 boolean improvisationOn = false;
+boolean improvOn = false;
 
 public void improviseButtonToggled()
   {
     improvisationOn = improviseButton.isSelected();
+    improvOn = true;
     if( improvisationOn )
       {
         improviseButton.setBackground(new Color(255, 0, 0));
