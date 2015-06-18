@@ -21,6 +21,7 @@
 package imp.gui;
 
 import imp.Constants;
+import imp.com.PlayScoreCommand;
 import imp.data.GuideLineGenerator;
 import imp.data.MelodyPart;
 import java.util.Enumeration;
@@ -469,6 +470,7 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
         notate.addChorus(guideToneLine);
         
         transformLine.setEnabled(true);
+        transformed = false;
     }//GEN-LAST:event_generateLineActionPerformed
 
     private int buttonToDuration(JRadioButton b){
@@ -521,18 +523,29 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
     }//GEN-LAST:event_highLimitSliderStateChanged
 
     private void transformLineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transformLineActionPerformed
+        //System.out.println(transformed);
         if(transformed){
             transformationPanel.revertSubs();
         }
-        transformationPanel.applySubstitutions();
+        
+        MelodyPart currentMelody = notate.getCurrentMelodyPart();
+        
+        transformationPanel.applySubstitutionsToPart(currentMelody,
+                                                     notate.getChordProg());
+        notate.playCurrentSelection(true, 
+                                    0, 
+                                    PlayScoreCommand.USEDRUMS, 
+                                    "Transformed over guide tone line");
         transformed = true;
         revertLine.setEnabled(true);
     }//GEN-LAST:event_transformLineActionPerformed
 
     private void revertLineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_revertLineActionPerformed
+        //System.out.println(transformed);
         transformationPanel.revertSubs();
+        transformed = false;
     }//GEN-LAST:event_revertLineActionPerformed
-
+    
     /**
      * returns which JRadioButton in a ButtonGroup is selected
      * @param group the ButtonGroup from which you want to return the selected button
