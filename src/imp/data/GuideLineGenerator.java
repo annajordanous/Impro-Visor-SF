@@ -769,7 +769,7 @@ public class GuideLineGenerator implements Constants {
         int index2 = distance+2;//index to be used in scores array
         int score = 0;
         score+=scores3[index1][index2];
-        
+        //when no max duration is specified: scores 3, 5, 6 are the same, 1, 2, 4 are the same
         return score;
     }
     
