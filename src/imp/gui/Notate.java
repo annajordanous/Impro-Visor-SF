@@ -10814,7 +10814,6 @@ void stopPlaying(String reason)
             melodyList.remove(0);
         }
         savNot.score.delPart(0);
-        //savNot.cm.changedSinceLastSave(true);
         String point = ImproVisor.getLastLeadsheetFileStem();
         String fin = point.substring(0, point.length()-3);
         String secFin = fin;
@@ -10836,19 +10835,18 @@ void stopPlaying(String reason)
         if (secFin.endsWith(" ")){secFin=secFin.substring(0, secFin.length()-1);}
         ImproVisor.setLastLeadsheetFileStem(secFin.concat(" - "+savNum+".ls"));
         savNum = 1;
-        savNot.saveAsLeadsheet();  //or newNotate.makeVisible(this); and 
+        savNot.saveAsLeadsheet(); 
         ImproVisor.setLastLeadsheetFileStem(point);
     }
   }
 
-//testing, wrong place
 public Notate cloneLS()
 {
     Score newScore = getScore();
 
     //ensureChordFontSize();
 
-   // int chordFontSize = Integer.valueOf(Preferences.getPreference(Preferences.DEFAULT_CHORD_FONT_SIZE)).intValue();
+    //int chordFontSize = Integer.valueOf(Preferences.getPreference(Preferences.DEFAULT_CHORD_FONT_SIZE)).intValue();
 
     //newScore.setChordFontSize(chordFontSize);
 
@@ -17375,8 +17373,12 @@ private void printAllStaves()
       {
         component[i] = staveScrollPane[i].getStave();
       }
+    Boolean bracketsAll[] = new Boolean[staveScrollPane.length];
+    Boolean bracketsMeasure[] = new Boolean[staveScrollPane.length];
     for( int i = 0; i < staveScrollPane.length; i++ )
       {
+        bracketsAll[i] = component[i].getShowAllCL();
+        bracketsMeasure[i] = component[i].getShowMeasureCL();
         setUpStavesToPrint(component[i]);
       }
     try
@@ -17390,6 +17392,12 @@ private void printAllStaves()
       {
         ErrorLog.log(ErrorLog.SEVERE, "Not enough memory to print this many choruses, try printing each chorus individually");
       }
+    for ( int i = 0; i < staveScrollPane.length; i++ )
+      {
+        staveScrollPane[i].getStave().setShowAllCL(bracketsAll[i]);
+        staveScrollPane[i].getStave().setShowMeasureCL(bracketsMeasure[i]);
+      }
+    
   }
 
 private void setUpStavesToPrint(Stave stv)
