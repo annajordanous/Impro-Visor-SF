@@ -10810,6 +10810,7 @@ void stopPlaying(String reason)
         Notate savNot = cloneLS();
         while (!melodyList.isEmpty())
         {
+            melodyList.get(0).setInstrument(instr);
             savNot.addChorus(melodyList.get(0));
             melodyList.remove(0);
         }
@@ -10821,24 +10822,29 @@ void stopPlaying(String reason)
         if (Character.isDigit(fin.charAt(fin.length()-1))){
             savNum = Character.getNumericValue(fin.charAt(fin.length()-1));
             if (fin.endsWith("-"+savNum)){
-                while (fin.endsWith("-"+savNum)){savNum++; fin = point.substring(0, point.length()-2);}
-                secFin = fin.substring(0, fin.length()-2);
+                while (fin.endsWith("-"+savNum)){savNum++;}
+                if (savNum > 9){secFin = fin.substring(0, fin.length()-3);}
+                else if (savNum > 99){savNum = 1; secFin = fin.substring(0, fin.length()-2);}
+                else{secFin = fin.substring(0, fin.length()-2);}
             }
             else if (fin.endsWith("- "+savNum)){
-                while (fin.endsWith("- "+savNum)){savNum++; fin = point.substring(0, point.length()-3);}
-                secFin = fin.substring(0, fin.length()-3);
+                while (fin.endsWith("- "+savNum)){savNum++;}
+                if (savNum > 9){secFin = fin.substring(0, fin.length()-4);}
+                else if (savNum > 99){savNum = 1; secFin = fin.substring(0, fin.length()-3);}
+                else{secFin = fin.substring(0, fin.length()-3);}
             }
             else{
                 savNum = 1;
             }
         }
         if (secFin.endsWith(" ")){secFin=secFin.substring(0, secFin.length()-1);}
-        ImproVisor.setLastLeadsheetFileStem(secFin.concat(" - "+savNum+".ls"));
+        ImproVisor.setLastLeadsheetFileStem(secFin.concat("-"+savNum+".ls"));
         savNum = 1;
         savNot.saveAsLeadsheet(); 
         ImproVisor.setLastLeadsheetFileStem(point);
     }
   }
+
 
 public Notate cloneLS()
 {
@@ -20886,7 +20892,7 @@ int cycCount = 0;
 int shufCount = 0;
 ArrayList<MelodyPart> melodyList = new ArrayList<MelodyPart>();
 MelodyPart pointr = new MelodyPart();
-
+int instr;
 
 /**
  * Original version of generate: does not return MelodyPart
@@ -20897,6 +20903,7 @@ MelodyPart pointr = new MelodyPart();
  */
 public void originalGenerate(LickGen lickgen, int improviseStartSlot, int improviseEndSlot)
   {
+    instr = getCurrentMelodyPart().getInstrument();
     if (ifCycle){
         String temp;
         temp = gramList.get(cycCount).substring(0, gramList.get(cycCount).length() - GrammarFilter.EXTENSION.length());
