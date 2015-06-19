@@ -3,22 +3,21 @@
  *
  * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
  *
- * Impro-Visor is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
+ * Impro-Visor is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 2 of the License, or (at your option) any later
+ * version.
  *
- * Impro-Visor is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * merchantability or fitness for a particular purpose.  See the
- * GNU General Public License for more details.
+ * Impro-Visor is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of merchantability or fitness
+ * for a particular purpose. See the GNU General Public License for more
+ * details.
  *
-
- * You should have received a copy of the GNU General Public License
- * along with Impro-Visor; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * Impro-Visor; if not, write to the Free Software Foundation, Inc., 51 Franklin
+ * St, Fifth Floor, Boston, MA 02110-1301 USA
  */
-
 package imp.gui;
 
 import imp.Constants;
@@ -34,265 +33,236 @@ import javax.swing.table.*;
 
 /**
  *
- * @author  mhunt
+ * @author mhunt
  */
 public class MidiLatencyMeasurementTool
         extends javax.swing.JPanel
-        implements Constants, MidiNoteListener, MidiPlayListener, Receiver
-  {
-  Notate notate;
+        implements Constants, MidiNoteListener, MidiPlayListener, Receiver {
 
-  MidiSynth midiSynth;
+    Notate notate;
 
-  boolean repeatTest = false;
+    MidiSynth midiSynth;
 
-  Score testScore;
+    boolean repeatTest = false;
 
-  MeasurementTableModel tableModel;
+    Score testScore;
 
-  private long timeStart;
+    MeasurementTableModel tableModel;
 
-  private class MeasurementTableModel
-          extends AbstractTableModel
-    {
-    Vector<Double> measurement = new Vector<Double>();
+    private long timeStart;
+    
 
-    public String getColumnName(int col)
-      {
-      switch( col )
-        {
-        case 0:
-          return "Trial";
-        case 1:
-          return "Latency";
+    private class MeasurementTableModel
+            extends AbstractTableModel {
+
+        Vector<Double> measurement = new Vector<Double>();
+
+        public String getColumnName(int col) {
+            switch (col) {
+                case 0:
+                    return "Trial";
+                case 1:
+                    return "Latency";
+            }
+            return "";
         }
-      return "";
-      }
 
-    public int getRowCount()
-      {
-      return measurement.size();
-      }
-
-    public int getColumnCount()
-      {
-      return 2;
-      }
-
-    public Object getValueAt(int row, int col)
-      {
-      if( col == 0 )
-        {
-        return row + 1;
+        public int getRowCount() {
+            return measurement.size();
         }
-      else
-        {
-        return measurement.get(row);
+
+        public int getColumnCount() {
+            return 2;
         }
-      }
 
-    public boolean isCellEditable(int row, int col)
-      {
-      return false;
-      }
-
-    public void addMeasurement(double latency)
-      {
-      measurement.add(latency);
-      int index = measurement.size() - 1;
-      fireTableRowsInserted(index, index);
-      }
-
-    public void clear()
-      {
-      int oldSize = measurement.size();
-      if( oldSize == 0 )
-        {
-        return;
+        public Object getValueAt(int row, int col) {
+            if (col == 0) {
+                return row + 1;
+            } else {
+                return measurement.get(row);
+            }
         }
-      measurement.clear();
-      fireTableRowsDeleted(0, oldSize - 1);
-      fireTableRowsUpdated(0, oldSize - 1);
-      }
 
-    public double getAverage()
-      {
-      // this is a quick hack since there is only one table...
-      int[] rowIndices = measurementTable.getSelectedRows();
-      int sum = 0;
-
-      if( rowIndices.length == 0 )
-        {
-        for( double latency : measurement )
-          {
-          sum += latency;
-          }
-        return sum / measurement.size();
+        public boolean isCellEditable(int row, int col) {
+            return false;
         }
-      else
-        {
-        for( int i : rowIndices )
-          {
-          sum += measurement.get(i);
-          }
-        return sum / rowIndices.length;
+
+        public void addMeasurement(double latency) {
+            measurement.add(latency);
+            int index = measurement.size() - 1;
+            fireTableRowsInserted(index, index);
         }
-      }
+
+        public void clear() {
+            int oldSize = measurement.size();
+            if (oldSize == 0) {
+                return;
+            }
+            measurement.clear();
+            fireTableRowsDeleted(0, oldSize - 1);
+            fireTableRowsUpdated(0, oldSize - 1);
+        }
+
+        public double getAverage() {
+            // this is a quick hack since there is only one table...
+            int[] rowIndices = measurementTable.getSelectedRows();
+            int sum = 0;
+
+            if (rowIndices.length == 0) {
+                for (double latency : measurement) {
+                    sum += latency;
+                }
+                return sum / measurement.size();
+            } else {
+                for (int i : rowIndices) {
+                    sum += measurement.get(i);
+                }
+                return sum / rowIndices.length;
+            }
+        }
 
     }
 
-  private class SelectionListener
-          implements ListSelectionListener
-    {
-    JTable table;
+    private class SelectionListener
+            implements ListSelectionListener {
 
-    SelectionListener(JTable table)
-      {
-      this.table = table;
-      }
+        JTable table;
 
-    public void valueChanged(ListSelectionEvent e)
-      {
-      updateAverage();
-      }
+        SelectionListener(JTable table) {
+            this.table = table;
+        }
+
+        public void valueChanged(ListSelectionEvent e) {
+            updateAverage();
+        }
 
     }
 
-  /** Creates new form MidiLatencyMeasurementTool */
-  public MidiLatencyMeasurementTool(Notate notate)
-    {
-    this.notate = notate;
+    /**
+     * Creates new form MidiLatencyMeasurementTool
+     */
+    public MidiLatencyMeasurementTool(Notate notate) {
+        this.notate = notate;
 
-    tableModel = new MeasurementTableModel();
+        tableModel = new MeasurementTableModel();
 
-    initComponents();
+        initComponents();
 
-    SelectionListener listener = new SelectionListener(measurementTable);
-    measurementTable.getSelectionModel().addListSelectionListener(listener);
-    measurementTable.getColumnModel().getSelectionModel().addListSelectionListener(listener);
+        SelectionListener listener = new SelectionListener(measurementTable);
+        measurementTable.getSelectionModel().addListSelectionListener(listener);
+        measurementTable.getColumnModel().getSelectionModel().addListSelectionListener(listener);
 
-    testScore = new Score();
-    MelodyPart part = new MelodyPart();
-    part.setInstrument(1);
-    part.addNote(new Note(60, BEAT));
-    part.addRest(new Rest(BEAT * 2));
-    testScore.setTempo(60);
-    testScore.addPart(part);
+        testScore = new Score();
+        playStatus = MidiPlayListener.Status.STOPPED;
+        MelodyPart part = new MelodyPart();
+        part.setInstrument(1);
+        
+        part.addNote(new Note(60, BEAT));
+        part.addRest(new Rest(BEAT * 2));
+        
+        testScore.setTempo(60);
+        testScore.addPart(part);
     }
 
-  public void startLatencyMeasurement()
-    {
-    midiSynth = notate.getMidiSynth();
-    repeatTest = true;
+    public void startLatencyMeasurement() {
+        midiSynth = notate.getMidiSynth();
+        repeatTest = true;
 
-    tableModel.clear();
-    midiSynth.registerReceiver(this);
-    midiSynth.registerNoteListener(this);
-    midiSynth.setPlayListener(this);
-    startPlay(0);
+        tableModel.clear();
+        midiSynth.registerReceiver(this);
+        midiSynth.registerNoteListener(this);
+        midiSynth.setPlayListener(this);
+        startPlay(0);
     }
 
-  public void stopLatencyMeasurement()
-    {
-    repeatTest = false;
-    midiSynth.unregisterReceiver(this);
-    midiSynth.unregisterNoteListener(this);
+    public void stopLatencyMeasurement() {
+        repeatTest = false;
+        midiSynth.unregisterReceiver(this);
+        midiSynth.unregisterNoteListener(this);
+        midiSynth.stop("stop");
     }
 
-  public void startPlay(int transposition)
-    {
-    try
-      {
-      midiSynth.play(testScore, 0, 0, transposition);
-      }
-    catch( Exception e )
-      {
-      ErrorLog.log(ErrorLog.WARNING, "Error playing sound");
-      }
+    public void startPlay(int transposition) {
+        try {
+            midiSynth.play(testScore, 0, 1000, transposition);
+        } catch (Exception e) {
+            ErrorLog.log(ErrorLog.WARNING, "Error playing sound");
+        }
     }
 
-  MidiPlayListener.Status playStatus;
+    MidiPlayListener.Status playStatus;
 
-  public void setPlaying(MidiPlayListener.Status playing, int transposition)
-    {
-    playStatus = playing;
-    switch( playing )
-      {
-      case PLAYING:
-        break;
-      case STOPPED:
-        if( repeatTest && isShowing() )
-          {
-          startPlay(transposition);
-          }
-        else if( repeatTest )
-          {
-          stopLatencyMeasurement();
-          }
-        break;
-      }
+    public void setPlaying(MidiPlayListener.Status playing, int transposition) {
+        playStatus = playing;
+        switch (playing) {
+            case PLAYING:
+                break;
+            case STOPPED:
+                if (repeatTest && isShowing()) {
+                    startPlay(transposition);
+                } else if (repeatTest) {
+                    stopLatencyMeasurement();
+                }
+                break;
+        }
     }
 
-  public MidiPlayListener.Status getPlaying()
-    {
-    return playStatus;
+    public MidiPlayListener.Status getPlaying() {
+        return playStatus;
     }
 
-  double latency = 0;
+    double latency = 0;
 
-  public void updateAverage()
-    {
-    latency = tableModel.getAverage();
-    averageLatencyTF.setText(String.valueOf(latency));
+    public void updateAverage() {
+        latency = tableModel.getAverage();
+        averageLatencyTF.setText(String.valueOf(latency));
     }
 
-  /**
-   * This function receives the note on event from the keyboard and
-   * uses it to calculate the latency
-   */
-  public void send(MidiMessage message, long timeStamp)
-    {
-    byte[] m = message.getMessage();
-    if( m.length < 3 )
-      {
-      return;
-      }
+    /**
+     * This function receives the note on event from the keyboard and uses it to
+     * calculate the latency
+     */
+    public void send(MidiMessage message, long timeStamp) {
+        byte[] m = message.getMessage();
+        if (m.length < 3) {
+            return;
+        }
 
-    int highNibble = (m[0] & 0xF0) >> 4;
-    int velocity = m[2];
+        int highNibble = (m[0] & 0xF0) >> 4;
+        int velocity = m[2];
 
-    switch( highNibble )
-      {
-      case 9: // note on
-        if( velocity == 0 )
-          {
-          break;
-          }
+        switch (highNibble) {
+            case 9: // note on
+                if (velocity == 0) {
+                    break;
+                }
 
-//                System.out.println("Key down: " + midiSynth.getSequencer().getMicrosecondPosition());
-        long delay =
-                midiSynth.getSequencer().getMicrosecondPosition() - timeStart;
-        tableModel.addMeasurement(((double)delay) / 1000);
-        updateAverage();
-        break;
-      }
+                System.out.println("Key down: " + midiSynth.getSequencer().getMicrosecondPosition());
+                long delay
+                        = (2 * (midiSynth.getSequencer().getMicrosecondPosition() - timeStart));
+                tableModel.addMeasurement(((double) delay) / 1000);
+                updateAverage();
+                break;
+        }
+    }
+    
+    
+
+    /**
+     * This function receives the note played event from the midiSynth and uses
+     * it to start timing the latency
+     */
+    public void noteOn(int note, int channel) {
+        timeStart = midiSynth.getSequencer().getMicrosecondPosition();
+         
+         System.out.println("Note On: " + timeStart);
     }
 
-  /**
-   * This function receives the note played event from the midiSynth and
-   * uses it to start timing the latency
-   */
-  public void noteOn(int note, int channel)
-    {
-    timeStart = midiSynth.getSequencer().getMicrosecondPosition();
-//         System.out.println("Note On: " + timeStart);
-    }
-
-  /** This method is called from within the constructor to
-   * initialize the form.
-   * WARNING: Do NOT modify this code. The content of this method is
-   * always regenerated by the Form Editor.
-   */
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
     // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
@@ -421,7 +391,7 @@ public class MidiLatencyMeasurementTool
 
     }// </editor-fold>//GEN-END:initComponents
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-      notate.setMidiLatency(latency);
+        notate.setMidiLatency(latency);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void returnBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_returnBtnActionPerformed
@@ -431,20 +401,16 @@ public class MidiLatencyMeasurementTool
     }//GEN-LAST:event_saveBtnActionPerformed
 
     private void startBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startBtnActionPerformed
-      if( !repeatTest )
-        {
-        startLatencyMeasurement();
-        startBtn.setText("Stop");
-        }
-      else
-        {
-        stopLatencyMeasurement();
-        startBtn.setText("Start Calibration");
+        if (!repeatTest) {
+            startLatencyMeasurement();
+            startBtn.setText("Stop");
+        } else {
+            stopLatencyMeasurement();
+            startBtn.setText("Start Calibration");
         }
     }//GEN-LAST:event_startBtnActionPerformed
 
-  public void close()
-    {
+    public void close() {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -460,4 +426,4 @@ public class MidiLatencyMeasurementTool
     private javax.swing.JButton startBtn;
     private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
-  }
+}
