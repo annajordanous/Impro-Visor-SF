@@ -58,10 +58,19 @@ public class GuideLineGenerator implements Constants {
     private int direction1;
     private int direction2;
     
+    //types of line - for two lines
+    private int lineType;
+    private final int THREE_SEVEN = 0;
+    private final int SEVEN_THREE = 1;
+    private final int FIVE_NINE = 2;
+    private final int NINE_FIVE = 3;
+    private String startDegree1;
+    private String startDegree2;
+    
     //Line identifiers so we know which direction to switch
-    private int ONLY_LINE = 0;
-    private int LINE_ONE = 1;
-    private int LINE_TWO = 2;
+    private final int ONLY_LINE = 0;
+    private final int LINE_ONE = 1;
+    private final int LINE_TWO = 2;
     
     //constants that correspond to the integers that represent direction
     private final int ASCENDING = 1;
@@ -117,7 +126,7 @@ public class GuideLineGenerator implements Constants {
     private static final int[][] scores = 
     //  -2 -1  0  1  2          //Directional Distance
     {   {1, 2, 3, 4, 5},        //DESCENDING
-        {3, 2, 1, 2, 3},        //NOPREFERENCE
+        {5, 3, 1, 3, 5},        //NOPREFERENCE
         {5, 4, 3, 2, 1}     };  //ASCENDING
     
     //in all the below, no preference uses 5 3 1 3 5 instead of 3 2 1 2 3
@@ -179,7 +188,7 @@ public class GuideLineGenerator implements Constants {
      * @param highLimit MIDI value of high limit
      * @param maxDuration maxDuration of any note, 0 or less if not specified
      */
-    public GuideLineGenerator(ChordPart inputChordPart, int direction, String startDegree, boolean alternating, int lowLimit, int highLimit, int maxDuration) 
+    public GuideLineGenerator(ChordPart inputChordPart, int direction, String startDegree, boolean alternating, int lowLimit, int highLimit, int maxDuration, int lineType) 
     {
         chordPart = inputChordPart;
         this.originalDirection = direction;
@@ -206,6 +215,20 @@ public class GuideLineGenerator implements Constants {
         }else{
             durationSpecified = true;
         }
+        
+        this.lineType = lineType;
+        if(lineType==THREE_SEVEN){
+            startDegree1 = THREE; startDegree2 = SEVEN;
+        }else if(lineType==SEVEN_THREE){
+            startDegree1 = SEVEN; startDegree2 = THREE;
+        }else if(lineType==FIVE_NINE){
+            startDegree1 = FIVE; startDegree2 = NINE;
+        }else if(lineType==NINE_FIVE){
+            startDegree1 = NINE; startDegree2 = FIVE;
+        }else{
+            startDegree1 = THREE; startDegree2 = SEVEN;
+        }
+        
     }
     
     /**
@@ -400,7 +423,8 @@ public class GuideLineGenerator implements Constants {
             }
             
             //need to split up note before adding it
-            if(durationSpecified && greaterThan(noteToAdd, maxDuration)){
+            boolean noteTooLong = durationSpecified && greaterThan(noteToAdd, maxDuration);
+            if(noteTooLong && !noteToAdd.isRest()){
                 
                 ArrayList<Note> notesToAdd = notesToAdd(noteToAdd, currentChord, ONLY_LINE);
                 for(Note n: notesToAdd){
@@ -476,8 +500,8 @@ public class GuideLineGenerator implements Constants {
         int index = startIndices.get(0);
         Chord firstChord = chordPart.getChord(index);
         
-        Note prevFirstNote = firstNote(firstChord, THREE);
-        Note prevSecondNote = firstNote(firstChord, SEVEN);
+        Note prevFirstNote = firstNote(firstChord, startDegree1);
+        Note prevSecondNote = firstNote(firstChord, startDegree2);
         
         Note firstNoteToAdd;
         Note secondNoteToAdd;
@@ -499,10 +523,10 @@ public class GuideLineGenerator implements Constants {
                 direction2 = originalDirection;
                 
                 //Set the two next notes to be half the length of the chord
-                firstNoteToAdd = firstNote(currentChord, THREE);
+                firstNoteToAdd = firstNote(currentChord, startDegree1);
                 firstNoteToAdd.setRhythmValue(currentChord.getRhythmValue()/2);
                 
-                secondNoteToAdd = firstNote(currentChord, SEVEN);
+                secondNoteToAdd = firstNote(currentChord, startDegree2);
                 secondNoteToAdd.setRhythmValue(currentChord.getRhythmValue()/2);
 
                 
@@ -514,8 +538,8 @@ public class GuideLineGenerator implements Constants {
                 secondNoteToAdd = nextNote(prevSecondNote, currentChord, SAME_OKAY, CHORD_TONE, null, LINE_TWO);
                 secondNoteToAdd.setRhythmValue(currentChord.getRhythmValue()/2);
             }
-            boolean firstNoteTooLong = greaterThan(firstNoteToAdd, maxDuration);
-            boolean secondNoteTooLong = greaterThan(secondNoteToAdd, maxDuration);
+            boolean firstNoteTooLong = greaterThan(firstNoteToAdd, maxDuration) && !firstNoteToAdd.isRest();
+            boolean secondNoteTooLong = greaterThan(secondNoteToAdd, maxDuration) && !secondNoteToAdd.isRest();
             if(durationSpecified && (firstNoteTooLong || secondNoteTooLong)){
                 if(threeFirst){
                     if(firstNoteTooLong){
@@ -588,6 +612,9 @@ public class GuideLineGenerator implements Constants {
                 possibleDirectionSwitch(secondNoteToAdd, LINE_TWO);
             }
             
+            //if the lines are on the same note and in the same direction, alter their directions
+            fixConvergingLines(prevFirstNote, prevSecondNote);
+            
             //jump ahead to next chord
             index+=duration;
             //switch which line comes first if alternating
@@ -599,6 +626,13 @@ public class GuideLineGenerator implements Constants {
         return guideLine;
     }
 
+    private void fixConvergingLines(Note n1, Note n2){
+        if(n1.getPitch()==n2.getPitch()&&direction1==direction2){
+            direction1 = ASCENDING;
+            direction2 = DESCENDING;
+        }
+    }
+    
     /**
      * Creates the first note for the line to be based off of
      * @param c The first chord of the chord part
@@ -608,8 +642,11 @@ public class GuideLineGenerator implements Constants {
      * returns a rest if the chord isNOCHORD
      */
     private Note firstNote(Chord c, String start){
+        if(c.isNOCHORD()){
+            return new Note(REST, Accidental.NOTHING, c.getRhythmValue());
+        }
         Note first =  scaleDegreeToNote(start, c);
-        first = putInRange(first);
+        first = putInRange(first, c);
         return first;
     }
     
@@ -621,6 +658,9 @@ public class GuideLineGenerator implements Constants {
      */
     private Note nextNote(Note n, Chord c, boolean disallowSame, int chordOrColor, Note notThisOne, int line)
     { 
+        if(c.isNOCHORD()){
+            return new Note(REST, Accidental.NOTHING, c.getRhythmValue());
+        }
         if(n.isRest()){
             return firstNote(c, startDegree);
         }else{
@@ -641,10 +681,25 @@ public class GuideLineGenerator implements Constants {
      */
     private Note bestNote(Note n, Chord c, ArrayList<Note> possibleNotes, boolean disallowSame, Note notThisOne, int line)
     {
+        //if there are not possible notes
         if(possibleNotes.isEmpty()){
-            //SHOULD DEFINITELY CHANGE
-            //currently choosing the note that would be the first note
-            return firstNote(c, startDegree);
+            //go through all the options, from best to worst
+            possibleNotes = possibleNotes(n, c, CHORD_TONE);
+            if(possibleNotes.isEmpty()){
+                possibleNotes = possibleNotes(n, c, COLOR_TONE);
+                if(possibleNotes.isEmpty()){
+                    possibleNotes = possibleNotes(n, c, APPROACH_TONE);
+                    if(possibleNotes.isEmpty()){
+                        return firstNote(c, startDegree);
+                    }else{
+                        return bestNote(n, c, possibleNotes, disallowSame, notThisOne, line);
+                    }
+                }else{
+                    return bestNote(n, c, possibleNotes, disallowSame, notThisOne, line);
+                }
+            }else{
+                return bestNote(n, c, possibleNotes, disallowSame, notThisOne, line);
+            }
         }
         else{
             
@@ -753,7 +808,7 @@ public class GuideLineGenerator implements Constants {
     }
     */
     
-    private double colorScore2(Chord c, Note n){
+    private double colorScore(Chord c, Note n){
         Polylist pl = NoteConverter.noteToRelativePitch(n, c);
         String degree = pl.second().toString();
         double score;
@@ -779,7 +834,6 @@ public class GuideLineGenerator implements Constants {
         }else{
             score = 5;
         }
-        System.out.println("Degree: "+degree+"; Score: "+score);
         return score;
     }
     
@@ -796,7 +850,7 @@ public class GuideLineGenerator implements Constants {
         int index1 = getDirection(line)+1;
         int index2 = distance+2;//index to be used in scores array
         int score = 0;
-        score+=scores3[index1][index2];
+        score+=scores[index1][index2];
         //when no max duration is specified: scores 3, 5, 6 are the same, 1, 2, 4 are the same
         return score;
     }
@@ -870,12 +924,7 @@ public class GuideLineGenerator implements Constants {
      */
     private boolean belongsTo(Note n, Chord c, int chordOrColor)
     {
-        if( c.getTypeIndex(n) == chordOrColor && !c.isNOCHORD()){
-            return true;
-        }
-        else{
-            return false;
-        }
+        return (c.getTypeIndex(n)==chordOrColor && !c.isNOCHORD());
     }
     
     /**
@@ -885,8 +934,9 @@ public class GuideLineGenerator implements Constants {
      * NOTE: this note's pitch will be unaltered if it was either already in the range,
      * OR if the user selected a range smaller than an octave so there is no instance of that note in the range
      */
-    private Note putInRange(Note n){
+    private Note putInRange(Note n, Chord c){
         int pitch = n.getPitch();
+        int rv = n.getRhythmValue();
         int inRange = inRange(pitch, lowLimit, highLimit);
         if(inRange!=IN_RANGE){
             if(inRange==BELOW_RANGE){
@@ -898,11 +948,33 @@ public class GuideLineGenerator implements Constants {
                     
                 }
             }
+            
             //if the note is STILL not in range (no option available, range less than an octave):
             if(inRange != IN_RANGE){
-                pitch = lowLimit; //set it to the lower limit of the range, probably not ideal
+                for(pitch = lowLimit, n = new Note(pitch); !belongsTo(n, c, CHORD_TONE)&&pitch<=highLimit; pitch++, n = new Note(pitch)){
+                    
+                }
+                if(belongsTo(n, c, CHORD_TONE)){
+                    //pitch is good
+                }else{
+                    for(pitch = lowLimit, n = new Note(pitch); !belongsTo(n, c, COLOR_TONE)&&pitch<=highLimit; pitch++, n = new Note(pitch)){
+                    
+                    }
+                    if(belongsTo(n, c, COLOR_TONE)){
+                        //pitch is good
+                    }else{
+                        for(pitch = lowLimit, n = new Note(pitch); !belongsTo(n, c, APPROACH_TONE)&&pitch<=highLimit; pitch++, n = new Note(pitch)){
+                    
+                        }
+                        if(belongsTo(n, c, APPROACH_TONE)){
+                            //pitch is good
+                        }else{
+                            pitch = lowLimit;//last resort
+                        }
+                    }
+                }
             }
-            n.setPitch(pitch);
+            n = new Note(pitch, rv);
         }
         return n;
     }

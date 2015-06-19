@@ -28,9 +28,6 @@ import java.util.Enumeration;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JRadioButton;
-import javax.swing.JSlider;
-import imp.data.Note;
-import imp.data.NoteSymbol;
 import imp.data.PianoKey;
 import javax.swing.Icon;
 import javax.swing.JLabel;
@@ -42,6 +39,10 @@ import javax.swing.JLabel;
  */
 public class GuideToneLineDialog extends javax.swing.JDialog implements Constants {
     
+    private final int THREE_SEVEN = 0;
+    private final int SEVEN_THREE = 1;
+    private final int FIVE_NINE = 2;
+    private final int NINE_FIVE = 3;
     
     private int keysPressed = 0;
     //Images from VoicingKeyboard.java
@@ -282,6 +283,7 @@ private void initKeys()
         transformationPanel = notate.lickgenFrame.getTransformPanel();
         initComponents();
         initKeys();
+        enableButtons(lineTypeButtons, false);
     }
 
     /**
@@ -298,6 +300,7 @@ private void initKeys()
         numberOfLinesButtons = new javax.swing.ButtonGroup();
         scaleDegreeButtons = new javax.swing.ButtonGroup();
         maxDurationButtons = new javax.swing.ButtonGroup();
+        lineTypeButtons = new javax.swing.ButtonGroup();
         linesPanel = new javax.swing.JPanel();
         numberOfLinesLabel = new javax.swing.JLabel();
         oneLine = new javax.swing.JRadioButton();
@@ -318,9 +321,8 @@ private void initKeys()
         deg7 = new javax.swing.JRadioButton();
         buttonPanel = new javax.swing.JPanel();
         generateLine = new javax.swing.JButton();
-        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(20, 20), new java.awt.Dimension(20, 20), new java.awt.Dimension(20, 20));
-        filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(20, 20), new java.awt.Dimension(20, 20), new java.awt.Dimension(20, 20));
-        filler4 = new javax.swing.Box.Filler(new java.awt.Dimension(20, 20), new java.awt.Dimension(20, 20), new java.awt.Dimension(20, 20));
+        leftFiller = new javax.swing.Box.Filler(new java.awt.Dimension(20, 20), new java.awt.Dimension(20, 20), new java.awt.Dimension(20, 20));
+        rightFiller = new javax.swing.Box.Filler(new java.awt.Dimension(20, 20), new java.awt.Dimension(20, 20), new java.awt.Dimension(20, 20));
         transformPanel = new javax.swing.JPanel();
         transformLine = new javax.swing.JButton();
         revertLine = new javax.swing.JButton();
@@ -330,6 +332,15 @@ private void initKeys()
         whole = new javax.swing.JRadioButton();
         half = new javax.swing.JRadioButton();
         quarter = new javax.swing.JRadioButton();
+        lineTypePanel = new javax.swing.JPanel();
+        lineTypeLabel = new javax.swing.JLabel();
+        threeSeven = new javax.swing.JRadioButton();
+        sevenThree = new javax.swing.JRadioButton();
+        fiveNine = new javax.swing.JRadioButton();
+        nineFive = new javax.swing.JRadioButton();
+        bottomFiller = new javax.swing.Box.Filler(new java.awt.Dimension(20, 20), new java.awt.Dimension(20, 20), new java.awt.Dimension(20, 20));
+        topFiller = new javax.swing.Box.Filler(new java.awt.Dimension(20, 20), new java.awt.Dimension(20, 20), new java.awt.Dimension(20, 20));
+        rangePanel = new javax.swing.JPanel();
         keyboardLP = new javax.swing.JLayeredPane();
         keyA0 = new javax.swing.JLabel();
         keyB0 = new javax.swing.JLabel();
@@ -420,7 +431,8 @@ private void initKeys()
         keyGsharp7 = new javax.swing.JLabel();
         keyBb7 = new javax.swing.JLabel();
         pointerC4 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        rangeLabelPanel = new javax.swing.JPanel();
+        rangeLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new java.awt.GridBagLayout());
@@ -579,20 +591,16 @@ private void initKeys()
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 7;
+        gridBagConstraints.gridy = 8;
         getContentPane().add(buttonPanel, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 8;
-        getContentPane().add(filler1, gridBagConstraints);
-        gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        getContentPane().add(filler3, gridBagConstraints);
+        gridBagConstraints.gridy = 7;
+        getContentPane().add(leftFiller, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 3;
-        getContentPane().add(filler4, gridBagConstraints);
+        gridBagConstraints.gridy = 7;
+        getContentPane().add(rightFiller, gridBagConstraints);
 
         transformLine.setText("Generate Solo Over Line");
         transformLine.setEnabled(false);
@@ -615,7 +623,7 @@ private void initKeys()
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 8;
+        gridBagConstraints.gridy = 9;
         getContentPane().add(transformPanel, gridBagConstraints);
 
         maxDurationPanel.setLayout(new java.awt.GridBagLayout());
@@ -658,8 +666,44 @@ private void initKeys()
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 5;
         getContentPane().add(maxDurationPanel, gridBagConstraints);
+
+        lineTypeLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        lineTypeLabel.setText("Line Type:");
+        lineTypePanel.add(lineTypeLabel);
+
+        lineTypeButtons.add(threeSeven);
+        threeSeven.setSelected(true);
+        threeSeven.setText("3-7 line");
+        lineTypePanel.add(threeSeven);
+
+        lineTypeButtons.add(sevenThree);
+        sevenThree.setText("7-3 line");
+        lineTypePanel.add(sevenThree);
+
+        lineTypeButtons.add(fiveNine);
+        fiveNine.setText("5-9 line");
+        lineTypePanel.add(fiveNine);
+
+        lineTypeButtons.add(nineFive);
+        nineFive.setText("9-5 line");
+        lineTypePanel.add(nineFive);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 4;
+        getContentPane().add(lineTypePanel, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 10;
+        getContentPane().add(bottomFiller, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        getContentPane().add(topFiller, gridBagConstraints);
+
+        rangePanel.setLayout(new java.awt.GridBagLayout());
 
         keyboardLP.setMinimumSize(new java.awt.Dimension(1045, 150));
         keyboardLP.setRequestFocusEnabled(false);
@@ -1063,19 +1107,26 @@ private void initKeys()
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 6;
+        gridBagConstraints.gridy = 11;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.ipadx = 1045;
         gridBagConstraints.ipady = 150;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        getContentPane().add(keyboardLP, gridBagConstraints);
+        rangePanel.add(keyboardLP, gridBagConstraints);
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel2.setText("Use the keyboard below to select an upper and lower range limit for your guide tone line.");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 5;
-        getContentPane().add(jLabel2, gridBagConstraints);
+        gridBagConstraints.gridy = 7;
+        getContentPane().add(rangePanel, gridBagConstraints);
+
+        rangeLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        rangeLabel.setText("Use the keyboard below to select an upper and lower range limit for your guide tone line.");
+        rangeLabelPanel.add(rangeLabel);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 6;
+        getContentPane().add(rangeLabelPanel, gridBagConstraints);
 
         pack();
         setLocationRelativeTo(null);
@@ -1087,13 +1138,14 @@ private void initKeys()
         JRadioButton direction = getSelected(directionButtons);
         JRadioButton scaleDeg = getSelected(scaleDegreeButtons);
         JRadioButton maxDur = getSelected(maxDurationButtons);
-        
+        JRadioButton lineTypeButton = getSelected(lineTypeButtons);
         
         //Get paramaters to pass into constructor
         //notate = (Notate)this.getParent();
         String scaleDegString = scaleDeg.getText();
         boolean alternating = false;
         int duration = buttonToDuration(maxDur);
+        int lineType = buttonToLineType(lineTypeButton);
         
         //Passing in "mix" as the scaleDegString indicates that two lines should be generated
         //Right now, the order in which the two lines appear always alternates,
@@ -1104,11 +1156,24 @@ private void initKeys()
         }
         
         int [] limits = limits();
-        int low = A; //lowest key  on keyboard
-        int high = A+87; //highest key on keyboard
+        int low = 60; //middle C (C4)
+        int high = 72; //C above middle C (C5)
         if(limits[0]!=-1&&limits[1]!=-1){
             low = limits[0];
             high = limits[1];
+        }else{
+            clearKeyboard();
+            PianoKey lowKey = pkeys[low-A];
+            lowKey.setPressed(true);
+            pressKey(lowKey);
+            keysPressed++;
+            
+            
+            PianoKey highKey = pkeys[high-A];
+            highKey.setPressed(true);
+            pressKey(highKey);
+            keysPressed++;
+            
         }
         /*int low = lowLimitSlider.getValue();
         int high = highLimitSlider.getValue();
@@ -1120,7 +1185,8 @@ private void initKeys()
                                                               scaleDegString, 
                                                               alternating, 
                                                               low, high, 
-                                                              duration);
+                                                              duration,
+                                                              lineType);
         MelodyPart guideToneLine = guideLine.makeGuideLine();
         notate.addChorus(guideToneLine);
         
@@ -1128,6 +1194,17 @@ private void initKeys()
         transformed = false;
     }//GEN-LAST:event_generateLineActionPerformed
 
+    private void clearKeyboard(){
+        for(PianoKey pk : pkeys){
+            if(pk.isPressed()){
+                pk.setPressed(false);
+                pressKey(pk);
+                keysPressed--;
+            }
+            
+        }
+    }
+    
     private int [] limits(){
         int [] limits = {-1, -1};
         boolean low = true;
@@ -1159,8 +1236,23 @@ private void initKeys()
         }
     }
     
+    private int buttonToLineType(JRadioButton b){
+        if(b.equals(threeSeven)){
+            return THREE_SEVEN;
+        }else if(b.equals(sevenThree)){
+            return SEVEN_THREE;
+        }else if(b.equals(fiveNine)){
+            return FIVE_NINE;
+        }else if(b.equals(nineFive)){
+            return NINE_FIVE;
+        }else{
+            return THREE_SEVEN; // default, shouldn't happen
+        }
+    }
+    
     private void twoLinesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_twoLinesActionPerformed
         enableButtons(scaleDegreeButtons, false);
+        enableButtons(lineTypeButtons, true);
     }//GEN-LAST:event_twoLinesActionPerformed
 
     /**
@@ -1177,6 +1269,7 @@ private void initKeys()
     
     private void oneLineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_oneLineActionPerformed
         enableButtons(scaleDegreeButtons, true);
+        enableButtons(lineTypeButtons, false);
     }//GEN-LAST:event_oneLineActionPerformed
 
     private void transformLineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transformLineActionPerformed
@@ -1435,6 +1528,7 @@ private void initKeys()
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JRadioButton ascending;
+    private javax.swing.Box.Filler bottomFiller;
     private javax.swing.JPanel buttonPanel;
     private javax.swing.JRadioButton deg1;
     private javax.swing.JRadioButton deg2;
@@ -1447,13 +1541,10 @@ private void initKeys()
     private javax.swing.ButtonGroup directionButtons;
     private javax.swing.JLabel directionLabel;
     private javax.swing.JPanel directionPanel;
-    private javax.swing.Box.Filler filler1;
-    private javax.swing.Box.Filler filler3;
-    private javax.swing.Box.Filler filler4;
+    private javax.swing.JRadioButton fiveNine;
     private javax.swing.JButton generateLine;
     private javax.swing.JRadioButton half;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel keyA0;
     private javax.swing.JLabel keyA1;
     private javax.swing.JLabel keyA2;
@@ -1543,9 +1634,14 @@ private void initKeys()
     private javax.swing.JLabel keyGsharp6;
     private javax.swing.JLabel keyGsharp7;
     private javax.swing.JLayeredPane keyboardLP;
+    private javax.swing.Box.Filler leftFiller;
+    private javax.swing.ButtonGroup lineTypeButtons;
+    private javax.swing.JLabel lineTypeLabel;
+    private javax.swing.JPanel lineTypePanel;
     private javax.swing.JPanel linesPanel;
     private javax.swing.ButtonGroup maxDurationButtons;
     private javax.swing.JPanel maxDurationPanel;
+    private javax.swing.JRadioButton nineFive;
     private javax.swing.JRadioButton noPref;
     private javax.swing.JRadioButton noPreference;
     private javax.swing.ButtonGroup numberOfLinesButtons;
@@ -1553,10 +1649,17 @@ private void initKeys()
     private javax.swing.JRadioButton oneLine;
     private javax.swing.JLabel pointerC4;
     private javax.swing.JRadioButton quarter;
+    private javax.swing.JLabel rangeLabel;
+    private javax.swing.JPanel rangeLabelPanel;
+    private javax.swing.JPanel rangePanel;
     private javax.swing.JButton revertLine;
+    private javax.swing.Box.Filler rightFiller;
     private javax.swing.JLabel scaleDegLabel;
     private javax.swing.JPanel scaleDegPanel;
     private javax.swing.ButtonGroup scaleDegreeButtons;
+    private javax.swing.JRadioButton sevenThree;
+    private javax.swing.JRadioButton threeSeven;
+    private javax.swing.Box.Filler topFiller;
     private javax.swing.JButton transformLine;
     private javax.swing.JPanel transformPanel;
     private javax.swing.JRadioButton twoLines;
