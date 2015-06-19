@@ -1475,15 +1475,10 @@ public Critic getCritic()
         midiCalibrationPanel = new MidiLatencyMeasurementTool(this);
         audioTab = new javax.swing.JPanel();
         audioInputLabel = new javax.swing.JLabel();
-        beatDelayInputBox = new javax.swing.JTextField();
-        beatDelayLabel = new javax.swing.JLabel();
         filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(35, 35), new java.awt.Dimension(35, 35), new java.awt.Dimension(35, 35));
         audioInputLabel1 = new javax.swing.JLabel();
         useSuperColliderCheckbox = new javax.swing.JCheckBox();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(35, 35), new java.awt.Dimension(35, 35), new java.awt.Dimension(35, 35));
-        delayText2 = new javax.swing.JLabel();
-        delayText3 = new javax.swing.JLabel();
-        delayText1 = new javax.swing.JLabel();
         useSuperColliderCheckboxText = new javax.swing.JLabel();
         ReloadSuperColliderButton = new javax.swing.JButton();
         audioInputLabel2 = new javax.swing.JLabel();
@@ -3921,7 +3916,7 @@ public Critic getCritic()
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         devicesTab.add(jLabel1, gridBagConstraints);
 
-        jTabbedPane2.addTab("Devices", devicesTab);
+        jTabbedPane2.addTab("MIDI Devices", devicesTab);
 
         latencyTab.setLayout(new java.awt.GridBagLayout());
 
@@ -3964,26 +3959,6 @@ public Critic getCritic()
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
         audioTab.add(audioInputLabel, gridBagConstraints);
-
-        beatDelayInputBox.setText("1.0");
-        beatDelayInputBox.setMaximumSize(new java.awt.Dimension(100, 28));
-        beatDelayInputBox.setMinimumSize(new java.awt.Dimension(65, 28));
-        beatDelayInputBox.setPreferredSize(new java.awt.Dimension(65, 28));
-        beatDelayInputBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                beatDelayInputBoxActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 11;
-        audioTab.add(beatDelayInputBox, gridBagConstraints);
-
-        beatDelayLabel.setText("(beats)");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 12;
-        audioTab.add(beatDelayLabel, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 7;
@@ -3995,46 +3970,23 @@ public Critic getCritic()
         gridBagConstraints.gridy = 5;
         audioTab.add(audioInputLabel1, gridBagConstraints);
 
-        useSuperColliderCheckbox.setText("Use SuperCollider. To restart, press the button");
+        useSuperColliderCheckbox.setText("Use Pitch Tracker");
         useSuperColliderCheckbox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 useSuperColliderCheckboxActionPerformed(evt);
             }
         });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        audioTab.add(useSuperColliderCheckbox, gridBagConstraints);
+        audioTab.add(useSuperColliderCheckbox, new java.awt.GridBagConstraints());
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
         audioTab.add(filler1, gridBagConstraints);
-
-        delayText2.setText("adjust for the delays in beats. Use decimals for fractions of beats.");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 9;
-        audioTab.add(delayText2, gridBagConstraints);
-
-        delayText3.setText(" Press ENTER to set value.");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 10;
-        audioTab.add(delayText3, gridBagConstraints);
-
-        delayText1.setText("Using audio input may result in some delay. Below , you can");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 8;
-        audioTab.add(delayText1, gridBagConstraints);
-
-        useSuperColliderCheckboxText.setText("to the right. See Audio Input Help for more details.");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         audioTab.add(useSuperColliderCheckboxText, gridBagConstraints);
 
-        ReloadSuperColliderButton.setText("Reload SuperCollider");
+        ReloadSuperColliderButton.setText("Reload Pitch Tracker");
         ReloadSuperColliderButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ReloadSuperColliderButtonActionPerformed(evt);
@@ -8154,12 +8106,12 @@ public Critic getCritic()
 
         openRecentLeadsheetMenu.setText("Open Recent Leadsheet (same window)");
         openRecentLeadsheetMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                populateRecentFileMenu(evt);
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                populateRecentFileMenu(evt);
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -8175,12 +8127,12 @@ public Critic getCritic()
 
         openRecentLeadsheetNewWindowMenu.setText("Open Recent Leadsheet (new window)");
         openRecentLeadsheetNewWindowMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                populateRecentLeadsheetNewWindow(evt);
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                populateRecentLeadsheetNewWindow(evt);
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -9101,12 +9053,12 @@ public Critic getCritic()
             }
         });
         notateGrammarMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                notateGrammarMenuMenuSelected(evt);
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                notateGrammarMenuMenuSelected(evt);
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
         notateGrammarMenu.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -9124,12 +9076,12 @@ public Critic getCritic()
         windowMenu.setMnemonic('W');
         windowMenu.setText("Window");
         windowMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                windowMenuMenuSelected(evt);
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                windowMenuMenuSelected(evt);
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -14429,7 +14381,7 @@ private boolean saveMidiLatency()
  * tempo.
  *
  * @return
- */
+ 
 private boolean saveAudioLatency()
   {
     System.out.println("Saved audio latency");
@@ -14440,7 +14392,7 @@ private boolean saveAudioLatency()
     audioLatencyRegistered = true;//Have edited audio latency at least once
     return true;
   }
-
+*/
 private boolean saveSectionInfo()
   {
     score.getChordProg().setSectionInfo(sectionInfo.copy());
@@ -22444,10 +22396,6 @@ public void moveTab()
         reAnalyze();
     }//GEN-LAST:event_reAnalyzeMIAction
 
-    private void beatDelayInputBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_beatDelayInputBoxActionPerformed
-        saveAudioLatency();
-    }//GEN-LAST:event_beatDelayInputBoxActionPerformed
-
     private void renameTabPopupMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_renameTabPopupMenuItemActionPerformed
         getCurrentStave().partTitleFocus();
     }//GEN-LAST:event_renameTabPopupMenuItemActionPerformed
@@ -24461,8 +24409,6 @@ private ImageIcon pauseButton =
     private javax.swing.JScrollPane bassStyleSpecScrollPane;
     private javax.swing.JPanel bassTabPanel;
     private javax.swing.JSlider bassVolume;
-    private javax.swing.JTextField beatDelayInputBox;
-    private javax.swing.JLabel beatDelayLabel;
     private javax.swing.JRadioButton blackApproachBtn;
     private javax.swing.JRadioButton blackChordBtn;
     private javax.swing.JRadioButton blackColorBtn;
@@ -24589,9 +24535,6 @@ private ImageIcon pauseButton =
     private javax.swing.JButton delTabBtn;
     private javax.swing.JCheckBox delTabCheckBox;
     private javax.swing.JMenuItem delTabPopupMenuItem;
-    private javax.swing.JLabel delayText1;
-    private javax.swing.JLabel delayText2;
-    private javax.swing.JLabel delayText3;
     private javax.swing.JButton deleteVoicingCancelButton;
     private javax.swing.JDialog deleteVoicingDialog;
     private javax.swing.JLabel deleteVoicingLabel;
