@@ -29,6 +29,7 @@ import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JRadioButton;
 import imp.data.PianoKey;
+import java.awt.Color;
 import javax.swing.Icon;
 import javax.swing.JLabel;
 
@@ -43,6 +44,7 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
     private final int SEVEN_THREE = 1;
     private final int FIVE_NINE = 2;
     private final int NINE_FIVE = 3;
+    
     
     private int keysPressed = 0;
     //Images from VoicingKeyboard.java
@@ -296,6 +298,20 @@ private void initKeys()
         initComponents();
         initKeys();
         enableButtons(lineTypeButtons, false);
+        
+        clearKeyboard();
+        
+        PianoKey lowKey = pkeys[C4-A];
+        lowKey.setPressed(true);
+        pressKey(lowKey);
+        keysPressed++;
+
+
+        PianoKey highKey = pkeys[C5-A];
+        highKey.setPressed(true);
+        pressKey(highKey);
+        keysPressed++;
+        
     }
 
     /**
@@ -445,6 +461,7 @@ private void initKeys()
         pointerC4 = new javax.swing.JLabel();
         rangeLabelPanel = new javax.swing.JPanel();
         rangeLabel = new javax.swing.JLabel();
+        warningLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new java.awt.GridBagLayout());
@@ -603,15 +620,15 @@ private void initKeys()
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 8;
+        gridBagConstraints.gridy = 9;
         getContentPane().add(buttonPanel, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 7;
+        gridBagConstraints.gridy = 8;
         getContentPane().add(leftFiller, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 7;
+        gridBagConstraints.gridy = 8;
         getContentPane().add(rightFiller, gridBagConstraints);
 
         transformLine.setText("Generate Solo Over Line");
@@ -635,7 +652,7 @@ private void initKeys()
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 9;
+        gridBagConstraints.gridy = 10;
         getContentPane().add(transformPanel, gridBagConstraints);
 
         maxDurationPanel.setLayout(new java.awt.GridBagLayout());
@@ -708,7 +725,7 @@ private void initKeys()
         getContentPane().add(lineTypePanel, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 10;
+        gridBagConstraints.gridy = 11;
         getContentPane().add(bottomFiller, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -1128,7 +1145,7 @@ private void initKeys()
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 7;
+        gridBagConstraints.gridy = 8;
         getContentPane().add(rangePanel, gridBagConstraints);
 
         rangeLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -1139,6 +1156,14 @@ private void initKeys()
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 6;
         getContentPane().add(rangeLabelPanel, gridBagConstraints);
+
+        warningLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        warningLabel.setForeground(Color.black);
+        warningLabel.setText("Range okay.");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 7;
+        getContentPane().add(warningLabel, gridBagConstraints);
 
         pack();
         setLocationRelativeTo(null);
@@ -1168,9 +1193,9 @@ private void initKeys()
         }
         
         int [] limits = limits();
-        int low = 60; //middle C (C4)
-        int high = 72; //C above middle C (C5)
-        if(limits[0]!=-1&&limits[1]!=-1){
+        int low = C4; //middle C (C4)
+        int high = C5; //C above middle C (C5)
+        if(limits[0]!=-1&&limits[1]!=-1&&(limits[1]-limits[0]+1)>=Constants.OCTAVE){
             low = limits[0];
             high = limits[1];
         }else{
@@ -1457,6 +1482,19 @@ private void initKeys()
                 keysPressed++;
                 pressKey(keyPlayed);
             }
+            if(keysPressed<2){
+                warningLabel.setText("WARNING: You must select two keys.");
+                warningLabel.setForeground(Color.red);
+            }else{
+                int [] limits = limits();
+                if(limits[1]-limits[0]+1<Constants.OCTAVE){
+                    warningLabel.setText("WARNING: Range must be at least an octave.");
+                    warningLabel.setForeground(Color.red);
+                }else{
+                    warningLabel.setText("Range okay.");
+                    warningLabel.setForeground(Color.black);
+                }
+            }
         }
     }
     
@@ -1675,6 +1713,7 @@ private void initKeys()
     private javax.swing.JButton transformLine;
     private javax.swing.JPanel transformPanel;
     private javax.swing.JRadioButton twoLines;
+    private javax.swing.JLabel warningLabel;
     private javax.swing.JRadioButton whole;
     // End of variables declaration//GEN-END:variables
 }

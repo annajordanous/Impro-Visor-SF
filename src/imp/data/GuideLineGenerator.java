@@ -62,13 +62,12 @@ public class GuideLineGenerator implements Constants {
     private int direction2;
     
     //types of line - for two lines
-    private int lineType;
     private final int THREE_SEVEN = 0;
     private final int SEVEN_THREE = 1;
     private final int FIVE_NINE = 2;
     private final int NINE_FIVE = 3;
-    private String startDegree1;
-    private String startDegree2;
+    private final String startDegree1;
+    private final String startDegree2;
     
     //Line identifiers so we know which direction to switch
     private final int ONLY_LINE = 0;
@@ -190,6 +189,7 @@ public class GuideLineGenerator implements Constants {
      * @param lowLimit MIDI value of low limit
      * @param highLimit MIDI value of high limit
      * @param maxDuration maxDuration of any note, 0 or less if not specified
+     * @param lineType the type of line (i.e. 3-7, 5-9, etc)
      */
     public GuideLineGenerator(ChordPart inputChordPart, int direction, String startDegree, boolean alternating, int lowLimit, int highLimit, int maxDuration, int lineType) 
     {
@@ -202,24 +202,17 @@ public class GuideLineGenerator implements Constants {
         this.alternating = alternating;
         
         //pass in "mix" as the startDegree to signify two lines
-        if(startDegree.equals("mix")){
-            mix=true;
-        }else{
-            mix=false;
-        }
+        mix = startDegree.equals("mix");
+       
         
         this.lowLimit = lowLimit;
         this.highLimit = highLimit;
         this.maxDuration = maxDuration;
         
         //pass in 0 or less to signify no duration specified
-        if(maxDuration<=0){
-            durationSpecified = false;
-        }else{
-            durationSpecified = true;
-        }
+        durationSpecified = maxDuration>0;
         
-        this.lineType = lineType;
+        
         if(lineType==THREE_SEVEN){
             startDegree1 = THREE; startDegree2 = SEVEN;
         }else if(lineType==SEVEN_THREE){
@@ -241,11 +234,7 @@ public class GuideLineGenerator implements Constants {
      */
     private boolean greaterThan(Note n1, int duration){
         int noteDuration = n1.getRhythmValue();
-        if(noteDuration>duration){
-            return true;
-        }else{
-            return false;
-        }
+        return noteDuration>duration;
     }
     
     /**
@@ -449,6 +438,7 @@ public class GuideLineGenerator implements Constants {
     /**
      * Executes a possible direction switch if note being added is out of range
      * @param n Note to be tested
+     * @param line Line whose direction could be switched
      */
     public void possibleDirectionSwitch(Note n, int line){
         int newDirection = NOCHANGE;
@@ -1018,15 +1008,7 @@ public class GuideLineGenerator implements Constants {
         }
         return NoteConverter.scaleDegreeToNote(degree, c, octave, c.getRhythmValue());
     }  
-    
-    private boolean moreThanTwoOctaves(){
-        return (highLimit-lowLimit)>=(OCTAVE*2);
-    }
-    
-    private boolean moreThanOneOctave(){
-        return (highLimit-lowLimit)>=OCTAVE;
-    }
-    
+
     private int middleOfRange(){
         return lowLimit+((highLimit-lowLimit)/2);//rounds down for odd numbers
     }
