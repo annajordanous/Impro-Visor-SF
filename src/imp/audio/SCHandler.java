@@ -57,28 +57,9 @@ public class SCHandler {
                     openSCHelperWindows();
                 } 
             } else if (isOsX) {
-//              Check process list for existing sclang instance
-//              boolean existingInstanceSclang = false;
-//              String line;
-//              Process pro = Runtime.getRuntime().exec("ps -e");
-//              BufferedReader input =
-//                      new BufferedReader(new InputStreamReader(pro.getInputStream()));
-//              while ((line = input.readLine()) != null) {
-//                  Check for sclang
-//                  if (line.contains("sclang")) {
-//                      existingInstanceSclang = true;
-//                      break;
-//                  }
-//              }
-//              input.close();
-//              if (existingInstanceSclang) {
-//                  //do nothing
-//              } else {
-//                  process = runTime.exec("open /Applications/SuperCollider/SuperCollider.app/Contents/Resources/sclang");
-//              }
-//              This next line would open the ide rather than simply sclang
-                System.out.println("Attempting to open Pitch Tracker");
-                process = runTime.exec("open /Applications/TitchPacker618.app");
+                String dir = System.getProperty("user.dir");
+//                System.out.println("Attempting to open Pitch Tracker : " + dir);
+                process = runTime.exec("open " + dir + "/sc/PitchTracker619.app");
                 
             } else {//is linux
                 process = null;
