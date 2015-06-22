@@ -49,7 +49,7 @@ abstract public class Block {
                                              // end in a leadsheet
     public final static int PHRASE_END = 2;  // int to set a block as a phrase
                                              // end in a leadsheet
-    
+        protected String styleName;
 
     /** Block / 3
      * Fills in the name, key and mode information of a Block
@@ -387,6 +387,14 @@ abstract public class Block {
      * @return whether this block has just one chord
      */
     abstract public boolean singleChord();
+    public void setStyleName(String newStyleName)
+    {
+        styleName = newStyleName;
+    }
 
+    public String getStyleName()
+    {
+        return styleName;
+    }
 // end of abstract class Block
 }

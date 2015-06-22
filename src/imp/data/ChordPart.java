@@ -362,8 +362,25 @@ public Style getStyle()
   {
     return sectionInfo.getStyle();
   }
+public ArrayList<Block> setAllStyles(ArrayList<Block> blocks)
+{
+    return sectionInfo.setAllStyles(blocks);
+}
 
+public ArrayList<String> getAllStyleNames (ArrayList<Block> blocks)
+{
+    return sectionInfo.getAllStyleNames(blocks);
+}
 
+public String getStyleName(int n)
+{
+    return sectionInfo.getStyleName(n);
+}
+
+public void setAllStyleNames(ArrayList<String> styleNames)
+{
+    sectionInfo.setAllStyleNames(styleNames);
+}
 /**
  * getStyleAtSlot returns Style operative at a given slot in the ChordPart
  * @param slot
@@ -653,4 +670,15 @@ public void addFromRoadMapFrame(RoadMapFrame roadmap)
           }
         return roadmap.getBlockAtSlot(slot);
       }
+    
+    public ArrayList<SectionRecord> getSectionRecords()
+    {
+        return sectionInfo.getSectionRecords();
+    }
+    
+    public void setSectionRecords(ArrayList<SectionRecord> secRecords)
+    {
+        sectionInfo.setSectionRecords(secRecords);
+    }
+    
 }

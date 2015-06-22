@@ -752,7 +752,9 @@ public ArrayList<Block> toBlockList()
             }
        }
     
-    return blocks;
+    return setAllStyles(blocks);
+    
+      
 }
 
 /**
@@ -831,4 +833,73 @@ public Iterator<SectionRecord> iterator()
   {
     return records.iterator();
   }
+/**
+ * Set the blocks' styles and add the sections.
+ * @param blocks
+ * @return blocks
+ */
+public ArrayList<Block> setAllStyles(ArrayList<Block> blocks)
+  {     
+     
+      int lastIndex = 0;
+      for (Block b : blocks)
+      {  
+          if (lastIndex < records.size())
+          {
+              b.setStyleName(records.get(lastIndex).getStyleName());     
+              // System.out.println("block:" + b.getStyleName());
+          }
+          else if (lastIndex >= 1)
+          {
+              b.setStyleName(records.get(records.size()-1).getStyleName()); 
+              // System.out.println("block:" + b.getStyleName());
+          }
+          if (b.isSectionEnd())
+          {
+              lastIndex++;
+          }
+      }
+    
+    return blocks;
+  }
+
+/**
+ * Adds the sections with the specified style name.
+ * @param styleNames 
+ */
+public void setAllStyleNames(ArrayList<String> styleNames)
+{
+ int i = 0;
+ for (String s : styleNames)
+ {
+     if (i < records.size())
+     {
+        records.get(i).setStyleName(s);
+     }
+     i++;
+ }
+}
+
+
+public ArrayList<String> getAllStyleNames (ArrayList<Block> blocks)
+{
+    ArrayList<String> styleNames = new ArrayList<String>();
+    
+    for (Block b : blocks)
+    {
+        styleNames.add(b.getStyleName());
+    }
+    return styleNames;
+}
+
+public ArrayList<SectionRecord> getSectionRecords()
+{
+    return records;
+}
+
+public void setSectionRecords(ArrayList<SectionRecord> secRecords)
+{
+    records = secRecords;
+}
+
 }

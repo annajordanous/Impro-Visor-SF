@@ -468,6 +468,7 @@ public class GraphicBrick {
             
             name = RoadMapSettings.trimString(name,cutoff - x, metrics);
             name = RoadMapSettings.trimString(name,totalLength, metrics);
+            name += " "+block.getStyleName();
             
             g2d.setColor(settings.textColor);
             g2d.drawString(margin + name, x+2, y+blockHeight + fontOffset);
