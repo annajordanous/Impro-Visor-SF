@@ -462,6 +462,8 @@ private void initKeys()
         rangeLabelPanel = new javax.swing.JPanel();
         rangeLabel = new javax.swing.JLabel();
         warningLabel = new javax.swing.JLabel();
+        playPanel = new javax.swing.JPanel();
+        playButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new java.awt.GridBagLayout());
@@ -632,7 +634,6 @@ private void initKeys()
         getContentPane().add(rightFiller, gridBagConstraints);
 
         transformLine.setText("Generate Solo Over Line");
-        transformLine.setEnabled(false);
         transformLine.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 transformLineActionPerformed(evt);
@@ -1165,6 +1166,19 @@ private void initKeys()
         gridBagConstraints.gridy = 7;
         getContentPane().add(warningLabel, gridBagConstraints);
 
+        playButton.setText("Play");
+        playButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                playButtonActionPerformed(evt);
+            }
+        });
+        playPanel.add(playButton);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 11;
+        getContentPane().add(playPanel, gridBagConstraints);
+
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
@@ -1318,7 +1332,7 @@ private void initKeys()
         
         transformationPanel.applySubstitutionsToPart(currentMelody,
                                                      notate.getChordProg());
-        notate.playCurrentSelection(true, 
+        notate.playCurrentSelection(false, 
                                     0, 
                                     PlayScoreCommand.USEDRUMS, 
                                     "Transformed over guide tone line");
@@ -1461,6 +1475,20 @@ private void initKeys()
             setKeyboard(mod, midiValue);
         }
     }//GEN-LAST:event_keyboardLPMouseClicked
+
+    private void playButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playButtonActionPerformed
+        if(playButton.getText().equals("Play")){
+            notate.playCurrentSelection(true,
+                                        0,
+                                        PlayScoreCommand.USEDRUMS,
+                                        "Playing guide tone line");
+            playButton.setText("Stop");
+        }
+        else{
+            notate.stopPlaying();
+            playButton.setText("Play");
+        }
+    }//GEN-LAST:event_playButtonActionPerformed
 
     public void setKeyboard(String mod, int midiValue){
         
@@ -1697,6 +1725,8 @@ private void initKeys()
     private javax.swing.ButtonGroup numberOfLinesButtons;
     private javax.swing.JLabel numberOfLinesLabel;
     private javax.swing.JRadioButton oneLine;
+    private javax.swing.JButton playButton;
+    private javax.swing.JPanel playPanel;
     private javax.swing.JLabel pointerC4;
     private javax.swing.JRadioButton quarter;
     private javax.swing.JLabel rangeLabel;
