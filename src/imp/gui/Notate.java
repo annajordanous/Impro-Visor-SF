@@ -550,7 +550,7 @@ private MidiPlayListener.Status playingStatus = MidiPlayListener.Status.STOPPED;
 /**
  * latency measurement tool for the preferences dialog
  */
-private MidiLatencyMeasurementTool midiLatencyMeasurement;
+private MidiLatencyMeasurementTool midiLatencyMeasurement = new MidiLatencyMeasurementTool(this);
 /**
  * If playback indicator goes off the screen, autoscroll to show it again
  *
@@ -11433,6 +11433,8 @@ public void volumeSliderChanged(JSlider volumeSlider)
         preferencesDialog.setVisible(false);
 
         requestFocusInWindow();
+        //stop midi latency test
+        this.midiLatencyMeasurement.stop();
     }//GEN-LAST:event_cancelBtnActionPerformed
 
     private void savePrefsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_savePrefsBtnActionPerformed
@@ -14357,6 +14359,7 @@ private void savePrefs()
 
         requestFocusInWindow();
       }
+    this.midiLatencyMeasurement.stop();
   }
 
 
