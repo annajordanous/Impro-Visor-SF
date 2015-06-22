@@ -684,6 +684,10 @@ private void findNonterminal(int row, int col)
         }
 
         solution = PostProcessor.findLaunchers(solution);
+         for ( Block b : solution)
+        {
+            b.setStyleName(blocks.get(0).getStyleName());
+        }
         return solution;
     }
         

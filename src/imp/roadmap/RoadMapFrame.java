@@ -3966,25 +3966,44 @@ public void setParent(Notate notate)
      *
      * If the road map is empty, does nothing.
      */
+    int temp = 0; // to see how many times roadmap is opened
     public void playSelection() {
+        
         if (roadMapPanel.getNumBlocks() < 1)
           {
             return;
           }
         
         boolean nothingSelected = !roadMapPanel.hasSelection();
+        
         if (nothingSelected)
           {
             selectAllBricks();
           }
 
-        ChordPart chordPart = new ChordPart();
-        chordPart.setStyle(getStyle());
+        ArrayList<Block> blocks = roadMapPanel.getSelection();
+        
+        ChordPart chordPart = new ChordPart();        
+        chordPart.setSectionRecords(notate.getChordProg().getSectionRecords());
+        
+        if (temp == 0)
+        {
+        blocks = chordPart.setAllStyles(blocks); 
+        temp++;
+        }
+        chordPart.setAllStyleNames(chordPart.getAllStyleNames(blocks));
         chordPart.addFromRoadMapFrame(this);
+        
+        
+        
         
         Score score = new Score(chordPart);
         score.setMetre(getMetre());
         score.setTempo(getTempo());
+
+        
+        //SectionInfo si = chordPart.getSectionInfo();
+        // score.setSectionInfo(si);
         int volume = allVolumeToolBarSlider.getValue();
         
         score.setMasterVolume(volume); 
@@ -3995,10 +4014,12 @@ public void setParent(Notate notate)
         if( loopToggleButton.isSelected() )
           {
             notate.playAscore(score, style.getName(), -1);
+            
           }
         else
           {
             notate.playAscore(score, style.getName(), 0);
+            
           }
         
         if( nothingSelected )
@@ -4225,6 +4246,8 @@ public void analyzeInBackground(boolean showJoinsOnCompletion)
         setMetre(score.getMetre());
         setTempo((int)score.getTempo());
         setStyle(score.getStyle());
+        //ArrayList<Block> blocks = roadMapPanel.getSelection();        
+        //setStyleNames(score.getAllStyleNames(blocks));
         setBarsPerLine(score.getRoadmapLayout());
     }
 

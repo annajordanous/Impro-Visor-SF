@@ -584,7 +584,11 @@ protected void addBlocks(ArrayList<Block> blocks, Boolean selectBlocks)
               {
                 newBlocks.addAll(block.getSubBlocks());
               }
-            
+             for ( Block b : newBlocks )
+              {
+                b.setStyleName(blocks.get(0).getStyleName());
+              }
+                 
             replaceSelection(newBlocks);
         }       
     }

@@ -33,6 +33,7 @@ import static imp.Constants.GSHARP;
 import static imp.Constants.MAX_VOLUME;
 import static imp.Constants.NOCHORD;
 import imp.ImproVisor;
+import imp.brickdictionary.Block;
 import static imp.data.Score.DEFAULT_BARS_PER_LINE;
 import static imp.data.Score.DEFAULT_COMPOSER;
 import static imp.data.Score.DEFAULT_KEYSIG;
@@ -47,6 +48,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.ListIterator;
 import javax.sound.midi.InvalidMidiDataException;
@@ -1230,7 +1232,20 @@ public void addChord(Chord chord)
   }
 
 
+public ArrayList<String> getAllStyleNames (ArrayList<Block> blocks)
+{
+    return chordProg.getAllStyleNames(blocks);
+}
 
+public void setAllStyles(ArrayList<Block> blocks)
+{
+    chordProg.setAllStyles(blocks);
+}
+
+public void setSectionInfo(SectionInfo si)
+  {
+    chordProg.setSectionInfo(si);
+  }
 
 /**
  * Return first Note in melody, or null if there is no note
@@ -1251,4 +1266,9 @@ public Note getFirstNote()
 
     return null;  // TEMP!
   }
+
+public void setSectionRecords(ArrayList<SectionRecord> secRecords)
+{
+    chordProg.setSectionRecords(secRecords);
+}
 }
