@@ -118,25 +118,25 @@ public void pressKey(PianoKey keyPlayed)
 
     if (keyPlayed.isPressed()) 
     {
-        if (keyPlayed.isBass()) 
-        {
-            label.setIcon(rootIconOn);
-        }
-        else 
+        if (!keyPlayed.isBass()) 
         {
             label.setIcon(onIcon);
         }
+        //else 
+        //{
+        //    label.setIcon(onIcon);
+        //}
     }
     else if (!keyPlayed.isPressed()) 
     {
-        if (keyPlayed.isBass()) 
-        {
-            label.setIcon(rootIcon);
-        }
-        else 
+        if (!keyPlayed.isBass()) 
         {
             label.setIcon(offIcon);
         }
+        //else 
+        //{
+        //    label.setIcon(offIcon);
+        //}
     }
     forcePaint();
 }
@@ -259,6 +259,18 @@ private void initKeys()
     
     // 8th octave keys
     pkeys[87] = new PianoKey(108, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyC8);
+    
+    for(int i = 0; i < 24; ++i){
+        pkeys[i].setIsBass(true);
+        Icon rootOnIcon = pkeys[i].getBassOnIcon();
+        pkeys[i].getLabel().setIcon(rootOnIcon);
+}
+
+    for(int i = 76; i < 88; ++i){
+        pkeys[i].setIsBass(true);
+        Icon rootOnIcon = pkeys[i].getBassOnIcon();
+        pkeys[i].getLabel().setIcon(rootOnIcon);
+    }
 }
 
     public PianoKey[] pianoKeys() {
@@ -1190,7 +1202,6 @@ private void initKeys()
         MelodyPart guideToneLine = guideLine.makeGuideLine();
         notate.addChorus(guideToneLine);
         
-        transformLine.setEnabled(true);
         transformed = false;
     }//GEN-LAST:event_generateLineActionPerformed
 
@@ -1431,6 +1442,7 @@ private void initKeys()
         // Pressing the keys and playing the notes
         PianoKey keyPlayed = pianoKeys()[midiValue - A];
         
+        if((midiValue - A) > 23 && (midiValue - A) < 76){
             // if the key has been pressed, unpress it.
             if (keyPlayed.isPressed()) 
             {
@@ -1445,10 +1457,7 @@ private void initKeys()
                 keysPressed++;
                 pressKey(keyPlayed);
             }
-            
-            
-            
-            
+        }
     }
     
     /**
@@ -1509,6 +1518,9 @@ private void initKeys()
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(GuideToneLineDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the dialog */
