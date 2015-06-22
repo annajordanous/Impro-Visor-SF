@@ -9736,12 +9736,12 @@ private void turnStepInputOff()
 
             c.setExtension(extension);
 
-            if( !ChordPattern.goodVoicing(c, currentStyle) )
-              {
-                ErrorLog.log(ErrorLog.WARNING,
-                             "Voicing does not fit within range of leadsheet: " + voicing);
-                return;
-              }
+//            if( !ChordPattern.goodVoicing(c, currentStyle) )
+//              {
+//                ErrorLog.log(ErrorLog.WARNING,
+//                             "Voicing does not fit within range of leadsheet: " + voicing);
+//                return;
+//              }
 
             playVoicing(c);
 
@@ -19699,12 +19699,12 @@ public void populateChordSelMenu()
                 c.setVoicing(voicing);
                 c.setExtension(extension);
 
-                if( !ChordPattern.goodVoicing(c, currentStyle) )
-                  {
-                    ErrorLog.log(ErrorLog.WARNING,
-                                 "Voicing does not fit within range of leadsheet: " + voicing);
-                    return;
-                  }
+//                if( !ChordPattern.goodVoicing(c, currentStyle) )
+//                  {
+//                    ErrorLog.log(ErrorLog.WARNING,
+//                                 "Voicing does not fit within range of leadsheet: " + voicing);
+//                    return;
+//                  }
 
                 playVoicing(c);
                 insertVoicing(c, index);
