@@ -22,8 +22,11 @@ package imp.gui;
 
 import imp.Constants;
 import imp.com.PlayScoreCommand;
+import imp.data.Chord;
 import imp.data.GuideLineGenerator;
 import imp.data.MelodyPart;
+import imp.data.Note;
+import imp.data.NoteSymbol;
 import java.util.Enumeration;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
@@ -32,6 +35,8 @@ import imp.data.PianoKey;
 import java.awt.Color;
 import javax.swing.Icon;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+import polya.Polylist;
 
 /**
  * Display that lets the user control the options for generating a guide 
@@ -295,13 +300,13 @@ private void initKeys()
     public GuideToneLineDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         this.setTitle("Generate Guide Tone Line");
-        this.setResizable(false);
+        this.setResizable(true);
         notate = (Notate)this.getParent();
         transformationPanel = notate.lickgenFrame.getTransformPanel();
         initComponents();
         initKeys();
         enableButtons(lineTypeButtons, false);
-        
+        updateButtons();
         clearKeyboard();
         
         lowKey = pkeys[C4-A];
@@ -343,13 +348,6 @@ private void initKeys()
         ascending = new javax.swing.JRadioButton();
         scaleDegPanel = new javax.swing.JPanel();
         scaleDegLabel = new javax.swing.JLabel();
-        deg1 = new javax.swing.JRadioButton();
-        deg2 = new javax.swing.JRadioButton();
-        deg3 = new javax.swing.JRadioButton();
-        deg4 = new javax.swing.JRadioButton();
-        deg5 = new javax.swing.JRadioButton();
-        deg6 = new javax.swing.JRadioButton();
-        deg7 = new javax.swing.JRadioButton();
         buttonPanel = new javax.swing.JPanel();
         generateLine = new javax.swing.JButton();
         leftFiller = new javax.swing.Box.Filler(new java.awt.Dimension(20, 20), new java.awt.Dimension(20, 20), new java.awt.Dimension(20, 20));
@@ -470,6 +468,8 @@ private void initKeys()
         allowColorBox = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(1150, 500));
+        setPreferredSize(new java.awt.Dimension(1150, 500));
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         linesPanel.setLayout(new java.awt.GridBagLayout());
@@ -555,56 +555,6 @@ private void initKeys()
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         scaleDegPanel.add(scaleDegLabel, gridBagConstraints);
-
-        scaleDegreeButtons.add(deg1);
-        deg1.setText("1");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        scaleDegPanel.add(deg1, gridBagConstraints);
-
-        scaleDegreeButtons.add(deg2);
-        deg2.setText("2");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 0;
-        scaleDegPanel.add(deg2, gridBagConstraints);
-
-        scaleDegreeButtons.add(deg3);
-        deg3.setSelected(true);
-        deg3.setText("3");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 0;
-        scaleDegPanel.add(deg3, gridBagConstraints);
-
-        scaleDegreeButtons.add(deg4);
-        deg4.setText("4");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 0;
-        scaleDegPanel.add(deg4, gridBagConstraints);
-
-        scaleDegreeButtons.add(deg5);
-        deg5.setText("5");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 5;
-        gridBagConstraints.gridy = 0;
-        scaleDegPanel.add(deg5, gridBagConstraints);
-
-        scaleDegreeButtons.add(deg6);
-        deg6.setText("6");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 6;
-        gridBagConstraints.gridy = 0;
-        scaleDegPanel.add(deg6, gridBagConstraints);
-
-        scaleDegreeButtons.add(deg7);
-        deg7.setText("7");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 7;
-        gridBagConstraints.gridy = 0;
-        scaleDegPanel.add(deg7, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -1297,6 +1247,29 @@ private void initKeys()
             return THREE_SEVEN; // default, shouldn't happen
         }
     }
+    public void updateButtons(){
+        setButtonText(scaleDegreeButtons, scaleDegPanel);
+    }
+    private void setButtonText(ButtonGroup group, JPanel panel){
+        panel.removeAll();
+        panel.add(scaleDegLabel);
+        Chord firstChord = notate.getChordProg().getChord(0);
+        Polylist chordSpell = firstChord.getSpell();
+        if(chordSpell==null){
+            return;
+        }
+        while(!chordSpell.isEmpty()){
+            Note nextNote = ((NoteSymbol)chordSpell.first()).toNote();
+            Polylist relPitch = nextNote.toRelativePitch(firstChord);
+            String degree = (String)relPitch.second();
+            chordSpell = chordSpell.rest();
+            JRadioButton b = new JRadioButton(degree);
+            panel.add(b);
+            group.add(b);
+            b.setSelected(true);
+        }
+        
+    }
     
     private void twoLinesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_twoLinesActionPerformed
         enableButtons(scaleDegreeButtons, false);
@@ -1618,13 +1591,6 @@ private void initKeys()
     private javax.swing.JRadioButton ascending;
     private javax.swing.Box.Filler bottomFiller;
     private javax.swing.JPanel buttonPanel;
-    private javax.swing.JRadioButton deg1;
-    private javax.swing.JRadioButton deg2;
-    private javax.swing.JRadioButton deg3;
-    private javax.swing.JRadioButton deg4;
-    private javax.swing.JRadioButton deg5;
-    private javax.swing.JRadioButton deg6;
-    private javax.swing.JRadioButton deg7;
     private javax.swing.JRadioButton descending;
     private javax.swing.ButtonGroup directionButtons;
     private javax.swing.JLabel directionLabel;
