@@ -129,13 +129,25 @@ public class GuideLineGenerator implements Constants {
     private static final int BELOW_RANGE = -1;
     private static final int ABOVE_RANGE = 1;
     
-    //Array that contains scores. Low scores are good.
-    private static final int[][] scores = 
-    //  -2 -1  0  1  2          //Directional Distance
-    {   {1, 2, 3, 4, 5},        //DESCENDING
-        {5, 3, 1, 3, 5},        //NOPREFERENCE
-        {5, 4, 3, 2, 1}     };  //ASCENDING
+    private static final int SAME_NOTE = 0;
+    private static final int HALF_STEP = 1;
+    private static final int WHOLE_STEP = 2;
+    private static final int MINOR_THIRD = 3;
+    private static final int MAJOR_THIRD = 4;
+    private static final int BIG_INTERVAL = 3;
     
+    private final boolean allowColor;
+    
+    //a score for each of the 11 distances
+    private static final int scores[] = {1, 1, 1, 2, 2, 3, 3, 3, 3, 3, 3, 3};
+    
+    //Array that contains scores. Low scores are good.
+//    private static final int[][] scores = 
+//    //  -2 -1  0  1  2          //Directional Distance
+//    {   {1, 2, 3, 4, 5},        //DESCENDING
+//        {5, 3, 1, 3, 5},        //NOPREFERENCE
+//        {5, 4, 3, 2, 1}     };  //ASCENDING
+//    
     //in all the below, no preference uses 5 3 1 3 5 instead of 3 2 1 2 3
     
     //One line, descending, quarter notes, low limit b-4, aint misbehavin:
@@ -196,7 +208,7 @@ public class GuideLineGenerator implements Constants {
      * @param maxDuration maxDuration of any note, 0 or less if not specified
      * @param lineType the type of line (i.e. 3-7, 5-9, etc)
      */
-    public GuideLineGenerator(ChordPart inputChordPart, int direction, String startDegree, boolean alternating, int lowLimit, int highLimit, int maxDuration, int lineType) 
+    public GuideLineGenerator(ChordPart inputChordPart, int direction, String startDegree, boolean alternating, int lowLimit, int highLimit, int maxDuration, int lineType, boolean allowColor) 
     {
         chordPart = inputChordPart;
         this.originalDirection = direction;
@@ -217,6 +229,7 @@ public class GuideLineGenerator implements Constants {
         //pass in 0 or less to signify no duration specified
         durationSpecified = maxDuration>0;
         
+        this.allowColor = allowColor;
         
         if(lineType==THREE_SEVEN){
             startDegree1 = THREE; startDegree2 = SEVEN;
@@ -237,13 +250,21 @@ public class GuideLineGenerator implements Constants {
      * @param duration duration that these notes are to have
      * @return ArrayList of chord tones - note: default pitches used
      */
-    private static ArrayList<Note> chordTones(Chord chord, int duration){
+    private ArrayList<Note> chordTones(Chord chord, int duration){
         PolylistEnum noteList = chord.getSpell().elements();
         ArrayList<Note> chordTones = new ArrayList<Note>();
         while(noteList.hasMoreElements()){
             Note note = ((NoteSymbol)noteList.nextElement()).toNote();
             note.setRhythmValue(duration);
             chordTones.add(note);
+        }
+        if(allowColor){
+            PolylistEnum colorList = chord.getColor().elements();
+            while(colorList.hasMoreElements()){
+                Note note = ((NoteSymbol)colorList.nextElement()).toNote();
+                note.setRhythmValue(duration);
+                chordTones.add(note);
+            }
         }
         return chordTones;
     }
@@ -255,11 +276,11 @@ public class GuideLineGenerator implements Constants {
      * @param duration
      * @return 
      */
-    private ArrayList<Note> closestChordTones(Chord chord, Note prev, int duration){
+    private ArrayList<Note> closestChordTones(Chord chord, Note prev, int duration, int line){
         ArrayList<Note> chordTones = chordTones(chord, duration);
         ArrayList<Note> closestChordTones = new ArrayList<Note>();
         for(Note note : chordTones){
-            note = getClosest(prev, note);
+            note = getClosest(prev, note, line);
             closestChordTones.add(note);
         }
         return closestChordTones;
@@ -277,7 +298,7 @@ public class GuideLineGenerator implements Constants {
      * @param next a note that we're trying to change to be closer to prev
      * @return a note with the same pitch class and rhythm value as next that is closest to prev
      */
-    private Note getClosest(Note prev, Note next){
+    private Note getClosest(Note prev, Note next, int line){
         
         int prevPitch = prev.getPitch();
         
@@ -309,12 +330,29 @@ public class GuideLineGenerator implements Constants {
             }
         }else{
             //tritone - tiebreak, go up for now - fix
-            pitch+=OCTAVE/2;
+            int lineDirection = getDirection(line);
+            if(lineDirection==ASCENDING){
+                pitch+=dist1;
+            }else if(lineDirection==DESCENDING){
+                pitch-=dist1;
+            }else{
+                pitch+=dist1;//ARBITRARY TIE BREAK
+            }
+            
         }
         
         //temporary fix - shouldn't happen unless guide tone line goes way out of range
         if(pitch<0){
             pitch = prevPitch;
+        }
+        //makes range limits hard as opposed to soft
+        int inRange = inRange(pitch);
+        if(inRange!=IN_RANGE){
+            if(inRange==ABOVE_RANGE){
+                pitch-=OCTAVE;
+            }else{
+                pitch+=OCTAVE;
+            }
         }
         return new Note(pitch, next.getRhythmValue());
     }
@@ -360,7 +398,7 @@ public class GuideLineGenerator implements Constants {
         }if(prev.isRest()){
             return firstNote(chord, getStartDegree(line), line, duration);
         }
-        return bestNote(prev, closestChordTones(chord, prev, duration), chord, line, disallowSame);
+        return bestNote(prev, closestChordTones(chord, prev, duration, line), chord, line, disallowSame);
     }
     
     private String getStartDegree(int line){
@@ -403,16 +441,21 @@ public class GuideLineGenerator implements Constants {
      * @return score based on distance - lower score means better/closer
      */
     private int distanceScore(Note prev, Note next, boolean disallowSame){
+        int score;
+        
         int dist = dist(prev, next);
-        if(dist==0){//same
-            return disallowSame?Integer.MAX_VALUE:0;
-        }else if(dist<=2){//half or whole step
-            return 1;
-        }else if(dist<=4){//minor or major third
-            return 2;
-        }else{//large interval
-            return 3;
+        int lastIndex = scores.length-1;
+        
+        if(dist<=lastIndex&&dist>=0){//avoid array index out of bounds exception
+            if(dist==SAME_NOTE){
+                score = disallowSame?Integer.MAX_VALUE:scores[dist];//this score depends on disallowSame
+            }else{
+                score = scores[dist]; 
+            }
+        }else{//if exception, use last score in array
+            score = scores[lastIndex];
         }
+        return score;
     }
     
     private int priorityScore(Note next, Chord chord){
@@ -430,7 +473,11 @@ public class GuideLineGenerator implements Constants {
     }
     
     private int dist(Note n1, Note n2){
-        return Math.abs(n1.getPitch()-n2.getPitch());
+        return dist(n1.getPitch(), n2.getPitch());
+    }
+    
+    private int dist(int n1, int n2){
+        return Math.abs(n1-n2);
     }
     
     /**
@@ -701,15 +748,8 @@ public class GuideLineGenerator implements Constants {
      * @param line Line whose direction could be switched
      */
     public void possibleDirectionSwitch(Note n, int line){
-        int newDirection = NOCHANGE;
-        int inRange = inRange(n.getPitch(), lowLimit, highLimit);
-        if(inRange!=IN_RANGE){
-            if(inRange==BELOW_RANGE){
-                newDirection = ASCENDING;
-            }else if(inRange==ABOVE_RANGE){
-                newDirection = DESCENDING;
-            }
-        }
+        int newDirection = newDirection(n);
+        
         if(newDirection!=NOCHANGE){
             if(line==ONLY_LINE){
                 direction = newDirection;
@@ -721,6 +761,19 @@ public class GuideLineGenerator implements Constants {
         }
     }
     
+    private int newDirection(Note n){
+        int newDirection;
+        int pitch = n.getPitch();
+        if(dist(pitch, lowLimit)<=HALF_STEP){
+            newDirection = ASCENDING;
+        }else if(dist(pitch, highLimit)<=HALF_STEP){
+            newDirection = DESCENDING;
+        }else{
+            newDirection = NOCHANGE;
+        }
+        return newDirection;
+    }
+    
     /**
      * returns whether or not a number lies in a given range
      * @param n number to test
@@ -728,11 +781,11 @@ public class GuideLineGenerator implements Constants {
      * @param high high end of range
      * @return 1 if n is above the range, -1 if below, 0 if within
      */
-    private static int inRange(int n, int low, int high){
+    private int inRange(int n){
         int toreturn = IN_RANGE;
-        if(n>=high){
+        if(n>highLimit){
             toreturn = ABOVE_RANGE;
-        }else if(n<=low){
+        }else if(n<lowLimit){
             toreturn = BELOW_RANGE;
         }
         return toreturn;
@@ -1252,9 +1305,9 @@ public class GuideLineGenerator implements Constants {
         int lineDirection = getDirection(line);
         
         int closestBelow = closestBelowMiddle(n);
-        boolean belowInRange = inRange(closestBelow, lowLimit, highLimit)==IN_RANGE;
+        boolean belowInRange = inRange(closestBelow)==IN_RANGE;
         int closestAbove = closestAboveMiddle(n);
-        boolean aboveInRange = inRange(closestAbove, lowLimit, highLimit)==IN_RANGE;
+        boolean aboveInRange = inRange(closestAbove)==IN_RANGE;
         
         int pitch;
         if(lineDirection == ASCENDING){
