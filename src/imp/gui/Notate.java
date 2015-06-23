@@ -80,7 +80,7 @@ public class Notate
         extends javax.swing.JFrame
         implements Constants, MidiPlayListener
 {
-public static GuideToneLineDialog guideToneLineDialog;
+public GuideToneLineDialog guideToneLineDialog;
 public static int midiImportXoffset = 200;
 public static int midiImportYoffset = 200;
 public static final int HELP_DIALOG_WIDTH = 980;
@@ -517,6 +517,10 @@ private SourceEditorDialog grammarEditor = null;
 ;
 
   private StyleEditor styleEditor = null;
+
+    private void setGuideToneLineDialog(GuideToneLineDialog guideToneLineDialog) {
+        this.guideToneLineDialog = guideToneLineDialog;
+    }
 
 /**
  * Various input mode names
@@ -18311,7 +18315,7 @@ public void openLeadsheet(boolean openCorpus)
                                this.impro,
                                getNewXlocation(),
                                getNewYlocation());
-
+            newNotate.setGuideToneLineDialog(new GuideToneLineDialog(newNotate, false));
             newNotate.makeVisible(this);
           }
         else
@@ -18401,6 +18405,9 @@ public void openLeadsheet(boolean openCorpus)
             // creset the command manager
 
             cmReset();
+            
+            
+            
           }
 
         setChordFontSizeSpinner(score.getChordFontSize());
@@ -18488,6 +18495,12 @@ public boolean setupLeadsheet(File file, boolean openCorpus)
     updatePhiAndDelta(phi, delta);
 
     staveRequestFocus();
+    
+    boolean visible = guideToneLineDialog.isVisible();
+    guideToneLineDialog.setVisible(false);
+    guideToneLineDialog.updateButtons();
+    guideToneLineDialog.setVisible(visible);
+    
     return true;
   }
 
@@ -22598,6 +22611,8 @@ int quantizeResolution = 60;
     private void guideToneLineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guideToneLineActionPerformed
         //Create dialog box with guide tone line options
         //false means not modal, i.e. the user is allowed to click back and forth between the main window and the dialog box
+        guideToneLineDialog.setVisible(false);
+        guideToneLineDialog.updateButtons();
         guideToneLineDialog.setVisible(true);
     }//GEN-LAST:event_guideToneLineActionPerformed
 

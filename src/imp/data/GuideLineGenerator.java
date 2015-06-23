@@ -97,10 +97,7 @@ public class GuideLineGenerator implements Constants {
     //Strings representing sharp and flat
     //private final String SHARP = "#";
     //private final String FLAT = "b";
-    
-    //Options
-    private final Integer change = 1;
-    private final Integer nochange = 0;
+   
 
     //Which scale degree to start on
     private final String startDegree;
@@ -129,17 +126,31 @@ public class GuideLineGenerator implements Constants {
     private static final int BELOW_RANGE = -1;
     private static final int ABOVE_RANGE = 1;
     
+    //intervals
     private static final int SAME_NOTE = 0;
     private static final int HALF_STEP = 1;
     private static final int WHOLE_STEP = 2;
     private static final int MINOR_THIRD = 3;
     private static final int MAJOR_THIRD = 4;
-    private static final int BIG_INTERVAL = 3;
+    private static final int TRITONE = 5;
     
     private final boolean allowColor;
     
-    //a score for each of the 11 distances
-    private static final int scores[] = {1, 1, 1, 2, 2, 3, 3, 3, 3, 3, 3, 3};
+    //a score for each of the 6 possbile distances (same note through tritone)
+    private static final int distanceScores[] = 
+    //  same note   half step   whole step  minor 3rd   major 3rd   tritone
+    {   1,          1,          1,          2,          2,          3};
+    
+    private static final int directionScores[][] = 
+    //  down    same    up
+    {   {0,     0,      1},         //DESCENDING
+        {0,     0,      0},         //NOPREFERENCE
+        {1,     0,      0}};        //ASCENDING
+    
+    private static final int colorScores[] =
+    //  SEMITONES ABOVE ROOT
+    //  0   1   2   3   4   5   6   7   8   9   10  11
+    {   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0};
     
     //Array that contains scores. Low scores are good.
 //    private static final int[][] scores = 
@@ -430,15 +441,9 @@ public class GuideLineGenerator implements Constants {
      * In the case of no preference, returns 0 for anything.
      */
     private int directionScore(Note prev, Note next, int line){
-        int lineDirection = getDirection(line);
-        int compare = compareTo(next.getPitch(), prev.getPitch());
-        if(lineDirection==ASCENDING){
-            return compare>=SAME?0:1;
-        }else if(lineDirection==DESCENDING){
-            return compare<=SAME?0:1;
-        }else{
-            return 0;//direction doesn't matter
-        }
+        int index1 = getDirection(line)+1;
+        int index2 = compareTo(next.getPitch(), prev.getPitch())+1;
+        return directionScores[index1][index2];
     }
     
     /**
@@ -449,18 +454,17 @@ public class GuideLineGenerator implements Constants {
      */
     private int distanceScore(Note prev, Note next, boolean disallowSame){
         int score;
-        
         int dist = dist(prev, next);
-        int lastIndex = scores.length-1;
+        int lastIndex = distanceScores.length-1;
         
         if(dist<=lastIndex&&dist>=0){//avoid array index out of bounds exception
             if(dist==SAME_NOTE){
-                score = disallowSame?Integer.MAX_VALUE:scores[dist];//this score depends on disallowSame
+                score = disallowSame?Integer.MAX_VALUE:distanceScores[dist];//this score depends on disallowSame
             }else{
-                score = scores[dist]; 
+                score = distanceScores[dist]; 
             }
         }else{//if exception, use last score in array
-            score = scores[lastIndex];
+            score = distanceScores[lastIndex];
         }
         return score;
     }
@@ -533,36 +537,7 @@ public class GuideLineGenerator implements Constants {
         durations.add(durationRemaining);
         return durations;
     }
-    
-    /**
-     * Splits up a note (or rest) into a list of notes so that no note (or rest)
-     * has a duration greater than maxDuration
-     * all notes in the list have the same pitch value as the note passed in
-     * @param n the note to be split up
-     * @return list of notes or rests split up using maxDuration
-     */
-//    private ArrayList<Note> splitUpNote(Note n){
-//
-//        int pitch = n.getPitch();
-//        ArrayList<Note> notes = new ArrayList<Note>();
-//        int durationRemaining;
-//        for(durationRemaining = n.getRhythmValue(); durationRemaining > maxDuration; durationRemaining -= maxDuration){
-//            if(!(pitch==REST)){
-//                notes.add(new Note(pitch, maxDuration));
-//            }else{
-//                notes.add(new Note(pitch, Accidental.NOTHING, maxDuration));
-//            }
-//           
-//        }
-//        if(!(pitch==REST)){
-//           notes.add(new Note(pitch, durationRemaining)); 
-//        }else{
-//            notes.add(new Note(pitch, Accidental.NOTHING, durationRemaining));
-//        }
-//        
-//        return notes;
-//    }
-//    
+
     private ArrayList<Note> notesToAdd(Note note, Chord chord, int line){
         ArrayList<Note> notesToAdd = new ArrayList<Note>();
         ArrayList<Integer> durations = splitUp(note.getRhythmValue());
@@ -579,82 +554,7 @@ public class GuideLineGenerator implements Constants {
         }
         return notesToAdd;
     }
-    
-    /**
-     * Generates a list of notes to add from a note to be split up and a chord
-     * Splits up note into list of notes of the same pitch
-     * Avoids repeated notes by first only allowing chord tones but making
-     * repeated notes have really bad scores, then by resorting to color tones
-     * Possibly switches direction of guide tone line at addition of each note
-     * @param note note to be converted to an ArrayList of notes
-     * @param c the chord that the notes are to be played over
-     * @return an ArrayList of notes to be played over the chord generated
-     * using the nextNote method disallowing same notes
-     * 
-     */
-//    private ArrayList<Note> notesToAdd(Note note, Chord c, int line){
-//        
-//        ArrayList<Note> notes = splitUpNote(note);
-//        ArrayList<Note> notesToAdd = new ArrayList<Note>();
-//        
-//        Note prevNote = notes.remove(0);
-//        
-//        notesToAdd.add(prevNote);
-//        possibleDirectionSwitch(prevNote, line);
-//        for(Note n: notes){
-//            
-//            //find next chord tone, making same notes have really bad scores
-//            Note noteToAdd = nextNote(prevNote, c, DISALLOW_SAME, CHORD_TONE, null, line);
-//            
-//            //If the note is still the same, find the "best" color tone
-//            if(noteToAdd.getPitch()==prevNote.getPitch()){
-//                //recalculate noteToAdd, allowing color tones
-//                noteToAdd = nextNote(prevNote, c, DISALLOW_SAME, COLOR_TONE, null, line);
-//            }
-//            
-//            //set note's rhythm value
-//            noteToAdd.setRhythmValue(n.getRhythmValue());
-//            //add note, possibly switching direction of line
-//            notesToAdd.add(noteToAdd);
-//            possibleDirectionSwitch(noteToAdd, line);
-//            //store note as prevNote
-//            prevNote = noteToAdd;
-//        }
-//        
-//        //post-processing: if notesToAdd has a multiple of 4 notes in it
-//        //make sure it doesn't do back-and-forth motion by correcting the 3rd note
-//        //by disallowing its original pitch and the same note as the previous pitch
-//        if(notesToAdd.size()>4){
-//            for(int i = 0; i+4<notesToAdd.size(); i+=4){
-//                //if first and third note of phrase are the same, you'll have back and forth motion because it's deterministic
-//                if(notesToAdd.get(i).getPitch()==notesToAdd.get(i+2).getPitch()){
-//                    
-//                    //find next chord tone, making same notes have really bad scores AND its original pitch have a really bad score
-//                    Note noteToAdd = nextNote(notesToAdd.get(i+1), c, DISALLOW_SAME, CHORD_TONE, notesToAdd.get(i+2), line);
-//
-//                    //If the note is still the same OR its original pitch, find the "best" color tone
-//                    if(noteToAdd.getPitch()==notesToAdd.get(i+1).getPitch()||noteToAdd.getPitch()==notesToAdd.get(i+2).getPitch()){
-//                        //recalculate noteToAdd, allowing color tones
-//                        noteToAdd = nextNote(notesToAdd.get(i+1), c, DISALLOW_SAME, COLOR_TONE, notesToAdd.get(i+2), line);
-//                    }
-//                    
-//                    //set note's rhythm value
-//                    noteToAdd.setRhythmValue(notesToAdd.get(i+2).getRhythmValue());
-//                    //remove bad note
-//                    notesToAdd.remove(i+2);
-//                    //add note to place where it was removed from
-//                    notesToAdd.add(i+2, noteToAdd);
-//                    //possibleDirectionSwitch(noteToAdd);
-//                    
-//                }
-//            }
-//        }
-//        
-//        return notesToAdd;
-//    }
-    
-   
-    
+ 
     /**
      * Returns last Note in ArrayList of Notes
      * @param notes ArrayList of Notes
@@ -952,95 +852,7 @@ public class GuideLineGenerator implements Constants {
         first = closestToMiddle(first, chord, line);//uses duration of first
         return first;
     }
-    
-    /**
-     * Generates the next note in the sequence
-     * @param n The last note chosen for the array part
-     * @param c The next chord in the chord part
-     * @return The next note to be used in the guide tone line
-     */
-//    private Note nextNote(Note n, Chord c, boolean disallowSame, int chordOrColor, Note notThisOne, int line)
-//    { 
-//        if(c.isNOCHORD()){
-//            return new Note(REST, Accidental.NOTHING, c.getRhythmValue());
-//        }
-//        if(n.isRest()){
-//            return firstNote(c, startDegree, line);
-//        }else{
-//            ArrayList<Note> possibleNotes = possibleNotes(n,c, chordOrColor);
-//            return bestNote(n, c, possibleNotes, disallowSame, notThisOne, line); 
-//        }
-//        
-//    }
-    
-    /**
-     * Uses scoring to determine the note that will fit best with the previous
-     * note and the current chord
-     * @param n The previous note in the guide tone line
-     * @param c The next chord in the progression
-     * @param possibleNotes The notes in the chord that are available to 
-     * travel to
-     * @return The note with the best score to fit in the guide tone line
-     */
-//    private Note bestNote(Note n, Chord c, ArrayList<Note> possibleNotes, boolean disallowSame, Note notThisOne, int line)
-//    {
-//        //if there are not possible notes
-//        if(possibleNotes.isEmpty()){
-//            //go through all the options, from best to worst
-//            possibleNotes = possibleNotes(n, c, CHORD_TONE);
-//            if(possibleNotes.isEmpty()){
-//                possibleNotes = possibleNotes(n, c, COLOR_TONE);
-//                if(possibleNotes.isEmpty()){
-//                    possibleNotes = possibleNotes(n, c, APPROACH_TONE);
-//                    if(possibleNotes.isEmpty()){
-//                        return firstNote(c, startDegree, line, c.getRhythmValue());
-//                    }else{
-//                        return bestNote(n, c, possibleNotes, disallowSame, notThisOne, line);
-//                    }
-//                }else{
-//                    return bestNote(n, c, possibleNotes, disallowSame, notThisOne, line);
-//                }
-//            }else{
-//                return bestNote(n, c, possibleNotes, disallowSame, notThisOne, line);
-//            }
-//        }
-//        else{
-//            
-//            Note bestNote = possibleNotes.remove(0);
-//            
-//            //initialize minScore
-//            double minScore = score(n, c, bestNote, disallowSame, notThisOne, line);
-//            
-//            //possible notes iterated through in order of low to high pitch
-//            for(Note currNote : possibleNotes){
-//                double currScore = score(n, c, currNote, disallowSame, notThisOne, line);
-//                
-//                //IMPLICIT TIE BREAK, could be <=
-//                //<= prefers higher notes, < prefers lower notes
-//                if(currScore<=minScore){
-//                    if(currScore==minScore){
-//                        minScore = currScore;
-//                        bestNote = currNote;
-//                        /*
-//                        System.out.println("Tie break: Coming from: "+n.getPitchClassName()+"; Going to: Old Best ("+bestNote.getPitchClassName()+") or New Best ("+currNote.getPitchClassName()+")\n");
-//                        //tiebreak - favors higher notes
-//                        if(tiebreak()){
-//                            minScore = currScore;
-//                            bestNote = currNote;
-//                        }
-//                        */
-//                    }else{
-//                        //no tie break neccessary - replace old minScore
-//                        minScore = currScore;
-//                        bestNote = currNote; 
-//                    }
-//                    
-//                }
-//            }
-//            return bestNote;
-//        }
-//    }
-    
+
 //    private boolean tiebreak(){
 //        ArrayList<Integer> options = new ArrayList<Integer>();
 //        options.add(change);
@@ -1049,38 +861,7 @@ public class GuideLineGenerator implements Constants {
 //        Integer choice = options.get(0);
 //        return choice.equals(change);
 //    }
-    
-    /**
-     * Gives a score for a note based on its distance from the previous note
-     * and which scale degree it is relative to the chord
-     * @param prev the last note in the guide tone line
-     * @param c the chord the note is chosen from
-     * @param note the note being scored
-     * @return The relative score of the note, lower means it is a better fit
-     */
-//    private double score(Note prev, Chord c, Note note, boolean disallowSame, Note notThisOne, int line){
-//        
-//        //if note is the same as the previous note and disallowSame, 
-//        //return really high (bad) score
-//        if(prev.getPitch()==note.getPitch()&&disallowSame){
-//            return Double.MAX_VALUE;
-//        }
-//        if(notThisOne!=null&&note.getPitch()==notThisOne.getPitch()){
-//            return Double.MAX_VALUE;
-//        }
-//        //initialize score to 0
-//        double score = 0;
-//        
-//        //color
-//        //score+=colorScore2(c, note);
-//        
-//        //distance
-//        score+=distanceScore(prev, note, line);
-//        
-//        //final score
-//        return score;
-//    }
-//   
+
     /**
      * Scores a note based on how colorful it is in the chord
      * @param c the chord
