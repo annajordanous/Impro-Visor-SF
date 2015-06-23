@@ -1715,6 +1715,9 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Allow Color Tones"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="allowColorBoxActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
