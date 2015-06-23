@@ -1116,6 +1116,7 @@ public void setTableColumnWidths()
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 40);
         getContentPane().add(jLabel4, gridBagConstraints);
 
+        trans1ComboBox.setToolTipText("");
         trans1ComboBox.addItem("Transpose");
         trans1ComboBox.addItem("Invert");
         trans1ComboBox.addItem("Reverse");
@@ -2085,6 +2086,7 @@ private double probBarLineShift = 0.5;
 private double probForwardShift = 0.5;
 private boolean barLineShiftForward = false;
 private int shiftForwardBy = 60;
+private final int shiftForwardByFinal = 60;
 private double leapProb = 0.2;
 private boolean avoidRepeats = true;
 private LickGen lickgen;
@@ -3625,7 +3627,9 @@ private MelodyPart sideslip(MelodyPart melody, int length)
     //System.out.println(probBarLineShift + " : " + probForwardShift);
     if (Notate.bernoulli(probBarLineShift))
     {//decide whether to go forward or backward
-        
+        shiftForwardBy = shiftForwardByFinal;
+        int numBeats = random.nextInt(2) + 1;
+        shiftForwardBy *= numBeats;
         if (Notate.bernoulli(probForwardShift))
         {//shift forward
             MelodyPart addRest = new MelodyPart(shiftForwardBy+sideslippedMelody.getSize());
