@@ -23,6 +23,7 @@ import imp.Constants;
 import static imp.Constants.REST;
 import imp.data.Chord;
 import imp.data.ChordPart;
+import imp.data.GuideLineGenerator;
 import imp.data.MelodyPart;
 import imp.data.Note;
 import imp.data.NoteSymbol;
@@ -32,6 +33,7 @@ import imp.gui.Notate;
 import imp.util.ErrorLog;
 import java.util.ArrayList;
 import polya.Polylist;
+import polya.PolylistEnum;
 
 /**
  *
@@ -135,15 +137,25 @@ public class NoteConverter {
      * @return Note corresponding to the given scale degree, null if degree not in chord's scale
      */
     public static Note scaleDegreeToNote(String degree, Chord chord, int octave, int rhythmValue){
+        if(chord.isNOCHORD()){
+            return new Note(REST, Constants.Accidental.NOTHING, rhythmValue);//Chord is NC, return rest
+        }
         PitchClass pc = scaleDegreeToPitchClass(degree, chord);
         if(pc!=null){
             NoteSymbol ns = new NoteSymbol(pc, octave, rhythmValue);
             int midi = ns.getMIDI();
             return new Note(midi, rhythmValue);
-        }else{
-            return new Note(REST, Constants.Accidental.NOTHING, rhythmValue);//Chord is NC, return rest
+        }else{//scale degree could not be found in chord's scale or chord does not have an associated scale
+            return highestPriority(chord, rhythmValue);
         }
         
+    }
+    
+    public static Note highestPriority(Chord chord, int duration){
+        PolylistEnum priorityList = chord.getPriority().elements();
+        Note highestPriority = ((NoteSymbol)priorityList.nextElement()).toNote();
+        highestPriority.setRhythmValue(duration);
+        return highestPriority;
     }
     
     /**
@@ -163,14 +175,17 @@ public class NoteConverter {
                 if(semitonesAboveRoot!=-1){
                     return PitchClass.transpose(rootPc, semitonesAboveRoot);
                 }else{
-                    return rootPc; //scale degree not in the scale associated with that chord, return pitch class of root of chord
+                    //scale degree not in the scale associated with that chord, return null
+                    return null; 
                 }
             }else{
-                return rootPc;//chord family does not have an associated scale, return root of chord
+                //chord family does not have an associated scale, return null
+                return null;
             }
         }
         else{
-            return null;//Chord is NC - return null. There is no PitchClass representing a rest, only a pitchClassName, "r", and a pitch, REST (-1)
+            //Chord is NC - return null. There is no PitchClass representing a rest, only a pitchClassName, "r", and a pitch, REST (-1)
+            return null;
         }
     }
     

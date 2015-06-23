@@ -151,63 +151,7 @@ public class GuideLineGenerator implements Constants {
     //  SEMITONES ABOVE ROOT
     //  0   1   2   3   4   5   6   7   8   9   10  11
     {   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0};
-    
-    //Array that contains scores. Low scores are good.
-//    private static final int[][] scores = 
-//    //  -2 -1  0  1  2          //Directional Distance
-//    {   {1, 2, 3, 4, 5},        //DESCENDING
-//        {5, 3, 1, 3, 5},        //NOPREFERENCE
-//        {5, 4, 3, 2, 1}     };  //ASCENDING
-//    
-    //in all the below, no preference uses 5 3 1 3 5 instead of 3 2 1 2 3
-    
-    //One line, descending, quarter notes, low limit b-4, aint misbehavin:
-    //scores1 (w>h>s) and scores4 (w>s>h) act similarly (BAD)
-    //scores2 (h>w>s) and scores3 (s>h>w) and scores5 (h>s>w) act similarly
-    //scores6 seems pretty unique (s>w>h) (BAD)
-    
-    //whole>half>same
-    private static final int[][] scores1 = 
-    //  -2 -1  0  1  2          //Directional Distance
-    {   {1, 2, 3, 4, 5},        //DESCENDING
-        {5, 3, 1, 3, 5},        //NOPREFERENCE
-        {5, 4, 3, 2, 1}     };  //ASCENDING
-    
-    //half>whole>same
-    private static final int[][] scores2 = 
-    //  -2 -1  0  1  2          //Directional Distance
-    {   {2, 1, 3, 4, 5},        //DESCENDING
-        {5, 3, 1, 3, 5},        //NOPREFERENCE
-        {5, 4, 3, 1, 2}     };  //ASCENDING
-    
-    //same>half>whole
-    private static final int[][] scores3 = 
-    //  -2 -1  0  1  2          //Directional Distance
-    {   {3, 2, 1, 4, 5},        //DESCENDING
-        {5, 3, 1, 3, 5},        //NOPREFERENCE
-        {5, 4, 1, 2, 3}     };  //ASCENDING
-    
-    //whole>same>half
-    private static final int[][] scores4 = 
-    //  -2 -1  0  1  2          //Directional Distance
-    {   {1, 3, 2, 4, 5},        //DESCENDING
-        {5, 3, 1, 3, 5},        //NOPREFERENCE
-        {5, 4, 2, 3, 1}     };  //ASCENDING
-    
-    //half>same>whole
-    private static final int[][] scores5 = 
-    //  -2 -1  0  1  2          //Directional Distance
-    {   {3, 1, 2, 4, 5},        //DESCENDING
-        {5, 3, 1, 3, 5},        //NOPREFERENCE
-        {5, 4, 2, 1, 3}     };  //ASCENDING
-    
-    //same>whole>half
-    private static final int[][] scores6 = 
-    //  -2 -1  0  1  2          //Directional Distance
-    {   {2, 3, 1, 4, 5},        //DESCENDING
-        {5, 3, 1, 3, 5},        //NOPREFERENCE
-        {5, 4, 1, 3, 2}     };  //ASCENDING
-    
+
     /**
      * Constructor
      * @param inputChordPart ChordPart from score
@@ -278,13 +222,6 @@ public class GuideLineGenerator implements Constants {
             }
         }
         return chordTones;
-    }
-    
-    private static Note highestPriority(Chord chord, int duration){
-        PolylistEnum priorityList = chord.getPriority().elements();
-        Note highestPriority = ((NoteSymbol)priorityList.nextElement()).toNote();
-        highestPriority.setRhythmValue(duration);
-        return highestPriority;
     }
     
     /**
@@ -507,16 +444,7 @@ public class GuideLineGenerator implements Constants {
             return originalDirection;
         }
     }
-    
-//    private static ArrayList<Note> chordTones(Note prev, Chord chord, int duration){
-//        PolylistEnum noteList = chord.getSpell().elements();
-//        ArrayList<Note> chordTones = new ArrayList<Note>();
-//        while(noteList.hasMoreElements()){
-//            chordTones.add(((NoteSymbol)noteList.nextElement()).toNote());
-//        }
-//        return chordTones;
-//    }
-//    
+
     /**
      * tests whether a note duration is greater than the given duration
      * @param n1 Note whose duration is being tested
@@ -847,8 +775,22 @@ public class GuideLineGenerator implements Constants {
         if(chord.isNOCHORD()){
             return new Note(REST, Accidental.NOTHING, duration);
         }
+        //returns the scale degree as a note in octave 0 or, if unavailable, the highest priority note in the chord
         Note first =  scaleDegreeToNote(start, chord, duration);
-        //first = putInRange(first, c);
+        
+        //Check if it's a chord/color tone, change it to the highestPriority note if it's not
+        if(!belongsTo(first, chord, CHORD_TONE)){
+            if(allowColor){
+                if(!belongsTo(first, chord, COLOR_TONE)){
+                    first = NoteConverter.highestPriority(chord, duration);
+                }
+            }else{
+                first = NoteConverter.highestPriority(chord, duration);
+            }
+            
+        }
+        
+        //puts note close to middle
         first = closestToMiddle(first, chord, line);//uses duration of first
         return first;
     }
@@ -862,126 +804,7 @@ public class GuideLineGenerator implements Constants {
 //        return choice.equals(change);
 //    }
 
-    /**
-     * Scores a note based on how colorful it is in the chord
-     * @param c the chord
-     * @param note the note
-     * @return a score - low for colorful, high for not
-     */
-    /*
-    private double colorScore(Chord c, Note note){
-        Polylist pl = NoteConverter.noteToRelativePitch(note, c);
-        String degree = pl.second().toString();
-        int score;
-        if(degree.contains(THREE)||degree.contains(SEVEN)){
-            score = 0;
-        }else if(degree.contains(FIVE)||degree.contains(NINE)){
-            score = 1;
-        }
-        else if(degree.contains(FLAT) || degree.contains(SHARP)){
-            score = 2;
-        }
-        else if(degree.equals(FIVE)){
-            score = 4;
-        }
-        else{
-            score = 3;
-        }
-        System.out.println("Degree: "+degree+"; Score: "+score);
-        return score;
-    }
-    */
-    
-//    private double colorScore(Chord c, Note n){
-//        Polylist pl = NoteConverter.noteToRelativePitch(n, c);
-//        String degree = pl.second().toString();
-//        double score;
-//        
-//        if(belongsTo(n, c, CHORD_TONE)){
-//            if(degree.contains(THREE)||degree.contains(SEVEN)){
-//                score = 1;
-//            }else if(degree.contains(FIVE)||degree.contains(ONE)){
-//                score = 3;
-//            }else{
-//                score = 5;
-//            }
-//        }else if(belongsTo(n, c, COLOR_TONE)){
-//            if(degree.contains(SEVEN)||degree.contains(NINE)){
-//                score = 1;
-//            }else if(degree.contains(ELEVEN)||degree.contains(THIRTEEN)){
-//                score = 3;
-//            }else{
-//                score = 5;
-//            } 
-//        }else if(belongsTo(n, c, APPROACH_TONE)){
-//            score = 5;
-//        }else{
-//            score = 5;
-//        }
-//        return score;
-//    }
-//    
-//    
-    /**
-     * Scores a note based on how close it is to the previous note
-     * @param prev the previous note
-     * @param note the current note
-     * @return low score for good, high score for bad
-     */
-//    private double distanceScore(Note prev, Note note, int line){
-//
-//        int distance = directionalDist(prev, note);
-//        int index1 = getDirection(line)+1;
-//        int index2 = distance+2;//index to be used in scores array
-//        int score = 0;
-//        score+=scores[index1][index2];
-//        //when no max duration is specified: scores 3, 5, 6 are the same, 1, 2, 4 are the same
-//        return score;
-//    }
-//    
-    /**
-     * Returns the number of semitones note two is above note one
-     * Positive indicates note two is above note one, negative means it is below
-     * @param n1 note one
-     * @param n2 note two
-     * @return integer representing the directional distance between two notes
-     */
-//    private int directionalDist(Note n1, Note n2){
-//        return n2.getPitch()-n1.getPitch();
-//    }
-//    
-    /**
-     * Given one note and the next chord, it returns the closest chord tones
-     * to that note
-     * @param n note
-     * @param c chord
-     * @return A list of the chord tones closest to the note
-     */
-//    private ArrayList<Note> possibleNotes(Note n, Chord c, int chordOrColor)
-//    {
-//        return chordOrColorNotes(fiveNotes(n,c.getRhythmValue()), c, chordOrColor);
-//    }
-//    
-    /**
-     * From the five closest notes to another note, it returns a list of which 
-     * ones are either chord tones or color tones in chord c
-     * @param fiveNotes ArrayList of five different notes
-     * @param c a chord
-     * @param chordOrColor CHORD_TONE to choose chord tones,
-     * COLOR_TONE to choose color tones
-     * @return A list of which of the five notes are available
-     */
-//    private ArrayList<Note> chordOrColorNotes(ArrayList<Note> fiveNotes, Chord c, int chordOrColor)
-//    {
-//        ArrayList<Note> notesInChord = new ArrayList<Note>();
-//        for(Note note: fiveNotes){
-//            if(belongsTo(note, c, chordOrColor)){
-//                notesInChord.add(note);
-//            }
-//        }
-//        return notesInChord;
-//    }
-//   
+
     /**
      * Determines whether a given note is a chord tone or color tone
      * @param n note
@@ -993,79 +816,7 @@ public class GuideLineGenerator implements Constants {
     {
         return (c.getTypeIndex(n)==chordOrColor && !c.isNOCHORD());
     }
-    
-    /**
-     * Puts a note in the user-specified range
-     * @param n the note to adjust
-     * @return the adjusted note
-     * NOTE: this note's pitch will be unaltered if it was either already in the range,
-     * OR if the user selected a range smaller than an octave so there is no instance of that note in the range
-     */
-//    private Note putInRange(Note n, Chord c){
-//        int pitch = n.getPitch();
-//        int rv = n.getRhythmValue();
-//        int inRange = inRange(pitch, lowLimit, highLimit);
-//        if(inRange!=IN_RANGE){
-//            if(inRange==BELOW_RANGE){
-//                for( ; (inRange != IN_RANGE) && (pitch <= highLimit); pitch+=OCTAVE, inRange = inRange(pitch, lowLimit, highLimit)){
-//                    
-//                }
-//            }else if(inRange==ABOVE_RANGE){
-//                for( ; (inRange != IN_RANGE) && (pitch >=lowLimit); pitch-=OCTAVE, inRange = inRange(pitch, lowLimit, highLimit)){
-//                    
-//                }
-//            }
-//            
-//            //if the note is STILL not in range (no option available, range less than an octave):
-//            if(inRange != IN_RANGE){
-//                for(pitch = lowLimit, n = new Note(pitch); !belongsTo(n, c, CHORD_TONE)&&pitch<=highLimit; pitch++, n = new Note(pitch)){
-//                    
-//                }
-//                if(belongsTo(n, c, CHORD_TONE)){
-//                    //pitch is good
-//                }else{
-//                    for(pitch = lowLimit, n = new Note(pitch); !belongsTo(n, c, COLOR_TONE)&&pitch<=highLimit; pitch++, n = new Note(pitch)){
-//                    
-//                    }
-//                    if(belongsTo(n, c, COLOR_TONE)){
-//                        //pitch is good
-//                    }else{
-//                        for(pitch = lowLimit, n = new Note(pitch); !belongsTo(n, c, APPROACH_TONE)&&pitch<=highLimit; pitch++, n = new Note(pitch)){
-//                    
-//                        }
-//                        if(belongsTo(n, c, APPROACH_TONE)){
-//                            //pitch is good
-//                        }else{
-//                            pitch = lowLimit;//last resort
-//                        }
-//                    }
-//                }
-//            }
-//            n = new Note(pitch, rv);
-//        }
-//        return n;
-//    }
-//    
-    /**
-     * Returns an ArrayList of notes that are within two half steps of the 
-     * given note
-     * @param n note
-     * @param rhythmValue length of notes to be put in the list
-     * @return ArrayList of notes
-     */
-//    private ArrayList<Note> fiveNotes(Note n, int rhythmValue)
-//    {
-//        ArrayList<Note> fiveNextNotes = new ArrayList<Note>();
-//        int pitch = n.getPitch();
-//        if(pitch==REST){
-//            return fiveNextNotes;//return empty list if note is rest
-//        }
-//        for(int i=-2; i<=2; i++){
-//            fiveNextNotes.add(new Note(pitch+i, rhythmValue));
-//        }
-//        return fiveNextNotes;
-//    }
-//    
+
     //IMPORTANT: does not specify whether to represent note as sharp or flat
     //if there is ambiguity - I think it defaults to sharp...
     /**
@@ -1076,11 +827,7 @@ public class GuideLineGenerator implements Constants {
      * @return Note that is the specified degree of the chord
      */
     private Note scaleDegreeToNote(String degree, Chord c, int duration){
-        int octave = direction==ASCENDING?0:1;
-        if(mix && degree.equals(SEVEN)){
-            octave = 0;
-        }
-        return NoteConverter.scaleDegreeToNote(degree, c, octave, duration);
+        return NoteConverter.scaleDegreeToNote(degree, c, 0, duration);
     }  
 
     private int middleOfRange(){
@@ -1101,61 +848,27 @@ public class GuideLineGenerator implements Constants {
         if(lineDirection == ASCENDING){
             if(belowInRange){
                 pitch = closestBelow;
-            }else if(aboveInRange){
+            }else{//above guaranteed to be in range because we limit the user to an octave
                 pitch = closestAbove;
-            }else{
-                pitch = lastResortPitch(c);
             }
         }else if(lineDirection == DESCENDING){
             if(aboveInRange){
                 pitch = closestAbove;
-            }else if(belowInRange){
+            }else{//below guaranteed in range because we limit the user to an octave
                 pitch = closestBelow;
-            }else{
-                pitch = lastResortPitch(c);
             }
-        }else{
+        }else{//NO PREFERENCE
             if(belowInRange && aboveInRange){
                 int middle = middleOfRange();
-                //closest of the two
+                //closest of the two - tiebreak goes to above note if distances equal
                 pitch = ((middle-closestBelow)<(closestAbove-middle)?closestBelow:closestAbove);
             }else if(belowInRange){
                 pitch = closestBelow;
-            }else if(aboveInRange){
+            }else{//above guaranteed to be in range because we limit the user to an octave
                 pitch = closestAbove;
-            }else{
-                pitch = lastResortPitch(c);
             }
         }
         return new Note(pitch, rv);
-    }
-    
-    private int lastResortPitch(Chord c){
-        int pitch;
-        Note n;
-        for(pitch = lowLimit, n = new Note(pitch); !belongsTo(n, c, CHORD_TONE)&&pitch<=highLimit; pitch++, n = new Note(pitch)){
-                    
-        }
-        if(belongsTo(n, c, CHORD_TONE)){
-            //pitch is good
-        }else{
-            for(pitch = lowLimit, n = new Note(pitch); !belongsTo(n, c, COLOR_TONE)&&pitch<=highLimit; pitch++, n = new Note(pitch)){
-
-            }
-            if(belongsTo(n, c, COLOR_TONE)){
-                //pitch is good
-            }else{
-                for(pitch = lowLimit, n = new Note(pitch); !belongsTo(n, c, APPROACH_TONE)&&pitch<=highLimit; pitch++, n = new Note(pitch)){
-
-                }
-                if(belongsTo(n, c, APPROACH_TONE)){
-                    //pitch is good
-                }else{
-                    pitch = lowLimit;//last resort
-                }
-            }
-        }
-        return pitch;
     }
     
     private int closestBelowMiddle(Note n){

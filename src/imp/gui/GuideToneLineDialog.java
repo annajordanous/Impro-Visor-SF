@@ -1153,7 +1153,13 @@ private void initKeys()
         
         //Get paramaters to pass into constructor
         //notate = (Notate)this.getParent();
-        String scaleDegString = scaleDeg.getText();
+        String scaleDegString;
+        if(scaleDeg!=null){
+           scaleDegString = scaleDeg.getText(); 
+        }else{
+            scaleDegString = "NOCHORD";
+        }
+        
         boolean alternating = false;
         int duration = buttonToDuration(maxDur);
         int lineType = buttonToLineType(lineTypeButton);
@@ -1258,6 +1264,7 @@ private void initKeys()
     private void setButtonText(ButtonGroup group, JPanel panel){
         panel.removeAll();
         panel.add(scaleDegLabel);
+        removeAll(group);
         Chord firstChord = notate.getChordProg().getChord(0);
         Polylist chordSpell = firstChord.getSpell();
         if(chordSpell==null){
@@ -1306,6 +1313,17 @@ private void initKeys()
         for(Enumeration<AbstractButton> buttons = group.getElements(); buttons.hasMoreElements();){
             AbstractButton b = buttons.nextElement();
             b.setEnabled(enabled);
+        }
+    }
+    
+    /**
+     * Removes all buttons from a button group
+     * @param group 
+     */
+    private void removeAll(ButtonGroup group){
+        for(Enumeration<AbstractButton> buttons = group.getElements(); buttons.hasMoreElements();){
+            AbstractButton b = buttons.nextElement();
+            group.remove(b);
         }
     }
     
