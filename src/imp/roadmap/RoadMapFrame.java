@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2011-2013 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2011-2015 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -3039,7 +3039,7 @@ public void setVolumeSlider(int volume)
                         Rectangle viewport = getRoadMapScrollPane().getViewport().getViewRect();
                         //System.out.println("checkpoint 22222");
                         
-                        if( viewport != null )
+                        if( viewport != null && playline != null )
                         {
                         Boolean temp = viewport.contains(playline);
                         //System.out.println(temp + "");
@@ -3968,14 +3968,12 @@ public void setParent(Notate notate)
      */
     int temp = 0; // to see how many times roadmap is opened
     public void playSelection() {
-        
         if (roadMapPanel.getNumBlocks() < 1)
           {
             return;
           }
         
         boolean nothingSelected = !roadMapPanel.hasSelection();
-        
         if (nothingSelected)
           {
             selectAllBricks();
@@ -3983,9 +3981,7 @@ public void setParent(Notate notate)
 
         ArrayList<Block> blocks = roadMapPanel.getSelection();
         
-        ChordPart chordPart = new ChordPart();        
-        chordPart.setSectionRecords(notate.getChordProg().getSectionRecords());
-        
+        ChordPart chordPart = new ChordPart();                
         if (temp == 0)
         {
         blocks = chordPart.setAllStyles(blocks); 
@@ -3994,16 +3990,9 @@ public void setParent(Notate notate)
         chordPart.setAllStyleNames(chordPart.getAllStyleNames(blocks));
         chordPart.addFromRoadMapFrame(this);
         
-        
-        
-        
         Score score = new Score(chordPart);
         score.setMetre(getMetre());
         score.setTempo(getTempo());
-
-        
-        //SectionInfo si = chordPart.getSectionInfo();
-        // score.setSectionInfo(si);
         int volume = allVolumeToolBarSlider.getValue();
         
         score.setMasterVolume(volume); 
@@ -4013,13 +4002,11 @@ public void setParent(Notate notate)
          
         if( loopToggleButton.isSelected() )
           {
-            notate.playAscore(score, style.getName(), -1);
-            
+            notate.playAscoreWithStyle(score, -1);
           }
         else
           {
-            notate.playAscore(score, style.getName(), 0);
-            
+            notate.playAscoreWithStyle(score, 0);
           }
         
         if( nothingSelected )
@@ -4246,8 +4233,6 @@ public void analyzeInBackground(boolean showJoinsOnCompletion)
         setMetre(score.getMetre());
         setTempo((int)score.getTempo());
         setStyle(score.getStyle());
-        //ArrayList<Block> blocks = roadMapPanel.getSelection();        
-        //setStyleNames(score.getAllStyleNames(blocks));
         setBarsPerLine(score.getRoadmapLayout());
     }
 
