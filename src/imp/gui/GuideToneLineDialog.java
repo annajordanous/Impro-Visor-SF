@@ -468,8 +468,6 @@ private void initKeys()
         playButton = new javax.swing.JButton();
         allowColorPanel = new javax.swing.JPanel();
         allowColorBox = new javax.swing.JCheckBox();
-        warningPanel = new javax.swing.JPanel();
-        warningLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new java.awt.GridBagLayout());
@@ -1186,16 +1184,6 @@ private void initKeys()
         gridBagConstraints.gridy = 6;
         getContentPane().add(allowColorPanel, gridBagConstraints);
 
-        warningLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        warningLabel.setForeground(Color.black);
-        warningLabel.setText("Range okay.");
-        warningPanel.add(warningLabel);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 9;
-        getContentPane().add(warningPanel, gridBagConstraints);
-
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
@@ -1765,8 +1753,6 @@ private void initKeys()
     private javax.swing.JButton transformLine;
     private javax.swing.JPanel transformPanel;
     private javax.swing.JRadioButton twoLines;
-    private javax.swing.JLabel warningLabel;
-    private javax.swing.JPanel warningPanel;
     private javax.swing.JRadioButton whole;
     // End of variables declaration//GEN-END:variables
 }

@@ -80,6 +80,7 @@ public class Notate
         extends javax.swing.JFrame
         implements Constants, MidiPlayListener
 {
+public static GuideToneLineDialog guideToneLineDialog;
 public static int midiImportXoffset = 200;
 public static int midiImportYoffset = 200;
 public static final int HELP_DIALOG_WIDTH = 980;
@@ -1033,6 +1034,8 @@ public Notate(Score score, Advisor adv, ImproVisor impro, int x, int y)
       }
 
     audioSettings = new AudioSettings(this);
+    guideToneLineDialog = new GuideToneLineDialog(this, false);
+    guideToneLineDialog.setVisible(false);
   } // end of Notate constructor
 
 boolean showConstructionLinesAndBoxes = true;
@@ -22595,8 +22598,7 @@ int quantizeResolution = 60;
     private void guideToneLineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guideToneLineActionPerformed
         //Create dialog box with guide tone line options
         //false means not modal, i.e. the user is allowed to click back and forth between the main window and the dialog box
-        GuideToneLineDialog dialogbox = new GuideToneLineDialog(this, false);
-        dialogbox.setVisible(true);
+        guideToneLineDialog.setVisible(true);
     }//GEN-LAST:event_guideToneLineActionPerformed
 
 private void updateDottedAndTriplet()
