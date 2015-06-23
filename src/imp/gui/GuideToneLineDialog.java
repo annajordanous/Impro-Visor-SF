@@ -1127,6 +1127,11 @@ private void initKeys()
 
         allowColorBox.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         allowColorBox.setText("Allow Color Tones");
+        allowColorBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                allowColorBoxActionPerformed(evt);
+            }
+        });
         allowColorPanel.add(allowColorBox);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -1267,6 +1272,22 @@ private void initKeys()
             panel.add(b);
             group.add(b);
             b.setSelected(true);
+        }
+        if(allowColorBox.isSelected()){
+            Polylist chordColor = firstChord.getColor();
+            if(chordColor==null){
+                return;
+            }
+            while(!chordColor.isEmpty()){
+                Note nextNote = ((NoteSymbol)chordColor.first()).toNote();
+                Polylist relPitch = nextNote.toRelativePitch(firstChord);
+                String degree = (String)relPitch.second();
+                chordColor = chordColor.rest();
+                JRadioButton b = new JRadioButton(degree);
+                panel.add(b);
+                group.add(b);
+                b.setSelected(true);
+            }
         }
         
     }
@@ -1460,6 +1481,12 @@ private void initKeys()
             playButton.setText("Play");
         }
     }//GEN-LAST:event_playButtonActionPerformed
+
+    private void allowColorBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_allowColorBoxActionPerformed
+        this.setVisible(false);
+        updateButtons();
+        this.setVisible(true);
+    }//GEN-LAST:event_allowColorBoxActionPerformed
 
     public void setKeyboard(String mod, int midiValue){
         
