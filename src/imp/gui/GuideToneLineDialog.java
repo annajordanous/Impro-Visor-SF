@@ -40,6 +40,9 @@ import javax.swing.JLabel;
  */
 public class GuideToneLineDialog extends javax.swing.JDialog implements Constants {
     
+    private PianoKey lowKey;
+    private PianoKey highKey;
+    
     private final int THREE_SEVEN = 0;
     private final int SEVEN_THREE = 1;
     private final int FIVE_NINE = 2;
@@ -110,7 +113,7 @@ public PianoKey[] pkeys;
  * 
  * @param keyPlayed
  */
-public void pressKey(PianoKey keyPlayed)
+private void pressKey(PianoKey keyPlayed)
 {
     JLabel label = keyPlayed.getLabel();
     Icon onIcon = keyPlayed.getOnIcon();
@@ -301,13 +304,13 @@ private void initKeys()
         
         clearKeyboard();
         
-        PianoKey lowKey = pkeys[C4-A];
+        lowKey = pkeys[C4-A];
         lowKey.setPressed(true);
         pressKey(lowKey);
         keysPressed++;
 
 
-        PianoKey highKey = pkeys[C5-A];
+        highKey = pkeys[G5-A];
         highKey.setPressed(true);
         pressKey(highKey);
         keysPressed++;
@@ -1272,18 +1275,9 @@ private void initKeys()
     }
     
     private int [] limits(){
-        int [] limits = {-1, -1};
-        boolean low = true;
-        for(PianoKey pk : pkeys){
-            if(pk.isPressed()){
-                if(low){
-                    limits[0] = pk.getMIDI();
-                    low = false;
-                }else{
-                    limits[1] = pk.getMIDI();
-                }
-            }
-        }
+        int [] limits = new int[2];
+        limits[0] = lowKey.getMIDI();
+        limits[1] = highKey.getMIDI();
         return limits;
     }
     
@@ -1510,35 +1504,45 @@ private void initKeys()
         
         // Pressing the keys and playing the notes
         PianoKey keyPlayed = pianoKeys()[midiValue - A];
-        
+        //if not blue note
         if((midiValue - A) > 23 && (midiValue - A) < 76){
-            // if the key has been pressed, unpress it.
-            if (keyPlayed.isPressed()) 
-            {
-                keyPlayed.setPressed(false);
-                keysPressed--;
-                pressKey(keyPlayed);
-            }
-            // press the correct key
-            else if(keysPressed<2)
-            {
+            //new logic
+            
+            if(midiValue<lowKey.getMIDI()){
                 keyPlayed.setPressed(true);
-                keysPressed++;
                 pressKey(keyPlayed);
-            }
-            if(keysPressed<2){
-                warningLabel.setText("WARNING: You must select two keys.");
-                warningLabel.setForeground(Color.red);
-            }else{
-                int [] limits = limits();
-                if(limits[1]-limits[0]+1<Constants.OCTAVE){
-                    warningLabel.setText("WARNING: Range must be at least an octave.");
-                    warningLabel.setForeground(Color.red);
-                }else{
-                    warningLabel.setText("Range okay.");
-                    warningLabel.setForeground(Color.black);
+                lowKey.setPressed(false);
+                pressKey(lowKey);
+                lowKey = keyPlayed;
+            }else if(midiValue>highKey.getMIDI()){
+                keyPlayed.setPressed(true);
+                pressKey(keyPlayed);
+                highKey.setPressed(false);
+                pressKey(highKey);
+                highKey = keyPlayed;
+            }else if(midiValue>lowKey.getMIDI()&&midiValue<highKey.getMIDI()){
+                int distanceToLow = Math.abs(midiValue-lowKey.getMIDI());
+                int distanceToHigh = Math.abs(midiValue-highKey.getMIDI());
+                if(distanceToLow<distanceToHigh){
+                    if(distanceToHigh>=Constants.OCTAVE){
+                        keyPlayed.setPressed(true);
+                        pressKey(keyPlayed);
+                        lowKey.setPressed(false);
+                        pressKey(lowKey);
+                        lowKey = keyPlayed;
+                    }
+                }else{//if equal, change the high key (tiebreak)
+                    if(distanceToLow>=Constants.OCTAVE){
+                        keyPlayed.setPressed(true);
+                        pressKey(keyPlayed);
+                        highKey.setPressed(false);
+                        pressKey(highKey);
+                        highKey = keyPlayed;
+                    }
+                    
                 }
             }
+            
         }
     }
     

@@ -269,6 +269,13 @@ public class GuideLineGenerator implements Constants {
         return chordTones;
     }
     
+    private static Note highestPriority(Chord chord, int duration){
+        PolylistEnum priorityList = chord.getPriority().elements();
+        Note highestPriority = ((NoteSymbol)priorityList.nextElement()).toNote();
+        highestPriority.setRhythmValue(duration);
+        return highestPriority;
+    }
+    
     /**
      * 
      * @param chord
@@ -936,13 +943,13 @@ public class GuideLineGenerator implements Constants {
      * if the user-specified degree is not in the chord's associated scale
      * returns a rest if the chord isNOCHORD
      */
-    private Note firstNote(Chord c, String start, int line, int duration){
-        if(c.isNOCHORD()){
+    private Note firstNote(Chord chord, String start, int line, int duration){
+        if(chord.isNOCHORD()){
             return new Note(REST, Accidental.NOTHING, duration);
         }
-        Note first =  scaleDegreeToNote(start, c, duration);
+        Note first =  scaleDegreeToNote(start, chord, duration);
         //first = putInRange(first, c);
-        first = closestToMiddle(first, c, line);//uses duration of first
+        first = closestToMiddle(first, chord, line);//uses duration of first
         return first;
     }
     
