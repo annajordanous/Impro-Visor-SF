@@ -97,6 +97,18 @@ public class MelodyPart
   
   private String id;
   
+  //For use in TransformPanel:
+  //null originalVersion indicates that this melody part is the original version
+  private MelodyInContext originalVersion = null;
+  
+  public MelodyInContext getOriginalVersion(){
+      return originalVersion;
+  }
+  
+  public void setOriginalVersion(MelodyInContext originalVersion){
+      this.originalVersion = originalVersion;
+  }
+  
   public String getMelodyPartId()
     {
       return id;

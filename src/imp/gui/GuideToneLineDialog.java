@@ -294,7 +294,7 @@ private void initKeys()
     private final Notate notate;
     private final TransformPanel transformationPanel;
     
-    private Boolean transformed = false;
+    //private Boolean transformed = false;
     
     private int lowPitch;
     private int highPitch;
@@ -1230,7 +1230,7 @@ private void initKeys()
         MelodyPart guideToneLine = guideLine.makeGuideLine();
         notate.addChorus(guideToneLine);
         
-        transformed = false;
+        //transformed = false;
     }//GEN-LAST:event_generateLineActionPerformed
 
     private void setDefaultRange(){
@@ -1369,27 +1369,26 @@ private void initKeys()
     }//GEN-LAST:event_oneLineActionPerformed
 
     private void transformLineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transformLineActionPerformed
-        //System.out.println(transformed);
-        if(transformed){
-            transformationPanel.revertSubs();
-        }
+
+        transformationPanel.applySubstitutions();
         
-        MelodyPart currentMelody = notate.getCurrentMelodyPart();
-        
-        transformationPanel.applySubstitutionsToPart(currentMelody,
-                                                     notate.getChordProg());
-        notate.playCurrentSelection(false, 
-                                    0, 
-                                    PlayScoreCommand.USEDRUMS, 
-                                    "Transformed over guide tone line");
-        transformed = true;
+        //don't play it
+//        notate.playCurrentSelection(false, 
+//                                    0, 
+//                                    PlayScoreCommand.USEDRUMS, 
+//                                    "Transformed over guide tone line");
+//        
+        //fix this
         revertLine.setEnabled(true);
     }//GEN-LAST:event_transformLineActionPerformed
 
     private void revertLineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_revertLineActionPerformed
-        //System.out.println(transformed);
+        
         transformationPanel.revertSubs();
-        transformed = false;
+        
+//        if(transformationPanel.getStackEmpty()){
+//            revertLine.setEnabled(false);
+//        }
     }//GEN-LAST:event_revertLineActionPerformed
     
     private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_keyboardLPMouseClicked
