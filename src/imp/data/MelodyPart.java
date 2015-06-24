@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.ListIterator;
+import java.util.Stack;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.Track;
 
@@ -99,14 +100,18 @@ public class MelodyPart
   
   //For use in TransformPanel:
   //null originalVersion indicates that this melody part is the original version
-  private MelodyInContext originalVersion = null;
+  private Stack <MelodyInContext> originalVersions = new Stack<MelodyInContext>();
   
-  public MelodyInContext getOriginalVersion(){
-      return originalVersion;
+  public MelodyInContext getRecentVersion(){
+      return originalVersions.pop();
   }
   
-  public void setOriginalVersion(MelodyInContext originalVersion){
-      this.originalVersion = originalVersion;
+  public void pushOriginalVersion(MelodyInContext originalVersion){
+      originalVersions.push(originalVersion);
+  }
+  
+  public boolean isOriginal(){
+      return originalVersions.isEmpty();
   }
   
   public String getMelodyPartId()

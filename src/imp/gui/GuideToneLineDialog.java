@@ -324,6 +324,9 @@ private void initKeys()
         //updates scale Degree buttons based on first chord of leadsheet
         //and whether or not allow color tones is checked
         updateButtons(); 
+        
+        //make the transform buttons whatever they are in the transform panel
+        updateTransformButtons();
 
     }
 
@@ -387,6 +390,7 @@ private void initKeys()
         transformPanel = new javax.swing.JPanel();
         transformLine = new javax.swing.JButton();
         revertLine = new javax.swing.JButton();
+        reapplyTransform = new javax.swing.JButton();
         maxDurationPanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         noPref = new javax.swing.JRadioButton();
@@ -636,6 +640,15 @@ private void initKeys()
             }
         });
         transformPanel.add(revertLine);
+
+        reapplyTransform.setText("Try Again");
+        reapplyTransform.setEnabled(false);
+        reapplyTransform.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reapplyTransformActionPerformed(evt);
+            }
+        });
+        transformPanel.add(reapplyTransform);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -1372,23 +1385,16 @@ private void initKeys()
 
         transformationPanel.applySubstitutions();
         
-        //don't play it
-//        notate.playCurrentSelection(false, 
-//                                    0, 
-//                                    PlayScoreCommand.USEDRUMS, 
-//                                    "Transformed over guide tone line");
-//        
-        //fix this
-        revertLine.setEnabled(true);
+        updateTransformButtons();
+        
     }//GEN-LAST:event_transformLineActionPerformed
 
     private void revertLineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_revertLineActionPerformed
         
         transformationPanel.revertSubs();
         
-//        if(transformationPanel.getStackEmpty()){
-//            revertLine.setEnabled(false);
-//        }
+        updateTransformButtons();
+
     }//GEN-LAST:event_revertLineActionPerformed
     
     private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_keyboardLPMouseClicked
@@ -1540,6 +1546,20 @@ private void initKeys()
         updateButtons();
         this.setVisible(true);
     }//GEN-LAST:event_allowColorBoxActionPerformed
+
+    public void updateTransformButtons(){
+        revertLine.setEnabled(transformationPanel.getRevertEnabled());
+        reapplyTransform.setEnabled(transformationPanel.getReapplyEnabled());
+    }
+    
+    private void reapplyTransformActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reapplyTransformActionPerformed
+        
+        transformationPanel.revertSubs();
+        transformationPanel.applySubstitutions();
+        
+        updateTransformButtons();
+        
+    }//GEN-LAST:event_reapplyTransformActionPerformed
 
     public void setKeyboard(String mod, int midiValue){
         
@@ -1788,6 +1808,7 @@ private void initKeys()
     private javax.swing.JLabel rangeLabel;
     private javax.swing.JPanel rangeLabelPanel;
     private javax.swing.JPanel rangePanel;
+    private javax.swing.JButton reapplyTransform;
     private javax.swing.JButton revertLine;
     private javax.swing.Box.Filler rightFiller;
     private javax.swing.JLabel scaleDegLabel;

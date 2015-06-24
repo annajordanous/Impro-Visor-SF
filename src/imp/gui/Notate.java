@@ -16050,6 +16050,13 @@ private void setLayoutPreference(Polylist layout)
             setItemStates();
 
           }
+        
+        //UPDATE TRANSFORM BUTTONS IN TRANSFORM PANEL AND GUIDETONELINEDIALOG
+        this.lickgenFrame.getTransformPanel().updateButtons();
+        if(guideToneLineDialog!=null){
+            guideToneLineDialog.updateTransformButtons();
+        }
+        
     }//GEN-LAST:event_scoreTabStateChanged
 
 public Rectangle getCurrentScrollPosition()

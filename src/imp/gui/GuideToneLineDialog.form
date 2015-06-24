@@ -279,6 +279,15 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="revertLineActionPerformed"/>
           </Events>
         </Component>
+        <Component class="javax.swing.JButton" name="reapplyTransform">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Try Again"/>
+            <Property name="enabled" type="boolean" value="false"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="reapplyTransformActionPerformed"/>
+          </Events>
+        </Component>
       </SubComponents>
     </Container>
     <Container class="javax.swing.JPanel" name="maxDurationPanel">
