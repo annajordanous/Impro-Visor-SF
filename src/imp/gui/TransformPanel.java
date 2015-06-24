@@ -122,15 +122,6 @@ public class TransformPanel extends javax.swing.JPanel {
     private String filename;
     
     /**
-     * Saves the paste commands for applying, so they can be reverted. 
-     */
-    private Stack<MelodyInContext> savedMelodies;
-    
-    public boolean getStackEmpty(){
-        return savedMelodies.isEmpty();
-    }
-    
-    /**
      * Creates new form SubstitutorTabPanel
      */
     public TransformPanel(Notate notate) {
@@ -187,11 +178,11 @@ public class TransformPanel extends javax.swing.JPanel {
                                                                      "transform");
         chooser.setFileFilter(filter);
         
-        savedMelodies = new Stack();
         
         // Tries to set the transform as the default transform for the user
         // (as in My.transform)
         setDefaultTrans();
+
     }
     
     /**
@@ -220,6 +211,7 @@ public class TransformPanel extends javax.swing.JPanel {
         applySubstitutionsButton.setEnabled(true);
         saveSubstitutionsButton.setEnabled(true);
         cleanTransformButton.setEnabled(true);
+        
     }
 
     /**
@@ -1401,7 +1393,7 @@ public class TransformPanel extends javax.swing.JPanel {
         
         filename = newFilename;
         substitutionFromLabel.setText("Transformation Classes From: " + filename);
-        savedMelodies = new Stack();
+        
         revertSubstitutionsButton.setEnabled(false);
         reapplySubstitutionsButton.setEnabled(false);
 
@@ -1479,6 +1471,14 @@ public class TransformPanel extends javax.swing.JPanel {
         changeTransform(trans, "learnedTransform");
     }
     
+    public boolean getRevertEnabled(){
+        return revertSubstitutionsButton.isEnabled();
+    }
+    
+    public boolean getReapplyEnabled(){
+        return reapplySubstitutionsButton.isEnabled();
+    }
+    
     /**
      * Apply the current transform to the currently selected melody. 
      */
@@ -1495,6 +1495,16 @@ public class TransformPanel extends javax.swing.JPanel {
         applySubstitutionsToPart(melody, chords);
     }
     
+    public void updateButtons(){
+        if(notate.getCurrentMelodyPart().isOriginal()){
+            revertSubstitutionsButton.setEnabled(false);
+            reapplySubstitutionsButton.setEnabled(false);
+        }else{
+            revertSubstitutionsButton.setEnabled(true);
+            reapplySubstitutionsButton.setEnabled(true);
+        }
+    }
+    
     /**
      * Apply the current transform the melodyPart and ChordPart sent at the
      * location selected in notate.
@@ -1509,7 +1519,7 @@ public class TransformPanel extends javax.swing.JPanel {
             Stave stave = notate.getCurrentStave();
             int start = notate.getCurrentSelectionStart();
             int stop = notate.getCurrentSelectionEnd();
-            notate.getCurrentMelodyPart().setOriginalVersion(new MelodyInContext(melody.copy(), stave, start, stop));
+            notate.getCurrentMelodyPart().pushOriginalVersion(new MelodyInContext(melody.copy(), stave, start, stop));
 //            savedMelodies.add(new MelodyInContext(melody.copy(), 
 //                                                  stave, 
 //                                                  start, 
@@ -1533,6 +1543,7 @@ public class TransformPanel extends javax.swing.JPanel {
                                         "putLick " + start + " - " + stop);
             ImproVisor.setPlayEntrySounds(true);
             
+            //Current MelodyPart was just transformed - set enabled to true
             revertSubstitutionsButton.setEnabled(true);
             reapplySubstitutionsButton.setEnabled(true);
         }
@@ -1545,7 +1556,7 @@ public class TransformPanel extends javax.swing.JPanel {
     public void revertSubs()
     {
         MelodyPart currentPart = notate.getCurrentMelodyPart();
-        MelodyInContext originalPart = currentPart.getOriginalVersion();
+        MelodyInContext originalPart = currentPart.getRecentVersion();
         
         //prevent null pointer exception, don't try to revert an original melody
         if(originalPart==null){
@@ -1560,15 +1571,12 @@ public class TransformPanel extends javax.swing.JPanel {
         stave.setSelection(start, stop);
         pasteOver(notate.getMelodyPart(stave), originalPart.getMelody(), start);
         
-//        
-//        if(savedMelodies.size() < 1)
-//        {
-//            revertSubstitutionsButton.setEnabled(false);
-//            reapplySubstitutionsButton.setEnabled(false);
-//        }
+        //if the stack is empty
+        if(currentPart.isOriginal()){
+           revertSubstitutionsButton.setEnabled(false);
+           reapplySubstitutionsButton.setEnabled(false); 
+        }
         
-        //now the current melody part is the original version
-        currentPart.setOriginalVersion(null);
     }
     
     /**
