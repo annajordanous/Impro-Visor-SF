@@ -32,6 +32,7 @@ import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JRadioButton;
 import imp.data.PianoKey;
+import imp.util.Preferences;
 import java.awt.Color;
 import javax.swing.Icon;
 import javax.swing.JLabel;
@@ -54,7 +55,6 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
     private final int NINE_FIVE = 3;
     
     
-    private int keysPressed = 0;
     //Images from VoicingKeyboard.java
     /**
     * Getting the piano key images.
@@ -270,18 +270,22 @@ private void initKeys()
     // 8th octave keys
     pkeys[87] = new PianoKey(108, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyC8);
     
-    for(int i = 0; i < 24; ++i){
-        pkeys[i].setIsBass(true);
-        Icon rootOnIcon = pkeys[i].getBassOnIcon();
-        pkeys[i].getLabel().setIcon(rootOnIcon);
+    
 }
 
-    for(int i = 76; i < 88; ++i){
-        pkeys[i].setIsBass(true);
-        Icon rootOnIcon = pkeys[i].getBassOnIcon();
-        pkeys[i].getLabel().setIcon(rootOnIcon);
+    private void setBlueKeys(){
+        for(int i = 0; i < lowPitch-A; ++i){
+            pkeys[i].setIsBass(true);
+            Icon rootOnIcon = pkeys[i].getBassOnIcon();
+            pkeys[i].getLabel().setIcon(rootOnIcon);
+        }
+
+        for(int i = highPitch-A+1; i < 88; ++i){
+            pkeys[i].setIsBass(true);
+            Icon rootOnIcon = pkeys[i].getBassOnIcon();
+            pkeys[i].getLabel().setIcon(rootOnIcon);
+        }
     }
-}
 
     public PianoKey[] pianoKeys() {
         return pkeys;
@@ -291,7 +295,13 @@ private void initKeys()
     private final TransformPanel transformationPanel;
     
     private Boolean transformed = false;
+    
+    private int lowPitch;
+    private int highPitch;
 
+    private int lowDefaultPitch;
+    private int highDefaultPitch;
+    
     /**
      * Creates new form GuideToneLineDialog
      * @param parent Frame that spawned this dialog box
@@ -304,24 +314,46 @@ private void initKeys()
         notate = (Notate)this.getParent();
         transformationPanel = notate.lickgenFrame.getTransformPanel();
         initComponents();
+        
         initKeys();
-        enableButtons(lineTypeButtons, false);
-        updateButtons();
-        clearKeyboard();
         
-        lowKey = pkeys[C4-A];
-        lowKey.setPressed(true);
-        pressKey(lowKey);
-        keysPressed++;
-
-
-        highKey = pkeys[G5-A];
-        highKey.setPressed(true);
-        pressKey(highKey);
-        keysPressed++;
+        //initializes keyboard based on stave type
+        //changes which notes are blue and sets the appropriate default range
+        updateLimits();
         
+        //updates scale Degree buttons based on first chord of leadsheet
+        //and whether or not allow color tones is checked
+        updateButtons(); 
+
     }
 
+    public void updateLimits(){
+
+        //set all keys to white (unpressed)
+        clearKeyboard();
+        
+        //set low and high absolute and default limits based on stave type
+        StaveType stave = Preferences.getStaveTypeFromPreferences();
+        if(stave==StaveType.AUTO||stave==StaveType.GRAND){
+            lowPitch = C1; highPitch = C7;
+            lowDefaultPitch = G2; highDefaultPitch = G5;
+        }else if(stave==StaveType.TREBLE){
+            lowPitch = A2; highPitch = C7;
+            lowDefaultPitch = C4; highDefaultPitch = G5;
+        }else if(stave==StaveType.BASS){
+            lowPitch = C1; highPitch = E5;
+            lowDefaultPitch = G2; highDefaultPitch = C4;
+        }else{//StaveType.NONE
+            lowPitch = C1; highPitch = C7;
+            lowDefaultPitch = G2; highDefaultPitch = G5;
+        }
+        setDefaultRange();
+        setBlueKeys();//set some keys to blue
+        
+        
+    }
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -1180,18 +1212,7 @@ private void initKeys()
             low = limits[0];
             high = limits[1];
         }else{
-            clearKeyboard();
-            PianoKey lowKey = pkeys[low-A];
-            lowKey.setPressed(true);
-            pressKey(lowKey);
-            keysPressed++;
-            
-            
-            PianoKey highKey = pkeys[high-A];
-            highKey.setPressed(true);
-            pressKey(highKey);
-            keysPressed++;
-            
+            setDefaultRange();
         }
         /*int low = lowLimitSlider.getValue();
         int high = highLimitSlider.getValue();
@@ -1212,14 +1233,29 @@ private void initKeys()
         transformed = false;
     }//GEN-LAST:event_generateLineActionPerformed
 
+    private void setDefaultRange(){
+        //initKeys();
+        //clearKeyboard();
+        
+        lowKey = pkeys[lowDefaultPitch-A];
+        lowKey.setPressed(true);
+        pressKey(lowKey);
+
+
+        highKey = pkeys[highDefaultPitch-A];
+        highKey.setPressed(true);
+        pressKey(highKey);
+    }
+    
     private void clearKeyboard(){
         for(PianoKey pk : pkeys){
             if(pk.isPressed()){
                 pk.setPressed(false);
                 pressKey(pk);
-                keysPressed--;
             }
-            
+            pk.setIsBass(false);
+            Icon rootOnIcon = pk.getOffIcon();
+            pk.getLabel().setIcon(rootOnIcon);
         }
     }
     
@@ -1511,7 +1547,7 @@ private void initKeys()
         // Pressing the keys and playing the notes
         PianoKey keyPlayed = pianoKeys()[midiValue - A];
         //if not blue note
-        if((midiValue - A) > 23 && (midiValue - A) < 76){
+        if(midiValue>= lowPitch && midiValue<= highPitch){
             //new logic
             
             if(midiValue<lowKey.getMIDI()){
