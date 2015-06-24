@@ -1484,6 +1484,9 @@ public class TransformPanel extends javax.swing.JPanel {
      */
     public void applySubstitutions()
     {
+        if(notate.getChordProg().getChords().isEmpty()){
+            return;
+        }
         notate.stopPlaying();
         notate.adjustSelection();
         int start = notate.getCurrentSelectionStart();
