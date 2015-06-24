@@ -14955,6 +14955,8 @@ private void setStavePreferenceFromButtons()
       {
         setCurrentStaveType(Preferences.getStaveTypeFromPreferences());
       }
+    
+    guideToneLineDialog.updateLimits();
   }
 
 public void setTrackerDelay(String text)
