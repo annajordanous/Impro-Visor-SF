@@ -32,6 +32,7 @@ import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JRadioButton;
 import imp.data.PianoKey;
+import imp.gui.Notate.Mode;
 import imp.util.Preferences;
 import java.awt.Color;
 import javax.swing.Icon;
@@ -499,13 +500,15 @@ private void initKeys()
         rangeLabelPanel = new javax.swing.JPanel();
         rangeLabel = new javax.swing.JLabel();
         playPanel = new javax.swing.JPanel();
-        playButton = new javax.swing.JButton();
+        playBtn = new javax.swing.JButton();
+        pauseBtn = new javax.swing.JToggleButton();
+        stopBtn = new javax.swing.JButton();
         allowColorPanel = new javax.swing.JPanel();
         allowColorBox = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setMinimumSize(new java.awt.Dimension(1150, 500));
-        setPreferredSize(new java.awt.Dimension(1150, 500));
+        setMinimumSize(new java.awt.Dimension(1150, 600));
+        setPreferredSize(new java.awt.Dimension(1150, 600));
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         linesPanel.setLayout(new java.awt.GridBagLayout());
@@ -725,7 +728,7 @@ private void initKeys()
         getContentPane().add(lineTypePanel, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 14;
+        gridBagConstraints.gridy = 15;
         getContentPane().add(bottomFiller, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -1157,13 +1160,46 @@ private void initKeys()
         gridBagConstraints.gridy = 8;
         getContentPane().add(rangeLabelPanel, gridBagConstraints);
 
-        playButton.setText("Play");
-        playButton.addActionListener(new java.awt.event.ActionListener() {
+        playBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/play.gif"))); // NOI18N
+        playBtn.setToolTipText("Play the entire leadsheet, starting with the first chorus.\nTo play just the current chorus, select the first beat of that chorus and press Shift-Enter.");
+        playBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        playBtn.setMaximumSize(new java.awt.Dimension(30, 30));
+        playBtn.setMinimumSize(new java.awt.Dimension(30, 30));
+        playBtn.setPreferredSize(new java.awt.Dimension(30, 30));
+        playBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                playButtonActionPerformed(evt);
+                playBtnActionPerformed(evt);
             }
         });
-        playPanel.add(playButton);
+        playPanel.add(playBtn);
+
+        pauseBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/pause.gif"))); // NOI18N
+        pauseBtn.setToolTipText("Pause or resume playback.");
+        pauseBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        pauseBtn.setEnabled(false);
+        pauseBtn.setMaximumSize(new java.awt.Dimension(30, 30));
+        pauseBtn.setMinimumSize(new java.awt.Dimension(30, 30));
+        pauseBtn.setPreferredSize(new java.awt.Dimension(30, 30));
+        pauseBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pauseBtnActionPerformed(evt);
+            }
+        });
+        playPanel.add(pauseBtn);
+
+        stopBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/stop.gif"))); // NOI18N
+        stopBtn.setToolTipText("Stop playback.");
+        stopBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        stopBtn.setEnabled(false);
+        stopBtn.setMaximumSize(new java.awt.Dimension(30, 30));
+        stopBtn.setMinimumSize(new java.awt.Dimension(30, 30));
+        stopBtn.setPreferredSize(new java.awt.Dimension(30, 30));
+        stopBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stopBtnActionPerformed(evt);
+            }
+        });
+        playPanel.add(stopBtn);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -1245,6 +1281,8 @@ private void initKeys()
             MelodyPart guideToneLine = guideLine.makeGuideLine();
             notate.addChorus(guideToneLine);
         }
+        
+        updatePlayButtons();
 
     }//GEN-LAST:event_generateLineActionPerformed
 
@@ -1392,6 +1430,8 @@ private void initKeys()
         
         updateTransformButtons();
         
+        updatePlayButtons();
+        
     }//GEN-LAST:event_transformLineActionPerformed
 
     private void revertLineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_revertLineActionPerformed
@@ -1399,6 +1439,8 @@ private void initKeys()
         transformationPanel.revertSubs();
         
         updateTransformButtons();
+        
+        updatePlayButtons();
 
     }//GEN-LAST:event_revertLineActionPerformed
     
@@ -1532,20 +1574,6 @@ private void initKeys()
         }
     }//GEN-LAST:event_keyboardLPMouseClicked
 
-    private void playButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playButtonActionPerformed
-        if(playButton.getText().equals("Play")){
-            notate.playCurrentSelection(true,
-                                        0,
-                                        PlayScoreCommand.USEDRUMS,
-                                        "Playing guide tone line");
-            playButton.setText("Stop");
-        }
-        else{
-            notate.stopPlaying();
-            playButton.setText("Play");
-        }
-    }//GEN-LAST:event_playButtonActionPerformed
-
     private void allowColorBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_allowColorBoxActionPerformed
         this.setVisible(false);
         updateButtons();
@@ -1564,7 +1592,58 @@ private void initKeys()
         
         updateTransformButtons();
         
+        updatePlayButtons();
+        
     }//GEN-LAST:event_reapplyTransformActionPerformed
+
+    private void updatePlayButtons(){
+        playBtn.setEnabled(notate.getPlayEnabled());
+        pauseBtn.setEnabled(notate.getPauseEnabled());
+        stopBtn.setEnabled(notate.getStopEnabled());
+        
+        playBtn.setSelected(notate.getPlaySelected());
+        pauseBtn.setSelected(notate.getPauseSelected());
+        stopBtn.setSelected(notate.getStopSelected());
+    }
+    
+    
+    private void playBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playBtnActionPerformed
+        notate.improvisationOn = false;
+        notate.improvOn = false;
+        notate.playAll();
+        
+        updatePlayButtons();
+    }//GEN-LAST:event_playBtnActionPerformed
+
+    private void stopBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopBtnActionPerformed
+        notate.stopButtonPressed();
+        
+        updatePlayButtons();
+    }//GEN-LAST:event_stopBtnActionPerformed
+
+    private void pauseBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pauseBtnActionPerformed
+        if( notate.getMode() == Mode.PLAYING_PAUSED )
+        {
+            notate.setMode(Mode.PLAYING);
+        }
+        else
+        {
+            notate.setMode(Mode.PLAYING_PAUSED);
+        }
+        notate.pauseScore();
+        if( notate.getKeyboard() != null )
+        {
+            String v = notate.getKeyboard().voicingFromKeyboard();
+            String currentChord = notate.getKeyboard().getPresentChordDisplayText();
+
+            if( notate.getVoicingTestFrame() != null && notate.getVoicingTestFrame().isVisible() )
+            {
+                notate.selectVoicing(v, currentChord);
+            }
+        }
+
+        updatePlayButtons();
+    }//GEN-LAST:event_pauseBtnActionPerformed
 
     public void setKeyboard(String mod, int midiValue){
         
@@ -1806,7 +1885,8 @@ private void initKeys()
     private javax.swing.ButtonGroup numberOfLinesButtons;
     private javax.swing.JLabel numberOfLinesLabel;
     private javax.swing.JRadioButton oneLine;
-    private javax.swing.JButton playButton;
+    private javax.swing.JToggleButton pauseBtn;
+    private javax.swing.JButton playBtn;
     private javax.swing.JPanel playPanel;
     private javax.swing.JLabel pointerC4;
     private javax.swing.JRadioButton quarter;
@@ -1820,6 +1900,7 @@ private void initKeys()
     private javax.swing.JPanel scaleDegPanel;
     private javax.swing.ButtonGroup scaleDegreeButtons;
     private javax.swing.JRadioButton sevenThree;
+    private javax.swing.JButton stopBtn;
     private javax.swing.JRadioButton threeSeven;
     private javax.swing.Box.Filler topFiller;
     private javax.swing.JButton transformLine;
