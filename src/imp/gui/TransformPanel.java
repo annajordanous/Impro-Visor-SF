@@ -24,6 +24,7 @@ import imp.ImproVisor;
 import imp.com.PasteCommand;
 import imp.com.PlayScoreCommand;
 import imp.data.ChordPart;
+import imp.data.MelodyInContext;
 import imp.data.MelodyPart;
 import static imp.gui.UnsavedChanges.Value.CANCEL;
 import static imp.gui.UnsavedChanges.Value.NO;
@@ -124,6 +125,10 @@ public class TransformPanel extends javax.swing.JPanel {
      * Saves the paste commands for applying, so they can be reverted. 
      */
     private Stack<MelodyInContext> savedMelodies;
+    
+    public boolean getStackEmpty(){
+        return savedMelodies.isEmpty();
+    }
     
     /**
      * Creates new form SubstitutorTabPanel
@@ -1504,10 +1509,11 @@ public class TransformPanel extends javax.swing.JPanel {
             Stave stave = notate.getCurrentStave();
             int start = notate.getCurrentSelectionStart();
             int stop = notate.getCurrentSelectionEnd();
-            savedMelodies.add(new MelodyInContext(melody.copy(), 
-                                                  stave, 
-                                                  start, 
-                                                  stop));
+            notate.getCurrentMelodyPart().setOriginalVersion(new MelodyInContext(melody.copy(), stave, start, stop));
+//            savedMelodies.add(new MelodyInContext(melody.copy(), 
+//                                                  stave, 
+//                                                  start, 
+//                                                  stop));
             
             MelodyPart transformedPart = transform.applySubstitutionsToMelodyPart(melody,
                                                                                   chords,
@@ -1538,7 +1544,14 @@ public class TransformPanel extends javax.swing.JPanel {
      */
     public void revertSubs()
     {
-        MelodyInContext originalPart = savedMelodies.pop();
+        MelodyPart currentPart = notate.getCurrentMelodyPart();
+        MelodyInContext originalPart = currentPart.getOriginalVersion();
+        
+        //prevent null pointer exception, don't try to revert an original melody
+        if(originalPart==null){
+            return;
+        }
+        //MelodyInContext originalPart = savedMelodies.pop();
         notate.stopPlaying();
         Stave stave = originalPart.getStave();
         int start = originalPart.getStart();
@@ -1547,49 +1560,15 @@ public class TransformPanel extends javax.swing.JPanel {
         stave.setSelection(start, stop);
         pasteOver(notate.getMelodyPart(stave), originalPart.getMelody(), start);
         
-        if(savedMelodies.size() < 1)
-        {
-            revertSubstitutionsButton.setEnabled(false);
-            reapplySubstitutionsButton.setEnabled(false);
-        }
-    }
-    
-    /**
-     * Defines a selection in a stave from a melody with start and end slots.
-     */
-    private class MelodyInContext {
-        private MelodyPart melody;
-        private Stave stave;
-        private int start;
-        private int stop;
+//        
+//        if(savedMelodies.size() < 1)
+//        {
+//            revertSubstitutionsButton.setEnabled(false);
+//            reapplySubstitutionsButton.setEnabled(false);
+//        }
         
-        public MelodyInContext(MelodyPart melody,Stave stave, int start, int stop)
-        {
-            this.melody = melody;
-            this.stave = stave;
-            this.start = start;
-            this.stop = stop;
-        }
-        
-        public MelodyPart getMelody()
-        {
-            return this.melody.copy();
-        }
-        
-        public Stave getStave()
-        {
-            return this.stave;
-        }
-        
-        public int getStart()
-        {
-            return this.start;
-        }
-        
-        public int getStop()
-        {
-            return this.stop;
-        }
+        //now the current melody part is the original version
+        currentPart.setOriginalVersion(null);
     }
     
     /**
