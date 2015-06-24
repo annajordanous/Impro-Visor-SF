@@ -1232,7 +1232,9 @@ private void initKeys()
         */
         
         //construct a guide tone line generator, make a guide tone line (melody part), then add it as a new chorus
-        GuideLineGenerator guideLine = new GuideLineGenerator(notate.getChordProg(), 
+        
+        if(!notate.getChordProg().getChords().isEmpty()){
+            GuideLineGenerator guideLine = new GuideLineGenerator(notate.getChordProg(), 
                                                               buttonToDirection(direction), 
                                                               scaleDegString, 
                                                               alternating, 
@@ -1240,10 +1242,10 @@ private void initKeys()
                                                               duration,
                                                               lineType,
                                                               allowColor);
-        MelodyPart guideToneLine = guideLine.makeGuideLine();
-        notate.addChorus(guideToneLine);
-        
-        //transformed = false;
+            MelodyPart guideToneLine = guideLine.makeGuideLine();
+            notate.addChorus(guideToneLine);
+        }
+
     }//GEN-LAST:event_generateLineActionPerformed
 
     private void setDefaultRange(){
@@ -1315,6 +1317,9 @@ private void initKeys()
         panel.add(scaleDegLabel);
         removeAll(group);
         Chord firstChord = notate.getChordProg().getChord(0);
+        if(firstChord==null){
+            return;
+        }
         Polylist chordSpell = firstChord.getSpell();
         if(chordSpell==null){
             return;
