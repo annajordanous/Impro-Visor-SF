@@ -480,6 +480,11 @@ private SectionInfo sectionInfo;
 private VoicingTableModel voicingTableModel = new VoicingTableModel();
 private DefaultListModel voicingSequenceListModel = new DefaultListModel();
 private imp.gui.VoicingKeyboard keyboard = null;
+
+public imp.gui.VoicingKeyboard getKeyboard(){
+    return keyboard;
+}
+
 private imp.gui.StepEntryKeyboard stepKeyboard = null;
 private static DefaultTableCellRenderer voicingRenderer = new DefaultTableCellRenderer()
 {
@@ -25077,6 +25082,45 @@ private ImageIcon pauseButton =
     private javax.swing.JSeparator grammarMenuSeparator;
     // Real end of variables declaration
     
+    public boolean getPlayEnabled(){
+        return playBtn.isEnabled();
+    }
+    
+    public boolean getPauseEnabled(){
+        return pauseBtn.isEnabled();
+    }
+    
+    public boolean getStopEnabled(){
+        return stopBtn.isEnabled();
+    }
+    
+    public javax.swing.JFrame getVoicingTestFrame(){
+        return voicingTestFrame;
+    }
+    
+    public JButton getPlay(){
+        return playBtn;
+    }
+    
+    public JToggleButton getPause(){
+        return pauseBtn;
+    }
+    
+    public JButton getStop(){
+        return stopBtn;
+    }
+    
+    public boolean getPlaySelected(){
+        return playBtn.isSelected();
+    }
+    
+    public boolean getPauseSelected(){
+        return pauseBtn.isSelected();
+    }
+    
+    public boolean getStopSelected(){
+        return stopBtn.isSelected();
+    }
     
 public int getIgnoreDuplicateLick()
   {
