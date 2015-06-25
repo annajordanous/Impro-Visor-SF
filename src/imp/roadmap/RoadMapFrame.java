@@ -184,6 +184,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     
     private boolean jSliderIgnoreStateChangedEvt = false;
     
+    private ArrayList<String> styleNames = new ArrayList<String>();
   /**
    *
    * The file chooser for opening the dictionary
@@ -3975,21 +3976,30 @@ public void setParent(Notate notate)
         
         boolean nothingSelected = !roadMapPanel.hasSelection();
         if (nothingSelected)
-          {
-            selectAllBricks();
-          }
-
-        ArrayList<Block> blocks = roadMapPanel.getSelection();
+         {
+          selectAllBricks();            
+         }
         
-        ChordPart chordPart = new ChordPart();                
+       
+        
+        ChordPart chordPart = new ChordPart();           //only one secrec - swing
+        ArrayList<Block> blocks = new ArrayList<Block>();
         if (temp == 0)
+          {
+            blocks = roadMapPanel.getBlocks();
+            blocks = chordPart.setAllStyles(blocks, notate.getChordProg().getSectionRecords()); 
+            temp++;
+          } 
+        else
         {
-        blocks = chordPart.setAllStyles(blocks); 
-        temp++;
+            blocks = roadMapPanel.getSelection();
+            blocks = chordPart.setAllStyles(blocks, notate.getChordProg().getSectionRecords());
         }
-        chordPart.setAllStyleNames(chordPart.getAllStyleNames(blocks));
-        chordPart.addFromRoadMapFrame(this);
         
+        chordPart.setStyleNamesFromBlocks(blocks);
+        chordPart.addFromRoadMapFrame(this);
+        chordPart.resetStylesInRecords(notate.getChordProg().getSectionRecords());
+
         Score score = new Score(chordPart);
         score.setMetre(getMetre());
         score.setTempo(getTempo());
@@ -4667,5 +4677,15 @@ public Note getFirstNote()
 public String getComposer()
 {
     return notate.getComposer();
+}
+
+public void setStyleNames(ArrayList<String> styles)
+{
+    styleNames = styles;
+}
+
+public ArrayList<String> getStyleNames()
+{
+    return styleNames;
 }
 }
