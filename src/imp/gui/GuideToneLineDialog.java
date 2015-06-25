@@ -373,6 +373,7 @@ private void initKeys()
         scaleDegreeButtons = new javax.swing.ButtonGroup();
         maxDurationButtons = new javax.swing.ButtonGroup();
         lineTypeButtons = new javax.swing.ButtonGroup();
+        scaleDegree2Buttons = new javax.swing.ButtonGroup();
         linesPanel = new javax.swing.JPanel();
         numberOfLinesLabel = new javax.swing.JLabel();
         oneLine = new javax.swing.JRadioButton();
@@ -398,12 +399,6 @@ private void initKeys()
         whole = new javax.swing.JRadioButton();
         half = new javax.swing.JRadioButton();
         quarter = new javax.swing.JRadioButton();
-        lineTypePanel = new javax.swing.JPanel();
-        lineTypeLabel = new javax.swing.JLabel();
-        threeSeven = new javax.swing.JRadioButton();
-        sevenThree = new javax.swing.JRadioButton();
-        fiveNine = new javax.swing.JRadioButton();
-        nineFive = new javax.swing.JRadioButton();
         bottomFiller = new javax.swing.Box.Filler(new java.awt.Dimension(20, 20), new java.awt.Dimension(20, 20), new java.awt.Dimension(20, 20));
         topFiller = new javax.swing.Box.Filler(new java.awt.Dimension(20, 20), new java.awt.Dimension(20, 20), new java.awt.Dimension(20, 20));
         rangePanel = new javax.swing.JPanel();
@@ -505,6 +500,8 @@ private void initKeys()
         stopBtn = new javax.swing.JButton();
         allowColorPanel = new javax.swing.JPanel();
         allowColorBox = new javax.swing.JCheckBox();
+        scaleDeg2Panel = new javax.swing.JPanel();
+        scaleDeg2Label = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(1150, 600));
@@ -589,7 +586,7 @@ private void initKeys()
         scaleDegPanel.setLayout(new java.awt.GridBagLayout());
 
         scaleDegLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        scaleDegLabel.setText("Start on Scale Degree:");
+        scaleDegLabel.setText("Line 1 - Start on Scale Degree:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -615,15 +612,15 @@ private void initKeys()
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 12;
+        gridBagConstraints.gridy = 13;
         getContentPane().add(buttonPanel, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 11;
+        gridBagConstraints.gridy = 12;
         getContentPane().add(leftFiller, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 11;
+        gridBagConstraints.gridy = 12;
         getContentPane().add(rightFiller, gridBagConstraints);
 
         transformLine.setText("Generate Solo Over Line");
@@ -655,7 +652,7 @@ private void initKeys()
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 13;
+        gridBagConstraints.gridy = 14;
         getContentPane().add(transformPanel, gridBagConstraints);
 
         maxDurationPanel.setLayout(new java.awt.GridBagLayout());
@@ -698,37 +695,11 @@ private void initKeys()
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 6;
         getContentPane().add(maxDurationPanel, gridBagConstraints);
-
-        lineTypeLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        lineTypeLabel.setText("Line Type:");
-        lineTypePanel.add(lineTypeLabel);
-
-        lineTypeButtons.add(threeSeven);
-        threeSeven.setSelected(true);
-        threeSeven.setText("3-7 line");
-        lineTypePanel.add(threeSeven);
-
-        lineTypeButtons.add(sevenThree);
-        sevenThree.setText("7-3 line");
-        lineTypePanel.add(sevenThree);
-
-        lineTypeButtons.add(fiveNine);
-        fiveNine.setText("5-9 line");
-        lineTypePanel.add(fiveNine);
-
-        lineTypeButtons.add(nineFive);
-        nineFive.setText("9-5 line");
-        lineTypePanel.add(nineFive);
-
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 4;
-        getContentPane().add(lineTypePanel, gridBagConstraints);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 15;
+        gridBagConstraints.gridy = 16;
         getContentPane().add(bottomFiller, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -1148,7 +1119,7 @@ private void initKeys()
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 11;
+        gridBagConstraints.gridy = 12;
         getContentPane().add(rangePanel, gridBagConstraints);
 
         rangeLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -1157,7 +1128,7 @@ private void initKeys()
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 8;
+        gridBagConstraints.gridy = 9;
         getContentPane().add(rangeLabelPanel, gridBagConstraints);
 
         playBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/play.gif"))); // NOI18N
@@ -1203,7 +1174,7 @@ private void initKeys()
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 14;
+        gridBagConstraints.gridy = 15;
         getContentPane().add(playPanel, gridBagConstraints);
 
         allowColorBox.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -1217,8 +1188,19 @@ private void initKeys()
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 6;
+        gridBagConstraints.gridy = 7;
         getContentPane().add(allowColorPanel, gridBagConstraints);
+
+        scaleDeg2Panel.setLayout(new java.awt.GridBagLayout());
+
+        scaleDeg2Label.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        scaleDeg2Label.setText("Line 2 - Start On Scale Degree:");
+        scaleDeg2Panel.add(scaleDeg2Label, new java.awt.GridBagConstraints());
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 4;
+        getContentPane().add(scaleDeg2Panel, gridBagConstraints);
 
         pack();
         setLocationRelativeTo(null);
@@ -1229,8 +1211,9 @@ private void initKeys()
         JRadioButton numberOfLines = getSelected(numberOfLinesButtons);
         JRadioButton direction = getSelected(directionButtons);
         JRadioButton scaleDeg = getSelected(scaleDegreeButtons);
+        JRadioButton scaleDeg2 = getSelected(scaleDegree2Buttons);
         JRadioButton maxDur = getSelected(maxDurationButtons);
-        JRadioButton lineTypeButton = getSelected(lineTypeButtons);
+        //JRadioButton lineTypeButton = getSelected(lineTypeButtons);
         
         //Get paramaters to pass into constructor
         //notate = (Notate)this.getParent();
@@ -1241,18 +1224,26 @@ private void initKeys()
             scaleDegString = "NOCHORD";
         }
         
+        String scaleDegString2;
+        if(scaleDeg2!=null){
+           scaleDegString2 = scaleDeg2.getText(); 
+        }else{
+            scaleDegString2 = "NOCHORD";
+        }
+        
         boolean alternating = false;
         int duration = buttonToDuration(maxDur);
-        int lineType = buttonToLineType(lineTypeButton);
+        //int lineType = buttonToLineType(lineTypeButton);
         boolean allowColor = allowColorBox.isSelected();
+        boolean mix = twoLines.isSelected();
         
         //Passing in "mix" as the scaleDegString indicates that two lines should be generated
         //Right now, the order in which the two lines appear always alternates,
         //i.e. the line has a trapezoidal shape
-        if(numberOfLines.equals(twoLines)){
-            scaleDegString = "mix";
-            alternating = true;
-        }
+//        if(numberOfLines.equals(twoLines)){
+//            scaleDegString = "mix";
+//            alternating = true;
+//        }
         
         int [] limits = limits();
         int low = C4; //middle C (C4)
@@ -1272,11 +1263,12 @@ private void initKeys()
         if(!notate.getChordProg().getChords().isEmpty()){
             GuideLineGenerator guideLine = new GuideLineGenerator(notate.getChordProg(), 
                                                               buttonToDirection(direction), 
-                                                              scaleDegString, 
+                                                              scaleDegString,
+                                                              scaleDegString2,
                                                               alternating, 
                                                               low, high, 
                                                               duration,
-                                                              lineType,
+                                                              mix,
                                                               allowColor);
             MelodyPart guideToneLine = guideLine.makeGuideLine();
             notate.addChorus(guideToneLine);
@@ -1334,25 +1326,20 @@ private void initKeys()
         }
     }
     
-    private int buttonToLineType(JRadioButton b){
-        if(b.equals(threeSeven)){
-            return THREE_SEVEN;
-        }else if(b.equals(sevenThree)){
-            return SEVEN_THREE;
-        }else if(b.equals(fiveNine)){
-            return FIVE_NINE;
-        }else if(b.equals(nineFive)){
-            return NINE_FIVE;
-        }else{
-            return THREE_SEVEN; // default, shouldn't happen
-        }
-    }
+    
     public void updateButtons(){
         setButtonText(scaleDegreeButtons, scaleDegPanel);
+        setButtonText(scaleDegree2Buttons, scaleDeg2Panel);
+        enableButtons(scaleDegree2Buttons, twoLines.isSelected());
     }
     private void setButtonText(ButtonGroup group, JPanel panel){
         panel.removeAll();
-        panel.add(scaleDegLabel);
+        if(panel.equals(scaleDegPanel)){
+            panel.add(scaleDegLabel);
+        }else if(panel.equals(scaleDeg2Panel)){
+            panel.add(scaleDeg2Label);
+        }
+        
         removeAll(group);
         Chord firstChord = notate.getChordProg().getChord(0);
         if(firstChord==null){
@@ -1388,12 +1375,16 @@ private void initKeys()
                 b.setSelected(true);
             }
         }
+        if(panel.getComponents().length>1){
+            JRadioButton first = (JRadioButton)panel.getComponent(1);
+            first.setSelected(true);
+        }
+        
         
     }
     
     private void twoLinesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_twoLinesActionPerformed
-        enableButtons(scaleDegreeButtons, false);
-        enableButtons(lineTypeButtons, true);
+        enableButtons(scaleDegree2Buttons, true);
     }//GEN-LAST:event_twoLinesActionPerformed
 
     /**
@@ -1420,8 +1411,7 @@ private void initKeys()
     }
     
     private void oneLineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_oneLineActionPerformed
-        enableButtons(scaleDegreeButtons, true);
-        enableButtons(lineTypeButtons, false);
+        enableButtons(scaleDegree2Buttons, false);
     }//GEN-LAST:event_oneLineActionPerformed
 
     private void transformLineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transformLineActionPerformed
@@ -1779,7 +1769,6 @@ private void initKeys()
     private javax.swing.ButtonGroup directionButtons;
     private javax.swing.JLabel directionLabel;
     private javax.swing.JPanel directionPanel;
-    private javax.swing.JRadioButton fiveNine;
     private javax.swing.JButton generateLine;
     private javax.swing.JRadioButton half;
     private javax.swing.JLabel jLabel1;
@@ -1874,12 +1863,9 @@ private void initKeys()
     private javax.swing.JLayeredPane keyboardLP;
     private javax.swing.Box.Filler leftFiller;
     private javax.swing.ButtonGroup lineTypeButtons;
-    private javax.swing.JLabel lineTypeLabel;
-    private javax.swing.JPanel lineTypePanel;
     private javax.swing.JPanel linesPanel;
     private javax.swing.ButtonGroup maxDurationButtons;
     private javax.swing.JPanel maxDurationPanel;
-    private javax.swing.JRadioButton nineFive;
     private javax.swing.JRadioButton noPref;
     private javax.swing.JRadioButton noPreference;
     private javax.swing.ButtonGroup numberOfLinesButtons;
@@ -1896,12 +1882,13 @@ private void initKeys()
     private javax.swing.JButton reapplyTransform;
     private javax.swing.JButton revertLine;
     private javax.swing.Box.Filler rightFiller;
+    private javax.swing.JLabel scaleDeg2Label;
+    private javax.swing.JPanel scaleDeg2Panel;
     private javax.swing.JLabel scaleDegLabel;
     private javax.swing.JPanel scaleDegPanel;
+    private javax.swing.ButtonGroup scaleDegree2Buttons;
     private javax.swing.ButtonGroup scaleDegreeButtons;
-    private javax.swing.JRadioButton sevenThree;
     private javax.swing.JButton stopBtn;
-    private javax.swing.JRadioButton threeSeven;
     private javax.swing.Box.Filler topFiller;
     private javax.swing.JButton transformLine;
     private javax.swing.JPanel transformPanel;

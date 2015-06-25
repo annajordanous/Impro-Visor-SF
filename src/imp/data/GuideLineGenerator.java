@@ -163,18 +163,18 @@ public class GuideLineGenerator implements Constants {
      * @param maxDuration maxDuration of any note, 0 or less if not specified
      * @param lineType the type of line (i.e. 3-7, 5-9, etc)
      */
-    public GuideLineGenerator(ChordPart inputChordPart, int direction, String startDegree, boolean alternating, int lowLimit, int highLimit, int maxDuration, int lineType, boolean allowColor) 
+    public GuideLineGenerator(ChordPart inputChordPart, int direction, String startDegree1, String startDegree2, boolean alternating, int lowLimit, int highLimit, int maxDuration, boolean mix, boolean allowColor) 
     {
         chordPart = inputChordPart;
         this.originalDirection = direction;
         this.direction = direction;
         this.direction1 = direction;
         this.direction2 = direction;
-        this.startDegree = startDegree;
+        this.startDegree = startDegree1;
         this.alternating = alternating;
         
         //pass in "mix" as the startDegree to signify two lines
-        mix = startDegree.equals("mix");
+        this.mix = mix;
        
         
         this.lowLimit = lowLimit;
@@ -186,17 +186,9 @@ public class GuideLineGenerator implements Constants {
         
         this.allowColor = allowColor;
         
-        if(lineType==THREE_SEVEN){
-            startDegree1 = THREE; startDegree2 = SEVEN;
-        }else if(lineType==SEVEN_THREE){
-            startDegree1 = SEVEN; startDegree2 = THREE;
-        }else if(lineType==FIVE_NINE){
-            startDegree1 = FIVE; startDegree2 = NINE;
-        }else if(lineType==NINE_FIVE){
-            startDegree1 = NINE; startDegree2 = FIVE;
-        }else{
-            startDegree1 = THREE; startDegree2 = SEVEN;
-        }
+        this.startDegree1 = startDegree1;
+        this.startDegree2 = startDegree2;
+
     }
     
     /**
