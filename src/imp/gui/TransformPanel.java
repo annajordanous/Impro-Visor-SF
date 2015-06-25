@@ -221,8 +221,7 @@ public class TransformPanel extends javax.swing.JPanel {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
         transformationsFunctionDialogue = new javax.swing.JDialog();
@@ -352,10 +351,8 @@ public class TransformPanel extends javax.swing.JPanel {
         createNewSubstitutionsFileButton.setText("Create New Transform File");
         createNewSubstitutionsFileButton.setToolTipText("Create a new empty transform file with no classes.");
         createNewSubstitutionsFileButton.setMaximumSize(new java.awt.Dimension(10000, 23));
-        createNewSubstitutionsFileButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        createNewSubstitutionsFileButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 createNewSubstitutionsFileButtonActionPerformed(evt);
             }
         });
@@ -370,10 +367,8 @@ public class TransformPanel extends javax.swing.JPanel {
         openSubstitutionsFileButton.setToolTipText("Open transform file from grammars folder.");
         openSubstitutionsFileButton.setAutoscrolls(true);
         openSubstitutionsFileButton.setMaximumSize(new java.awt.Dimension(10000, 23));
-        openSubstitutionsFileButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        openSubstitutionsFileButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 openSubstitutionsFileButtonActionPerformed(evt);
             }
         });
@@ -389,10 +384,8 @@ public class TransformPanel extends javax.swing.JPanel {
         saveSubstitutionsButton.setToolTipText("Save the transformations below into a file.");
         saveSubstitutionsButton.setEnabled(false);
         saveSubstitutionsButton.setMaximumSize(new java.awt.Dimension(10000, 23));
-        saveSubstitutionsButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        saveSubstitutionsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveSubstitutionsButtonActionPerformed(evt);
             }
         });
@@ -421,10 +414,8 @@ public class TransformPanel extends javax.swing.JPanel {
         substitutorRectifyCheckBox.setMaximumSize(new java.awt.Dimension(240, 23));
         substitutorRectifyCheckBox.setMinimumSize(new java.awt.Dimension(240, 23));
         substitutorRectifyCheckBox.setPreferredSize(new java.awt.Dimension(240, 23));
-        substitutorRectifyCheckBox.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        substitutorRectifyCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 substitutorRectifyCheckBoxActionPerformed(evt);
             }
         });
@@ -462,10 +453,13 @@ public class TransformPanel extends javax.swing.JPanel {
         applySubstitutionsButton.setToolTipText("Apply the transformation classes below to the selected melody.");
         applySubstitutionsButton.setEnabled(false);
         applySubstitutionsButton.setMaximumSize(new java.awt.Dimension(10000, 23));
-        applySubstitutionsButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        applySubstitutionsButton.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                applySubstitutionsButtonStateChanged(evt);
+            }
+        });
+        applySubstitutionsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 applySubstitutionsButtonActionPerformed(evt);
             }
         });
@@ -482,10 +476,13 @@ public class TransformPanel extends javax.swing.JPanel {
         revertSubstitutionsButton.setToolTipText("Undo transformations that were applied.\n");
         revertSubstitutionsButton.setEnabled(false);
         revertSubstitutionsButton.setMaximumSize(new java.awt.Dimension(10000, 23));
-        revertSubstitutionsButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        revertSubstitutionsButton.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                revertSubstitutionsButtonStateChanged(evt);
+            }
+        });
+        revertSubstitutionsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 revertSubstitutionsButtonActionPerformed(evt);
             }
         });
@@ -499,10 +496,13 @@ public class TransformPanel extends javax.swing.JPanel {
         reapplySubstitutionsButton.setText("Re-Apply");
         reapplySubstitutionsButton.setToolTipText("Revert transformations and Apply again.");
         reapplySubstitutionsButton.setEnabled(false);
-        reapplySubstitutionsButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        reapplySubstitutionsButton.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                reapplySubstitutionsButtonStateChanged(evt);
+            }
+        });
+        reapplySubstitutionsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 reapplySubstitutionsButtonActionPerformed(evt);
             }
         });
@@ -515,10 +515,8 @@ public class TransformPanel extends javax.swing.JPanel {
         cleanTransformButton.setToolTipText("Remove duplicate classes, but add their weights together.");
         cleanTransformButton.setEnabled(false);
         cleanTransformButton.setMaximumSize(new java.awt.Dimension(10000, 23));
-        cleanTransformButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        cleanTransformButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cleanTransformButtonActionPerformed(evt);
             }
         });
@@ -544,10 +542,8 @@ public class TransformPanel extends javax.swing.JPanel {
         addSubsFromOtherFileButton.setText("Add Classes From Other File");
         addSubsFromOtherFileButton.setToolTipText("Add all the classes in another transform file to the current set.");
         addSubsFromOtherFileButton.setEnabled(false);
-        addSubsFromOtherFileButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        addSubsFromOtherFileButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addSubsFromOtherFileButtonActionPerformed(evt);
             }
         });
@@ -567,10 +563,8 @@ public class TransformPanel extends javax.swing.JPanel {
         createNewSubstitutionButton.setMaximumSize(new java.awt.Dimension(164, 26));
         createNewSubstitutionButton.setMinimumSize(new java.awt.Dimension(164, 26));
         createNewSubstitutionButton.setPreferredSize(new java.awt.Dimension(164, 26));
-        createNewSubstitutionButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        createNewSubstitutionButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 createNewSubstitutionButtonActionPerformed(evt);
             }
         });
@@ -591,10 +585,8 @@ public class TransformPanel extends javax.swing.JPanel {
         editSubstitutionNameButton.setMaximumSize(new java.awt.Dimension(158, 26));
         editSubstitutionNameButton.setMinimumSize(new java.awt.Dimension(158, 26));
         editSubstitutionNameButton.setPreferredSize(new java.awt.Dimension(158, 26));
-        editSubstitutionNameButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        editSubstitutionNameButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 editSubstitutionNameButtonActionPerformed(evt);
             }
         });
@@ -615,10 +607,8 @@ public class TransformPanel extends javax.swing.JPanel {
         deleteSubstitutionButton.setMaximumSize(new java.awt.Dimension(115, 26));
         deleteSubstitutionButton.setMinimumSize(new java.awt.Dimension(115, 26));
         deleteSubstitutionButton.setPreferredSize(new java.awt.Dimension(115, 26));
-        deleteSubstitutionButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        deleteSubstitutionButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 deleteSubstitutionButtonActionPerformed(evt);
             }
         });
@@ -651,8 +641,7 @@ public class TransformPanel extends javax.swing.JPanel {
         subsScrollPane.setPreferredSize(new java.awt.Dimension(465, 402));
 
         subJTable.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        subJTable.setModel(new javax.swing.table.AbstractTableModel()
-        {
+        subJTable.setModel(new javax.swing.table.AbstractTableModel() {
 
             Object[] subs = new Object[0];
             public Class getColumnClass(int columnIndex)
@@ -667,18 +656,15 @@ public class TransformPanel extends javax.swing.JPanel {
             {
                 return 1;
             }
-            public Substitution getValueAt(int rowIndex, int columnIndex)
-            {
+            public Substitution getValueAt(int rowIndex, int columnIndex) {
                 return (Substitution)subs[columnIndex];
             }
         });
         subJTable.setMaximumSize(new java.awt.Dimension(100000, 1000000));
         subJTable.setMinimumSize(new java.awt.Dimension(360, 450));
         subJTable.getTableHeader().setReorderingAllowed(false);
-        subJTable.addFocusListener(new java.awt.event.FocusAdapter()
-        {
-            public void focusGained(java.awt.event.FocusEvent evt)
-            {
+        subJTable.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
                 subJTableFocusGained(evt);
             }
         });
@@ -706,10 +692,8 @@ public class TransformPanel extends javax.swing.JPanel {
 
         scaleMotifWeightsButton.setText("Scale All");
         scaleMotifWeightsButton.setToolTipText("scale all the weights of substitutions currently labeled as motifs");
-        scaleMotifWeightsButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        scaleMotifWeightsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 scaleMotifWeightsButtonActionPerformed(evt);
             }
         });
@@ -741,10 +725,8 @@ public class TransformPanel extends javax.swing.JPanel {
 
         scaleEmbWeightsButton.setText("Scale All");
         scaleEmbWeightsButton.setToolTipText("scale all the weights of substitutions currently labeled as embellishments");
-        scaleEmbWeightsButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        scaleEmbWeightsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 scaleEmbWeightsButtonActionPerformed(evt);
             }
         });
@@ -811,10 +793,8 @@ public class TransformPanel extends javax.swing.JPanel {
         createNewTransformationButton.setToolTipText("Create a new empty transform that will be added to the selected class.");
         createNewTransformationButton.setEnabled(false);
         createNewTransformationButton.setMargin(new java.awt.Insets(2, 7, 2, 7));
-        createNewTransformationButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        createNewTransformationButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 createNewTransformationButtonActionPerformed(evt);
             }
         });
@@ -832,10 +812,8 @@ public class TransformPanel extends javax.swing.JPanel {
         editSelectedTransformationButton.setToolTipText("Edit the grammar for the selected transform.");
         editSelectedTransformationButton.setEnabled(false);
         editSelectedTransformationButton.setMargin(new java.awt.Insets(2, 7, 2, 7));
-        editSelectedTransformationButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        editSelectedTransformationButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 editSelectedTransformationButtonActionPerformed(evt);
             }
         });
@@ -853,10 +831,8 @@ public class TransformPanel extends javax.swing.JPanel {
         deleteTransformationButton.setToolTipText("Delete the selected transform from the selected class.");
         deleteTransformationButton.setEnabled(false);
         deleteTransformationButton.setMargin(new java.awt.Insets(2, 7, 2, 7));
-        deleteTransformationButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        deleteTransformationButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 deleteTransformationButtonActionPerformed(evt);
             }
         });
@@ -875,8 +851,7 @@ public class TransformPanel extends javax.swing.JPanel {
         transScrollPane.setPreferredSize(new java.awt.Dimension(465, 402));
 
         transJTable.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        transJTable.setModel(new javax.swing.table.AbstractTableModel()
-        {
+        transJTable.setModel(new javax.swing.table.AbstractTableModel() {
 
             Object[] subs = new Object[0];
             public Class getColumnClass(int columnIndex)
@@ -891,8 +866,7 @@ public class TransformPanel extends javax.swing.JPanel {
             {
                 return 1;
             }
-            public Object getValueAt(int rowIndex, int columnIndex)
-            {
+            public Object getValueAt(int rowIndex, int columnIndex) {
                 return subs[columnIndex];
             }
         });
@@ -918,10 +892,8 @@ public class TransformPanel extends javax.swing.JPanel {
 
         scaleTransWeightsButton.setText("Scale All");
         scaleTransWeightsButton.setToolTipText("scale all the weights of transformations in the currently selected substitution");
-        scaleTransWeightsButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        scaleTransWeightsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 scaleTransWeightsButtonActionPerformed(evt);
             }
         });
@@ -961,10 +933,8 @@ public class TransformPanel extends javax.swing.JPanel {
         transformationsFunctionsPanel.setLayout(new java.awt.GridBagLayout());
 
         jButton1.setText("Show Function Documentation");
-        jButton1.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
@@ -997,10 +967,8 @@ public class TransformPanel extends javax.swing.JPanel {
         substitutorPlayLeadsheetButton.setMaximumSize(new java.awt.Dimension(10000, 23));
         substitutorPlayLeadsheetButton.setMinimumSize(new java.awt.Dimension(153, 23));
         substitutorPlayLeadsheetButton.setPreferredSize(new java.awt.Dimension(153, 23));
-        substitutorPlayLeadsheetButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        substitutorPlayLeadsheetButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 substitutorPlayLeadsheetButtonActionPerformed(evt);
             }
         });
@@ -1012,10 +980,8 @@ public class TransformPanel extends javax.swing.JPanel {
         substitutorStopLeadsheetButton.setText("Stop Playback");
         substitutorStopLeadsheetButton.setToolTipText("Stop leadsheet playback.");
         substitutorStopLeadsheetButton.setMaximumSize(new java.awt.Dimension(10000, 23));
-        substitutorStopLeadsheetButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        substitutorStopLeadsheetButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 substitutorStopLeadsheetButtonActionPerformed(evt);
             }
         });
@@ -1029,10 +995,8 @@ public class TransformPanel extends javax.swing.JPanel {
         substitutorSaveLeadsheetButton.setText("Save");
         substitutorSaveLeadsheetButton.setToolTipText("Save current lick.");
         substitutorSaveLeadsheetButton.setMaximumSize(new java.awt.Dimension(10000, 23));
-        substitutorSaveLeadsheetButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        substitutorSaveLeadsheetButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 substitutorSaveLeadsheetButtonActionPerformed(evt);
             }
         });
@@ -1257,6 +1221,24 @@ public class TransformPanel extends javax.swing.JPanel {
         notate.openHelpDialog();
         notate.helpDialog.showTransformationDocs();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void applySubstitutionsButtonStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_applySubstitutionsButtonStateChanged
+        if(notate.guideToneLineDialog!=null){
+           notate.guideToneLineDialog.updateTransformButtons(); 
+        }
+    }//GEN-LAST:event_applySubstitutionsButtonStateChanged
+
+    private void revertSubstitutionsButtonStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_revertSubstitutionsButtonStateChanged
+        if(notate.guideToneLineDialog!=null){
+           notate.guideToneLineDialog.updateTransformButtons(); 
+        }
+    }//GEN-LAST:event_revertSubstitutionsButtonStateChanged
+
+    private void reapplySubstitutionsButtonStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_reapplySubstitutionsButtonStateChanged
+        if(notate.guideToneLineDialog!=null){
+           notate.guideToneLineDialog.updateTransformButtons(); 
+        }
+    }//GEN-LAST:event_reapplySubstitutionsButtonStateChanged
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel SubstitutorParametersPanel;
