@@ -367,10 +367,10 @@ public ArrayList<Block> setAllStyles(ArrayList<Block> blocks)
     return sectionInfo.setAllStyles(blocks);
 }
 
-public ArrayList<Block> setAllStyles(ArrayList<Block> blocks, ArrayList<SectionRecord> secRecs)
-{
-    return sectionInfo.setAllStyles(blocks, secRecs);
-}
+//public ArrayList<Block> setAllStyles(ArrayList<Block> blocks, ArrayList<SectionRecord> secRecs)
+//{
+//    return sectionInfo.setAllStyles(blocks, secRecs);
+//}
 
 
 public String getStyleName(int n)
@@ -597,7 +597,9 @@ public void addFromRoadMapFrame(RoadMapFrame roadmap)
             totalSlots += chordBlock.getDuration();
             addChord(chord);
             if( chordBlock.isSectionEnd() ) {
-                addSection(roadmap.getStyle().getName(),sectionStart,chordBlock.isPhraseEnd());
+                addSection(chordBlock.getStyleName(),
+                           sectionStart,
+                           chordBlock.isPhraseEnd());
                 sectionStart = totalSlots;
             }
         }
@@ -673,12 +675,12 @@ public void addFromRoadMapFrame(RoadMapFrame roadmap)
     }
     
     
-    public void resetStylesInRecords (ArrayList<SectionRecord> secRecs)
-    {
-        sectionInfo.resetStylesInRecords(secRecs);
-    }
-    public void setStyleNamesFromBlocks (ArrayList<Block> blocks)
-    {
-        sectionInfo.setStyleNamesFromBlocks(blocks);
-    }
+//    public void resetStylesInRecords (ArrayList<SectionRecord> secRecs)
+//    {
+//        sectionInfo.resetStylesInRecords(secRecs);
+//    }
+//    public void setStyleNamesFromBlocks (ArrayList<Block> blocks)
+//    {
+//        sectionInfo.setStyleNamesFromBlocks(blocks);
+//    }
 }

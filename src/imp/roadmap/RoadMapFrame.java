@@ -3967,7 +3967,7 @@ public void setParent(Notate notate)
      *
      * If the road map is empty, does nothing.
      */
-    int temp = 0; // to see how many times roadmap is opened
+    
     public void playSelection() {
         if (roadMapPanel.getNumBlocks() < 1)
           {
@@ -3979,27 +3979,12 @@ public void setParent(Notate notate)
          {
           selectAllBricks();            
          }
-        
+         
+        ChordPart chordPart = new ChordPart();
+        ArrayList<Block> blocks = roadMapPanel.getSelection();
        
-        
-        ChordPart chordPart = new ChordPart();           //only one secrec - swing
-        ArrayList<Block> blocks = new ArrayList<Block>();
-        if (temp == 0)
-          {
-            blocks = roadMapPanel.getBlocks();
-            blocks = chordPart.setAllStyles(blocks, notate.getChordProg().getSectionRecords()); 
-            temp++;
-          } 
-        else
-        {
-            blocks = roadMapPanel.getSelection();
-            blocks = chordPart.setAllStyles(blocks, notate.getChordProg().getSectionRecords());
-        }
-        
-        chordPart.setStyleNamesFromBlocks(blocks);
         chordPart.addFromRoadMapFrame(this);
-        chordPart.resetStylesInRecords(notate.getChordProg().getSectionRecords());
-
+ 
         Score score = new Score(chordPart);
         score.setMetre(getMetre());
         score.setTempo(getTempo());
