@@ -727,7 +727,7 @@ public ArrayList<Block> toBlockList()
     while( k.hasNext() ) //&& (endLimitIndex == ENDSCORE || endIndex <= endLimitIndex) )
       {
         SectionRecord record = k.next();
-        Style style = record.getStyle();
+        String styleName = record.getStyleName();
         int startIndex = record.getIndex();
         
         endIndex = m.hasNext() ? m.next().getIndex() : chordsSize;
@@ -741,6 +741,7 @@ public ArrayList<Block> toBlockList()
           if( chord != null )
             {
               block = new ChordBlock(chord.getName(), chord.getRhythmValue());
+              block.setStyleName(styleName);
               blocks.add(block);
             }
           }
@@ -752,9 +753,7 @@ public ArrayList<Block> toBlockList()
             }
        }
     
-    return setAllStyles(blocks);
-    
-      
+    return blocks;
 }
 
 /**
@@ -891,31 +890,31 @@ public ArrayList<SectionRecord> getSectionRecords()
 }
 
 
-public void resetStylesInRecords(ArrayList<SectionRecord> secRecs)
-{
-    int i = 0;
-    for (SectionRecord sr :records)
-    {
-        sr.setStyleName(secRecs.get(i).getStyleName());        
-        i++;
-    }
-}
+//public void resetStylesInRecords(ArrayList<SectionRecord> secRecs)
+//{
+//    int i = 0;
+//    for (SectionRecord sr :records)
+//    {
+//        sr.setStyleName(secRecs.get(i).getStyleName());        
+//        i++;
+//    }
+//}
 
-public void setStyleNamesFromBlocks(ArrayList<Block> blocks)
-{
-   ArrayList<String> styleNames = new ArrayList<String>();
-   for (Block b : blocks)
-   {
-       styleNames.add(b.getStyleName());
-   }
-   int i = 0;
-   for (String s : styleNames)
-   {
-     if (i < records.size())
-     {
-        records.get(i).setStyleName(s);
-     }
-     i++;
-   }
-}
+//public void setStyleNamesFromBlocks(ArrayList<Block> blocks)
+//{
+//   ArrayList<String> styleNames = new ArrayList<String>();
+//   for (Block b : blocks)
+//   {
+//       styleNames.add(b.getStyleName());
+//   }
+//   int i = 0;
+//   for (String s : styleNames)
+//   {
+//     if (i < records.size())
+//     {
+//        records.get(i).setStyleName(s);
+//     }
+//     i++;
+//   }
+//}
 }
