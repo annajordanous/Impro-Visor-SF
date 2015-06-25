@@ -825,6 +825,7 @@ public String toString()
         buffer.append(" ");
         buffer.append(record.getIsPhrase());
         buffer.append(") ");
+        buffer.append("\n");
     }
     return buffer.toString();
   }
@@ -839,67 +840,82 @@ public Iterator<SectionRecord> iterator()
  * @return blocks
  */
 public ArrayList<Block> setAllStyles(ArrayList<Block> blocks)
-  {     
-     
+  {         
       int lastIndex = 0;
       for (Block b : blocks)
       {  
           if (lastIndex < records.size())
           {
               b.setStyleName(records.get(lastIndex).getStyleName());     
-              // System.out.println("block:" + b.getStyleName());
+              //System.out.println("block:" + b.getStyleName());
           }
           else if (lastIndex >= 1)
           {
               b.setStyleName(records.get(records.size()-1).getStyleName()); 
-              // System.out.println("block:" + b.getStyleName());
+              //System.out.println("block:" + b.getStyleName());
           }
           if (b.isSectionEnd())
           {
               lastIndex++;
           }
       }
-    
     return blocks;
   }
 
-/**
- * Adds the sections with the specified style name.
- * @param styleNames 
- */
-public void setAllStyleNames(ArrayList<String> styleNames)
-{
- int i = 0;
- for (String s : styleNames)
- {
-     if (i < records.size())
-     {
-        records.get(i).setStyleName(s);
-     }
-     i++;
- }
-}
-
-
-public ArrayList<String> getAllStyleNames (ArrayList<Block> blocks)
-{
-    ArrayList<String> styleNames = new ArrayList<String>();
-    
-    for (Block b : blocks)
-    {
-        styleNames.add(b.getStyleName());
-    }
-    return styleNames;
-}
+public ArrayList<Block> setAllStyles(ArrayList<Block> blocks, ArrayList<SectionRecord> secRecs)
+  {         
+      int lastIndex = 0;
+      for (Block b : blocks)
+      {  
+          if (lastIndex < secRecs.size())
+          {
+              b.setStyleName(secRecs.get(lastIndex).getStyleName());     
+              //System.out.println("block:" + b.getStyleName());
+          }
+          else if (lastIndex >= 1)
+          {
+              b.setStyleName(secRecs.get(secRecs.size()-1).getStyleName()); 
+              //System.out.println("block:" + b.getStyleName());
+          }
+          if (b.isSectionEnd())
+          {
+              lastIndex++;
+          }
+      }
+    return blocks;
+  }
 
 public ArrayList<SectionRecord> getSectionRecords()
 {
     return records;
 }
 
-public void setSectionRecords(ArrayList<SectionRecord> secRecords)
+
+public void resetStylesInRecords(ArrayList<SectionRecord> secRecs)
 {
-    records = secRecords;
+    int i = 0;
+    for (SectionRecord sr :records)
+    {
+        sr.setStyleName(secRecs.get(i).getStyleName());        
+        i++;
+    }
 }
 
+public void setStyleNamesFromBlocks(ArrayList<Block> blocks)
+{
+   ArrayList<String> styleNames = new ArrayList<String>();
+   for (Block b : blocks)
+   {
+       styleNames.add(b.getStyleName());
+   }
+   int i = 0;
+   for (String s : styleNames)
+   {
+     if (i < records.size())
+     {
+        records.get(i).setStyleName(s);
+     }
+     i++;
+   }
+}
 }

@@ -889,7 +889,7 @@ protected void addBlocks(ArrayList<Block> blocks, Boolean selectBlocks)
          }
        if ( settings.showStartingNote)
        {
-      drawStartingNote();
+        drawStartingNote();
        }
        if(view.isPlaying()) {
            drawPlaySection();
@@ -1071,6 +1071,34 @@ protected void addBlocks(ArrayList<Block> blocks, Boolean selectBlocks)
                 g2d.drawLine(x, y-5, x, y+settings.lineHeight+5);
                 g2d.setStroke(new BasicStroke(1));
             }
+            ArrayList<String> styleList = view.getStyleNames();
+            if(ind < styleList.size() && !styleList.get(ind).isEmpty())
+            {
+                String styleName =  margin + styleList.get(ind) + margin;
+                int length = settings.getBlockLength(brick.getBlock());
+                
+                FontMetrics metrics = g2d.getFontMetrics();
+                
+                int width = metrics.stringWidth(styleName) + 4;
+                int offset = metrics.getAscent();
+                
+                int styleX = settings.xOffset;
+                int styleY = y + styleX/settings.getLineLength() * settings.getLineOffset() +
+                        settings.lineHeight;
+                
+        
+                g2d.setColor(Color.WHITE);
+                g2d.setStroke(settings.basicLine);
+                
+                g2d.fillRect(styleX+1,styleY+yAdjust, width, offset + 2);
+        
+                g2d.setColor(settings.lineColor);
+                g2d.drawRect(styleX+1,styleY+yAdjust, width, offset + 2);
+                
+                g2d.setColor(settings.textColor);
+                g2d.drawString(styleName,styleX, styleY+yAdjust+offset);
+            }
+
         }
         
 
@@ -1275,4 +1303,10 @@ protected void addBlocks(ArrayList<Block> blocks, Boolean selectBlocks)
       {
         removeBlocks();
       }
+    
+    public ArrayList<Block> getBlocks()
+      {
+        return roadMap.getBlocks();
+      }
+    
 }

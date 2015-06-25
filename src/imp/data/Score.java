@@ -1232,11 +1232,6 @@ public void addChord(Chord chord)
   }
 
 
-public ArrayList<String> getAllStyleNames (ArrayList<Block> blocks)
-{
-    return chordProg.getAllStyleNames(blocks);
-}
-
 public void setAllStyles(ArrayList<Block> blocks)
 {
     chordProg.setAllStyles(blocks);
@@ -1267,8 +1262,4 @@ public Note getFirstNote()
     return null;  // TEMP!
   }
 
-public void setSectionRecords(ArrayList<SectionRecord> secRecords)
-{
-    chordProg.setSectionRecords(secRecords);
-}
 }
