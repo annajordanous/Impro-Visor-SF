@@ -4664,10 +4664,10 @@ public String getComposer()
     return notate.getComposer();
 }
 
-public void setStyleNames(ArrayList<String> styles)
-{
-    styleNames = styles;
-}
+//public void setStyleNames(ArrayList<String> styles)
+//{
+//    styleNames = styles;
+//}
 
 public ArrayList<String> getStyleNames()
 {
