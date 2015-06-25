@@ -1596,7 +1596,7 @@ private void initKeys()
         
     }//GEN-LAST:event_reapplyTransformActionPerformed
 
-    private void updatePlayButtons(){
+    public void updatePlayButtons(){
         playBtn.setEnabled(notate.getPlayEnabled());
         pauseBtn.setEnabled(notate.getPauseEnabled());
         stopBtn.setEnabled(notate.getStopEnabled());

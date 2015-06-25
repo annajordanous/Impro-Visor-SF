@@ -7535,6 +7535,11 @@ public Critic getCritic()
         playBtn.setMaximumSize(new java.awt.Dimension(30, 30));
         playBtn.setMinimumSize(new java.awt.Dimension(30, 30));
         playBtn.setPreferredSize(new java.awt.Dimension(30, 30));
+        playBtn.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                playBtnStateChanged(evt);
+            }
+        });
         playBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 playBtnActionPerformed(evt);
@@ -7549,6 +7554,11 @@ public Critic getCritic()
         pauseBtn.setMaximumSize(new java.awt.Dimension(30, 30));
         pauseBtn.setMinimumSize(new java.awt.Dimension(30, 30));
         pauseBtn.setPreferredSize(new java.awt.Dimension(30, 30));
+        pauseBtn.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                pauseBtnStateChanged(evt);
+            }
+        });
         pauseBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 pauseBtnActionPerformed(evt);
@@ -7563,6 +7573,11 @@ public Critic getCritic()
         stopBtn.setMaximumSize(new java.awt.Dimension(30, 30));
         stopBtn.setMinimumSize(new java.awt.Dimension(30, 30));
         stopBtn.setPreferredSize(new java.awt.Dimension(30, 30));
+        stopBtn.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                stopBtnStateChanged(evt);
+            }
+        });
         stopBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 stopBtnActionPerformed(evt);
@@ -10419,6 +10434,7 @@ private boolean initLocationVoicingFrame = false;
                 selectVoicing(v, currentChord);
               }
           }
+        guideToneLineDialog.updatePlayButtons();
     }//GEN-LAST:event_pauseBtnActionPerformed
 
 public void pauseScore()
@@ -10893,6 +10909,8 @@ private void recordFromMidi()
         improvisationOn = false;
         improvOn = false;
         playAll();
+        
+        guideToneLineDialog.updatePlayButtons();
     }//GEN-LAST:event_playBtnActionPerformed
 
     private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_windowMenuMenuSelected
@@ -12171,6 +12189,7 @@ private void showFileStepDialog()
 
     private void stopBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopBtnActionPerformed
         stopButtonPressed();
+        guideToneLineDialog.updatePlayButtons();
     }//GEN-LAST:event_stopBtnActionPerformed
 
 public void stopButtonPressed()
@@ -22628,8 +22647,21 @@ int quantizeResolution = 60;
         //false means not modal, i.e. the user is allowed to click back and forth between the main window and the dialog box
         guideToneLineDialog.setVisible(false);
         guideToneLineDialog.updateButtons();
+        guideToneLineDialog.updatePlayButtons();
         guideToneLineDialog.setVisible(true);
     }//GEN-LAST:event_guideToneLineActionPerformed
+
+    private void playBtnStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_playBtnStateChanged
+        guideToneLineDialog.updatePlayButtons();
+    }//GEN-LAST:event_playBtnStateChanged
+
+    private void pauseBtnStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_pauseBtnStateChanged
+        guideToneLineDialog.updatePlayButtons();
+    }//GEN-LAST:event_pauseBtnStateChanged
+
+    private void stopBtnStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_stopBtnStateChanged
+        guideToneLineDialog.updatePlayButtons();
+    }//GEN-LAST:event_stopBtnStateChanged
 
 private void updateDottedAndTriplet()
   {
