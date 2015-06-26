@@ -39,7 +39,7 @@ public class RangeChooser extends javax.swing.JDialog implements Constants{
     private static final int [] grandDefaults = {G2, G5};
     
     //the midi values of two keys that are currently clicked
-    private final int [] clicked;
+    private int [] clicked;
     
     //array of piano keys
     private PianoKey [] pkeys;
@@ -101,6 +101,73 @@ public class RangeChooser extends javax.swing.JDialog implements Constants{
      */
     public RangeChooser(java.awt.Frame parent, int defaultLow, int defaultHigh){
         this(parent, defaultLow, defaultHigh, NO_PREFERENCE);
+    }
+    
+    /**
+     * Constructor
+     * @param lowLimit - lowest clickable key
+     * @param highLimit - highest clickable key
+     * @param parent - frame that spawned this dialog box
+     */
+    public RangeChooser(int lowLimit, int highLimit, java.awt.Frame parent){
+        this(parent, NO_PREFERENCE, NO_PREFERENCE, lowLimit, highLimit);
+    }
+    
+    /**
+     * Constructor
+     * @param lowLimit lowest clickable key
+     * @param highLimit highest clickable key
+     * @param minimumRange minimum size of range that user must pick
+     * @param parent frame that spawned this dialog box
+     */
+    public RangeChooser(int lowLimit, int highLimit, int minimumRange, java.awt.Frame parent){
+        this(parent, NO_PREFERENCE, NO_PREFERENCE, minimumRange, lowLimit, highLimit);
+    }
+    
+    /**
+     * Constructor
+     * @param parent frame that spawned this dialog box
+     * @param fullKeyboard true to have the full keyboard be clickable,
+     * false to have the keyboard range selected according to the current stave
+     */
+    public RangeChooser(java.awt.Frame parent, boolean fullKeyboard){
+        this(A0, C8, parent);
+    }
+    
+    /**
+     * Constructor
+     * @param parent frame that spawned this dialog box
+     * @param defaultLow midi value of low key to be initially selected
+     * @param defaultHigh midi value of high key to be initially selected
+     * @param fullKeyboard true to have the full keyboard be clickable,
+     * false to have the keyboard range selected according to the current stave
+     */
+    public RangeChooser(java.awt.Frame parent, int defaultLow, int defaultHigh, boolean fullKeyboard){
+        this(parent, defaultLow, defaultHigh, A0, C8);
+    }
+    
+    /**
+     * Constructor
+     * @param parent frame that spawned this dialog box
+     * @param minimumRange minimum size of range that user must pick
+     * @param fullKeyboard true to have the full keyboard be clickable,
+     * false to have the keyboard range selected according to the current stave
+     */
+    public RangeChooser(java.awt.Frame parent, int minimumRange, boolean fullKeyboard){
+        this(parent, NO_PREFERENCE, NO_PREFERENCE, minimumRange, A0, C8);
+    }
+    
+    /**
+     * Constructor
+     * @param parent frame that spawned this dialog box
+     * @param defaultLow midi value of low key to be initially selected
+     * @param defaultHigh midi value of high key to be initially selected
+     * @param minimumRange minimum size of range that user must pick
+     * @param fullKeyboard true to have the full keyboard be clickable,
+     * false to have the keyboard range selected according to the current stave
+     */
+    public RangeChooser(java.awt.Frame parent, int defaultLow, int defaultHigh, int minimumRange, boolean fullKeyboard){
+        this(parent, defaultLow, defaultHigh, minimumRange, A0, C8);
     }
     
     /**
@@ -176,6 +243,11 @@ public class RangeChooser extends javax.swing.JDialog implements Constants{
         int [] userLimits = {lowLimit, highLimit};
         if(limitsOkay(lowLimit, highLimit)){
             limits = userLimits;
+            //use stave-determined program defaults for initial notes clicked
+            //if those aren't within the not-blue notes, use the range limits
+            if(!rangeOkay(programDefaults)){
+                programDefaults = userLimits;
+            }
         }else{
             limits = defaultLimits;
         }
@@ -183,7 +255,7 @@ public class RangeChooser extends javax.swing.JDialog implements Constants{
         //set the two initially clicked keys
         //use the user defaults if they're valid, program defaults otherwise
         int [] userDefaults = {defaultLow, defaultHigh};
-        clicked = rangeOkay(defaultLow, defaultHigh) ? userDefaults : programDefaults;
+        clicked = rangeOkay(userDefaults) ? userDefaults : programDefaults;
         
         //initialize graphical components
         initComponents();
@@ -195,8 +267,8 @@ public class RangeChooser extends javax.swing.JDialog implements Constants{
         setBlueKeys();
         
         //click the default keys
-        pressKey(pkeys[index(clicked[LOW])]);
-        pressKey(pkeys[index(clicked[HIGH])]);
+        pressKey(midiToKey(clicked[LOW]));
+        pressKey(midiToKey(clicked[HIGH]));
         
         //make dialog box visible
         this.setVisible(true);
@@ -230,6 +302,20 @@ public class RangeChooser extends javax.swing.JDialog implements Constants{
      */
     private boolean inRange(int midi){
         return midi >= limits[LOW] && midi <= limits[HIGH];
+    }
+    
+    /**
+     * rangeOkay
+     * Determines whether a range given by a two-element array is okay
+     * @param limits two-element array of ints
+     * @return whether the range is okay (false if array doesn't contain 2 ints)
+     */
+    private boolean rangeOkay(int [] limits){
+        if(limits.length==2){
+            return rangeOkay(limits[LOW], limits[HIGH]);
+        }else{
+            return false;
+        }
     }
     
     /**
@@ -304,17 +390,18 @@ public class RangeChooser extends javax.swing.JDialog implements Constants{
         //potential new low and high range limits
         int newLow = keyIndex == LOW ? newMidi : clicked[LOW];
         int newHigh = keyIndex == LOW ? clicked[HIGH] : newMidi;
+        int [] newRange = {newLow, newHigh};
         
         //if the proposed new range is not ok, return
-        if(!rangeOkay(newLow, newHigh)){
+        if(!rangeOkay(newRange)){
             return;
         }
         
         //The new key
-        PianoKey newKey = pkeys[index(newMidi)];
+        PianoKey newKey = midiToKey(newMidi);
         
         //The old key
-        PianoKey oldKey = pkeys[index(oldMidi)];
+        PianoKey oldKey = midiToKey(oldMidi);
         
         //click the new key
         pressKey(newKey);
@@ -322,9 +409,19 @@ public class RangeChooser extends javax.swing.JDialog implements Constants{
         //unclick the old key
         pressKey(oldKey);
         
-        //store the new low key's midi value
-        clicked[keyIndex] = newMidi;
+        //store the new range
+        clicked = newRange;
 
+    }
+    
+    /**
+     * midiToKey
+     * Returns Piano Key corresponding to midi value
+     * @param midi midi value
+     * @return Piano Key corresponding to midi value
+     */
+    private PianoKey midiToKey(int midi){
+        return pkeys[index(midi)];
     }
     
     /**
