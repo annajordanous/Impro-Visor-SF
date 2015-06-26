@@ -7989,6 +7989,14 @@ public Critic getCritic()
         textEntry.setToolTipText("Enter chords or melody in leadsheet notation.");
         textEntry.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         textEntry.setNextFocusableComponent(scoreTab);
+        textEntry.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                textEntryGainsFocus(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                textEntryLosesFocus(evt);
+            }
+        });
         textEntry.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 textEntryMouseClicked(evt);
@@ -7997,14 +8005,6 @@ public Critic getCritic()
         textEntry.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 textEntryActionPerformed(evt);
-            }
-        });
-        textEntry.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                textEntryGainsFocus(evt);
-            }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                textEntryLosesFocus(evt);
             }
         });
         textEntry.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -8121,12 +8121,12 @@ public Critic getCritic()
 
         openRecentLeadsheetMenu.setText("Open Recent Leadsheet (same window)");
         openRecentLeadsheetMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                populateRecentFileMenu(evt);
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                populateRecentFileMenu(evt);
             }
         });
 
@@ -8142,12 +8142,12 @@ public Critic getCritic()
 
         openRecentLeadsheetNewWindowMenu.setText("Open Recent Leadsheet (new window)");
         openRecentLeadsheetNewWindowMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                populateRecentLeadsheetNewWindow(evt);
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                populateRecentLeadsheetNewWindow(evt);
             }
         });
 
@@ -9069,12 +9069,12 @@ public Critic getCritic()
             }
         });
         notateGrammarMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                notateGrammarMenuMenuSelected(evt);
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                notateGrammarMenuMenuSelected(evt);
             }
         });
         notateGrammarMenu.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -9092,12 +9092,12 @@ public Critic getCritic()
         windowMenu.setMnemonic('W');
         windowMenu.setText("Window");
         windowMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                windowMenuMenuSelected(evt);
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                windowMenuMenuSelected(evt);
             }
         });
 
