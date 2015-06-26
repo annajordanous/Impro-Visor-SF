@@ -150,7 +150,7 @@ public void send(MidiMessage message, long timeStamp)
             channel = lowNibble;
             note = m[1];
             velocity = m[2];
-            if( velocity == 0 )
+            if( (velocity == 0  ||note<this.notate.getLow() ||note>this.notate.getHigh()) && this.notate.getFilter())
               {
                 // this is actually a note-off event, done to allow 
                 // 'running status': 
@@ -224,7 +224,7 @@ void handleNoteOn(int note, int velocity, int channel)
     noteOn = lastEvent;
     index = snapSlots(tickToSlots(noteOn)) - getCountInBias();
 
-    // add current note
+    // add current note   MAYBE RIGHT HEREEREREREREREER
     Note noteToAdd = new Note(note, snapTo);
 
     try
@@ -249,7 +249,7 @@ void handleNoteOn(int note, int velocity, int channel)
  * @param index
  * @param noteToAdd 
  */
-private void setNote(int index, Note noteToAdd)
+private void setNote(int index, Note noteToAdd) //THIS COULD BE It
   {
     this.melodyPart = notate.getCurrentMelodyPart();
     

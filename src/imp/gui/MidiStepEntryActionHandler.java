@@ -53,11 +53,10 @@ public class MidiStepEntryActionHandler implements Constants, Receiver {
                 channel = lowNibble;
                 note = m[1];
                 velocity = m[2];
-                if(velocity == 0) { // this is actually a note-off event, done to allow 'running status': http://www.borg.com/~jglatt/tech/midispec/run.htm
+                if((velocity == 0  ||note<this.notate.getLow() ||note>this.notate.getHigh()) && this.notate.getFilter()) { // this is actually a note-off event, done to allow 'running status': http://www.borg.com/~jglatt/tech/midispec/run.htm
                     handleNoteOff(note, velocity, channel);
-                } else {
+                } else 
                     handleNoteOn(note);
-                }
                 break;
             case 8: // note off
                 channel = lowNibble;
