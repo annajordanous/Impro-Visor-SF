@@ -18,10 +18,10 @@
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="2"/>
     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-      <Dimension value="[500, 600]"/>
+      <Dimension value="[600, 600]"/>
     </Property>
     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-      <Dimension value="[500, 600]"/>
+      <Dimension value="[600, 600]"/>
     </Property>
   </Properties>
   <SyntheticProperties>
