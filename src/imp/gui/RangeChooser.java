@@ -118,7 +118,32 @@ public class RangeChooser extends javax.swing.JDialog implements Constants{
      * @param defaultHigh midi value of high key to be initially selected
      * @param minimumRange minimum size of range that user must pick
      */
-    public RangeChooser(java.awt.Frame parent, int defaultLow, int defaultHigh, int minimumRange) {
+    public RangeChooser(java.awt.Frame parent, int defaultLow, int defaultHigh, int minimumRange){
+        this(parent, defaultLow, defaultHigh, minimumRange, NO_PREFERENCE, NO_PREFERENCE);
+    }
+    
+    /**
+     * Constructor
+     * @param parent frame that spawned this dialog box
+     * @param defaultLow midi value of low key to be initially selected
+     * @param defaultHigh midi value of high key to be initially selected
+     * @param lowLimit lowest key that is clickable
+     * @param highLimit highest key that is clickable
+     */
+    public RangeChooser(java.awt.Frame parent, int defaultLow, int defaultHigh, int lowLimit, int highLimit){
+        this(parent, defaultLow, defaultHigh, NO_PREFERENCE, lowLimit, highLimit);
+    }
+    
+    /**
+     * Constructor
+     * @param parent frame that spawned this dialog box
+     * @param defaultLow midi value of low key to be initially selected
+     * @param defaultHigh midi value of high key to be initially selected
+     * @param minimumRange minimum size of range that user must pick
+     * @param lowLimit lowest key that is clickable
+     * @param highLimit highest key that is clikable
+     */
+    public RangeChooser(java.awt.Frame parent, int defaultLow, int defaultHigh, int minimumRange, int lowLimit, int highLimit) {
         
         //RangeChooser is always modal
         super(parent, true);
@@ -135,16 +160,24 @@ public class RangeChooser extends javax.swing.JDialog implements Constants{
         StaveType stave = Preferences.getStaveTypeFromPreferences();
         
         int [] programDefaults;
+        int [] defaultLimits;
         
         if(stave==StaveType.TREBLE){
-            limits = trebleLimits;
+            defaultLimits = trebleLimits;
             programDefaults = trebleDefaults;
         }else if(stave==StaveType.BASS){
-            limits = bassLimits;
+            defaultLimits = bassLimits;
             programDefaults = bassDefaults;
         }else{
-            limits = grandLimits;
+            defaultLimits = grandLimits;
             programDefaults = grandDefaults;
+        }
+        
+        int [] userLimits = {lowLimit, highLimit};
+        if(limitsOkay(lowLimit, highLimit)){
+            limits = userLimits;
+        }else{
+            limits = defaultLimits;
         }
         
         //set the two initially clicked keys
@@ -169,6 +202,18 @@ public class RangeChooser extends javax.swing.JDialog implements Constants{
         this.setVisible(true);
     }
 
+    /**
+     * limitsOkay
+     * returns whether the range specified by the limits is within the keyboard
+     * and the lower limit is < than the upper limit
+     * @param low the lower limit
+     * @param high the upper limit
+     * @return whether or not the limits are okay
+     */
+    private boolean limitsOkay(int low, int high){
+        return low>=A0&&high<=C8&&low<high;
+    }
+    
     /**
      * getRange - for public use
      * @return an int array containing the midi values of the
