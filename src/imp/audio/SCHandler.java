@@ -47,23 +47,21 @@ public class SCHandler {
         try {
             Runtime runTime = Runtime.getRuntime();
 
-            //@TODO fix Linux. Works, but NO SOUND OUTPUT.
-
+            // @TODO fix Linux. Works, but NO SOUND OUTPUT.
             if (isWindows) {
-                if (firstTimeOpen) {//Exists no process
+                if (firstTimeOpen) { // Exists no process
                     openSCHelperWindows();
                     firstTimeOpen = false;
-                } else if (!isRunning(process)) {//OK to open again
+                } else if (!isRunning(process)) { // OK to open again
                     openSCHelperWindows();
                 } 
             } else if (isOsX) {
                 String dir = System.getProperty("user.dir");
-//                System.out.println("Attempting to open Pitch Tracker : " + dir);
+//                System.out.println("Attempting to open Pitch Tracker : " + dir + "/sc/PitchTracker.app");
                 process = runTime.exec("open " + dir + "/sc/PitchTracker619.app");
                 
-            } else {//is linux
+            } else { // is linux
                 process = null;
-                //process = runTime.exec();
             }
         } catch (IOException e) {
             e.printStackTrace();
