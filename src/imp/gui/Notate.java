@@ -1486,7 +1486,6 @@ public Critic getCritic()
         audioInputLabel = new javax.swing.JLabel();
         filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(35, 35), new java.awt.Dimension(35, 35), new java.awt.Dimension(35, 35));
         audioInputLabel1 = new javax.swing.JLabel();
-        useSuperColliderCheckbox = new javax.swing.JCheckBox();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(35, 35), new java.awt.Dimension(35, 35), new java.awt.Dimension(35, 35));
         useSuperColliderCheckboxText = new javax.swing.JLabel();
         ReloadSuperColliderButton = new javax.swing.JButton();
@@ -3978,14 +3977,6 @@ public Critic getCritic()
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 5;
         audioTab.add(audioInputLabel1, gridBagConstraints);
-
-        useSuperColliderCheckbox.setText("Use Pitch Tracker");
-        useSuperColliderCheckbox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                useSuperColliderCheckboxActionPerformed(evt);
-            }
-        });
-        audioTab.add(useSuperColliderCheckbox, new java.awt.GridBagConstraints());
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
@@ -3995,7 +3986,7 @@ public Critic getCritic()
         gridBagConstraints.gridy = 1;
         audioTab.add(useSuperColliderCheckboxText, gridBagConstraints);
 
-        ReloadSuperColliderButton.setText("Reload Pitch Tracker");
+        ReloadSuperColliderButton.setText("Open Pitch Tracker");
         ReloadSuperColliderButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ReloadSuperColliderButtonActionPerformed(evt);
@@ -8130,12 +8121,12 @@ public Critic getCritic()
 
         openRecentLeadsheetMenu.setText("Open Recent Leadsheet (same window)");
         openRecentLeadsheetMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                populateRecentFileMenu(evt);
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                populateRecentFileMenu(evt);
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -8151,12 +8142,12 @@ public Critic getCritic()
 
         openRecentLeadsheetNewWindowMenu.setText("Open Recent Leadsheet (new window)");
         openRecentLeadsheetNewWindowMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                populateRecentLeadsheetNewWindow(evt);
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                populateRecentLeadsheetNewWindow(evt);
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -9078,12 +9069,12 @@ public Critic getCritic()
             }
         });
         notateGrammarMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                notateGrammarMenuMenuSelected(evt);
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                notateGrammarMenuMenuSelected(evt);
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
         notateGrammarMenu.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -9101,12 +9092,12 @@ public Critic getCritic()
         windowMenu.setMnemonic('W');
         windowMenu.setText("Window");
         windowMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                windowMenuMenuSelected(evt);
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                windowMenuMenuSelected(evt);
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -22547,27 +22538,11 @@ private boolean isDotted = false;
         updateDottedAndTriplet();
     }//GEN-LAST:event_noteLenTripletCheckBoxActionPerformed
 
-    private void useSuperColliderCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_useSuperColliderCheckboxActionPerformed
-        //If checkbox is selected, pull up supercollider and set supercollider mode to true.
-        //If checkbox is deselected, set supercollider mode to false.
-        if( useSuperColliderCheckbox.isSelected() )
-          {
-            superColliderMode = true;
-            SCHandler handler = new SCHandler();
-            handler.openSC();
-          }
-        else
-          {
-            superColliderMode = false;
-          }
-    }//GEN-LAST:event_useSuperColliderCheckboxActionPerformed
-
     private void ReloadSuperColliderButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ReloadSuperColliderButtonActionPerformed
-        if( useSuperColliderCheckbox.isSelected() )
-          {
-            SCHandler handler = new SCHandler();
-            handler.openSC();
-          }
+      
+        SCHandler handler = new SCHandler();
+        handler.openSC();
+
     }//GEN-LAST:event_ReloadSuperColliderButtonActionPerformed
 
     private void OpenHelpTextMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_OpenHelpTextMouseClicked
@@ -25092,7 +25067,6 @@ private ImageIcon pauseButton =
     private javax.swing.JCheckBoxMenuItem useBeamsMI;
     private javax.swing.JButton usePreviousStyleButton;
     private javax.swing.JCheckBox useSubstitutorCheckBox;
-    private javax.swing.JCheckBox useSuperColliderCheckbox;
     private javax.swing.JLabel useSuperColliderCheckboxText;
     private javax.swing.JMenu utilitiesMenu;
     private javax.swing.JMenu viewMenu;
