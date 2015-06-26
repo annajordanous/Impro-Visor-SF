@@ -21,6 +21,10 @@
 package imp.gui;
 
 import imp.Constants;
+import static imp.Constants.A2;
+import static imp.Constants.C1;
+import static imp.Constants.C7;
+import static imp.Constants.E5;
 import imp.data.Chord;
 import imp.data.GuideLineGenerator;
 import imp.data.MelodyPart;
@@ -52,6 +56,11 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
     private static final int [] trebleDefaults = {C4, G5};
     private static final int [] grandDefaults = {G2, G5};
     
+    //range of keys which are clickable
+    private static final int [] bassLimits = {C1, E5};
+    private static final int [] trebleLimits = {A2, C7};
+    private static final int [] grandLimits = {C1, C7};
+    
     //range limits
     private int [] range;
     private static final int LOW = 0;
@@ -77,15 +86,7 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
         //make the transform buttons whatever they are in the transform panel
         updateTransformButtons();
         
-        StaveType stave = Preferences.getStaveTypeFromPreferences();
-        
-        if(stave==StaveType.TREBLE){
-            range = trebleDefaults;
-        }else if(stave==StaveType.BASS){
-            range = bassDefaults;
-        }else{
-            range = grandDefaults;
-        }
+        updateRange();
 
     }
 
@@ -594,7 +595,37 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
         setButtonText(scaleDegreeButtons, scaleDegPanel);
         setButtonText(scaleDegree2Buttons, scaleDeg2Panel);
         enableButtons(scaleDegree2Buttons, twoLines.isSelected());
+        setVisible(isVisible());
     }
+    
+    //called from notate when stave type is changed
+    public void updateRange(){
+        
+        
+        int [] limits, defaultRange;
+        StaveType stave = Preferences.getStaveTypeFromPreferences();
+        
+        if(stave==StaveType.TREBLE){
+            limits = trebleLimits;
+            defaultRange = trebleDefaults;
+        }else if(stave==StaveType.BASS){
+            limits = bassLimits;
+            defaultRange = bassDefaults;
+        }else{
+            limits = grandLimits;
+            defaultRange = grandDefaults;
+        }
+        
+        //if the range needs to be changed, change it.
+        if(range==null||!inRange(range[LOW], limits[LOW], limits[HIGH])||!inRange(range[HIGH], limits[LOW], limits[HIGH])){
+            range = defaultRange;
+        }
+    }
+    
+    private boolean inRange(int n, int low, int high){
+        return n>=low&&n<=high;
+    }
+    
     private void setButtonText(ButtonGroup group, JPanel panel){
         panel.removeAll();
         if(panel.equals(scaleDegPanel)){

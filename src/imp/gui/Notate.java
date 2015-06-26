@@ -523,9 +523,6 @@ private SourceEditorDialog grammarEditor = null;
 
   private StyleEditor styleEditor = null;
 
-    private void setGuideToneLineDialog(GuideToneLineDialog guideToneLineDialog) {
-        this.guideToneLineDialog = guideToneLineDialog;
-    }
 
 /**
  * Various input mode names
@@ -10434,7 +10431,6 @@ private boolean initLocationVoicingFrame = false;
                 selectVoicing(v, currentChord);
               }
           }
-        guideToneLineDialog.updatePlayButtons();
     }//GEN-LAST:event_pauseBtnActionPerformed
 
 public void pauseScore()
@@ -10909,8 +10905,6 @@ private void recordFromMidi()
         improvisationOn = false;
         improvOn = false;
         playAll();
-        
-        guideToneLineDialog.updatePlayButtons();
     }//GEN-LAST:event_playBtnActionPerformed
 
     private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_windowMenuMenuSelected
@@ -12189,7 +12183,6 @@ private void showFileStepDialog()
 
     private void stopBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopBtnActionPerformed
         stopButtonPressed();
-        guideToneLineDialog.updatePlayButtons();
     }//GEN-LAST:event_stopBtnActionPerformed
 
 public void stopButtonPressed()
@@ -13486,8 +13479,12 @@ public void updateSelection()
                                              parseListFromString(enteredText),
                                              chordProg,
                                              partList.get(currTabIndex)));
+                //update scale degree buttons if first chord changed
+                if(getCurrentSelectionStart()==0){
+                    guideToneLineDialog.updateButtons();
+                }
               }
-
+            
             staveRequestFocus();
 
             redoAdvice();
@@ -13500,6 +13497,7 @@ public void updateSelection()
           {
             disableAccelerators();        // to prevent keys from triggering
           }
+
     }//GEN-LAST:event_textEntryKeyPressed
 
     public void saveLeadsheetMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveLeadsheetMIActionPerformed
@@ -14979,7 +14977,9 @@ private void setStavePreferenceFromButtons()
       {
         setCurrentStaveType(Preferences.getStaveTypeFromPreferences());
       }
-
+    
+    //update guide tone line range to match stave
+    guideToneLineDialog.updateRange();
   }
 
 public void setTrackerDelay(String text)
@@ -16931,10 +16931,16 @@ private void enterBoth()
                     parseListFromString(chordText),
                     chordProg,
                     partList.get(currTabIndex)));
+            
+            //update scale degree buttons if first chord changed
+            if(getCurrentSelectionStart()==0){
+                guideToneLineDialog.updateButtons();
+            }
 
             redoAdvice();
           }
       }
+
   }
 
 /**
@@ -16959,6 +16965,11 @@ void enterChords()
                     chordProg,
                     null));
 
+            //update scale degree buttons if first chord changed
+            if(getCurrentSelectionStart()==0){
+                guideToneLineDialog.updateButtons();
+            }
+            
             redoAdvice();
           }
       }
@@ -16988,10 +16999,15 @@ void enterMelody()
                     parseListFromString(windowText),
                     null,
                     partList.get(currTabIndex)));
-
+            
+            //update scale degree buttons if first chord changed
+            if(getCurrentSelectionStart()==0){
+                guideToneLineDialog.updateButtons();
+            }
+            
             redoAdvice();
           }
-      }
+      }  
   }
 
 /**
@@ -18348,7 +18364,7 @@ public void openLeadsheet(boolean openCorpus)
                                this.impro,
                                getNewXlocation(),
                                getNewYlocation());
-            newNotate.setGuideToneLineDialog(new GuideToneLineDialog(newNotate, false));
+
             newNotate.makeVisible(this);
           }
         else
@@ -18529,10 +18545,8 @@ public boolean setupLeadsheet(File file, boolean openCorpus)
 
     staveRequestFocus();
     
-    boolean visible = guideToneLineDialog.isVisible();
-    guideToneLineDialog.setVisible(false);
+    //update scale degree buttons when setting up new leadsheet
     guideToneLineDialog.updateButtons();
-    guideToneLineDialog.setVisible(visible);
     
     return true;
   }
@@ -22638,15 +22652,10 @@ int quantizeResolution = 60;
     
     /**
      * guideToneLineActionPerformed
-     * Creates a dialog box with guide tone line options
+     * Makes guideToneLineDialog visible
      * @param evt event triggered when guide tone line menu item is clicked
      */
     private void guideToneLineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guideToneLineActionPerformed
-        //Create dialog box with guide tone line options
-        //false means not modal, i.e. the user is allowed to click back and forth between the main window and the dialog box
-        guideToneLineDialog.setVisible(false);
-        guideToneLineDialog.updateButtons();
-        guideToneLineDialog.updatePlayButtons();
         guideToneLineDialog.setVisible(true);
     }//GEN-LAST:event_guideToneLineActionPerformed
 
