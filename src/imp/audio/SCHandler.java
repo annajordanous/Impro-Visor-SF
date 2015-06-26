@@ -74,9 +74,14 @@ public class SCHandler {
      */
     private void openSCHelperWindows() {
         try {
+            String dir = System.getProperty("user.dir");
+            String myFile = dir + "\\sc\\standalone_windows\\SuperCollider-3.6.6\\start.bat";
+            process = Runtime.getRuntime().exec(myFile);
+            /*
             String[] command = {"cmd", "/c", "C:\\Program Files (x86)\\SuperCollider-3.6.5\\scide.exe"};
             ProcessBuilder probuilder = new ProcessBuilder(command);
             process = probuilder.start();
+            */
         } catch (Exception e) {
             System.out.println("Error opening SuperCollider");
         }
