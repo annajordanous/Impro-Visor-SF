@@ -20,6 +20,7 @@
 package imp.gui;
 
 import static imp.Constants.BEAT;
+import static imp.Constants.OCTAVE;
 import imp.com.CommandManager;
 import imp.com.InvertCommand;
 import imp.com.LoadThemesCommand;
@@ -223,10 +224,6 @@ public void setTableColumnWidths()
         stopPlaytoggle = new javax.swing.JToggleButton();
         deleteRowbutton = new javax.swing.JButton();
         deleteThemebutton = new javax.swing.JButton();
-        pitchRangeMinSlider = new javax.swing.JSlider();
-        pitchRangeMinLabel = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        pitchRangeMaxSlider = new javax.swing.JSlider();
         jLabel4 = new javax.swing.JLabel();
         trans1ComboBox = new javax.swing.JComboBox();
         trans3ComboBox = new javax.swing.JComboBox();
@@ -246,7 +243,8 @@ public void setTableColumnWidths()
         expandPreferenceButton = new javax.swing.JButton();
         jLabel14 = new javax.swing.JLabel();
         trans6ComboBox = new javax.swing.JComboBox();
-        jButton4 = new javax.swing.JButton();
+        barLineShiftPreferencesButton = new javax.swing.JButton();
+        rangeChooserButton = new javax.swing.JButton();
         roadmapMenuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
         loadThemesMI = new javax.swing.JMenuItem();
@@ -807,7 +805,6 @@ public void setTableColumnWidths()
         gridBagConstraints.gridwidth = 2;
         barLineShiftPreference.getContentPane().add(jLabel16, gridBagConstraints);
 
-        setAlwaysOnTop(true);
         setLocation(new java.awt.Point(10, 10));
         setLocationByPlatform(true);
         setPreferredSize(new java.awt.Dimension(1500, 750));
@@ -1098,65 +1095,6 @@ public void setTableColumnWidths()
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 50);
         getContentPane().add(deleteThemebutton, gridBagConstraints);
 
-        pitchRangeMinSlider.setMajorTickSpacing(10);
-        pitchRangeMinSlider.setMinimum(40);
-        pitchRangeMinSlider.setMinorTickSpacing(1);
-        pitchRangeMinSlider.setPaintLabels(true);
-        pitchRangeMinSlider.setPaintTicks(true);
-        pitchRangeMinSlider.setSnapToTicks(true);
-        pitchRangeMinSlider.setToolTipText("");
-        pitchRangeMinSlider.setValue(58);
-        pitchRangeMinSlider.setMinimumSize(new java.awt.Dimension(280, 52));
-        setSliderLabels(pitchRangeMinSlider);
-        pitchRangeMinSlider.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                pitchRangeMinSliderMouseReleased(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 20);
-        getContentPane().add(pitchRangeMinSlider, gridBagConstraints);
-
-        pitchRangeMinLabel.setText("Pitch Range Minimum");
-        pitchRangeMinLabel.setToolTipText("Themes will be transposed to fit in the specified range.");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        getContentPane().add(pitchRangeMinLabel, gridBagConstraints);
-        pitchRangeMinLabel.getAccessibleContext().setAccessibleName("Pitch Range Minimum       E2");
-
-        jLabel3.setText("Pitch Range Maximum");
-        jLabel3.setToolTipText("Themes will be transposed to fit in the specified range.");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 5;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        getContentPane().add(jLabel3, gridBagConstraints);
-
-        pitchRangeMaxSlider.setMajorTickSpacing(10);
-        pitchRangeMaxSlider.setMinimum(40);
-        pitchRangeMaxSlider.setMinorTickSpacing(1);
-        pitchRangeMaxSlider.setPaintLabels(true);
-        pitchRangeMaxSlider.setPaintTicks(true);
-        pitchRangeMaxSlider.setToolTipText("");
-        pitchRangeMaxSlider.setValue(82);
-        pitchRangeMaxSlider.setMinimumSize(new java.awt.Dimension(280, 52));
-        setSliderLabels(pitchRangeMaxSlider);
-        pitchRangeMaxSlider.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                pitchRangeMaxSliderMouseReleased(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 5;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 20);
-        getContentPane().add(pitchRangeMaxSlider, gridBagConstraints);
-
         jLabel4.setFont(new java.awt.Font("Lucida Grande", 1, 18)); // NOI18N
         jLabel4.setText("             Themes                      ");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -1373,16 +1311,28 @@ public void setTableColumnWidths()
         gridBagConstraints.ipady = 24;
         getContentPane().add(trans6ComboBox, gridBagConstraints);
 
-        jButton4.setText("Open Bar Line Shift Preferences");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        barLineShiftPreferencesButton.setText("Open Bar Line Shift Preferences");
+        barLineShiftPreferencesButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                barLineShiftPreferencesButtonActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 12;
-        getContentPane().add(jButton4, gridBagConstraints);
+        getContentPane().add(barLineShiftPreferencesButton, gridBagConstraints);
+
+        rangeChooserButton.setText("Choose Range");
+        rangeChooserButton.setToolTipText("");
+        rangeChooserButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rangeChooserButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 3;
+        getContentPane().add(rangeChooserButton, gridBagConstraints);
 
         fileMenu.setText("File"); // NOI18N
         fileMenu.setMaximumSize(new java.awt.Dimension(50, 40));
@@ -2075,22 +2025,6 @@ private void closeWindow()
         }
     }//GEN-LAST:event_trans4ComboBoxActionPerformed
 
-    private void pitchRangeMaxSliderMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pitchRangeMaxSliderMouseReleased
-        //ensures that the maximum pitch isn't less than the minimum
-        if (pitchRangeMaxSlider.getValue() < pitchRangeMinSlider.getValue())
-        {
-            pitchRangeMaxSlider.setValue(pitchRangeMinSlider.getValue());
-        }
-    }//GEN-LAST:event_pitchRangeMaxSliderMouseReleased
-
-    private void pitchRangeMinSliderMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pitchRangeMinSliderMouseReleased
-        //ensures that the minimum pitch isn't greater than the maximum
-        if (pitchRangeMinSlider.getValue() > pitchRangeMaxSlider.getValue())
-        {
-            pitchRangeMinSlider.setValue(pitchRangeMaxSlider.getValue());
-        }
-    }//GEN-LAST:event_pitchRangeMinSliderMouseReleased
-
     private void cellOkbutton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cellOkbutton1ActionPerformed
         rangeTooSmall.setVisible(false);
         stopPlaying();
@@ -2218,9 +2152,16 @@ private void closeWindow()
         // TODO add your handling code here:
     }//GEN-LAST:event_barLineShiftPreferenceformKeyPressed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void barLineShiftPreferencesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barLineShiftPreferencesButtonActionPerformed
         barLineShiftPreference.setVisible(true);
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_barLineShiftPreferencesButtonActionPerformed
+
+    private void rangeChooserButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rangeChooserButtonActionPerformed
+        RangeChooser rangeChooser = new RangeChooser(notate, minPitch, maxPitch, OCTAVE);
+        range = rangeChooser.getRange();
+        minPitch = range[0];
+        maxPitch = range[1];
+    }//GEN-LAST:event_rangeChooserButtonActionPerformed
     
     private void setAllProb()
     {
@@ -2306,6 +2247,7 @@ private int themeLength = 8;
 private Notate notate;
 private int minPitch = 60;
 private int maxPitch = 82;
+private int [] range;
 private int minInterval = 0;
 private int maxInterval = 6;
 private double probWholeToneTranspose = .7;
@@ -3386,9 +3328,6 @@ public void myGenerateSolo(ArrayList<ThemeUse> themeUses, CommandManager cm)
     
     themeUsageTextArea.setText(null);
     
-    maxPitch = (int)pitchRangeMaxSlider.getValue();//maximum pitch allowed in solo
-    minPitch = (int)pitchRangeMinSlider.getValue();//minimum pitch allowed in solo
-    
     probnoTheme = 1.0-Double.parseDouble(themeProbTextField.getText());//probability of not using a theme at all 
     MelodyPart solo = new MelodyPart(0);//new melody part of size 0
     
@@ -4040,6 +3979,7 @@ public boolean inRange(MelodyPart melody)
     private javax.swing.JButton YesButton;
     private javax.swing.JLabel areYouSure;
     private javax.swing.JFrame barLineShiftPreference;
+    private javax.swing.JButton barLineShiftPreferencesButton;
     private javax.swing.JButton cancelButton;
     private javax.swing.JMenuItem cascadeMI;
     private javax.swing.JButton cellOkbutton;
@@ -4059,7 +3999,6 @@ public boolean inRange(MelodyPart melody)
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
@@ -4075,7 +4014,6 @@ public boolean inRange(MelodyPart melody)
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -4089,15 +4027,13 @@ public boolean inRange(MelodyPart melody)
     private javax.swing.JLabel namePicked;
     private javax.swing.JDialog noRowSelected;
     private javax.swing.JLabel noThemeProbLabel;
-    private javax.swing.JSlider pitchRangeMaxSlider;
-    private javax.swing.JLabel pitchRangeMinLabel;
-    private javax.swing.JSlider pitchRangeMinSlider;
     private javax.swing.JSlider probExpandby2or3;
     private javax.swing.JTextField probHalf;
     private javax.swing.JSlider probShiftForwardorBackSlider;
     private javax.swing.JTextField probThird;
     private javax.swing.JSlider probUpOrDown;
     private javax.swing.JTextField probWhole;
+    private javax.swing.JButton rangeChooserButton;
     private javax.swing.JDialog rangeTooSmall;
     private javax.swing.JLabel rangeWrong;
     private javax.swing.JLabel rangeWrong1;
