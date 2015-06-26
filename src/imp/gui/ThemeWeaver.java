@@ -184,7 +184,6 @@ public void setTableColumnWidths()
         sideslipPreference = new javax.swing.JFrame();
         probUpOrDown = new javax.swing.JSlider();
         jLabel10 = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
         SoloGeneratorTitle1 = new java.awt.Label();
         jLabel2 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
@@ -192,17 +191,20 @@ public void setTableColumnWidths()
         probHalf = new javax.swing.JTextField();
         probWhole = new javax.swing.JTextField();
         probThird = new javax.swing.JTextField();
-        jLabel14 = new javax.swing.JLabel();
-        probBarlineShiftSlider = new javax.swing.JSlider();
-        jLabel15 = new javax.swing.JLabel();
-        probShiftForwardorBackSlider = new javax.swing.JSlider();
-        jLabel16 = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
+        jLabel18 = new javax.swing.JLabel();
         expandPreference = new javax.swing.JFrame();
         probExpandby2or3 = new javax.swing.JSlider();
         ExpandPreferenceTitle = new java.awt.Label();
         jLabel25 = new javax.swing.JLabel();
         jLabel26 = new javax.swing.JLabel();
         jLabel27 = new javax.swing.JLabel();
+        barLineShiftPreference = new javax.swing.JFrame();
+        SoloGeneratorTitle2 = new java.awt.Label();
+        jLabel23 = new javax.swing.JLabel();
+        probShiftForwardorBackSlider = new javax.swing.JSlider();
+        jLabel15 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
         soloTableScrollPane = new javax.swing.JScrollPane();
         soloTable = new javax.swing.JTable();
         themeListScrollPane = new javax.swing.JScrollPane();
@@ -242,6 +244,9 @@ public void setTableColumnWidths()
         jButton3 = new javax.swing.JButton();
         jLabel28 = new javax.swing.JLabel();
         expandPreferenceButton = new javax.swing.JButton();
+        jLabel14 = new javax.swing.JLabel();
+        trans6ComboBox = new javax.swing.JComboBox();
+        jButton4 = new javax.swing.JButton();
         roadmapMenuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
         loadThemesMI = new javax.swing.JMenuItem();
@@ -546,7 +551,7 @@ public void setTableColumnWidths()
         sideslipPreference.setLocation(new java.awt.Point(10, 10));
         sideslipPreference.setLocationByPlatform(true);
         sideslipPreference.setMinimumSize(new java.awt.Dimension(200, 300));
-        sideslipPreference.setSize(new java.awt.Dimension(700, 600));
+        sideslipPreference.setSize(new java.awt.Dimension(750, 600));
         sideslipPreference.addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 sideslipPreferencewindowClosed(evt);
@@ -564,9 +569,14 @@ public void setTableColumnWidths()
         probUpOrDown.setMinorTickSpacing(1);
         probUpOrDown.setPaintLabels(true);
         probUpOrDown.setPaintTicks(true);
+        probUpOrDown.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                probUpOrDownMouseDragged(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         sideslipPreference.getContentPane().add(probUpOrDown, gridBagConstraints);
@@ -574,18 +584,10 @@ public void setTableColumnWidths()
         jLabel10.setText("Slide Up");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
         sideslipPreference.getContentPane().add(jLabel10, gridBagConstraints);
-
-        jLabel11.setText("Slide Down");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 10);
-        sideslipPreference.getContentPane().add(jLabel11, gridBagConstraints);
 
         SoloGeneratorTitle1.setFont(new java.awt.Font("Lucida Grande", 1, 24)); // NOI18N
         SoloGeneratorTitle1.setMaximumSize(new java.awt.Dimension(327, 327));
@@ -601,21 +603,21 @@ public void setTableColumnWidths()
         jLabel2.setText("Prob Half Step Slide");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.insets = new java.awt.Insets(20, 0, 25, 0);
         sideslipPreference.getContentPane().add(jLabel2, gridBagConstraints);
 
         jLabel12.setText("Prob Whole Step Slide");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.insets = new java.awt.Insets(25, 0, 25, 10);
         sideslipPreference.getContentPane().add(jLabel12, gridBagConstraints);
 
         jLabel13.setText("Prob Third Slide");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 6;
         gridBagConstraints.insets = new java.awt.Insets(25, 0, 25, 0);
         sideslipPreference.getContentPane().add(jLabel13, gridBagConstraints);
 
@@ -628,7 +630,8 @@ public void setTableColumnWidths()
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.ipadx = 20;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         sideslipPreference.getContentPane().add(probHalf, gridBagConstraints);
 
@@ -640,7 +643,8 @@ public void setTableColumnWidths()
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.ipadx = 20;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         sideslipPreference.getContentPane().add(probWhole, gridBagConstraints);
 
@@ -653,64 +657,25 @@ public void setTableColumnWidths()
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.ipadx = 20;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         sideslipPreference.getContentPane().add(probThird, gridBagConstraints);
 
-        jLabel14.setText("Bar-line Shift Probability");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 5;
-        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
-        sideslipPreference.getContentPane().add(jLabel14, gridBagConstraints);
-
-        probBarlineShiftSlider.setMajorTickSpacing(10);
-        probBarlineShiftSlider.setMinorTickSpacing(1);
-        probBarlineShiftSlider.setPaintLabels(true);
-        probBarlineShiftSlider.setPaintTicks(true);
-        probBarlineShiftSlider.setToolTipText("");
-        probBarlineShiftSlider.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                probBarlineShiftSliderMouseReleased(evt);
-            }
-        });
+        jLabel17.setText("*Here you can control the probability that the melody will be side slipped up or down.*");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(10, 0, 10, 0);
-        sideslipPreference.getContentPane().add(probBarlineShiftSlider, gridBagConstraints);
+        sideslipPreference.getContentPane().add(jLabel17, gridBagConstraints);
 
-        jLabel15.setText("Shift Back");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 6;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        sideslipPreference.getContentPane().add(jLabel15, gridBagConstraints);
-
-        probShiftForwardorBackSlider.setMajorTickSpacing(10);
-        probShiftForwardorBackSlider.setMinorTickSpacing(1);
-        probShiftForwardorBackSlider.setPaintLabels(true);
-        probShiftForwardorBackSlider.setPaintTicks(true);
-        probShiftForwardorBackSlider.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                probShiftForwardorBackSliderMouseReleased(evt);
-            }
-        });
+        jLabel18.setText("*Enter the probability that it will slide up (%). The probability that it will slide down is the inverse of this.*");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 6;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        sideslipPreference.getContentPane().add(probShiftForwardorBackSlider, gridBagConstraints);
-
-        jLabel16.setText("Shift Forward");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 6;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 10);
-        sideslipPreference.getContentPane().add(jLabel16, gridBagConstraints);
+        sideslipPreference.getContentPane().add(jLabel18, gridBagConstraints);
 
         expandPreference.setAlwaysOnTop(true);
         expandPreference.setLocation(new java.awt.Point(10, 10));
@@ -771,6 +736,77 @@ public void setTableColumnWidths()
         gridBagConstraints.insets = new java.awt.Insets(0, 10, 20, 20);
         expandPreference.getContentPane().add(jLabel27, gridBagConstraints);
 
+        barLineShiftPreference.setAlwaysOnTop(true);
+        barLineShiftPreference.setLocation(new java.awt.Point(10, 10));
+        barLineShiftPreference.setLocationByPlatform(true);
+        barLineShiftPreference.setMinimumSize(new java.awt.Dimension(200, 300));
+        barLineShiftPreference.setSize(new java.awt.Dimension(700, 600));
+        barLineShiftPreference.addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                barLineShiftPreferencewindowClosed(evt);
+            }
+        });
+        barLineShiftPreference.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                barLineShiftPreferenceformKeyPressed(evt);
+            }
+        });
+        barLineShiftPreference.getContentPane().setLayout(new java.awt.GridBagLayout());
+
+        SoloGeneratorTitle2.setFont(new java.awt.Font("Lucida Grande", 1, 24)); // NOI18N
+        SoloGeneratorTitle2.setMaximumSize(new java.awt.Dimension(327, 327));
+        SoloGeneratorTitle2.setText("Bar Line Shift Preferences");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(20, 0, 40, 0);
+        barLineShiftPreference.getContentPane().add(SoloGeneratorTitle2, gridBagConstraints);
+
+        jLabel23.setText("Shift Forward");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
+        barLineShiftPreference.getContentPane().add(jLabel23, gridBagConstraints);
+
+        probShiftForwardorBackSlider.setMajorTickSpacing(10);
+        probShiftForwardorBackSlider.setMinorTickSpacing(1);
+        probShiftForwardorBackSlider.setPaintLabels(true);
+        probShiftForwardorBackSlider.setPaintTicks(true);
+        probShiftForwardorBackSlider.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                probShiftForwardorBackSliderMouseDragged(evt);
+            }
+        });
+        probShiftForwardorBackSlider.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                probShiftForwardorBackSliderMouseReleased(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 10);
+        barLineShiftPreference.getContentPane().add(probShiftForwardorBackSlider, gridBagConstraints);
+
+        jLabel15.setText("*This represents the probability (% chance) that the bar line shift will be forwards.*");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 10);
+        barLineShiftPreference.getContentPane().add(jLabel15, gridBagConstraints);
+
+        jLabel16.setText("*The probability that it will shift backwards is the inverse of this probability.*");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 2;
+        barLineShiftPreference.getContentPane().add(jLabel16, gridBagConstraints);
+
         setAlwaysOnTop(true);
         setLocation(new java.awt.Point(10, 10));
         setLocationByPlatform(true);
@@ -796,23 +832,23 @@ public void setTableColumnWidths()
 
         soloTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Name", "Theme Length", "Theme", "Prob. to Use", "Prob. to Transpose", "Prob. to Invert", "Prob. to Reverse", "Prob. to Expand", "Prob. to Side Slip"
+                "Name", "Theme Length", "Theme", "Prob. to Use", "Prob. to Transpose", "Prob. to Invert", "Prob. to Reverse", "Prob. to Expand", "Prob. to Side Slip", "Prob. to Bar Line Shift"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -848,9 +884,9 @@ public void setTableColumnWidths()
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
-        gridBagConstraints.gridheight = 5;
-        gridBagConstraints.ipadx = 600;
-        gridBagConstraints.insets = new java.awt.Insets(0, 35, -30, 0);
+        gridBagConstraints.gridheight = 6;
+        gridBagConstraints.ipadx = 680;
+        gridBagConstraints.insets = new java.awt.Insets(0, 15, -30, 0);
         getContentPane().add(soloTableScrollPane, gridBagConstraints);
 
         themeListScrollPane.setMaximumSize(new java.awt.Dimension(0, 0));
@@ -880,7 +916,7 @@ public void setTableColumnWidths()
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 7;
         gridBagConstraints.gridwidth = 4;
-        gridBagConstraints.gridheight = 3;
+        gridBagConstraints.gridheight = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
         gridBagConstraints.ipadx = 320;
         gridBagConstraints.ipady = 200;
@@ -897,7 +933,7 @@ public void setTableColumnWidths()
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 12;
+        gridBagConstraints.gridy = 13;
         gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
         gridBagConstraints.gridheight = java.awt.GridBagConstraints.REMAINDER;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
@@ -926,7 +962,7 @@ public void setTableColumnWidths()
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 11;
+        gridBagConstraints.gridy = 12;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.ipadx = 32;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
@@ -1002,7 +1038,7 @@ public void setTableColumnWidths()
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 9;
+        gridBagConstraints.gridy = 10;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
         gridBagConstraints.weightx = 2.0;
@@ -1017,7 +1053,7 @@ public void setTableColumnWidths()
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 12;
+        gridBagConstraints.gridy = 13;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         getContentPane().add(currentSelectionJButton, gridBagConstraints);
 
@@ -1042,7 +1078,7 @@ public void setTableColumnWidths()
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 13;
+        gridBagConstraints.gridy = 14;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         getContentPane().add(deleteRowbutton, gridBagConstraints);
 
@@ -1055,7 +1091,7 @@ public void setTableColumnWidths()
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 10;
+        gridBagConstraints.gridy = 11;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.ipadx = 32;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
@@ -1136,6 +1172,7 @@ public void setTableColumnWidths()
         trans1ComboBox.addItem("Reverse");
         trans1ComboBox.addItem("Expand");
         trans1ComboBox.addItem("Side Slip");
+        trans1ComboBox.addItem("Bar Line Shift");
         trans1ComboBox.setSelectedItem("Transpose");
         transformationComboBoxes[0] = trans1ComboBox;
         trans1ComboBox.addActionListener(new java.awt.event.ActionListener() {
@@ -1152,6 +1189,7 @@ public void setTableColumnWidths()
         trans3ComboBox.addItem("Reverse");
         trans3ComboBox.addItem("Expand");
         trans3ComboBox.addItem("Side Slip");
+        trans3ComboBox.addItem("Bar Line Shift");
         trans3ComboBox.setSelectedItem("Reverse");
         transformationComboBoxes[2] = trans3ComboBox;
         trans3ComboBox.addActionListener(new java.awt.event.ActionListener() {
@@ -1167,6 +1205,7 @@ public void setTableColumnWidths()
 
         trans4ComboBox.addItem("Expand");
         trans4ComboBox.addItem("Side Slip");
+        trans4ComboBox.addItem("Bar Line Shift");
         trans4ComboBox.setSelectedItem("Expand");
         transformationComboBoxes[3] = trans4ComboBox;
         trans4ComboBox.addActionListener(new java.awt.event.ActionListener() {
@@ -1182,8 +1221,14 @@ public void setTableColumnWidths()
 
         trans5ComboBox.setToolTipText("");
         trans5ComboBox.addItem("Side Slip");
+        trans5ComboBox.addItem("Bar Line Shift");
         trans5ComboBox.setSelectedItem("Side Slip");
         transformationComboBoxes[4] = trans5ComboBox;
+        trans5ComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                trans5ComboBoxActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 8;
@@ -1242,6 +1287,7 @@ public void setTableColumnWidths()
         trans2ComboBox.addItem("Reverse");
         trans2ComboBox.addItem("Expand");
         trans2ComboBox.addItem("Side Slip");
+        trans2ComboBox.addItem("Bar Line Shift");
         trans2ComboBox.setSelectedItem("Invert");
         transformationComboBoxes[1] = trans2ComboBox;
         trans2ComboBox.addActionListener(new java.awt.event.ActionListener() {
@@ -1263,8 +1309,7 @@ public void setTableColumnWidths()
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 9;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
+        gridBagConstraints.gridy = 11;
         getContentPane().add(jButton1, gridBagConstraints);
 
         jButton2.setText("Set All Probabilities Equal To 1st Theme");
@@ -1275,7 +1320,7 @@ public void setTableColumnWidths()
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 10;
+        gridBagConstraints.gridy = 11;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         getContentPane().add(jButton2, gridBagConstraints);
 
@@ -1287,7 +1332,7 @@ public void setTableColumnWidths()
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 11;
+        gridBagConstraints.gridy = 12;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         getContentPane().add(jButton3, gridBagConstraints);
 
@@ -1307,7 +1352,37 @@ public void setTableColumnWidths()
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 10;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
         getContentPane().add(expandPreferenceButton, gridBagConstraints);
+
+        jLabel14.setText("6:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 9;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 15, 0, 0);
+        getContentPane().add(jLabel14, gridBagConstraints);
+
+        trans6ComboBox.setToolTipText("");
+        trans6ComboBox.addItem("Bar Line Shift");
+        trans6ComboBox.setSelectedItem("Bar Line Shift");
+        transformationComboBoxes[5] = trans6ComboBox;
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 9;
+        gridBagConstraints.ipady = 24;
+        getContentPane().add(trans6ComboBox, gridBagConstraints);
+
+        jButton4.setText("Open Bar Line Shift Preferences");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 12;
+        getContentPane().add(jButton4, gridBagConstraints);
 
         fileMenu.setText("File"); // NOI18N
         fileMenu.setMaximumSize(new java.awt.Dimension(50, 40));
@@ -1465,7 +1540,10 @@ private void playSelection()
                         if( (getValueAt(j, USE_COLUMN) == null)
                                 && (getValueAt(j, TRANSPOSE_COLUMN) == null)
                                 && (getValueAt(j, INVERT_COLUMN) == null)
-                                && (getValueAt(j, REVERSE_COLUMN) == null) )
+                                && (getValueAt(j, REVERSE_COLUMN) == null) 
+                                && (getValueAt(j, EXPAND_COLUMN) == null)
+                                && (getValueAt(j, SIDESLIP_COLUMN) == null)
+                                && (getValueAt(j, BARLINESHIFT_COLUMN) == null))
                           {
                             // if the weighted value cells are null
                             //set default values for weighted values
@@ -1475,6 +1553,7 @@ private void playSelection()
                             soloTable.setValueAt(REVERSE_DEFAULT_VALUE, j, REVERSE_COLUMN);
                             soloTable.setValueAt(EXPAND_DEFAULT_VALUE, j, EXPAND_COLUMN);
                             soloTable.setValueAt(SIDESLIP_DEFAULT_VALUE, j, SIDESLIP_COLUMN);
+                            soloTable.setValueAt(BARLINESHIFT_DEFAULT_VALUE, j, BARLINESHIFT_COLUMN);
                           }
 
                         String name = (String) themeList.getSelectedValue();
@@ -1740,7 +1819,8 @@ private void closeWindow()
                         || (getValueAt(i, INVERT_COLUMN) == null)
                         || (getValueAt(i, REVERSE_COLUMN) == null)
                         || (getValueAt(i, EXPAND_COLUMN) == null)
-                        || (getValueAt(i, SIDESLIP_COLUMN) == null))
+                        || (getValueAt(i, SIDESLIP_COLUMN) == null)
+                        || (getValueAt(i, BARLINESHIFT_COLUMN) == null))
                 {
                     //if one necessary cell isn't filled
                     enteredIncorrectly.setVisible(true); //show error message 
@@ -1751,7 +1831,8 @@ private void closeWindow()
                         || !isDouble((String) getValueAt(i, INVERT_COLUMN))
                         || !isDouble((String) getValueAt(i, REVERSE_COLUMN))
                         || !isDouble((String) getValueAt(i, EXPAND_COLUMN))
-                        || !isDouble((String) getValueAt(i, SIDESLIP_COLUMN)))
+                        || !isDouble((String) getValueAt(i, SIDESLIP_COLUMN))
+                        || !isDouble((String) getValueAt(i, BARLINESHIFT_COLUMN)))
                   {
                     //if theme cell not empty but weighted values are entered wrong
                     enteredIncorrectly.setVisible(true); //show error message 
@@ -1766,6 +1847,7 @@ private void closeWindow()
                     use.probReverse = Double.valueOf((String) getValueAt(i, REVERSE_COLUMN));
                     use.probExpand = Double.valueOf((String) getValueAt(i, EXPAND_COLUMN));
                     use.probSideslip = Double.valueOf((String) getValueAt(i, SIDESLIP_COLUMN));
+                    use.probBarLineShift = Double.valueOf((String) getValueAt(i, BARLINESHIFT_COLUMN));
                     themeUses.add(use); // add a new ThemeUse to the arraylist with respective elements
 
                     if( getValueAt(i, NAME_COLUMN) != null )
@@ -1790,10 +1872,6 @@ private void closeWindow()
         stopPlaytoggle.setSelected(false);
         stopPlaytoggle.setText("<html><center>Stop Playing</center></html>");
     }//GEN-LAST:event_generateSoloJButtonActionPerformed
-
-    private void generateThemeJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateThemeJButtonActionPerformed
-        generateTheme();
-    }//GEN-LAST:event_generateThemeJButtonActionPerformed
 
     private void currentSelectionJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_currentSelectionJButtonActionPerformed
         // int index = soloTable.getSelectedRow();
@@ -1955,47 +2033,45 @@ private void closeWindow()
     }//GEN-LAST:event_pitchRangeMaxSliderMouseDragged
 
     private void trans1ComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_trans1ComboBoxActionPerformed
-        //sets transformation 1-5 according to what the user chose for 1
+        //sets transformation 1-6 according to what the user chose for 1
         canEnter2 = false;
         canEnter3 = false;
-        canEnter4 = false;//doesn't let trans2(3 and 4)ComboBoxActionPerformed activate at the wrong time
+        canEnter4 = false;
+        canEnter5 = false;//doesn't let trans2(3, 4, and 5)ComboBoxActionPerformed activate at the wrong time
         transformNum = 1;
-        adjustItemsInComboBox(1, 5);
+        adjustItemsInComboBox(1, 6);
     }//GEN-LAST:event_trans1ComboBoxActionPerformed
 
     private void trans2ComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_trans2ComboBoxActionPerformed
-        //sets transformation 2-5 according to what the user chose for 2
+        //sets transformation 2-6 according to what the user chose for 2
         if (canEnter2)
         {
             canEnter3=false;
             canEnter4=false;
-            System.out.println("2");
+            canEnter5=false;
             transformNum = 2;
-            adjustItemsInComboBox(2, 4);
+            adjustItemsInComboBox(2, 5);
         }
     }//GEN-LAST:event_trans2ComboBoxActionPerformed
 
     private void trans3ComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_trans3ComboBoxActionPerformed
-        //sets transformation 3-5 according to what the user chose for 3
+        //sets transformation 3-6 according to what the user chose for 3
         if (canEnter3)
         {
             canEnter4=false;
-            System.out.println("3");
+            canEnter5=false;
             transformNum = 3;
-            adjustItemsInComboBox(3, 3);
+            adjustItemsInComboBox(3, 4);
         }
     }//GEN-LAST:event_trans3ComboBoxActionPerformed
 
     private void trans4ComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_trans4ComboBoxActionPerformed
-        //sets transformation 4-5 according to what the user chose for 4
+        //sets transformation 4-6 according to what the user chose for 4
         if (canEnter4)
         {
-            System.out.println("4");
+            canEnter5=false;
             transformNum = 4;
-            adjustItemsInComboBox(4, 2);
-            canEnter2=true;
-            canEnter3=true;
-            canEnter4=true;
+            adjustItemsInComboBox(4, 3);
         }
     }//GEN-LAST:event_trans4ComboBoxActionPerformed
 
@@ -2057,38 +2133,6 @@ private void closeWindow()
         noRowSelected.setVisible(false);
     }//GEN-LAST:event_cellOkbutton2ActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        sideslipPreference.setVisible(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void sideslipPreferenceformKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_sideslipPreferenceformKeyPressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_sideslipPreferenceformKeyPressed
-
-    private void sideslipPreferencewindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_sideslipPreferencewindowClosed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_sideslipPreferencewindowClosed
-
-    private void probHalfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_probHalfActionPerformed
-        probHalfSideSlip = Double.parseDouble(probHalf.getText());
-    }//GEN-LAST:event_probHalfActionPerformed
-
-    private void probShiftForwardorBackSliderMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_probShiftForwardorBackSliderMouseReleased
-        probForwardShift = probShiftForwardorBackSlider.getValue()/100.0;
-    }//GEN-LAST:event_probShiftForwardorBackSliderMouseReleased
-
-    private void probWholeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_probWholeActionPerformed
-        probWholeSideSlip = Double.parseDouble(probWhole.getText());
-    }//GEN-LAST:event_probWholeActionPerformed
-
-    private void probThirdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_probThirdActionPerformed
-        probThirdSideSlip = Double.parseDouble(probThird.getText());
-    }//GEN-LAST:event_probThirdActionPerformed
-
-    private void probBarlineShiftSliderMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_probBarlineShiftSliderMouseReleased
-        probBarLineShift = probBarlineShiftSlider.getValue()/100.0;
-    }//GEN-LAST:event_probBarlineShiftSliderMouseReleased
-
     private void rangeTooSmallWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_rangeTooSmallWindowOpened
         stopPlaying();
     }//GEN-LAST:event_rangeTooSmallWindowOpened
@@ -2112,6 +2156,71 @@ private void closeWindow()
     private void expandPreferenceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_expandPreferenceButtonActionPerformed
         expandPreference.setVisible(true);
     }//GEN-LAST:event_expandPreferenceButtonActionPerformed
+
+    private void sideslipPreferenceformKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_sideslipPreferenceformKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_sideslipPreferenceformKeyPressed
+
+    private void sideslipPreferencewindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_sideslipPreferencewindowClosed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_sideslipPreferencewindowClosed
+
+    private void probShiftForwardorBackSliderMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_probShiftForwardorBackSliderMouseReleased
+        probForwardShift = probShiftForwardorBackSlider.getValue()/100.0;
+    }//GEN-LAST:event_probShiftForwardorBackSliderMouseReleased
+
+    private void probThirdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_probThirdActionPerformed
+        probThirdSideSlip = Double.parseDouble(probThird.getText());
+    }//GEN-LAST:event_probThirdActionPerformed
+
+    private void probWholeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_probWholeActionPerformed
+        probWholeSideSlip = Double.parseDouble(probWhole.getText());
+    }//GEN-LAST:event_probWholeActionPerformed
+
+    private void probHalfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_probHalfActionPerformed
+        probHalfSideSlip = Double.parseDouble(probHalf.getText());
+    }//GEN-LAST:event_probHalfActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        sideslipPreference.setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void generateThemeJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateThemeJButtonActionPerformed
+        generateTheme();
+    }//GEN-LAST:event_generateThemeJButtonActionPerformed
+
+    private void trans5ComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_trans5ComboBoxActionPerformed
+        //sets transformation 4-5 according to what the user chose for 4
+        if (canEnter5)
+        {
+            transformNum = 5;
+            adjustItemsInComboBox(5, 2);
+            canEnter2=true;
+            canEnter3=true;
+            canEnter4=true;
+            canEnter5=true;
+        }
+    }//GEN-LAST:event_trans5ComboBoxActionPerformed
+
+    private void probShiftForwardorBackSliderMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_probShiftForwardorBackSliderMouseDragged
+        probForwardShift = probShiftForwardorBackSlider.getValue()/100.0;
+    }//GEN-LAST:event_probShiftForwardorBackSliderMouseDragged
+
+    private void probUpOrDownMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_probUpOrDownMouseDragged
+        probSlideUp = probUpOrDown.getValue()/100;
+    }//GEN-LAST:event_probUpOrDownMouseDragged
+
+    private void barLineShiftPreferencewindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_barLineShiftPreferencewindowClosed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_barLineShiftPreferencewindowClosed
+
+    private void barLineShiftPreferenceformKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_barLineShiftPreferenceformKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_barLineShiftPreferenceformKeyPressed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        barLineShiftPreference.setVisible(true);
+    }//GEN-LAST:event_jButton4ActionPerformed
     
     private void setAllProb()
     {
@@ -2121,13 +2230,15 @@ private void closeWindow()
         Object probReverse = soloTable.getValueAt(0, 6);
         Object probExpand = soloTable.getValueAt(0, 7);
         Object probSideSlip = soloTable.getValueAt(0, 8);
-        Object [] probs = new Object[6];
+        Object probBarLineShift = soloTable.getValueAt(0,9);
+        Object [] probs = new Object[7];
         probs[0] = probUse;
         probs[1] = probTranpose;
         probs[2] = probInvert;
         probs[3] = probReverse;
         probs[4] = probExpand;
         probs[5] = probSideSlip;
+        probs[6] = probBarLineShift;
         
         for (int r=1; r<soloTable.getRowCount(); r++)
         {
@@ -2160,9 +2271,8 @@ private void closeWindow()
     private void adjustItemsInComboBox(int start, int numItems)
     {//updates the remaining transformations so that they don't include one
         //that was previously chosen. prevents duplicates
-        for (int i=start-1; i<4; i++)
+        for (int i=start-1; i<5; i++)
         {
-            System.out.println("i: " + i);
             itemsLeft.clear();
             javax.swing.JComboBox currBox = transformationComboBoxes[i];
             javax.swing.JComboBox nextBox = transformationComboBoxes[i+1];
@@ -2170,7 +2280,6 @@ private void closeWindow()
             for (int j=0; j<numItems; j++)
             {
                 Object currItem = currBox.getItemAt(j);
-                System.out.println("j" + j);
                 if (!currItem.equals(chosenItem))
                 {
                     itemsLeft.add(currItem);
@@ -2187,6 +2296,7 @@ private void closeWindow()
         canEnter2=true;
         canEnter3=true; 
         canEnter4=true;
+        canEnter5=true;
     }
     
 private boolean endSoloEarly = false;
@@ -2200,10 +2310,10 @@ private int minInterval = 0;
 private int maxInterval = 6;
 private double probWholeToneTranspose = .7;
 private double probSemitoneTranspose = .3;
+private double probSlideUp = 0.5;
 private double probHalfSideSlip = 0.4;
 private double probWholeSideSlip = 0.4;
 private double probThirdSideSlip = 0.2;
-private double probBarLineShift = 0.5;
 private double probForwardShift = 0.5;
 private boolean barLineShiftForward = false;
 private int shiftForwardBy = 60;
@@ -2221,23 +2331,28 @@ static final int INVERT_COLUMN = 5;
 static final int REVERSE_COLUMN = 6;
 static final int EXPAND_COLUMN = 7;
 static final int SIDESLIP_COLUMN = 8;
+static final int BARLINESHIFT_COLUMN = 9;
 static final String USE_DEFAULT_VALUE = "1.0";
 static final String TRANSPOSE_DEFAULT_VALUE = "0.0";
 static final String INVERT_DEFAULT_VALUE = "0.0";
 static final String REVERSE_DEFAULT_VALUE = "0.0";
 static final String EXPAND_DEFAULT_VALUE = "0.0";
 static final String SIDESLIP_DEFAULT_VALUE = "0.0";
+static final String BARLINESHIFT_DEFAULT_VALUE = "0.0";
 private ArrayList<Object> itemsLeft = new ArrayList<Object>();
 private boolean canEnter2 = true;//controls whether trans2ComboBoxActionPerformed can execute or not
 private boolean canEnter3 = true;//controls whether trans3ComboBoxActionPerformed can execute or not
 private boolean canEnter4 = true;//controls whether trans4ComboBoxActionPerformed can execute or not
+private boolean canEnter5 = true;//controls whether trans5ComboBoxActionPerformed can execute or not
 private boolean throughOnce = false;//set to true once all of the transition combo boxes have been gone through
 private int transformNum = 0;//keeps track of the tranformation number that is being set
 private String themeUsageText = "";
 static final int ROW_COUNT = 20;
 double probnoTheme;//probability of not using a theme 
 public ThemeListModel themeListModel = new ThemeListModel();
-private javax.swing.JComboBox [] transformationComboBoxes = new javax.swing.JComboBox[5];//array of the tranformation combo boxes
+private javax.swing.JComboBox [] transformationComboBoxes = new javax.swing.JComboBox[6];//array of the tranformation combo boxes
+private boolean barlineshift = false;
+private boolean sideslip = false;
 
 Random random;
 File fileName = ImproVisor.getThemesFile();
@@ -2245,89 +2360,90 @@ private SoloGeneratorTableModel soloTableModel = new SoloGeneratorTableModel(
         new Object[][]
   {
     {
-        null, null, null, null, null, null, null, null
+        null, null, null, null, null, null, null, null, null, null
       },
     {
-        null, null, null, null, null, null, null, null
+        null, null, null, null, null, null, null, null, null, null
       },
     {
-        null, null, null, null, null, null, null, null
+        null, null, null, null, null, null, null, null, null, null
       },
     {
-        null, null, null, null, null, null, null, null
+        null, null, null, null, null, null, null, null, null, null
       },
     {
-        null, null, null, null, null, null, null, null
+        null, null, null, null, null, null, null, null, null, null
       },
     {
-        null, null, null, null, null, null, null, null
+        null, null, null, null, null, null, null, null, null, null
       },
     {
-        null, null, null, null, null, null, null, null
+        null, null, null, null, null, null, null, null, null, null
       },
     {
-        null, null, null, null, null, null, null, null
+        null, null, null, null, null, null, null, null, null, null
       },
     {
-        null, null, null, null, null, null, null, null
+        null, null, null, null, null, null, null, null, null, null
       },
     {
-        null, null, null, null, null, null, null, null
+        null, null, null, null, null, null, null, null, null, null
       },
     {
-        null, null, null, null, null, null, null, null
+        null, null, null, null, null, null, null, null, null, null
       },
     {
-        null, null, null, null, null, null, null, null
+        null, null, null, null, null, null, null, null, null, null
       },
     {
-        null, null, null, null, null, null, null, null
+        null, null, null, null, null, null, null, null, null, null
       },
     {
-        null, null, null, null, null, null, null, null
+        null, null, null, null, null, null, null, null, null, null
       },
     {
-        null, null, null, null, null, null, null, null
+        null, null, null, null, null, null, null, null, null, null
       },
     {
-        null, null, null, null, null, null, null, null
+        null, null, null, null, null, null, null, null, null, null
       },
     {
-        null, null, null, null, null, null, null, null
+        null, null, null, null, null, null, null, null, null, null
       },
     {
-        null, null, null, null, null, null, null, null
+        null, null, null, null, null, null, null, null, null, null
       },
     {
-        null, null, null, null, null, null, null, null
+        null, null, null, null, null, null, null, null, null, null
       },
     {
-        null, null, null, null, null, null, null, null
+        null, null, null, null, null, null, null, null, null, null
       }
   },
         new String[]
   {
-    "Name", "Length", "Theme", "Use", "Transpose", "Invert", "Reverse", "Expand", "Side Slip"
+    "Name", "Length", "Theme", "Use", "Transpose", "Invert", "Reverse", "Expand", "Side Slip", "Bar Line Shift"
   });
 
 public class SoloGeneratorTableModel extends DefaultTableModel
 {
 
-private static final int columnCount = 9;
+private static final int columnCount = 10;
 boolean[] canEdit = new boolean[]
   {
-    //name, theme, length, use, transpose, invert, reverse, expand, side slip
-    true, true, true, true, true, true, true, true, true
+    //name, theme, length, use, transpose, invert, reverse, expand, side slip, bar line shift
+    true, true, true, true, true, true, true, true, true, true
   };
 int[] columnWidths = new int[]
   {
-    80, 4, 80, 3, 30, 5, 5, 5, 5
+    80, 4, 80, 3, 30, 5, 5, 5, 5, 40
   };
 int[] columnAdjustment =
   {
     DefaultTableCellRenderer.LEFT,
     DefaultTableCellRenderer.LEFT,
     DefaultTableCellRenderer.LEFT,
+    DefaultTableCellRenderer.RIGHT,
     DefaultTableCellRenderer.RIGHT,
     DefaultTableCellRenderer.RIGHT,
     DefaultTableCellRenderer.RIGHT,
@@ -2379,6 +2495,8 @@ public void tableRefresh()
         soloTable.setValueAt(null, i, TRANSPOSE_COLUMN);
         soloTable.setValueAt(null, i, INVERT_COLUMN);
         soloTable.setValueAt(null, i, REVERSE_COLUMN);
+        soloTable.setValueAt(null, i, SIDESLIP_COLUMN);
+        soloTable.setValueAt(null, i, BARLINESHIFT_COLUMN);
       }
 
     fireTableDataChanged();
@@ -2901,6 +3019,7 @@ public void generateTheme()
                 soloTable.setValueAt(REVERSE_DEFAULT_VALUE,   x, REVERSE_COLUMN);
                 soloTable.setValueAt(EXPAND_DEFAULT_VALUE,    x, EXPAND_COLUMN);
                 soloTable.setValueAt(SIDESLIP_DEFAULT_VALUE,    x, SIDESLIP_COLUMN);
+                soloTable.setValueAt(BARLINESHIFT_DEFAULT_VALUE,    x, BARLINESHIFT_COLUMN);
 
                 int Length = notate.intFromStringInRange((String) getValueAt(x, LENGTH_COLUMN), 0, 100, themeLength);
                 //get length from tablek
@@ -3328,7 +3447,7 @@ public void myGenerateSolo(ArrayList<ThemeUse> themeUses, CommandManager cm)
             int originalSize = chosenTheme.getSize();//keeps the original size in case the size is changed later
             
             newMelody.setSize(chosenTheme.getSize());
-            //change theme according to given probabilities for transpose, invert, reverse, expand, and side slip
+            //change theme according to given probabilities for transpose, invert, reverse, expand, side slip, and bar line shift
             newMelody = adjustTheme(chosenTheme, chosenThemeUse, cm, themeInterval);//adjustTheme is a helper method
           
             if (newMelody.getSize()+i > notate.getScoreLength())
@@ -3345,10 +3464,7 @@ public void myGenerateSolo(ArrayList<ThemeUse> themeUses, CommandManager cm)
                 double numIncrements = newMelody.getSize()*1.0/themeIntervalUseIncrement ;
                
                 increaseIncrement += themeIntervalUseIncrement*numIncrements;
-                if (barLineShiftForward)
-                {
-                    increaseIncrement += shiftForwardBy;
-                }
+       
             }
             else
             {//it fits properly
@@ -3449,14 +3565,16 @@ public MelodyPart adjustTheme(MelodyPart chosenTheme, ThemeUse chosenThemeUse, C
     Object trans3 = trans3ComboBox.getSelectedItem();
     Object trans4 = trans4ComboBox.getSelectedItem();
     Object trans5 = trans5ComboBox.getSelectedItem();
-    Object[] transformOrder = new Object[5];
+    Object trans6 = trans6ComboBox.getSelectedItem();
+    Object[] transformOrder = new Object[6];
     transformOrder[0]=trans1;
     transformOrder[1]=trans2;
     transformOrder[2]=trans3;//organizes transformations in an array
     transformOrder[3]=trans4;
     transformOrder[4]=trans5;
+    transformOrder[5]=trans6;
     
-    if (trans1==null||trans2==null||trans3==null||trans4==null||trans5==null||transformDoubled(transformOrder))
+    if (trans1==null||trans2==null||trans3==null||trans4==null||trans5==null||trans6==null||transformDoubled(transformOrder))
     {// if anything isn't entered correctly (if something is null or a transformation is entered more than once)
         //use the default order
         transformOrder[0]="Transpose";
@@ -3464,9 +3582,10 @@ public MelodyPart adjustTheme(MelodyPart chosenTheme, ThemeUse chosenThemeUse, C
         transformOrder[2]="Reverse";
         transformOrder[3]="Expand";
         transformOrder[4]="Side Slip";
+        transformOrder[5]="Bar Line Shift";
     }
     int count = 0;
-    while (count < 5)//loop until all of the transformations are reached
+    while (count < 6)//loop until all of the transformations are reached
     {
         if (transformOrder[count]=="Transpose")
         {
@@ -3567,7 +3686,7 @@ public MelodyPart adjustTheme(MelodyPart chosenTheme, ThemeUse chosenThemeUse, C
             if (Notate.bernoulli(chosenThemeUse.getProbSideslip()))
             {
                 numAdjustments ++;
-                //usedSideslip = true;
+                sideslip = true;
                 MelodyPart sideslippedMelody = adjustedMelody.copy();
                 if (numAdjustments > 1)
                 {
@@ -3578,6 +3697,26 @@ public MelodyPart adjustTheme(MelodyPart chosenTheme, ThemeUse chosenThemeUse, C
                     themeUsageText+="side slip";
                 }
                 adjustedMelody = sideslip(sideslippedMelody, length);
+          
+            }
+        }
+        else if (transformOrder[count] == "Bar Line Shift")
+        {
+            if (Notate.bernoulli(chosenThemeUse.getProbBarLineShift()))
+            {
+                numAdjustments++;
+                barlineshift = true;
+                MelodyPart shiftedMelody = adjustedMelody.copy();
+                if (numAdjustments > 1)
+                {
+                    themeUsageText += ", bar line shift";
+                }
+                else
+                {
+                    themeUsageText+= "bar line shift";
+                }
+                adjustedMelody = barLineShift(shiftedMelody, length);
+               
             }
         }
         count++;
@@ -3586,7 +3725,8 @@ public MelodyPart adjustTheme(MelodyPart chosenTheme, ThemeUse chosenThemeUse, C
     {
         themeUsageText+=" unmotified";
     }
-    
+    barlineshift = false;
+    sideslip = false;
     return adjustedMelody;
 }
 
@@ -3674,12 +3814,11 @@ private MelodyPart transpose(MelodyPart melody, int length)
 
 private MelodyPart sideslip(MelodyPart melody, int length)
 { 
-    double probSlideUp = probUpOrDown.getValue()/100;
     probHalfSideSlip = Double.parseDouble(probHalf.getText());
     probWholeSideSlip = Double.parseDouble(probWhole.getText());
     probThirdSideSlip = Double.parseDouble(probThird.getText());
-    probForwardShift = probShiftForwardorBackSlider.getValue()/100.0; 
-    probBarLineShift = probBarlineShiftSlider.getValue()/100.0;
+    
+    //probBarLineShift = probBarlineShiftSlider.getValue()/100.0;
     double[] probs = new double[3];
     probs[0] = probHalfSideSlip;
     probs[1] = probWholeSideSlip;
@@ -3692,8 +3831,7 @@ private MelodyPart sideslip(MelodyPart melody, int length)
         probWholeSideSlip = probs[1];
         probThirdSideSlip = probs[2];
     }
-    MelodyPart sideslippedMelody = melody.copy();
-    MelodyPart adjustedMelody = melody.copy();
+    
     double rand = random.nextDouble();
     double tempTotalProb=0;
     int slideInterval = 2;
@@ -3705,6 +3843,17 @@ private MelodyPart sideslip(MelodyPart melody, int length)
             slideInterval = i;
             break;
         }
+    }
+    
+    MelodyPart sideslippedMelody = melody.copy();
+    MelodyPart adjustedMelody = melody.copy();
+    int start = melody.getSize();
+    if (barlineshift)
+    {
+        start = melody.getSize()/2 - shiftForwardBy;
+        sideslippedMelody = melody.extract(start, melody.getSize());
+        adjustedMelody = melody.extract(0, start);
+        adjustedMelody.setSize(adjustedMelody.getSize());
     }
     
     if (Notate.bernoulli(probSlideUp))
@@ -3749,33 +3898,53 @@ private MelodyPart sideslip(MelodyPart melody, int length)
             themeUsageText += " down third";
         }
     }
-    //System.out.println(probBarLineShift + " : " + probForwardShift);
-    if (Notate.bernoulli(probBarLineShift))
-    {//decide whether to go forward or backward
-        shiftForwardBy = shiftForwardByFinal;
-        int numBeats = random.nextInt(2) + 1;
-        shiftForwardBy *= numBeats;
-        if (Notate.bernoulli(probForwardShift))
-        {//shift forward
-            MelodyPart addRest = new MelodyPart(shiftForwardBy+sideslippedMelody.getSize());
-            addRest.pasteSlots(sideslippedMelody, shiftForwardBy);
-            sideslippedMelody.setSize(addRest.getSize());
-            sideslippedMelody = addRest;
-            themeUsageText += " forwards";
-            barLineShiftForward = true;
-        }
-        else
-        {//shift backward
-            int shiftBackTo = adjustedMelody.getSize()- shiftForwardBy;
-            adjustedMelody.setSize(adjustedMelody.getSize()+sideslippedMelody.getSize());
-            adjustedMelody.pasteSlots(sideslippedMelody, shiftBackTo);
-            themeUsageText += " backwards";
-            return adjustedMelody;
-        }
-    }
+    
     //add two of the same melodies with one transposed
     adjustedMelody.setSize(adjustedMelody.getSize()+sideslippedMelody.getSize());
-    adjustedMelody.pasteSlots(sideslippedMelody, melody.getSize());
+    adjustedMelody.pasteSlots(sideslippedMelody, start);
+    return adjustedMelody;
+}
+
+private MelodyPart barLineShift(MelodyPart melody, int length)
+{
+    MelodyPart adjustedMelody = melody.copy();
+    MelodyPart secondHalf;
+    int start = adjustedMelody.getSize();
+    
+    if (sideslip)
+    {
+        start = melody.getSize()/2;
+        secondHalf = melody.extract(start, melody.getSize());
+        sideslip = false;
+    }
+    else
+    {
+        secondHalf = melody.copy();
+    }
+    probForwardShift = probShiftForwardorBackSlider.getValue()/100.0; 
+    shiftForwardBy = shiftForwardByFinal;
+    int numBeats = random.nextInt(2) + 1;
+    shiftForwardBy *= numBeats;
+    if (Notate.bernoulli(probForwardShift))
+    {//shift forward
+        MelodyPart addRest = new MelodyPart(shiftForwardBy+start);
+        addRest.pasteSlots(secondHalf, shiftForwardBy);
+        
+        adjustedMelody.setSize(start + addRest.getSize());
+        adjustedMelody.pasteSlots(addRest, start);
+        
+        themeUsageText += " forwards";
+        barLineShiftForward = true;
+        
+    }
+    else
+    {//shift backward
+        int shiftBackTo = start- shiftForwardBy;
+        adjustedMelody.setSize(start+secondHalf.getSize());
+        adjustedMelody.pasteSlots(secondHalf, shiftBackTo);
+        themeUsageText += " backwards";
+        
+    }
     return adjustedMelody;
 }
 
@@ -3866,9 +4035,11 @@ public boolean inRange(MelodyPart melody)
     private javax.swing.JLabel Resettable;
     private java.awt.Label SoloGeneratorTitle;
     private java.awt.Label SoloGeneratorTitle1;
+    private java.awt.Label SoloGeneratorTitle2;
     private javax.swing.JLabel TransformationOrder;
     private javax.swing.JButton YesButton;
     private javax.swing.JLabel areYouSure;
+    private javax.swing.JFrame barLineShiftPreference;
     private javax.swing.JButton cancelButton;
     private javax.swing.JMenuItem cascadeMI;
     private javax.swing.JButton cellOkbutton;
@@ -3888,15 +4059,18 @@ public boolean inRange(MelodyPart melody)
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
@@ -3918,7 +4092,6 @@ public boolean inRange(MelodyPart melody)
     private javax.swing.JSlider pitchRangeMaxSlider;
     private javax.swing.JLabel pitchRangeMinLabel;
     private javax.swing.JSlider pitchRangeMinSlider;
-    private javax.swing.JSlider probBarlineShiftSlider;
     private javax.swing.JSlider probExpandby2or3;
     private javax.swing.JTextField probHalf;
     private javax.swing.JSlider probShiftForwardorBackSlider;
@@ -3948,6 +4121,7 @@ public boolean inRange(MelodyPart melody)
     private javax.swing.JComboBox trans3ComboBox;
     private javax.swing.JComboBox trans4ComboBox;
     private javax.swing.JComboBox trans5ComboBox;
+    private javax.swing.JComboBox trans6ComboBox;
     private javax.swing.JLabel tryAgain;
     private javax.swing.JLabel tryAgain1;
     private javax.swing.JLabel tryAgain2;

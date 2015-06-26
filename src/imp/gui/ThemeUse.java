@@ -42,6 +42,8 @@ double probExpand;
 
 double probSideslip;
 
+double probBarLineShift;
+
 public ThemeUse(MelodyPart melody)
 {
     theme = new Theme(melody);
@@ -92,6 +94,11 @@ public ThemeUse(MelodyPart melody)
     public double getProbSideslip()
       {
         return probSideslip;
+      }
+    
+    public double getProbBarLineShift()
+      {
+        return probBarLineShift;
       }
 public String toString()
 {
