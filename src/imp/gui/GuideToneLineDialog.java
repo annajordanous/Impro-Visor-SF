@@ -106,11 +106,9 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
         lineTypeButtons = new javax.swing.ButtonGroup();
         scaleDegree2Buttons = new javax.swing.ButtonGroup();
         linesPanel = new javax.swing.JPanel();
-        numberOfLinesLabel = new javax.swing.JLabel();
         oneLine = new javax.swing.JRadioButton();
         twoLines = new javax.swing.JRadioButton();
         directionPanel = new javax.swing.JPanel();
-        directionLabel = new javax.swing.JLabel();
         descending = new javax.swing.JRadioButton();
         noPreference = new javax.swing.JRadioButton();
         ascending = new javax.swing.JRadioButton();
@@ -118,46 +116,50 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
         scaleDegLabel = new javax.swing.JLabel();
         buttonPanel = new javax.swing.JPanel();
         generateLine = new javax.swing.JButton();
-        leftFiller = new javax.swing.Box.Filler(new java.awt.Dimension(20, 20), new java.awt.Dimension(20, 20), new java.awt.Dimension(20, 20));
-        rightFiller = new javax.swing.Box.Filler(new java.awt.Dimension(20, 20), new java.awt.Dimension(20, 20), new java.awt.Dimension(20, 20));
         transformPanel = new javax.swing.JPanel();
         transformLine = new javax.swing.JButton();
-        revertLine = new javax.swing.JButton();
-        reapplyTransform = new javax.swing.JButton();
+        scaleDeg2Panel = new javax.swing.JPanel();
+        scaleDeg2Label = new javax.swing.JLabel();
         maxDurationPanel = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
         noPref = new javax.swing.JRadioButton();
         whole = new javax.swing.JRadioButton();
         half = new javax.swing.JRadioButton();
         quarter = new javax.swing.JRadioButton();
-        bottomFiller = new javax.swing.Box.Filler(new java.awt.Dimension(20, 20), new java.awt.Dimension(20, 20), new java.awt.Dimension(20, 20));
-        topFiller = new javax.swing.Box.Filler(new java.awt.Dimension(20, 20), new java.awt.Dimension(20, 20), new java.awt.Dimension(20, 20));
-        rangeLabelPanel = new javax.swing.JPanel();
-        rangeLabel = new javax.swing.JLabel();
         playPanel = new javax.swing.JPanel();
         playBtn = new javax.swing.JButton();
         pauseBtn = new javax.swing.JToggleButton();
         stopBtn = new javax.swing.JButton();
         allowColorPanel = new javax.swing.JPanel();
         allowColorBox = new javax.swing.JCheckBox();
-        scaleDeg2Panel = new javax.swing.JPanel();
-        scaleDeg2Label = new javax.swing.JLabel();
         rangeChooserPanel = new javax.swing.JPanel();
         rangeChooserButton = new javax.swing.JButton();
+        revertOrReapplyPanel = new javax.swing.JPanel();
+        revertLine = new javax.swing.JButton();
+        reapplyTransform = new javax.swing.JButton();
+        numberOfLinesLabel = new javax.swing.JLabel();
+        directionLabel = new javax.swing.JLabel();
+        maxDurationLabel = new javax.swing.JLabel();
+        startLabel = new javax.swing.JLabel();
+        colorLabel = new javax.swing.JLabel();
+        rangeLabel = new javax.swing.JLabel();
+        soloLabel = new javax.swing.JLabel();
+        playLabel = new javax.swing.JLabel();
+        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(20, 20), new java.awt.Dimension(20, 20), new java.awt.Dimension(20, 20));
+        filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(20, 20), new java.awt.Dimension(20, 20), new java.awt.Dimension(20, 20));
+        filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(20, 20), new java.awt.Dimension(20, 20), new java.awt.Dimension(20, 20));
+        filler4 = new javax.swing.Box.Filler(new java.awt.Dimension(20, 20), new java.awt.Dimension(20, 20), new java.awt.Dimension(20, 20));
+        filler5 = new javax.swing.Box.Filler(new java.awt.Dimension(20, 20), new java.awt.Dimension(20, 20), new java.awt.Dimension(20, 20));
+        filler6 = new javax.swing.Box.Filler(new java.awt.Dimension(20, 20), new java.awt.Dimension(20, 20), new java.awt.Dimension(20, 20));
+        filler7 = new javax.swing.Box.Filler(new java.awt.Dimension(20, 20), new java.awt.Dimension(20, 20), new java.awt.Dimension(20, 20));
+        filler8 = new javax.swing.Box.Filler(new java.awt.Dimension(20, 20), new java.awt.Dimension(20, 20), new java.awt.Dimension(20, 20));
+        filler9 = new javax.swing.Box.Filler(new java.awt.Dimension(20, 20), new java.awt.Dimension(20, 20), new java.awt.Dimension(20, 20));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setMinimumSize(new java.awt.Dimension(1150, 600));
-        setPreferredSize(new java.awt.Dimension(1150, 600));
+        setMinimumSize(new java.awt.Dimension(500, 600));
+        setPreferredSize(new java.awt.Dimension(500, 600));
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         linesPanel.setLayout(new java.awt.GridBagLayout());
-
-        numberOfLinesLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        numberOfLinesLabel.setText("Number of Lines:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        linesPanel.add(numberOfLinesLabel, gridBagConstraints);
 
         numberOfLinesButtons.add(oneLine);
         oneLine.setSelected(true);
@@ -169,7 +171,7 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridy = 1;
         linesPanel.add(oneLine, gridBagConstraints);
 
         numberOfLinesButtons.add(twoLines);
@@ -181,7 +183,7 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridy = 1;
         linesPanel.add(twoLines, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -190,13 +192,6 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
         getContentPane().add(linesPanel, gridBagConstraints);
 
         directionPanel.setLayout(new java.awt.GridBagLayout());
-
-        directionLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        directionLabel.setText("Direction:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        directionPanel.add(directionLabel, gridBagConstraints);
 
         directionButtons.add(descending);
         descending.setText("Descending");
@@ -222,13 +217,13 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 3;
         getContentPane().add(directionPanel, gridBagConstraints);
 
         scaleDegPanel.setLayout(new java.awt.GridBagLayout());
 
         scaleDegLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        scaleDegLabel.setText("Line 1 - Start on Scale Degree:");
+        scaleDegLabel.setText("Line 1:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -236,7 +231,7 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 6;
         getContentPane().add(scaleDegPanel, gridBagConstraints);
 
         buttonPanel.setLayout(new java.awt.GridBagLayout());
@@ -254,16 +249,10 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 10;
+        gridBagConstraints.gridy = 16;
         getContentPane().add(buttonPanel, gridBagConstraints);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 9;
-        getContentPane().add(leftFiller, gridBagConstraints);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 9;
-        getContentPane().add(rightFiller, gridBagConstraints);
+
+        transformPanel.setLayout(new java.awt.GridBagLayout());
 
         transformLine.setText("Generate Solo Over Line");
         transformLine.addActionListener(new java.awt.event.ActionListener() {
@@ -271,40 +260,25 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
                 transformLineActionPerformed(evt);
             }
         });
-        transformPanel.add(transformLine);
-
-        revertLine.setText("Restore Guide Tone Line");
-        revertLine.setToolTipText("");
-        revertLine.setEnabled(false);
-        revertLine.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                revertLineActionPerformed(evt);
-            }
-        });
-        transformPanel.add(revertLine);
-
-        reapplyTransform.setText("Try Again");
-        reapplyTransform.setEnabled(false);
-        reapplyTransform.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                reapplyTransformActionPerformed(evt);
-            }
-        });
-        transformPanel.add(reapplyTransform);
+        transformPanel.add(transformLine, new java.awt.GridBagConstraints());
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 11;
+        gridBagConstraints.gridy = 20;
         getContentPane().add(transformPanel, gridBagConstraints);
 
-        maxDurationPanel.setLayout(new java.awt.GridBagLayout());
+        scaleDeg2Panel.setLayout(new java.awt.GridBagLayout());
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel1.setText("Max Note Duration:");
+        scaleDeg2Label.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        scaleDeg2Label.setText("Line 2:");
+        scaleDeg2Panel.add(scaleDeg2Label, new java.awt.GridBagConstraints());
+
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        maxDurationPanel.add(jLabel1, gridBagConstraints);
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 7;
+        getContentPane().add(scaleDeg2Panel, gridBagConstraints);
+
+        maxDurationPanel.setLayout(new java.awt.GridBagLayout());
 
         maxDurationButtons.add(noPref);
         noPref.setSelected(true);
@@ -337,25 +311,10 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 9;
         getContentPane().add(maxDurationPanel, gridBagConstraints);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 13;
-        getContentPane().add(bottomFiller, gridBagConstraints);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        getContentPane().add(topFiller, gridBagConstraints);
 
-        rangeLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        rangeLabel.setText("Use the keyboard below to select an upper and lower range limit for your guide tone line.");
-        rangeLabelPanel.add(rangeLabel);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 8;
-        getContentPane().add(rangeLabelPanel, gridBagConstraints);
+        playPanel.setLayout(new java.awt.GridBagLayout());
 
         playBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/play.gif"))); // NOI18N
         playBtn.setToolTipText("Play the entire leadsheet, starting with the first chorus.\nTo play just the current chorus, select the first beat of that chorus and press Shift-Enter.");
@@ -368,7 +327,7 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
                 playBtnActionPerformed(evt);
             }
         });
-        playPanel.add(playBtn);
+        playPanel.add(playBtn, new java.awt.GridBagConstraints());
 
         pauseBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/pause.gif"))); // NOI18N
         pauseBtn.setToolTipText("Pause or resume playback.");
@@ -382,7 +341,7 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
                 pauseBtnActionPerformed(evt);
             }
         });
-        playPanel.add(pauseBtn);
+        playPanel.add(pauseBtn, new java.awt.GridBagConstraints());
 
         stopBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/stop.gif"))); // NOI18N
         stopBtn.setToolTipText("Stop playback.");
@@ -396,12 +355,14 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
                 stopBtnActionPerformed(evt);
             }
         });
-        playPanel.add(stopBtn);
+        playPanel.add(stopBtn, new java.awt.GridBagConstraints());
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 12;
+        gridBagConstraints.gridy = 17;
         getContentPane().add(playPanel, gridBagConstraints);
+
+        allowColorPanel.setLayout(new java.awt.GridBagLayout());
 
         allowColorBox.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         allowColorBox.setText("Allow Color Tones");
@@ -410,23 +371,14 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
                 allowColorBoxActionPerformed(evt);
             }
         });
-        allowColorPanel.add(allowColorBox);
+        allowColorPanel.add(allowColorBox, new java.awt.GridBagConstraints());
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 6;
+        gridBagConstraints.gridy = 11;
         getContentPane().add(allowColorPanel, gridBagConstraints);
 
-        scaleDeg2Panel.setLayout(new java.awt.GridBagLayout());
-
-        scaleDeg2Label.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        scaleDeg2Label.setText("Line 2 - Start On Scale Degree:");
-        scaleDeg2Panel.add(scaleDeg2Label, new java.awt.GridBagConstraints());
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 4;
-        getContentPane().add(scaleDeg2Panel, gridBagConstraints);
+        rangeChooserPanel.setLayout(new java.awt.GridBagLayout());
 
         rangeChooserButton.setText("Choose Range");
         rangeChooserButton.addActionListener(new java.awt.event.ActionListener() {
@@ -434,12 +386,138 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
                 rangeChooserButtonActionPerformed(evt);
             }
         });
-        rangeChooserPanel.add(rangeChooserButton);
+        rangeChooserPanel.add(rangeChooserButton, new java.awt.GridBagConstraints());
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 7;
+        gridBagConstraints.gridy = 13;
         getContentPane().add(rangeChooserPanel, gridBagConstraints);
+
+        revertOrReapplyPanel.setLayout(new java.awt.GridBagLayout());
+
+        revertLine.setText("Restore Guide Tone Line");
+        revertLine.setToolTipText("");
+        revertLine.setEnabled(false);
+        revertLine.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                revertLineActionPerformed(evt);
+            }
+        });
+        revertOrReapplyPanel.add(revertLine, new java.awt.GridBagConstraints());
+
+        reapplyTransform.setText("Try Again");
+        reapplyTransform.setEnabled(false);
+        reapplyTransform.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reapplyTransformActionPerformed(evt);
+            }
+        });
+        revertOrReapplyPanel.add(reapplyTransform, new java.awt.GridBagConstraints());
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 21;
+        getContentPane().add(revertOrReapplyPanel, gridBagConstraints);
+
+        numberOfLinesLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        numberOfLinesLabel.setText("Number of Lines:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        getContentPane().add(numberOfLinesLabel, gridBagConstraints);
+
+        directionLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        directionLabel.setText("Direction:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        getContentPane().add(directionLabel, gridBagConstraints);
+
+        maxDurationLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        maxDurationLabel.setText("Max Note Duration:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 9;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        getContentPane().add(maxDurationLabel, gridBagConstraints);
+
+        startLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        startLabel.setText("Start on Scale Degree:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        getContentPane().add(startLabel, gridBagConstraints);
+
+        colorLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        colorLabel.setText("Color:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 11;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        getContentPane().add(colorLabel, gridBagConstraints);
+
+        rangeLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        rangeLabel.setText("Range:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 13;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        getContentPane().add(rangeLabel, gridBagConstraints);
+
+        soloLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        soloLabel.setText("Solo:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 19;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        getContentPane().add(soloLabel, gridBagConstraints);
+
+        playLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        playLabel.setText("Play:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 15;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        getContentPane().add(playLabel, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        getContentPane().add(filler1, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 4;
+        getContentPane().add(filler2, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 8;
+        getContentPane().add(filler3, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 10;
+        getContentPane().add(filler4, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 12;
+        getContentPane().add(filler5, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 14;
+        getContentPane().add(filler6, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 18;
+        getContentPane().add(filler7, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        getContentPane().add(filler8, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 22;
+        getContentPane().add(filler9, gridBagConstraints);
 
         pack();
         setLocationRelativeTo(null);
@@ -777,19 +855,27 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
     private javax.swing.JCheckBox allowColorBox;
     private javax.swing.JPanel allowColorPanel;
     private javax.swing.JRadioButton ascending;
-    private javax.swing.Box.Filler bottomFiller;
     private javax.swing.JPanel buttonPanel;
+    private javax.swing.JLabel colorLabel;
     private javax.swing.JRadioButton descending;
     private javax.swing.ButtonGroup directionButtons;
     private javax.swing.JLabel directionLabel;
     private javax.swing.JPanel directionPanel;
+    private javax.swing.Box.Filler filler1;
+    private javax.swing.Box.Filler filler2;
+    private javax.swing.Box.Filler filler3;
+    private javax.swing.Box.Filler filler4;
+    private javax.swing.Box.Filler filler5;
+    private javax.swing.Box.Filler filler6;
+    private javax.swing.Box.Filler filler7;
+    private javax.swing.Box.Filler filler8;
+    private javax.swing.Box.Filler filler9;
     private javax.swing.JButton generateLine;
     private javax.swing.JRadioButton half;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.Box.Filler leftFiller;
     private javax.swing.ButtonGroup lineTypeButtons;
     private javax.swing.JPanel linesPanel;
     private javax.swing.ButtonGroup maxDurationButtons;
+    private javax.swing.JLabel maxDurationLabel;
     private javax.swing.JPanel maxDurationPanel;
     private javax.swing.JRadioButton noPref;
     private javax.swing.JRadioButton noPreference;
@@ -798,23 +884,24 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
     private javax.swing.JRadioButton oneLine;
     private javax.swing.JToggleButton pauseBtn;
     private javax.swing.JButton playBtn;
+    private javax.swing.JLabel playLabel;
     private javax.swing.JPanel playPanel;
     private javax.swing.JRadioButton quarter;
     private javax.swing.JButton rangeChooserButton;
     private javax.swing.JPanel rangeChooserPanel;
     private javax.swing.JLabel rangeLabel;
-    private javax.swing.JPanel rangeLabelPanel;
     private javax.swing.JButton reapplyTransform;
     private javax.swing.JButton revertLine;
-    private javax.swing.Box.Filler rightFiller;
+    private javax.swing.JPanel revertOrReapplyPanel;
     private javax.swing.JLabel scaleDeg2Label;
     private javax.swing.JPanel scaleDeg2Panel;
     private javax.swing.JLabel scaleDegLabel;
     private javax.swing.JPanel scaleDegPanel;
     private javax.swing.ButtonGroup scaleDegree2Buttons;
     private javax.swing.ButtonGroup scaleDegreeButtons;
+    private javax.swing.JLabel soloLabel;
+    private javax.swing.JLabel startLabel;
     private javax.swing.JButton stopBtn;
-    private javax.swing.Box.Filler topFiller;
     private javax.swing.JButton transformLine;
     private javax.swing.JPanel transformPanel;
     private javax.swing.JRadioButton twoLines;
