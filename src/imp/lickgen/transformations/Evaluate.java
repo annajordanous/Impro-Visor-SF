@@ -190,6 +190,7 @@ public enum Operators {
   QUINTUPLET("quintuplet?"),//
   REST("rest?"),//
   DURATION("duration"),//
+  DURATION_EQ("duration="),//
   DURATION_ADDITION("duration+"),//
   DURATION_SUBTRACTION("duration-"),//
   DURATION_GR("duration>"),//
@@ -370,6 +371,10 @@ public Object evaluate(Object sent)
                 
             case DURATION_SUBTRACTION:
                 returnVal = duration_subtraction(evaledArgs);
+                break;
+            
+            case DURATION_EQ:
+                returnVal = duration_eq(evaledArgs);
                 break;
                 
             case DURATION_GR:
@@ -805,6 +810,19 @@ private int getDuration(Object ob)
         return ((NoteChordPair)ob).note.getRhythmValue();
     else
         return Duration.getDuration0(ob.toString());
+}
+/**
+ * returns true if two notes are equal in duration
+ */
+public Boolean duration_eq(Polylist evaledArgs)
+{
+    int dur1 = getDuration(evaledArgs.first());
+    int dur2 = getDuration(evaledArgs.second());
+
+    if(dur1 == dur2)
+        return true;
+    else 
+        return false;
 }
 /**
  * return true if the duration of arg1 is greater than the duration of arg2
@@ -1442,6 +1460,10 @@ public class NoteChordPair{
     {
         this.note = note;
         this.chord = chord;
+    }
+    
+    public String toString(){
+        return "NoteChordPair";
     }
 }
 }
