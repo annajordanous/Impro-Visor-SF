@@ -1475,6 +1475,8 @@ public Critic getCritic()
         midiRecordSnapSpinner = new javax.swing.JSpinner();
         sendSetBankCheckBox = new javax.swing.JCheckBox();
         jLabel1 = new javax.swing.JLabel();
+        rangeFilterBtn = new javax.swing.JButton();
+        clearRangeBtn = new javax.swing.JButton();
         latencyTab = new javax.swing.JPanel();
         midiLatencyPanel = new javax.swing.JPanel();
         midiLatencyLabel = new javax.swing.JLabel();
@@ -3900,6 +3902,7 @@ public Critic getCritic()
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 5;
         devicesTab.add(midiRecordSnapSpinner, gridBagConstraints);
 
@@ -3922,7 +3925,36 @@ public Critic getCritic()
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 7;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 2;
+        gridBagConstraints.ipady = 2;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 10, 0);
         devicesTab.add(jLabel1, gridBagConstraints);
+
+        rangeFilterBtn.setText("Midi Input Range");
+        rangeFilterBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rangeFilterBtnActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 8;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        gridBagConstraints.insets = new java.awt.Insets(0, 50, 0, 0);
+        devicesTab.add(rangeFilterBtn, gridBagConstraints);
+
+        clearRangeBtn.setText("Clear Range");
+        clearRangeBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clearRangeBtnActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 8;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 50);
+        devicesTab.add(clearRangeBtn, gridBagConstraints);
 
         jTabbedPane2.addTab("MIDI Devices", devicesTab);
 
@@ -7523,11 +7555,6 @@ public Critic getCritic()
         playBtn.setMaximumSize(new java.awt.Dimension(30, 30));
         playBtn.setMinimumSize(new java.awt.Dimension(30, 30));
         playBtn.setPreferredSize(new java.awt.Dimension(30, 30));
-        playBtn.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                playBtnStateChanged(evt);
-            }
-        });
         playBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 playBtnActionPerformed(evt);
@@ -7542,11 +7569,6 @@ public Critic getCritic()
         pauseBtn.setMaximumSize(new java.awt.Dimension(30, 30));
         pauseBtn.setMinimumSize(new java.awt.Dimension(30, 30));
         pauseBtn.setPreferredSize(new java.awt.Dimension(30, 30));
-        pauseBtn.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                pauseBtnStateChanged(evt);
-            }
-        });
         pauseBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 pauseBtnActionPerformed(evt);
@@ -7561,11 +7583,6 @@ public Critic getCritic()
         stopBtn.setMaximumSize(new java.awt.Dimension(30, 30));
         stopBtn.setMinimumSize(new java.awt.Dimension(30, 30));
         stopBtn.setPreferredSize(new java.awt.Dimension(30, 30));
-        stopBtn.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                stopBtnStateChanged(evt);
-            }
-        });
         stopBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 stopBtnActionPerformed(evt);
@@ -8121,12 +8138,12 @@ public Critic getCritic()
 
         openRecentLeadsheetMenu.setText("Open Recent Leadsheet (same window)");
         openRecentLeadsheetMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                populateRecentFileMenu(evt);
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                populateRecentFileMenu(evt);
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -8142,12 +8159,12 @@ public Critic getCritic()
 
         openRecentLeadsheetNewWindowMenu.setText("Open Recent Leadsheet (new window)");
         openRecentLeadsheetNewWindowMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                populateRecentLeadsheetNewWindow(evt);
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                populateRecentLeadsheetNewWindow(evt);
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -9069,12 +9086,12 @@ public Critic getCritic()
             }
         });
         notateGrammarMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                notateGrammarMenuMenuSelected(evt);
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                notateGrammarMenuMenuSelected(evt);
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
         notateGrammarMenu.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -9092,12 +9109,12 @@ public Critic getCritic()
         windowMenu.setMnemonic('W');
         windowMenu.setText("Window");
         windowMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                windowMenuMenuSelected(evt);
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                windowMenuMenuSelected(evt);
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -22646,6 +22663,32 @@ int quantizeResolution = 60;
         guideToneLineDialog.updatePlayButtons();
     }//GEN-LAST:event_stopBtnStateChanged
 
+    private int [] range = {-1, -1};
+    private boolean shouldFilter = false;
+    private void rangeFilterBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rangeFilterBtnActionPerformed
+        RangeChooser midiFilter = new RangeChooser(this, range[0], range[1], 1, true);
+        range = midiFilter.getRange();
+        shouldFilter = true;
+    }//GEN-LAST:event_rangeFilterBtnActionPerformed
+
+    private void clearRangeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearRangeBtnActionPerformed
+        range[0] = 0;
+        range[1] = 128;
+        shouldFilter = false;
+    }//GEN-LAST:event_clearRangeBtnActionPerformed
+
+public boolean getFilter(){
+    return shouldFilter;
+}
+    
+public int getHigh(){
+    return range[1];
+}
+
+public int getLow(){
+    return range[0];
+}
+    
 private void updateDottedAndTriplet()
   {
     isDotted = noteLenDottedCheckBox.isSelected();
@@ -24516,6 +24559,7 @@ private ImageIcon pauseButton =
     private javax.swing.JPanel chorusSpecificPanel;
     private javax.swing.JButton clearButton;
     private javax.swing.JMenuItem clearHistoryMI;
+    private javax.swing.JButton clearRangeBtn;
     private javax.swing.JMenuItem closeWindowMI;
     private javax.swing.ButtonGroup colorColorBtnGrp;
     private javax.swing.JLabel colorToneLabel;
@@ -24932,6 +24976,7 @@ private ImageIcon pauseButton =
     private javax.swing.JMenuItem quitMI;
     private javax.swing.JRadioButton quoteRadioButton;
     private javax.swing.JCheckBox quotes;
+    private javax.swing.JButton rangeFilterBtn;
     private javax.swing.JLabel rangeToLabel;
     private javax.swing.JLabel rangeToLabel2;
     private javax.swing.JMenuItem reAnalyzeMI;
