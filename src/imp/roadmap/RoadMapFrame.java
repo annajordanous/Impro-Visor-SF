@@ -386,6 +386,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         showJoinsCheckBoxMI = new javax.swing.JCheckBoxMenuItem();
         showStartingNoteCheckBoxMI = new javax.swing.JCheckBoxMenuItem();
         showVariantsCheckBoxMI = new javax.swing.JCheckBoxMenuItem();
+        showStylesCheckBoxMI = new javax.swing.JCheckBoxMenuItem();
         replaceWithPhiCheckBoxMI = new javax.swing.JCheckBoxMenuItem();
         replaceWithDeltaCheckBoxMI = new javax.swing.JCheckBoxMenuItem();
         windowMenu = new javax.swing.JMenu();
@@ -2073,6 +2074,16 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         });
         preferencesMenu.add(showVariantsCheckBoxMI);
 
+        showStylesCheckBoxMI.setSelected(true);
+        showStylesCheckBoxMI.setText(bundle.getString("RoadMapFrame.showStylesCheckBoxMI.text")); // NOI18N
+        showStylesCheckBoxMI.setName("showStylesCheckBoxMI"); // NOI18N
+        showStylesCheckBoxMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showStylesCheckBoxMIActionPerformed(evt);
+            }
+        });
+        preferencesMenu.add(showStylesCheckBoxMI);
+
         replaceWithPhiCheckBoxMI.setSelected(true);
         replaceWithPhiCheckBoxMI.setText("Use \u03D5 for m7b5");
         replaceWithPhiCheckBoxMI.setName("replaceWithPhiCheckBoxMI"); // NOI18N
@@ -2990,6 +3001,11 @@ private void playOnClickToggleButtonPressed(java.awt.event.ActionEvent evt)//GEN
        roadMapPanel.draw();
     }//GEN-LAST:event_showVariantsCheckBoxMIActionPerformed
 
+    private void showStylesCheckBoxMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showStylesCheckBoxMIActionPerformed
+        settings.showStyles = showStylesCheckBoxMI.getState();
+        roadMapPanel.draw();
+    }//GEN-LAST:event_showStylesCheckBoxMIActionPerformed
+
 private Notate.StyleComboBoxModel getStyleMenuModel()
   {
     return styleComboBoxModel;
@@ -3866,6 +3882,7 @@ public void setVolumeSlider(int volume)
     private javax.swing.JCheckBoxMenuItem showJoinsCheckBoxMI;
     private javax.swing.JCheckBoxMenuItem showKeysCheckBoxMI;
     private javax.swing.JCheckBoxMenuItem showStartingNoteCheckBoxMI;
+    private javax.swing.JCheckBoxMenuItem showStylesCheckBoxMI;
     private javax.swing.JCheckBoxMenuItem showVariantsCheckBoxMI;
     private javax.swing.JButton stopButton;
     private javax.swing.JMenuItem stopPlayMI;
@@ -4664,10 +4681,11 @@ public String getComposer()
     return notate.getComposer();
 }
 
-//public void setStyleNames(ArrayList<String> styles)
-//{
-//    styleNames = styles;
-//}
+public void setStyleNames(ArrayList<String> styles)
+{
+        styleNames = styles;
+}
+
 
 public ArrayList<String> getStyleNames()
 {

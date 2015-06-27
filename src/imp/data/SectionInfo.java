@@ -889,6 +889,15 @@ public ArrayList<SectionRecord> getSectionRecords()
     return records;
 }
 
+public ArrayList<String> getSectionRecordStyleNames()
+{
+    ArrayList<String> secRecStyles = new ArrayList<String>();
+    for (SectionRecord sr : records)
+    {
+        secRecStyles.add(sr.getStyleName());
+    }
+    return secRecStyles;
+}
 
 //public void resetStylesInRecords(ArrayList<SectionRecord> secRecs)
 //{

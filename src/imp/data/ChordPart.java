@@ -674,6 +674,10 @@ public void addFromRoadMapFrame(RoadMapFrame roadmap)
         return sectionInfo.getSectionRecords();
     }
     
+    public ArrayList<String> getSectionRecordStyleNames()
+    {
+        return sectionInfo.getSectionRecordStyleNames();
+    }
     
 //    public void resetStylesInRecords (ArrayList<SectionRecord> secRecs)
 //    {

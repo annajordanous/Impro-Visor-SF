@@ -883,10 +883,14 @@ protected void addBlocks(ArrayList<Block> blocks, Boolean selectBlocks)
        drawGrid();
        drawText();
        drawBricks(settings.showJoins);
+       if (settings.showStyles)
+       {
+            drawStyles();
+       }
        if( settings.showKeys )
-         {
+       {
          drawKeyMap();
-         }
+       }
        if ( settings.showStartingNote)
        {
         drawStartingNote();
@@ -1020,7 +1024,9 @@ protected void addBlocks(ArrayList<Block> blocks, Boolean selectBlocks)
     {        
         //Graphics2D g = (Graphics2D)buffer.getGraphics();
         g2d.setFont(settings.basicFont);
+        
         ArrayList<String> joinList = roadMap.getJoins();
+        ArrayList<String> styleList = view.getStyleNames();
         
         int yAdjust = 1;
         
@@ -1071,33 +1077,7 @@ protected void addBlocks(ArrayList<Block> blocks, Boolean selectBlocks)
                 g2d.drawLine(x, y-5, x, y+settings.lineHeight+5);
                 g2d.setStroke(new BasicStroke(1));
             }
-            ArrayList<String> styleList = view.getStyleNames();
-            if(ind < styleList.size() && !styleList.get(ind).isEmpty())
-            {
-                String styleName =  margin + styleList.get(ind) + margin;
-                int length = settings.getBlockLength(brick.getBlock());
-                
-                FontMetrics metrics = g2d.getFontMetrics();
-                
-                int width = metrics.stringWidth(styleName) + 4;
-                int offset = metrics.getAscent();
-                
-                int styleX = settings.xOffset;
-                int styleY = y + styleX/settings.getLineLength() * settings.getLineOffset() +
-                        settings.lineHeight;
-                
-        
-                g2d.setColor(Color.WHITE);
-                g2d.setStroke(settings.basicLine);
-                
-                g2d.fillRect(styleX+1,styleY+yAdjust, width, offset + 2);
-        
-                g2d.setColor(settings.lineColor);
-                g2d.drawRect(styleX+1,styleY+yAdjust, width, offset + 2);
-                
-                g2d.setColor(settings.textColor);
-                g2d.drawString(styleName,styleX, styleY+yAdjust+offset);
-            }
+            
 
         }
         
@@ -1309,4 +1289,51 @@ protected void addBlocks(ArrayList<Block> blocks, Boolean selectBlocks)
         return roadMap.getBlocks();
       }
     
+    public void drawStyles()
+    {
+        ArrayList<String> styleList = view.getStyleNames();
+        int yAdjust = 1;
+        int temp = 0;
+
+       for( int ind = 0; ind < graphicMap.size(); ind++ ) {
+            GraphicBrick brick = graphicMap.get(ind);  
+            int x = brick.x();
+            int y = brick.y();
+            String styleName = "style";
+            brick.draw(g);        
+        
+             
+            if (ind == 0 || (ind > 0 && graphicMap.get(ind - 1).getBlock().isSectionEnd()))
+                {
+                    if (temp < styleList.size())
+                    {
+                
+                    styleName = margin + styleList.get(temp) + margin;
+                    int length = settings.getBlockLength(brick.getBlock());
+                
+                    FontMetrics metrics = g2d.getFontMetrics();
+                
+                    int width = metrics.stringWidth(styleName) + 4;
+                    int offset = metrics.getAscent();
+                
+                    int styleX = settings.xOffset;
+                    int styleY = y + styleX/settings.getLineLength() * settings.getLineOffset()
+                      + settings.lineHeight - settings.getBlockHeight() * 4;
+                     
+                    g2d.setColor(Color.WHITE);
+                    g2d.setStroke(settings.basicLine);
+                
+                    g2d.fillRect(styleX+1,styleY+yAdjust, width, offset + 2);
+                
+                    g2d.setColor(settings.lineColor);                    
+                
+                    g2d.setColor(settings.textColor);
+                    g2d.drawString(styleName,styleX, styleY+yAdjust+offset);
+                    temp++;
+                    }
+                }
+            
+        
+        }
+    }
 }
