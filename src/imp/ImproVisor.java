@@ -24,12 +24,16 @@ import imp.com.LoadAdviceCommand;
 import imp.data.*;
 import imp.gui.FirstTimeDialog;
 import imp.gui.Notate;
+import imp.gui.StyleEditor;
 import imp.gui.ToolkitImages;
 import imp.util.*;
 import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
-import polya.Polylist;
+import java.util.ArrayList;
+import java.util.Arrays;
+import javax.sound.midi.InvalidMidiDataException;
+import polya.*;
 
 /**
  * Impro-Visor main class
@@ -62,6 +66,8 @@ public class ImproVisor implements Constants {
     private static String themesFileName = "My.themes";
     private static MidiManager midiManager;
     private static MidiSynth midiSynth;
+    public static AutomaticVoicingSettings avs;
+    public static boolean override;
     
     private static Color windowFrameColor = new Color(230, 230, 230);
      
@@ -469,30 +475,42 @@ public int getPasteType()
  * Main Impro-Visor program. Creates an ImproVisor instance, which will 
  * initialize the array of Notate frames.
  */
-public static void main(String[] args)
+public static void main(String[] args) throws InvalidMidiDataException
   {
-    String leadsheet = null;
-    if( args.length > 0 )
-      {
-        //System.out.println("sees argument");
-        leadsheet = args[0];
-      }
+        //Start up Impro-Visor
+        String leadsheet = null;
+        if( args.length > 0 )
+            {
+                //System.out.println("sees argument");
+                leadsheet = args[0];
+            }
 
-    // preload images
-    ToolkitImages.getInstance();
-
-    // Establish user directory and copy vocab files.
-
-    getUserDirectory();
-
-    // create ImproVisor instance... this seems to violate some principle
-    // of instances, we set instance directly instead of call getInstance()
-    // but it does allow us to pass in a leadsheet parameter...
-    
-    instance = new ImproVisor(leadsheet);
-    //new PitchExtraction().setVisible(true);
+        // preload images
+        ToolkitImages.getInstance();
+        getUserDirectory();
+        instance = new ImproVisor(leadsheet);
+        avs=new AutomaticVoicingSettings();
+        avs.setDefaults();
+        override = false;
+        
+ 
   }
 
+public void setAVS(AutomaticVoicingSettings avs){
+    this.avs = avs;
+}
+
+public AutomaticVoicingSettings getAVS(){
+    return avs;
+}
+
+public void setOverride(boolean ov){
+    this.override = ov;
+}
+    
+public boolean getOverride(){
+    return override;
+}
 
 /**
  * Get the directory where user Impro-Visor files are stored.
