@@ -25607,6 +25607,7 @@ public void roadMapThisAnalyze()
     establishRoadMapFrame();
     score.toRoadMapFrame(roadmapFrame);
     roadmapFrame.setRoadMapTitle(getTitle());
+    roadmapFrame.setStyleNames(getChordProg().getSectionRecordStyleNames());
     roadmapFrame.updatePhiAndDelta(getPhiStatus(), getDeltaStatus());
     roadmapFrame.makeVisible(true);
     setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));

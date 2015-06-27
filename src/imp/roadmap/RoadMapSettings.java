@@ -168,6 +168,12 @@ public class RoadMapSettings {
      */
     public boolean showVariants = true;
     
+    /**
+     * whether to show the starting note from the leadsheet or not
+     * 
+     */
+    public boolean showStyles = true;
+    
     public int getBlockLength(Block block)
     {
         return (int) (block.getDuration() * measureLength)/getSlotsPerMeasure();
