@@ -20,9 +20,15 @@
 
 package imp.data;
 
+import imp.AutomaticVoicingSettings;
+import imp.ControlPanelFrame;
+import imp.HandManager;
+import imp.ImproVisor;
+import imp.VoicingGenerator;
 import imp.util.ErrorLog;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.LinkedHashMap;
@@ -793,6 +799,122 @@ public static Polylist getVoicingAndExtensionList(ChordSymbol chord,
                                                   Polylist lastChord,
                                                   Style style, boolean verbose)
   {
+    //Form Chord Voicing
+    //Start
+    //---------------------------------------------------------------------------------------------//
+    
+    /*Init Dan's Classes*/
+    if(ImproVisor.override==true){
+        AutomaticVoicingSettings avs= ImproVisor.avs;
+        VoicingGenerator vgen=new VoicingGenerator();
+        HandManager handyMan=new HandManager();
+        avs.setLeftHandLowerLimit(style.getChordLow().getMIDI());
+        avs.setRightHandUpperLimit(style.getChordHigh().getMIDI());
+        handyMan.setLeftHandLowerLimit(avs.getLeftHandLowerLimit());
+        handyMan.setLeftHandUpperLimit(avs.getLeftHandUpperLimit());
+        handyMan.setLeftHandSpread(avs.getLeftHandSpread());
+        handyMan.setRightHandLowerLimit(avs.getRightHandLowerLimit());
+        handyMan.setRightHandUpperLimit(avs.getRightHandUpperLimit());
+        handyMan.setRightHandSpread(avs.getRightHandSpread());
+        handyMan.setLeftHandMinNotes(avs.getLeftHandMinNotes());
+        handyMan.setLeftHandMaxNotes(avs.getLeftHandMaxNotes());
+        handyMan.setRightHandMinNotes(avs.getRightHandMinNotes());
+        handyMan.setRightHandMaxNotes(avs.getRightHandMaxNotes());
+        handyMan.setPreferredMotion(avs.getPreferredMotion());
+        handyMan.setPreferredMotionRange(avs.getPreferredMotionRange());
+        handyMan.resetHands();
+        vgen.setFullStepAwayMultiplier(avs.getFullStepAwayMultiplier());
+        vgen.setHalfStepAwayMultiplier(avs.getHalfStepAwayMultiplier());
+        vgen.setMaxPriority(avs.getMaxPriority());
+        vgen.setLeftColorPriority(avs.getLeftColorPriority());
+        vgen.setRightColorPriority(avs.getRightColorPriority());
+        vgen.setPreviousVoicingMultiplier(avs.getPreviousVoicingMultiplier());
+        vgen.setRepeatMultiplier(avs.getRepeatMultiplier());
+        vgen.setHalfStepReducer(avs.getHalfStepReducer());
+        vgen.setFullStepReducer(avs.getFullStepReducer());
+
+        /*get values from the user*/
+
+        /*process values*/
+        //while loop with first item
+        int[] lastVoicing=null;
+        ArrayList<int[]>progressionVoicings=new ArrayList<int[]>();
+        ArrayList<Integer> bassList=new ArrayList<Integer>();
+
+        System.out.println("---------");
+        System.out.println("chord: "+chord.toString());    //trace
+        Chord chord1 = new Chord(chord.getName());
+        Polylist spelling = new Polylist();              //create voicing variable for first chord
+        spelling = chord1.getSpell();                  //get chord1 voicing; assign to voicing
+        System.out.println("spelling: " + spelling.toString());    //trace
+        bassList.add(((NoteSymbol)spelling.first()).getMIDI()); //gets a list of bass notes
+        Polylist priorityPoly=chord1.getPriority();     //create a polylist for chord priority notes
+        Polylist colorPoly=chord1.getColor();           //create a polylist for chord color notes
+        int[] color=new int[colorPoly.length()];        //array for color notes' midi values
+        int [] priority = new int[priorityPoly.length()];   //array for priority notes' midi values
+        for(int i=0; i<color.length; i++)               //for loop that gets midi value of corresponding color note in colorPoly and puts in color[]
+        {
+            color[i]=((NoteSymbol)colorPoly.nth(i)).getMIDI();
+            //System.out.println("color num:" +color[i]);
+        }
+
+        for(int i=0; i<priority.length; i++)            //for loop that gets midi value of corresponding priority note in priorityPoly and puts in priority[]
+        {
+            priority[i]=((NoteSymbol)priorityPoly.nth(i)).getMIDI();
+            //System.out.println("priority num:" +priority[i]);
+        }
+        System.out.println();
+        System.out.println("New voicing:");
+        //settings
+        handyMan.repositionHands();
+        vgen.setLowerLeftBound(handyMan.getLeftHandLowestNote());
+        vgen.setUpperLeftBound(handyMan.getLeftHandLowestNote()+handyMan.getLeftHandSpread());
+        vgen.setLowerRightBound(handyMan.getRightHandLowestNote());
+        vgen.setUpperRightBound(handyMan.getRightHandLowestNote()+handyMan.getRightHandSpread());
+        vgen.setNumNotesLeft(handyMan.getNumLeftNotes());
+        vgen.setNumNotesRight(handyMan.getNumRightNotes());
+        vgen.setColor(color);
+        vgen.setPriority(priority);
+
+        System.out.println("Did settings");
+
+        int index=0;
+        if(lastVoicing!=null){
+            for(Polylist a = lastChord; a.nonEmpty(); a=a.rest()){
+            lastVoicing[index] = ((NoteSymbol)a.first()).getMIDI();
+            index++;
+            System.out.println(Arrays.toString(lastVoicing));
+            }
+        }
+
+        vgen.setPreviousVoicing(lastVoicing);
+        vgen.calculate();
+        lastVoicing=vgen.getChord();
+        progressionVoicings.add(lastVoicing);
+        Polylist midiL = new Polylist();
+
+
+        Integer[] lastVoicingObj=new Integer[lastVoicing.length];
+        for(int i=0; i<lastVoicing.length; i++)
+            lastVoicingObj[i]=new Integer(lastVoicing[i]);
+        midiL=Polylist.PolylistFromArray(lastVoicingObj);       //creates polylist from lastVoicingObj to assign to a midi value list midiL
+        System.out.println("midiL: "+midiL.toString());   //trace
+
+        PolylistBuffer buffer = new PolylistBuffer();
+        for( Polylist M = midiL; M.nonEmpty(); M = M.rest() )
+        {
+            NoteSymbol n = NoteSymbol.makeNoteSymbol(new Note((Integer)M.first()));
+            buffer.append(n);
+        }
+
+        chord.setVoicing(buffer.toPolylist());
+        System.out.println("Voicing: "+buffer.toPolylist().toString());
+        System.out.println("----------");
+        System.out.println();
+    }
+/*End*/
+//----------------------------------------------------------------------------------------------------//
+    
   Polylist voicing = chord.getVoicing();
   String chordRoot = chord.getRootString();
   ChordForm chordForm = chord.getChordForm();
@@ -806,25 +928,45 @@ public static Polylist getVoicingAndExtensionList(ChordSymbol chord,
     // put the voicing and extension near the previous chord
     
     Polylist extension = chord.getExtension();
+    int lowestNote=128;
+    int highestNote=0;
+            for(Object o:voicing.array())
+            {
+                
+                if(((NoteSymbol)o).getMIDI()<lowestNote)
+                    lowestNote=((NoteSymbol)o).getMIDI();
+                if(((NoteSymbol)o).getMIDI()>highestNote)
+                    highestNote=((NoteSymbol)o).getMIDI();
+        
+    
+            }
+            
     Polylist v = ChordPattern.placeVoicing(lastChord, voicing, extension,
-            style.getChordLow(), style.getChordHigh());
-
+           NoteSymbol.makeNoteSymbol(new Note(lowestNote)), NoteSymbol.makeNoteSymbol("c++++"));
+    //v=voicing;// fix here
+    
+    //System.out.println("Chord low, high"+style.getChordLow()+" , "+style.getChordHigh());
     if( v == null )
       {
       // if the specified voicing doesn't fit in range, error
       // and don't voice this chord
-      if( verbose )
+          
+          if( verbose )
         {
         ErrorLog.log(ErrorLog.WARNING,
                 "Voicing does not fit within range: " + voicing);
         }
       return null;
+          
+          //return Polylist.list(v);
       }
     else
       {
       return Polylist.list(v);
       }
-
+          
+    
+        //return Polylist.list(v);
     }
   else
     {
@@ -941,7 +1083,7 @@ public static Polylist chooseVoicings(Polylist lastChord, Polylist voicings,
  * @param voicing   a Polylist containing the voicing to place
  * @return a Polylist containing the placed voicing
  */
-public static Polylist placeVoicingAbove(Polylist lastChord,
+ public static Polylist placeVoicingAbove(Polylist lastChord,
                                          Polylist voicing)
   {
   NoteSymbol lastNote = (NoteSymbol)lastChord.first();
