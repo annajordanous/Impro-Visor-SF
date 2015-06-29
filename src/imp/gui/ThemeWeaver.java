@@ -175,7 +175,7 @@ public void setTableColumnWidths()
         rangeWrong = new javax.swing.JLabel();
         deleteThemeDialog = new javax.swing.JDialog();
         areYouSure = new javax.swing.JLabel();
-        yesButton = new javax.swing.JButton();
+        yesdeletethemeButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
         rangeWrong1 = new javax.swing.JLabel();
         noRowSelected = new javax.swing.JDialog();
@@ -490,17 +490,17 @@ public void setTableColumnWidths()
         gridBagConstraints.gridwidth = 2;
         deleteThemeDialog.getContentPane().add(areYouSure, gridBagConstraints);
 
-        yesButton.setText("Yes");
-        yesButton.addActionListener(new java.awt.event.ActionListener() {
+        yesdeletethemeButton.setText("Yes");
+        yesdeletethemeButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                yesButtonActionPerformed(evt);
+                yesdeletethemeButtonActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.insets = new java.awt.Insets(50, 30, 50, 30);
-        deleteThemeDialog.getContentPane().add(yesButton, gridBagConstraints);
+        deleteThemeDialog.getContentPane().add(yesdeletethemeButton, gridBagConstraints);
 
         cancelButton.setText("Cancel");
         cancelButton.addActionListener(new java.awt.event.ActionListener() {
@@ -1241,7 +1241,7 @@ public void setTableColumnWidths()
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.ipadx = 32;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
@@ -1292,7 +1292,7 @@ public void setTableColumnWidths()
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         jPanel1.add(deleteRowbutton, gridBagConstraints);
 
@@ -1305,7 +1305,7 @@ public void setTableColumnWidths()
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
         gridBagConstraints.weightx = 2.0;
@@ -2079,7 +2079,6 @@ private void closeWindow()
     }//GEN-LAST:event_deleteRowbuttonActionPerformed
 
     private void deleteThemebuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteThemebuttonActionPerformed
-
         deleteThemeDialog.setVisible(true);
     }//GEN-LAST:event_deleteThemebuttonActionPerformed
 
@@ -2135,19 +2134,25 @@ private void closeWindow()
         stopPlaying();
     }//GEN-LAST:event_cellOkbutton1ActionPerformed
 
-    private void yesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_yesButtonActionPerformed
+    private void yesdeletethemeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_yesdeletethemeButtonActionPerformed
         String name = (String) themeList.getSelectedValue();
-
+        
         //delete the desired theme from the table
         for( int j = 0; j < soloTable.getRowCount(); j++ )
           {
-            //System.out.println(name.concat ("- ") + j);
-            if( (soloTable.getValueAt(j, NAME_COLUMN) == name)
-                    || (soloTable.getValueAt(j, NAME_COLUMN) == name.concat("- 1")) )
+            if(soloTable.getValueAt(j, NAME_COLUMN) != null 
+                    && (soloTable.getValueAt(j, NAME_COLUMN).equals(name)))
               {
                 soloTable.setValueAt(null, j, NAME_COLUMN);
                 soloTable.setValueAt(null, j, LENGTH_COLUMN);
                 soloTable.setValueAt(null, j, THEME_COLUMN);
+                soloTable.setValueAt(null, j, USE_COLUMN);
+                soloTable.setValueAt(null, j, TRANSPOSE_COLUMN);
+                soloTable.setValueAt(null, j, INVERT_COLUMN);
+                soloTable.setValueAt(null, j, REVERSE_COLUMN);
+                soloTable.setValueAt(null, j, EXPAND_COLUMN);
+                soloTable.setValueAt(null, j, SIDESLIP_COLUMN);
+                soloTable.setValueAt(null, j, BARLINESHIFT_COLUMN);
               }
           }
 
@@ -2162,7 +2167,7 @@ private void closeWindow()
         
         deleteThemeDialog.setVisible(false);
         
-    }//GEN-LAST:event_yesButtonActionPerformed
+    }//GEN-LAST:event_yesdeletethemeButtonActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         deleteThemeDialog.setVisible(false);
@@ -4187,7 +4192,7 @@ public boolean inRange(MelodyPart melody)
     private javax.swing.JLabel typedWrong;
     private javax.swing.JMenu windowMenu;
     private javax.swing.JSeparator windowMenuSeparator;
-    private javax.swing.JButton yesButton;
+    private javax.swing.JButton yesdeletethemeButton;
     private javax.swing.JLabel youSure;
     // End of variables declaration//GEN-END:variables
 }
