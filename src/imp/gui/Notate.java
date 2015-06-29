@@ -558,6 +558,12 @@ private MidiPlayListener.Status playingStatus = MidiPlayListener.Status.STOPPED;
  * latency measurement tool for the preferences dialog
  */
 private MidiLatencyMeasurementTool midiLatencyMeasurement = new MidiLatencyMeasurementTool(this);
+
+/**
+ * Trading prefs
+ */
+TradingWindow trader;
+
 /**
  * If playback indicator goes off the screen, autoscroll to show it again
  *
@@ -721,6 +727,8 @@ public Notate(Score score, Advisor adv, ImproVisor impro, int x, int y)
     setGrammarFilename(ImproVisor.getGrammarFile().getAbsolutePath());
 
     midiLatencyMeasurement = new MidiLatencyMeasurementTool(this);
+    
+    trader = new TradingWindow(this);
 
     leadsheetEditor = new SourceEditorDialog(null, false, this, cm,
                                              SourceEditorDialog.LEADSHEET);
@@ -2058,6 +2066,7 @@ public Critic getCritic()
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         createRoadMapCheckBox = new javax.swing.JCheckBoxMenuItem();
         tradingMenu = new javax.swing.JMenu();
+        jMenuItem3 = new javax.swing.JMenuItem();
         notateGrammarMenu = new javax.swing.JMenu();
         windowMenu = new javax.swing.JMenu();
         closeWindowMI = new javax.swing.JMenuItem();
@@ -6967,11 +6976,11 @@ public Critic getCritic()
             }
         });
         addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosed(java.awt.event.WindowEvent evt) {
-                notateWIndowClosed(evt);
-            }
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
+            }
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                notateWIndowClosed(evt);
             }
         });
         addKeyListener(new java.awt.event.KeyAdapter() {
@@ -9077,6 +9086,15 @@ public Critic getCritic()
                 tradingMenuActionPerformed(evt);
             }
         });
+
+        jMenuItem3.setText("Open Trading Window");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        tradingMenu.add(jMenuItem3);
+
         menuBar.add(tradingMenu);
 
         notateGrammarMenu.setText(getDefaultGrammarName());
@@ -22677,6 +22695,12 @@ int quantizeResolution = 60;
         shouldFilter = false;
     }//GEN-LAST:event_clearRangeBtnActionPerformed
 
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        // Open New Trading window
+        System.out.println("hey");
+        trader.setVisible(true);
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
 public boolean getFilter(){
     return shouldFilter;
 }
@@ -23355,6 +23379,7 @@ private void populateTradingMenu()
     });
 
     tradingMenu.removeAll();
+    tradingMenu.add(jMenuItem3);
     tradingMenu.add(whetherToTradeCheckBox);
     tradingMenu.add(tradingCheckBox);
 
@@ -24751,6 +24776,7 @@ private ImageIcon pauseButton =
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel15;
