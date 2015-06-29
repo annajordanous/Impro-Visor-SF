@@ -213,16 +213,12 @@ public void setTableColumnWidths()
         themeUsageScrollPane = new javax.swing.JScrollPane();
         themeUsageTextArea = new javax.swing.JTextArea();
         SoloGeneratorTitle = new java.awt.Label();
-        Reset = new javax.swing.JButton();
         themeIntervalTextField = new javax.swing.JTextField();
         themeIntervalLabel = new javax.swing.JLabel();
         themeProbTextField = new javax.swing.JTextField();
         noThemeProbLabel = new javax.swing.JLabel();
         generateSoloJButton = new javax.swing.JButton();
-        generateThemeJButton = new javax.swing.JButton();
-        currentSelectionJButton = new javax.swing.JButton();
         stopPlaytoggle = new javax.swing.JToggleButton();
-        deleteRowbutton = new javax.swing.JButton();
         deleteThemebutton = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         trans1ComboBox = new javax.swing.JComboBox();
@@ -236,15 +232,28 @@ public void setTableColumnWidths()
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         trans2ComboBox = new javax.swing.JComboBox();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
         jLabel28 = new javax.swing.JLabel();
-        expandPreferenceButton = new javax.swing.JButton();
         jLabel14 = new javax.swing.JLabel();
         trans6ComboBox = new javax.swing.JComboBox();
+        currentSelectionJButton = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        Reset = new javax.swing.JButton();
+        expandPreferenceButton = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         barLineShiftPreferencesButton = new javax.swing.JButton();
+        deleteRowbutton = new javax.swing.JButton();
+        generateThemeJButton = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel20 = new javax.swing.JLabel();
+        setAllProbTextField = new javax.swing.JTextField();
+        jButton4 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        setProbToZeroButton = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
         rangeChooserButton = new javax.swing.JButton();
+        jLabel19 = new javax.swing.JLabel();
         roadmapMenuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
         loadThemesMI = new javax.swing.JMenuItem();
@@ -883,6 +892,7 @@ public void setTableColumnWidths()
         gridBagConstraints.gridy = 4;
         gridBagConstraints.gridheight = 6;
         gridBagConstraints.ipadx = 680;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         gridBagConstraints.insets = new java.awt.Insets(0, 15, -30, 0);
         getContentPane().add(soloTableScrollPane, gridBagConstraints);
 
@@ -911,9 +921,9 @@ public void setTableColumnWidths()
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 7;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.gridwidth = 4;
-        gridBagConstraints.gridheight = 4;
+        gridBagConstraints.gridheight = 6;
         gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
         gridBagConstraints.ipadx = 320;
         gridBagConstraints.ipady = 200;
@@ -932,7 +942,6 @@ public void setTableColumnWidths()
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 13;
         gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
-        gridBagConstraints.gridheight = java.awt.GridBagConstraints.REMAINDER;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 0.6;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 15, 30);
@@ -949,22 +958,6 @@ public void setTableColumnWidths()
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 15, 0);
         getContentPane().add(SoloGeneratorTitle, gridBagConstraints);
-
-        Reset.setText("Reset");
-        Reset.setToolTipText("Clears the table of all themes currently entered");
-        Reset.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ResetActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 12;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.ipadx = 32;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 50);
-        getContentPane().add(Reset, gridBagConstraints);
 
         themeIntervalTextField.setText("8");
         themeIntervalTextField.setMaximumSize(new java.awt.Dimension(50, 2147483647));
@@ -1026,34 +1019,6 @@ public void setTableColumnWidths()
         gridBagConstraints.weightx = 2.0;
         getContentPane().add(generateSoloJButton, gridBagConstraints);
 
-        generateThemeJButton.setText("Generate Theme");
-        generateThemeJButton.setToolTipText("Generates a theme for every non empty length cell in the table that doesn't have a corresponding theme");
-        generateThemeJButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                generateThemeJButtonActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 10;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
-        gridBagConstraints.weightx = 2.0;
-        getContentPane().add(generateThemeJButton, gridBagConstraints);
-
-        currentSelectionJButton.setText("Use Current Selection in Leadsheet Window as Theme");
-        currentSelectionJButton.setToolTipText("Adds the selection from the window into the first empty theme cell in the table");
-        currentSelectionJButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                currentSelectionJButtonActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 13;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        getContentPane().add(currentSelectionJButton, gridBagConstraints);
-
         stopPlaytoggle.setBackground(new java.awt.Color(255, 255, 255));
         stopPlaytoggle.setText("Stop Playing");
         stopPlaytoggle.addActionListener(new java.awt.event.ActionListener() {
@@ -1066,18 +1031,6 @@ public void setTableColumnWidths()
         gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         getContentPane().add(stopPlaytoggle, gridBagConstraints);
-
-        deleteRowbutton.setText("Delete Selected Row");
-        deleteRowbutton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                deleteRowbuttonActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 14;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        getContentPane().add(deleteRowbutton, gridBagConstraints);
 
         deleteThemebutton.setText("Delete Theme From File");
         deleteThemebutton.setPreferredSize(new java.awt.Dimension(78, 29));
@@ -1092,14 +1045,13 @@ public void setTableColumnWidths()
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.ipadx = 32;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 50);
         getContentPane().add(deleteThemebutton, gridBagConstraints);
 
         jLabel4.setFont(new java.awt.Font("Lucida Grande", 1, 18)); // NOI18N
         jLabel4.setText("             Themes                      ");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 6;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
         getContentPane().add(jLabel4, gridBagConstraints);
@@ -1239,59 +1191,12 @@ public void setTableColumnWidths()
         gridBagConstraints.ipady = 24;
         getContentPane().add(trans2ComboBox, gridBagConstraints);
 
-        jButton1.setText("Open Side Slip Preferences");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 11;
-        getContentPane().add(jButton1, gridBagConstraints);
-
-        jButton2.setText("Set All Probabilities Equal To 1st Theme");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 11;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        getContentPane().add(jButton2, gridBagConstraints);
-
-        jButton3.setText("Reset Probabilites To Zero");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 12;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        getContentPane().add(jButton3, gridBagConstraints);
-
         jLabel28.setText("*Shift-Click on a row to play the theme*");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.insets = new java.awt.Insets(20, 0, 0, 0);
         getContentPane().add(jLabel28, gridBagConstraints);
-
-        expandPreferenceButton.setText("Open Expand Preferences");
-        expandPreferenceButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                expandPreferenceButtonActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 10;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
-        getContentPane().add(expandPreferenceButton, gridBagConstraints);
 
         jLabel14.setText("6:");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -1311,6 +1216,62 @@ public void setTableColumnWidths()
         gridBagConstraints.ipady = 24;
         getContentPane().add(trans6ComboBox, gridBagConstraints);
 
+        currentSelectionJButton.setText("Use Current Selection in Leadsheet Window as Theme");
+        currentSelectionJButton.setToolTipText("Adds the selection from the window into the first empty theme cell in the table");
+        currentSelectionJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                currentSelectionJButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 12;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        getContentPane().add(currentSelectionJButton, gridBagConstraints);
+
+        jPanel1.setLayout(new java.awt.GridBagLayout());
+
+        Reset.setText("Reset Table");
+        Reset.setToolTipText("Clears the table of all themes currently entered");
+        Reset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ResetActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 32;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
+        jPanel1.add(Reset, gridBagConstraints);
+
+        expandPreferenceButton.setText("Open Expand Preferences");
+        expandPreferenceButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                expandPreferenceButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
+        jPanel1.add(expandPreferenceButton, gridBagConstraints);
+
+        jButton1.setText("Open Side Slip Preferences");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        jPanel1.add(jButton1, gridBagConstraints);
+
         barLineShiftPreferencesButton.setText("Open Bar Line Shift Preferences");
         barLineShiftPreferencesButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1319,8 +1280,123 @@ public void setTableColumnWidths()
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 12;
-        getContentPane().add(barLineShiftPreferencesButton, gridBagConstraints);
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        jPanel1.add(barLineShiftPreferencesButton, gridBagConstraints);
+
+        deleteRowbutton.setText("Delete Selected Row");
+        deleteRowbutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteRowbuttonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        jPanel1.add(deleteRowbutton, gridBagConstraints);
+
+        generateThemeJButton.setText("Generate Theme");
+        generateThemeJButton.setToolTipText("Generates a theme for every non empty length cell in the table that doesn't have a corresponding theme");
+        generateThemeJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                generateThemeJButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
+        gridBagConstraints.weightx = 2.0;
+        jPanel1.add(generateThemeJButton, gridBagConstraints);
+
+        jPanel3.setLayout(new java.awt.GridBagLayout());
+
+        jLabel20.setText("Set All Theme Probabilites To: ");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
+        jPanel3.add(jLabel20, gridBagConstraints);
+
+        setAllProbTextField.setText("0.0");
+        setAllProbTextField.setToolTipText("");
+        setAllProbTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                setAllProbTextFieldActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 10;
+        jPanel3.add(setAllProbTextField, gridBagConstraints);
+
+        jButton4.setText("Set Probabilities");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        jPanel3.add(jButton4, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 5;
+        jPanel1.add(jPanel3, gridBagConstraints);
+
+        jButton2.setText("Set All Probabilities Equal To 1st Theme");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        jPanel1.add(jButton2, gridBagConstraints);
+
+        setProbToZeroButton.setText("Reset Theme Probabilites To Zero");
+        setProbToZeroButton.setToolTipText("");
+        setProbToZeroButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                setProbToZeroButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        jPanel1.add(setProbToZeroButton, gridBagConstraints);
+
+        jLabel3.setText("Tranformation Preferences:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        jPanel1.add(jLabel3, gridBagConstraints);
+
+        jLabel11.setText("Edit Table:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        jPanel1.add(jLabel11, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 11;
+        gridBagConstraints.gridheight = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(20, 0, 0, 0);
+        getContentPane().add(jPanel1, gridBagConstraints);
+
+        jPanel2.setLayout(new java.awt.GridBagLayout());
 
         rangeChooserButton.setText("Choose Range");
         rangeChooserButton.setToolTipText("");
@@ -1330,9 +1406,21 @@ public void setTableColumnWidths()
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        jPanel2.add(rangeChooserButton, gridBagConstraints);
+
+        jLabel19.setText("Range:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        jPanel2.add(jLabel19, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 3;
-        getContentPane().add(rangeChooserButton, gridBagConstraints);
+        gridBagConstraints.gridwidth = 2;
+        getContentPane().add(jPanel2, gridBagConstraints);
 
         fileMenu.setText("File"); // NOI18N
         fileMenu.setMaximumSize(new java.awt.Dimension(50, 40));
@@ -1759,6 +1847,7 @@ private void closeWindow()
                     && (getValueAt(i, LENGTH_COLUMN) != null) )
               {
                 //if theme cell is empty and length isn't
+                System.out.println("3");
                 enteredIncorrectly.setVisible(true); //show error message
                 break;
               }
@@ -1773,31 +1862,33 @@ private void closeWindow()
                         || (getValueAt(i, BARLINESHIFT_COLUMN) == null))
                 {
                     //if one necessary cell isn't filled
+                    System.out.println("4");
                     enteredIncorrectly.setVisible(true); //show error message 
                     break;
                 }
-                else if( !isDouble((String) getValueAt(i, USE_COLUMN))
-                        || !isDouble((String) getValueAt(i, TRANSPOSE_COLUMN))
-                        || !isDouble((String) getValueAt(i, INVERT_COLUMN))
-                        || !isDouble((String) getValueAt(i, REVERSE_COLUMN))
-                        || !isDouble((String) getValueAt(i, EXPAND_COLUMN))
-                        || !isDouble((String) getValueAt(i, SIDESLIP_COLUMN))
-                        || !isDouble((String) getValueAt(i, BARLINESHIFT_COLUMN)))
+                else if( !isNumeric((getValueAt(i, USE_COLUMN).toString()))
+                        || !isNumeric((getValueAt(i, TRANSPOSE_COLUMN).toString()))
+                        || !isNumeric((getValueAt(i, INVERT_COLUMN).toString()))
+                        || !isNumeric((getValueAt(i, REVERSE_COLUMN).toString()))
+                        || !isNumeric((getValueAt(i, EXPAND_COLUMN).toString()))
+                        || !isNumeric((getValueAt(i, SIDESLIP_COLUMN).toString()))
+                        || !isNumeric((getValueAt(i, BARLINESHIFT_COLUMN).toString())))
                   {
                     //if theme cell not empty but weighted values are entered wrong
+                    System.out.println("5");  
                     enteredIncorrectly.setVisible(true); //show error message 
                     break;
                   }
                 else
                   { //if all cells are entered correctly, form theme uses
                     ThemeUse use = new ThemeUse(new MelodyPart((String) getValueAt(i, THEME_COLUMN)));
-                    use.probUse = Double.valueOf((String) getValueAt(i, USE_COLUMN));
-                    use.probTranspose = Double.valueOf((String) getValueAt(i, TRANSPOSE_COLUMN));
-                    use.probInvert = Double.valueOf((String) getValueAt(i, INVERT_COLUMN));
-                    use.probReverse = Double.valueOf((String) getValueAt(i, REVERSE_COLUMN));
-                    use.probExpand = Double.valueOf((String) getValueAt(i, EXPAND_COLUMN));
-                    use.probSideslip = Double.valueOf((String) getValueAt(i, SIDESLIP_COLUMN));
-                    use.probBarLineShift = Double.valueOf((String) getValueAt(i, BARLINESHIFT_COLUMN));
+                    use.probUse = Double.valueOf(String.valueOf(getValueAt(i, USE_COLUMN)));
+                    use.probTranspose = Double.valueOf(String.valueOf(getValueAt(i, TRANSPOSE_COLUMN)));
+                    use.probInvert = Double.valueOf(String.valueOf(getValueAt(i, INVERT_COLUMN)));
+                    use.probReverse = Double.valueOf(String.valueOf(getValueAt(i, REVERSE_COLUMN)));
+                    use.probExpand = Double.valueOf(String.valueOf(getValueAt(i, EXPAND_COLUMN)));
+                    use.probSideslip = Double.valueOf(String.valueOf(getValueAt(i, SIDESLIP_COLUMN)));
+                    use.probBarLineShift = Double.valueOf(String.valueOf(getValueAt(i, BARLINESHIFT_COLUMN)));
                     themeUses.add(use); // add a new ThemeUse to the arraylist with respective elements
 
                     if( getValueAt(i, NAME_COLUMN) != null )
@@ -1810,6 +1901,7 @@ private void closeWindow()
           }
         if (themeUses.isEmpty())
         {
+            System.out.println("6");
             enteredIncorrectly.setVisible(true);
             return;
         }
@@ -1823,6 +1915,19 @@ private void closeWindow()
         stopPlaytoggle.setText("<html><center>Stop Playing</center></html>");
     }//GEN-LAST:event_generateSoloJButtonActionPerformed
 
+    private static boolean isNumeric(String str)  
+    {  
+      try  
+      {  
+        double d = Double.parseDouble(str);  
+      }  
+      catch(NumberFormatException nfe)  
+      {  
+        return false;  
+      }  
+      return true;  
+    }
+    
     private void currentSelectionJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_currentSelectionJButtonActionPerformed
         // int index = soloTable.getSelectedRow();
         MelodyPart sel = notate.getCurrentStave().getMelodyPart().extract(
@@ -2075,9 +2180,9 @@ private void closeWindow()
         setAllProb();
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        setAllProbToZero();
-    }//GEN-LAST:event_jButton3ActionPerformed
+    private void setProbToZeroButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setProbToZeroButtonActionPerformed
+        setAllProbTo(0.0);
+    }//GEN-LAST:event_setProbToZeroButtonActionPerformed
 
     private void expandPreferencewindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_expandPreferencewindowClosed
         // TODO add your handling code here:
@@ -2162,6 +2267,14 @@ private void closeWindow()
         minPitch = range[0];
         maxPitch = range[1];
     }//GEN-LAST:event_rangeChooserButtonActionPerformed
+
+    private void setAllProbTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setAllProbTextFieldActionPerformed
+        
+    }//GEN-LAST:event_setAllProbTextFieldActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        setAllProbTo(Double.parseDouble(setAllProbTextField.getText()));
+    }//GEN-LAST:event_jButton4ActionPerformed
     
     private void setAllProb()
     {
@@ -2194,17 +2307,17 @@ private void closeWindow()
         }
     }
     
-    private void setAllProbToZero()
+    private void setAllProbTo(double prob)
     {
         for (int r=0; r<soloTable.getRowCount(); r++)
         {
-            for (int c=3; c<soloTable.getColumnCount(); c++)
+            for (int c=4; c<soloTable.getColumnCount(); c++)
             {
                 if (soloTable.getValueAt(r,2)==null)
                 {
                     return;
                 }
-                soloTable.setValueAt(0.0, r, c);
+                soloTable.setValueAt(prob, r, c);
             }
         }
     }
@@ -2290,7 +2403,7 @@ private boolean throughOnce = false;//set to true once all of the transition com
 private int transformNum = 0;//keeps track of the tranformation number that is being set
 private String themeUsageText = "";
 static final int ROW_COUNT = 20;
-double probnoTheme;//probability of not using a theme 
+double probTheme;//probability of using a theme 
 public ThemeListModel themeListModel = new ThemeListModel();
 private javax.swing.JComboBox [] transformationComboBoxes = new javax.swing.JComboBox[6];//array of the tranformation combo boxes
 private boolean barlineshift = false;
@@ -2437,6 +2550,7 @@ public void tableRefresh()
         soloTable.setValueAt(null, i, TRANSPOSE_COLUMN);
         soloTable.setValueAt(null, i, INVERT_COLUMN);
         soloTable.setValueAt(null, i, REVERSE_COLUMN);
+        soloTable.setValueAt(null, i, EXPAND_COLUMN);
         soloTable.setValueAt(null, i, SIDESLIP_COLUMN);
         soloTable.setValueAt(null, i, BARLINESHIFT_COLUMN);
       }
@@ -2447,8 +2561,7 @@ public void tableRefresh()
 
 public void tableReset()
   {
-
-    tableRefresh();
+       tableRefresh();
   }
 
 @Override
@@ -2942,6 +3055,7 @@ public void generateTheme()
         if( (getValueAt(x, LENGTH_COLUMN) != null)
                 && (!isInteger((String) getValueAt(x, LENGTH_COLUMN))) )
           {
+            System.out.println("1");
             enteredIncorrectly.setVisible(true);
           }
         else
@@ -3328,7 +3442,7 @@ public void myGenerateSolo(ArrayList<ThemeUse> themeUses, CommandManager cm)
     
     themeUsageTextArea.setText(null);
     
-    probnoTheme = 1.0-Double.parseDouble(themeProbTextField.getText());//probability of not using a theme at all 
+    probTheme = Double.parseDouble(themeProbTextField.getText());//probability of not using a theme at all 
     MelodyPart solo = new MelodyPart(0);//new melody part of size 0
     
     imp.ImproVisor.setPlayEntrySounds(false); //don't play insertions yet
@@ -3355,7 +3469,7 @@ public void myGenerateSolo(ArrayList<ThemeUse> themeUses, CommandManager cm)
         int increaseIncrement = 0;//keeps track of how i should change depending on how newMelody is changed 
                                         //and how the solo size should change
         
-        if (probnoTheme < randProbNT)//if we get to use a theme!
+        if (probTheme > randProbNT)//if we get to use a theme!
         {
            
             //choose a theme
@@ -3374,8 +3488,8 @@ public void myGenerateSolo(ArrayList<ThemeUse> themeUses, CommandManager cm)
             double tempTotalProb=0;
             for (ThemeUse themeUse : themeUses) 
             {
-                tempTotalProb += themeUse.getProbUse();
-                if (tempTotalProb/sumUseProb > randProbUse) 
+                tempTotalProb += themeUse.getProbUse()/sumUseProb;
+                if (tempTotalProb > randProbUse) 
                 {
                     chosenThemeUse = themeUse;
                     break;
@@ -3998,9 +4112,10 @@ public boolean inRange(MelodyPart melody)
     private javax.swing.JButton generateThemeJButton;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
@@ -4008,18 +4123,24 @@ public boolean inRange(MelodyPart melody)
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JPopupMenu.Separator jSeparator5;
     private javax.swing.JMenuItem loadThemesMI;
     private javax.swing.JDialog nameErrorMessage;
@@ -4041,6 +4162,8 @@ public boolean inRange(MelodyPart melody)
     private javax.swing.JDialog resetCheck;
     private javax.swing.JMenuBar roadmapMenuBar;
     private javax.swing.JMenuItem saveAsAdvice;
+    private javax.swing.JTextField setAllProbTextField;
+    private javax.swing.JButton setProbToZeroButton;
     private javax.swing.JFrame sideslipPreference;
     private javax.swing.JTable soloTable;
     private javax.swing.JScrollPane soloTableScrollPane;
