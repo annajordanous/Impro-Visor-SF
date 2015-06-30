@@ -181,7 +181,7 @@ public void execute()
                         // If note is a repeat of the previous, try moving it up or down a half step then
                         // resolving it in the direction moved.
 
-                        if( previouslyResolved != null && previouslyResolved.samePitch(resolved) )
+                        /*if( previouslyResolved != null && previouslyResolved.samePitch(resolved) )
                           {
                             // Decide direction randomly
 
@@ -194,7 +194,7 @@ public void execute()
 
                             //System.out.println(
                             //    "repeated pitch at slot " + i + ": " + resolved.toLeadsheet() + " to " + previouslyResolved.toLeadsheet() + ", dir = " + dir);
-                           }
+                           }*/
                       }
                     
                      part.setNote(i, resolved);
