@@ -942,7 +942,7 @@ public static Polylist getVoicingAndExtensionList(ChordSymbol chord,
             }
             
     Polylist v = ChordPattern.placeVoicing(lastChord, voicing, extension,
-           NoteSymbol.makeNoteSymbol(new Note(lowestNote)), NoteSymbol.makeNoteSymbol("c++++"));
+           NoteSymbol.makeNoteSymbol(new Note(lowestNote)), NoteSymbol.makeNoteSymbol(new Note(highestNote)));
     //v=voicing;// fix here
     
     //System.out.println("Chord low, high"+style.getChordLow()+" , "+style.getChordHigh());
