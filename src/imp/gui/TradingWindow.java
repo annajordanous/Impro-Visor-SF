@@ -20,6 +20,14 @@
  */
 package imp.gui;
 
+import java.util.ArrayList;
+import imp.data.MelodyPart;
+import imp.data.MidiSynth;
+import imp.data.Score;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.sound.midi.InvalidMidiDataException;
+
 /**
  *
  * @author muddCS15
@@ -27,6 +35,7 @@ package imp.gui;
 public class TradingWindow extends javax.swing.JFrame {
     
     static Notate notate;
+    ArrayList<MelodyPart> melodies = new ArrayList<MelodyPart>();
 
     /**
      * Creates new form TradingWindow
@@ -45,7 +54,11 @@ public class TradingWindow extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
+        sliceBtn = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        outArea = new javax.swing.JTextArea();
+        jLabel1 = new javax.swing.JLabel();
+        playBtn = new javax.swing.JButton();
 
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
@@ -53,10 +66,23 @@ public class TradingWindow extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("jButton1");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        sliceBtn.setText("Create Segments");
+        sliceBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                sliceBtnActionPerformed(evt);
+            }
+        });
+
+        outArea.setColumns(20);
+        outArea.setRows(5);
+        jScrollPane1.setViewportView(outArea);
+
+        jLabel1.setText("Melody Parts Extracted");
+
+        playBtn.setText("Play");
+        playBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                playBtnActionPerformed(evt);
             }
         });
 
@@ -65,28 +91,72 @@ public class TradingWindow extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(143, 143, 143)
-                .addComponent(jButton1)
-                .addContainerGap(159, Short.MAX_VALUE))
+                .addGap(12, 12, 12)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(sliceBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(playBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 368, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel1)
+                        .addGap(109, 109, 109))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(139, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addGap(132, 132, 132))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(sliceBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(playBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 523, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        System.out.println("hello");
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void sliceBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sliceBtnActionPerformed
+        MelodyPart whole = notate.getCurrentMelodyPart();
+        int len = whole.getSize(); 
+        // one measure -- TODO implement extractTruncated
+        outArea.setText(null); // Clear the text area
+        
+        for (int frame = 0; frame < len; frame += 480) {
+            // extract using 'fudge-ing'
+            MelodyPart tempPart = whole.extract(frame, frame + 479, true, true);
+            melodies.add(tempPart);
+            outArea.append(tempPart.toString() + "\n");
+        }
+    }//GEN-LAST:event_sliceBtnActionPerformed
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
-        //
+        System.out.println("bye for now");
     }//GEN-LAST:event_formWindowClosed
+
+    private void playBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playBtnActionPerformed
+        // TODO add your handling code here:
+        Score currentScore = new Score();
+        MidiSynth synth    = notate.getMidiSynth2();
+        
+        for (MelodyPart mdy : melodies) {
+            currentScore.addPart(mdy);
+        }
+        
+        System.out.println(currentScore.toString());
+        
+        try {
+            synth.play(currentScore, WIDTH, WIDTH, WIDTH, false);
+        } catch (InvalidMidiDataException ex) {
+            Logger.getLogger(TradingWindow.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_playBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -124,6 +194,10 @@ public class TradingWindow extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea outArea;
+    private javax.swing.JButton playBtn;
+    private javax.swing.JButton sliceBtn;
     // End of variables declaration//GEN-END:variables
 }
