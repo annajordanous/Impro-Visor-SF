@@ -325,6 +325,10 @@ public class ControlPanelFrame extends javax.swing.JFrame implements Serializabl
            handLimits[1].setValue(handLimits[0].getValue()+handSpreads[0].getValue());
        if(handLimits[3].getValue()<handLimits[2].getValue()+handSpreads[1].getValue())
            handLimits[3].setValue(handLimits[2].getValue()+handSpreads[1].getValue());
+       if(handNotes[0].getValue()>handNotes[1].getValue())
+           handNotes[0].setValue(handNotes[1].getValue());
+       if(handNotes[2].getValue()>handNotes[3].getValue())
+           handNotes[2].setValue(handNotes[3].getValue());
        
     }
     public void saveSlidersToVariables()
@@ -652,6 +656,7 @@ public class ControlPanelFrame extends javax.swing.JFrame implements Serializabl
         WholeStepRedSlider = new javax.swing.JSlider();
         closeB = new javax.swing.JButton();
 
+        setBounds(new java.awt.Rectangle(0, 0, 1300, 500));
         setPreferredSize(null);
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
@@ -731,29 +736,22 @@ public class ControlPanelFrame extends javax.swing.JFrame implements Serializabl
         getContentPane().add(filler1, gridBagConstraints);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Pianist Hand Settings", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 3, 14))); // NOI18N
-        jPanel1.setPreferredSize(null);
         jPanel1.setLayout(new java.awt.GridBagLayout());
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Left Hand", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 3, 12))); // NOI18N
         jPanel4.setName(""); // NOI18N
-        jPanel4.setPreferredSize(null);
         jPanel4.setLayout(new java.awt.GridBagLayout());
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Upper Limit"));
         jPanel2.setToolTipText("Absolute Upper note limits for voicings in a hand.");
-        jPanel2.setMinimumSize(null);
-        jPanel2.setPreferredSize(null);
         jPanel2.setLayout(new java.awt.GridBagLayout());
 
         LHULSlider.setMajorTickSpacing(12);
         LHULSlider.setMaximum(108);
         LHULSlider.setMinimum(21);
         LHULSlider.setMinorTickSpacing(1);
-        LHULSlider.setPaintLabels(true);
         LHULSlider.setPaintTicks(true);
         LHULSlider.setSnapToTicks(true);
-        LHULSlider.setMinimumSize(null);
-        LHULSlider.setPreferredSize(null);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -783,19 +781,14 @@ public class ControlPanelFrame extends javax.swing.JFrame implements Serializabl
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Lower Limit"));
         jPanel3.setToolTipText("Absolute Lower note limits for voicings in a hand.");
-        jPanel3.setMinimumSize(null);
-        jPanel3.setPreferredSize(null);
         jPanel3.setLayout(new java.awt.GridBagLayout());
 
         LHLLSlider.setMajorTickSpacing(12);
         LHLLSlider.setMaximum(108);
         LHLLSlider.setMinimum(21);
         LHLLSlider.setMinorTickSpacing(1);
-        LHLLSlider.setPaintLabels(true);
         LHLLSlider.setPaintTicks(true);
         LHLLSlider.setSnapToTicks(true);
-        LHLLSlider.setMinimumSize(null);
-        LHLLSlider.setPreferredSize(null);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
@@ -824,8 +817,6 @@ public class ControlPanelFrame extends javax.swing.JFrame implements Serializabl
 
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Stretch Limit (Semitones)"));
         jPanel5.setToolTipText("The distance between the lowest and highest note for one voicing in a hand.");
-        jPanel5.setMinimumSize(null);
-        jPanel5.setPreferredSize(null);
         jPanel5.setLayout(new java.awt.GridBagLayout());
 
         LHStretchSlider.setMajorTickSpacing(7);
@@ -857,8 +848,6 @@ public class ControlPanelFrame extends javax.swing.JFrame implements Serializabl
 
         jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder("Minimum Notes"));
         jPanel6.setToolTipText("Minimum number of notes in the hand's voicing.");
-        jPanel6.setMinimumSize(null);
-        jPanel6.setPreferredSize(null);
         jPanel6.setLayout(new java.awt.GridBagLayout());
 
         LHMinNotesSlider.setMajorTickSpacing(5);
@@ -889,8 +878,6 @@ public class ControlPanelFrame extends javax.swing.JFrame implements Serializabl
 
         jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder("Maximum Notes"));
         jPanel7.setToolTipText("Maximum number of notes in the hand's voicing.");
-        jPanel7.setMinimumSize(null);
-        jPanel7.setPreferredSize(null);
         jPanel7.setLayout(new java.awt.GridBagLayout());
 
         LHMaxNotesSlider.setMajorTickSpacing(5);
@@ -929,26 +916,19 @@ public class ControlPanelFrame extends javax.swing.JFrame implements Serializabl
         jPanel1.add(jPanel4, gridBagConstraints);
 
         jPanel8.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Right Hand", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 3, 12))); // NOI18N
-        jPanel8.setMinimumSize(null);
         jPanel8.setName(""); // NOI18N
-        jPanel8.setPreferredSize(null);
         jPanel8.setLayout(new java.awt.GridBagLayout());
 
         jPanel9.setBorder(javax.swing.BorderFactory.createTitledBorder("Upper Limit"));
         jPanel9.setToolTipText("Absolute Upper note limits for voicings in a hand.");
-        jPanel9.setMinimumSize(null);
-        jPanel9.setPreferredSize(null);
         jPanel9.setLayout(new java.awt.GridBagLayout());
 
         RHULSlider.setMajorTickSpacing(12);
         RHULSlider.setMaximum(108);
         RHULSlider.setMinimum(21);
         RHULSlider.setMinorTickSpacing(1);
-        RHULSlider.setPaintLabels(true);
         RHULSlider.setPaintTicks(true);
         RHULSlider.setSnapToTicks(true);
-        RHULSlider.setMinimumSize(null);
-        RHULSlider.setPreferredSize(null);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -981,19 +961,14 @@ public class ControlPanelFrame extends javax.swing.JFrame implements Serializabl
 
         jPanel10.setBorder(javax.swing.BorderFactory.createTitledBorder("Lower Limit"));
         jPanel10.setToolTipText("Absolute Lower note limits for voicings in a hand.");
-        jPanel10.setMinimumSize(null);
-        jPanel10.setPreferredSize(null);
         jPanel10.setLayout(new java.awt.GridBagLayout());
 
         RHLLSlider.setMajorTickSpacing(12);
         RHLLSlider.setMaximum(108);
         RHLLSlider.setMinimum(21);
         RHLLSlider.setMinorTickSpacing(1);
-        RHLLSlider.setPaintLabels(true);
         RHLLSlider.setPaintTicks(true);
         RHLLSlider.setSnapToTicks(true);
-        RHLLSlider.setMinimumSize(null);
-        RHLLSlider.setPreferredSize(null);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -1026,8 +1001,6 @@ public class ControlPanelFrame extends javax.swing.JFrame implements Serializabl
 
         jPanel11.setBorder(javax.swing.BorderFactory.createTitledBorder("Stretch Limit (Semitones)"));
         jPanel11.setToolTipText("The distance between the lowest and highest note for one voicing in a hand.");
-        jPanel11.setMinimumSize(null);
-        jPanel11.setPreferredSize(null);
         jPanel11.setLayout(new java.awt.GridBagLayout());
 
         RHStretchSlider.setMajorTickSpacing(5);
@@ -1059,8 +1032,6 @@ public class ControlPanelFrame extends javax.swing.JFrame implements Serializabl
 
         jPanel12.setBorder(javax.swing.BorderFactory.createTitledBorder("Minimum Notes"));
         jPanel12.setToolTipText("Minimum number of notes in the hand's voicing.");
-        jPanel12.setMinimumSize(null);
-        jPanel12.setPreferredSize(null);
         jPanel12.setLayout(new java.awt.GridBagLayout());
 
         RHMinNotesSlider.setMajorTickSpacing(5);
@@ -1091,8 +1062,6 @@ public class ControlPanelFrame extends javax.swing.JFrame implements Serializabl
 
         jPanel13.setBorder(javax.swing.BorderFactory.createTitledBorder("Maximum Notes"));
         jPanel13.setToolTipText("Maximum number of notes in the hand's voicing.");
-        jPanel13.setMinimumSize(null);
-        jPanel13.setPreferredSize(null);
         jPanel13.setLayout(new java.awt.GridBagLayout());
 
         RHMaxNotesSlider.setMajorTickSpacing(5);
@@ -1142,13 +1111,10 @@ public class ControlPanelFrame extends javax.swing.JFrame implements Serializabl
         getContentPane().add(jPanel1, gridBagConstraints);
 
         jPanel14.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Voice Leading Settings", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 3, 14))); // NOI18N
-        jPanel14.setPreferredSize(null);
         jPanel14.setLayout(new java.awt.GridBagLayout());
 
         jPanel15.setBorder(javax.swing.BorderFactory.createTitledBorder("Previous Chord Priority"));
         jPanel15.setToolTipText("Rating of last chord's significance for voice leading.");
-        jPanel15.setMinimumSize(null);
-        jPanel15.setPreferredSize(null);
         jPanel15.setLayout(new java.awt.GridBagLayout());
 
         PrevChordPrioritySlider.setMajorTickSpacing(10);
@@ -1178,8 +1144,6 @@ public class ControlPanelFrame extends javax.swing.JFrame implements Serializabl
 
         jPanel16.setBorder(javax.swing.BorderFactory.createTitledBorder("Half Step Away Priority"));
         jPanel16.setToolTipText("Mulitplier for any note a half-step away from previously voiced note.");
-        jPanel16.setMinimumSize(null);
-        jPanel16.setPreferredSize(null);
         jPanel16.setLayout(new java.awt.GridBagLayout());
 
         HalfStepAwaySlider.setMajorTickSpacing(10);
@@ -1209,8 +1173,6 @@ public class ControlPanelFrame extends javax.swing.JFrame implements Serializabl
 
         jPanel17.setBorder(javax.swing.BorderFactory.createTitledBorder("Whole Step Away Priority"));
         jPanel17.setToolTipText("Mulitplier for any note a whole step away from previously voiced note.");
-        jPanel17.setMinimumSize(null);
-        jPanel17.setPreferredSize(null);
         jPanel17.setLayout(new java.awt.GridBagLayout());
 
         WholeStepAwaySlider.setMajorTickSpacing(10);
@@ -1240,8 +1202,6 @@ public class ControlPanelFrame extends javax.swing.JFrame implements Serializabl
 
         jPanel18.setBorder(javax.swing.BorderFactory.createTitledBorder("Preferred Motion Direction"));
         jPanel18.setToolTipText("Preferred direction of chord progression");
-        jPanel18.setMinimumSize(null);
-        jPanel18.setPreferredSize(null);
         jPanel18.setLayout(new java.awt.GridBagLayout());
 
         PrefMotionDirSlider.setMaximum(5);
@@ -1272,8 +1232,6 @@ public class ControlPanelFrame extends javax.swing.JFrame implements Serializabl
 
         jPanel19.setBorder(javax.swing.BorderFactory.createTitledBorder("Preferred Motion Distance"));
         jPanel19.setToolTipText("Preferred distance of chord progression");
-        jPanel19.setMinimumSize(null);
-        jPanel19.setPreferredSize(null);
         jPanel19.setLayout(new java.awt.GridBagLayout());
 
         PrefMotionDistSlider.setMaximum(5);
@@ -1313,13 +1271,10 @@ public class ControlPanelFrame extends javax.swing.JFrame implements Serializabl
         getContentPane().add(jPanel14, gridBagConstraints);
 
         jPanel20.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Voicing Settings", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 3, 14))); // NOI18N
-        jPanel20.setPreferredSize(null);
         jPanel20.setLayout(new java.awt.GridBagLayout());
 
         jPanel21.setBorder(javax.swing.BorderFactory.createTitledBorder("Chord Tone Maximum Priority"));
         jPanel21.setToolTipText("Highest priority weighting for any note in the chord.");
-        jPanel21.setMinimumSize(null);
-        jPanel21.setPreferredSize(null);
         jPanel21.setLayout(new java.awt.GridBagLayout());
 
         ChordToneMaxPrioritySlider.setMaximum(10);
@@ -1349,8 +1304,6 @@ public class ControlPanelFrame extends javax.swing.JFrame implements Serializabl
 
         jPanel22.setBorder(javax.swing.BorderFactory.createTitledBorder("Chord Tone Priority Weighting"));
         jPanel22.setToolTipText("Desired weighting for priority notes in a chord");
-        jPanel22.setMinimumSize(null);
-        jPanel22.setPreferredSize(null);
         jPanel22.setLayout(new java.awt.GridBagLayout());
 
         ChordTonePriorityWeightSlider.setMajorTickSpacing(10);
@@ -1380,8 +1333,6 @@ public class ControlPanelFrame extends javax.swing.JFrame implements Serializabl
 
         jPanel23.setBorder(javax.swing.BorderFactory.createTitledBorder("Left Hand Color Note Priority"));
         jPanel23.setToolTipText("Desired weighting for color notes in this hand.");
-        jPanel23.setMinimumSize(null);
-        jPanel23.setPreferredSize(null);
         jPanel23.setLayout(new java.awt.GridBagLayout());
 
         LHColorPriority.setMaximum(10);
@@ -1411,8 +1362,6 @@ public class ControlPanelFrame extends javax.swing.JFrame implements Serializabl
 
         jPanel24.setBorder(javax.swing.BorderFactory.createTitledBorder("Right Hand Color Note Priority"));
         jPanel24.setToolTipText("Desired weighting for color notes in this hand.");
-        jPanel24.setMinimumSize(null);
-        jPanel24.setPreferredSize(null);
         jPanel24.setLayout(new java.awt.GridBagLayout());
 
         RHColorPriority.setMaximum(10);
@@ -1441,8 +1390,6 @@ public class ControlPanelFrame extends javax.swing.JFrame implements Serializabl
 
         jPanel25.setBorder(javax.swing.BorderFactory.createTitledBorder("Probability of Same Note In Two Octaves"));
         jPanel25.setToolTipText("Probability of playing the same note in two separate octaves.");
-        jPanel25.setMinimumSize(null);
-        jPanel25.setPreferredSize(null);
         jPanel25.setLayout(new java.awt.GridBagLayout());
 
         ProbSameNoteTwoOctavesSlider.setMaximum(10);
@@ -1472,8 +1419,6 @@ public class ControlPanelFrame extends javax.swing.JFrame implements Serializabl
 
         jPanel26.setBorder(javax.swing.BorderFactory.createTitledBorder("Half Step Reduction"));
         jPanel26.setToolTipText("Probability that two notes a half-step apart will be played.");
-        jPanel26.setMinimumSize(null);
-        jPanel26.setPreferredSize(null);
         jPanel26.setLayout(new java.awt.GridBagLayout());
 
         HalfStepRedSlider.setMaximum(10);
@@ -1502,8 +1447,6 @@ public class ControlPanelFrame extends javax.swing.JFrame implements Serializabl
 
         jPanel27.setBorder(javax.swing.BorderFactory.createTitledBorder("Whole Step Reduction"));
         jPanel27.setToolTipText("Probability that two notes a whole-step apart will be played.");
-        jPanel27.setMinimumSize(null);
-        jPanel27.setPreferredSize(null);
         jPanel27.setLayout(new java.awt.GridBagLayout());
 
         WholeStepRedSlider.setMaximum(10);
