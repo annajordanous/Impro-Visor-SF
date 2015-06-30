@@ -808,8 +808,8 @@ public static Polylist getVoicingAndExtensionList(ChordSymbol chord,
         AutomaticVoicingSettings avs= ImproVisor.avs;
         VoicingGenerator vgen=new VoicingGenerator();
         HandManager handyMan=new HandManager();
-        avs.setLeftHandLowerLimit(style.getChordLow().getMIDI());
-        avs.setRightHandUpperLimit(style.getChordHigh().getMIDI());
+        //avs.setLeftHandLowerLimit(style.getChordLow().getMIDI());
+        //avs.setRightHandUpperLimit(style.getChordHigh().getMIDI());
         handyMan.setLeftHandLowerLimit(avs.getLeftHandLowerLimit());
         handyMan.setLeftHandUpperLimit(avs.getLeftHandUpperLimit());
         handyMan.setLeftHandSpread(avs.getLeftHandSpread());
