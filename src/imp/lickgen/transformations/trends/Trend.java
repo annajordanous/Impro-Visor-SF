@@ -22,7 +22,7 @@ public abstract class Trend {
     public boolean stopCondition(Note n1, Note n2, Chord c){
         
         //if no chord or one of the notes absent or rest, stop the trend
-        if(c.isNOCHORD() || n1 == null || n1.isRest() || n2 == null || n2.isRest()){
+        if(c == null || c.isNOCHORD() || n1 == null || n1.isRest() || n2 == null || n2.isRest()){
             return true;
         }
         

@@ -38,7 +38,7 @@ public class DescendingTrend extends Trend{
 
     //2 for descending
     public int numberOfSections() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return 2;
     }
 
     public String getName() {
