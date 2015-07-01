@@ -523,7 +523,7 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         gridBagConstraints.gridy = 0;
         printTrendPanel.add(trendChooser, gridBagConstraints);
 
-        printTrendsButton.setText("Print Trends");
+        printTrendsButton.setText("Create Trend Transform");
         printTrendsButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 printTrendsButtonActionPerformed(evt);
@@ -605,12 +605,11 @@ public class TransformLearningPanel extends javax.swing.JPanel {
     private void printTrendsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printTrendsButtonActionPerformed
         String trendString = (String) trendChooser.getSelectedItem();
         Trend trend = getTrend(trendString);
-        TrendDetector detector = new TrendDetector(trend);
-        ArrayList<TrendSegment> trends = detector.trends(notate.getCurrentMelodyPart(), notate.getChordProg());
-        System.out.println("Printing All "+trendString+" Trends:\n");
-        for(TrendSegment ts : trends){
-            System.out.println(ts);
-        }
+        
+        transform = transformLearning.trendTransform(notate, trend);
+        transform.hasChanged = true;
+        showTransformButton.setEnabled(true);
+        setTransformButton.setEnabled(true);
     }//GEN-LAST:event_printTrendsButtonActionPerformed
 
     private static Trend getTrend(String s){
@@ -801,6 +800,8 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         
         return transform;
     }
+    
+    
     /**
      * Goes through each note in the original melody and if it equals the note 
      * at the same place in the flattened melody, turn it into a rest. This 

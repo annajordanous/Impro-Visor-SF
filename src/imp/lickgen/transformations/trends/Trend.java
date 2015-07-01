@@ -38,7 +38,6 @@ public abstract class Trend {
     //method to extract important / outline notes from the identified trend
     public TrendSegment importantNotes(TrendSegment trend, int [] metre){
         
-        //int division - could have leftover at end
         int duration = trend.getTotalDuration()/numberOfSections();
         ArrayList<TrendSegment> sections = trend.splitUp(duration);
 

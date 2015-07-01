@@ -1402,7 +1402,6 @@ public Transform trendTransform(Notate notate, Trend trend){
     ArrayList<TrendSegment> trends = detector.trends(melodyPart, chordPart);
     
     for(TrendSegment original : trends){
-        
         TrendSegment flattened = trend.importantNotes(original, metre);
         Substitution sub = makeTrendSub(original, flattened, trend);
         trendTransform.addSubstitution(sub);
