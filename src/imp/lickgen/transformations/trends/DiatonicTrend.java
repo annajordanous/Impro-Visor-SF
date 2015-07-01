@@ -3,21 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package imp.data;
+package imp.lickgen.transformations.trends;
 
 import java.util.ArrayList;
 import polya.Polylist;
-
+import imp.data.*;
 /**
  *
  * @author muddCS15
  */
-public class DiatonicTrend implements Trend{
-
-    //check all three stop conditions
-    public boolean stopCondition(Note n1, Note n2, Chord c) {
-        return stopCondition(n1, n2) || stopCondition(n1, c) || stopCondition(n2, c);
-    }
+public class DiatonicTrend extends Trend{
 
     //doesn't matter what the interval is
     public boolean stopCondition(Note n1, Note n2) {

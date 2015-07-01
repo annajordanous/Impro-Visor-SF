@@ -3,15 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package imp.data;
+package imp.lickgen.transformations.trends;
 
 import java.util.ArrayList;
-
+import imp.data.*;
 /**
  *
  * @author muddCS15
  */
-public class ChromaticTrend implements Trend{
+public class ChromaticTrend extends Trend{
     
     //intervals
     private static final int HALF_STEP = 1;
@@ -39,11 +39,6 @@ public class ChromaticTrend implements Trend{
     //TODO
     public ArrayList<Note> importantNotes(ArrayList<Note> notes) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    //check all three stop conditions
-    public boolean stopCondition(Note n1, Note n2, Chord c) {
-        return stopCondition(n1, n2) || stopCondition(n1, c) || stopCondition(n2, c);
     }
     
 }
