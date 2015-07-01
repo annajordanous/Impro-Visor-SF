@@ -9,6 +9,7 @@ import imp.Constants.Accidental;
 import java.util.ArrayList;
 import imp.data.*;
 import imp.lickgen.transformations.trends.Trend;
+import polya.Polylist;
 /**
  *
  * @author muddCS15
@@ -103,12 +104,14 @@ public class TrendDetector {
 
         return trends;
     }
-    
-    
-//    public Transform trendTransform(ArrayList<TrendSegment> trends, int [] metre){
-//        for(TrendSegment trendSeg : trends){
-//            TrendSegment importantNotes = trend.importantNotes(trendSeg, metre);
-//        }
-//    }
+
+    public Polylist trendToPolylist(TrendSegment trend){
+        Polylist pl = new Polylist();
+        NCPIterator i = trend.makeIterator();
+        while(i.hasNext()){
+            pl.addToEnd(i.nextNCP().toNCP());
+        }
+        return pl;
+    }
     
 }

@@ -45,6 +45,7 @@ public abstract class Trend {
         TrendSegment importantNotes = new TrendSegment();
         for(TrendSegment currTrend : sections){
             //each of these has length equal to the length of currTrend
+            //and start slot equal to the start slot of currTrend
             importantNotes.add(importantNote(currTrend, metre));
         }
         return importantNotes;
@@ -66,6 +67,8 @@ public abstract class Trend {
         }
         //ADJUST LENGTH OF NOTE TO BE LENGTH OF THE ENTIRE TREND
         bestNCP.setDuration(trend.getTotalDuration());
+        //ADJUST THE STARTING SLOT OF THE NOTE TO BE THE STARTING SLOT OF THE ENTIRE TREND
+        bestNCP.setSlot(trend.getStartSlot());
         return bestNCP;
     }
     
@@ -97,5 +100,8 @@ public abstract class Trend {
     
     //number of sections to split trend up into
     public abstract int numberOfSections();
+    
+    //return name of trend in all caps
+    public abstract String getName();
     
 }

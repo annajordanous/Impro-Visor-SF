@@ -28,8 +28,10 @@ import imp.data.MelodyPart;
 import imp.data.Note;
 import imp.data.Part.PartIterator;
 import imp.data.Unit;
+import imp.gui.Notate;
 import imp.lickgen.LickGen;
 import imp.lickgen.NoteConverter;
+import imp.lickgen.transformations.trends.Trend;
 import java.util.ArrayList;
 import polya.Polylist;
 import polya.PolylistEnum;
@@ -903,12 +905,14 @@ private Polylist getTrendGuardCondition(Polylist importantNotesWithChords,
                 Chord chord = (Chord)noteWithChord.second();
                 String var = (String)noteWithChord.fourth();
                 
+                //CHROMATIC SPECIFIC
                 Polylist pitchMinus = Polylist.PolylistFromString("pitch-");
                 pitchMinus = pitchMinus.addToEnd(compVar).addToEnd(var);
                 
                 double minus = (compNote.getPitch() - note.getPitch())/2.0;
                 Polylist pitchMinusEquals = Polylist.PolylistFromString("=");
                 pitchMinusEquals = pitchMinusEquals.addToEnd(pitchMinus).addToEnd(minus);
+                //END CHROMATIC SPECIFIC
                 
                 andEquals = andEquals.addToEnd(pitchMinusEquals);
             }
@@ -926,12 +930,13 @@ private Polylist getTrendGuardCondition(Polylist importantNotesWithChords,
                 Note note = (Note)noteWithChord.first();
                 Chord chord = (Chord)noteWithChord.second();
                 String var = (String)noteWithChord.fourth();
+                //DIATONIC SPECIFIC
                 Polylist diatonicCond = getTransposeDiatonicCondition(note, 
                                                                       compNote, 
                                                                       var, 
                                                                       compVar, 
                                                                       compChord);
-
+                //END DIATONIC SPECIFIC
                 andEquals = andEquals.addToEnd(diatonicCond);
             }
         }
@@ -1009,12 +1014,14 @@ private Polylist getTrendTargetNotes(Polylist firstOutlineNCP,
             {
                 Polylist transposeNote = new Polylist();
 
+                //CHROMATIC SPECIFIC
                 if(trend == CHROMATIC_TREND)
                 {
                     transposeNote = getTransposeChromatic(fromNote, 
                                                           transNote, 
                                                           fromVar);
                 }
+                //DIATONIC SPECIFIC
                 else if(trend == DIATONIC_TREND)
                 {
                     transposeNote = getTransposeDiatonicFunction(fromNote, 
@@ -1351,4 +1358,288 @@ private static int data(int trend, Note lastNote, Note curNote, Chord curChord){
     }
 }
 
+public Transform trendTransform(Notate notate, Trend trend){
+    Transform trendTransform = new Transform();
+    
+    MelodyPart melodyPart = notate.getCurrentMelodyPart();
+    ChordPart chordPart = notate.getChordProg();
+    int [] metre = notate.getScore().getMetre();
+    
+    TrendDetector detector = new TrendDetector(trend);
+    ArrayList<TrendSegment> trends = detector.trends(melodyPart, chordPart);
+    
+    for(TrendSegment original : trends){
+        
+        TrendSegment flattened = trend.importantNotes(original, metre);
+        Substitution sub = makeTrendSub(original, flattened, trend);
+        trendTransform.addSubstitution(sub);
+        
+    }
+    
+    return trendTransform;
+    
 }
+
+private Substitution makeTrendSub(TrendSegment original, TrendSegment flattened, Trend trend){
+    
+    Substitution trendSub = new Substitution();
+    trendSub.setName(original.getSize() + "-changed-GENERATED-"+trend.getName());
+    trendSub.addTransformation(makeTrendTransformation(original, flattened));
+    return trendSub;
+    
+}
+
+/**
+ * makeTrendTransformation
+ * @param original segment of the original melody
+ * @param flattened flattened version of that segment
+ * @return a learned transformation
+ */
+private Transformation makeTrendTransformation(TrendSegment original, TrendSegment flattened){
+
+    //transformation, description, weight
+    Polylist transformation = Polylist.PolylistFromString(
+        "transformation" + 
+        "(description generated-transformation)" + 
+        "(weight 1)");
+    
+    //source notes
+    Polylist sourceNotes = Polylist.PolylistFromString("source-notes");
+
+    NCPIterator i = flattened.makeIterator();
+    
+    while(i.hasNext())
+    {
+        sourceNotes = sourceNotes.addToEnd(i.nextNCP().varName());
+    }
+    transformation = transformation.addToEnd(sourceNotes);
+    
+    //guard condition
+    Polylist guard = getTrendGuardCondition(flattened);
+    
+    //target notes
+    Polylist target = getTrendTargetNotes(original, flattened);
+    
+    //safety check
+    if(guard == null || target == null)
+        return null;
+    
+    //add guard condition and target notes
+    transformation = transformation.addToEnd(guard).addToEnd(target);
+    
+    //make transformation out of the String
+    return new Transformation(transformation);
+    
+}
+
+    private Polylist getTrendGuardCondition(TrendSegment original){
+        
+        Polylist guardCondition = Polylist.PolylistFromString("guard-condition");
+        Polylist andEquals = Polylist.PolylistFromString("and");
+        
+        NCPIterator i = original.makeIterator();
+
+        while(i.hasNext())
+        {
+
+            NoteChordPair ncp = i.nextNCP();
+            Note note = ncp.getNote();
+            Chord chord = ncp.getChord();
+            String var = ncp.varName();
+            
+            // make all conditions we want checked
+            Polylist categoryEquals = Polylist.PolylistFromString("= (note-category "
+                                                                  + var + ")");
+            Polylist chordFamilyEquals = Polylist.PolylistFromString("= (chord-family "
+                                                                     + var + ")");
+            Polylist relPitchEquals = Polylist.PolylistFromString("= (relative-pitch "
+                                                                  + var + ")");
+            
+            // fill conditions
+            Object relPitch = NoteConverter.noteToRelativePitch(note, chord).second();
+            relPitchEquals = relPitchEquals.addToEnd(relPitch);
+            int cat = LickGen.classifyNote(note, chord);
+            switch (cat){
+                case LickGen.CHORD:
+                    categoryEquals = categoryEquals.addToEnd("C");
+                    break;
+                case LickGen.COLOR:
+                    categoryEquals = categoryEquals.addToEnd("L");
+                    break;
+                case LickGen.APPROACH:
+                    categoryEquals = categoryEquals.addToEnd("A");
+                    break;
+                default:
+                    categoryEquals = categoryEquals.addToEnd("X");
+                    break;
+            }
+            chordFamilyEquals = chordFamilyEquals.addToEnd(chord.getFamily());
+            
+            // add all conditions to the and condition
+            andEquals = andEquals.addToEnd(categoryEquals);
+            andEquals = andEquals.addToEnd(chordFamilyEquals);
+            andEquals = andEquals.addToEnd(relPitchEquals);
+        }
+
+        guardCondition = guardCondition.addToEnd(andEquals);
+        return guardCondition;
+    }  
+    
+    //TODO
+    private Polylist getTrendTargetNotes(TrendSegment original, TrendSegment flattened){
+        
+        //initialize
+        Polylist targetNotes = Polylist.PolylistFromString("target-notes");
+        
+        //first note
+        NoteChordPair firstOutNCP = flattened.firstNCP();
+        
+        Note firstOutNote = firstOutNCP.getNote();
+        int firstOutSlot = firstOutNCP.getSlot();
+        String firstOutVar = firstOutNCP.varName();
+        
+        //last note
+        NoteChordPair lastOutNCP = flattened.lastNCP();
+        
+        Note lastOutNote = lastOutNCP.getNote();
+        int lastOutSlot = lastOutNCP.getSlot();
+        String lastOutVar = lastOutNCP.varName();
+        
+        //whether we're at the first note
+        boolean first = true;
+        
+        //go through target notes, adding them
+        NCPIterator targetNoteIterator = original.makeIterator();
+        
+        while(targetNoteIterator.hasNext()){
+            Polylist setDur = Polylist.PolylistFromString("set-duration");
+            
+            //result note
+            NoteChordPair result = targetNoteIterator.nextNCP();
+            
+            Note transNote = result.getNote();
+            int startingSlot = result.getSlot();
+            
+            //source note
+            NoteChordPair resultFrom = source(result, flattened);
+            
+            Note fromNote = resultFrom.getNote();
+            Chord fromChord = resultFrom.getChord();
+            String fromVar = resultFrom.varName();
+            
+            if(first){
+                first = false;
+                int slotsLeftFront = firstOutNote.getRhythmValue() - 
+                                    (startingSlot - firstOutSlot);
+                
+                if(slotsLeftFront < firstOutNote.getRhythmValue())
+                {
+                    Polylist addToFront = Polylist.PolylistFromString("subtract-duration");
+                    String subDur = Note.getDurationString(slotsLeftFront);
+                    addToFront = addToFront.addToEnd(subDur).addToEnd(firstOutVar);
+                    targetNotes = targetNotes.addToEnd(addToFront);
+                }
+            }
+            setDur = setDur.addToEnd(Note.getDurationString(transNote.getRhythmValue()));
+            if(transNote.samePitch(fromNote))
+            {
+                setDur = setDur.addToEnd(fromVar);
+            }
+            else if(transNote.isRest() || fromNote.isRest())
+            {
+                Polylist rest = Polylist.PolylistFromString("make-rest " + 
+                                                            fromVar);
+                setDur = setDur.addToEnd(rest);
+            }
+            else
+            {
+                Polylist transposeNote = new Polylist();
+
+                //IMPORTANT: JUST PICKED ONE FOR NOW, COULD BE TREND SPECIFIC
+                transposeNote = getTransposeChromatic(fromNote, transNote, fromVar);
+                
+//                //CHROMATIC SPECIFIC
+//                if(trend == CHROMATIC_TREND)
+//                {
+//                    transposeNote = getTransposeChromatic(fromNote, 
+//                                                          transNote, 
+//                                                          fromVar);
+//                }
+//                //DIATONIC SPECIFIC
+//                else if(trend == DIATONIC_TREND)
+//                {
+//                    transposeNote = getTransposeDiatonicFunction(fromNote, 
+//                                                                 transNote, 
+//                                                                 fromVar, 
+//                                                                 fromChord);
+//                }
+                if(transposeNote == null)
+                    return null;
+                setDur = setDur.addToEnd(transposeNote);
+            }
+            targetNotes = targetNotes.addToEnd(setDur);
+            
+            // if the last note is not part of the actual trend or needs to be 
+            // extended or reduced
+            if(!targetNoteIterator.hasNext())
+            {
+                int endingSlot = startingSlot + transNote.getRhythmValue();
+                if(startingSlot < lastOutSlot)
+                {
+                    if( endingSlot > lastOutSlot)
+                    {
+                        Polylist subFromEnd = Polylist.PolylistFromString("add-duration");
+                        String subDur = Note.getDurationString(lastOutNote.getRhythmValue() + 
+                                                               lastOutSlot - endingSlot);
+                        subFromEnd = subFromEnd.addToEnd(subDur).addToEnd(lastOutVar);
+                        targetNotes = targetNotes.addToEnd(subFromEnd);
+                    }
+                    else if(endingSlot < lastOutSlot)
+                    {
+                        Polylist addToEnd = Polylist.PolylistFromString("add-duration");
+                        String addDur = Note.getDurationString(lastOutNote.getRhythmValue() + 
+                                                               lastOutSlot - endingSlot);
+                        addToEnd = addToEnd.addToEnd(addDur).addToEnd(lastOutVar);
+                        targetNotes = targetNotes.addToEnd(addToEnd);
+                    }
+                    else
+                    {
+                        targetNotes = targetNotes.addToEnd(lastOutVar);
+                    }
+                }
+                else
+                {
+                    if(lastOutSlot + lastOutNote.getRhythmValue() !=  
+                            startingSlot + transNote.getRhythmValue())
+                    {
+                        Polylist addToEnd = Polylist.PolylistFromString("subtract-duration");
+                        String subDur = Note.getDurationString(endingSlot - lastOutSlot);
+                        addToEnd = addToEnd.addToEnd(subDur).addToEnd(lastOutVar);
+                        targetNotes = targetNotes.addToEnd(addToEnd);
+                    }
+                }
+            }
+            
+        }
+        
+        return targetNotes;
+        
+    }
+    
+    private NoteChordPair source(NoteChordPair dest, TrendSegment flattened){
+        
+        int slot = dest.getSlot();
+        
+        NCPIterator i = flattened.makeIterator();
+        while(i.hasNext()){
+            NoteChordPair source = i.nextNCP();
+            //Decent, but not perfect
+            if(slot >= source.getSlot()){
+                return source;
+            }
+        }
+        return null;
+    }
+
+}
+

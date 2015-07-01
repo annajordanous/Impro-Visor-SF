@@ -43,4 +43,8 @@ public class ArpeggioTrend extends Trend{
         return 2;
     }
 
+    public String getName() {
+        return "ARPEGGIO";
+    }
+
 }
