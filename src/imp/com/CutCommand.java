@@ -105,7 +105,7 @@ public class CutCommand implements Command {
      * and redoing.
      */
     public void execute() {
-        Trace.log(2, "exeucting CutCommand");
+        Trace.log(2, "executing CutCommand");
         /*
         Part newPart = source.extract(startSlot, endSlot);
         source.delUnits(startSlot, endSlot);
@@ -121,8 +121,9 @@ public class CutCommand implements Command {
 
         deleteUnits = new DeleteUnitsCommand(source, startSlot, endSlot);
         deleteUnits.execute();
-        if(!deleteUnits.isUndoable())
+        if(!deleteUnits.isUndoable()){
             undoable = false;
+        }
     }
 
     /**
