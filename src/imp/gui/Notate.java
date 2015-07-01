@@ -10616,6 +10616,23 @@ public Mode getMode()
   }
 
 /**
+ * gets the value of midiRecorder
+ * @return instance of MidiRecorder
+ */
+public MidiRecorder getMidiRecorder(){
+    return this.midiRecorder;
+}
+
+public void initTradingRecorder(MelodyPart aMelodyPart){
+    if (this.midiRecorder == null) {
+        this.midiRecorder = new MidiRecorder(this, this.score);
+        this.midiRecorder.setDestination(aMelodyPart);
+    } else{
+        this.midiRecorder.setDestination(aMelodyPart);
+    }
+}
+
+/**
  *
  * Stops recording: unregisters the midiRecorder and changes the mode
  *
@@ -10663,12 +10680,9 @@ public AudioSettings getAudioSettings()
   }
 
 /**
- *
- * Starts recording: registers the midiRecorder and changes the mode
- *
+ * Starts recording: registers the midiRecorder and changes the mode.
  */
-private void startRecording()
-  {
+public void startRecording(){
     setFirstChorus(true);
     //Take care of first time recording audio preferences
     if( !audioLatencyRegistered )
@@ -10683,41 +10697,49 @@ private void startRecording()
       {
         ErrorLog.log(ErrorLog.COMMENT, "No valid MIDI in devices found.  \n\nPlease check your device connection and the MIDI Preferences. It is possible another program is currently using this device.");
       }
-    else if( superColliderMode ) //User wants to use SuperCollider. Works if checkbox selected
-      {
-
-        String devName = midiManager.getInDeviceInfo().getName();
-        //Check for valid Input Device associated with using SuperCollider
-        boolean validSCInDevice = devName.equals("IAC Bus 1")
-                || devName.equals("Bus 1")
-                || devName.equals("LoopBe Internal MIDI")
-                || devName.contains("VirMIDI");
-
-        //If valid device selected, okay to go through with recording. Else,
-        //yell at user. @TODO potential trouble spot for user-defined 
-        //workarounds.            
-        if( validSCInDevice )
-          {
-            SCHandler handler = new SCHandler();
-            handler.openSC();
-            startRecordingHelper();
-          }
-        else
-          {
-            //@TODO Yell at user. Like through a dialog. Then quit.
-            ErrorLog.log(ErrorLog.WARNING, "You need a valid MIDI input device "
-                    + "to do this! See Help->Audio Input for instructions/details.");
-          }
-      }
+    
+    /*
+    this section is from the old implementation of audio input
+    */
+//    else if( superColliderMode ) //User wants to use SuperCollider. Works if checkbox selected
+//      {
+//
+//        String devName = midiManager.getInDeviceInfo().getName();
+//        //Check for valid Input Device associated with using SuperCollider
+//        boolean validSCInDevice = devName.equals("IAC Bus 1")
+//                || devName.equals("Bus 1")
+//                || devName.equals("LoopBe Internal MIDI")
+//                || devName.contains("VirMIDI");
+//
+//        //If valid device selected, okay to go through with recording. Else,
+//        //yell at user. @TODO potential trouble spot for user-defined 
+//        //workarounds.            
+//        if( validSCInDevice )
+//          {
+//            SCHandler handler = new SCHandler();
+//            handler.openSC();
+//            startRecordingHelper();
+//          }
+//        else
+//          {
+//            //@TODO Yell at user. Like through a dialog. Then quit.
+//            ErrorLog.log(ErrorLog.WARNING, "You need a valid MIDI input device "
+//                    + "to do this! See Help->Audio Input for instructions/details.");
+//          }
+//      }
     else
       {
         startRecordingHelper();//below
       }
   }
 
+
+
+
 /**
  * Takes care of midiSynth and midiRecorder material for startRecording().
  * Called separately from startRecording() so SuperCollider has time to run.
+ * @param thisScore score into which midi is actually recorded
  */
 private void startRecordingHelper()
   {
@@ -10729,15 +10751,16 @@ private void startRecordingHelper()
 
     if( midiRecorder == null )
       {
-        midiRecorder = new MidiRecorder(this, score);
+        midiRecorder = new MidiRecorder(this, this.score);
       }
 
-    //Deal with latency
-    if( superColliderMode )
-      {//Set latency to default
-        double latency = Preferences.getAudioInLatency();
-        midiRecorder.setLatency(latency);
-      }
+//    no longer used
+//    Deal with latency
+//    if( superColliderMode )
+//      {//Set latency to default
+//        double latency = Preferences.getAudioInLatency();
+//        midiRecorder.setLatency(latency);
+//      }
 
     midiSynth.registerReceiver(midiRecorder);
 
@@ -10751,8 +10774,9 @@ private void startRecordingHelper()
 
     midiSynth.registerReceiver(midiRecorder);
 
-    midiRecorder.start(score.getCountInOffset());   // set time to 0
+    midiRecorder.start(this.score.getCountInOffset());   // set time to 0
   }
+
 
 /**
  * This is like startRecording() without the playback.
