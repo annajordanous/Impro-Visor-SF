@@ -31,11 +31,15 @@ import imp.lickgen.transformations.Evaluate;
 import imp.lickgen.transformations.TransformLearning;
 import imp.lickgen.transformations.Transform;
 import imp.lickgen.transformations.Transformation;
+import imp.lickgen.transformations.TrendDetector;
+import imp.lickgen.transformations.TrendSegment;
+import imp.lickgen.transformations.trends.*;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import polya.*;
 
@@ -136,6 +140,9 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         step4Label2 = new javax.swing.JLabel();
         step4Label3 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
+        printTrendPanel = new javax.swing.JPanel();
+        trendChooser = new javax.swing.JComboBox();
+        printTrendsButton = new javax.swing.JButton();
 
         setAlignmentX(0.0F);
         setMinimumSize(new java.awt.Dimension(250, 25));
@@ -486,6 +493,30 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(4, 9, 4, 0);
         add(jLabel1, gridBagConstraints);
+
+        printTrendPanel.setLayout(new java.awt.GridBagLayout());
+
+        trendChooser.setModel(new javax.swing.DefaultComboBoxModel(new String[] {"Arpeggio", "Ascending", "Chromatic", "Descending", "Diatonic", "Skip"}));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        printTrendPanel.add(trendChooser, gridBagConstraints);
+
+        printTrendsButton.setText("Print Trends");
+        printTrendsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                printTrendsButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        printTrendPanel.add(printTrendsButton, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 5;
+        add(printTrendPanel, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
 
     private void saveOriginalButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveOriginalButtonActionPerformed
@@ -568,6 +599,35 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_allowRepeatsCheckBoxActionPerformed
 
+    private void printTrendsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printTrendsButtonActionPerformed
+        String trendString = (String) trendChooser.getSelectedItem();
+        Trend trend = getTrend(trendString);
+        TrendDetector detector = new TrendDetector(trend);
+        ArrayList<TrendSegment> trends = detector.trends(notate.getCurrentMelodyPart(), notate.getChordProg());
+        System.out.println("Printing All "+trendString+" Trends:\n");
+        for(TrendSegment ts : trends){
+            System.out.println(ts);
+        }
+    }//GEN-LAST:event_printTrendsButtonActionPerformed
+
+    private static Trend getTrend(String s){
+        if(s.equals("Arpeggio")){
+            return new ArpeggioTrend();
+        }else if(s.equals("Ascending")){
+            return new AscendingTrend();
+        }else if(s.equals("Chromatic")){
+            return new ChromaticTrend();
+        }else if(s.equals("Descending")){
+            return new DescendingTrend();
+        }else if(s.equals("Diatonic")){
+            return new DiatonicTrend();
+        }else if(s.equals("Skip")){
+            return new SkipTrend();
+        }else{
+            return new AscendingTrend();//default
+        }
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox allowRepeatsCheckBox;
     private javax.swing.JButton createTransformButton;
@@ -576,6 +636,8 @@ public class TransformLearningPanel extends javax.swing.JPanel {
     private javax.swing.JComboBox generateTransformMethodComboBox;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JPanel printTrendPanel;
+    private javax.swing.JButton printTrendsButton;
     private javax.swing.JButton replaceWithOriginalButton;
     private javax.swing.JButton saveOriginalButton;
     private javax.swing.JButton setTransformButton;
@@ -597,6 +659,7 @@ public class TransformLearningPanel extends javax.swing.JPanel {
     private javax.swing.JLabel step4Label3;
     private javax.swing.JPanel step4Panel;
     private javax.swing.JButton subFlatFromOrigButton;
+    private javax.swing.JComboBox trendChooser;
     // End of variables declaration//GEN-END:variables
 
     /**
