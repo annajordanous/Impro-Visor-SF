@@ -1841,6 +1841,22 @@ public void setAutoFill(boolean fill)
     {
         return m.getNotes();   
     }
+     
+     /**
+      * getNoteList
+      * @return the ArrayList of Notes
+      */
+     public ArrayList<Note> getNoteList()
+    {
+        ArrayList<Note> result = new ArrayList<Note>();
+        PartIterator i = iterator();
+        while( i.hasNext() )
+        {
+            Note note = (Note)i.next();
+            result.add(note);
+        }
+        return result;   
+    }
     
     /**
      * Quantization: accounting for the human element of user-generated audio

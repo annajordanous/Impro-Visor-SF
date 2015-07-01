@@ -3,29 +3,34 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package imp.data;
+package imp.lickgen.transformations.trends;
 
 import java.util.ArrayList;
-
+import imp.data.*;
 /**
  *
  * @author muddCS15
  */
-public class AscendingTrend implements Trend{
+public class SkipTrend extends Trend{
+    
+    //intervals
+    private static final int MINOR_THIRD = 3;
+    private static final int MAJOR_THIRD = 4;
     
     //directional distance between two notes
     public static int dist(Note n1, Note n2){
         return n2.getPitch() - n1.getPitch();
     }
     
-    //staying on the same note is okay (not strictly ascending)
-    public static boolean ascending(Note n1, Note n2){
-        return dist(n1, n2) >= 0;
+    //absolute distance between two notes
+    public static int absDist(Note n1, Note n2){
+        return Math.abs(dist(n1, n2));
     }
 
-    //trend continues so long as direction is ascending
+    //moving a skip in either direction continues the trend
     public boolean stopCondition(Note n1, Note n2) {
-        return !ascending(n1, n2);
+        int absDist = absDist(n1, n2);
+        return ! (absDist == MINOR_THIRD || absDist == MAJOR_THIRD);
     }
 
     //doesn't matter what role the note plays in the chord
@@ -37,10 +42,5 @@ public class AscendingTrend implements Trend{
     public ArrayList<Note> importantNotes(ArrayList<Note> notes) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
-    //check all three stop conditions
-    public boolean stopCondition(Note n1, Note n2, Chord c) {
-        return stopCondition(n1, n2) || stopCondition(n1, c) || stopCondition(n2, c);
-    }
-    
+ 
 }
