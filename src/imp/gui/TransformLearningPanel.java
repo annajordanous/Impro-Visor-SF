@@ -74,7 +74,7 @@ public class TransformLearningPanel extends javax.swing.JPanel {
      * The latest resolution used to flatten a melody 
      */
     private int resolution;
-    
+    private int windowResolution;
     /**
      * The transform created after learning
      */
@@ -112,6 +112,7 @@ public class TransformLearningPanel extends javax.swing.JPanel {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
+        jLabel1 = new javax.swing.JLabel();
         step1Panel = new javax.swing.JPanel();
         saveOriginalButton = new javax.swing.JButton();
         replaceWithOriginalButton = new javax.swing.JButton();
@@ -127,19 +128,20 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         allowRepeatsCheckBox = new javax.swing.JCheckBox();
         jLabel2 = new javax.swing.JLabel();
         step3Panel = new javax.swing.JPanel();
-        subFlatFromOrigButton = new javax.swing.JButton();
-        createTransformButton = new javax.swing.JButton();
         step3Label1 = new javax.swing.JLabel();
-        step3Label2 = new javax.swing.JLabel();
         step3Label3 = new javax.swing.JLabel();
+        subFlatFromOrigButton = new javax.swing.JButton();
+        generateTransformPanel = new javax.swing.JPanel();
         generateTransformMethodComboBox = new javax.swing.JComboBox();
+        createTransformButton = new javax.swing.JButton();
+        windowResolutionComboBox = new javax.swing.JComboBox();
+        step3Label2 = new javax.swing.JLabel();
         step4Panel = new javax.swing.JPanel();
-        showTransformButton = new javax.swing.JButton();
-        setTransformButton = new javax.swing.JButton();
-        step4Label1 = new javax.swing.JLabel();
-        step4Label2 = new javax.swing.JLabel();
         step4Label3 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
+        setTransformButton = new javax.swing.JButton();
+        step4Label2 = new javax.swing.JLabel();
+        step4Label1 = new javax.swing.JLabel();
+        showTransformButton = new javax.swing.JButton();
         printTrendPanel = new javax.swing.JPanel();
         trendChooser = new javax.swing.JComboBox();
         printTrendsButton = new javax.swing.JButton();
@@ -148,6 +150,20 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         setMinimumSize(new java.awt.Dimension(250, 25));
         setPreferredSize(new java.awt.Dimension(250, 25));
         setLayout(new java.awt.GridBagLayout());
+
+        jLabel1.setText("Follow every step to learn a transform for a solo. The comments labeled important are the strictly required instructions to generate a learned transform.");
+        jLabel1.setAlignmentY(0.0F);
+        jLabel1.setMaximumSize(new java.awt.Dimension(1000, 15));
+        jLabel1.setMinimumSize(new java.awt.Dimension(1000, 15));
+        jLabel1.setPreferredSize(new java.awt.Dimension(1000, 15));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(4, 9, 4, 0);
+        add(jLabel1, gridBagConstraints);
 
         step1Panel.setBackground(new java.awt.Color(252, 110, 90));
         step1Panel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Step 1", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
@@ -238,6 +254,7 @@ public class TransformLearningPanel extends javax.swing.JPanel {
 
         step2Label2.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
         step2Label2.setText("<html><b> Important: </b>Select a resolution that represents the length of the notes that result from flattening, then click Flatten");
+        step2Label2.setMinimumSize(new java.awt.Dimension(652, 15));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
@@ -302,6 +319,7 @@ public class TransformLearningPanel extends javax.swing.JPanel {
 
         jLabel2.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
         jLabel2.setText("<html> <b>Advice:</b> It is recommended to select Allow Repeat Pitches when learning by windowning");
+        jLabel2.setMinimumSize(new java.awt.Dimension(504, 15));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 5;
@@ -319,7 +337,32 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         step3Panel.setBackground(new java.awt.Color(130, 217, 151));
         step3Panel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Step 3", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
         step3Panel.setToolTipText("");
+        step3Panel.setPreferredSize(new java.awt.Dimension(664, 248));
         step3Panel.setLayout(new java.awt.GridBagLayout());
+
+        step3Label1.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
+        step3Label1.setText("<html><b> Important: </b>To create the transformations, select a generation method and click the Generate Transform button.");
+        step3Label1.setMaximumSize(new java.awt.Dimension(800, 15));
+        step3Label1.setMinimumSize(new java.awt.Dimension(648, 15));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 8, 0);
+        step3Panel.add(step3Label1, gridBagConstraints);
+
+        step3Label3.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
+        step3Label3.setText("<html>Methods:<br>&nbsp;&nbsp;&nbsp;&nbsp;Windowing&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Learns transformations by just associating notes in a windowed section<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(sized by the resolution used in flattening) with their flattened note.<br>&nbsp;&nbsp;&nbsp;&nbsp;Trend Detection&nbsp;-&nbsp;Detects groups of notes that follow a trend and generates transfromations<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;that builds the group of notes from important notes in the flattened outline.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CURRENTLY ONLY DETECTS CHROMATIC DIFFERENCE TRENDS\n");
+        step3Label3.setMaximumSize(new java.awt.Dimension(2147483647, 85));
+        step3Label3.setMinimumSize(new java.awt.Dimension(600, 85));
+        step3Label3.setPreferredSize(new java.awt.Dimension(600, 85));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 8, 0);
+        step3Panel.add(step3Label3, gridBagConstraints);
 
         subFlatFromOrigButton.setText("Subtract Flattening from Original");
         subFlatFromOrigButton.setToolTipText("show just the transformations in the leadsheet");
@@ -337,6 +380,20 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         gridBagConstraints.gridwidth = 2;
         step3Panel.add(subFlatFromOrigButton, gridBagConstraints);
 
+        generateTransformPanel.setBackground(new java.awt.Color(130, 217, 151));
+        generateTransformPanel.setLayout(new java.awt.GridBagLayout());
+
+        generateTransformMethodComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Windowing", "Trend Detection" }));
+        generateTransformMethodComboBox.setToolTipText("select the method for learning");
+        generateTransformMethodComboBox.setMinimumSize(new java.awt.Dimension(165, 25));
+        generateTransformMethodComboBox.setPreferredSize(new java.awt.Dimension(165, 25));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
+        generateTransformPanel.add(generateTransformMethodComboBox, gridBagConstraints);
+
         createTransformButton.setText("Generate Transform");
         createTransformButton.setToolTipText("create a transform file based on transforming the flattened melody into the original melody");
         createTransformButton.setEnabled(false);
@@ -350,24 +407,23 @@ public class TransformLearningPanel extends javax.swing.JPanel {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 0);
-        step3Panel.add(createTransformButton, gridBagConstraints);
+        generateTransformPanel.add(createTransformButton, gridBagConstraints);
 
-        step3Label1.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
-        step3Label1.setText("<html><b> Important: </b>To create the transformations, select a generation method and click the Generate Transform button.");
-        step3Label1.setMaximumSize(new java.awt.Dimension(435, 15));
-        step3Label1.setMinimumSize(new java.awt.Dimension(452, 15));
+        windowResolutionComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Flatten Resolution", "Double Flatten Resolution" }));
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 8, 0);
-        step3Panel.add(step3Label1, gridBagConstraints);
+        generateTransformPanel.add(windowResolutionComboBox, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = java.awt.GridBagConstraints.RELATIVE;
+        step3Panel.add(generateTransformPanel, gridBagConstraints);
 
         step3Label2.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
         step3Label2.setText("To just get just a visual representation of where transformations are happening, you can subtract.");
@@ -377,30 +433,6 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.insets = new java.awt.Insets(8, 0, 8, 0);
         step3Panel.add(step3Label2, gridBagConstraints);
-
-        step3Label3.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
-        step3Label3.setText("<html>Methods:<br>&nbsp;&nbsp;&nbsp;&nbsp;Windowing&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Learns transformations by just associating notes in a windowed section<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(sized by the resolution used in flattening) with their flattened note.<br>&nbsp;&nbsp;&nbsp;&nbsp;Trend Detection&nbsp;-&nbsp;Detects groups of notes that follow a trend and generates transfromations<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;that builds the group of notes from important notes in the flattened outline.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CURRENTLY ONLY DETECTS CHROMATIC DIFFERENCE TRENDS\n");
-        step3Label3.setMaximumSize(new java.awt.Dimension(2147483647, 85));
-        step3Label3.setMinimumSize(new java.awt.Dimension(600, 85));
-        step3Label3.setPreferredSize(new java.awt.Dimension(600, 85));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 8, 0);
-        step3Panel.add(step3Label3, gridBagConstraints);
-
-        generateTransformMethodComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Windowing", "Trend Detection" }));
-        generateTransformMethodComboBox.setToolTipText("select the method for learning");
-        generateTransformMethodComboBox.setMinimumSize(new java.awt.Dimension(165, 25));
-        generateTransformMethodComboBox.setPreferredSize(new java.awt.Dimension(165, 25));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
-        step3Panel.add(generateTransformMethodComboBox, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -416,20 +448,16 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         step4Panel.setPreferredSize(new java.awt.Dimension(1111, 154));
         step4Panel.setLayout(new java.awt.GridBagLayout());
 
-        showTransformButton.setText("Show Generated Transform");
-        showTransformButton.setToolTipText("show the transform file generated from above");
-        showTransformButton.setEnabled(false);
-        showTransformButton.setMinimumSize(new java.awt.Dimension(340, 25));
-        showTransformButton.setPreferredSize(new java.awt.Dimension(340, 25));
-        showTransformButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                showTransformButtonActionPerformed(evt);
-            }
-        });
+        step4Label3.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
+        step4Label3.setText("<html><b> Important: </b>To use the generated Transform, click this button to make it the opened transform in the Tranform Tab. Then go to the Transform tab and click Apply.");
+        step4Label3.setMaximumSize(new java.awt.Dimension(1000, 15));
+        step4Label3.setMinimumSize(new java.awt.Dimension(943, 15));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
-        step4Panel.add(showTransformButton, gridBagConstraints);
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 8, 0);
+        step4Panel.add(step4Label3, gridBagConstraints);
 
         setTransformButton.setText("Put Transform into Transform tab");
         setTransformButton.setToolTipText("put the transform generated above into the transform tab");
@@ -446,6 +474,16 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         gridBagConstraints.gridy = 1;
         step4Panel.add(setTransformButton, gridBagConstraints);
 
+        step4Label2.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
+        step4Label2.setText("<html><b> Important: </b>To further use the transformations, go to the Transform Tab and click Apply.");
+        step4Label2.setMinimumSize(new java.awt.Dimension(513, 20));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(8, 0, 0, 0);
+        step4Panel.add(step4Label2, gridBagConstraints);
+
         step4Label1.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
         step4Label1.setText("Open a window with the generated Transform in grammar form.");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -455,25 +493,20 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(4, 0, 8, 0);
         step4Panel.add(step4Label1, gridBagConstraints);
 
-        step4Label2.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
-        step4Label2.setText("<html><b> Important: </b>To further use the transformations, go to the Transform Tab and click Apply.");
+        showTransformButton.setText("Show Generated Transform");
+        showTransformButton.setToolTipText("show the transform file generated from above");
+        showTransformButton.setEnabled(false);
+        showTransformButton.setMinimumSize(new java.awt.Dimension(340, 25));
+        showTransformButton.setPreferredSize(new java.awt.Dimension(340, 25));
+        showTransformButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showTransformButtonActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(8, 0, 0, 0);
-        step4Panel.add(step4Label2, gridBagConstraints);
-
-        step4Label3.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
-        step4Label3.setText("<html><b> Important: </b>To use the generated Transform, click this button to make it the opened transform in the Tranform Tab. Then go to the Transform tab and click Apply.");
-        step4Label3.setMaximumSize(new java.awt.Dimension(652, 15));
-        step4Label3.setMinimumSize(new java.awt.Dimension(678, 15));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 8, 0);
-        step4Panel.add(step4Label3, gridBagConstraints);
+        gridBagConstraints.gridy = 4;
+        step4Panel.add(showTransformButton, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -481,18 +514,6 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weighty = 1.0;
         add(step4Panel, gridBagConstraints);
-
-        jLabel1.setText("Follow every step to learn a transform for a solo. The comments labeled important are the strictly required instructions to generate a learned transform.");
-        jLabel1.setAlignmentY(0.0F);
-        jLabel1.setMaximumSize(new java.awt.Dimension(1000, 15));
-        jLabel1.setMinimumSize(new java.awt.Dimension(1000, 15));
-        jLabel1.setPreferredSize(new java.awt.Dimension(1000, 15));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(4, 9, 4, 0);
-        add(jLabel1, gridBagConstraints);
 
         printTrendPanel.setLayout(new java.awt.GridBagLayout());
 
@@ -553,26 +574,8 @@ public class TransformLearningPanel extends javax.swing.JPanel {
 
     private void flattenButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flattenButtonActionPerformed
         String flattenValue = (String)flattenValueComboBox.getSelectedItem();
-        if(flattenValue.equals("Whole Note"))
-        {
-            flatten(480);
-        }
-        else if(flattenValue.equals("Half Note"))
-        {
-            flatten(240);
-        }
-        else if(flattenValue.equals("Quarter Note"))
-        {
-            flatten(120);
-        }
-        else if(flattenValue.equals("Eight Note"))
-        {
-            flatten(60);
-        }
-        else if(flattenValue.equals("Sixteenth Note"))
-        {
-            flatten(30);
-        }
+        resolution = getResolution(flattenValue);
+        flatten(resolution);
     }//GEN-LAST:event_flattenButtonActionPerformed
 
     private void createTransformButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createTransformButtonActionPerformed
@@ -634,6 +637,7 @@ public class TransformLearningPanel extends javax.swing.JPanel {
     private javax.swing.JButton flattenButton;
     private javax.swing.JComboBox flattenValueComboBox;
     private javax.swing.JComboBox generateTransformMethodComboBox;
+    private javax.swing.JPanel generateTransformPanel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel printTrendPanel;
@@ -660,6 +664,7 @@ public class TransformLearningPanel extends javax.swing.JPanel {
     private javax.swing.JPanel step4Panel;
     private javax.swing.JButton subFlatFromOrigButton;
     private javax.swing.JComboBox trendChooser;
+    private javax.swing.JComboBox windowResolutionComboBox;
     // End of variables declaration//GEN-END:variables
 
     /**
@@ -763,12 +768,14 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         int stop = notate.getCurrentSelectionEnd();
         MelodyPart outline = notate.getCurrentMelodyPart();
         ChordPart chords = notate.getChordProg();
+        int res = getResolution(windowResolutionComboBox.getSelectedItem().toString());
         Transform transform = 
                 transformLearning.createBlockTransform(outline, 
                                                        original.copy(), 
                                                        chords, 
                                                        start, 
-                                                       stop);
+                                                       stop,
+                                                       res);
         
         return transform;
     }
@@ -848,6 +855,26 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         }
         pasteOver(notate.getCurrentMelodyPart(), subFromOrig, start);
         notate.repaint();
+    }
+    
+    private int getResolution(String flattenValue)
+    {
+        if(flattenValue.equals("Whole Note"))
+            return 480;
+        else if(flattenValue.equals("Half Note"))
+            return 240;
+        else if(flattenValue.equals("Quarter Note"))
+            return 120;
+        else if(flattenValue.equals("Eight Note"))
+            return 60;
+        else if(flattenValue.equals("Sixteenth Note"))
+            return 30;
+        else if(flattenValue.equals("Flatten Resolution"))
+            return getResolution((String)flattenValueComboBox.getSelectedItem());
+        else if(flattenValue.equals("Double Flatten Resolution"))
+            return 2 * getResolution((String)flattenValueComboBox.getSelectedItem());
+        else
+            return 480;
     }
     
     /**

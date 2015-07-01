@@ -56,6 +56,8 @@ private static final int NO_DATA = 997;
 private static final int WHOLE_STEP = 2;
 private static final int HALF_STEP = 1;
 
+private int windowResolution;
+
 public TransformLearning()
 {}
 
@@ -298,28 +300,34 @@ private int getNoteScore(Note note,
 * @param transformed                 the original melody to build from
 * @param chords                      the chordPart of the leadsheet
 * @param start                       the starting slot to learn from
-* @param stop                        the stoping slot to learn from
+* @param stop                        the stopping slot to learn from
 * @return Polylist                   form of a Transform
 */  
 public Transform createBlockTransform(MelodyPart outline, 
                                       MelodyPart transformed, 
                                       ChordPart chords, 
                                       int start, 
-                                      int stop)
+                                      int stop,
+                                      int windowResolution)
 {
     Transform transform = new Transform();
     
+    this.windowResolution = windowResolution;
+    
     for(int slot = start; slot < stop;)
     {
-        int nextSlot = outline.getNextIndex(slot);
-        if(nextSlot == -1)
-            slot = stop + 1;
+        int nextSlot = slot + windowResolution;
+        //int nextSlot = outline.getNextIndex(slot);
+        //if(nextSlot == -1)
+            //slot = stop + 1;
         MelodyPart outlinePart = outline.extract(slot, nextSlot-1,true,true);
         MelodyPart transPart = transformed.extract(slot, nextSlot-1,true,true);
+        ChordPart chordPart = chords.extract(slot, nextSlot-1);
         Chord chord = chords.getCurrentChord(slot);
         Substitution substitution = createBlockSubstitution(outlinePart, 
                                                             transPart, 
-                                                            chord);
+                                                            chord,
+                                                            chordPart);
         transform.addSubstitution(substitution);
         slot = nextSlot;
     }
@@ -336,7 +344,8 @@ public Transform createBlockTransform(MelodyPart outline,
 */  
 private Substitution createBlockSubstitution(MelodyPart outline, 
                                              MelodyPart transformed, 
-                                             Chord chord)
+                                             Chord chord,
+                                             ChordPart chordPart)
 {
     int numNotes = 0;
     int slot = 0;
@@ -346,15 +355,67 @@ private Substitution createBlockSubstitution(MelodyPart outline,
         slot = transformed.getNextIndex(slot);
     }
     
+    int flatNotes = 0;
+    int outlineSlot = 0;
+    while(outline.getCurrentNote(outlineSlot) != null)
+    {
+        flatNotes++;
+        outlineSlot = outline.getNextIndex(outlineSlot);
+    }
+    
     Substitution sub = new Substitution();
     sub.setName(chord.getFamily() + "-" + numNotes + "-notes");
     
+    if(flatNotes > 1){
+        Transformation transformation = createTwoNoteBlockTransformation(outline, 
+                                                                         transformed, 
+                                                                         chord,
+                                                                         chordPart,
+                                                                         flatNotes);
+        sub.addTransformation(transformation);
+    }
+    else{
     Transformation transformation = createOneNoteBlockTransformation(outline, 
                                                                      transformed, 
                                                                      chord);
     sub.addTransformation(transformation);
-    
+    }
     return sub;
+}
+private Transformation createTwoNoteBlockTransformation(MelodyPart outline,
+                                                        MelodyPart transformed,
+                                                        Chord chord,
+                                                        ChordPart chordPart,
+                                                        int numNotes)
+{
+    Polylist transformation = Polylist.PolylistFromString(
+            "transformation" +
+            "(description generated-transformation)" + 
+            "(weight 1)" + 
+            "(source-notes n1 n2)");
+    
+    StringBuilder sourceNotes = new StringBuilder();
+    sourceNotes.append("(source-notes");
+    for(int i = 0; i < numNotes; ++i){
+        sourceNotes.append(" n");
+        sourceNotes.append(i+1);
+    }
+    sourceNotes.append(")");
+    
+    Polylist guardCondition = getTwoWindowGuardCondition(outline, chordPart);
+    Polylist targetNotes = getWindowTargetNotes(outline, transformed, chord);
+    Polylist defaultTarget = Polylist.PolylistFromString("target-notes n1 n2");
+    
+    transformation = transformation.addToEnd(guardCondition);
+    
+    if(targetNotes != null)
+        transformation = transformation.addToEnd(targetNotes);
+    else
+        transformation = transformation.addToEnd(defaultTarget);
+    
+    Transformation trans = new Transformation();
+    trans.setTransformation(transformation);
+    return trans;
 }
 /**
 * Creates a transform that transform the note in outline into the
@@ -429,7 +490,60 @@ private Polylist getWindowGuardCondition(MelodyPart outline, Chord chord)
         guardCondition = guardCondition.addToEnd(andEquals);
         return guardCondition;
     }    
+private Polylist getTwoWindowGuardCondition(MelodyPart outline, ChordPart chords)
+{
+    Polylist guardCondition = Polylist.PolylistFromString("guard-condition");
+    StringBuilder andEqString = new StringBuilder();
+    andEqString.append("and ");
 
+    int notes = 1;
+    int slot = 0;
+    while(outline.getCurrentNote(slot) != null){
+        Note origNote = outline.getCurrentNote(slot);
+        Chord currChord = chords.getCurrentChord(slot);
+        
+        if(origNote.isRest()){
+            Polylist rest = Polylist.PolylistFromString(
+                    "rest? n" + notes);
+            
+            andEqString = andEqString.append(rest);
+        }
+        else {
+            Polylist rest = Polylist.PolylistFromString(
+                "not (rest? n" + notes + ")");
+            Polylist categoryEquals = Polylist.PolylistFromString(
+                "= (note-category n" + notes + ")");
+            Polylist relPitchEquals = Polylist.PolylistFromString(
+                    "= (relative-pitch n" + notes + ")");
+
+            int cat = LickGen.classifyNote(origNote, currChord);
+            switch (cat){
+                case LickGen.CHORD:
+                    categoryEquals = categoryEquals.addToEnd("C");
+                    break;
+                case LickGen.COLOR:
+                    categoryEquals = categoryEquals.addToEnd("L");
+                    break;
+                case LickGen.APPROACH:
+                    categoryEquals = categoryEquals.addToEnd("A");
+                    break;
+                default:
+                    categoryEquals = categoryEquals.addToEnd("X");
+                    break;
+            }
+            
+            relPitchEquals = relPitchEquals.addToEnd(NoteConverter.noteToRelativePitch(origNote, currChord).second());
+            andEqString = andEqString.append(rest).append(categoryEquals).append(relPitchEquals);
+        }
+
+        notes++;
+        slot = outline.getNextIndex(slot);
+    }
+    
+    Polylist andEquals = Polylist.PolylistFromString(andEqString.toString());
+    guardCondition = guardCondition.addToEnd(andEquals);
+    return guardCondition;
+}
 /**
 * Creates target-notes for Windowing
 * @param outline                     contains the outline note
@@ -474,6 +588,77 @@ private Polylist getWindowTargetNotes(MelodyPart outline,
         
         return targetNotes;
     }
+
+private Polylist getWindowTwoTargetNotes(MelodyPart outline,
+                                         MelodyPart transformed,
+                                         ChordPart chords)
+{
+    Polylist targetNotes = Polylist.PolylistFromString("target-notes");
+    
+    Note origNote = outline.getCurrentNote(0);
+    Chord origChord = chords.getCurrentChord(0);
+    int noteNum = 1;
+    
+    for(int slot = 0; slot < windowResolution;){
+        int nextSlot = outline.getNextIndex(slot);
+        if(nextSlot == -1)
+            nextSlot = windowResolution;
+        
+        MelodyPart outlinePart = outline.extract(slot, nextSlot-1,true,true);
+        MelodyPart transPart = transformed.extract(slot, nextSlot-1,true,true);
+        Chord chord = chords.getCurrentChord(slot);
+        String noteString = "n" + noteNum;
+        
+        Polylist newNotes = getTargetNotes(outlinePart, transPart, chord, noteString);
+        if(newNotes == null)
+            newNotes = Polylist.PolylistFromString(noteString);
+        
+        targetNotes = targetNotes.addToEnd(newNotes);
+        
+        slot = nextSlot;
+        ++noteNum;
+    }
+    return targetNotes;
+}
+
+private Polylist getTargetNotes(MelodyPart outline,
+                                MelodyPart transformed,
+                                Chord chord,
+                                String noteString)
+{
+    Polylist noteTargets = Polylist.PolylistFromString("");
+    
+    Note origNote = outline.getCurrentNote(0);
+        
+    PartIterator transNotes = transformed.iterator();
+
+    if(origNote.isRest())
+        return null;
+    while(transNotes.hasNext())
+    {
+        Note toTransform = (Note)transNotes.next();
+        String duration = Note.getDurationString(toTransform.getRhythmValue());
+        Polylist setDuration = Polylist.PolylistFromString("set-duration");
+        setDuration = setDuration.addToEnd(duration);
+
+        Polylist result;
+
+        result = getTransposeDiatonicFunction(origNote, 
+                                              toTransform, 
+                                              noteString, 
+                                              chord);
+        if(result == null)
+        {
+            return null;
+        }
+
+        setDuration = setDuration.addToEnd(result);
+
+        noteTargets = noteTargets.addToEnd(setDuration);
+    }
+
+    return noteTargets;
+}
 
 /**
 * Creates note function that transforms the outline note into the transformed
