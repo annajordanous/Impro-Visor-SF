@@ -70,7 +70,7 @@ public class TrendDetector {
             if(trend.stopCondition(prevNote, currNote, currChord)){
                 
                 //If the trend is at least 2 notes long, add it to the trend list.
-                if(currentTrend.getNCPS().size() >= 2){
+                if(currentTrend.getSize() >= 2){
                     trends.add(currentTrend);
                 }
                 
@@ -103,5 +103,12 @@ public class TrendDetector {
 
         return trends;
     }
+    
+    
+//    public Transform trendTransform(ArrayList<TrendSegment> trends, int [] metre){
+//        for(TrendSegment trendSeg : trends){
+//            TrendSegment importantNotes = trend.importantNotes(trendSeg, metre);
+//        }
+//    }
     
 }

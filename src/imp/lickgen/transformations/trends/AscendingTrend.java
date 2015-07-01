@@ -7,17 +7,15 @@ package imp.lickgen.transformations.trends;
 
 import java.util.ArrayList;
 import imp.data.*;
+import imp.lickgen.transformations.NoteChordPair;
+import imp.lickgen.transformations.Scorer;
+import imp.lickgen.transformations.TrendSegment;
 /**
  *
  * @author muddCS15
  */
 public class AscendingTrend extends Trend{
-    
-    //directional distance between two notes
-    public static int dist(Note n1, Note n2){
-        return n2.getPitch() - n1.getPitch();
-    }
-    
+
     //staying on the same note is okay (not strictly ascending)
     public static boolean ascending(Note n1, Note n2){
         return dist(n1, n2) >= 0;
@@ -33,9 +31,15 @@ public class AscendingTrend extends Trend{
         return false;
     }
 
-    //TODO
-    public ArrayList<Note> importantNotes(ArrayList<Note> notes) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    //two sections for ascending
+    public int numberOfSections() {
+        return 2;
+    }
+
+    //equal weights
+    public double[] weights() {
+        double [] weights = {1, 1, 1};
+        return weights;
     }
     
 }

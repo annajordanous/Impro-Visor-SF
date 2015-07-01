@@ -12,24 +12,30 @@ import java.util.ArrayList;
  */
 public class TrendSegment {
     private final ArrayList<NoteChordPair> ncps;
+    private int totalDuration;
+    private int size;
+    private int currIndex = -1;
     
     public TrendSegment(){
         ncps = new ArrayList<NoteChordPair>();
+        totalDuration = 0;
+        size = 0;
     }
 
     public void add(NoteChordPair ncp){
         ncps.add(ncp);
+        totalDuration += ncp.getNote().getRhythmValue();
+        size++;
     }
-    
-    public ArrayList<NoteChordPair> getNCPS(){
-        return ncps;
-    }
-    
-    public void clear(){
-        ncps.clear();
-    }
-    
 
+    public int getTotalDuration(){
+        return totalDuration;
+    }
+
+    public int getSize(){
+        return size;
+    }
+    
     @Override
     public String toString(){
         String toreturn = "";
@@ -38,6 +44,32 @@ public class TrendSegment {
             toreturn += (ncp.toString()+"\n");
         }
         return toreturn;
+    }
+    
+    public void clear(){
+        ncps.clear();
+        totalDuration = 0;
+        size = 0;
+    }
+    
+    public ArrayList<TrendSegment> splitUp(int duration){
+        ArrayList<TrendSegment> chunks = new ArrayList<TrendSegment>();
+        TrendSegment currentChunk = new TrendSegment();
+        int durationRemaining = duration;
+        for(NoteChordPair ncp : ncps){
+            currentChunk.add(ncp);
+            durationRemaining -= ncp.getNote().getRhythmValue();
+            if(durationRemaining <= 0){
+                durationRemaining = duration;
+                chunks.add(currentChunk);
+                currentChunk.clear();
+            }
+        }
+        return chunks;
+    }
+
+    public NCPIterator makeIterator(){
+        return new NCPIterator(ncps);
     }
     
 }

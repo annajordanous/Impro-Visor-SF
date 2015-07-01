@@ -43,6 +43,31 @@ public class NoteChordPair {
         
     }
     
+    public Note getNote(){
+        return note;
+    }
+    
+    public Chord getChord(){
+        return chord;
+    }
+    
+    public int getSlot(){
+        return slot;
+    }
+    
+    public int getVar(){
+        return var;
+    }
+    
+    public int getDuration(){
+        return note.getRhythmValue();
+    }
+    
+    public void setDuration(int duration){
+        note.setRhythmValue(duration);
+    }
+    
+    @Override
     public String toString(){
         return "NCP: Note: "+note.getPitchClassName()+"; Chord: "+chord.getName()+"; Slot: "+slot+"; Var: "+var+".";
     }
