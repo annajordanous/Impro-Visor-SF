@@ -403,7 +403,7 @@ private Transformation createTwoNoteBlockTransformation(MelodyPart outline,
     sourceNotes.append(")");
     
     Polylist guardCondition = getTwoWindowGuardCondition(outline, chordPart);
-    Polylist targetNotes = getWindowTargetNotes(outline, transformed, chord);
+    Polylist targetNotes = getWindowTwoTargetNotes(outline, transformed, chordPart);
     Polylist defaultTarget = Polylist.PolylistFromString("target-notes n1 n2");
     
     transformation = transformation.addToEnd(guardCondition);
@@ -609,11 +609,11 @@ private Polylist getWindowTwoTargetNotes(MelodyPart outline,
         Chord chord = chords.getCurrentChord(slot);
         String noteString = "n" + noteNum;
         
-        Polylist newNotes = getTargetNotes(outlinePart, transPart, chord, noteString);
-        if(newNotes == null)
-            newNotes = Polylist.PolylistFromString(noteString);
-        
-        targetNotes = targetNotes.addToEnd(newNotes);
+        targetNotes = getTargetNotes(outlinePart, transPart, chord, noteString, targetNotes);
+        //if(newNotes == null)
+          //  targetNotes = targetNotes.addToEnd(noteString);
+        //else
+          //  targetNotes = targetNotes.addToEnd(newNotes);
         
         slot = nextSlot;
         ++noteNum;
@@ -624,40 +624,39 @@ private Polylist getWindowTwoTargetNotes(MelodyPart outline,
 private Polylist getTargetNotes(MelodyPart outline,
                                 MelodyPart transformed,
                                 Chord chord,
-                                String noteString)
+                                String noteString,
+                                Polylist targetNotes)
 {
-    Polylist noteTargets = Polylist.PolylistFromString("");
-    
     Note origNote = outline.getCurrentNote(0);
         
     PartIterator transNotes = transformed.iterator();
 
     if(origNote.isRest())
-        return null;
-    while(transNotes.hasNext())
-    {
-        Note toTransform = (Note)transNotes.next();
-        String duration = Note.getDurationString(toTransform.getRhythmValue());
-        Polylist setDuration = Polylist.PolylistFromString("set-duration");
-        setDuration = setDuration.addToEnd(duration);
-
-        Polylist result;
-
-        result = getTransposeDiatonicFunction(origNote, 
-                                              toTransform, 
-                                              noteString, 
-                                              chord);
-        if(result == null)
+        return targetNotes.addToEnd(noteString);
+    else{
+        while(transNotes.hasNext())
         {
-            return null;
+            Note toTransform = (Note)transNotes.next();
+            String duration = Note.getDurationString(toTransform.getRhythmValue());
+            Polylist setDuration = Polylist.PolylistFromString("set-duration");
+            setDuration = setDuration.addToEnd(duration);
+
+            Polylist result = getTransposeDiatonicFunction(origNote, 
+                                                  toTransform, 
+                                                  noteString, 
+                                                  chord);
+            if(result == null)
+            {
+                return null;
+            }
+
+            setDuration = setDuration.addToEnd(result);
+            
+            targetNotes = targetNotes.addToEnd(setDuration);
         }
 
-        setDuration = setDuration.addToEnd(result);
-
-        noteTargets = noteTargets.addToEnd(setDuration);
+        return targetNotes ;
     }
-
-    return noteTargets;
 }
 
 /**
