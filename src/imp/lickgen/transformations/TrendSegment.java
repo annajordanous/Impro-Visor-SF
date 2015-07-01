@@ -11,12 +11,23 @@ import java.util.ArrayList;
  * @author muddCS15
  */
 public class TrendSegment {
+    
+
     private final ArrayList<NoteChordPair> ncps;
     private int totalDuration;
     
     public TrendSegment(){
         ncps = new ArrayList<NoteChordPair>();
         totalDuration = 0;
+    }
+    
+    public TrendSegment(ArrayList<NoteChordPair> noteList, int totalDuration){
+        ArrayList<NoteChordPair> copiedNotes = new ArrayList<NoteChordPair>();
+        for(NoteChordPair ncp : noteList){
+            copiedNotes.add(ncp);
+        }
+        ncps = copiedNotes;
+        this.totalDuration = totalDuration;
     }
 
     public void add(NoteChordPair ncp){
@@ -60,7 +71,7 @@ public class TrendSegment {
             durationRemaining -= ncp.getNote().getRhythmValue();
             if(durationRemaining <= 0){
                 durationRemaining = duration;
-                chunks.add(currentChunk);
+                chunks.add(currentChunk.copy());
                 currentChunk.clear();
             }
         }
@@ -87,6 +98,10 @@ public class TrendSegment {
         else{
             return null;
         }
+    }
+    
+    public TrendSegment copy(){
+        return new TrendSegment(this.ncps, this.totalDuration);
     }
     
 }
