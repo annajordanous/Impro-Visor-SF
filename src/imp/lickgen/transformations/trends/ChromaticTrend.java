@@ -39,5 +39,9 @@ public class ChromaticTrend extends Trend{
         return 2;
     }
 
+    public String getName() {
+        return "CHROMATIC";
+    }
+
     
 }

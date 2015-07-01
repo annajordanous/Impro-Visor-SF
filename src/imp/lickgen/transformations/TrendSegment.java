@@ -13,19 +13,15 @@ import java.util.ArrayList;
 public class TrendSegment {
     private final ArrayList<NoteChordPair> ncps;
     private int totalDuration;
-    private int size;
-    private int currIndex = -1;
     
     public TrendSegment(){
         ncps = new ArrayList<NoteChordPair>();
         totalDuration = 0;
-        size = 0;
     }
 
     public void add(NoteChordPair ncp){
         ncps.add(ncp);
         totalDuration += ncp.getNote().getRhythmValue();
-        size++;
     }
 
     public int getTotalDuration(){
@@ -33,7 +29,11 @@ public class TrendSegment {
     }
 
     public int getSize(){
-        return size;
+        return ncps.size();
+    }
+    
+    public int getStartSlot(){
+        return ncps.get(0).getSlot();
     }
     
     @Override
@@ -49,7 +49,6 @@ public class TrendSegment {
     public void clear(){
         ncps.clear();
         totalDuration = 0;
-        size = 0;
     }
     
     public ArrayList<TrendSegment> splitUp(int duration){
@@ -70,6 +69,24 @@ public class TrendSegment {
 
     public NCPIterator makeIterator(){
         return new NCPIterator(ncps);
+    }
+    
+    public NoteChordPair firstNCP(){
+        if(!ncps.isEmpty()){
+            return ncps.get(0);
+        }
+        else{
+            return null;
+        }
+    }
+    
+    public NoteChordPair lastNCP(){
+        if(!ncps.isEmpty()){
+            return ncps.get(ncps.size()-1);
+        }
+        else{
+            return null;
+        }
     }
     
 }

@@ -41,4 +41,8 @@ public class SkipTrend extends Trend{
         return 2;
     }
 
+    public String getName() {
+        return "SKIP";
+    }
+
 }

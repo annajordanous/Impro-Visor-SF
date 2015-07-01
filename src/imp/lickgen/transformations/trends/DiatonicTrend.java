@@ -52,5 +52,9 @@ public class DiatonicTrend extends Trend{
     public int numberOfSections() {
         return 2;
     }
+
+    public String getName() {
+        return "DIATONIC";
+    }
     
 }

@@ -41,5 +41,9 @@ public class AscendingTrend extends Trend{
         double [] weights = {1, 1, 1};
         return weights;
     }
+
+    public String getName() {
+        return "ASCENDING";
+    }
     
 }

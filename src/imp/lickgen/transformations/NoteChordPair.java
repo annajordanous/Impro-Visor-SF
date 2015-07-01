@@ -55,6 +55,10 @@ public class NoteChordPair {
         return slot;
     }
     
+    public void setSlot(int slot){
+        this.slot = slot;
+    }
+    
     public int getVar(){
         return var;
     }
@@ -70,6 +74,10 @@ public class NoteChordPair {
     @Override
     public String toString(){
         return "NCP: Note: "+note.getPitchClassName()+"; Chord: "+chord.getName()+"; Slot: "+slot+"; Var: "+var+".";
+    }
+    
+    public String varName(){
+        return "n"+var;
     }
     
 }
