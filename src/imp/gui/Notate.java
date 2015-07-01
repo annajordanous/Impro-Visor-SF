@@ -1984,6 +1984,7 @@ public Critic getCritic()
         undoMI = new javax.swing.JMenuItem();
         redoMI = new javax.swing.JMenuItem();
         jSeparator7 = new javax.swing.JSeparator();
+        delAllMI = new javax.swing.JMenuItem();
         cutMelodyMI = new javax.swing.JMenuItem();
         cutChordsMI = new javax.swing.JMenuItem();
         cutBothMI = new javax.swing.JMenuItem();
@@ -8361,6 +8362,14 @@ public Critic getCritic()
         });
         editMenu.add(redoMI);
         editMenu.add(jSeparator7);
+
+        delAllMI.setText("Delete All Melodies");
+        delAllMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                delAllMIActionPerformed(evt);
+            }
+        });
+        editMenu.add(delAllMI);
 
         cutMelodyMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, 0));
         cutMelodyMI.setText("Cut Melody");
@@ -22701,6 +22710,38 @@ int quantizeResolution = 60;
         trader.setVisible(true);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
+    private void delAllMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delAllMIActionPerformed
+        delAllMelody();
+    }//GEN-LAST:event_delAllMIActionPerformed
+void delAllMelody()
+  {
+    Trace.log(2, "delete all melody");
+    
+        int prevTab = scoreTab.getSelectedIndex();
+        
+        cm.execute(new DeleteAllCommand(scoreTab.getTabCount(), this));
+
+        getCurrentStave().setPasteFromStart(
+                getCurrentSelectionStart());
+
+        getCurrentStave().setPasteFromEnd(
+                getCurrentSelectionEnd());
+
+        setCurrentSelectionEnd(getCurrentSelectionStart());
+        
+       
+        for (int i=0; i<scoreTab.getTabCount(); i++){
+            scoreTab.setSelectedComponent(staveScrollPane[i]);
+            setCurrentSelectionEnd(getCurrentSelectionStart());
+        }
+        scoreTab.setSelectedComponent(staveScrollPane[prevTab]);
+
+        setItemStates();
+
+    redoAdvice();
+  }
+    
+    
 public boolean getFilter(){
     return shouldFilter;
 }
@@ -24650,6 +24691,7 @@ private ImageIcon pauseButton =
     private javax.swing.JPanel defaultStaveTypePanel;
     private javax.swing.JTextField defaultTempoTF;
     private javax.swing.JPanel defaultsTab;
+    private javax.swing.JMenuItem delAllMI;
     private javax.swing.JButton delSectionButton;
     private javax.swing.JButton delTabBtn;
     private javax.swing.JCheckBox delTabCheckBox;
