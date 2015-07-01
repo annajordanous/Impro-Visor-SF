@@ -7,6 +7,8 @@ package imp.lickgen.transformations.trends;
 
 import java.util.ArrayList;
 import imp.data.*;
+import imp.lickgen.transformations.NoteChordPair;
+import imp.lickgen.transformations.TrendSegment;
 /**
  *
  * @author muddCS15
@@ -16,16 +18,6 @@ public class SkipTrend extends Trend{
     //intervals
     private static final int MINOR_THIRD = 3;
     private static final int MAJOR_THIRD = 4;
-    
-    //directional distance between two notes
-    public static int dist(Note n1, Note n2){
-        return n2.getPitch() - n1.getPitch();
-    }
-    
-    //absolute distance between two notes
-    public static int absDist(Note n1, Note n2){
-        return Math.abs(dist(n1, n2));
-    }
 
     //moving a skip in either direction continues the trend
     public boolean stopCondition(Note n1, Note n2) {
@@ -38,9 +30,15 @@ public class SkipTrend extends Trend{
         return false;
     }
 
-    //TODO
-    public ArrayList<Note> importantNotes(ArrayList<Note> notes) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    //equal weights
+    public double[] weights() {
+        double [] weights = {1, 1, 1};
+        return weights;
     }
- 
+
+    //2 for now - will change
+    public int numberOfSections() {
+        return 2;
+    }
+
 }

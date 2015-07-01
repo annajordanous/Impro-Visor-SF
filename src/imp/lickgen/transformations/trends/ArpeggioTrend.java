@@ -7,6 +7,8 @@ package imp.lickgen.transformations.trends;
 
 import imp.Constants;
 import imp.data.*;
+import imp.lickgen.transformations.NoteChordPair;
+import imp.lickgen.transformations.TrendSegment;
 import java.util.ArrayList;
 
 /**
@@ -30,9 +32,15 @@ public class ArpeggioTrend extends Trend{
         return !chordTone(n, c);
     }
 
-    //TODO
-    public ArrayList<Note> importantNotes(ArrayList<Note> notes) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    //no weight given to priority, lots to strong beat, some to duration
+    public double[] weights() {
+        double [] weights = {0, 1, .5};
+        return weights;
     }
-    
+
+    //2 sections for now - will change
+    public int numberOfSections() {
+        return 2;
+    }
+
 }

@@ -8,6 +8,8 @@ package imp.lickgen.transformations.trends;
 import java.util.ArrayList;
 import polya.Polylist;
 import imp.data.*;
+import imp.lickgen.transformations.NoteChordPair;
+import imp.lickgen.transformations.TrendSegment;
 /**
  *
  * @author muddCS15
@@ -40,9 +42,15 @@ public class DiatonicTrend extends Trend{
         return !diatonic(n, c);
     }
 
-    //TODO
-    public ArrayList<Note> importantNotes(ArrayList<Note> notes) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    //priority important, then strong beat and duration
+    public double[] weights() {
+        double [] weights = {1, .5, .5};
+        return weights;
+    }
+
+    //2 for now - will change
+    public int numberOfSections() {
+        return 2;
     }
     
 }
