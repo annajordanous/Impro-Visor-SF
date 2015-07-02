@@ -42,7 +42,7 @@ public class ArpeggioTrend extends Trend{
 
     //2 sections for now - will change
     public int numberOfSections() {
-        return 2;
+        return 1;
     }
 
     public String getName() {
