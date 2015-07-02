@@ -606,30 +606,13 @@ public class TransformLearningPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_allowRepeatsCheckBoxActionPerformed
 
     private void printTrendsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printTrendsButtonActionPerformed
-        String trendString = (String) trendChooser.getSelectedItem();
-        Trend trend = getTrend(trendString);
-        
-        Transform newTransform = new Transform();
-        
-        if(trend == null){
-            for (String trendName : trendNames) {
-                Trend t = getTrend(trendName);
-                if(t!=null){
-                    Transform currTransform = transformLearning.trendTransform(notate, getTrend(trendName));
-                    newTransform = transformLearning.merge(newTransform, currTransform);
-                }
-
-            }
-        }else{
-            newTransform = transformLearning.trendTransform(notate, trend);
-        }
-        
+        Transform newTransform = learnByNewTrendDetection();
+                
         transform = newTransform;
-        
         
         transform.hasChanged = true;
         showTransformButton.setEnabled(true);
-        setTransformButton.setEnabled(true);
+        setTransformButton.setEnabled(true);    
     }//GEN-LAST:event_printTrendsButtonActionPerformed
 
     private static Trend getTrend(String s){
@@ -821,7 +804,36 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         return transform;
     }
     
-    
+    private Transform learnByNewTrendDetection(){
+        String trendString = (String) trendChooser.getSelectedItem();
+        Trend trend = getTrend(trendString);
+        
+        notate.adjustSelection();
+        notate.repaint();
+        int start = notate.getCurrentSelectionStart();
+        int stop = notate.getCurrentSelectionEnd();
+        MelodyPart melodyPart = notate.getCurrentMelodyPart().copy().extract(start, stop);
+        ChordPart chordPart = notate.getChordProg();
+        int [] metre = notate.getScore().getMetre();
+        
+        Transform newTransform = new Transform();
+        
+        if(trend == null){
+            for (String trendName : trendNames) {
+                Trend t = getTrend(trendName);
+                if(t!=null){
+                    Transform currTransform = transformLearning.trendTransform(melodyPart, chordPart, metre, getTrend(trendName));
+                    newTransform = transformLearning.merge(newTransform, currTransform);
+                }
+
+            }
+        }else{
+            newTransform = transformLearning.trendTransform(melodyPart, chordPart, metre, trend);
+        }
+        
+        return newTransform;
+
+    }
     /**
      * Goes through each note in the original melody and if it equals the note 
      * at the same place in the flattened melody, turn it into a rest. This 
