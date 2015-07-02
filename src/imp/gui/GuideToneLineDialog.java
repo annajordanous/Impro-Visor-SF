@@ -548,7 +548,7 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
             scaleDegString2 = "NOCHORD";
         }
         
-        boolean alternating = false;
+        boolean alternating = true;
         int duration = buttonToDuration(maxDur);
         //int lineType = buttonToLineType(lineTypeButton);
         boolean allowColor = allowColorBox.isSelected();
