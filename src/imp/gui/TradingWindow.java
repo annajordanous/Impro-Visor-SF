@@ -32,6 +32,7 @@ import javax.sound.midi.InvalidMidiDataException;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.Stack;
 import jm.midi.event.Event;
 /**
  *
@@ -41,17 +42,43 @@ public class TradingWindow extends javax.swing.JFrame{
     static Notate notate;
     
     private int melodyNum = 0;
-    ArrayList<MelodyPart>  melodies   = new ArrayList<MelodyPart>();
-    LinkedList<MelodyPart> hotswapper = new LinkedList<MelodyPart>();
-    Score tradeScore;
-    
-    public void trackPlay(ActionEvent e){
-        System.out.println(notate.getSequencer().getTickPosition());
-    }
-    
-    
+    private ArrayList<MelodyPart>  melodies   = new ArrayList<MelodyPart>();
+    private LinkedList<MelodyPart> hotswapper = new LinkedList<MelodyPart>();
+    private Score tradeScore;
+    private Stack<Integer> triggers = new Stack();
     //length of trading in measures
-    private int measures;
+    private Integer measures = 4;
+    private boolean isUserTurn;
+    
+    private Integer scoreLength;
+    private Integer slotsPerMeasure;
+    private Integer slotsPerTurn;
+    private Integer adjustedLength;
+    
+    public void trackPlay(ActionEvent e) {
+        long currentPosition = notate.getSlotInPlayback();
+        if (triggers.isEmpty()) {
+            stopTrading();
+        } else {
+            long nextTrig = (long) triggers.peek();
+            if (nextTrig <= currentPosition) {
+                System.out.println("int: " + triggers.peek());
+                System.out.println("long: " + nextTrig);
+                triggers.pop();
+                if (nextTrig != 0) {
+                    switchTurn();
+                }
+            }
+        }
+    }
+
+    public void switchTurn(){
+        if (this.isUserTurn){
+            this.computerTurn();
+        } else{
+            this.userTurn();
+        }
+    }
     
     /**
      * Creates new form TradingWindow
@@ -67,13 +94,16 @@ public class TradingWindow extends javax.swing.JFrame{
      * Starts interactive trading
      */
     public void startTrading() {
-        ChordPart chords = notate.getScore().getChordProg().extract(0, 479);
-        MelodyPart aMelodyPart = new MelodyPart(480);
-        tradeScore = new Score("trading", notate.getTempo(), 0);
-        tradeScore.setChordProg(chords);
-        tradeScore.addPart(aMelodyPart);
-        notate.initTradingRecorder(aMelodyPart);
-        notate.startRecording();
+        scoreLength = notate.getScoreLength();
+        slotsPerMeasure = notate.getScore().getSlotsPerMeasure();
+        slotsPerTurn = measures * slotsPerMeasure;
+        adjustedLength = scoreLength - (scoreLength % slotsPerTurn);
+        for (int trigSlot = adjustedLength; trigSlot >= 0; trigSlot = trigSlot - slotsPerTurn) {
+            triggers.push(trigSlot);
+            //System.out.println(trigSlot);
+        }
+        notate.playScore();
+        userTurn();
     }
     
     /**
@@ -83,9 +113,33 @@ public class TradingWindow extends javax.swing.JFrame{
         notate.stopRecording();
         notate.stopPlaying("stop trading");
         notate.getMidiRecorder().setDestination(null);
-        System.out.println(this.tradeScore);
+    }
+    
+    public void userTurn() {
+        this.isUserTurn = true;
+        int nextSection;
+        if (triggers.isEmpty()){
+            nextSection = adjustedLength;
+        }
+        else {
+            nextSection = triggers.peek();
+        }
+        ChordPart chords = notate.getScore().getChordProg().extract(nextSection, nextSection + slotsPerTurn - 1);
+        MelodyPart aMelodyPart = new MelodyPart(slotsPerTurn);
+        tradeScore = new Score("trading", notate.getTempo(), 0);
+        tradeScore.setChordProg(chords);
+        tradeScore.addPart(aMelodyPart);
+        notate.initTradingRecorder(aMelodyPart);
+        notate.enableRecording();
+    }
+    
+    public void computerTurn() {
+        this.isUserTurn = false;
+        notate.stopRecording();
         notate.playAscore(tradeScore);
     }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -311,40 +365,40 @@ public class TradingWindow extends javax.swing.JFrame{
         stopTrading();
     }//GEN-LAST:event_stopTradingButtonActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TradingWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TradingWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TradingWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TradingWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new TradingWindow(notate).setVisible(true);
-            }
-        });
-    }
+//    /**
+//     * @param args the command line arguments
+//     */
+//    public static void main(String args[]) {
+//        /* Set the Nimbus look and feel */
+//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+//         */
+//        try {
+//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+//                if ("Nimbus".equals(info.getName())) {
+//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                    break;
+//                }
+//            }
+//        } catch (ClassNotFoundException ex) {
+//            java.util.logging.Logger.getLogger(TradingWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (InstantiationException ex) {
+//            java.util.logging.Logger.getLogger(TradingWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (IllegalAccessException ex) {
+//            java.util.logging.Logger.getLogger(TradingWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+//            java.util.logging.Logger.getLogger(TradingWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        }
+//        //</editor-fold>
+//
+//        /* Create and display the form */
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                new TradingWindow(notate).setVisible(true);
+//            }
+//        });
+//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
