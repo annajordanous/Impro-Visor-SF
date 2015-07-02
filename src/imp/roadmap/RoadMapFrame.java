@@ -128,7 +128,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     private Notate.StyleComboBoxModel styleComboBoxModel = new Notate.StyleComboBoxModel();
     
     /** Default width of the roadmap frame */
-    private int RMframeWidth = 1250;
+    private int RMframeWidth = 1315;
     
     /** Playback status */
     private MidiPlayListener.Status isPlaying = MidiPlayListener.Status.STOPPED;
@@ -193,7 +193,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     
   private JFileChooser dictionaryfc = new JFileChooser();;
 
-  
+  public int roadMapTransposition = 0;
    
     private RoadMapFrame() {} // Not for you.
     
@@ -310,6 +310,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         styleComboBox = new javax.swing.JComboBox();
         barsPerLineComboBox = new javax.swing.JComboBox();
         featureWidthSlider = new javax.swing.JSlider();
+        transposeSpinner = new javax.swing.JSpinner();
         roadMapTextEntry = new javax.swing.JTextField();
         roadMapStatus = new javax.swing.JTextField();
         roadMapScrollPane = new javax.swing.JScrollPane(roadMapPanel);
@@ -1256,6 +1257,21 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         });
         toolBar.add(featureWidthSlider);
 
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("imp/roadmap/Bundle"); // NOI18N
+        transposeSpinner.setToolTipText(bundle.getString("RoadMapFrame.toolTipText")); // NOI18N
+        transposeSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder(null, bundle.getString("RoadMapFrame.border.title"), javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 10))); // NOI18N
+        transposeSpinner.setMaximumSize(new java.awt.Dimension(65, 45));
+        transposeSpinner.setMinimumSize(new java.awt.Dimension(65, 45));
+        transposeSpinner.setName(""); // NOI18N
+        transposeSpinner.setPreferredSize(new java.awt.Dimension(65, 45));
+        transposeSpinner.setValue(0);
+        transposeSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                transposeSpinnerStateChanged(evt);
+            }
+        });
+        toolBar.add(transposeSpinner);
+
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -2054,7 +2070,6 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         preferencesMenu.add(showJoinsCheckBoxMI);
 
         showStartingNoteCheckBoxMI.setSelected(true);
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("imp/roadmap/Bundle"); // NOI18N
         showStartingNoteCheckBoxMI.setText(bundle.getString("RoadMapFrame.showStartingNoteCheckBoxMI.text")); // NOI18N
         showStartingNoteCheckBoxMI.setName("showStartingNoteCheckBoxMI"); // NOI18N
         showStartingNoteCheckBoxMI.addActionListener(new java.awt.event.ActionListener() {
@@ -3006,6 +3021,10 @@ private void playOnClickToggleButtonPressed(java.awt.event.ActionEvent evt)//GEN
         roadMapPanel.draw();
     }//GEN-LAST:event_showStylesCheckBoxMIActionPerformed
 
+    private void transposeSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_transposeSpinnerStateChanged
+        setPlayTransposed();
+    }//GEN-LAST:event_transposeSpinnerStateChanged
+
 private Notate.StyleComboBoxModel getStyleMenuModel()
   {
     return styleComboBoxModel;
@@ -3895,6 +3914,7 @@ public void setVolumeSlider(int volume)
     private javax.swing.JToolBar toolBar;
     private javax.swing.JMenuItem transposeDownMenuItem;
     private javax.swing.JMenu transposeMenu;
+    private javax.swing.JSpinner transposeSpinner;
     private javax.swing.JMenuItem transposeUpMenuItem;
     private javax.swing.JMenuItem undoMenuItem;
     private javax.swing.JMenuItem unselectAllMenuItem;
@@ -4005,6 +4025,8 @@ public void setParent(Notate notate)
         Score score = new Score(chordPart);
         score.setMetre(getMetre());
         score.setTempo(getTempo());
+        score.setTransposition(roadMapTransposition);
+        //System.out.print(score.getTransposition());
         int volume = allVolumeToolBarSlider.getValue();
         
         score.setMasterVolume(volume); 
@@ -4014,11 +4036,11 @@ public void setParent(Notate notate)
          
         if( loopToggleButton.isSelected() )
           {
-            notate.playAscoreWithStyle(score, -1);
+            notate.playAscoreWithStyle(score, -1, score.getTransposition());
           }
         else
           {
-            notate.playAscoreWithStyle(score, 0);
+            notate.playAscoreWithStyle(score, 0, score.getTransposition());
           }
         
         if( nothingSelected )
@@ -4691,4 +4713,24 @@ public ArrayList<String> getStyleNames()
 {
     return styleNames;
 }
+
+ private void setPlayTransposed() {
+    setTransposition(getTransposition());
+}
+    
+public void setTransposition(int transposition)
+  {
+    if( transposeSpinner != null )
+      {
+        transposeSpinner.setValue(transposition);
+      }
+
+    roadMapTransposition = transposition;
+  } 
+
+public int getTransposition()
+  {
+    return Integer.parseInt(transposeSpinner.getValue().toString());
+  }
+
 }

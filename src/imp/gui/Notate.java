@@ -26172,4 +26172,31 @@ public String getComposer()
 {
     return score.getComposer();
 }
+
+public void playAscoreWithStyle(Score score, int loopCount, int newTranspos)
+  {
+    int volume = allVolumeToolBarSlider.getValue();
+    int startTime = 0;
+    boolean swing = true;
+    boolean useDrums = true;
+    int endLimitIndex = -1; // score.getLength()-1;
+    //System.out.println("playing score of length " + score.getLength());
+
+    if( midiSynth3 == null )
+      {
+        midiSynth3 = new MidiSynth(midiManager);
+      }
+
+    midiSynth3.setMasterVolume(volume);
+
+    new PlayScoreCommand(score,
+                         startTime,
+                         swing,
+                         midiSynth3,
+                         this,
+                         loopCount,
+                         newTranspos,
+                         useDrums,
+                         endLimitIndex).execute();
+  }
 } //Notate
