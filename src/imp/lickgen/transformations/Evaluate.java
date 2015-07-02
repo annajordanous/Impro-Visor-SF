@@ -686,7 +686,7 @@ public Boolean triplet(Polylist evaledArgs)
     String dur;
     
     if(firstArg instanceof NoteChordPair)
-        dur = Note.getDurationString(((NoteChordPair)firstArg).note.getRhythmValue());
+        dur = Note.getDurationString(((NoteChordPair)firstArg).getNote().getRhythmValue());
     else
         dur = firstArg.toString();
     
@@ -702,7 +702,7 @@ public Boolean quintuplet(Polylist evaledArgs)
     String dur;
     
     if(firstArg instanceof NoteChordPair)
-        dur = Note.getDurationString(((NoteChordPair)firstArg).note.getRhythmValue());
+        dur = Note.getDurationString(((NoteChordPair)firstArg).getNote().getRhythmValue());
     else
         dur = firstArg.toString();
     
@@ -718,7 +718,7 @@ public Boolean rest(Polylist evaledArgs)
     String dur;
     
     if(firstArg instanceof NoteChordPair)
-        return ((NoteChordPair)firstArg).note.isRest();
+        return ((NoteChordPair)firstArg).getNote().isRest();
     else
         return null;
     
@@ -730,7 +730,7 @@ public boolean chord_equals(Polylist evaledArgs)
 {
     NoteChordPair pair1 = (NoteChordPair) evaledArgs.first();
     NoteChordPair pair2 = (NoteChordPair) evaledArgs.second();
-    return pair1.chord.getChordSymbol().equals(pair2.chord.getChordSymbol());
+    return pair1.getChord().getChordSymbol().equals(pair2.getChord().getChordSymbol());
 }
 /**
  * return the chord family of a note
@@ -738,7 +738,7 @@ public boolean chord_equals(Polylist evaledArgs)
 public String chord_family(Polylist evaledArgs)
 {
     NoteChordPair pair = (NoteChordPair) evaledArgs.first();
-    Chord chord = pair.chord;
+    Chord chord = pair.getChord();
     String family = chord.getFamily();
     if(family == null)
         return "none";
@@ -750,7 +750,7 @@ public String chord_family(Polylist evaledArgs)
  */ 
 public String duration(Polylist evaledArgs)
 {
-    Note note = ((NoteChordPair) evaledArgs.first()).note.copy();
+    Note note = ((NoteChordPair) evaledArgs.first()).getNote().copy();
     return Note.getDurationString(note.getRhythmValue());
 }
 /**
@@ -765,12 +765,12 @@ public String duration_addition(Polylist evaledArgs)
     int secondDur = 0;
     
     if(firstArg instanceof NoteChordPair)
-        firstDur = ((NoteChordPair)firstArg).note.getRhythmValue();
+        firstDur = ((NoteChordPair)firstArg).getNote().getRhythmValue();
     else
         firstDur = Duration.getDuration0(firstArg.toString());
     
     if(secondArg instanceof NoteChordPair)
-        secondDur = ((NoteChordPair)secondArg).note.getRhythmValue();
+        secondDur = ((NoteChordPair)secondArg).getNote().getRhythmValue();
     else
         secondDur = Duration.getDuration0(secondArg.toString());
     
@@ -788,12 +788,12 @@ public String duration_subtraction(Polylist evaledArgs)
     int secondDur = 0;
     
     if(firstArg instanceof NoteChordPair)
-        firstDur = ((NoteChordPair)firstArg).note.getRhythmValue();
+        firstDur = ((NoteChordPair)firstArg).getNote().getRhythmValue();
     else
         firstDur = Duration.getDuration0(firstArg.toString());
     
     if(secondArg instanceof NoteChordPair)
-        secondDur = ((NoteChordPair)secondArg).note.getRhythmValue();
+        secondDur = ((NoteChordPair)secondArg).getNote().getRhythmValue();
     else
         secondDur = Duration.getDuration0(secondArg.toString());
     
@@ -807,7 +807,7 @@ public String duration_subtraction(Polylist evaledArgs)
 private int getDuration(Object ob)
 {
     if(ob instanceof NoteChordPair)
-        return ((NoteChordPair)ob).note.getRhythmValue();
+        return ((NoteChordPair)ob).getNote().getRhythmValue();
     else
         return Duration.getDuration0(ob.toString());
 }
@@ -880,7 +880,7 @@ public Boolean duration_lt_eq(Polylist evaledArgs)
 public String note_category(Polylist evaledArgs)
 {
     NoteChordPair pair = (NoteChordPair) evaledArgs.first();
-    int classify = LickGen.classifyNote(pair.note, pair.chord);
+    int classify = LickGen.classifyNote(pair.getNote(), pair.getChord());
     switch(classify)
     {
         case LickGen.CHORD:
@@ -899,8 +899,8 @@ public String note_category(Polylist evaledArgs)
 public Object relative_pitch(Polylist evaledArgs)
 {
     NoteChordPair pair = (NoteChordPair) evaledArgs.first();
-    Note note = pair.note;
-    Chord chord = pair.chord;
+    Note note = pair.getNote();
+    Chord chord = pair.getChord();
 
     Polylist relNoteList = NoteConverter.noteToRelativePitch(note, chord);
     if(relNoteList.second().equals("0"))
@@ -919,7 +919,7 @@ public String absolute_pitch(Polylist evaledArgs)
     NoteChordPair pair = (NoteChordPair) evaledArgs.first();
     if(pair == null)
         return null;
-    Note note = pair.note.copy();
+    Note note = pair.getNote().copy();
     note.setRhythmValue(0);
     return note.toLeadsheet();
 }
@@ -944,8 +944,8 @@ public Object pitch_addition(Polylist evaledArgs)
     {
         if(secondArg instanceof NoteChordPair)
         {
-            Note secondNote = ((NoteChordPair)secondArg).note.copy();
-            Chord chord = ((NoteChordPair)secondArg).chord;
+            Note secondNote = ((NoteChordPair)secondArg).getNote().copy();
+            Chord chord = ((NoteChordPair)secondArg).getChord();
             Polylist relNote = NoteConverter.noteToRelativePitch(secondNote, chord);
             if(relNote.second().equals("0"))
                 return null;
@@ -961,8 +961,8 @@ public Object pitch_addition(Polylist evaledArgs)
     {
         if(secondArg.toString().matches("[b#]?(-?)(\\d)+"))
         {
-            Note firstNote = ((NoteChordPair)firstArg).note.copy();
-            Chord chord = ((NoteChordPair)firstArg).chord;
+            Note firstNote = ((NoteChordPair)firstArg).getNote().copy();
+            Chord chord = ((NoteChordPair)firstArg).getChord();
             Polylist relNote = NoteConverter.noteToRelativePitch(firstNote, chord);
             if(relNote.second().equals("0"))
                 return null;
@@ -971,8 +971,8 @@ public Object pitch_addition(Polylist evaledArgs)
         }
         else
         {
-            Note firstNote = ((NoteChordPair)firstArg).note.copy();
-            Note secondNote = ((NoteChordPair)secondArg).note.copy();
+            Note firstNote = ((NoteChordPair)firstArg).getNote().copy();
+            Note secondNote = ((NoteChordPair)secondArg).getNote().copy();
             return (firstNote.getPitch()+secondNote.getPitch())/2.0;
        }
     }
@@ -1001,8 +1001,8 @@ public Object pitch_addition(Polylist evaledArgs)
     {
         if(secondArg instanceof NoteChordPair)
         {
-            Note secondNote = ((NoteChordPair)secondArg).note.copy();
-            Chord chord = ((NoteChordPair)secondArg).chord;
+            Note secondNote = ((NoteChordPair)secondArg).getNote().copy();
+            Chord chord = ((NoteChordPair)secondArg).getChord();
             Polylist relNote = NoteConverter.noteToRelativePitch(secondNote, chord);
             if(relNote.second().equals("0"))
                 return null;
@@ -1059,8 +1059,8 @@ public Object pitch_addition(Polylist evaledArgs)
         
         if(secondArg.toString().matches("[b#]?(-?)(\\d)+"))
         {
-            Note firstNote = ((NoteChordPair)firstArg).note.copy();
-            Chord chord = ((NoteChordPair)firstArg).chord;
+            Note firstNote = ((NoteChordPair)firstArg).getNote().copy();
+            Chord chord = ((NoteChordPair)firstArg).getChord();
             Polylist relNote = NoteConverter.noteToRelativePitch(firstNote, chord);
             if(relNote.second().equals("0"))
                 return null;
@@ -1089,8 +1089,8 @@ public Object pitch_addition(Polylist evaledArgs)
         }
         else if(secondArg instanceof NoteChordPair)
         {
-            Note firstNote = ((NoteChordPair)firstArg).note.copy();
-            Note secondNote = ((NoteChordPair)secondArg).note.copy();
+            Note firstNote = ((NoteChordPair)firstArg).getNote().copy();
+            Note secondNote = ((NoteChordPair)secondArg).getNote().copy();
             return (firstNote.getPitch()-secondNote.getPitch())/2.0;
         }
         else
@@ -1196,54 +1196,54 @@ public Boolean pitch_lt_eq(Polylist evaledArgs)
  */ 
 public NoteChordPair scale_duration(NoteChordPair pair, double scale)
 {
-    Note note = pair.note.copy();
+    Note note = pair.getNote().copy();
     int dur = (int) (note.getRhythmValue()*scale);
     String durString = Note.getDurationString(dur);
     note.setRhythmValue(Duration.getDuration0(durString));
-    return new NoteChordPair(note, pair.chord);
+    return new NoteChordPair(note, pair.getChord());
 }
 /**
  * returns a NoteChordPair with its note's duration set to duration
  */ 
 public NoteChordPair set_duration(NoteChordPair pair, String duration)
 {
-    Note note = pair.note.copy();
+    Note note = pair.getNote().copy();
     note.setRhythmValue(Duration.getDuration0(duration));
-    return new NoteChordPair(note, pair.chord);
+    return new NoteChordPair(note, pair.getChord());
 }
 /**
  * returns a NoteChordPair with its note's duration added with duration
  */ 
 public NoteChordPair note_duration_addition(NoteChordPair pair, String duration)
 {
-    Note note = pair.note.copy();
+    Note note = pair.getNote().copy();
     int dur = note.getRhythmValue()+Duration.getDuration0(duration);
     String durString = Note.getDurationString(dur);
     note.setRhythmValue(Duration.getDuration0(durString));
-    return new NoteChordPair(note, pair.chord);
+    return new NoteChordPair(note, pair.getChord());
 }
 /**
  * returns a NoteChordPair with duration subtracted from pair's note's duration
  */ 
 public NoteChordPair note_duration_subtraction(NoteChordPair pair, String duration)
 {
-    Note note = pair.note.copy();
+    Note note = pair.getNote().copy();
     int dur = note.getRhythmValue()-Duration.getDuration0(duration);
     String durString = Note.getDurationString(dur);
     note.setRhythmValue(Duration.getDuration0(durString));
-    return new NoteChordPair(note, pair.chord);
+    return new NoteChordPair(note, pair.getChord());
 }
 /**
  * returns a NoteChordPair with the note created from a relative pitch
  */ 
 public NoteChordPair set_relative_pitch(NoteChordPair pair, String relPitch)
 {
-    Note note = pair.note.copy();
+    Note note = pair.getNote().copy();
     Polylist transposeNoteList = Polylist.PolylistFromString("X " + 
                                                              relPitch + 
                                                              " " + 
                                                              Note.getDurationString(note.getRhythmValue()));
-    Chord chord = pair.chord;
+    Chord chord = pair.getChord();
     Note newNote = LickGen.makeRelativeNote(transposeNoteList, chord);
     return new NoteChordPair(newNote, chord);
 }
@@ -1252,9 +1252,9 @@ public NoteChordPair set_relative_pitch(NoteChordPair pair, String relPitch)
  */ 
 public NoteChordPair transpose_diatonic(NoteChordPair pair, String relPitch)
 {
-    if(pair.chord.isNOCHORD())
+    if(pair.getChord().isNOCHORD())
         return null;
-    if(pair.note.isRest())
+    if(pair.getNote().isRest())
         return null;
     
     String returns = relative_pitch(new Polylist(pair, new Polylist())).toString();
@@ -1290,10 +1290,10 @@ public NoteChordPair transpose_diatonic(NoteChordPair pair, String relPitch)
     
     Polylist transposeNoteList = Polylist.PolylistFromString("X " + totalSum + " 4");
     Polylist transposeNoteListInit = Polylist.PolylistFromString("X " + initArg + " 4");
-    Chord chord = pair.chord;
+    Chord chord = pair.getChord();
     Note fakeNote = LickGen.makeRelativeNote(transposeNoteList, chord);
     Note fakeInitNote = LickGen.makeRelativeNote(transposeNoteListInit, chord);
-    Note note = pair.note.copy();
+    Note note = pair.getNote().copy();
     int newPitch = fakeNote.getPitch()-fakeInitNote.getPitch();
     newPitch += Note.OCTAVE*shiftOctaves;
     note.shiftPitch(newPitch, 0);
@@ -1305,27 +1305,27 @@ public NoteChordPair transpose_diatonic(NoteChordPair pair, String relPitch)
 public NoteChordPair transpose_chromatic(NoteChordPair pair, double pitches)
 {
     pitches *= 2;
-    Note note = pair.note.copy();
+    Note note = pair.getNote().copy();
     if(note.isRest())
         return null;
     note.shiftPitch((int)pitches, 0);
-    return new NoteChordPair(note, pair.chord);
+    return new NoteChordPair(note, pair.getChord());
 }
 /**
  * returns a NoteChordPair with the note set to a rest
  */ 
 public NoteChordPair make_rest(NoteChordPair pair)
 {
-    Note note = pair.note.copy();
+    Note note = pair.getNote().copy();
     Note newNote = Note.makeRest(note.getRhythmValue());
-    return new NoteChordPair(newNote, pair.chord);
+    return new NoteChordPair(newNote, pair.getChord());
 }
 /**
  * returns a NoteChordPair with the note transposed chromatically 
  */ 
 public Note get_note(Polylist evaledArgs)
 {
-    Note note = ((NoteChordPair)evaledArgs.first()).note.copy();
+    Note note = ((NoteChordPair)evaledArgs.first()).getNote().copy();
     return note;
 }
 
@@ -1452,6 +1452,7 @@ public String absoluteRelPitchDiff(Note n1, Note n2, Chord chord)
 /**
  * A data-structure that holds a note and its chord. 
  */
+/*
 public class NoteChordPair{
     public final Note note;
     public final Chord chord;
@@ -1466,4 +1467,5 @@ public class NoteChordPair{
         return "NoteChordPair";
     }
 }
+*/
 }
