@@ -25913,6 +25913,10 @@ class PlayActionListener implements ActionListener
  */
 public void actionPerformed(ActionEvent evt)
   {
+      
+    //this is used to pass info for interactive trading
+    Notate.this.trader.trackPlay(evt);
+    
     if( playingStopped() )
       {
         if( keyboard != null && keyboard.isVisible() )
