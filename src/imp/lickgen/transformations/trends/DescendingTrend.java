@@ -41,7 +41,7 @@ public class DescendingTrend extends Trend{
 
     //2 for descending
     public int numberOfSections() {
-        return 2;
+        return 1;
     }
 
     public String getName() {
