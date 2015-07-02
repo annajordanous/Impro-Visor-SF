@@ -35,6 +35,10 @@ public class NoteChordPair {
         this(note, chord, slot, NO_VAR);
     }
     
+    public NoteChordPair(Note note, Chord chord){
+        this(note, chord, 0, NO_VAR);
+    }
+    
     public Polylist toNCP(){
         Polylist list = Polylist.PolylistFromString("");
         list = list.addToEnd(note).addToEnd(chord).addToEnd(slot);

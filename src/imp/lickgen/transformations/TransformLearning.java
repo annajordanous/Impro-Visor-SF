@@ -521,9 +521,11 @@ private Polylist getTwoWindowGuardCondition(MelodyPart outline, ChordPart chords
     StringBuilder andEqString = new StringBuilder();
     andEqString.append("and ");
 
-    int notes = 1;
+    int notes = 0;
     int slot = 0;
     while(outline.getCurrentNote(slot) != null){
+        ++notes; 
+        
         Note origNote = outline.getCurrentNote(slot);
         Chord currChord = chords.getCurrentChord(slot);
         
@@ -561,8 +563,15 @@ private Polylist getTwoWindowGuardCondition(MelodyPart outline, ChordPart chords
             andEqString = andEqString.append(rest).append(categoryEquals).append(relPitchEquals);
         }
 
-        notes++;
         slot = outline.getNextIndex(slot);
+    }
+
+    if(notes == 2 && 
+      !outline.getCurrentNote(0).isRest() && 
+      !outline.getNextNote(0).isRest()){
+        
+        Polylist pitchComp = makePitchComparison(outline, chords);
+        andEqString.append(pitchComp);
     }
     
     Polylist andEquals = Polylist.PolylistFromString(andEqString.toString());
@@ -1676,6 +1685,30 @@ private Transformation makeTrendTransformation(TrendSegment original, TrendSegme
         }
         return bestSource;
     }
-
+    
+    private Polylist makePitchComparison(MelodyPart outline, ChordPart chords) {
+        Evaluate eval = new Evaluate(new Polylist());
+        
+        ArrayList<Chord> chordList = chords.getChords();
+        
+        NoteChordPair first = new NoteChordPair(outline.getCurrentNote(0), 
+                                                chordList.get(0));
+        
+        NoteChordPair second = new NoteChordPair(outline.getNextNote(0), 
+                                                 chordList.get(chordList.size() - 1));
+        
+        Polylist noteList = Polylist.list(first, second);
+        
+        if(eval.pitch_lt(noteList)){
+            Polylist lessThan = Polylist.PolylistFromString("pitch< n1 n2");
+            return lessThan;
+        }
+        else {
+            Polylist greaterThan = Polylist.PolylistFromString("pitch>= n1 n2");
+            return greaterThan;
+        }
+    }
+    
 }
+
 
