@@ -63,6 +63,10 @@ public class NoteChordPair {
         return var;
     }
     
+    public void setVar(int var){
+        this.var = var;
+    }
+    
     public int getDuration(){
         return note.getRhythmValue();
     }

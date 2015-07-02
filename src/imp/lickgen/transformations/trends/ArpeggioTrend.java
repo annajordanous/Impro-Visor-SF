@@ -17,9 +17,11 @@ import java.util.ArrayList;
  */
 public class ArpeggioTrend extends Trend{
 
-    //doesn't matter what the interval is
+    private static final int MAJOR_THIRD = 4;
+    
+    //stops when it encounters an interval greater than a major third
     public boolean stopCondition(Note n1, Note n2) {
-        return false;
+        return absDist(n1, n2) > MAJOR_THIRD;
     }
 
     //returns whether a note is a chord tone of a chord (false if chord is no chord or note is rest)

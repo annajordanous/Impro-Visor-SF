@@ -86,6 +86,9 @@ public class TransformLearningPanel extends javax.swing.JPanel {
      */
     TransformPanel transformPanel;
     
+    //names of trends
+    String [] trendNames = {"All", "Arpeggio", "Ascending", "Chromatic", "Descending", "Diatonic", "Skip"};
+    
     /**
      * Creates new form TransformLearningPanel
      */
@@ -517,7 +520,7 @@ public class TransformLearningPanel extends javax.swing.JPanel {
 
         printTrendPanel.setLayout(new java.awt.GridBagLayout());
 
-        trendChooser.setModel(new javax.swing.DefaultComboBoxModel(new String[] {"Arpeggio", "Ascending", "Chromatic", "Descending", "Diatonic", "Skip"}));
+        trendChooser.setModel(new javax.swing.DefaultComboBoxModel(trendNames));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -606,7 +609,24 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         String trendString = (String) trendChooser.getSelectedItem();
         Trend trend = getTrend(trendString);
         
-        transform = transformLearning.trendTransform(notate, trend);
+        Transform newTransform = new Transform();
+        
+        if(trend == null){
+            for (String trendName : trendNames) {
+                Trend t = getTrend(trendName);
+                if(t!=null){
+                    Transform currTransform = transformLearning.trendTransform(notate, getTrend(trendName));
+                    newTransform = transformLearning.merge(newTransform, currTransform);
+                }
+
+            }
+        }else{
+            newTransform = transformLearning.trendTransform(notate, trend);
+        }
+        
+        transform = newTransform;
+        
+        
         transform.hasChanged = true;
         showTransformButton.setEnabled(true);
         setTransformButton.setEnabled(true);
@@ -626,7 +646,7 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         }else if(s.equals("Skip")){
             return new SkipTrend();
         }else{
-            return new AscendingTrend();//default
+            return null;//all trends
         }
     }
     

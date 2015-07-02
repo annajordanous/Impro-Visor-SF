@@ -71,7 +71,8 @@ public class TrendSegment {
             durationRemaining -= ncp.getNote().getRhythmValue();
             if(durationRemaining <= 0){
                 durationRemaining = duration;
-                chunks.add(currentChunk.copy());
+                TrendSegment toAdd = currentChunk.copy();
+                chunks.add(toAdd);
                 currentChunk.clear();
             }
         }
@@ -102,6 +103,15 @@ public class TrendSegment {
     
     public TrendSegment copy(){
         return new TrendSegment(this.ncps, this.totalDuration);
+    }
+    
+    public void renumber(){
+        if(ncps.isEmpty()){
+            return;
+        }
+        for(int i = 0; i<ncps.size(); i++){
+            ncps.get(i).setVar(i+1);
+        }
     }
     
 }

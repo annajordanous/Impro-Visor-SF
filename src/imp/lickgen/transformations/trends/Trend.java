@@ -47,6 +47,9 @@ public abstract class Trend {
             //and start slot equal to the start slot of currTrend
             importantNotes.add(importantNote(currTrend, metre));
         }
+        //RENUMBER BEFORE RETURNING!!!
+        importantNotes.renumber();
+        
         return importantNotes;
     }
     

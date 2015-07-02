@@ -1413,7 +1413,6 @@ public Transform trendTransform(Notate notate, Trend trend){
 }
 
 private Substitution makeTrendSub(TrendSegment original, TrendSegment flattened, Trend trend){
-    
     Substitution trendSub = new Substitution();
     trendSub.setName(original.getSize() + "-changed-GENERATED-"+trend.getName());
     trendSub.addTransformation(makeTrendTransformation(original, flattened));
@@ -1429,6 +1428,7 @@ private Substitution makeTrendSub(TrendSegment original, TrendSegment flattened,
  */
 private Transformation makeTrendTransformation(TrendSegment original, TrendSegment flattened){
 
+    
     //transformation, description, weight
     Polylist transformation = Polylist.PolylistFromString(
         "transformation" + 
@@ -1519,7 +1519,6 @@ private Transformation makeTrendTransformation(TrendSegment original, TrendSegme
     
     //TODO
     private Polylist getTrendTargetNotes(TrendSegment original, TrendSegment flattened){
-        
         //initialize
         Polylist targetNotes = Polylist.PolylistFromString("target-notes");
         

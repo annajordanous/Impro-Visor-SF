@@ -16,9 +16,11 @@ import imp.lickgen.transformations.TrendSegment;
  */
 public class DiatonicTrend extends Trend{
 
-    //doesn't matter what the interval is
+    private static final int MAJOR_THIRD = 4;
+    
+    //stops when it encounters a big interval
     public boolean stopCondition(Note n1, Note n2) {
-        return false;
+        return absDist(n1, n2) > MAJOR_THIRD;
     }
 
     //returns whether a note belongs to a chord's primary scale
