@@ -1455,11 +1455,10 @@ private Transformation makeTrendTransformation(TrendSegment original, TrendSegme
     //add guard condition and target notes
     transformation = transformation.addToEnd(guard).addToEnd(target);
     
-        
-    //testing
-    System.out.println("Original:\n"+original);
-    System.out.println("Flattened:\n"+flattened);
-    System.out.println("Transformation:\n"+transformation);
+    //debugging
+    //System.out.println("Original:\n"+original);
+    //System.out.println("Flattened:\n"+flattened);
+    //System.out.println("Transformation:\n"+transformation);
     
     //make transformation out of the String
     return new Transformation(transformation);
