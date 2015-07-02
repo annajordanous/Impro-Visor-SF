@@ -1391,12 +1391,8 @@ private static int data(int trend, Note lastNote, Note curNote, Chord curChord){
     }
 }
 
-public Transform trendTransform(Notate notate, Trend trend){
+public Transform trendTransform(MelodyPart melodyPart, ChordPart chordPart, int [] metre, Trend trend){
     Transform trendTransform = new Transform();
-    
-    MelodyPart melodyPart = notate.getCurrentMelodyPart();
-    ChordPart chordPart = notate.getChordProg();
-    int [] metre = notate.getScore().getMetre();
     
     TrendDetector detector = new TrendDetector(trend);
     ArrayList<TrendSegment> trends = detector.trends(melodyPart, chordPart);
