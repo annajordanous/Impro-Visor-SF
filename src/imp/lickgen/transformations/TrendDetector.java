@@ -16,6 +16,9 @@ import polya.Polylist;
  */
 public class TrendDetector {
     
+    private static final int MIN_TREND_LENGTH = 2;
+    private static final int MAX_TREND_LENGTH = 4;
+    
     private final Trend trend;
     
     //use this instead of -1 because we might want different behaviour for rests
@@ -68,10 +71,10 @@ public class TrendDetector {
             
             //End of trend detected.
             //(if prevNote is null, stopCondition bases its decision only on how currNote fits in the chord)
-            if(trend.stopCondition(prevNote, currNote, currChord)){
+            if(trend.stopCondition(prevNote, currNote, currChord) || currentTrend.getSize() >= MAX_TREND_LENGTH){
                 
-                //If the trend is at least 2 notes long, add it to the trend list.
-                if(currentTrend.getSize() >= 2){
+                //If the trend is at least 3 notes long, add it to the trend list.
+                if(currentTrend.getSize() >= MIN_TREND_LENGTH){
                     trends.add(currentTrend);
                 }
                 

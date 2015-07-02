@@ -16,14 +16,17 @@ import imp.lickgen.transformations.TrendSegment;
  */
 public class AscendingTrend extends Trend{
 
+    private static final int WHOLE_STEP = 2;
+    
     //staying on the same note is okay (not strictly ascending)
     public static boolean ascending(Note n1, Note n2){
         return dist(n1, n2) >= 0;
     }
 
     //trend continues so long as direction is ascending
+    //and motion is stepwise
     public boolean stopCondition(Note n1, Note n2) {
-        return !ascending(n1, n2);
+        return !ascending(n1, n2) && absDist(n1, n2) > WHOLE_STEP;
     }
 
     //doesn't matter what role the note plays in the chord
@@ -38,7 +41,7 @@ public class AscendingTrend extends Trend{
 
     //equal weights
     public double[] weights() {
-        double [] weights = {1, 1, 1};
+        double [] weights = {1, 5, 1};
         return weights;
     }
 
