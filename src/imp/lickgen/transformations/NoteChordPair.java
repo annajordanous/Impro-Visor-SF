@@ -27,6 +27,10 @@ public class NoteChordPair {
         this.var = var;
     }
     
+    public NoteChordPair copy(){
+        return new NoteChordPair(note.copy(), chord.copy(), slot, var);
+    }
+    
     public NoteChordPair(Note note, Chord chord, int slot){
         this(note, chord, slot, NO_VAR);
     }
@@ -75,9 +79,14 @@ public class NoteChordPair {
         note.setRhythmValue(duration);
     }
     
+//    @Override
+//    public String toString(){
+//        return "NCP: Note: "+note.getPitchClassName()+"; Chord: "+chord.getName()+"; Slot: "+slot+"; Var: "+var+".";
+//    }
+    
     @Override
     public String toString(){
-        return "NCP: Note: "+note.getPitchClassName()+"; Chord: "+chord.getName()+"; Slot: "+slot+"; Var: "+var+".";
+        return "NCP:\t"+note+"\t"+chord+"\tSLOT: "+slot+"\tVAR: "+var;
     }
     
     public String varName(){

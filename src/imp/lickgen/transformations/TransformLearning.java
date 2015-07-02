@@ -1455,6 +1455,12 @@ private Transformation makeTrendTransformation(TrendSegment original, TrendSegme
     //add guard condition and target notes
     transformation = transformation.addToEnd(guard).addToEnd(target);
     
+        
+    //testing
+    System.out.println("Original:\n"+original);
+    System.out.println("Flattened:\n"+flattened);
+    System.out.println("Transformation:\n"+transformation);
+    
     //make transformation out of the String
     return new Transformation(transformation);
     
@@ -1658,14 +1664,18 @@ private Transformation makeTrendTransformation(TrendSegment original, TrendSegme
         int slot = dest.getSlot();
         
         NCPIterator i = flattened.makeIterator();
+        NoteChordPair bestSource = flattened.firstNCP();
         while(i.hasNext()){
             NoteChordPair source = i.nextNCP();
-            //Decent, but not perfect
-            if(slot >= source.getSlot()){
-                return source;
+            //went too far - flattened note occurs later than original note
+            if(slot < source.getSlot()){
+                break;
+            }else{
+                //keep going
+                bestSource = source;
             }
         }
-        return null;
+        return bestSource;
     }
 
 }
