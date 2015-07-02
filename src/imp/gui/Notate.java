@@ -10781,7 +10781,7 @@ private void startRecordingHelper()
 /**
  * This is like startRecording() without the playback.
  */
-private void enableRecording()
+public void enableRecording()
   {
     //debug System.out.println("enableRecording()");
     turnStepInputOff();
@@ -22730,7 +22730,6 @@ int quantizeResolution = 60;
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         // Open New Trading window
-        System.out.println("hey");
         trader.setVisible(true);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
