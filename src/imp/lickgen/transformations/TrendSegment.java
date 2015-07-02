@@ -14,29 +14,29 @@ public class TrendSegment {
     
 
     private final ArrayList<NoteChordPair> ncps;
-    private int totalDuration;
     
     public TrendSegment(){
         ncps = new ArrayList<NoteChordPair>();
-        totalDuration = 0;
     }
     
-    public TrendSegment(ArrayList<NoteChordPair> noteList, int totalDuration){
+    public TrendSegment(ArrayList<NoteChordPair> noteList){
         ArrayList<NoteChordPair> copiedNotes = new ArrayList<NoteChordPair>();
         for(NoteChordPair ncp : noteList){
             copiedNotes.add(ncp);
         }
         ncps = copiedNotes;
-        this.totalDuration = totalDuration;
     }
 
     public void add(NoteChordPair ncp){
         ncps.add(ncp);
-        totalDuration += ncp.getNote().getRhythmValue();
     }
 
     public int getTotalDuration(){
-        return totalDuration;
+        int total = 0;
+        for(NoteChordPair ncp : ncps){
+            total += ncp.getDuration();
+        }
+        return total;
     }
 
     public int getSize(){
@@ -59,7 +59,6 @@ public class TrendSegment {
     
     public void clear(){
         ncps.clear();
-        totalDuration = 0;
     }
     
     public ArrayList<TrendSegment> splitUp(int duration){
@@ -69,7 +68,7 @@ public class TrendSegment {
         for(NoteChordPair ncp : ncps){
             currentChunk.add(ncp);
             durationRemaining -= ncp.getNote().getRhythmValue();
-            if(durationRemaining <= 0){
+            if(durationRemaining <= 0 || ncp.equals(ncps.get(ncps.size()-1))){
                 durationRemaining = duration;
                 TrendSegment toAdd = currentChunk.copy();
                 chunks.add(toAdd);
@@ -102,7 +101,7 @@ public class TrendSegment {
     }
     
     public TrendSegment copy(){
-        return new TrendSegment(this.ncps, this.totalDuration);
+        return new TrendSegment(this.ncps);
     }
     
     public void renumber(){

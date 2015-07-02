@@ -67,11 +67,16 @@ public abstract class Trend {
                 bestNCP = currNCP;
             }
         }
+        //MAKE COPY OF NCP TO RETURN
+        NoteChordPair toReturn = bestNCP.copy();
+        
         //ADJUST LENGTH OF NOTE TO BE LENGTH OF THE ENTIRE TREND
-        bestNCP.setDuration(trend.getTotalDuration());
+        toReturn.setDuration(trend.getTotalDuration());
+        
         //ADJUST THE STARTING SLOT OF THE NOTE TO BE THE STARTING SLOT OF THE ENTIRE TREND
-        bestNCP.setSlot(trend.getStartSlot());
-        return bestNCP;
+        toReturn.setSlot(trend.getStartSlot());
+        
+        return toReturn;
     }
     
     //score function
