@@ -729,7 +729,6 @@ public Notate(Score score, Advisor adv, ImproVisor impro, int x, int y)
 
     midiLatencyMeasurement = new MidiLatencyMeasurementTool(this);
     
-    trader = new TradingWindow(this);
     trader2 = new TradingWindow2(this);
 
     leadsheetEditor = new SourceEditorDialog(null, false, this, cm,
@@ -22741,6 +22740,7 @@ int quantizeResolution = 60;
 
     private void tradingWindowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tradingWindowActionPerformed
         // Open New Trading window
+        trader = new TradingWindow(this);
         trader.setVisible(true);
     }//GEN-LAST:event_tradingWindowActionPerformed
 
@@ -25929,12 +25929,13 @@ class PlayActionListener implements ActionListener
  *
  * @param evt
  */
-public void actionPerformed(ActionEvent evt)
-  {
-      
-    //this is used to pass info for interactive trading
-    Notate.this.trader.trackPlay(evt);
-    
+public void actionPerformed(ActionEvent evt) {
+
+        //this is used to pass info for interactive trading
+        if (Notate.this.trader != null) {
+            Notate.this.trader.trackPlay(evt);
+        }
+
     if( playingStopped() )
       {
         if( keyboard != null && keyboard.isVisible() )

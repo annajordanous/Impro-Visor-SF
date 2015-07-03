@@ -54,6 +54,9 @@ public class TradingWindow extends javax.swing.JFrame{
     private Integer slotsPerMeasure;
     private Integer slotsPerTurn;
     private Integer adjustedLength;
+    private Integer snapResolution = 2;
+    private ChordPart chords;
+    private MelodyPart aMelodyPart;
     
     public void trackPlay(ActionEvent e) {
         long currentPosition = notate.getSlotInPlayback();
@@ -62,8 +65,7 @@ public class TradingWindow extends javax.swing.JFrame{
         } else {
             long nextTrig = (long) triggers.peek();
             if (nextTrig <= currentPosition) {
-                System.out.println("int: " + triggers.peek());
-                System.out.println("long: " + nextTrig);
+                //System.out.println("long: " + nextTrig);
                 triggers.pop();
                 if (nextTrig != 0) {
                     switchTurn();
@@ -124,8 +126,8 @@ public class TradingWindow extends javax.swing.JFrame{
         else {
             nextSection = triggers.peek();
         }
-        ChordPart chords = notate.getScore().getChordProg().extract(nextSection, nextSection + slotsPerTurn - 1);
-        MelodyPart aMelodyPart = new MelodyPart(slotsPerTurn);
+        chords = notate.getScore().getChordProg().extract(nextSection, nextSection + slotsPerTurn - 1);
+        aMelodyPart = new MelodyPart(slotsPerTurn);
         tradeScore = new Score("trading", notate.getTempo(), 0);
         tradeScore.setChordProg(chords);
         tradeScore.addPart(aMelodyPart);
@@ -136,6 +138,8 @@ public class TradingWindow extends javax.swing.JFrame{
     public void computerTurn() {
         this.isUserTurn = false;
         notate.stopRecording();
+        tradeScore.getPart(0).applyResolution(snapResolution);
+        //new RectifyPitchesCommand(aMelodyPart, 0, slotsPerTurn);
         notate.playAscore(tradeScore);
     }
     
@@ -165,6 +169,7 @@ public class TradingWindow extends javax.swing.JFrame{
         startTradingButton = new javax.swing.JButton();
         stopTradingButton = new javax.swing.JButton();
 
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 formWindowClosed(evt);
