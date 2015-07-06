@@ -36,7 +36,7 @@ public class AscendingTrend extends Trend{
 
     //two sections for ascending
     public int numberOfSections() {
-        return 1;
+        return 2;
     }
 
     //equal weights

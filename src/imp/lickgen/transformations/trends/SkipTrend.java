@@ -38,7 +38,7 @@ public class SkipTrend extends Trend{
 
     //2 for now - will change
     public int numberOfSections() {
-        return 1;
+        return 2;
     }
 
     public String getName() {
