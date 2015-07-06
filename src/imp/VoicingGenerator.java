@@ -4,11 +4,16 @@ package imp;
 import java.util.ArrayList;
 
 /**
+ * This class is the actual voicing calculator, takes very specific parameters that can be randomized using hand manager and stored in automatic voicing settings.
  * Instructions: Initialize with priorities in constructor. 
  * Chord notes, hand bounds, and number of notes per hand should be set with each new chord.
  * The number of notes/hand, and hand bounds should have some degree of randomness.
  * Call calculate to actually calculate chord tones, and then get the integer array of midi notes to be played.
  *
+ * The way this class works: all available notes are individually weighted, and array lists are created containing n duplicates of each note in each hand's range where n is the weight of the note.
+ * Notes are picked randomly from the list.
+ * Once a note is picked, the notes around it and exactly an octave (and multiple octaves) above and below are multiplied by the multiplier settings and new array lists are generated.
+ * The process is repeated until the array list is empty or the number of desired notes is reached.
  * @author Daniel Scanteianu
  */
 public class VoicingGenerator {
@@ -38,6 +43,9 @@ public class VoicingGenerator {
         this.halfStepReducer = halfStepReducer;
         this.fullStepReducer = fullStepReducer;
     }
+    /**
+     * generates a voicing based on current parameters and stores it in the chord array accessible by get chord. 
+     */
     public void calculate()
     {
         
@@ -104,6 +112,9 @@ public class VoicingGenerator {
     public void setFullStepReducer(double fullStepReducer) {
         this.fullStepReducer = fullStepReducer;
     }
+    /**
+     * this is for voice leading, makes it likelier to hit notes in or near the last voicing.
+     */
     private void weightPreviousVoicing()
     {
         for(int n: previousVoicing)
@@ -127,6 +138,9 @@ public class VoicingGenerator {
             allMidiValues[n+2]=(int) (allMidiValues[n+2]*fullStepAwayMultiplier);
         }
     }
+    /**
+     * sets up the midi values for a new chord 
+     */
     private void initAllMidiValues()
     {
         //start with everything at zero
@@ -147,6 +161,9 @@ public class VoicingGenerator {
             setupNote(priority[p], (int)(maxPriority*10-p*10*priorityMultiplier));
         }
     }
+    /**
+     * sets up left array list
+     */
     private void setupAllLeftValues() {
        allLeftValues=new ArrayList<Integer>();
        for(int i=lowerLeftBound; i<=upperLeftBound; i++)
@@ -157,6 +174,9 @@ public class VoicingGenerator {
            }
        }
     }
+    /**
+     * sets up right array list
+     */
     private void setupAllRightValues() {
        allRightValues=new ArrayList<Integer>();
        for(int i=lowerRightBound; i<=upperRightBound; i++)
@@ -167,6 +187,11 @@ public class VoicingGenerator {
            }
        }
     }
+    /**
+     * Sets up all of a certain note to a certain value in all octaves
+     * @param midiValue the note (gets converted to mod12)
+     * @param priority  the value to set up the note to
+     */
     private void setupNote(int midiValue, int priority)
     {
         midiValue=midiValue%12;
@@ -175,6 +200,12 @@ public class VoicingGenerator {
             allMidiValues[i]=priority;
         }
     }
+    /**
+     * Sets up all of a certain note to a certain value in all octaves above the note start
+     * @param midiValue the note (gets converted to mod12)
+     * @param priority  the value to set up the note to
+     * @param start the note from which to start setting up the note
+     */
     private void setupNote(int midiValue, int priority, int start)
     {
         midiValue=midiValue%12;
@@ -327,6 +358,10 @@ public class VoicingGenerator {
             allMidiValues[i]=(int)(allMidiValues[i]*multiplier);
         }
     }
+    /**
+     *  generates array with notes in LH
+     * @return int array
+     */
     public int[] getLeftHand()
     {
         int[] leftArray=new int[leftHand.size()];
@@ -336,6 +371,10 @@ public class VoicingGenerator {
         }
         return leftArray;
     }
+    /**
+     * generates array with notes in RH
+     * @return int array
+     */
     public int[] getRightHand()
     {
         int[] rightArray=new int[rightHand.size()];
@@ -345,6 +384,10 @@ public class VoicingGenerator {
         }
         return rightArray;
     }
+    /**
+     * generates int array with all notes in chord.
+     * @return int array with chord.
+     */
     public int[] getChord()
     {
         int[] chord=new int[rightHand.size()+leftHand.size()];

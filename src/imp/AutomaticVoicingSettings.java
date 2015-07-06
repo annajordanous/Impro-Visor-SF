@@ -6,8 +6,8 @@
 package imp;
 
 /**
- *
- * @author muddCS15
+ *Data structure to store the parameters for automatic voicing generator
+ * @author Daniel Scanteianu
  */
 public class AutomaticVoicingSettings {
     

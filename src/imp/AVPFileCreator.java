@@ -14,11 +14,16 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
- *
- * @author muddCS15
+ *  Loads and saves automatic voicing settings objects in AVP files
+ * @author Daniel Scanteianu
  */
 public class AVPFileCreator
 {
+    /**
+     * loads settings objects from file
+     * @param file file to read
+     * @param settings settings object to populate
+     */
     public static void fileToSettings(File file, AutomaticVoicingSettings settings)
     {
         try {
@@ -148,6 +153,11 @@ public class AVPFileCreator
             
         }
     }
+    /**
+     * saves settings object to a file
+     * @param settings settings to save
+     * @param file file to write
+     */
     public static void settingsToFile(AutomaticVoicingSettings settings, File file)
     {
         try{
@@ -184,8 +194,8 @@ public class AVPFileCreator
                     
                 }
     }
-
+/*
     static void settingsFromFile(File openFile, AutomaticVoicingSettings avs) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    }*/
 }
