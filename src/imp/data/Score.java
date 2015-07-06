@@ -672,6 +672,13 @@ public class Score implements Constants, Serializable {
         setLength(chordProg.size());
         this.chordProg = chordProg;
     }
+    
+    /**
+     * Gets rid of the chord part while maintaining score's length
+     */
+    public void deleteChords(){
+        this.chordProg = new ChordPart();
+    }
 
     /**
      * Returns the Score's chord progression.
