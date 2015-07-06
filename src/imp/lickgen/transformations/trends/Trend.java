@@ -37,8 +37,14 @@ public abstract class Trend {
     
     //method to extract important / outline notes from the identified trend
     public TrendSegment importantNotes(TrendSegment trend, int [] metre){
-        
-        int duration = trend.getTotalDuration()/numberOfSections();
+        int flatNotes = numberOfSections();
+        int totalNotes = trend.getSize();
+        //always flatten to a smaller number of notes than we started with
+        if(totalNotes <= flatNotes){
+            //flatten to half the total number of notes (int division rounds down)
+            flatNotes = totalNotes/2;
+        }
+        int duration = trend.getTotalDuration()/flatNotes;
         ArrayList<TrendSegment> sections = trend.splitUp(duration);
 
         TrendSegment importantNotes = new TrendSegment();

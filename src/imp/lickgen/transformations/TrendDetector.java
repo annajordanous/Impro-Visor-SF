@@ -16,7 +16,7 @@ import polya.Polylist;
  */
 public class TrendDetector {
     
-    private static final int MIN_TREND_LENGTH = 2;
+    public static final int MIN_TREND_LENGTH = 2;
     private static final int MAX_TREND_LENGTH = 4;
     
     private final Trend trend;

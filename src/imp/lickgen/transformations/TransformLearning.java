@@ -27,6 +27,7 @@ import imp.data.ChordPart;
 import imp.data.MelodyPart;
 import imp.data.Note;
 import imp.data.Part.PartIterator;
+import imp.data.Rest;
 import imp.data.Unit;
 import imp.gui.Notate;
 import imp.lickgen.LickGen;
@@ -168,7 +169,8 @@ public MelodyPart flattenByResolution(MelodyPart melody,
                                                      resolution, 
                                                      slotIndex);
         
-        bestNote = getBestNote(notes, chord, resolution, startingSlot);
+        //bestNote = getBestNote(notes, chord, resolution, startingSlot);
+        bestNote = getAverageNote(notes, chord);
         
         // if we do not want repeat pitches
         if(concatRepeatPitches)
@@ -266,6 +268,40 @@ private Note getBestNote(ArrayList<Note> notes,
     bestNote.setRhythmValue(totalDur);
     return bestNote;
 }
+
+/**
+ * getAverageNote
+ * Returns a note whose pitch is the average of all the notes in the list
+ * (excluding rests) rectified to a chord tone
+ * and whose duration is the total duration of the notes in the list
+ * (including rests)
+ * @param notes list of notes
+ * @param chord chord the notes are being played over
+ * @return note of average pitch rectified
+ */
+private Note getAverageNote(ArrayList<Note> notes,
+                            Chord chord){
+    int totalPitch = 0;
+    int totalDuration = 0;
+    int totalNotes = 0;
+    for(Note n : notes){
+        if(!n.isRest()){
+          totalPitch += n.getPitch();  
+          totalNotes++;
+        }
+        totalDuration += n.getRhythmValue();
+    }
+    Note average;
+    if(totalNotes!=0){
+       average = Note.getClosestMatch(totalPitch/totalNotes, chord.getSpell()); 
+       average.setRhythmValue(totalDuration);
+    }else{
+       average = new Rest(totalDuration);
+    }
+    
+    return average;
+}
+
 /**
 * Returns the score of a certain note to compare against other scores
 * @param note                        the Note to score
