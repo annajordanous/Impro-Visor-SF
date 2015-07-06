@@ -1157,6 +1157,10 @@ public Advisor getAdvisor()
     return adv;
   }
 
+public MidiManager getMidiManager(){
+    return this.midiManager;
+}
+
 public Score getScore()
   {
     return score;

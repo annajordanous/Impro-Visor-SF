@@ -20,10 +20,14 @@
  */
 package imp.gui;
 
+import imp.com.PlayPartCommand;
+import imp.com.PlayScoreCommand;
+import imp.com.RectifyPitchesCommand;
 import imp.data.ChordPart;
 import java.util.ArrayList;
 import imp.data.MelodyPart;
 import imp.data.MidiSynth;
+import imp.data.Rest;
 import imp.data.Score;
 import imp.util.MidiPlayListener;
 import java.awt.event.ActionEvent;
@@ -38,7 +42,9 @@ import jm.midi.event.Event;
  *
  * @author muddCS15
  */
-public class TradingWindow extends javax.swing.JFrame{
+public class TradingWindow 
+extends javax.swing.JFrame
+{
     static Notate notate;
     
     private int melodyNum = 0;
@@ -47,16 +53,39 @@ public class TradingWindow extends javax.swing.JFrame{
     private Score tradeScore;
     private Stack<Integer> triggers = new Stack();
     //length of trading in measures
-    private Integer measures = 4;
     private boolean isUserTurn;
     
     private Integer scoreLength;
     private Integer slotsPerMeasure;
     private Integer slotsPerTurn;
     private Integer adjustedLength;
-    private Integer snapResolution = 2;
     private ChordPart chords;
     private MelodyPart aMelodyPart;
+    private MidiSynth midiSynth;
+    private boolean isTrading;
+    private long slotDelay;
+    private boolean isUserInputError;
+    
+    
+    
+    //magic values
+    private int endLimitIndex = -1;
+    private boolean isSwing = false;
+    private Integer snapResolution = 2;
+    private Integer measures = 4;
+    
+    private static final int zero = 0;
+    private static final int one = 1;
+    
+    private void setSlotDelay(double beatDelay){
+        double doubleSlotsPerMeasure = (double) tradeScore.getSlotsPerMeasure();
+        double beatsPerMeasure = (double) tradeScore.getBeatsPerMeasure();
+        double slotsPerBeat = doubleSlotsPerMeasure / beatsPerMeasure;
+        
+        long newDelay = Math.round(slotsPerBeat * beatDelay);
+        slotDelay = newDelay;
+        System.out.println(slotDelay);
+    }
     
     public void trackPlay(ActionEvent e) {
         long currentPosition = notate.getSlotInPlayback();
@@ -67,7 +96,7 @@ public class TradingWindow extends javax.swing.JFrame{
             if (nextTrig <= currentPosition) {
                 //System.out.println("long: " + nextTrig);
                 triggers.pop();
-                if (nextTrig != 0) {
+                if (nextTrig != zero) {
                     switchTurn();
                 }
             }
@@ -96,11 +125,14 @@ public class TradingWindow extends javax.swing.JFrame{
      * Starts interactive trading
      */
     public void startTrading() {
+        startTradingButton.setText("StopTrading");
+        isTrading = true;
+        midiSynth = new MidiSynth(notate.getMidiManager());
         scoreLength = notate.getScoreLength();
         slotsPerMeasure = notate.getScore().getSlotsPerMeasure();
         slotsPerTurn = measures * slotsPerMeasure;
         adjustedLength = scoreLength - (scoreLength % slotsPerTurn);
-        for (int trigSlot = adjustedLength; trigSlot >= 0; trigSlot = trigSlot - slotsPerTurn) {
+        for (int trigSlot = adjustedLength; trigSlot >= zero; trigSlot = trigSlot - slotsPerTurn) {
             triggers.push(trigSlot);
             //System.out.println(trigSlot);
         }
@@ -112,6 +144,8 @@ public class TradingWindow extends javax.swing.JFrame{
      * Stops interactive trading
      */
     public void stopTrading() {
+        startTradingButton.setText("StartTrading");
+        isTrading = false;
         notate.stopRecording();
         notate.stopPlaying("stop trading");
         notate.getMidiRecorder().setDestination(null);
@@ -126,25 +160,59 @@ public class TradingWindow extends javax.swing.JFrame{
         else {
             nextSection = triggers.peek();
         }
-        chords = notate.getScore().getChordProg().extract(nextSection, nextSection + slotsPerTurn - 1);
+        chords = notate.getScore().getChordProg().extract(nextSection, nextSection + slotsPerTurn - one);
         aMelodyPart = new MelodyPart(slotsPerTurn);
-        tradeScore = new Score("trading", notate.getTempo(), 0);
+        tradeScore = new Score("trading", notate.getTempo(), zero);
         tradeScore.setChordProg(chords);
         tradeScore.addPart(aMelodyPart);
         notate.initTradingRecorder(aMelodyPart);
         notate.enableRecording();
+        
     }
+    
     
     public void computerTurn() {
+        
         this.isUserTurn = false;
         notate.stopRecording();
-        tradeScore.getPart(0).applyResolution(snapResolution);
-        //new RectifyPitchesCommand(aMelodyPart, 0, slotsPerTurn);
-        notate.playAscore(tradeScore);
+        //snap? tradeScore.getPart(0).applyResolution(snapResolution);
+        
+        
+
+        RectifyPitchesCommand fixPitches = new RectifyPitchesCommand(
+                aMelodyPart, 
+                zero, 
+                slotsPerTurn, 
+                chords, 
+                false, 
+                false);
+        fixPitches.execute();
+        tradeScore.setBassMuted(true);
+        tradeScore.delPart(0);
+        tradeScore.deleteChords();
+        
+        aMelodyPart = aMelodyPart.applyResolution(60);
+        
+        Long delayCopy = new Long(this.slotDelay);
+        aMelodyPart = aMelodyPart.extract(delayCopy.intValue(), slotsPerTurn - one, true, true);
+        tradeScore.addPart(aMelodyPart);
+        
+        
+        new PlayScoreCommand(
+                tradeScore,
+                zero,
+                isSwing,
+                midiSynth,
+                notate,
+                zero,
+                notate.getTransposition(),
+                false,
+                endLimitIndex
+        ).execute();
+//        notate.playAscore(tradeScore);
     }
     
     
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -154,20 +222,9 @@ public class TradingWindow extends javax.swing.JFrame{
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        sliceBtn = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        outArea = new javax.swing.JTextArea();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        queueBtn = new javax.swing.JButton();
-        playToggleBtn = new javax.swing.JToggleButton();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        playArea = new javax.swing.JTextArea();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        queueArea = new javax.swing.JTextArea();
         startTradingButton = new javax.swing.JButton();
-        stopTradingButton = new javax.swing.JButton();
+        beatDelayBox = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -176,49 +233,6 @@ public class TradingWindow extends javax.swing.JFrame{
             }
         });
 
-        sliceBtn.setText("Create Segments");
-        sliceBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                sliceBtnActionPerformed(evt);
-            }
-        });
-
-        outArea.setColumns(20);
-        outArea.setRows(5);
-        outArea.setPreferredSize(new java.awt.Dimension(230, 80));
-        jScrollPane1.setViewportView(outArea);
-
-        jLabel1.setText("Melody Parts Extracted");
-
-        jLabel2.setText("Queue'd :");
-
-        jLabel3.setText("Now Playing :");
-
-        queueBtn.setText("Queue Melody");
-        queueBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                queueBtnActionPerformed(evt);
-            }
-        });
-
-        playToggleBtn.setText("Play");
-        playToggleBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                playToggleBtnActionPerformed(evt);
-            }
-        });
-
-        jScrollPane2.setWheelScrollingEnabled(false);
-
-        playArea.setColumns(20);
-        playArea.setRows(5);
-        jScrollPane2.setViewportView(playArea);
-
-        queueArea.setColumns(20);
-        queueArea.setRows(5);
-        queueArea.setAutoscrolls(false);
-        jScrollPane3.setViewportView(queueArea);
-
         startTradingButton.setLabel("Start Trading");
         startTradingButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -226,89 +240,46 @@ public class TradingWindow extends javax.swing.JFrame{
             }
         });
 
-        stopTradingButton.setText("Stop Trading");
-        stopTradingButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                stopTradingButtonActionPerformed(evt);
+        beatDelayBox.setForeground(new java.awt.Color(255, 0, 0));
+        beatDelayBox.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        beatDelayBox.setText("0.0");
+        beatDelayBox.setAutoscrolls(false);
+        beatDelayBox.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                beatDelayBoxCaretUpdate(evt);
             }
         });
+        beatDelayBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                beatDelayBoxActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("delay in beats:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 698, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(15, 15, 15)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 483, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(6, 6, 6)
-                            .addComponent(sliceBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGap(1, 1, 1)
-                                    .addComponent(jLabel3))
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                    .addContainerGap()
-                                    .addComponent(jLabel2)))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 570, Short.MAX_VALUE)
-                                .addComponent(jScrollPane3))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                    .addGap(0, 0, Short.MAX_VALUE)
-                                    .addComponent(playToggleBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(startTradingButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(queueBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(stopTradingButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                    .addGap(0, 0, Short.MAX_VALUE))))))
-                .addGap(6, 6, 6))
+                        .addComponent(startTradingButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(beatDelayBox, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(7, 7, 7)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(5, 5, 5)
-                        .addComponent(jLabel1))
-                    .addComponent(sliceBtn))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(15, Short.MAX_VALUE)
+                .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(startTradingButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(stopTradingButton))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(29, 29, 29)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(queueBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addGap(21, 21, 21))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(playToggleBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap())))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())))
+                .addComponent(beatDelayBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(startTradingButton)
+                .addContainerGap())
         );
 
         startTradingButton.getAccessibleContext().setAccessibleDescription("");
@@ -316,60 +287,40 @@ public class TradingWindow extends javax.swing.JFrame{
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void sliceBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sliceBtnActionPerformed
-        MelodyPart whole = notate.getCurrentMelodyPart();
-        int len = whole.getSize(); 
-        // one measure -- TODO implement extractTruncated
-        outArea.setText(null); // Clear the text area
-        
-        for (int frame = 0; frame < len; frame += 480) {
-            // extract using 'fudge-ing'
-            MelodyPart tempPart = whole.extract(frame, frame + 479, true, true);
-            melodies.add(tempPart);
-            outArea.append(tempPart.toString() + "\n");
-        }
-    }//GEN-LAST:event_sliceBtnActionPerformed
-
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
         //
     }//GEN-LAST:event_formWindowClosed
 
-    private void queueBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_queueBtnActionPerformed
-        MelodyPart currPart = melodies.get(melodyNum);
-        
-        hotswapper.add(currPart);
-        melodyNum++;
-        
-        queueArea.setText(currPart.toString() + "\n");
-    }//GEN-LAST:event_queueBtnActionPerformed
-
-    private void playToggleBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playToggleBtnActionPerformed
-        if (hotswapper.peekFirst() != null) {
-            Score hotscore  = new Score();
-            MidiSynth synth = notate.getMidiSynth2();
-            
-            playArea.append(hotswapper.peekFirst().toString());
-            hotscore.addPart(hotswapper.removeFirst());
-            
-            try {
-                synth.play(hotscore, 0, 0, 0, false);
-            } catch (InvalidMidiDataException ex) {
-                Logger.getLogger(TradingWindow.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            
-        } else {
-            System.out.println("Error: no songs in the Queue!");
-        }
-    }//GEN-LAST:event_playToggleBtnActionPerformed
-
     private void startTradingButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startTradingButtonActionPerformed
-        startTrading();
+        if (!isUserInputError) {
+            if (!isTrading) {
+                startTrading();
+            } else {
+                stopTrading();
+            }
+        }
     }//GEN-LAST:event_startTradingButtonActionPerformed
 
-    private void stopTradingButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopTradingButtonActionPerformed
-        stopTrading();
-    }//GEN-LAST:event_stopTradingButtonActionPerformed
+    private void beatDelayBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_beatDelayBoxActionPerformed
+        setSlotDelay(tryDouble(beatDelayBox.getText()));
+    }//GEN-LAST:event_beatDelayBoxActionPerformed
 
+    private void beatDelayBoxCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_beatDelayBoxCaretUpdate
+        setSlotDelay(tryDouble(beatDelayBox.getText()));
+    }//GEN-LAST:event_beatDelayBoxCaretUpdate
+
+    private double tryDouble(String number){
+        double newNumber;
+        try {
+            newNumber = Double.parseDouble(number);
+            isUserInputError = false;
+        } catch (Exception e){
+            isUserInputError = true;
+            newNumber = 0;
+        }
+        return newNumber;
+    }
+    
 //    /**
 //     * @param args the command line arguments
 //     */
@@ -406,21 +357,12 @@ public class TradingWindow extends javax.swing.JFrame{
 //    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField beatDelayBox;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTextArea outArea;
-    private javax.swing.JTextArea playArea;
-    private javax.swing.JToggleButton playToggleBtn;
-    private javax.swing.JTextArea queueArea;
-    private javax.swing.JButton queueBtn;
-    private javax.swing.JButton sliceBtn;
     private javax.swing.JButton startTradingButton;
-    private javax.swing.JButton stopTradingButton;
     // End of variables declaration//GEN-END:variables
+
+    
 
     
 
