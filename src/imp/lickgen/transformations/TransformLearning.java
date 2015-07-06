@@ -293,8 +293,13 @@ private Note getAverageNote(ArrayList<Note> notes,
     }
     Note average;
     if(totalNotes!=0){
-       average = Note.getClosestMatch(totalPitch/totalNotes, chord.getSpell()); 
-       average.setRhythmValue(totalDuration);
+        int averagePitch = totalPitch/totalNotes;
+        if(!chord.isNOCHORD()){
+            average = Note.getClosestMatch(averagePitch, chord.getSpell());
+            average.setRhythmValue(totalDuration);
+        }else{
+            average = new Note(averagePitch, totalDuration);
+        }
     }else{
        average = new Rest(totalDuration);
     }
