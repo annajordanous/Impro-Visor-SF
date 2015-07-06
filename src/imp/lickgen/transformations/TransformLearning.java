@@ -723,8 +723,16 @@ private Polylist getTargetNotes(MelodyPart outline,
         {
             Note toTransform = (Note)transNotes.next();
             String duration = Note.getDurationString(toTransform.getRhythmValue());
-            Polylist setDuration = Polylist.PolylistFromString("set-duration");
-            setDuration = setDuration.addToEnd(duration);
+            
+            //new code
+            //use multiply-duration instead here: multiply_duration
+            Polylist multiplyDuration = Polylist.PolylistFromString("multiply-duration");
+            String subDur = Double.toString((double)toTransform.getRhythmValue()/(double)origNote.getRhythmValue());
+            multiplyDuration = multiplyDuration.addToEnd(subDur);
+            
+            //old code
+            //Polylist setDuration = Polylist.PolylistFromString("set-duration");
+            //setDuration = setDuration.addToEnd(duration);
 
             Polylist result = getTransposeDiatonicFunction(origNote, 
                                                   toTransform, 
@@ -735,9 +743,11 @@ private Polylist getTargetNotes(MelodyPart outline,
                 return null;
             }
 
-            setDuration = setDuration.addToEnd(result);
+            //setDuration = setDuration.addToEnd(result);
+            multiplyDuration = multiplyDuration.addToEnd(result);
             
-            targetNotes = targetNotes.addToEnd(setDuration);
+            //targetNotes = targetNotes.addToEnd(setDuration);
+            targetNotes = targetNotes.addToEnd(multiplyDuration);
         }
 
         return targetNotes ;

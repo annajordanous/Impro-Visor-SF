@@ -193,6 +193,7 @@ public enum Operators {
   DURATION_EQ("duration="),//
   DURATION_ADDITION("duration+"),//
   DURATION_SUBTRACTION("duration-"),//
+  DURATION_MULTIPLICATION("duration*"),//two args are ncps or durations
   DURATION_GR("duration>"),//
   DURATION_GR_EQ("duration>="),//
   DURATION_LT("duration<"),//
@@ -209,6 +210,7 @@ public enum Operators {
   SCALE_DURATION("scale-duration"),//
   NOTE_DURATION_ADDITION("add-duration"),//
   NOTE_DURATION_SUBTRACTION("subtract-duration"),//
+  NOTE_DURATION_MULTIPLICATION("multiply-duration"),//double value, then ncp(s)
   SET_DURATION("set-duration"),//
   SET_RELATIVE_PITCH("set-relative-pitch"),//
   TRANSPOSE_DIATONIC("transpose-diatonic"),//
@@ -372,6 +374,10 @@ public Object evaluate(Object sent)
             case DURATION_SUBTRACTION:
                 returnVal = duration_subtraction(evaledArgs);
                 break;
+                
+            case DURATION_MULTIPLICATION:
+                returnVal = duration_multiplication(evaledArgs);
+                break;
             
             case DURATION_EQ:
                 returnVal = duration_eq(evaledArgs);
@@ -460,6 +466,17 @@ public Object evaluate(Object sent)
                 else
                 {
                     returnVal = note_duration_subtraction((NoteChordPair)evaledArgs.rest().first(),firstArg.toString());
+                }
+                break;
+            case NOTE_DURATION_MULTIPLICATION:
+                firstArg = evaledArgs.first();
+                if(evaledArgs.rest().length() != 1)
+                    returnVal = evaledArgs.rest().map(new Evaluate(frame,
+                                                                    Operators.NOTE_DURATION_MULTIPLICATION.getGrammarName(),
+                                                                    firstArg)).flatten();
+                else
+                {
+                    returnVal = note_duration_multiplication((NoteChordPair)evaledArgs.rest().first(),Double.parseDouble(firstArg.toString()));
                 }
                 break;
             case SET_DURATION:
@@ -802,6 +819,36 @@ public String duration_subtraction(Polylist evaledArgs)
         return null;
     else
         return Note.getDurationString(sub);
+}
+
+/**
+ * return the String duration of the first arg multiplied by the second arg
+ * First arg can be either an NCP or a duration String
+ * Second arg is a double to multiply the first arg by
+ * @param evaledArgs
+ * @return 
+ */
+public String duration_multiplication(Polylist evaledArgs){
+    Object firstArg = evaledArgs.first();
+    Object secondArg = evaledArgs.second();
+    
+    int firstDur = 0;
+    double secondDur = 0;
+    
+    if(firstArg instanceof NoteChordPair)
+        firstDur = ((NoteChordPair)firstArg).getNote().getRhythmValue();
+    else
+        firstDur = Duration.getDuration0(firstArg.toString());
+    
+    secondDur = Double.parseDouble(secondArg.toString());
+    
+    int mult = (int)(firstDur*secondDur);
+    
+    if(mult < 0){
+        return null;
+    }else{
+        return Note.getDurationString(mult);
+    }
 }
 
 private int getDuration(Object ob)
@@ -1233,6 +1280,21 @@ public NoteChordPair note_duration_subtraction(NoteChordPair pair, String durati
     note.setRhythmValue(Duration.getDuration0(durString));
     return new NoteChordPair(note, pair.getChord());
 }
+/**
+ * note_duration_multiplication
+ * returns a NoteChordPair with duration multiplied by pair's note's duration
+ * @param pair
+ * @param duration
+ * @return 
+ */
+public NoteChordPair note_duration_multiplication(NoteChordPair pair, double duration){
+    Note note = pair.getNote().copy();
+    int dur = (int)(note.getRhythmValue()*duration);
+    String durString = Note.getDurationString(dur);
+    note.setRhythmValue(Duration.getDuration0(durString));
+    return new NoteChordPair(note, pair.getChord());
+}
+
 /**
  * returns a NoteChordPair with the note created from a relative pitch
  */ 
