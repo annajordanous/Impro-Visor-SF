@@ -100,7 +100,7 @@ public class NoteConverter {
         //Part 2 of the note construction: add scale degree
         int pitchOffset = pitch - root; //note: this has been normalized to be between 0 and 11
         if (chord.isNOCHORD()) {
-            relativeNote = relativeNote.addToEnd(1);                            
+            relativeNote = relativeNote.addToEnd("1");                            
         } else if (chordFamily.equals("minor")) {
             relativeNote = relativeNote.addToEnd(minorScaleDegrees[pitchOffset]);
         } else if (chordFamily.equals("minor7")) {
