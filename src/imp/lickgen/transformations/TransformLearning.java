@@ -360,14 +360,20 @@ public Transform createBlockTransform(MelodyPart outline,
     for(int slot = start; slot < stop;)
     {
         int nextSlot = slot + windowResolution;
-        //int nextSlot = outline.getNextIndex(slot);
-        //if(nextSlot == -1)
-            //slot = stop + 1;
+
         MelodyPart outlinePart = outline.extract(slot, nextSlot-1,true,true);
         MelodyPart transPart = transformed.extract(slot, nextSlot-1,true,true);
         ChordPart chordPart = chords.extract(slot, nextSlot-1);
         Chord chord = chords.getCurrentChord(slot);
-        Substitution substitution = createBlockSubstitution(outlinePart, 
+        
+        Note origNote = outline.getCurrentNote(0);
+        String relPitch = (String)NoteConverter.noteToRelativePitch(origNote, chord).second();
+        String nameString = "first-rel-pitch-" + relPitch;
+        
+        Substitution substitution = transform.getSubstitution(nameString);
+    
+        substitution = createBlockSubstitution(substitution,
+                                                            outlinePart, 
                                                             transPart, 
                                                             chord,
                                                             chordPart);
@@ -385,19 +391,12 @@ public Transform createBlockTransform(MelodyPart outline,
 * @param chords                      the chordPart of the section
 * @return Polylist                   form of a Substitution
 */  
-private Substitution createBlockSubstitution(MelodyPart outline, 
+private Substitution createBlockSubstitution(Substitution sub,
+                                             MelodyPart outline, 
                                              MelodyPart transformed, 
                                              Chord chord,
                                              ChordPart chordPart)
 {
-    int numNotes = 0;
-    int slot = 0;
-    while(transformed.getCurrentNote(slot) != null)
-    {
-        numNotes++;
-        slot = transformed.getNextIndex(slot);
-    }
-    
     int flatNotes = 0;
     int outlineSlot = 0;
     while(outline.getCurrentNote(outlineSlot) != null)
@@ -405,9 +404,6 @@ private Substitution createBlockSubstitution(MelodyPart outline,
         flatNotes++;
         outlineSlot = outline.getNextIndex(outlineSlot);
     }
-    
-    Substitution sub = new Substitution();
-    sub.setName(chord.getFamily() + "-" + numNotes + "-notes");
     
     if(flatNotes > 1){
         Transformation transformation = createTwoNoteBlockTransformation(outline, 
@@ -417,10 +413,10 @@ private Substitution createBlockSubstitution(MelodyPart outline,
         sub.addTransformation(transformation);
     }
     else{
-    Transformation transformation = createOneNoteBlockTransformation(outline, 
-                                                                     transformed, 
-                                                                     chord);
-    sub.addTransformation(transformation);
+        Transformation transformation = createOneNoteBlockTransformation(outline, 
+                                                                         transformed, 
+                                                                         chord);
+        sub.addTransformation(transformation);  
     }
     return sub;
 }
