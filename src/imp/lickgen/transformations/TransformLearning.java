@@ -405,7 +405,13 @@ private Substitution createBlockSubstitution(Substitution sub,
         outlineSlot = outline.getNextIndex(outlineSlot);
     }
     
-    if(flatNotes > 1){
+    Transformation transformation = createTwoNoteBlockTransformation(outline,
+                                                                    transformed,
+                                                                    chordPart,
+                                                                    flatNotes);
+    sub.addTransformation(transformation);
+    
+    /*if(flatNotes > 1){
         Transformation transformation = createTwoNoteBlockTransformation(outline, 
                                                                          transformed, 
                                                                          chordPart,
@@ -417,7 +423,8 @@ private Substitution createBlockSubstitution(Substitution sub,
                                                                          transformed, 
                                                                          chord);
         sub.addTransformation(transformation);  
-    }
+    }*/
+    
     return sub;
 }
 /**
