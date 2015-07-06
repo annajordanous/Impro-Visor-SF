@@ -8,7 +8,8 @@ package imp;
 
 /**
  *
- * @author muddCS15
+ * This class can be used to calculate the distances between voicings for analytical purposes.
+ * @author Daniel Scanteianu
  */
 public class VoicingDistanceCalculator {
     public static int calculateDistance(int[] voicing1, int[] voicing2)

@@ -6,8 +6,8 @@
 package imp;
 
 /**
- *
- * @author muddCS15
+ * facilitates hand movement by moving the hands between the lower and upper limits based on parameters set by the user
+ * @author Daniel Scanteianu
  */
 public class HandManager {
     private int leftHandLowerLimit;
@@ -41,10 +41,18 @@ public class HandManager {
     private int rightHandLowestNote;//used for calculating the limits for current chord
     private int preferredMotion;//set positive for moving up when possible, negative for moving down when possible, zero to keep the hands in the same place
     private int preferredMotionRange;//this is the plus/minus for preferred motion
+    /**
+     * randomly generates a number of notes for the LH to play within range
+     * @return a number of notes
+     */
     public int getNumLeftNotes()
     {
         return (int)Math.round(Math.random()*(leftHandMaxNotes-leftHandMinNotes) + leftHandMinNotes);
     }
+    /**
+     * randomly generate a number of notes for the RH to play within range
+     * @return a number of notes
+     */
     public int getNumRightNotes()
     {
         return (int)Math.round(Math.random()*(rightHandMaxNotes-rightHandMinNotes) + rightHandMinNotes);
@@ -53,7 +61,7 @@ public class HandManager {
     public int getLeftHandLowerLimit() {
         return leftHandLowerLimit;
     }
-
+    
     public void setLeftHandLowerLimit(int leftHandLowerLimit) {
         this.leftHandLowerLimit = leftHandLowerLimit;
     }
@@ -161,16 +169,25 @@ public class HandManager {
     public void setPreferredMotionRange(int preferredMotionRange) {
         this.preferredMotionRange = preferredMotionRange;
     }
+    /**
+     * moves hands between chords, ensuring that voicings are in ranges.
+     */
     public void repositionHands()
     {
-       leftHandLowestNote=(int)Math.round(leftHandLowestNote+Math.random()*2*preferredMotionRange-preferredMotionRange+preferredMotion);
-       rightHandLowestNote=(int)Math.round(rightHandLowestNote+Math.random()*2*preferredMotionRange-preferredMotionRange+preferredMotion);
+      //System.out.println("lll "+this.leftHandLowerLimit+"rll "+this.rightHandLowerLimit);
+      //System.out.println("lul "+this.leftHandUpperLimit+"rul "+this.rightHandUpperLimit);
+      //System.out.println("ll "+this.leftHandLowestNote+"rl "+this.rightHandLowestNote);
+       leftHandLowestNote=(int)Math.round(leftHandLowestNote+((Math.random()*2*preferredMotionRange)-preferredMotionRange)+preferredMotion);
+       rightHandLowestNote=(int)Math.round(rightHandLowestNote+((Math.random()*2*preferredMotionRange)-preferredMotionRange)+preferredMotion);
        if(leftHandLowestNote<leftHandLowerLimit || rightHandLowestNote<rightHandLowerLimit)
            resetHands();
        if(leftHandLowestNote+leftHandSpread>leftHandUpperLimit || rightHandLowestNote+rightHandSpread>rightHandUpperLimit)
            resetHands();
        
     }
+    /**
+     * sets hands to a starting position based on settings
+     */
     public void resetHands()
     {
         if(preferredMotion>0)//to allow motion up

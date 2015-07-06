@@ -23,8 +23,8 @@ import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
- *
- * @author muddCS15
+ *Graphical user interface to allow user to modify voicing settings
+ * @author Daniel Scanteianu, Errick Jackson
  */
 public class ControlPanelFrame extends javax.swing.JFrame implements Serializable{
 
@@ -122,6 +122,9 @@ public class ControlPanelFrame extends javax.swing.JFrame implements Serializabl
     { AVPFileCreator.settingsToFile(avs, file);
                 setSlidersToVariables();
     }
+    /**
+     * hard coded defaults for when defaults button is pressed.
+     */
     private void setDefaults()
     {
         leftHandLowerLimit=46;
@@ -150,6 +153,9 @@ public class ControlPanelFrame extends javax.swing.JFrame implements Serializabl
         fullStepReducer=.7;
         syncToSettings();
     }
+    /**
+     * Sets the values in the automatic voicing settings object to the variables
+     */
     public void syncToSettings()
     {
         avs.setLeftHandLowerLimit(leftHandLowerLimit);
@@ -177,6 +183,9 @@ public class ControlPanelFrame extends javax.swing.JFrame implements Serializabl
         avs.setHalfStepReducer(halfStepReducer);
         avs.setFullStepReducer(fullStepReducer);
     }
+    /**
+     * sets the variables to the values in the settings object
+     */
     public void syncFromSettings()
     {
         leftHandLowerLimit=avs.getLeftHandLowerLimit();
@@ -244,6 +253,9 @@ public class ControlPanelFrame extends javax.swing.JFrame implements Serializabl
         setDefaults();
         setSlidersToVariables();
     }
+    /**
+     * updates the note limit labels to the note on the sliders
+     */
     public void setLabels()
     {
         for(int i=0; i<4; i++)
@@ -251,6 +263,9 @@ public class ControlPanelFrame extends javax.swing.JFrame implements Serializabl
             limitLabels[i].setText((NoteSymbol.makeNoteSymbol(new Note(handLimits[i].getValue())).toString()));
         }
     }
+    /**
+     * Sets the sliders to the values in the variables
+     */
     public void setSlidersToVariables()
     {
         syncFromSettings();
@@ -279,6 +294,9 @@ public class ControlPanelFrame extends javax.swing.JFrame implements Serializabl
         closeNoteReducer[0].setValue((int)(halfStepReducer*10));
         closeNoteReducer[1].setValue((int)(fullStepReducer*10));
     }
+    /**
+     * points sliders we declared and named to auto-created sliders from gui designer.
+     */
      public void associateSliders()
     {
         handLimits=new JSlider[4];
@@ -319,6 +337,9 @@ public class ControlPanelFrame extends javax.swing.JFrame implements Serializabl
         
         
     }
+     /**
+      * ensures the user's settings make sense logically (avoids sending the voicing program impossible settings
+     */
     public void checkSliders()
     {
        if(handLimits[1].getValue()<handLimits[0].getValue()+handSpreads[0].getValue())
@@ -331,6 +352,9 @@ public class ControlPanelFrame extends javax.swing.JFrame implements Serializabl
            handNotes[2].setValue(handNotes[3].getValue());
        
     }
+    /**
+     * saves values in sliders to variables.
+     */
     public void saveSlidersToVariables()
     {
         checkSliders();
