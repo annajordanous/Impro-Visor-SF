@@ -98,6 +98,9 @@ public void addSubstitution(Substitution sub)
 {
     for(Substitution subst : substitutions){
         if(subst.getName().equals(sub.getName())){
+            for(Transformation t : sub.transformations){
+                subst.addTransformation(t);
+            }
             return;
         }
     }
@@ -137,6 +140,20 @@ public MelodyPart applySubstitutionsToMelodyPart(MelodyPart melody, ChordPart ch
     ArrayList<ArrayList<Substitution>> subTypes = new ArrayList<ArrayList<Substitution>>();
     ArrayList<Substitution> substitutionsMotif = new ArrayList<Substitution>(); 
     ArrayList<Substitution> substitutionsEmbellish = new ArrayList<Substitution>(); 
+    
+    //arraylists based on rel pitch - makes searching much faster
+    ArrayList<Substitution> zero = new ArrayList<Substitution>();
+    ArrayList<Substitution> one = new ArrayList<Substitution>();
+    ArrayList<Substitution> two = new ArrayList<Substitution>();
+    ArrayList<Substitution> three = new ArrayList<Substitution>();
+    ArrayList<Substitution> four = new ArrayList<Substitution>();
+    ArrayList<Substitution> five = new ArrayList<Substitution>();
+    ArrayList<Substitution> six = new ArrayList<Substitution>();
+    ArrayList<Substitution> seven = new ArrayList<Substitution>();
+    ArrayList<Substitution> eight = new ArrayList<Substitution>();
+    ArrayList<Substitution> nine = new ArrayList<Substitution>();
+    ArrayList<Substitution> ten = new ArrayList<Substitution>();
+    ArrayList<Substitution> eleven = new ArrayList<Substitution>();
     
     for(Substitution sub: substitutions)
     {
@@ -290,6 +307,12 @@ public void findDuplicatesAndAddToWeight()
         }
         sub.setWeight(newWeight);
         substitutions.add(i, sub);
+    }
+}
+
+public void cleanSubs(){
+    for(Substitution s : substitutions){
+        s.clean();
     }
 }
 

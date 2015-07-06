@@ -1017,6 +1017,7 @@ public class TransformPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cleanTransformButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cleanTransformButtonActionPerformed
+        transform.cleanSubs();
         transform.findDuplicatesAndAddToWeight();
         redrawSubstitutionsList();
         redrawTransformationsList();

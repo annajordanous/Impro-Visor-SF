@@ -202,6 +202,22 @@ public void addTransformation(Transformation trans)
     transformations.add(trans);
 }
 
+public void clean(){
+    for(int i = 0; i < transformations.size(); i++){
+        Transformation trans = transformations.get(i);
+        transformations.remove(trans);
+        int newWeight = trans.getWeight();
+        while(transformations.contains(trans)){
+            int transIndex = transformations.indexOf(trans);
+            Transformation copy = transformations.remove(transIndex);
+            newWeight += copy.getWeight();
+            hasChanged = true;
+        }
+        trans.setWeight(newWeight);
+        transformations.add(i, trans);
+    }
+}
+
 /**
  * Remove a transformation from the list of transformations 
  * @param trans
