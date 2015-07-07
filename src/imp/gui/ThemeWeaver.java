@@ -206,6 +206,51 @@ public void setTableColumnWidths()
         probShiftForwardorBackSlider = new javax.swing.JSlider();
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
+        customizeSolo = new javax.swing.JFrame();
+        SoloGeneratorTitle3 = new java.awt.Label();
+        themeListScrollPane1 = new javax.swing.JScrollPane();
+        themeList1 = new javax.swing.JList();
+        jLabel21 = new javax.swing.JLabel();
+        jLabel22 = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
+        transposeButton = new javax.swing.JToggleButton();
+        invertButton = new javax.swing.JToggleButton();
+        reverseButton = new javax.swing.JToggleButton();
+        expandButton = new javax.swing.JToggleButton();
+        sideslipButton = new javax.swing.JToggleButton();
+        barlineshiftButton = new javax.swing.JToggleButton();
+        resetTransformationChoicesButton = new javax.swing.JButton();
+        jPanel7 = new javax.swing.JPanel();
+        transposeUpRadioButton = new javax.swing.JRadioButton();
+        transposeDownRadioButton = new javax.swing.JRadioButton();
+        jLabel32 = new javax.swing.JLabel();
+        jLabel33 = new javax.swing.JLabel();
+        halfStepRadioButton = new javax.swing.JRadioButton();
+        wholeStepRadioButton = new javax.swing.JRadioButton();
+        thirdRadioButton = new javax.swing.JRadioButton();
+        jPanel8 = new javax.swing.JPanel();
+        expandBy2RadioButton = new javax.swing.JRadioButton();
+        expandBy3RadioButton = new javax.swing.JRadioButton();
+        jPanel10 = new javax.swing.JPanel();
+        jLabel34 = new javax.swing.JLabel();
+        jLabel35 = new javax.swing.JLabel();
+        halfStepRadioButton1 = new javax.swing.JRadioButton();
+        wholeStepRadioButton1 = new javax.swing.JRadioButton();
+        thirdRadioButton1 = new javax.swing.JRadioButton();
+        sideslipUpRadioButton = new javax.swing.JRadioButton();
+        sideslipDownRadioButton = new javax.swing.JRadioButton();
+        jPanel9 = new javax.swing.JPanel();
+        shiftBackwardRadioButton = new javax.swing.JRadioButton();
+        shiftForwardRadioButton = new javax.swing.JRadioButton();
+        jLabel24 = new javax.swing.JLabel();
+        transformationsUsed = new javax.swing.JScrollPane();
+        transformationsUsedTextArea = new javax.swing.JTextArea();
+        jLabel29 = new javax.swing.JLabel();
+        jPanel6 = new javax.swing.JPanel();
+        jLabel30 = new javax.swing.JLabel();
+        playThemeButton = new javax.swing.JButton();
+        jLabel31 = new javax.swing.JLabel();
+        pasteToLeadsheetButton = new javax.swing.JButton();
         soloTableScrollPane = new javax.swing.JScrollPane();
         soloTable = new javax.swing.JTable();
         themeListScrollPane = new javax.swing.JScrollPane();
@@ -221,20 +266,8 @@ public void setTableColumnWidths()
         stopPlaytoggle = new javax.swing.JToggleButton();
         deleteThemebutton = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
-        trans1ComboBox = new javax.swing.JComboBox();
-        trans3ComboBox = new javax.swing.JComboBox();
-        trans4ComboBox = new javax.swing.JComboBox();
-        trans5ComboBox = new javax.swing.JComboBox();
         TransformationOrder = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
-        trans2ComboBox = new javax.swing.JComboBox();
         jLabel28 = new javax.swing.JLabel();
-        jLabel14 = new javax.swing.JLabel();
-        trans6ComboBox = new javax.swing.JComboBox();
         currentSelectionJButton = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         Reset = new javax.swing.JButton();
@@ -246,7 +279,7 @@ public void setTableColumnWidths()
         jPanel3 = new javax.swing.JPanel();
         jLabel20 = new javax.swing.JLabel();
         setAllProbTextField = new javax.swing.JTextField();
-        jButton4 = new javax.swing.JButton();
+        setAllProbButton = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         setProbToZeroButton = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
@@ -254,6 +287,20 @@ public void setTableColumnWidths()
         jPanel2 = new javax.swing.JPanel();
         rangeChooserButton = new javax.swing.JButton();
         jLabel19 = new javax.swing.JLabel();
+        customizeSoloButton = new javax.swing.JButton();
+        jPanel5 = new javax.swing.JPanel();
+        trans2ComboBox = new javax.swing.JComboBox();
+        trans1ComboBox = new javax.swing.JComboBox();
+        trans3ComboBox = new javax.swing.JComboBox();
+        trans4ComboBox = new javax.swing.JComboBox();
+        trans5ComboBox = new javax.swing.JComboBox();
+        trans6ComboBox = new javax.swing.JComboBox();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
         roadmapMenuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
         loadThemesMI = new javax.swing.JMenuItem();
@@ -814,10 +861,462 @@ public void setTableColumnWidths()
         gridBagConstraints.gridwidth = 2;
         barLineShiftPreference.getContentPane().add(jLabel16, gridBagConstraints);
 
+        customizeSolo.setAlwaysOnTop(true);
+        customizeSolo.setLocation(new java.awt.Point(10, 10));
+        customizeSolo.setLocationByPlatform(true);
+        customizeSolo.setPreferredSize(new java.awt.Dimension(1100, 900));
+        customizeSolo.setSize(new java.awt.Dimension(1100, 900));
+        customizeSolo.addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                customizeSolowindowClosed(evt);
+            }
+        });
+        customizeSolo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                customizeSoloformKeyPressed(evt);
+            }
+        });
+        customizeSolo.getContentPane().setLayout(new java.awt.GridBagLayout());
+
+        SoloGeneratorTitle3.setFont(new java.awt.Font("Lucida Grande", 1, 24)); // NOI18N
+        SoloGeneratorTitle3.setMaximumSize(new java.awt.Dimension(327, 327));
+        SoloGeneratorTitle3.setText("Customize Solo");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(20, 0, 40, 0);
+        customizeSolo.getContentPane().add(SoloGeneratorTitle3, gridBagConstraints);
+
+        themeListScrollPane1.setMaximumSize(new java.awt.Dimension(0, 0));
+        themeListScrollPane1.setMinimumSize(new java.awt.Dimension(0, 0));
+        themeListScrollPane1.setPreferredSize(new java.awt.Dimension(100, 100));
+
+        themeList1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        themeList1.setModel(themeListModel);
+        themeList1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        themeList1.setToolTipText("shift-click a theme to listen to it");
+        themeList1.setLayoutOrientation(javax.swing.JList.VERTICAL_WRAP);
+        themeList1.setPreferredSize(new java.awt.Dimension(200, 200));
+        themeList1.setVisibleRowCount(30);
+        themeList1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                themeList1Clicked(evt);
+            }
+        });
+        themeListScrollPane1.setViewportView(themeList1);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridheight = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
+        gridBagConstraints.ipadx = 320;
+        gridBagConstraints.ipady = 200;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 0.3;
+        gridBagConstraints.insets = new java.awt.Insets(0, 20, 20, 0);
+        customizeSolo.getContentPane().add(themeListScrollPane1, gridBagConstraints);
+
+        jLabel21.setText("Step 1: Choose a Theme");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        customizeSolo.getContentPane().add(jLabel21, gridBagConstraints);
+
+        jLabel22.setText("Step 2: Choose Some Transformations");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        customizeSolo.getContentPane().add(jLabel22, gridBagConstraints);
+
+        jPanel4.setLayout(new java.awt.GridBagLayout());
+
+        transposeButton.setText("Transpose");
+        transposeButton.setToolTipText("");
+        transposeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                transposeButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.ipady = 1;
+        gridBagConstraints.insets = new java.awt.Insets(16, 0, 16, 0);
+        jPanel4.add(transposeButton, gridBagConstraints);
+
+        invertButton.setText("Invert");
+        invertButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                invertButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.insets = new java.awt.Insets(16, 0, 16, 0);
+        jPanel4.add(invertButton, gridBagConstraints);
+
+        reverseButton.setText("Reverse");
+        reverseButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reverseButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.insets = new java.awt.Insets(16, 0, 16, 0);
+        jPanel4.add(reverseButton, gridBagConstraints);
+
+        expandButton.setText("Expand");
+        expandButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                expandButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.insets = new java.awt.Insets(16, 0, 16, 0);
+        jPanel4.add(expandButton, gridBagConstraints);
+
+        sideslipButton.setText("Side Slip");
+        sideslipButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sideslipButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.insets = new java.awt.Insets(16, 0, 16, 0);
+        jPanel4.add(sideslipButton, gridBagConstraints);
+
+        barlineshiftButton.setText("Bar Line Shift");
+        barlineshiftButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                barlineshiftButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.insets = new java.awt.Insets(16, 0, 16, 0);
+        jPanel4.add(barlineshiftButton, gridBagConstraints);
+
+        resetTransformationChoicesButton.setText("Reset Choices");
+        resetTransformationChoicesButton.setToolTipText("");
+        resetTransformationChoicesButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                resetTransformationChoicesButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.ipadx = 21;
+        gridBagConstraints.ipady = 25;
+        gridBagConstraints.insets = new java.awt.Insets(40, 0, 0, 0);
+        jPanel4.add(resetTransformationChoicesButton, gridBagConstraints);
+
+        jPanel7.setLayout(new java.awt.GridBagLayout());
+
+        transposeUpRadioButton.setText("Transpose Up");
+        transposeUpRadioButton.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        transposeUpRadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                transposeUpRadioButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        jPanel7.add(transposeUpRadioButton, gridBagConstraints);
+
+        transposeDownRadioButton.setText("Transpose Down");
+        transposeDownRadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                transposeDownRadioButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        jPanel7.add(transposeDownRadioButton, gridBagConstraints);
+
+        jLabel32.setText("Direction");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        jPanel7.add(jLabel32, gridBagConstraints);
+
+        jLabel33.setText("Distance");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        jPanel7.add(jLabel33, gridBagConstraints);
+
+        halfStepRadioButton.setText("Half");
+        halfStepRadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                halfStepRadioButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        jPanel7.add(halfStepRadioButton, gridBagConstraints);
+
+        wholeStepRadioButton.setText("Whole");
+        wholeStepRadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                wholeStepRadioButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        jPanel7.add(wholeStepRadioButton, gridBagConstraints);
+
+        thirdRadioButton.setText("Third");
+        thirdRadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                thirdRadioButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
+        jPanel7.add(thirdRadioButton, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.insets = new java.awt.Insets(20, 0, 20, 0);
+        jPanel4.add(jPanel7, gridBagConstraints);
+
+        jPanel8.setLayout(new java.awt.GridBagLayout());
+
+        expandBy2RadioButton.setText("Expand By 2");
+        expandBy2RadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                expandBy2RadioButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 4;
+        jPanel8.add(expandBy2RadioButton, gridBagConstraints);
+
+        expandBy3RadioButton.setText("Expand By 3");
+        expandBy3RadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                expandBy3RadioButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 5;
+        jPanel8.add(expandBy3RadioButton, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
+        jPanel4.add(jPanel8, gridBagConstraints);
+
+        jPanel10.setLayout(new java.awt.GridBagLayout());
+
+        jLabel34.setText("Direction");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        jPanel10.add(jLabel34, gridBagConstraints);
+
+        jLabel35.setText("Distance");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        jPanel10.add(jLabel35, gridBagConstraints);
+
+        halfStepRadioButton1.setText("Half");
+        halfStepRadioButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                halfStepRadioButton1ActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        jPanel10.add(halfStepRadioButton1, gridBagConstraints);
+
+        wholeStepRadioButton1.setText("Whole");
+        wholeStepRadioButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                wholeStepRadioButton1ActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        jPanel10.add(wholeStepRadioButton1, gridBagConstraints);
+
+        thirdRadioButton1.setText("Third");
+        thirdRadioButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                thirdRadioButton1ActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
+        jPanel10.add(thirdRadioButton1, gridBagConstraints);
+
+        sideslipUpRadioButton.setText("Side Slip Up");
+        sideslipUpRadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sideslipUpRadioButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        jPanel10.add(sideslipUpRadioButton, gridBagConstraints);
+
+        sideslipDownRadioButton.setText("Side Slip Down");
+        sideslipDownRadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sideslipDownRadioButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        jPanel10.add(sideslipDownRadioButton, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.insets = new java.awt.Insets(20, 0, 20, 0);
+        jPanel4.add(jPanel10, gridBagConstraints);
+
+        jPanel9.setLayout(new java.awt.GridBagLayout());
+
+        shiftBackwardRadioButton.setText("Shift Backwards");
+        shiftBackwardRadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                shiftBackwardRadioButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        jPanel9.add(shiftBackwardRadioButton, gridBagConstraints);
+
+        shiftForwardRadioButton.setText("Shift Forwards");
+        shiftForwardRadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                shiftForwardRadioButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        jPanel9.add(shiftForwardRadioButton, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 5;
+        jPanel4.add(jPanel9, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
+        customizeSolo.getContentPane().add(jPanel4, gridBagConstraints);
+
+        jLabel24.setText("*Please select in the order you want the transformations done in*");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        customizeSolo.getContentPane().add(jLabel24, gridBagConstraints);
+
+        transformationsUsed.setMinimumSize(new java.awt.Dimension(300, 100));
+
+        transformationsUsedTextArea.setColumns(20);
+        transformationsUsedTextArea.setRows(70);
+        transformationsUsedTextArea.setPreferredSize(new java.awt.Dimension(240, 200));
+        transformationsUsedTextArea.setRequestFocusEnabled(false);
+        transformationsUsedTextArea.setSize(new java.awt.Dimension(200, 200));
+        transformationsUsed.setViewportView(transformationsUsedTextArea);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.6;
+        gridBagConstraints.insets = new java.awt.Insets(0, 20, 20, 20);
+        customizeSolo.getContentPane().add(transformationsUsed, gridBagConstraints);
+
+        jLabel29.setText("Chosen Transformations (In Order):");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 0);
+        customizeSolo.getContentPane().add(jLabel29, gridBagConstraints);
+
+        jPanel6.setLayout(new java.awt.GridBagLayout());
+
+        jLabel30.setText("Step 3: Listen To Adjusted Theme");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        jPanel6.add(jLabel30, gridBagConstraints);
+
+        playThemeButton.setText("Click To Play Theme");
+        playThemeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                playThemeButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.ipadx = 17;
+        gridBagConstraints.ipady = 32;
+        gridBagConstraints.insets = new java.awt.Insets(20, 0, 40, 0);
+        jPanel6.add(playThemeButton, gridBagConstraints);
+
+        jLabel31.setText("Step 4: Add To Solo");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.insets = new java.awt.Insets(40, 0, 0, 0);
+        jPanel6.add(jLabel31, gridBagConstraints);
+
+        pasteToLeadsheetButton.setText("Paste Theme To Leadsheet");
+        pasteToLeadsheetButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pasteToLeadsheetButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.ipady = 25;
+        gridBagConstraints.insets = new java.awt.Insets(20, 0, 0, 0);
+        jPanel6.add(pasteToLeadsheetButton, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 20);
+        customizeSolo.getContentPane().add(jPanel6, gridBagConstraints);
+
         setLocation(new java.awt.Point(10, 10));
         setLocationByPlatform(true);
-        setPreferredSize(new java.awt.Dimension(1500, 750));
-        setSize(new java.awt.Dimension(1500, 750));
+        setPreferredSize(new java.awt.Dimension(1500, 800));
+        setSize(new java.awt.Dimension(1500, 800));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 ThemeWeaver.this.windowClosed(evt);
@@ -893,7 +1392,7 @@ public void setTableColumnWidths()
         gridBagConstraints.gridheight = 6;
         gridBagConstraints.ipadx = 680;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
-        gridBagConstraints.insets = new java.awt.Insets(0, 15, -30, 0);
+        gridBagConstraints.insets = new java.awt.Insets(0, 15, -38, 0);
         getContentPane().add(soloTableScrollPane, gridBagConstraints);
 
         themeListScrollPane.setMaximumSize(new java.awt.Dimension(0, 0));
@@ -1056,75 +1555,6 @@ public void setTableColumnWidths()
         gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
         getContentPane().add(jLabel4, gridBagConstraints);
 
-        trans1ComboBox.setToolTipText("");
-        trans1ComboBox.addItem("Transpose");
-        trans1ComboBox.addItem("Invert");
-        trans1ComboBox.addItem("Reverse");
-        trans1ComboBox.addItem("Expand");
-        trans1ComboBox.addItem("Side Slip");
-        trans1ComboBox.addItem("Bar Line Shift");
-        trans1ComboBox.setSelectedItem("Transpose");
-        transformationComboBoxes[0] = trans1ComboBox;
-        trans1ComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                trans1ComboBoxActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.ipady = 24;
-        getContentPane().add(trans1ComboBox, gridBagConstraints);
-
-        trans3ComboBox.addItem("Reverse");
-        trans3ComboBox.addItem("Expand");
-        trans3ComboBox.addItem("Side Slip");
-        trans3ComboBox.addItem("Bar Line Shift");
-        trans3ComboBox.setSelectedItem("Reverse");
-        transformationComboBoxes[2] = trans3ComboBox;
-        trans3ComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                trans3ComboBoxActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 6;
-        gridBagConstraints.ipady = 24;
-        getContentPane().add(trans3ComboBox, gridBagConstraints);
-
-        trans4ComboBox.addItem("Expand");
-        trans4ComboBox.addItem("Side Slip");
-        trans4ComboBox.addItem("Bar Line Shift");
-        trans4ComboBox.setSelectedItem("Expand");
-        transformationComboBoxes[3] = trans4ComboBox;
-        trans4ComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                trans4ComboBoxActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 7;
-        gridBagConstraints.ipady = 24;
-        getContentPane().add(trans4ComboBox, gridBagConstraints);
-
-        trans5ComboBox.setToolTipText("");
-        trans5ComboBox.addItem("Side Slip");
-        trans5ComboBox.addItem("Bar Line Shift");
-        trans5ComboBox.setSelectedItem("Side Slip");
-        transformationComboBoxes[4] = trans5ComboBox;
-        trans5ComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                trans5ComboBoxActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 8;
-        gridBagConstraints.ipady = 24;
-        getContentPane().add(trans5ComboBox, gridBagConstraints);
-
         TransformationOrder.setFont(new java.awt.Font("Lucida Grande", 1, 16)); // NOI18N
         TransformationOrder.setText("Transformation Order");
         TransformationOrder.setToolTipText("If a transformation is entered more than once, it will use the default order (Transpose, Invert, Reverse, Expand, Side Slip).");
@@ -1133,88 +1563,12 @@ public void setTableColumnWidths()
         gridBagConstraints.gridy = 3;
         getContentPane().add(TransformationOrder, gridBagConstraints);
 
-        jLabel5.setText("1:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 15, 0, 0);
-        getContentPane().add(jLabel5, gridBagConstraints);
-
-        jLabel6.setText("2:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 5;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 15, 0, 0);
-        getContentPane().add(jLabel6, gridBagConstraints);
-
-        jLabel7.setText("3:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 6;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 15, 0, 0);
-        getContentPane().add(jLabel7, gridBagConstraints);
-
-        jLabel8.setText("4:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 7;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 15, 0, 0);
-        getContentPane().add(jLabel8, gridBagConstraints);
-
-        jLabel9.setText("5:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 8;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 15, 0, 0);
-        getContentPane().add(jLabel9, gridBagConstraints);
-
-        trans2ComboBox.addItem("Invert");
-        trans2ComboBox.addItem("Reverse");
-        trans2ComboBox.addItem("Expand");
-        trans2ComboBox.addItem("Side Slip");
-        trans2ComboBox.addItem("Bar Line Shift");
-        trans2ComboBox.setSelectedItem("Invert");
-        transformationComboBoxes[1] = trans2ComboBox;
-        trans2ComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                trans2ComboBoxActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 5;
-        gridBagConstraints.ipady = 24;
-        getContentPane().add(trans2ComboBox, gridBagConstraints);
-
         jLabel28.setText("*Shift-Click on a row to play the theme*");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.insets = new java.awt.Insets(20, 0, 0, 0);
         getContentPane().add(jLabel28, gridBagConstraints);
-
-        jLabel14.setText("6:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 9;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 15, 0, 0);
-        getContentPane().add(jLabel14, gridBagConstraints);
-
-        trans6ComboBox.setToolTipText("");
-        trans6ComboBox.addItem("Bar Line Shift");
-        trans6ComboBox.setSelectedItem("Bar Line Shift");
-        transformationComboBoxes[5] = trans6ComboBox;
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 9;
-        gridBagConstraints.ipady = 24;
-        getContentPane().add(trans6ComboBox, gridBagConstraints);
 
         currentSelectionJButton.setText("Use Current Selection in Leadsheet Window as Theme");
         currentSelectionJButton.setToolTipText("Adds the selection from the window into the first empty theme cell in the table");
@@ -1334,17 +1688,17 @@ public void setTableColumnWidths()
         gridBagConstraints.ipadx = 10;
         jPanel3.add(setAllProbTextField, gridBagConstraints);
 
-        jButton4.setText("Set Probabilities");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        setAllProbButton.setText("Set Probabilities");
+        setAllProbButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                setAllProbButtonActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
-        jPanel3.add(jButton4, gridBagConstraints);
+        jPanel3.add(setAllProbButton, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -1390,8 +1744,7 @@ public void setTableColumnWidths()
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 11;
-        gridBagConstraints.gridheight = 3;
+        gridBagConstraints.gridy = 13;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(20, 0, 0, 0);
         getContentPane().add(jPanel1, gridBagConstraints);
@@ -1421,6 +1774,176 @@ public void setTableColumnWidths()
         gridBagConstraints.gridy = 3;
         gridBagConstraints.gridwidth = 2;
         getContentPane().add(jPanel2, gridBagConstraints);
+
+        customizeSoloButton.setText("Customize Solo");
+        customizeSoloButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                customizeSoloButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 10;
+        gridBagConstraints.gridheight = 3;
+        gridBagConstraints.ipadx = 50;
+        gridBagConstraints.ipady = 20;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
+        gridBagConstraints.insets = new java.awt.Insets(20, 0, 0, 0);
+        getContentPane().add(customizeSoloButton, gridBagConstraints);
+
+        jPanel5.setLayout(new java.awt.GridBagLayout());
+
+        trans2ComboBox.addItem("Invert");
+        trans2ComboBox.addItem("Reverse");
+        trans2ComboBox.addItem("Expand");
+        trans2ComboBox.addItem("Side Slip");
+        trans2ComboBox.addItem("Bar Line Shift");
+        trans2ComboBox.setSelectedItem("Invert");
+        transformationComboBoxes[1] = trans2ComboBox;
+        trans2ComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                trans2ComboBoxActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.ipady = 24;
+        jPanel5.add(trans2ComboBox, gridBagConstraints);
+
+        trans1ComboBox.setToolTipText("");
+        trans1ComboBox.addItem("Transpose");
+        trans1ComboBox.addItem("Invert");
+        trans1ComboBox.addItem("Reverse");
+        trans1ComboBox.addItem("Expand");
+        trans1ComboBox.addItem("Side Slip");
+        trans1ComboBox.addItem("Bar Line Shift");
+        trans1ComboBox.setSelectedItem("Transpose");
+        transformationComboBoxes[0] = trans1ComboBox;
+        trans1ComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                trans1ComboBoxActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.ipady = 24;
+        jPanel5.add(trans1ComboBox, gridBagConstraints);
+
+        trans3ComboBox.addItem("Reverse");
+        trans3ComboBox.addItem("Expand");
+        trans3ComboBox.addItem("Side Slip");
+        trans3ComboBox.addItem("Bar Line Shift");
+        trans3ComboBox.setSelectedItem("Reverse");
+        transformationComboBoxes[2] = trans3ComboBox;
+        trans3ComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                trans3ComboBoxActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.ipady = 24;
+        jPanel5.add(trans3ComboBox, gridBagConstraints);
+
+        trans4ComboBox.addItem("Expand");
+        trans4ComboBox.addItem("Side Slip");
+        trans4ComboBox.addItem("Bar Line Shift");
+        trans4ComboBox.setSelectedItem("Expand");
+        transformationComboBoxes[3] = trans4ComboBox;
+        trans4ComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                trans4ComboBoxActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 7;
+        gridBagConstraints.ipady = 24;
+        jPanel5.add(trans4ComboBox, gridBagConstraints);
+
+        trans5ComboBox.setToolTipText("");
+        trans5ComboBox.addItem("Side Slip");
+        trans5ComboBox.addItem("Bar Line Shift");
+        trans5ComboBox.setSelectedItem("Side Slip");
+        transformationComboBoxes[4] = trans5ComboBox;
+        trans5ComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                trans5ComboBoxActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 8;
+        gridBagConstraints.ipady = 24;
+        jPanel5.add(trans5ComboBox, gridBagConstraints);
+
+        trans6ComboBox.setToolTipText("");
+        trans6ComboBox.addItem("Bar Line Shift");
+        trans6ComboBox.setSelectedItem("Bar Line Shift");
+        transformationComboBoxes[5] = trans6ComboBox;
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 9;
+        gridBagConstraints.ipady = 24;
+        jPanel5.add(trans6ComboBox, gridBagConstraints);
+
+        jLabel5.setText("1:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 15, 0, 0);
+        jPanel5.add(jLabel5, gridBagConstraints);
+
+        jLabel6.setText("2:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 15, 0, 0);
+        jPanel5.add(jLabel6, gridBagConstraints);
+
+        jLabel7.setText("3:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 15, 0, 0);
+        jPanel5.add(jLabel7, gridBagConstraints);
+
+        jLabel8.setText("4:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 7;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 15, 0, 0);
+        jPanel5.add(jLabel8, gridBagConstraints);
+
+        jLabel9.setText("5:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 8;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 15, 0, 0);
+        jPanel5.add(jLabel9, gridBagConstraints);
+
+        jLabel14.setText("6:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 9;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 15, 0, 0);
+        jPanel5.add(jLabel14, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridheight = 6;
+        getContentPane().add(jPanel5, gridBagConstraints);
 
         fileMenu.setText("File"); // NOI18N
         fileMenu.setMaximumSize(new java.awt.Dimension(50, 40));
@@ -2277,9 +2800,275 @@ private void closeWindow()
         
     }//GEN-LAST:event_setAllProbTextFieldActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void setAllProbButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setAllProbButtonActionPerformed
         setAllProbTo(Double.parseDouble(setAllProbTextField.getText()));
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_setAllProbButtonActionPerformed
+
+    private void customizeSoloButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_customizeSoloButtonActionPerformed
+        customizeSolo.setVisible(true);
+        transposeUpRadioButton.setSelected(true);
+        directionOfTransposition = "up";
+        distanceOfTransposition = "half";
+        halfStepRadioButton.setSelected(true);
+        expandBy2RadioButton.setSelected(true);
+        expandBy = 2;
+        sideslipUpRadioButton.setSelected(true);
+        directionOfSideslip = "up";
+        distanceOfSideslip = "half";
+        halfStepRadioButton1.setSelected(true);
+        shiftForwardRadioButton.setSelected(true);
+        directionOfShift = "forwards";
+    }//GEN-LAST:event_customizeSoloButtonActionPerformed
+
+    private void customizeSolowindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_customizeSolowindowClosed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_customizeSolowindowClosed
+
+    private void customizeSoloformKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_customizeSoloformKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_customizeSoloformKeyPressed
+
+    private void themeList1Clicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_themeList1Clicked
+        String name = (String) themeList1.getSelectedValue();
+        
+        //set name equal to the one clicked in the scroll box
+        for( Map.Entry pair : allThemes.entrySet() )
+        {
+          //loop through entries in allThemes
+
+          if( name == pair.getValue() )
+            { //if the name in the themeList is equal to the name in the entry
+              Theme theme = (Theme) pair.getKey();
+              //set theme equal to the corresponding theme in that entry
+              chosenCustomTheme = theme.melody; //get the melody of the theme
+              chosenCustomThemeOriginal = theme.melody;
+              break;
+            }
+        }       
+    }//GEN-LAST:event_themeList1Clicked
+
+    private void resetTransformationChoicesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetTransformationChoicesButtonActionPerformed
+        resetTransformationChoices();
+    }//GEN-LAST:event_resetTransformationChoicesButtonActionPerformed
+
+    private void resetTransformationChoices()
+    {
+        transformationOrder.clear();
+        transposeButton.setSelected(false);
+        invertButton.setSelected(false);
+        reverseButton.setSelected(false);
+        expandButton.setSelected(false);
+        sideslipButton.setSelected(false);
+        barlineshiftButton.setSelected(false);
+        transposeButtonPressed = false;
+        invertButtonPressed = false;
+        reverseButtonPressed = false;
+        expandButtonPressed = false;
+        sideslipButtonPressed = false;
+        barlineshiftButtonPressed = false;
+
+        transformationsUsedTextArea.setText(null);
+    }
+    private void barlineshiftButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barlineshiftButtonActionPerformed
+        if (barlineshiftButtonPressed == false)
+        {
+            barlineshiftButtonPressed = true;
+            transformationOrder.add("Bar Line Shift");
+        }
+        else
+        {
+            barlineshiftButtonPressed = false;
+            transformationOrder.remove("Bar Line Shift");
+        }
+        setTransformationsTextArea();
+        
+    }//GEN-LAST:event_barlineshiftButtonActionPerformed
+
+    private void sideslipButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sideslipButtonActionPerformed
+        if (sideslipButtonPressed == false)
+        {
+            sideslipButtonPressed = true;
+            transformationOrder.add("Side Slip");
+        }
+        else
+        {
+            sideslipButtonPressed = false;
+            transformationOrder.remove("Side Slip");
+        }
+
+        setTransformationsTextArea();
+        
+    }//GEN-LAST:event_sideslipButtonActionPerformed
+
+    private void expandButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_expandButtonActionPerformed
+        if (expandButtonPressed == false)
+        {
+            expandButtonPressed = true;
+            transformationOrder.add("Expand");
+        }
+        else
+        {
+            expandButtonPressed = false;
+            transformationOrder.remove("Expand");
+        }
+        setTransformationsTextArea();
+    }//GEN-LAST:event_expandButtonActionPerformed
+
+    private void reverseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reverseButtonActionPerformed
+
+        if (reverseButtonPressed == false)
+        {
+            reverseButtonPressed = true;
+            transformationOrder.add("Reverse");
+        }
+        else
+        {
+            reverseButtonPressed = false;
+            transformationOrder.remove("Reverse");
+        }
+
+        setTransformationsTextArea();
+    }//GEN-LAST:event_reverseButtonActionPerformed
+
+    private void invertButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_invertButtonActionPerformed
+        if (invertButtonPressed == false)
+        {
+            invertButtonPressed = true;
+            transformationOrder.add("Invert");
+        }
+        else
+        {
+            invertButtonPressed = false;
+            transformationOrder.remove("Invert");
+        }
+        setTransformationsTextArea();
+    }//GEN-LAST:event_invertButtonActionPerformed
+
+    private void transposeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transposeButtonActionPerformed
+        if (transposeButtonPressed == false)
+        {
+            transposeButtonPressed = true;
+            transformationOrder.add("Transpose");
+        }
+        else
+        {
+            transposeButtonPressed = false;
+            transformationOrder.remove("Transpose");
+        }
+        setTransformationsTextArea();
+    }//GEN-LAST:event_transposeButtonActionPerformed
+
+    private void playThemeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playThemeButtonActionPerformed
+        //tranform theme
+        MelodyPart adjustedTheme = chosenCustomThemeOriginal.copy();
+        adjustedTheme = transformTheme(adjustedTheme, transformationOrder);
+        
+        //play it
+        String name = (String) themeList.getSelectedValue();
+        Score score = new Score(name);
+       
+        score.addPart(adjustedTheme);
+        PatternDisplay.playScore(notate, score, themeWeaver);
+        
+        chosenCustomTheme = adjustedTheme;
+    }//GEN-LAST:event_playThemeButtonActionPerformed
+
+    private void transposeUpRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transposeUpRadioButtonActionPerformed
+        transposeDownRadioButton.setSelected(false);
+        directionOfTransposition = "up";
+    }//GEN-LAST:event_transposeUpRadioButtonActionPerformed
+
+    private void transposeDownRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transposeDownRadioButtonActionPerformed
+        transposeUpRadioButton.setSelected(false);
+        directionOfTransposition = "down";
+    }//GEN-LAST:event_transposeDownRadioButtonActionPerformed
+
+    private void halfStepRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_halfStepRadioButtonActionPerformed
+        wholeStepRadioButton.setSelected(false);
+        thirdRadioButton.setSelected(false);
+        distanceOfTransposition = "half";
+    }//GEN-LAST:event_halfStepRadioButtonActionPerformed
+
+    private void wholeStepRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_wholeStepRadioButtonActionPerformed
+        halfStepRadioButton.setSelected(false);
+        thirdRadioButton.setSelected(false);
+        distanceOfTransposition = "whole";
+    }//GEN-LAST:event_wholeStepRadioButtonActionPerformed
+
+    private void thirdRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_thirdRadioButtonActionPerformed
+        wholeStepRadioButton.setSelected(false);
+        halfStepRadioButton.setSelected(false);
+        distanceOfTransposition = "third";
+    }//GEN-LAST:event_thirdRadioButtonActionPerformed
+
+    private void expandBy3RadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_expandBy3RadioButtonActionPerformed
+        expandBy2RadioButton.setSelected(false);
+        expandBy = 3;
+    }//GEN-LAST:event_expandBy3RadioButtonActionPerformed
+
+    private void expandBy2RadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_expandBy2RadioButtonActionPerformed
+        expandBy3RadioButton.setSelected(false);
+        expandBy = 2;
+    }//GEN-LAST:event_expandBy2RadioButtonActionPerformed
+
+    private void sideslipUpRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sideslipUpRadioButtonActionPerformed
+        sideslipDownRadioButton.setSelected(false);
+        directionOfSideslip = "up";
+    }//GEN-LAST:event_sideslipUpRadioButtonActionPerformed
+
+    private void sideslipDownRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sideslipDownRadioButtonActionPerformed
+        sideslipUpRadioButton.setSelected(false);
+        directionOfSideslip = "down";
+    }//GEN-LAST:event_sideslipDownRadioButtonActionPerformed
+
+    private void halfStepRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_halfStepRadioButton1ActionPerformed
+        wholeStepRadioButton1.setSelected(false);
+        thirdRadioButton1.setSelected(false);
+        distanceOfSideslip = "half";
+    }//GEN-LAST:event_halfStepRadioButton1ActionPerformed
+
+    private void wholeStepRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_wholeStepRadioButton1ActionPerformed
+        halfStepRadioButton1.setSelected(false);
+        thirdRadioButton1.setSelected(false);
+        distanceOfSideslip = "whole";
+    }//GEN-LAST:event_wholeStepRadioButton1ActionPerformed
+
+    private void thirdRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_thirdRadioButton1ActionPerformed
+        wholeStepRadioButton1.setSelected(false);
+        halfStepRadioButton1.setSelected(false);
+        distanceOfSideslip = "third";
+    }//GEN-LAST:event_thirdRadioButton1ActionPerformed
+
+    private void shiftForwardRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_shiftForwardRadioButtonActionPerformed
+        shiftBackwardRadioButton.setSelected(false);
+        directionOfShift = "forwards";
+    }//GEN-LAST:event_shiftForwardRadioButtonActionPerformed
+
+    private void shiftBackwardRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_shiftBackwardRadioButtonActionPerformed
+        shiftForwardRadioButton.setSelected(false);
+        directionOfShift = "backwards";
+    }//GEN-LAST:event_shiftBackwardRadioButtonActionPerformed
+
+    private void pasteToLeadsheetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasteToLeadsheetButtonActionPerformed
+        customSolo.setSize(customSolo.getSize() + chosenCustomTheme.getSize());
+        
+        customSolo.pasteSlots(chosenCustomTheme, currentSlotCS);
+        currentSlotCS += chosenCustomTheme.getSize();
+        
+        notate.setCurrentSelectionStart(0); //start selection at beginning
+       
+        notate.pasteMelody(customSolo); //paste solo into leadsheet
+        imp.ImproVisor.setPlayEntrySounds(true); //play solo
+    }//GEN-LAST:event_pasteToLeadsheetButtonActionPerformed
+    
+    private void setTransformationsTextArea()
+    {
+        transformationsUsedTextArea.setText(null);
+        for (int i=0; i<transformationOrder.size(); i++)
+        {
+            transformationsUsedTextArea.append(transformationOrder.get(i) + "\n");
+        }
+    }
     
     private void setAllProb()
     {
@@ -2352,6 +3141,7 @@ private void closeWindow()
             nextBox.setSelectedIndex(0);
             numItems-=1;
         }
+        
         canEnter2=true;
         canEnter3=true; 
         canEnter4=true;
@@ -2400,6 +3190,7 @@ static final String EXPAND_DEFAULT_VALUE = "0.0";
 static final String SIDESLIP_DEFAULT_VALUE = "0.0";
 static final String BARLINESHIFT_DEFAULT_VALUE = "0.0";
 private ArrayList<Object> itemsLeft = new ArrayList<Object>();
+private ArrayList<Object> itemsLeft1 = new ArrayList<Object>();
 private boolean canEnter2 = true;//controls whether trans2ComboBoxActionPerformed can execute or not
 private boolean canEnter3 = true;//controls whether trans3ComboBoxActionPerformed can execute or not
 private boolean canEnter4 = true;//controls whether trans4ComboBoxActionPerformed can execute or not
@@ -2410,9 +3201,30 @@ private String themeUsageText = "";
 static final int ROW_COUNT = 20;
 double probTheme;//probability of using a theme 
 public ThemeListModel themeListModel = new ThemeListModel();
-private javax.swing.JComboBox [] transformationComboBoxes = new javax.swing.JComboBox[6];//array of the tranformation combo boxes
+private final javax.swing.JComboBox [] transformationComboBoxes = new javax.swing.JComboBox[6];//array of the tranformation combo boxes
 private boolean barlineshift = false;
 private boolean sideslip = false;
+private boolean transposeButtonPressed = false;
+private boolean invertButtonPressed = false;
+private boolean reverseButtonPressed = false;
+private boolean expandButtonPressed = false;
+private boolean sideslipButtonPressed = false;
+private boolean barlineshiftButtonPressed = false;
+private ArrayList<String> transformationOrder = new ArrayList<String>();
+private String transformationUsedText = "";
+private String directionOfTransposition = "";
+private String distanceOfTransposition = "";
+private int expandBy = -1;
+private String directionOfSideslip = "";
+private String distanceOfSideslip = "";
+private boolean barlineshift2 = false;
+private boolean sideslip2 = false;
+private String directionOfShift = "";
+private MelodyPart chosenCustomThemeOriginal = new MelodyPart();//this will keep track of the unmotified melody
+private MelodyPart chosenCustomTheme = new MelodyPart();
+private int currentSlotCS = 0; //the current slot, used for custom solo
+private MelodyPart customSolo = new MelodyPart();
+
 
 Random random;
 File fileName = ImproVisor.getThemesFile();
@@ -3721,7 +4533,7 @@ public MelodyPart adjustTheme(MelodyPart chosenTheme, ThemeUse chosenThemeUse, C
                         themeUsageText+="expanded by 3";
                     }
                     //expand by 3
-                    cm.execute(new TimeWarpCommand(adjustedMelody,0,length, true, 3, 1));
+                    adjustedMelody = expandBy(adjustedMelody, length, 3);
                 }
                 else
                 {
@@ -3734,7 +4546,7 @@ public MelodyPart adjustTheme(MelodyPart chosenTheme, ThemeUse chosenThemeUse, C
                         themeUsageText+="expanded by 2";
                     }
                     //expand by 2
-                    cm.execute(new TimeWarpCommand(adjustedMelody,0,length, true, 2, 1));
+                    adjustedMelody = expandBy(adjustedMelody, length, 2);
                 }
             }
         }
@@ -3868,6 +4680,16 @@ private MelodyPart transpose(MelodyPart melody, int length)
     }
     
     return transposedMelody;
+}
+
+private MelodyPart expandBy(MelodyPart melody, int length, int num)
+{
+    int newLength = length*num;
+    MelodyPart adjustedMelody = melody.copy();
+    adjustedMelody.setSize(newLength);
+    cm.execute(new TimeWarpCommand(adjustedMelody,0, newLength, true, num, 1));
+   
+    return adjustedMelody;
 }
 
 private MelodyPart sideslip(MelodyPart melody, int length)
@@ -4084,6 +4906,204 @@ public boolean inRange(MelodyPart melody)
     return highestNote(melody) <= maxPitch && lowestNote(melody) >= minPitch;
 }
 
+private MelodyPart transformTheme(MelodyPart chosenTheme, ArrayList<String> transformations)
+{
+    MelodyPart adjustedMelody = chosenTheme.copy();
+    int length = chosenTheme.getSize();
+    for (int i=0; i<transformations.size(); i++)
+    {
+        if (transformations.get(i).equals("Transpose"))
+        {
+            //transpose
+            adjustedMelody = transpose2(adjustedMelody, directionOfTransposition, 
+                    distanceOfTransposition, length);
+        }
+        else if (transformations.get(i).equals("Invert"))
+        {
+            //invert
+            cm.execute(new InvertCommand(adjustedMelody, 0, length, false));
+        }
+        else if (transformations.get(i).equals("Reverse"))
+        {
+            //reverse
+            cm.execute(new ReverseCommand(adjustedMelody, 0, length, false));
+        }
+        else if  (transformations.get(i).equals("Expand"))
+        {
+            //expand
+            if (expandBy == 2)
+            {
+                adjustedMelody = expandBy(adjustedMelody, length, 2);
+            }
+            else if (expandBy == 3)
+            {
+                adjustedMelody = expandBy(adjustedMelody, length, 3);
+            }
+        }
+        else if (transformations.get(i).equals("Side Slip"))
+        {
+            //side slip
+            adjustedMelody = sideslip2(adjustedMelody, directionOfSideslip, distanceOfSideslip, length);
+        }
+        else if (transformations.get(i).equals("Bar Line Shift"))
+        {
+            //bar line shift
+            adjustedMelody = barlineshift2(adjustedMelody, directionOfShift);
+        }
+    }
+    return adjustedMelody;
+}
+
+private MelodyPart transpose2(MelodyPart melody, String direction, String distance, int length)
+{
+    MelodyPart adjustedMelody = melody.copy();
+    if (direction.equals("up"))
+    {//slide up
+        if (distance.equals("half"))
+        {
+            cm.execute(new ShiftPitchesCommand(1, adjustedMelody, 
+                        0, length, 0, 128, notate.getScore().getKeySignature()));
+        }
+        else if (distance.equals("whole"))
+        {
+            cm.execute(new ShiftPitchesCommand(2, adjustedMelody, 
+                        0, length, 0, 128, notate.getScore().getKeySignature()));
+            themeUsageText += " up whole step";
+        }
+        else if (distance.equals("third"))
+        {
+            cm.execute(new ShiftPitchesCommand(3, adjustedMelody, 
+                        0, length, 0, 128, notate.getScore().getKeySignature()));
+            themeUsageText += " up third";
+        }
+    }
+    else if (direction.equals("down"))
+    {//slide down
+        if (distance.equals("half"))
+        {
+            cm.execute(new ShiftPitchesCommand(-1, adjustedMelody, 
+                        0, length, 0, 128, notate.getScore().getKeySignature()));
+            themeUsageText += " down half step";
+        }
+        else if (distance.equals("whole"))
+        {
+            cm.execute(new ShiftPitchesCommand(-2, adjustedMelody, 
+                        0, length, 0, 128, notate.getScore().getKeySignature()));
+            themeUsageText += " down whole step";
+        }
+        else if(distance.equals("third"))
+        {
+            cm.execute(new ShiftPitchesCommand(-3, adjustedMelody, 
+                        0, length, 0, 128, notate.getScore().getKeySignature()));
+            themeUsageText += " down third";
+        }
+    }
+   
+    return adjustedMelody;
+}
+
+private MelodyPart sideslip2(MelodyPart melody, String direction, String distance, int length)
+{
+    MelodyPart sideslippedMelody = melody.copy();
+    MelodyPart adjustedMelody = melody.copy();
+    int start = melody.getSize();
+    if (barlineshift2)
+    {
+        start = melody.getSize()/2 - shiftForwardBy;
+        sideslippedMelody = melody.extract(start, melody.getSize());
+        adjustedMelody = melody.extract(0, start);
+        adjustedMelody.setSize(adjustedMelody.getSize());
+    }
+    
+    if (direction.equals("up"))
+    {//slide up
+        if (distance.equals("half"))
+        {
+            cm.execute(new ShiftPitchesCommand(1, sideslippedMelody, 
+                        0, length, 0, 128, notate.getScore().getKeySignature()));
+            themeUsageText += " up half step";
+        }
+        else if (distance.equals("whole"))
+        {
+            cm.execute(new ShiftPitchesCommand(2, sideslippedMelody, 
+                        0, length, 0, 128, notate.getScore().getKeySignature()));
+            themeUsageText += " up whole step";
+        }
+        else if (distance.equals("third"))
+        {
+            cm.execute(new ShiftPitchesCommand(3, sideslippedMelody, 
+                        0, length, 0, 128, notate.getScore().getKeySignature()));
+            themeUsageText += " up third";
+        }
+    }
+    else if (direction.equals("down"))
+    {//slide down
+        if (distance.equals("half"))
+        {
+            cm.execute(new ShiftPitchesCommand(-1, sideslippedMelody, 
+                        0, length, 0, 128, notate.getScore().getKeySignature()));
+            themeUsageText += " down half step";
+        }
+        else if (distance.equals("whole"))
+        {
+            cm.execute(new ShiftPitchesCommand(-2, sideslippedMelody, 
+                        0, length, 0, 128, notate.getScore().getKeySignature()));
+            themeUsageText += " down whole step";
+        }
+        else if (distance.equals("third"))
+        {
+            cm.execute(new ShiftPitchesCommand(-3, sideslippedMelody, 
+                        0, length, 0, 128, notate.getScore().getKeySignature()));
+            themeUsageText += " down third";
+        }
+    }
+    
+    //add two of the same melodies with one transposed
+    adjustedMelody.setSize(adjustedMelody.getSize()+sideslippedMelody.getSize());
+    adjustedMelody.pasteSlots(sideslippedMelody, start);
+    return adjustedMelody;
+}
+
+private MelodyPart barlineshift2(MelodyPart melody, String direction)
+{
+    MelodyPart adjustedMelody = melody.copy();
+    MelodyPart secondHalf;
+    int start = adjustedMelody.getSize();
+    
+    if (sideslip2)
+    {
+        start = melody.getSize()/2;
+        secondHalf = melody.extract(start, melody.getSize());
+        sideslip2 = false;
+    }
+    else
+    {
+        secondHalf = melody.copy();
+    }
+    
+    shiftForwardBy = shiftForwardByFinal;
+    int numBeats = random.nextInt(2) + 1;
+    shiftForwardBy *= numBeats;
+    if (direction.equals("forwards"))
+    {//shift forward
+        MelodyPart addRest = new MelodyPart(shiftForwardBy+start);
+        addRest.pasteSlots(secondHalf, shiftForwardBy);
+        
+        adjustedMelody.setSize(start + addRest.getSize());
+        adjustedMelody.pasteSlots(addRest, start);
+        
+       
+        barLineShiftForward = true;
+        
+    }
+    else if (direction.equals("backwards"))
+    {//shift backward
+        int shiftBackTo = start- shiftForwardBy;
+        adjustedMelody.setSize(start+secondHalf.getSize());
+        adjustedMelody.pasteSlots(secondHalf, shiftBackTo);
+    }
+    return adjustedMelody;
+}
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton CancelButton;
     private java.awt.Label ExpandPreferenceTitle;
@@ -4094,11 +5114,13 @@ public boolean inRange(MelodyPart melody)
     private java.awt.Label SoloGeneratorTitle;
     private java.awt.Label SoloGeneratorTitle1;
     private java.awt.Label SoloGeneratorTitle2;
+    private java.awt.Label SoloGeneratorTitle3;
     private javax.swing.JLabel TransformationOrder;
     private javax.swing.JButton YesButton;
     private javax.swing.JLabel areYouSure;
     private javax.swing.JFrame barLineShiftPreference;
     private javax.swing.JButton barLineShiftPreferencesButton;
+    private javax.swing.JToggleButton barlineshiftButton;
     private javax.swing.JButton cancelButton;
     private javax.swing.JMenuItem cascadeMI;
     private javax.swing.JButton cellOkbutton;
@@ -4107,17 +5129,24 @@ public boolean inRange(MelodyPart melody)
     private javax.swing.JLabel chooseName;
     private javax.swing.JMenuItem closeWindowMI;
     private javax.swing.JButton currentSelectionJButton;
+    private javax.swing.JFrame customizeSolo;
+    private javax.swing.JButton customizeSoloButton;
     private javax.swing.JButton deleteRowbutton;
     private javax.swing.JDialog deleteThemeDialog;
     private javax.swing.JButton deleteThemebutton;
     private javax.swing.JDialog enteredIncorrectly;
+    private javax.swing.JToggleButton expandButton;
+    private javax.swing.JRadioButton expandBy2RadioButton;
+    private javax.swing.JRadioButton expandBy3RadioButton;
     private javax.swing.JFrame expandPreference;
     private javax.swing.JButton expandPreferenceButton;
     private javax.swing.JButton generateSoloJButton;
     private javax.swing.JButton generateThemeJButton;
+    private javax.swing.JRadioButton halfStepRadioButton;
+    private javax.swing.JRadioButton halfStepRadioButton1;
+    private javax.swing.JToggleButton invertButton;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -4131,12 +5160,22 @@ public boolean inRange(MelodyPart melody)
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
+    private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel30;
+    private javax.swing.JLabel jLabel31;
+    private javax.swing.JLabel jLabel32;
+    private javax.swing.JLabel jLabel33;
+    private javax.swing.JLabel jLabel34;
+    private javax.swing.JLabel jLabel35;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -4144,8 +5183,15 @@ public boolean inRange(MelodyPart melody)
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
     private javax.swing.JPopupMenu.Separator jSeparator5;
     private javax.swing.JMenuItem loadThemesMI;
     private javax.swing.JDialog nameErrorMessage;
@@ -4153,6 +5199,8 @@ public boolean inRange(MelodyPart melody)
     private javax.swing.JLabel namePicked;
     private javax.swing.JDialog noRowSelected;
     private javax.swing.JLabel noThemeProbLabel;
+    private javax.swing.JButton pasteToLeadsheetButton;
+    private javax.swing.JButton playThemeButton;
     private javax.swing.JSlider probExpandby2or3;
     private javax.swing.JTextField probHalf;
     private javax.swing.JSlider probShiftForwardorBackSlider;
@@ -4165,31 +5213,50 @@ public boolean inRange(MelodyPart melody)
     private javax.swing.JLabel rangeWrong1;
     private javax.swing.JLabel rangeWrong2;
     private javax.swing.JDialog resetCheck;
+    private javax.swing.JButton resetTransformationChoicesButton;
+    private javax.swing.JToggleButton reverseButton;
     private javax.swing.JMenuBar roadmapMenuBar;
     private javax.swing.JMenuItem saveAsAdvice;
+    private javax.swing.JButton setAllProbButton;
     private javax.swing.JTextField setAllProbTextField;
     private javax.swing.JButton setProbToZeroButton;
+    private javax.swing.JRadioButton shiftBackwardRadioButton;
+    private javax.swing.JRadioButton shiftForwardRadioButton;
+    private javax.swing.JToggleButton sideslipButton;
+    private javax.swing.JRadioButton sideslipDownRadioButton;
     private javax.swing.JFrame sideslipPreference;
+    private javax.swing.JRadioButton sideslipUpRadioButton;
     private javax.swing.JTable soloTable;
     private javax.swing.JScrollPane soloTableScrollPane;
     private javax.swing.JToggleButton stopPlaytoggle;
     private javax.swing.JLabel themeIntervalLabel;
     private javax.swing.JTextField themeIntervalTextField;
     private javax.swing.JList themeList;
+    private javax.swing.JList themeList1;
     private javax.swing.JScrollPane themeListScrollPane;
+    private javax.swing.JScrollPane themeListScrollPane1;
     private javax.swing.JTextField themeProbTextField;
     private javax.swing.JScrollPane themeUsageScrollPane;
     private javax.swing.JTextArea themeUsageTextArea;
+    private javax.swing.JRadioButton thirdRadioButton;
+    private javax.swing.JRadioButton thirdRadioButton1;
     private javax.swing.JComboBox trans1ComboBox;
     private javax.swing.JComboBox trans2ComboBox;
     private javax.swing.JComboBox trans3ComboBox;
     private javax.swing.JComboBox trans4ComboBox;
     private javax.swing.JComboBox trans5ComboBox;
     private javax.swing.JComboBox trans6ComboBox;
+    private javax.swing.JScrollPane transformationsUsed;
+    private javax.swing.JTextArea transformationsUsedTextArea;
+    private javax.swing.JToggleButton transposeButton;
+    private javax.swing.JRadioButton transposeDownRadioButton;
+    private javax.swing.JRadioButton transposeUpRadioButton;
     private javax.swing.JLabel tryAgain;
     private javax.swing.JLabel tryAgain1;
     private javax.swing.JLabel tryAgain2;
     private javax.swing.JLabel typedWrong;
+    private javax.swing.JRadioButton wholeStepRadioButton;
+    private javax.swing.JRadioButton wholeStepRadioButton1;
     private javax.swing.JMenu windowMenu;
     private javax.swing.JSeparator windowMenuSeparator;
     private javax.swing.JButton yesdeletethemeButton;
