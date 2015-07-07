@@ -96,15 +96,23 @@ public static Transform makeTransformWithIdentities()
  */
 public void addSubstitution(Substitution sub)
 {
+    /*Substitution addToThis = null;
     for(Substitution subst : substitutions){
         if(subst.getName().equals(sub.getName())){
-            for(Transformation t : sub.transformations){
-                subst.addTransformation(t);
-            }
-            return;
+            addToThis = subst;
+            break;
         }
     }
+    if(addToThis!=null){
+        System.out.println(addToThis.equals(sub));
+        for(Transformation t : sub.transformations){
+            addToThis.addTransformation(t.copy());
+        }
+    }else{
+       substitutions.add(sub); 
+    }*/
     substitutions.add(sub);
+    
 }
 
 public Substitution getSubstitution(String name) 
