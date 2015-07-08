@@ -370,14 +370,32 @@ public Transform createBlockTransform(MelodyPart outline,
         String relPitch = (String)NoteConverter.noteToRelativePitch(origNote, chord).second();
         String nameString = "first-rel-pitch-" + relPitch;
         
-        Substitution substitution = transform.getSubstitution(nameString);
-    
+        //look for a sub in the transform with the same name
+        Substitution substitution;
+        int index = transform.indexOf(nameString);
+        
+        //if you found one, remove it
+        if(index != -1){
+            substitution = transform.substitutions.remove(index);
+        }else{
+            //if not, make a new sub with that name
+            substitution = new Substitution();
+            substitution.setName(nameString);
+        }
+        //pass in old substitution to add new transformations to
         substitution = createBlockSubstitution(substitution,
                                                             outlinePart, 
                                                             transPart, 
                                                             chord,
                                                             chordPart);
-        transform.addSubstitution(substitution);
+        //if it was in the list, put the sub back where you found it
+        if(index != -1){
+            transform.substitutions.add(index, substitution);
+        }else{
+            //add it to the end
+            transform.addSubstitution(substitution);
+        }
+        
         slot = nextSlot;
     }
     
@@ -1227,6 +1245,7 @@ public Transform merge(Transform t1, Transform t2){
     
     return merged;
 }
+
 
 
 private boolean isValid(int trend){
