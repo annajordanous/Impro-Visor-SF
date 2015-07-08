@@ -60,6 +60,8 @@ public class Style
   public static final String USE_PREVIOUS_STYLE = "*";
   
   private static int defaultDrumPatternDuration = 480;
+  
+  private static boolean override;
 
   /**
    * the random number generator for styles
@@ -1619,7 +1621,6 @@ public long render(MidiSequence seq,
 
     return time;
   }
-
 
   /**
    * Extend the currentChord chord based on a previous chord.

@@ -21,8 +21,10 @@
 package imp.data;
 
 import imp.Constants;
+import imp.ImproVisor;
 import imp.brickdictionary.Block;
 import imp.brickdictionary.ChordBlock;
+import imp.gui.Notate;
 import imp.util.Preferences;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -30,6 +32,8 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.Track;
+import javax.swing.JTable;
+import javax.swing.table.TableModel;
 
 /**
  * SectionInfo was originally done by Stephen Jones when sections were
@@ -672,10 +676,10 @@ public long render(MidiSequence seq,
       {
         m.next();
       }
-
+    
     while( k.hasNext() ) //&& (endLimitIndex == ENDSCORE || endIndex <= endLimitIndex) )
-      {
-        SectionRecord record = k.next();
+      { 
+        SectionRecord record = k.next();        
         Style style;
         if( record.getUsePreviousStyle() )
           {
