@@ -5,6 +5,7 @@
  */
 package imp.lickgen.transformations;
 import imp.data.*;
+import imp.lickgen.NoteConverter;
 import polya.Polylist;
 
 /**
@@ -82,6 +83,17 @@ public class NoteChordPair {
     public void setDuration(int duration){
         note.setRhythmValue(duration);
     }
+    
+    public String getRelativePitch()
+    {
+        if(!note.isRest()){
+            return (String)NoteConverter.noteToRelativePitch(note, chord).second();
+        }
+        else{
+            return "rest";
+        }
+    }
+        
     
 //    @Override
 //    public String toString(){
