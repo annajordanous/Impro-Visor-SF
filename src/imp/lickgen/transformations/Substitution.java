@@ -216,7 +216,22 @@ public void addNewTransformation()
  */
 public void addTransformation(Transformation trans)
 {
-    transformations.add(trans);
+  //  transformations.add(trans);
+    int index = transformations.indexOf(trans);
+    //transformations.remove(trans);
+    int newWeight = trans.getWeight();
+    while(transformations.contains(trans)){
+        int transIndex = transformations.indexOf(trans);
+        Transformation copy = transformations.remove(transIndex);
+        newWeight += copy.getWeight();
+        hasChanged = true;
+    }
+    trans.setWeight(newWeight);
+    if(index>0){
+        transformations.add(index, trans); 
+    }else{
+        transformations.add(trans);
+    }
 }
 
 public void clean(){
