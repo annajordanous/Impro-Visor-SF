@@ -284,10 +284,10 @@ public void setTableColumnWidths()
         setProbToZeroButton = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
+        customizeSoloButton = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         rangeChooserButton = new javax.swing.JButton();
         jLabel19 = new javax.swing.JLabel();
-        customizeSoloButton = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         trans2ComboBox = new javax.swing.JComboBox();
         trans1ComboBox = new javax.swing.JComboBox();
@@ -864,7 +864,6 @@ public void setTableColumnWidths()
         customizeSolo.setAlwaysOnTop(true);
         customizeSolo.setLocation(new java.awt.Point(10, 10));
         customizeSolo.setLocationByPlatform(true);
-        customizeSolo.setPreferredSize(new java.awt.Dimension(1100, 900));
         customizeSolo.setSize(new java.awt.Dimension(1100, 900));
         customizeSolo.addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
@@ -1315,8 +1314,9 @@ public void setTableColumnWidths()
 
         setLocation(new java.awt.Point(10, 10));
         setLocationByPlatform(true);
-        setPreferredSize(new java.awt.Dimension(1500, 800));
-        setSize(new java.awt.Dimension(1500, 800));
+        setMinimumSize(new java.awt.Dimension(1000, 800));
+        setPreferredSize(new java.awt.Dimension(1100, 775));
+        setSize(new java.awt.Dimension(1100, 775));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 ThemeWeaver.this.windowClosed(evt);
@@ -1392,7 +1392,7 @@ public void setTableColumnWidths()
         gridBagConstraints.gridheight = 6;
         gridBagConstraints.ipadx = 680;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
-        gridBagConstraints.insets = new java.awt.Insets(0, 15, -38, 0);
+        gridBagConstraints.insets = new java.awt.Insets(0, 20, -38, 0);
         getContentPane().add(soloTableScrollPane, gridBagConstraints);
 
         themeListScrollPane.setMaximumSize(new java.awt.Dimension(0, 0));
@@ -1429,6 +1429,7 @@ public void setTableColumnWidths()
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 0.3;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 10);
         getContentPane().add(themeListScrollPane, gridBagConstraints);
 
         themeUsageScrollPane.setMinimumSize(new java.awt.Dimension(300, 100));
@@ -1578,9 +1579,9 @@ public void setTableColumnWidths()
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 12;
-        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         getContentPane().add(currentSelectionJButton, gridBagConstraints);
 
@@ -1595,7 +1596,7 @@ public void setTableColumnWidths()
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.ipadx = 32;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
@@ -1609,7 +1610,7 @@ public void setTableColumnWidths()
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
         jPanel1.add(expandPreferenceButton, gridBagConstraints);
@@ -1622,7 +1623,7 @@ public void setTableColumnWidths()
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         jPanel1.add(jButton1, gridBagConstraints);
 
@@ -1634,7 +1635,7 @@ public void setTableColumnWidths()
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         jPanel1.add(barLineShiftPreferencesButton, gridBagConstraints);
 
@@ -1646,7 +1647,7 @@ public void setTableColumnWidths()
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         jPanel1.add(deleteRowbutton, gridBagConstraints);
 
@@ -1659,7 +1660,7 @@ public void setTableColumnWidths()
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
         gridBagConstraints.weightx = 2.0;
@@ -1695,14 +1696,15 @@ public void setTableColumnWidths()
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         jPanel3.add(setAllProbButton, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 6;
         jPanel1.add(jPanel3, gridBagConstraints);
 
         jButton2.setText("Set All Probabilities Equal To 1st Theme");
@@ -1713,7 +1715,7 @@ public void setTableColumnWidths()
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         jPanel1.add(jButton2, gridBagConstraints);
 
@@ -1726,21 +1728,37 @@ public void setTableColumnWidths()
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 6;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         jPanel1.add(setProbToZeroButton, gridBagConstraints);
 
         jLabel3.setText("Tranformation Preferences:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridy = 1;
         jPanel1.add(jLabel3, gridBagConstraints);
 
         jLabel11.setText("Edit Table:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridy = 1;
         jPanel1.add(jLabel11, gridBagConstraints);
+
+        customizeSoloButton.setText("Customize Solo");
+        customizeSoloButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                customizeSoloButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.ipadx = 50;
+        gridBagConstraints.ipady = 20;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 10, 0);
+        jPanel1.add(customizeSoloButton, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -1774,22 +1792,6 @@ public void setTableColumnWidths()
         gridBagConstraints.gridy = 3;
         gridBagConstraints.gridwidth = 2;
         getContentPane().add(jPanel2, gridBagConstraints);
-
-        customizeSoloButton.setText("Customize Solo");
-        customizeSoloButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                customizeSoloButtonActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 10;
-        gridBagConstraints.gridheight = 3;
-        gridBagConstraints.ipadx = 50;
-        gridBagConstraints.ipady = 20;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
-        gridBagConstraints.insets = new java.awt.Insets(20, 0, 0, 0);
-        getContentPane().add(customizeSoloButton, gridBagConstraints);
 
         jPanel5.setLayout(new java.awt.GridBagLayout());
 
@@ -3308,7 +3310,7 @@ boolean[] canEdit = new boolean[]
   };
 int[] columnWidths = new int[]
   {
-    80, 4, 80, 3, 30, 5, 5, 5, 5, 40
+    40, 4, 40, 3, 10, 5, 5, 5, 5, 40
   };
 int[] columnAdjustment =
   {
