@@ -804,7 +804,7 @@ public static Polylist getVoicingAndExtensionList(ChordSymbol chord,
     //---------------------------------------------------------------------------------------------//
     
     /*Init Dan's Classes*/
-    if(ImproVisor.override==true){
+    if(style.getVoicingType().equals("custom")){
         AutomaticVoicingSettings avs= ImproVisor.avs;
         VoicingGenerator vgen=new VoicingGenerator();
         HandManager handyMan=new HandManager();

@@ -34,6 +34,7 @@ String styleName;
 Style style = null;
 int index;
 boolean isPhrase;
+boolean useCustomVoicing = true;
 
 int tempo;
 String timeSig;
@@ -157,5 +158,14 @@ public String toString()
   {
     return "(Section " + styleName + " " + index + " " + isPhrase + ")"; 
   }
+
+public boolean getUseCustomVoicing(){
+    return useCustomVoicing;
+}
+
+public void setUseCustomVoicing(boolean custom){
+    useCustomVoicing = custom;
+}
+
 
 }

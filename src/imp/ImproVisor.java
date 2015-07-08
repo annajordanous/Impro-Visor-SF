@@ -490,8 +490,7 @@ public static void main(String[] args) throws InvalidMidiDataException
         getUserDirectory();
         instance = new ImproVisor(leadsheet);
         avs=new AutomaticVoicingSettings();
-        avs.setDefaults();
-        override = false;
+        avs.setDefaults(); 
         
  
   }
@@ -504,13 +503,7 @@ public AutomaticVoicingSettings getAVS(){
     return avs;
 }
 
-public void setOverride(boolean ov){
-    this.override = ov;
-}
-    
-public boolean getOverride(){
-    return override;
-}
+
 
 /**
  * Get the directory where user Impro-Visor files are stored.

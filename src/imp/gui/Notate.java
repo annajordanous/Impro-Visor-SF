@@ -481,6 +481,10 @@ private VoicingTableModel voicingTableModel = new VoicingTableModel();
 private DefaultListModel voicingSequenceListModel = new DefaultListModel();
 private imp.gui.VoicingKeyboard keyboard = null;
 
+public JTable getSectionTable(){
+    return sectionTable;
+}
+
 public imp.gui.VoicingKeyboard getKeyboard(){
     return keyboard;
 }
@@ -2378,11 +2382,11 @@ public Critic getCritic()
                 {null, null, null, null, null, null}
             },
             new String [] {
-                "Phrase", "Start", "End", "Bars", "Style", "Options"
+                "Phrase", "Start", "End", "Bars", "Style", "Custom Voicing Type"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
             };
             boolean[] canEdit = new boolean [] {
                 false, true, false, false, false, false
@@ -6983,11 +6987,11 @@ public Critic getCritic()
             }
         });
         addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosing(java.awt.event.WindowEvent evt) {
-                formWindowClosing(evt);
-            }
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 notateWIndowClosed(evt);
+            }
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
             }
         });
         addKeyListener(new java.awt.event.KeyAdapter() {
@@ -7162,7 +7166,6 @@ public Critic getCritic()
         showAdviceButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         showAdviceButton.setMaximumSize(new java.awt.Dimension(30, 30));
         showAdviceButton.setMinimumSize(new java.awt.Dimension(30, 30));
-        showAdviceButton.setOpaque(true);
         showAdviceButton.setPreferredSize(new java.awt.Dimension(30, 30));
         showAdviceButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -7180,7 +7183,6 @@ public Critic getCritic()
         improviseButton.setIconTextGap(0);
         improviseButton.setMaximumSize(new java.awt.Dimension(50, 30));
         improviseButton.setMinimumSize(new java.awt.Dimension(50, 30));
-        improviseButton.setOpaque(true);
         improviseButton.setPreferredSize(new java.awt.Dimension(50, 30));
         improviseButton.setRequestFocusEnabled(false);
         improviseButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -7238,7 +7240,6 @@ public Critic getCritic()
         freezeLayoutButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         freezeLayoutButton.setMaximumSize(new java.awt.Dimension(45, 30));
         freezeLayoutButton.setMinimumSize(new java.awt.Dimension(45, 30));
-        freezeLayoutButton.setOpaque(true);
         freezeLayoutButton.setPreferredSize(new java.awt.Dimension(45, 20));
         freezeLayoutButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -7256,7 +7257,6 @@ public Critic getCritic()
         colorationButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         colorationButton.setMaximumSize(new java.awt.Dimension(40, 30));
         colorationButton.setMinimumSize(new java.awt.Dimension(40, 30));
-        colorationButton.setOpaque(true);
         colorationButton.setPreferredSize(new java.awt.Dimension(40, 30));
         colorationButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -7275,7 +7275,6 @@ public Critic getCritic()
         smartEntryButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         smartEntryButton.setMaximumSize(new java.awt.Dimension(45, 30));
         smartEntryButton.setMinimumSize(new java.awt.Dimension(45, 30));
-        smartEntryButton.setOpaque(true);
         smartEntryButton.setPreferredSize(new java.awt.Dimension(45, 30));
         smartEntryButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -7481,7 +7480,6 @@ public Critic getCritic()
         loopButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         loopButton.setMaximumSize(new java.awt.Dimension(30, 20));
         loopButton.setMinimumSize(new java.awt.Dimension(30, 20));
-        loopButton.setOpaque(true);
         loopButton.setPreferredSize(new java.awt.Dimension(30, 20));
         loopButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -7627,7 +7625,6 @@ public Critic getCritic()
         stepInputBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         stepInputBtn.setMaximumSize(new java.awt.Dimension(30, 30));
         stepInputBtn.setMinimumSize(new java.awt.Dimension(30, 30));
-        stepInputBtn.setOpaque(true);
         stepInputBtn.setPreferredSize(new java.awt.Dimension(30, 30));
         stepInputBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -7754,7 +7751,6 @@ public Critic getCritic()
         allMuteToolBarBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         allMuteToolBarBtn.setMaximumSize(new java.awt.Dimension(40, 20));
         allMuteToolBarBtn.setMinimumSize(new java.awt.Dimension(32, 20));
-        allMuteToolBarBtn.setOpaque(true);
         allMuteToolBarBtn.setPreferredSize(new java.awt.Dimension(32, 20));
         allMuteToolBarBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -7993,7 +7989,6 @@ public Critic getCritic()
         earlyScrollBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         earlyScrollBtn.setMaximumSize(new java.awt.Dimension(40, 35));
         earlyScrollBtn.setMinimumSize(new java.awt.Dimension(40, 35));
-        earlyScrollBtn.setOpaque(true);
         earlyScrollBtn.setPreferredSize(new java.awt.Dimension(40, 35));
         earlyScrollBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -8154,12 +8149,12 @@ public Critic getCritic()
 
         openRecentLeadsheetMenu.setText("Open Recent Leadsheet (same window)");
         openRecentLeadsheetMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                populateRecentFileMenu(evt);
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                populateRecentFileMenu(evt);
             }
         });
 
@@ -8175,12 +8170,12 @@ public Critic getCritic()
 
         openRecentLeadsheetNewWindowMenu.setText("Open Recent Leadsheet (new window)");
         openRecentLeadsheetNewWindowMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                populateRecentLeadsheetNewWindow(evt);
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                populateRecentLeadsheetNewWindow(evt);
             }
         });
 
@@ -9127,12 +9122,12 @@ public Critic getCritic()
             }
         });
         notateGrammarMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                notateGrammarMenuMenuSelected(evt);
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                notateGrammarMenuMenuSelected(evt);
             }
         });
         notateGrammarMenu.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -9150,12 +9145,12 @@ public Critic getCritic()
         windowMenu.setMnemonic('W');
         windowMenu.setText("Window");
         windowMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                windowMenuMenuSelected(evt);
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                windowMenuMenuSelected(evt);
             }
         });
 
@@ -11973,8 +11968,8 @@ public Object getValueAt(int row, int column)
           }
         case 4: //styleName
             return " " + sectionInfo.getSectionRecordByIndex(row).getStyleName();
-        case 5: //tempo
-            return null;
+        case 5: //custom
+            return sectionInfo.getSectionRecordByIndex(row).getUseCustomVoicing();
         case 6: //Time Sig.
             return null;
         case 7: //Key Sig.
@@ -11993,8 +11988,15 @@ public void setValueAt(Object aValue, int row, int column)
       {
         case 0:
             sectionInfo.getSectionRecordByIndex(row).setIsPhrase((Boolean) aValue);
+            sectionInfo.setSpecificCell(aValue, row, column);
+            break;
+        case 5:
+            sectionInfo.getSectionRecordByIndex(row).setUseCustomVoicing(aValue.equals("true"));
+            sectionInfo.setSpecificCell(aValue, row, column);
+            break;
         default:
             sectionInfo.setSpecificCell(aValue, row, column);
+            break;
       }
     tableRefresh();
   }
@@ -12020,7 +12022,7 @@ public void addARow()
         new Integer(0),
         new Integer(0),
         "",
-        null
+        new JCheckBox()
       });
   }
 

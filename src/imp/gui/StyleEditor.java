@@ -3653,8 +3653,7 @@ public void updateAllDrumPatterns(String name, String rules)
         chordOctaveLabel = new javax.swing.JLabel();
         voicingLabel = new javax.swing.JLabel();
         voicingType = new javax.swing.JComboBox();
-        advancedSettings = new javax.swing.JButton();
-        chordAttOverride = new java.awt.Checkbox();
+        customSettings = new javax.swing.JButton();
         melodySwingPanel = new javax.swing.JPanel();
         swingTextField = new javax.swing.JTextField();
         compSwingPanel1 = new javax.swing.JPanel();
@@ -4331,11 +4330,11 @@ public void updateAllDrumPatterns(String name, String rules)
         chordHighLabel.setToolTipText("The upper range for the chord part.");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.gridheight = 2;
-        gridBagConstraints.ipady = 7;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(6, 30, 0, 0);
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
         chordAttrPanel.add(chordHighLabel, gridBagConstraints);
 
         chordLowLabel.setFont(new java.awt.Font("Lucida Grande", 1, 11)); // NOI18N
@@ -4344,10 +4343,11 @@ public void updateAllDrumPatterns(String name, String rules)
         chordLowLabel.setToolTipText("The lower range for the chord part.");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 7;
-        gridBagConstraints.ipady = 7;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(8, 30, 0, 0);
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
         chordAttrPanel.add(chordLowLabel, gridBagConstraints);
 
         chordHighNote.setMaximumRowCount(12);
@@ -4362,12 +4362,11 @@ public void updateAllDrumPatterns(String name, String rules)
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.gridheight = 3;
-        gridBagConstraints.ipadx = -22;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(7, 4, 0, 0);
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
         chordAttrPanel.add(chordHighNote, gridBagConstraints);
 
         chordLowNote.setMaximumRowCount(12);
@@ -4382,10 +4381,11 @@ public void updateAllDrumPatterns(String name, String rules)
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 7;
-        gridBagConstraints.ipadx = -12;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(8, 7, 0, 0);
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
         chordAttrPanel.add(chordLowNote, gridBagConstraints);
 
         chordHighOctave.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
@@ -4397,12 +4397,12 @@ public void updateAllDrumPatterns(String name, String rules)
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.ipadx = -3;
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(9, 6, 0, 0);
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
         chordAttrPanel.add(chordHighOctave, gridBagConstraints);
 
         chordLowOctave.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
@@ -4414,41 +4414,40 @@ public void updateAllDrumPatterns(String name, String rules)
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 7;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.gridheight = 2;
-        gridBagConstraints.ipadx = -3;
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(13, 9, 19, 0);
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
         chordAttrPanel.add(chordLowOctave, gridBagConstraints);
 
         chordOctaveLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         chordOctaveLabel.setText("Octave:");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridheight = 2;
-        gridBagConstraints.ipadx = 33;
-        gridBagConstraints.ipady = 5;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(18, 6, 0, 0);
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
         chordAttrPanel.add(chordOctaveLabel, gridBagConstraints);
 
         voicingLabel.setFont(new java.awt.Font("Lucida Grande", 1, 11)); // NOI18N
         voicingLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         voicingLabel.setText("Voicing Type:");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 6;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.ipadx = 12;
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(18, 2, 0, 0);
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
         chordAttrPanel.add(voicingLabel, gridBagConstraints);
 
         voicingType.setMaximumRowCount(10);
-        voicingType.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "any", "closed", "open", "quartal", "shout" }));
-        voicingType.setSelectedIndex(2);
+        voicingType.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "custom", "any", "closed", "open", "quartal", "shout" }));
         voicingType.setMinimumSize(new java.awt.Dimension(150, 22));
         voicingType.setPreferredSize(new java.awt.Dimension(150, 22));
         voicingType.addActionListener(new java.awt.event.ActionListener() {
@@ -4457,50 +4456,28 @@ public void updateAllDrumPatterns(String name, String rules)
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 7;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.gridheight = 3;
-        gridBagConstraints.ipadx = -78;
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(18, 4, 0, 0);
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
         chordAttrPanel.add(voicingType, gridBagConstraints);
 
-        advancedSettings.setText("Advanced");
-        advancedSettings.addMouseListener(new java.awt.event.MouseAdapter() {
+        customSettings.setText("Custom");
+        customSettings.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                advancedSettingsMouseClicked(evt);
+                customSettingsMouseClicked(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 6;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.gridheight = 4;
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(7, 18, 0, 0);
-        chordAttrPanel.add(advancedSettings, gridBagConstraints);
-
-        chordAttOverride.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
-        chordAttOverride.setLabel("Override Basic with Advanced Settings");
-        chordAttOverride.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                chordAttOverrideMouseClicked(evt);
-            }
-        });
-        chordAttOverride.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                chordAttOverrideItemStateChanged(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 6;
-        gridBagConstraints.gridy = 7;
-        gridBagConstraints.gridwidth = 5;
-        gridBagConstraints.gridheight = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(13, 18, 19, 22);
-        chordAttrPanel.add(chordAttOverride, gridBagConstraints);
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
+        chordAttrPanel.add(customSettings, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -4570,7 +4547,6 @@ public void updateAllDrumPatterns(String name, String rules)
         muteChordToggle.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         muteChordToggle.setMaximumSize(new java.awt.Dimension(60, 20));
         muteChordToggle.setMinimumSize(new java.awt.Dimension(60, 20));
-        muteChordToggle.setOpaque(true);
         muteChordToggle.setPreferredSize(new java.awt.Dimension(60, 20));
         muteChordToggle.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -4635,7 +4611,6 @@ public void updateAllDrumPatterns(String name, String rules)
         playToggle.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         playToggle.setMaximumSize(new java.awt.Dimension(60, 20));
         playToggle.setMinimumSize(new java.awt.Dimension(60, 20));
-        playToggle.setOpaque(true);
         playToggle.setPreferredSize(new java.awt.Dimension(60, 20));
         playToggle.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -7967,7 +7942,7 @@ private void openStyleMixer()
         }  
     }//GEN-LAST:event_weightField0ActionPerformed
 
-    private void advancedSettingsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_advancedSettingsMouseClicked
+    private void customSettingsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_customSettingsMouseClicked
 
         AutomaticVoicingSettings avs=ImproVisor.avs;
         VoicingGenerator vgen=new VoicingGenerator();
@@ -7976,22 +7951,7 @@ private void openStyleMixer()
         conPanel.setVisible(true);
         
 
-    }//GEN-LAST:event_advancedSettingsMouseClicked
-
-    private void chordAttOverrideMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_chordAttOverrideMouseClicked
-        
-    }//GEN-LAST:event_chordAttOverrideMouseClicked
-
-    private void chordAttOverrideItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_chordAttOverrideItemStateChanged
-        boolean state = chordAttOverride.getState();
-        System.out.println("State: "+state);
-        if(state==true){
-            ImproVisor.override=true;
-        }
-        else{
-            ImproVisor.override=false;
-        }
-    }//GEN-LAST:event_chordAttOverrideItemStateChanged
+    }//GEN-LAST:event_customSettingsMouseClicked
 
     
 private void usePianoRoll()
@@ -8034,7 +7994,6 @@ public void unusePianoRoll()
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField accompanimentSwingTextField;
     private javax.swing.JButton addColumnButton;
-    private javax.swing.JButton advancedSettings;
     private javax.swing.JPanel bassAttrPanel;
     private javax.swing.JLabel bassBaseLabel;
     private javax.swing.JComboBox bassBaseNote;
@@ -8059,7 +8018,6 @@ public void unusePianoRoll()
     private javax.swing.JLabel bpmLabel;
     private javax.swing.JMenuItem cascadeMI;
     private javax.swing.JPanel cellsPanel;
-    private java.awt.Checkbox chordAttOverride;
     private javax.swing.JPanel chordAttrPanel;
     private javax.swing.JLabel chordHighLabel;
     private javax.swing.JComboBox chordHighNote;
@@ -8097,6 +8055,7 @@ public void unusePianoRoll()
     private javax.swing.JMenuItem copyCellsMI;
     private javax.swing.JButton copyColumnButton;
     private javax.swing.JButton copyRowButton;
+    private javax.swing.JButton customSettings;
     private javax.swing.JButton cutCellsButton;
     private javax.swing.JMenuItem cutCellsMI;
     private javax.swing.JButton cutColumnButton;
