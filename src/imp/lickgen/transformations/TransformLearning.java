@@ -366,9 +366,22 @@ public Transform createBlockTransform(MelodyPart outline,
         ChordPart chordPart = chords.extract(slot, nextSlot-1);
         Chord chord = chords.getCurrentChord(slot);
         
-        Note origNote = outline.getCurrentNote(0);
-        String relPitch = (String)NoteConverter.noteToRelativePitch(origNote, chord).second();
-        String nameString = "first-rel-pitch-" + relPitch;
+        Note origNote = outlinePart.getCurrentNote(0);
+        Chord firstChord = chordPart.getCurrentChord(0);
+        StringBuilder subName = new StringBuilder();
+        subName.append("first-rel-pitch-");
+        
+        if(firstChord.isNOCHORD()){
+            subName.replace(0,subName.length(), "no-rel-pitch");
+        }
+        else if(origNote.isRest()){
+            subName.append("rest");
+        }
+        else{
+            String relPitch = (String)NoteConverter.noteToRelativePitch(origNote, chord).second();
+            subName.append(relPitch);
+        }
+        String nameString = subName.toString();
         
         //look for a sub in the transform with the same name
         Substitution substitution;
