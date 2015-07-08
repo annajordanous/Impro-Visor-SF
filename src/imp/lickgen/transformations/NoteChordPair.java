@@ -86,11 +86,14 @@ public class NoteChordPair {
     
     public String getRelativePitch()
     {
-        if(!note.isRest()){
-            return (String)NoteConverter.noteToRelativePitch(note, chord).second();
+        if(note.isRest()){
+            return "rest";
+        }
+        else if(chord.isNOCHORD()){
+            return "none";
         }
         else{
-            return "rest";
+            return (String)NoteConverter.noteToRelativePitch(note, chord).second();
         }
     }
         
