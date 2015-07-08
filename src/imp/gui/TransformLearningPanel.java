@@ -20,6 +20,7 @@
  */
 package imp.gui;
 
+import imp.Constants;
 import imp.com.PasteCommand;
 import imp.data.Chord;
 import imp.data.ChordPart;
@@ -274,8 +275,7 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 6, 0);
         step2Panel.add(step2Label3, gridBagConstraints);
 
-        flattenValueComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Whole Note", "Half Note", "Quarter Note", "Eight Note", "Sixteenth Note" }));
-        flattenValueComboBox.setSelectedIndex(1);
+        flattenValueComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Whole Note", "Half Note", "Quarter Note", "Eight Note", "Sixteenth Note", "Measure Length", "Strong Beats", "Every Beat" }));
         flattenValueComboBox.setToolTipText("select the resolution to flatten at");
         flattenValueComboBox.setMinimumSize(new java.awt.Dimension(165, 25));
         flattenValueComboBox.setPreferredSize(new java.awt.Dimension(165, 25));
@@ -892,6 +892,7 @@ public class TransformLearningPanel extends javax.swing.JPanel {
     
     private int getResolution(String flattenValue)
     {
+        int [] metre = this.notate.getScore().getMetre();
         if(flattenValue.equals("Whole Note"))
             return 480;
         else if(flattenValue.equals("Half Note"))
@@ -906,8 +907,72 @@ public class TransformLearningPanel extends javax.swing.JPanel {
             return getResolution((String)flattenValueComboBox.getSelectedItem());
         else if(flattenValue.equals("Double Flatten Resolution"))
             return 2 * getResolution((String)flattenValueComboBox.getSelectedItem());
+        else if(flattenValue.equals("Every Beat"))
+            return beatLength(metre);
+        else if(flattenValue.equals("Measure Length"))
+            return measureLength(metre);
+        else if(flattenValue.equals("Strong Beats"))
+            return timeBetweenStrongBeats(metre);
         else
             return 480;
+    }
+    
+    /**
+     * beatLength
+     * @return length in slots of a single beat
+     */
+    private int beatLength(int [] metre){
+        return Constants.WHOLE/metre[1];
+    }
+    
+    /**
+     * beatsPerMeasure
+     * @return number of beats in a measure
+     */
+    private int beatsPerMeasure(int [] metre){
+        return metre[0];
+    }
+    
+    /**
+     * measureLength
+     * @return length of a measure in slots
+     */
+    private int measureLength(int [] metre){
+        return beatLength(metre)*beatsPerMeasure(metre);
+    }
+    
+    /**
+     * strongBeatsPerMeasure
+     * Determines number of strong beats per measure based on the top
+     * number in the time signature
+     * Could be improved. Right now, if there is some question as to whether
+     * something should be felt in two or in three, like in 6/8 or 12/8, 
+     * it default to a two feel
+     * @return number of strong beats per measure
+     */
+    private int strongBeatsPerMeasure(int [] metre){
+        int beatsPerMeasure = beatsPerMeasure(metre);
+        int strongBeats;
+   
+        if(beatsPerMeasure <= 3){               //  2/4, 3/4, ...
+            strongBeats = 1;
+        }else if(beatsPerMeasure % 2 == 0){     //  4/4, 6/8, 12/8, ...
+            strongBeats = 2;
+        }else if(beatsPerMeasure % 3 == 0){     //  9/8, ...
+            strongBeats = 3;
+        }else{                                  //  7/8, ...
+            strongBeats = 1;
+        }
+        
+        return strongBeats;
+    }
+    
+    /**
+     * timeBetweenStrongBeats
+     * @return length in slots between one strong beat and the next
+     */
+    private int timeBetweenStrongBeats(int [] metre){
+        return measureLength(metre) / strongBeatsPerMeasure(metre);
     }
     
     /**
