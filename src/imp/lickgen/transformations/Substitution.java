@@ -57,6 +57,23 @@ public Substitution ()
     hasChanged = false;
 }
 
+public Substitution copy(){
+    Substitution newSub = new Substitution();
+    
+    newSub.debug = this.debug;
+    for(Transformation t : transformations){
+        newSub.addTransformation(t.copy());
+    }
+    newSub.name = this.getName();
+    newSub.type = this.getType();
+    newSub.weight = this.getWeight();
+    newSub.enabled = this.getEnabled();
+    newSub.hasChanged = this.hasChanged();
+    
+    return newSub;
+    
+}
+
 /**
  * Creates a new Substitution that is created from the transformational grammar
  * in Polylist form

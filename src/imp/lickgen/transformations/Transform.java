@@ -96,31 +96,58 @@ public static Transform makeTransformWithIdentities()
  */
 public void addSubstitution(Substitution sub)
 {
-    /*Substitution addToThis = null;
-    for(Substitution subst : substitutions){
-        if(subst.getName().equals(sub.getName())){
-            addToThis = subst;
-            break;
-        }
-    }
-    if(addToThis!=null){
-        System.out.println(addToThis.equals(sub));
-        for(Transformation t : sub.transformations){
-            addToThis.addTransformation(t.copy());
-        }
+    
+    String name = sub.getName();
+    int index = indexOf(name);
+    if(index<0){
+        //if there isn't another sub with that name, add to the end
+        substitutions.add(sub); 
     }else{
-       substitutions.add(sub); 
-    }*/
-    substitutions.add(sub);
+        //remove old sub
+        Substitution oldSub = substitutions.remove(index);
+        Substitution merged = merge(oldSub, sub);
+        merged.setName(name);
+        substitutions.add(index, merged);
+    }
     
 }
 
-public Substitution getSubstitution(String name) 
-{
-    for(Substitution sub : substitutions){
-      if(sub.getName().equals(name))
-          return sub;
+public Substitution merge(Substitution s1, Substitution s2){
+    Substitution merged = new Substitution();
+    
+    ArrayList<Transformation> trans1 = s1.transformations;
+    ArrayList<Transformation> trans2 = s2.transformations;
+    
+    for(Transformation t : trans1){
+        merged.addTransformation(t);
     }
+    
+    for(Transformation t : trans2){
+        merged.addTransformation(t);
+    }
+    
+    return merged;
+}
+
+public int indexOf(String name){
+    for(int i = 0; i<substitutions.size(); i++){
+        if(substitutions.get(i).getName().equals(name)){
+            return i;
+        }
+    }
+    return -1;
+}
+
+public Substitution removeSubstitution(String name) 
+{
+    //if the substitution is there, remove it and return it
+    for(Substitution sub : substitutions){
+      if(sub.getName().equals(name)){
+          substitutions.remove(sub);
+          return sub;
+      }
+    }
+    //else, make a new substitution with that name and return it
     Substitution newSub = new Substitution();
     newSub.setName(name);
     return newSub;
