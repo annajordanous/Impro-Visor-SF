@@ -429,20 +429,6 @@ private Substitution createBlockSubstitution(Substitution sub,
                                                                     flatNotes);
     sub.addTransformation(transformation);
     
-    /*if(flatNotes > 1){
-        Transformation transformation = createTwoNoteBlockTransformation(outline, 
-                                                                         transformed, 
-                                                                         chordPart,
-                                                                         flatNotes);
-        sub.addTransformation(transformation);
-    }
-    else{
-        Transformation transformation = createOneNoteBlockTransformation(outline, 
-                                                                         transformed, 
-                                                                         chord);
-        sub.addTransformation(transformation);  
-    }*/
-    
     return sub;
 }
 /**
@@ -459,10 +445,14 @@ private Transformation createTwoNoteBlockTransformation(MelodyPart outline,
                                                         ChordPart chordPart,
                                                         int numNotes)
 {
-    Polylist transformation = Polylist.PolylistFromString(
-            "transformation" +
-            "(description generated-transformation)" + 
-            "(weight 1)");
+    Polylist transformation = Polylist.PolylistFromString("transformation");
+
+    String description = makeDescription(outline, chordPart);
+    
+    Polylist descriptionList = Polylist.PolylistFromString(description);
+    Polylist weight = Polylist.PolylistFromString("weight 1");
+    
+    transformation = transformation.addToEnd(descriptionList).addToEnd(weight);
     
     StringBuilder sourceNotes = new StringBuilder();
     sourceNotes.append("source-notes");
@@ -498,41 +488,7 @@ private Transformation createTwoNoteBlockTransformation(MelodyPart outline,
     trans.setTransformation(transformation);
     return trans;
 }
-/**
-* Creates a transform that transform the note in outline into the
-* transformed notes.
-* @param outline                     the flattened outline section
-* @param transformed                 the original melody section
-* @param chords                      the chordPart of the section
-* @return Polylist                   form of a Transform
-*/  
-private Transformation createOneNoteBlockTransformation(MelodyPart outline, 
-                                                        MelodyPart transformed, 
-                                                        Chord chord)
-{
-    
-    Polylist transformation = Polylist.PolylistFromString(
-            "transformation" + 
-            "(description generated-transformation)" + 
-            "(weight 1)" + 
-            "(source-notes n1)");
-    Polylist guardCondition = getWindowGuardCondition(outline, chord);
-    Polylist targetNotes = getWindowTargetNotes(outline, transformed, chord);
-    Polylist defaultTarget = Polylist.PolylistFromString("target-notes n1");
-    
-    transformation = transformation.addToEnd(guardCondition);
-    // if targetNotes are null, we just want to return the default
-    if(targetNotes != null)
-        transformation = transformation.addToEnd(targetNotes);
-    else
-        transformation = transformation.addToEnd(defaultTarget);
-    
-    Transformation trans = new Transformation();
-    
-    trans.setTransformation(transformation);
-    
-    return trans;
-}
+
 /**
 * Creates a guard condition for Windowing, or just one note
 * @param outline                     contains the outline note
@@ -640,50 +596,7 @@ private Polylist getTwoWindowGuardCondition(MelodyPart outline, ChordPart chords
     guardCondition = guardCondition.addToEnd(andEquals);
     return guardCondition;
 }
-/**
-* Creates target-notes for Windowing
-* @param outline                     contains the outline note
-* @param transformed                 what to transform the outline note into
-* @param chord                       the chord of the outline note
-* @return Polylist                   form of target notes
-*/  
-private Polylist getWindowTargetNotes(MelodyPart outline, 
-                                      MelodyPart transformed, 
-                                      Chord chord)
-    {
-        Polylist targetNotes = Polylist.PolylistFromString("target-notes");
-        
-        Note origNote = outline.getCurrentNote(0);
-        
-        PartIterator transNotes = transformed.iterator();
-        
-        if(origNote.isRest())
-            return null;
-        while(transNotes.hasNext())
-        {
-            Note toTransform = (Note)transNotes.next();
-            String duration = Note.getDurationString(toTransform.getRhythmValue());
-            Polylist setDuration = Polylist.PolylistFromString("set-duration");
-            setDuration = setDuration.addToEnd(duration);
-            
-            Polylist result;
-            
-            result = getTransposeDiatonicFunction(origNote, 
-                                                  toTransform, 
-                                                  "n1", 
-                                                  chord);
-            if(result == null)
-            {
-                return null;
-            }
-            
-            setDuration = setDuration.addToEnd(result);
-            
-            targetNotes = targetNotes.addToEnd(setDuration);
-        }
-        
-        return targetNotes;
-    }
+
 /**
  * Creates target-notes for Windowing
  * @param outline           contains the outline notes
@@ -743,7 +656,6 @@ private Polylist getTargetNotes(MelodyPart outline,
         while(transNotes.hasNext())
         {
             Note toTransform = (Note)transNotes.next();
-            String duration = Note.getDurationString(toTransform.getRhythmValue());
             
             //new code
             //use multiply-duration instead here: multiply_duration
@@ -1758,8 +1670,14 @@ private Transformation makeTrendTransformation(TrendSegment original, TrendSegme
         }
         return bestSource;
     }
-    
-    private Polylist makePitchComparison(MelodyPart outline, ChordPart chords) {
+    /**
+     * Used to generate the pitch comparison guard condition
+     * @param outline
+     * @param chords
+     * @return 
+     */
+    private Polylist makePitchComparison(MelodyPart outline, ChordPart chords) 
+    {
         Evaluate eval = new Evaluate(new Polylist());
         
         ArrayList<Chord> chordList = chords.getChords();
@@ -1780,6 +1698,39 @@ private Transformation makeTrendTransformation(TrendSegment original, TrendSegme
             Polylist greaterThan = Polylist.PolylistFromString("pitch>= n1 n2");
             return greaterThan;
         }
+    }
+    /**
+     * Used to generated the description of a learned transformation
+     * @param outline
+     * @param chords
+     * @return 
+     */
+    private String makeDescription(MelodyPart outline, ChordPart chords)
+    {
+        ArrayList<NoteChordPair> noteChordList = new ArrayList<NoteChordPair>();
+        ArrayList<Note> noteList = outline.getNoteList();
+        int slot = 0;
+        
+        for(Note note : noteList){
+            Chord currChord = chords.getCurrentChord(slot);
+            NoteChordPair newPair = new NoteChordPair(note, currChord);
+            noteChordList.add(newPair);
+            
+            slot = outline.getNextIndex(slot);
+        }
+        
+        StringBuilder description = new StringBuilder();
+        description.append("description ");
+        description.append("rel-pitch-");
+        description.append(noteChordList.get(0).getRelativePitch());
+        
+        for(int i = 1; i < noteChordList.size(); ++i){
+            description.append("-to-");
+            description.append(noteChordList.get(i).getRelativePitch());
+        }
+        
+        
+        return description.toString();
     }
     
 }
