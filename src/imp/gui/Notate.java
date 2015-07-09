@@ -1904,7 +1904,6 @@ public Critic getCritic()
         loopPanel = new javax.swing.JPanel();
         loopButton = new javax.swing.JToggleButton();
         loopSet = new javax.swing.JTextField();
-        countInPanel = new javax.swing.JPanel();
         countInCheckBox = new javax.swing.JCheckBox();
         playBtn = new javax.swing.JButton();
         pauseBtn = new javax.swing.JToggleButton();
@@ -7203,6 +7202,7 @@ public Critic getCritic()
         useSubstitutorCheckBox.setFocusable(false);
         useSubstitutorCheckBox.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         useSubstitutorCheckBox.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        useSubstitutorCheckBox.setIconTextGap(0);
         useSubstitutorCheckBox.setMargin(new java.awt.Insets(0, 0, 0, 0));
         useSubstitutorCheckBox.setMaximumSize(new java.awt.Dimension(30, 28));
         useSubstitutorCheckBox.setMinimumSize(new java.awt.Dimension(30, 28));
@@ -7554,29 +7554,22 @@ public Critic getCritic()
 
         playToolBar.add(loopPanel);
 
-        countInPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Count", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.ABOVE_TOP, new java.awt.Font("Dialog", 0, 10))); // NOI18N
-        countInPanel.setToolTipText("Check to count in two measures before tune is played.");
-        countInPanel.setMaximumSize(new java.awt.Dimension(50, 42));
-        countInPanel.setMinimumSize(new java.awt.Dimension(50, 50));
-        countInPanel.setPreferredSize(new java.awt.Dimension(50, 42));
-        countInPanel.setLayout(new java.awt.GridBagLayout());
-
+        countInCheckBox.setText("count");
         countInCheckBox.setToolTipText("Check to count in two measures before tune is played.");
-        countInCheckBox.setBorder(null);
+        countInCheckBox.setFocusable(false);
         countInCheckBox.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        countInCheckBox.setMaximumSize(new java.awt.Dimension(50, 42));
-        countInCheckBox.setMinimumSize(new java.awt.Dimension(50, 42));
-        countInCheckBox.setPreferredSize(new java.awt.Dimension(50, 42));
+        countInCheckBox.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        countInCheckBox.setIconTextGap(0);
+        countInCheckBox.setMaximumSize(new java.awt.Dimension(50, 30));
+        countInCheckBox.setMinimumSize(new java.awt.Dimension(50, 30));
+        countInCheckBox.setPreferredSize(new java.awt.Dimension(50, 30));
+        countInCheckBox.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
         countInCheckBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 countInCheckBoxActionPerformed(evt);
             }
         });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        countInPanel.add(countInCheckBox, gridBagConstraints);
-
-        playToolBar.add(countInPanel);
+        playToolBar.add(countInCheckBox);
 
         playBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/play.gif"))); // NOI18N
         playBtn.setToolTipText("Play the entire leadsheet, starting with the first chorus.\nTo play just the current chorus, select the first beat of that chorus and press Shift-Enter.");
@@ -7881,10 +7874,10 @@ public Critic getCritic()
         playToolBar.add(tempoPanel);
 
         transposeSpinner.setToolTipText("Transposes the playback the specified number of half steps (e.g. use -2 for Bb instruments, +3 for Eb).");
-        transposeSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Transpose", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 10))); // NOI18N
-        transposeSpinner.setMaximumSize(new java.awt.Dimension(65, 45));
-        transposeSpinner.setMinimumSize(new java.awt.Dimension(65, 45));
-        transposeSpinner.setPreferredSize(new java.awt.Dimension(65, 45));
+        transposeSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Transpose", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 11))); // NOI18N
+        transposeSpinner.setMaximumSize(new java.awt.Dimension(75, 45));
+        transposeSpinner.setMinimumSize(new java.awt.Dimension(75, 45));
+        transposeSpinner.setPreferredSize(new java.awt.Dimension(75, 45));
         transposeSpinner.setValue(0);
         transposeSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -7991,9 +7984,9 @@ public Critic getCritic()
 
         parallaxSpinner.setToolTipText("Sets the vertical parallax for mouse clicks on staves.");
         parallaxSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Parallax", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 10))); // NOI18N
-        parallaxSpinner.setMaximumSize(new java.awt.Dimension(55, 45));
-        parallaxSpinner.setMinimumSize(new java.awt.Dimension(55, 45));
-        parallaxSpinner.setPreferredSize(new java.awt.Dimension(55, 45));
+        parallaxSpinner.setMaximumSize(new java.awt.Dimension(60, 45));
+        parallaxSpinner.setMinimumSize(new java.awt.Dimension(60, 45));
+        parallaxSpinner.setPreferredSize(new java.awt.Dimension(60, 45));
         playToolBar.add(parallaxSpinner);
 
         earlyScrollBtn.setBackground(new java.awt.Color(51, 255, 255));
@@ -24762,7 +24755,6 @@ private ImageIcon pauseButton =
     private javax.swing.JMenuItem copyMelodyMI;
     private javax.swing.JMenuItem copyMelodySelectionToTextWindow;
     private javax.swing.JCheckBox countInCheckBox;
-    private javax.swing.JPanel countInPanel;
     private javax.swing.JCheckBoxMenuItem createRoadMapCheckBox;
     private javax.swing.JLabel currDirectoryLabel;
     private javax.swing.JPanel currentStyleTab;
