@@ -197,7 +197,6 @@ public MelodyPart apply(MelodyPart notes,
     }
     // Check that the melody satisfies the condition guard
     Boolean condition = (Boolean) eval.evaluate(conditionGuard);
-    
     // if not, just return null, since the transformation could not be applied
     if(condition == null)
     {
@@ -218,10 +217,10 @@ public MelodyPart apply(MelodyPart notes,
     
     // if the condition guard is satisfied, try to evaluate the target notes
     Evaluate targetEval = new Evaluate(eval.getFrame(),"get-note");
-    Polylist result = targetNotes.map(targetEval).flatten();
+    Polylist result = targetNotes.map(targetEval).flatten();//this line is causing problems
     MelodyPart resultingMP = new MelodyPart();
     PolylistEnum resultEnum = result.elements();
-    
+
     // get the total duration of the transformed notes
     int totalDurFinal = 0;
     while(resultEnum.hasMoreElements())

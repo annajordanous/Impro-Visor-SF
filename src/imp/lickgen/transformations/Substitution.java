@@ -134,6 +134,19 @@ public MelodyPart apply(MelodyPart notes,
                         int[] startingSlot, 
                         TransformPanel transformPanel)
 {
+    
+    //if it's a sub named after the rel pitch condition, check sub name first
+    String subName = this.getName();
+    String relPrefix = "first-rel-pitch-";
+    if(subName.contains(relPrefix)){
+        String relPitch = subName.substring(relPrefix.length());
+        NoteChordPair ncp = new NoteChordPair(notes.getCurrentNote(startingSlot[0]), chords.getCurrentChord(startingSlot[0]));
+        if(!ncp.getRelativePitch().equals(relPitch)){
+            return null;
+        }
+    }
+    
+    
     // for weighted random shuffling
     
     ArrayList<Transformation> full = new ArrayList<Transformation>();
@@ -166,7 +179,6 @@ public MelodyPart apply(MelodyPart notes,
             System.out.println("\t\t\tTrying trans: " + trans.getDescription());
         }
         MelodyPart result = trans.apply(notes, chords, newStartingSlot, transformPanel);
-
         if(!(result == null))
         {
             if(debug)
