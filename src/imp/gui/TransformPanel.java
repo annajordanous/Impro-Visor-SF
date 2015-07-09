@@ -1049,6 +1049,7 @@ public class TransformPanel extends javax.swing.JPanel {
     private void applySubstitutionsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_applySubstitutionsButtonActionPerformed
         // TODO add your handling code here:
         applySubstitutions();
+
     }//GEN-LAST:event_applySubstitutionsButtonActionPerformed
 
     private void revertSubstitutionsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_revertSubstitutionsButtonActionPerformed
@@ -1467,6 +1468,7 @@ public class TransformPanel extends javax.swing.JPanel {
      */
     public void applySubstitutions()
     {
+
         if(notate.getChordProg().getChords().isEmpty()){
             return;
         }
@@ -1479,6 +1481,7 @@ public class TransformPanel extends javax.swing.JPanel {
                                                                   false);
         ChordPart chords = notate.getChordProg().extract(start, stop);
         applySubstitutionsToPart(melody, chords);
+
     }
     
     public void updateButtons(){
@@ -1498,8 +1501,8 @@ public class TransformPanel extends javax.swing.JPanel {
      * @param chords 
      */
     public void applySubstitutionsToPart(MelodyPart melody, ChordPart chords)
-    {
-        
+    {  
+
         if(transform != null)
         {
             Stave stave = notate.getCurrentStave();

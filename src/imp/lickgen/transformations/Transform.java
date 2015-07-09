@@ -53,6 +53,16 @@ public Transform()
     substitutions = new ArrayList<Substitution>();
 }
 
+public Transform copy(){
+    Transform newTrans = new Transform();
+    newTrans.debug = debug;
+    newTrans.hasChanged = hasChanged;
+    for(Substitution s : substitutions){
+        newTrans.addSubstitution(s.copy());
+    }
+    return newTrans;
+}
+
 /**
  * Create a transform from a string containing a transformational grammar
  * @param subs                  String containing the grammar
@@ -112,7 +122,7 @@ public void addSubstitution(Substitution sub)
     
 }
 
-public Substitution merge(Substitution s1, Substitution s2){
+public static Substitution merge(Substitution s1, Substitution s2){
     Substitution merged = new Substitution();
     
     ArrayList<Transformation> trans1 = s1.transformations;
@@ -170,6 +180,10 @@ public void removeSubstitution(Substitution sub)
  */
 public MelodyPart applySubstitutionsToMelodyPart(MelodyPart melody, ChordPart chords, TransformPanel transformPanel)
 {
+    
+    //TIMING
+    long startTime = System.currentTimeMillis();
+    
     startingNotes = melody.copy();
     
     ArrayList<ArrayList<Substitution>> subTypes = new ArrayList<ArrayList<Substitution>>();
@@ -202,6 +216,12 @@ public MelodyPart applySubstitutionsToMelodyPart(MelodyPart melody, ChordPart ch
         
     }
     
+            
+    //TIMING
+    long stopTime = System.currentTimeMillis();
+    double timeInSecs = .001*(stopTime-startTime);
+    System.out.println("Time elapsed: "+timeInSecs);
+    
     return transMelody;
 }
 
@@ -217,7 +237,6 @@ private MelodyPart applySubstitutionType(ArrayList<Substitution> substitutions,
                                          ChordPart chords,
                                          TransformPanel transformPanel)
 {
-    
     
     MelodyPart subbedMP = new MelodyPart();
     
@@ -244,7 +263,7 @@ private MelodyPart applySubstitutionType(ArrayList<Substitution> substitutions,
         ArrayList<Substitution> full = new ArrayList<Substitution>();
         for(Substitution sub : substitutions)
         {
-            if(sub.getEnabled())
+            if(sub.getEnabled() && applicable(sub, transNotes, chords, startingSlot[0]))
             {
                 int weight = sub.getWeight();
                 for(int i = 0; i < weight; i++)
@@ -275,6 +294,8 @@ private MelodyPart applySubstitutionType(ArrayList<Substitution> substitutions,
             {
                 System.out.println("\t\tTrying sub: " + sub.getName());
             }
+            //SORT THE TRANSFORMATIONS, PUT THEM IN THE SUB'S TRANSFORM
+            //sub.categorizeTransformations();
             substituted = sub.apply(transNotes, chords, startingSlot, transformPanel);
             if(substituted != null)
             {
@@ -306,6 +327,22 @@ private MelodyPart applySubstitutionType(ArrayList<Substitution> substitutions,
     }
     return transNotes;
 }
+
+private boolean applicable(Substitution sub, MelodyPart notes, ChordPart chords, int startSlot){
+    //if it's a sub named after the rel pitch condition, check sub name first
+    String subName = sub.getName();
+    
+    String relPrefix = "first-rel-pitch-";
+    if(subName.contains(relPrefix)){
+        String relPitch = subName.substring(relPrefix.length());
+        NoteChordPair ncp = new NoteChordPair(notes.getCurrentNote(startSlot), chords.getCurrentChord(startSlot));
+        if(!ncp.getRelativePitch().equals(relPitch)){
+            return false;
+        }
+    }
+    return true;
+}
+
 
 /**
  * Find substitutions that have the same type and transformations, and delete
