@@ -201,6 +201,7 @@ public class VoicingKeyboard extends javax.swing.JFrame {
         chordStepBackButton = new javax.swing.JButton();
         chordReplayButton = new javax.swing.JButton();
         chordStepForwardButton = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         optionsMenu = new javax.swing.JMenu();
         clearKeyboardMI = new javax.swing.JMenuItem();
@@ -746,7 +747,7 @@ public class VoicingKeyboard extends javax.swing.JFrame {
 
         chordStepBackButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/icons/playReversedGreen.gif"))); // NOI18N
         chordStepBackButton.setToolTipText("Move back to the previous chord (without playing).\n");
-        chordStepBackButton.setBorder(javax.swing.BorderFactory.createBevelBorder(0));
+        chordStepBackButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         chordStepBackButton.setFocusable(false);
         chordStepBackButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         chordStepBackButton.setMaximumSize(new java.awt.Dimension(30, 30));
@@ -762,7 +763,7 @@ public class VoicingKeyboard extends javax.swing.JFrame {
 
         chordReplayButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/icons/replayGreen.gif"))); // NOI18N
         chordReplayButton.setToolTipText("Replays chord.");
-        chordReplayButton.setBorder(javax.swing.BorderFactory.createBevelBorder(0));
+        chordReplayButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         chordReplayButton.setFocusable(false);
         chordReplayButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         chordReplayButton.setMaximumSize(new java.awt.Dimension(30, 30));
@@ -777,7 +778,7 @@ public class VoicingKeyboard extends javax.swing.JFrame {
 
         chordStepForwardButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/icons/playGreen.gif"))); // NOI18N
         chordStepForwardButton.setToolTipText("Move to, and play, the next chord.");
-        chordStepForwardButton.setBorder(javax.swing.BorderFactory.createBevelBorder(0));
+        chordStepForwardButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         chordStepForwardButton.setFocusable(false);
         chordStepForwardButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         chordStepForwardButton.setMaximumSize(new java.awt.Dimension(30, 30));
@@ -794,6 +795,18 @@ public class VoicingKeyboard extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         getContentPane().add(jToolBar1, gridBagConstraints);
+
+        jButton2.setText("Save Voicing");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        getContentPane().add(jButton2, gridBagConstraints);
+        jButton2.getAccessibleContext().setAccessibleName("VoicingChord");
 
         optionsMenu.setText("Options");
 
@@ -954,12 +967,12 @@ public class VoicingKeyboard extends javax.swing.JFrame {
         windowMenu.setMnemonic('W');
         windowMenu.setText("Window");
         windowMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                windowMenuMenuSelected(evt);
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                windowMenuMenuSelected(evt);
             }
         });
 
@@ -2158,15 +2171,6 @@ private void resetChordDisplayMIActionPerformed(java.awt.event.ActionEvent evt) 
     
 }//GEN-LAST:event_resetChordDisplayMIActionPerformed
 
-private void playChordButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playChordButtonActionPerformed
-
-    String s = notate.voicingEntryTFText();
-    String c = notate.getChordRootTFText();
-
-    notate.constructAndPlayChord(c,s);
-
-}//GEN-LAST:event_playChordButtonActionPerformed
-
 private void pausePlayMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pausePlayMIActionPerformed
 
     if (playback)
@@ -2221,8 +2225,26 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRS
         notate.chordStepForwardDo();
     }//GEN-LAST:event_chordStepForwardButtonActionPerformed
 
-private void playChordButtonKeyTyped(java.awt.event.KeyEvent evt) {                                         
-}                                  
+    private void playChordButtonKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_playChordButtonKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_playChordButtonKeyTyped
+
+    private void playChordButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playChordButtonActionPerformed
+
+        String s = notate.voicingEntryTFText();
+        String c = notate.getChordRootTFText();
+
+        notate.constructAndPlayChord(c,s);
+    }//GEN-LAST:event_playChordButtonActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        saveChord();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void saveChord()
+    {
+        System.out.println("Successful Call");
+    }
 
 /**
  * clears the chord display labels
@@ -2525,6 +2547,7 @@ private void forcePaint()
     private javax.swing.JMenuItem downHalfStepMI;
     private javax.swing.JMenuItem downOctaveMI;
     private javax.swing.JLabel futureChordDisplay;
+    private javax.swing.JButton jButton2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JSeparator jSeparator1;
