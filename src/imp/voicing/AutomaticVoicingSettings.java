@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package imp;
+package imp.voicing;
 
 /**
  *Data structure to store the parameters for automatic voicing generator

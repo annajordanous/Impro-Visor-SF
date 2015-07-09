@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package imp;
+package imp.voicing;
 
+import imp.voicing.AutomaticVoicingSettings;
+import imp.voicing.AVPFileCreator;
 import imp.data.Note;
 import imp.data.NoteSymbol;
 import java.awt.event.ActionEvent;
@@ -681,7 +683,6 @@ public class ControlPanelFrame extends javax.swing.JFrame implements Serializabl
         closeB = new javax.swing.JButton();
 
         setBounds(new java.awt.Rectangle(0, 0, 1300, 500));
-        setPreferredSize(null);
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         jButton1.setText("Apply");

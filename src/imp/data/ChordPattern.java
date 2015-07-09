@@ -20,11 +20,11 @@
 
 package imp.data;
 
-import imp.AutomaticVoicingSettings;
-import imp.ControlPanelFrame;
-import imp.HandManager;
+import imp.voicing.AutomaticVoicingSettings;
+import imp.voicing.ControlPanelFrame;
+import imp.voicing.HandManager;
 import imp.ImproVisor;
-import imp.VoicingGenerator;
+import imp.voicing.VoicingGenerator;
 import imp.util.ErrorLog;
 import java.io.Serializable;
 import java.util.ArrayList;
