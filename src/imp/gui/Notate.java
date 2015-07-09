@@ -7166,6 +7166,7 @@ public Critic getCritic()
         showAdviceButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         showAdviceButton.setMaximumSize(new java.awt.Dimension(30, 30));
         showAdviceButton.setMinimumSize(new java.awt.Dimension(30, 30));
+        showAdviceButton.setOpaque(true);
         showAdviceButton.setPreferredSize(new java.awt.Dimension(30, 30));
         showAdviceButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -7183,6 +7184,7 @@ public Critic getCritic()
         improviseButton.setIconTextGap(0);
         improviseButton.setMaximumSize(new java.awt.Dimension(50, 30));
         improviseButton.setMinimumSize(new java.awt.Dimension(50, 30));
+        improviseButton.setOpaque(true);
         improviseButton.setPreferredSize(new java.awt.Dimension(50, 30));
         improviseButton.setRequestFocusEnabled(false);
         improviseButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -7194,13 +7196,17 @@ public Critic getCritic()
         standardToolbar.add(improviseButton);
 
         useSubstitutorCheckBox.setFont(new java.awt.Font("Dialog", 0, 10)); // NOI18N
+        useSubstitutorCheckBox.setText("xfm");
         useSubstitutorCheckBox.setToolTipText("Transform generated melody line when checked.");
+        useSubstitutorCheckBox.setBorder(null);
+        useSubstitutorCheckBox.setBorderPaintedFlat(true);
         useSubstitutorCheckBox.setFocusable(false);
+        useSubstitutorCheckBox.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         useSubstitutorCheckBox.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        useSubstitutorCheckBox.setLabel("Xfm");
-        useSubstitutorCheckBox.setMaximumSize(new java.awt.Dimension(30, 30));
-        useSubstitutorCheckBox.setMinimumSize(new java.awt.Dimension(30, 30));
-        useSubstitutorCheckBox.setPreferredSize(new java.awt.Dimension(30, 30));
+        useSubstitutorCheckBox.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        useSubstitutorCheckBox.setMaximumSize(new java.awt.Dimension(30, 28));
+        useSubstitutorCheckBox.setMinimumSize(new java.awt.Dimension(30, 28));
+        useSubstitutorCheckBox.setPreferredSize(new java.awt.Dimension(30, 28));
         useSubstitutorCheckBox.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
         standardToolbar.add(useSubstitutorCheckBox);
 
@@ -7224,6 +7230,7 @@ public Critic getCritic()
         openGeneratorButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         openGeneratorButton.setMaximumSize(new java.awt.Dimension(30, 30));
         openGeneratorButton.setMinimumSize(new java.awt.Dimension(30, 30));
+        openGeneratorButton.setOpaque(true);
         openGeneratorButton.setPreferredSize(new java.awt.Dimension(30, 30));
         openGeneratorButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -7240,6 +7247,7 @@ public Critic getCritic()
         freezeLayoutButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         freezeLayoutButton.setMaximumSize(new java.awt.Dimension(45, 30));
         freezeLayoutButton.setMinimumSize(new java.awt.Dimension(45, 30));
+        freezeLayoutButton.setOpaque(true);
         freezeLayoutButton.setPreferredSize(new java.awt.Dimension(45, 20));
         freezeLayoutButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -7257,6 +7265,7 @@ public Critic getCritic()
         colorationButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         colorationButton.setMaximumSize(new java.awt.Dimension(40, 30));
         colorationButton.setMinimumSize(new java.awt.Dimension(40, 30));
+        colorationButton.setOpaque(true);
         colorationButton.setPreferredSize(new java.awt.Dimension(40, 30));
         colorationButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -7275,6 +7284,7 @@ public Critic getCritic()
         smartEntryButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         smartEntryButton.setMaximumSize(new java.awt.Dimension(45, 30));
         smartEntryButton.setMinimumSize(new java.awt.Dimension(45, 30));
+        smartEntryButton.setOpaque(true);
         smartEntryButton.setPreferredSize(new java.awt.Dimension(45, 30));
         smartEntryButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -7305,11 +7315,11 @@ public Critic getCritic()
         standardToolbar.add(quantizeComboBox);
 
         chordFontSizeSpinner.setToolTipText("Specifies the chord font size.");
-        chordFontSizeSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Chord Font", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 10))); // NOI18N
+        chordFontSizeSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Chord Font", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 11))); // NOI18N
         chordFontSizeSpinner.setInheritsPopupMenu(true);
-        chordFontSizeSpinner.setMaximumSize(new java.awt.Dimension(65, 45));
-        chordFontSizeSpinner.setMinimumSize(new java.awt.Dimension(65, 45));
-        chordFontSizeSpinner.setPreferredSize(new java.awt.Dimension(65, 45));
+        chordFontSizeSpinner.setMaximumSize(new java.awt.Dimension(80, 45));
+        chordFontSizeSpinner.setMinimumSize(new java.awt.Dimension(80, 45));
+        chordFontSizeSpinner.setPreferredSize(new java.awt.Dimension(80, 45));
         chordFontSizeSpinner.setValue(16);
         chordFontSizeSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -7480,6 +7490,7 @@ public Critic getCritic()
         loopButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         loopButton.setMaximumSize(new java.awt.Dimension(30, 20));
         loopButton.setMinimumSize(new java.awt.Dimension(30, 20));
+        loopButton.setOpaque(true);
         loopButton.setPreferredSize(new java.awt.Dimension(30, 20));
         loopButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -7545,21 +7556,25 @@ public Critic getCritic()
 
         countInPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Count", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.ABOVE_TOP, new java.awt.Font("Dialog", 0, 10))); // NOI18N
         countInPanel.setToolTipText("Check to count in two measures before tune is played.");
-        countInPanel.setMaximumSize(new java.awt.Dimension(40, 42));
-        countInPanel.setMinimumSize(new java.awt.Dimension(40, 42));
-        countInPanel.setPreferredSize(new java.awt.Dimension(40, 42));
+        countInPanel.setMaximumSize(new java.awt.Dimension(50, 42));
+        countInPanel.setMinimumSize(new java.awt.Dimension(50, 50));
+        countInPanel.setPreferredSize(new java.awt.Dimension(50, 42));
         countInPanel.setLayout(new java.awt.GridBagLayout());
 
         countInCheckBox.setToolTipText("Check to count in two measures before tune is played.");
-        countInCheckBox.setMaximumSize(new java.awt.Dimension(28, 25));
-        countInCheckBox.setMinimumSize(new java.awt.Dimension(28, 25));
-        countInCheckBox.setPreferredSize(new java.awt.Dimension(28, 25));
+        countInCheckBox.setBorder(null);
+        countInCheckBox.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        countInCheckBox.setMaximumSize(new java.awt.Dimension(50, 42));
+        countInCheckBox.setMinimumSize(new java.awt.Dimension(50, 42));
+        countInCheckBox.setPreferredSize(new java.awt.Dimension(50, 42));
         countInCheckBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 countInCheckBoxActionPerformed(evt);
             }
         });
-        countInPanel.add(countInCheckBox, new java.awt.GridBagConstraints());
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        countInPanel.add(countInCheckBox, gridBagConstraints);
 
         playToolBar.add(countInPanel);
 
@@ -7625,6 +7640,7 @@ public Critic getCritic()
         stepInputBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         stepInputBtn.setMaximumSize(new java.awt.Dimension(30, 30));
         stepInputBtn.setMinimumSize(new java.awt.Dimension(30, 30));
+        stepInputBtn.setOpaque(true);
         stepInputBtn.setPreferredSize(new java.awt.Dimension(30, 30));
         stepInputBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -7751,6 +7767,7 @@ public Critic getCritic()
         allMuteToolBarBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         allMuteToolBarBtn.setMaximumSize(new java.awt.Dimension(40, 20));
         allMuteToolBarBtn.setMinimumSize(new java.awt.Dimension(32, 20));
+        allMuteToolBarBtn.setOpaque(true);
         allMuteToolBarBtn.setPreferredSize(new java.awt.Dimension(32, 20));
         allMuteToolBarBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -7989,6 +8006,7 @@ public Critic getCritic()
         earlyScrollBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         earlyScrollBtn.setMaximumSize(new java.awt.Dimension(40, 35));
         earlyScrollBtn.setMinimumSize(new java.awt.Dimension(40, 35));
+        earlyScrollBtn.setOpaque(true);
         earlyScrollBtn.setPreferredSize(new java.awt.Dimension(40, 35));
         earlyScrollBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -8048,6 +8066,7 @@ public Critic getCritic()
         clearButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         clearButton.setMaximumSize(new java.awt.Dimension(46, 38));
         clearButton.setMinimumSize(new java.awt.Dimension(46, 38));
+        clearButton.setOpaque(true);
         clearButton.setPreferredSize(new java.awt.Dimension(46, 38));
         clearButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -8149,12 +8168,12 @@ public Critic getCritic()
 
         openRecentLeadsheetMenu.setText("Open Recent Leadsheet (same window)");
         openRecentLeadsheetMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                populateRecentFileMenu(evt);
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                populateRecentFileMenu(evt);
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -8170,12 +8189,12 @@ public Critic getCritic()
 
         openRecentLeadsheetNewWindowMenu.setText("Open Recent Leadsheet (new window)");
         openRecentLeadsheetNewWindowMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                populateRecentLeadsheetNewWindow(evt);
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                populateRecentLeadsheetNewWindow(evt);
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -9122,12 +9141,12 @@ public Critic getCritic()
             }
         });
         notateGrammarMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                notateGrammarMenuMenuSelected(evt);
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                notateGrammarMenuMenuSelected(evt);
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
         notateGrammarMenu.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -9145,12 +9164,12 @@ public Critic getCritic()
         windowMenu.setMnemonic('W');
         windowMenu.setText("Window");
         windowMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                windowMenuMenuSelected(evt);
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                windowMenuMenuSelected(evt);
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
 
