@@ -17726,6 +17726,10 @@ public void playScore()
       {
             if (themeWeave)
                 {   
+                    if (themeWeaver == null)
+                    {
+                        themeWeaver = new ThemeWeaver(lickgen, this, cm);
+                    }
                     themeWeaver.generateThemeWovenSolo();
                 }
             else{
