@@ -535,9 +535,11 @@ public Object evaluate(Object sent)
                 }
                 break;
             case GET_NOTE:
-                if(evaledArgs.length() > 1)
+                if(evaledArgs.length() > 1){
                     returnVal = evaledArgs.map(new Evaluate(frame, 
                                                             Operators.GET_NOTE.getGrammarName())).flatten();
+                }
+                    
                 else
                 {
                     returnVal = new Polylist(get_note(evaledArgs), new Polylist());
@@ -623,8 +625,10 @@ public Boolean equals(Polylist evaledArgs)
     Object firstArg = evaledArgs.first();
     Object secondArg = evaledArgs.second();
     
-    if(firstArg == null || secondArg == null)
+    if(firstArg == null || secondArg == null){
         return false;
+    }
+        
     if(firstArg.toString().matches("(-?)([\\d]*)(\\.?)([\\d])*") 
        && secondArg.toString().matches("(-?)([\\d]*)(\\.?)([\\d])*"))
     {
@@ -632,8 +636,10 @@ public Boolean equals(Polylist evaledArgs)
         double secondNum = Double.parseDouble(secondArg.toString());
         return (firstNum == secondNum);
     }
-    else
+    else{
         return firstArg.equals(secondArg);
+    }
+        
 }
 /**
  * returns the absolute value of a number in double form
@@ -946,13 +952,16 @@ public String note_category(Polylist evaledArgs)
 public Object relative_pitch(Polylist evaledArgs)
 {
     NoteChordPair pair = (NoteChordPair) evaledArgs.first();
-    Note note = pair.getNote();
-    Chord chord = pair.getChord();
-
-    Polylist relNoteList = NoteConverter.noteToRelativePitch(note, chord);
-    if(relNoteList.second().equals("0"))
+    
+    String relPitch = pair.getRelativePitch();
+    
+//    Note note = pair.getNote();
+//    Chord chord = pair.getChord();
+//    Polylist relNoteList = NoteConverter.noteToRelativePitch(note, chord);
+    
+    if(relPitch.equals("0"))
         return null;
-    String relPitch = relNoteList.second().toString();
+    //String relPitch = relNoteList.second().toString();
     if(relPitch.matches("\\d*"))
         return Integer.parseInt(relPitch);
     else

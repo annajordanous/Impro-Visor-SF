@@ -176,20 +176,6 @@ public MelodyPart applySubstitutionsToMelodyPart(MelodyPart melody, ChordPart ch
     ArrayList<Substitution> substitutionsMotif = new ArrayList<Substitution>(); 
     ArrayList<Substitution> substitutionsEmbellish = new ArrayList<Substitution>(); 
     
-    //arraylists based on rel pitch - makes searching much faster
-    ArrayList<Substitution> zero = new ArrayList<Substitution>();
-    ArrayList<Substitution> one = new ArrayList<Substitution>();
-    ArrayList<Substitution> two = new ArrayList<Substitution>();
-    ArrayList<Substitution> three = new ArrayList<Substitution>();
-    ArrayList<Substitution> four = new ArrayList<Substitution>();
-    ArrayList<Substitution> five = new ArrayList<Substitution>();
-    ArrayList<Substitution> six = new ArrayList<Substitution>();
-    ArrayList<Substitution> seven = new ArrayList<Substitution>();
-    ArrayList<Substitution> eight = new ArrayList<Substitution>();
-    ArrayList<Substitution> nine = new ArrayList<Substitution>();
-    ArrayList<Substitution> ten = new ArrayList<Substitution>();
-    ArrayList<Substitution> eleven = new ArrayList<Substitution>();
-    
     for(Substitution sub: substitutions)
     {
         String type = sub.getType();

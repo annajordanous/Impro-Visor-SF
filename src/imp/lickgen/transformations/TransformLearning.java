@@ -582,8 +582,8 @@ private Polylist getTwoWindowGuardCondition(MelodyPart outline, ChordPart chords
                     categoryEquals = categoryEquals.addToEnd("X");
                     break;
             }
-            
-            relPitchEquals = relPitchEquals.addToEnd(NoteConverter.noteToRelativePitch(origNote, currChord).second());
+            NoteChordPair ncp = new NoteChordPair(origNote, currChord);
+            relPitchEquals = relPitchEquals.addToEnd(ncp.getRelativePitch());
             andEqString = andEqString.append(rest).append(categoryEquals).append(relPitchEquals);
         }
 
@@ -672,11 +672,16 @@ private Polylist getTargetNotes(MelodyPart outline,
             //old code
             //Polylist setDuration = Polylist.PolylistFromString("set-duration");
             //setDuration = setDuration.addToEnd(duration);
-
-            Polylist result = getTransposeDiatonicFunction(origNote, 
+            Polylist result;
+            if(chord.isNOCHORD()){
+                result = getTransposeChromatic(origNote, toTransform, noteString);
+            }else{
+                result = getTransposeDiatonicFunction(origNote, 
                                                   toTransform, 
                                                   noteString, 
                                                   chord);
+            }
+            
             if(result == null)
             {
                 return null;
@@ -739,6 +744,8 @@ private Polylist getTransposeChromatic(Note outlineNote,
                                        Note transNote, 
                                        String var)
 {
+    if(transNote.isRest())
+        return Polylist.PolylistFromString("make-rest "+var);
     double diff = (transNote.getPitch() - outlineNote.getPitch())/2.0;
     if(Math.abs(diff) > 10)
         return null;
