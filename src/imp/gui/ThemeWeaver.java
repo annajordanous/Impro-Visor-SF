@@ -242,6 +242,10 @@ public void setTableColumnWidths()
         jPanel9 = new javax.swing.JPanel();
         shiftBackwardRadioButton = new javax.swing.JRadioButton();
         shiftForwardRadioButton = new javax.swing.JRadioButton();
+        jLabel36 = new javax.swing.JLabel();
+        jLabel37 = new javax.swing.JLabel();
+        eighthShiftRadioButton = new javax.swing.JRadioButton();
+        quarterShiftRadioButton = new javax.swing.JRadioButton();
         jLabel24 = new javax.swing.JLabel();
         transformationsUsed = new javax.swing.JScrollPane();
         transformationsUsedTextArea = new javax.swing.JTextArea();
@@ -1209,7 +1213,7 @@ public void setTableColumnWidths()
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
         jPanel9.add(shiftBackwardRadioButton, gridBagConstraints);
 
@@ -1220,9 +1224,43 @@ public void setTableColumnWidths()
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         jPanel9.add(shiftForwardRadioButton, gridBagConstraints);
+
+        jLabel36.setText("Distance");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        jPanel9.add(jLabel36, gridBagConstraints);
+
+        jLabel37.setText("Direction");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        jPanel9.add(jLabel37, gridBagConstraints);
+
+        eighthShiftRadioButton.setText("Eighth");
+        eighthShiftRadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                eighthShiftRadioButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        jPanel9.add(eighthShiftRadioButton, gridBagConstraints);
+
+        quarterShiftRadioButton.setText("Quarter");
+        quarterShiftRadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                quarterShiftRadioButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        jPanel9.add(quarterShiftRadioButton, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -2362,7 +2400,11 @@ private void closeWindow()
     }//GEN-LAST:event_themeProbTextFieldActionPerformed
 
     private void generateSoloJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateSoloJButtonActionPerformed
-        
+        generateThemeWovenSolo();
+    }//GEN-LAST:event_generateSoloJButtonActionPerformed
+    
+    public void generateThemeWovenSolo()
+    {
         ArrayList<ThemeUse> themeUses = new ArrayList<ThemeUse>();
         //create an empty array of themeUses
 
@@ -2438,8 +2480,8 @@ private void closeWindow()
         soloPlaying = false;
         stopPlaytoggle.setSelected(false);
         stopPlaytoggle.setText("<html><center>Stop Playing</center></html>");
-    }//GEN-LAST:event_generateSoloJButtonActionPerformed
-
+    }
+    
     private static boolean isNumeric(String str)  
     {  
       try  
@@ -2820,6 +2862,7 @@ private void closeWindow()
         halfStepRadioButton1.setSelected(true);
         shiftForwardRadioButton.setSelected(true);
         directionOfShift = "forwards";
+        eighthShiftRadioButton.setSelected(true);
     }//GEN-LAST:event_customizeSoloButtonActionPerformed
 
     private void customizeSolowindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_customizeSolowindowClosed
@@ -2883,7 +2926,10 @@ private void closeWindow()
             transformationOrder.remove("Bar Line Shift");
         }
         setTransformationsTextArea();
-        
+        //tranform theme
+        MelodyPart adjustedTheme = chosenCustomThemeOriginal.copy();
+        adjustedTheme = transformTheme(adjustedTheme, transformationOrder);
+        chosenCustomTheme = adjustedTheme;
     }//GEN-LAST:event_barlineshiftButtonActionPerformed
 
     private void sideslipButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sideslipButtonActionPerformed
@@ -2914,6 +2960,10 @@ private void closeWindow()
             transformationOrder.remove("Expand");
         }
         setTransformationsTextArea();
+        //tranform theme
+        MelodyPart adjustedTheme = chosenCustomThemeOriginal.copy();
+        adjustedTheme = transformTheme(adjustedTheme, transformationOrder);
+        chosenCustomTheme = adjustedTheme;
     }//GEN-LAST:event_expandButtonActionPerformed
 
     private void reverseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reverseButtonActionPerformed
@@ -2930,6 +2980,10 @@ private void closeWindow()
         }
 
         setTransformationsTextArea();
+        //tranform theme
+        MelodyPart adjustedTheme = chosenCustomThemeOriginal.copy();
+        adjustedTheme = transformTheme(adjustedTheme, transformationOrder);
+        chosenCustomTheme = adjustedTheme;
     }//GEN-LAST:event_reverseButtonActionPerformed
 
     private void invertButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_invertButtonActionPerformed
@@ -2944,6 +2998,10 @@ private void closeWindow()
             transformationOrder.remove("Invert");
         }
         setTransformationsTextArea();
+        //tranform theme
+        MelodyPart adjustedTheme = chosenCustomThemeOriginal.copy();
+        adjustedTheme = transformTheme(adjustedTheme, transformationOrder);
+        chosenCustomTheme = adjustedTheme;
     }//GEN-LAST:event_invertButtonActionPerformed
 
     private void transposeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transposeButtonActionPerformed
@@ -2958,21 +3016,19 @@ private void closeWindow()
             transformationOrder.remove("Transpose");
         }
         setTransformationsTextArea();
-    }//GEN-LAST:event_transposeButtonActionPerformed
-
-    private void playThemeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playThemeButtonActionPerformed
         //tranform theme
         MelodyPart adjustedTheme = chosenCustomThemeOriginal.copy();
         adjustedTheme = transformTheme(adjustedTheme, transformationOrder);
-        
+        chosenCustomTheme = adjustedTheme;
+    }//GEN-LAST:event_transposeButtonActionPerformed
+
+    private void playThemeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playThemeButtonActionPerformed
         //play it
         String name = (String) themeList.getSelectedValue();
         Score score = new Score(name);
        
-        score.addPart(adjustedTheme);
+        score.addPart(chosenCustomTheme);
         PatternDisplay.playScore(notate, score, themeWeaver);
-        
-        chosenCustomTheme = adjustedTheme;
     }//GEN-LAST:event_playThemeButtonActionPerformed
 
     private void transposeUpRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transposeUpRadioButtonActionPerformed
@@ -3062,6 +3118,14 @@ private void closeWindow()
         notate.pasteMelody(customSolo); //paste solo into leadsheet
         imp.ImproVisor.setPlayEntrySounds(true); //play solo
     }//GEN-LAST:event_pasteToLeadsheetButtonActionPerformed
+
+    private void quarterShiftRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quarterShiftRadioButtonActionPerformed
+        eighthShiftRadioButton.setSelected(false);
+    }//GEN-LAST:event_quarterShiftRadioButtonActionPerformed
+
+    private void eighthShiftRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eighthShiftRadioButtonActionPerformed
+        quarterShiftRadioButton.setSelected(false);
+    }//GEN-LAST:event_eighthShiftRadioButtonActionPerformed
     
     private void setTransformationsTextArea()
     {
@@ -5084,7 +5148,15 @@ private MelodyPart barlineshift2(MelodyPart melody, String direction)
     }
     
     shiftForwardBy = shiftForwardByFinal;
-    int numBeats = random.nextInt(2) + 1;
+    int numBeats = 0;
+    if (eighthShiftRadioButton.isSelected())
+    {
+        numBeats = 1;
+    }
+    else if (quarterShiftRadioButton.isSelected())
+    {
+        numBeats = 2;
+    }
     shiftForwardBy *= numBeats;
     if (direction.equals("forwards"))
     {//shift forward
@@ -5136,6 +5208,7 @@ private MelodyPart barlineshift2(MelodyPart melody, String direction)
     private javax.swing.JButton deleteRowbutton;
     private javax.swing.JDialog deleteThemeDialog;
     private javax.swing.JButton deleteThemebutton;
+    private javax.swing.JRadioButton eighthShiftRadioButton;
     private javax.swing.JDialog enteredIncorrectly;
     private javax.swing.JToggleButton expandButton;
     private javax.swing.JRadioButton expandBy2RadioButton;
@@ -5178,6 +5251,8 @@ private MelodyPart barlineshift2(MelodyPart melody, String direction)
     private javax.swing.JLabel jLabel33;
     private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel35;
+    private javax.swing.JLabel jLabel36;
+    private javax.swing.JLabel jLabel37;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -5209,6 +5284,7 @@ private MelodyPart barlineshift2(MelodyPart melody, String direction)
     private javax.swing.JTextField probThird;
     private javax.swing.JSlider probUpOrDown;
     private javax.swing.JTextField probWhole;
+    private javax.swing.JRadioButton quarterShiftRadioButton;
     private javax.swing.JButton rangeChooserButton;
     private javax.swing.JDialog rangeTooSmall;
     private javax.swing.JLabel rangeWrong;
