@@ -20,12 +20,12 @@
 
 package imp.gui;
 
-import imp.AutomaticVoicingSettings;
+import imp.voicing.AutomaticVoicingSettings;
 import imp.Constants;
-import imp.ControlPanelFrame;
-import imp.HandManager;
+import imp.voicing.ControlPanelFrame;
+import imp.voicing.HandManager;
 import imp.ImproVisor;
-import imp.VoicingGenerator;
+import imp.voicing.VoicingGenerator;
 import imp.com.CommandManager;
 import imp.com.OpenLeadsheetCommand;
 import imp.data.*;

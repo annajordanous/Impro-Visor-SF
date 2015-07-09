@@ -20,6 +20,7 @@
 
 package imp;
 
+import imp.voicing.AutomaticVoicingSettings;
 import imp.com.LoadAdviceCommand;
 import imp.data.*;
 import imp.gui.FirstTimeDialog;

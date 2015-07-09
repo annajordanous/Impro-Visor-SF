@@ -1,5 +1,5 @@
 //jmusic for synthesis
-package imp;
+package imp.voicing;
 
 import java.util.ArrayList;
 

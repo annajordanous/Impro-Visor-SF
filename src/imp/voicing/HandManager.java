@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package imp;
+package imp.voicing;
 
 /**
  * facilitates hand movement by moving the hands between the lower and upper limits based on parameters set by the user
