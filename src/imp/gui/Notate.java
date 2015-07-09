@@ -17724,7 +17724,12 @@ public void playScore()
     improvMelodyIndex = 0;
     if( improvisationOn )
       {
-        improviseContinuously();
+            if (themeWeave)
+                {   
+                    themeWeaver.generateThemeWovenSolo();
+                }
+            else{
+        improviseContinuously();}
       }
     else
       {
@@ -22971,7 +22976,8 @@ public void improviseContinuously()
     Stave stave = getCurrentStave();
     improviseStartSlot = stave.getSelectionStart();
     improviseEndSlot = stave.getSelectionEnd();
-
+    
+    
     recurrentIteration = 1;
     originalGenerate(lickgen, improviseStartSlot, improviseEndSlot);
     //System.out.println("*** return from improviseContinuously");
@@ -23350,6 +23356,11 @@ public void openCorpus()
   }
 
 /**
+ * Menu item indicating whether to use theme weaver 
+ */
+JCheckBoxMenuItem themeWovenCheckBox = new JCheckBoxMenuItem();
+
+/**
  * Menu item indicating whether or not to trade
  */
 JCheckBoxMenuItem whetherToTradeCheckBox = new JCheckBoxMenuItem();
@@ -23363,6 +23374,11 @@ JCheckBoxMenuItem tradingCheckBox = new JCheckBoxMenuItem();
  * Indicate whether or not to trade.
  */
 boolean whetherToTrade = false;
+
+/**
+ * Indicate whether or not to theme weave.
+ */
+boolean themeWeave = false;
 
 /**
  * When trading is on, indicates that Impro-Visor will go first.
@@ -23405,6 +23421,15 @@ private QuantumSelectionCheckBox quantumSelectionCheckBox[] =
     new QuantumSelectionCheckBox(4),
     new QuantumSelectionCheckBox(5),    
   };
+
+/**
+ * Get the indication of whether to use theme weaver or not
+ * @return 
+ */
+public boolean getWhetherToThemeWeave()
+  {
+    return themeWovenCheckBox.isSelected();
+  }
 
 /**
  * Get the indication of who will trade first.
@@ -23452,6 +23477,20 @@ private void populateTradingMenu()
 
     });
 
+    themeWovenCheckBox.setText("Theme Weave Solo");
+    themeWovenCheckBox.setSelected(themeWeave);
+    
+    themeWovenCheckBox.addActionListener(new ActionListener()
+    {
+    public void actionPerformed(ActionEvent event)
+      {
+        themeWeave = !themeWeave;
+        themeWovenCheckBox.setSelected(themeWeave);
+        System.out.println("theme weave off");
+      }
+
+    });
+    
     tradingCheckBox.setText("Impro-Visor first");
     tradingCheckBox.setSelected(improVisorFirst);
     
@@ -23468,6 +23507,7 @@ private void populateTradingMenu()
     tradingMenu.removeAll();
     tradingMenu.add(tradingWindow);
     tradingMenu.add(tradingWindow2);
+    tradingMenu.add(themeWovenCheckBox);
     tradingMenu.add(whetherToTradeCheckBox);
     tradingMenu.add(tradingCheckBox);
 
