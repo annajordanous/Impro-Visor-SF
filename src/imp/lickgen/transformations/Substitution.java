@@ -42,6 +42,10 @@ public boolean debug;
 private boolean enabled;
 private boolean hasChanged;
 
+//secretly every substitution contains a transform full of other substitutions
+//this is to improve search time in application of transforms
+//private Transform transform;
+
 /**
  * Creates a new empty Substitution with weight = 1, type = motif, 
  * and enabled = true.
@@ -55,6 +59,8 @@ public Substitution ()
     weight = 1;
     enabled = true;
     hasChanged = false;
+    
+    //transform = new Transform();
 }
 
 public Substitution copy(){
@@ -64,14 +70,28 @@ public Substitution copy(){
     for(Transformation t : transformations){
         newSub.addTransformation(t.copy());
     }
+    
     newSub.name = this.getName();
     newSub.type = this.getType();
     newSub.weight = this.getWeight();
     newSub.enabled = this.getEnabled();
     newSub.hasChanged = this.hasChanged();
     
+//    newSub.transform = transform.copy();
+    
     return newSub;
     
+}
+
+public void categorizeTransformations(){
+    //transform = new Transform();
+    for(Transformation t : transformations){
+        String transName = t.getDescription();
+        Substitution toAdd = new Substitution();
+        toAdd.setName(transName);
+        toAdd.addTransformation(t.copy());
+        //transform.addSubstitution(toAdd);
+    }
 }
 
 /**
@@ -135,16 +155,26 @@ public MelodyPart apply(MelodyPart notes,
                         TransformPanel transformPanel)
 {
     
-    //if it's a sub named after the rel pitch condition, check sub name first
-    String subName = this.getName();
-    String relPrefix = "first-rel-pitch-";
-    if(subName.contains(relPrefix)){
-        String relPitch = subName.substring(relPrefix.length());
-        NoteChordPair ncp = new NoteChordPair(notes.getCurrentNote(startingSlot[0]), chords.getCurrentChord(startingSlot[0]));
-        if(!ncp.getRelativePitch().equals(relPitch)){
-            return null;
-        }
-    }
+
+    
+//    //intervention
+//    //if this sub contains other subs, go deeper
+//    //else, base case sub with transformations all of the same name. Continue
+//    if(!transform.substitutions.isEmpty()){
+//        //System.out.println("Number of subs in substitution: "+transform.substitutions.size());
+//        Substitution applicable = new Substitution();
+//        for(Substitution s : transform.substitutions){
+//            //could be more than one applicable sub if name is not descriptive (old version)
+//             if(applicable(s, notes, chords, startingSlot[0])){
+//                 //System.out.println("Adding sub "+s.getName());
+//                 applicable = Transform.merge(applicable, s);
+//             }
+//             //System.out.println("Sub not applicable: "+s.getName());
+//        }
+//        //applicable doesn't have a name
+//        return applicable.apply(notes, chords, startingSlot, transformPanel);
+//    }
+//    //System.out.println("Base case reached; Applying transformations");
     
     
     // for weighted random shuffling
@@ -152,7 +182,8 @@ public MelodyPart apply(MelodyPart notes,
     ArrayList<Transformation> full = new ArrayList<Transformation>();
     for(Transformation trans: transformations)
     {
-        if(trans.getEnabled())
+        
+        if(trans.getEnabled() && applicable(trans, notes, chords, startingSlot[0]))
         {
             for(int i = 0; i < trans.getWeight(); i++)
                 full.add(trans);
@@ -209,6 +240,27 @@ public MelodyPart apply(MelodyPart notes,
     }
     // if not transformation could be applied, return null
     return null;
+}
+
+public static boolean applicable(Transformation trans, MelodyPart notes, ChordPart chords, int startSlot){
+    String relPitchString = "rel-pitch-";
+    String to = "-to-";
+    String transName = trans.getDescription();
+    if(transName.contains(relPitchString)&&transName.contains(to)){
+        int relPitchIndex = transName.indexOf(to)+ to.length();
+        String secondPitch = transName.substring(relPitchIndex);
+        int secondSlot = notes.getNextIndex(startSlot);
+        if(secondSlot<notes.getSize()){
+            NoteChordPair ncp = new NoteChordPair(notes.getNote(secondSlot), chords.getCurrentChord(secondSlot));
+            String relPitch = ncp.getRelativePitch();
+            return relPitch.equals(secondPitch);
+        }else{
+            return false;
+        }
+        
+    }else{
+        return true;//assume applicable
+    }
 }
 
 /**
