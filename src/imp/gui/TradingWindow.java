@@ -126,6 +126,7 @@ public class TradingWindow
         initComponents();
         this.notate = notate;
         tradeScore = new Score();
+        tradeMode = TradeMode.REPEAT;
     }
 
 
