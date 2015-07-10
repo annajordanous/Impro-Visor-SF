@@ -567,7 +567,6 @@ private MidiLatencyMeasurementTool midiLatencyMeasurement = new MidiLatencyMeasu
  * Trading prefs
  */
 TradingWindow trader;
-TradingWindow2 trader2;
 
 /**
  * If playback indicator goes off the screen, autoscroll to show it again
@@ -733,7 +732,6 @@ public Notate(Score score, Advisor adv, ImproVisor impro, int x, int y)
 
     midiLatencyMeasurement = new MidiLatencyMeasurementTool(this);
     
-    trader2 = new TradingWindow2(this);
 
     leadsheetEditor = new SourceEditorDialog(null, false, this, cm,
                                              SourceEditorDialog.LEADSHEET);
@@ -2076,7 +2074,6 @@ public Critic getCritic()
         createRoadMapCheckBox = new javax.swing.JCheckBoxMenuItem();
         tradingMenu = new javax.swing.JMenu();
         tradingWindow = new javax.swing.JMenuItem();
-        tradingWindow2 = new javax.swing.JMenuItem();
         notateGrammarMenu = new javax.swing.JMenu();
         windowMenu = new javax.swing.JMenu();
         closeWindowMI = new javax.swing.JMenuItem();
@@ -7230,7 +7227,6 @@ public Critic getCritic()
         openGeneratorButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         openGeneratorButton.setMaximumSize(new java.awt.Dimension(30, 30));
         openGeneratorButton.setMinimumSize(new java.awt.Dimension(30, 30));
-        openGeneratorButton.setOpaque(true);
         openGeneratorButton.setPreferredSize(new java.awt.Dimension(30, 30));
         openGeneratorButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -8059,7 +8055,6 @@ public Critic getCritic()
         clearButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         clearButton.setMaximumSize(new java.awt.Dimension(46, 38));
         clearButton.setMinimumSize(new java.awt.Dimension(46, 38));
-        clearButton.setOpaque(true);
         clearButton.setPreferredSize(new java.awt.Dimension(46, 38));
         clearButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -9116,14 +9111,6 @@ public Critic getCritic()
             }
         });
         tradingMenu.add(tradingWindow);
-
-        tradingWindow2.setText("Open Trading Window 2");
-        tradingWindow2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tradingWindow2ActionPerformed(evt);
-            }
-        });
-        tradingMenu.add(tradingWindow2);
 
         menuBar.add(tradingMenu);
 
@@ -22777,12 +22764,6 @@ int quantizeResolution = 60;
     private void delAllMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delAllMIActionPerformed
         delAllMelody();
     }//GEN-LAST:event_delAllMIActionPerformed
-
-    private void tradingWindow2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tradingWindow2ActionPerformed
-        // TODO add your handling code here:
-        trader2.setVisible(true);
-        System.out.println("Opening the second trading window");
-    }//GEN-LAST:event_tradingWindow2ActionPerformed
 void delAllMelody()
   {
     Trace.log(2, "delete all melody");
@@ -22995,7 +22976,6 @@ public void improviseContinuously()
     Stave stave = getCurrentStave();
     improviseStartSlot = stave.getSelectionStart();
     improviseEndSlot = stave.getSelectionEnd();
-    
     
     recurrentIteration = 1;
     originalGenerate(lickgen, improviseStartSlot, improviseEndSlot);
@@ -23525,7 +23505,6 @@ private void populateTradingMenu()
 
     tradingMenu.removeAll();
     tradingMenu.add(tradingWindow);
-    tradingMenu.add(tradingWindow2);
     tradingMenu.add(themeWovenCheckBox);
     tradingMenu.add(whetherToTradeCheckBox);
     tradingMenu.add(tradingCheckBox);
@@ -25262,7 +25241,6 @@ private ImageIcon pauseButton =
     private javax.swing.JTextField trackerDelayTextField2;
     private javax.swing.JMenu tradingMenu;
     private javax.swing.JMenuItem tradingWindow;
-    private javax.swing.JMenuItem tradingWindow2;
     private javax.swing.JMenuItem transposeBothDownSemitone;
     private javax.swing.JMenuItem transposeBothUpSemitone;
     private javax.swing.JMenuItem transposeChordsDownSemitone;

@@ -29,6 +29,7 @@ import imp.data.MelodyPart;
 import imp.data.MidiSynth;
 import imp.data.Rest;
 import imp.data.Score;
+import imp.gui.Notate;
 import imp.util.MidiPlayListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -38,78 +39,84 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.Stack;
 import jm.midi.event.Event;
+
 /**
- *
- * @author muddCS15
+ * This class embodies the UI and functionality  of interactive trading.
+ * 
+ * An instance of TradingWindow works by keeping a reference to the instance
+ * of notate that instantiated itself. Each  instance of TradingWindow is 
+ * destroyed when it's associated UI window is closed. When interactive trading
+ * is initialized (the method '.startTrading()' is called),  notate is triggered
+ * to play its current open chorus; trading is made possible 
+ * by dispatching events based upon the position of the play head in said 
+ * chorus. Events are scheduled in three main phases, each phase with 
+ * its respective method: 
+ *                  User turn  -    When the user plays. During this phase,
+ *                                  the user input is recorded into 
+ *                                  the instance variable 'tradeScore'.
+ *                                      * associated method: .userTurn()
+ *                  Processing -    When processing takes place. During this
+ *                                  phase, user input is no longer recorded. 
+ *                                  TradeScore is manipulated to produce a 
+ *                                  finalized response for the computer to play.
+ *                                      * associated method: .processInput()
+ *                  Computer Turn - When the computer plays. During this phase,
+ *                                  the response finalized in processing phase
+ *                                  is played. When the computer is first, 
+ *                                  some solo pre-generated solo is used.
+ *                                      * associated method: .computerTurn()
+ * @author Zachary Kondak
  */
-public class TradingWindow 
-extends javax.swing.JFrame
-{
+public class TradingWindow
+        extends javax.swing.JFrame {
+
     static Notate notate;
-    
+
     private int melodyNum = 0;
-    private ArrayList<MelodyPart>  melodies   = new ArrayList<MelodyPart>();
+    private ArrayList<MelodyPart> melodies = new ArrayList<MelodyPart>();
     private LinkedList<MelodyPart> hotswapper = new LinkedList<MelodyPart>();
     private Score tradeScore;
     private Stack<Integer> triggers = new Stack();
     //length of trading in measures
-    private boolean isUserTurn;
-    
+
     private Integer scoreLength;
     private Integer slotsPerMeasure;
     private Integer slotsPerTurn;
     private Integer adjustedLength;
+    private Integer slotsForProcessing;
+    private Integer numberOfTurns;
     private ChordPart chords;
     private MelodyPart aMelodyPart;
     private MidiSynth midiSynth;
-    private boolean isTrading;
     private long slotDelay;
+    private boolean isTrading;
     private boolean isUserInputError;
-    
-    
-    
+    private boolean firstPlay;
+    private boolean isUserLeading = true; //TODO, make this not only option
+    private TradePhase phase;
+    private TradeMode tradeMode;
+
     //magic values
     private int endLimitIndex = -1;
     private boolean isSwing = false;
     private Integer snapResolution = 2;
     private Integer measures = 4;
-    
-    private static final int zero = 0;
-    private static final int one = 1;
-    
-    private void setSlotDelay(double beatDelay){
-        double doubleSlotsPerMeasure = (double) tradeScore.getSlotsPerMeasure();
-        double beatsPerMeasure = (double) tradeScore.getBeatsPerMeasure();
-        double slotsPerBeat = doubleSlotsPerMeasure / beatsPerMeasure;
-        
-        long newDelay = Math.round(slotsPerBeat * beatDelay);
-        slotDelay = newDelay;
-        System.out.println(slotDelay);
-    }
-    
-    public void trackPlay(ActionEvent e) {
-        long currentPosition = notate.getSlotInPlayback();
-        if (triggers.isEmpty()) {
-            stopTrading();
-        } else {
-            long nextTrig = (long) triggers.peek();
-            if (nextTrig <= currentPosition) {
-                //System.out.println("long: " + nextTrig);
-                triggers.pop();
-                if (nextTrig != zero) {
-                    switchTurn();
-                }
-            }
-        }
-    }
 
-    public void switchTurn(){
-        if (this.isUserTurn){
-            this.computerTurn();
-        } else{
-            this.userTurn();
-        }
+    public static final int zero = 0;
+    public static final int one = 1;
+    
+    
+    public enum TradePhase {
+        USER_TURN,
+        PROCESS_INPUT,
+        COMPUTER_TURN
     }
+    
+    public enum TradeMode {
+        REPEAT,
+        REPEAT_AND_RECTIFY
+    }
+    
     
     /**
      * Creates new form TradingWindow
@@ -121,43 +128,82 @@ extends javax.swing.JFrame
         tradeScore = new Score();
     }
 
+
     /**
-     * Starts interactive trading
+     * **no longer used, delay is now set automatically.**
+     * Method converts a delay given in a factor of beats to delay in slots,
+     * then this delay is saved into the instance variable 'slotDelay'
+     * @param beatDelay delay (given in a factor of a beat) that is
+     *                  incurred by calling the playScoreCommand
      */
-    public void startTrading() {
-        startTradingButton.setText("StopTrading");
-        isTrading = true;
-        midiSynth = new MidiSynth(notate.getMidiManager());
-        scoreLength = notate.getScoreLength();
-        slotsPerMeasure = notate.getScore().getSlotsPerMeasure();
-        slotsPerTurn = measures * slotsPerMeasure;
-        adjustedLength = scoreLength - (scoreLength % slotsPerTurn);
-        for (int trigSlot = adjustedLength; trigSlot >= zero; trigSlot = trigSlot - slotsPerTurn) {
-            triggers.push(trigSlot);
-            //System.out.println(trigSlot);
+    private void setSlotDelay(double beatDelay) {
+        double doubleSlotsPerMeasure = (double) tradeScore.getSlotsPerMeasure();
+        double beatsPerMeasure = (double) tradeScore.getBeatsPerMeasure();
+        double slotsPerBeat = doubleSlotsPerMeasure / beatsPerMeasure;
+
+        long newDelay = Math.round(slotsPerBeat * beatDelay);
+        slotDelay = newDelay;
+        //System.out.println(slotDelay);
+    }
+
+    /**
+     * Called continuously throughout trading. This method acts as a primitive 
+     * scheduler. Uses the stack 'triggers' to check if it is time to change
+     * phases (userTurn, processInput, computerTurn)
+     * @param e 
+     */
+    public void trackPlay(ActionEvent e) {
+        long currentPosition = notate.getSlotInPlayback();
+        //System.out.println(currentPosition);
+        if (firstPlay) {
+            //automatically calibrate delay
+            this.slotDelay = currentPosition;
+            firstPlay = false;
         }
-        notate.playScore();
-        userTurn();
+        
+        if (triggers.isEmpty() || currentPosition == scoreLength) {
+            stopTrading();
+        } else {
+            long nextTrig = (long) triggers.peek();
+            if (nextTrig <= currentPosition) {
+                //System.out.println("long: " + nextTrig);
+                triggers.pop();
+                if (nextTrig != zero) {
+                    switchTurn();
+                }
+            }
+            //else System.out.println(triggers);
+        }
     }
-    
+
     /**
-     * Stops interactive trading
+     * Switches between phases (userTurn, processInput, computerTurn). Called
+     * by trackPlay.
      */
-    public void stopTrading() {
-        startTradingButton.setText("StartTrading");
-        isTrading = false;
-        notate.stopRecording();
-        notate.stopPlaying("stop trading");
-        notate.getMidiRecorder().setDestination(null);
+    public void switchTurn() {
+        switch (phase) {
+            case USER_TURN:
+                processInput();
+                break;
+            case PROCESS_INPUT:
+                computerTurn();
+                break;
+            case COMPUTER_TURN:
+                userTurn();
+                break;
+            default:
+                break;
+                
+        }
     }
-    
+
     public void userTurn() {
-        this.isUserTurn = true;
+        //System.out.println("User turn at slot: " + notate.getSlotInPlayback());
+        phase = TradePhase.USER_TURN;
         int nextSection;
-        if (triggers.isEmpty()){
+        if (triggers.isEmpty()) {
             nextSection = adjustedLength;
-        }
-        else {
+        } else {
             nextSection = triggers.peek();
         }
         chords = notate.getScore().getChordProg().extract(nextSection, nextSection + slotsPerTurn - one);
@@ -167,36 +213,26 @@ extends javax.swing.JFrame
         tradeScore.addPart(aMelodyPart);
         notate.initTradingRecorder(aMelodyPart);
         notate.enableRecording();
-        
     }
     
-    
-    public void computerTurn() {
-        
-        this.isUserTurn = false;
+    public void processInput() {
+        //System.out.println("Process input at slot: " + notate.getSlotInPlayback());
+        phase = TradePhase.PROCESS_INPUT;
         notate.stopRecording();
-        //snap? tradeScore.getPart(0).applyResolution(snapResolution);
         
-        
-
-        RectifyPitchesCommand fixPitches = new RectifyPitchesCommand(
-                aMelodyPart, 
-                zero, 
-                slotsPerTurn, 
-                chords, 
-                false, 
-                false);
-        fixPitches.execute();
         tradeScore.setBassMuted(true);
         tradeScore.delPart(0);
         tradeScore.deleteChords();
         
-        aMelodyPart = aMelodyPart.applyResolution(60);
+        //snap? aMelodyPart = aMelodyPart.applyResolution(120);
+        applyTradingMode();
         
-        Long delayCopy = new Long(this.slotDelay);
+        Long delayCopy = new Long(slotDelay);
         aMelodyPart = aMelodyPart.extract(delayCopy.intValue(), slotsPerTurn - one, true, true);
         tradeScore.addPart(aMelodyPart);
-        
+    }
+
+    public void computerTurn() {
         
         new PlayScoreCommand(
                 tradeScore,
@@ -209,10 +245,121 @@ extends javax.swing.JFrame
                 false,
                 endLimitIndex
         ).execute();
-//        notate.playAscore(tradeScore);
+        
+        phase = TradePhase.COMPUTER_TURN;
+    }
+
+    /**
+     * Starts interactive trading
+     */
+    public void startTrading() {
+        slotsForProcessing = 2; // TODO, make editable
+        firstPlay = true;
+        startTradingButton.setText("StopTrading");
+        isTrading = true;
+        midiSynth = new MidiSynth(notate.getMidiManager());
+        scoreLength = notate.getScoreLength();
+        slotsPerMeasure = notate.getScore().getSlotsPerMeasure();
+        slotsPerTurn = measures * slotsPerMeasure;
+        adjustedLength = scoreLength - (scoreLength % slotsPerTurn);
+        numberOfTurns = adjustedLength / slotsPerTurn;
+        
+        if (isUserLeading) {
+            phase = TradePhase.USER_TURN;
+        } else {
+            phase = TradePhase.COMPUTER_TURN;
+            //TODO generate a solo to play, we are now doing nothing.
+        }
+        
+        populateTriggers();
+        
+        notate.playScore();
+        userTurn();
     }
     
+    private void populateTriggers(){
+        //populate trigger stack (scheduler)
+        boolean computerTurnNext;
+        if (numberOfTurns % 2 == zero) {
+            //even number of turns
+            if (isUserLeading) {
+                //user turn first.
+                //this seems couter-intuitive, but this is the case since we're
+                //working from the end of the score (backwards)
+                computerTurnNext = false;
+                
+            } else {
+                //computer turn first.
+                computerTurnNext = true;
+            }
+        } else {
+            //odd number of turns
+            if (isUserLeading) {
+                //user turn first.
+                computerTurnNext = true;
+            } else {
+                //computer turn first.
+                computerTurnNext = false;
+            }
+        }
+        for (int trigSlot = adjustedLength; trigSlot >= zero; trigSlot = trigSlot - slotsPerTurn) {
+            triggers.push(trigSlot);
+            if (computerTurnNext) {
+                computerTurnNext = false;
+                triggers.push(trigSlot - slotsForProcessing);
+            } else {
+                computerTurnNext = true;
+            }
+        }
+        //System.out.println(triggers);
+    }
+
+    /**
+     * Stops interactive trading
+     */
+    public void stopTrading() {
+        startTradingButton.setText("StartTrading");
+        //System.out.println("hi");
+        isTrading = false;
+        notate.stopRecording();
+        notate.stopPlaying("stop trading");
+        notate.getMidiRecorder().setDestination(null);
+    }
+
     
+
+    private void applyTradingMode() {
+        switch (tradeMode) {
+            case REPEAT_AND_RECTIFY:
+                repeatAndRectify();
+                break;
+            default:
+                break;
+        }
+    }
+    
+    private void changeTradeMode(String newMode) {
+        if (newMode.equals("Repeat")) {
+            tradeMode = TradeMode.REPEAT;
+        } else if (newMode.equals("Repeat and Rectify")) {
+            tradeMode = TradeMode.REPEAT_AND_RECTIFY;
+        } else {
+            tradeMode = TradeMode.REPEAT;
+            //System.out.println("Not a valid mode");
+        }
+    }
+    
+    private void repeatAndRectify(){
+        RectifyPitchesCommand fixPitches = new RectifyPitchesCommand(
+                aMelodyPart,
+                zero,
+                slotsPerTurn,
+                chords,
+                false,
+                true);
+        fixPitches.execute();
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -223,7 +370,7 @@ extends javax.swing.JFrame
     private void initComponents() {
 
         startTradingButton = new javax.swing.JButton();
-        beatDelayBox = new javax.swing.JTextField();
+        tradeModeSelector = new javax.swing.JComboBox();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -240,22 +387,14 @@ extends javax.swing.JFrame
             }
         });
 
-        beatDelayBox.setForeground(new java.awt.Color(255, 0, 0));
-        beatDelayBox.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        beatDelayBox.setText("0.0");
-        beatDelayBox.setAutoscrolls(false);
-        beatDelayBox.addCaretListener(new javax.swing.event.CaretListener() {
-            public void caretUpdate(javax.swing.event.CaretEvent evt) {
-                beatDelayBoxCaretUpdate(evt);
-            }
-        });
-        beatDelayBox.addActionListener(new java.awt.event.ActionListener() {
+        tradeModeSelector.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Repeat", "Repeat and Rectify" }));
+        tradeModeSelector.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                beatDelayBoxActionPerformed(evt);
+                tradeModeSelectorActionPerformed(evt);
             }
         });
 
-        jLabel1.setText("delay in beats:");
+        jLabel1.setText("Trading Mode:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -265,20 +404,21 @@ extends javax.swing.JFrame
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(startTradingButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(beatDelayBox, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(tradeModeSelector, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(startTradingButton, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(15, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(beatDelayBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(startTradingButton)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(startTradingButton)
+                    .addComponent(tradeModeSelector, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -301,26 +441,22 @@ extends javax.swing.JFrame
         }
     }//GEN-LAST:event_startTradingButtonActionPerformed
 
-    private void beatDelayBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_beatDelayBoxActionPerformed
-        setSlotDelay(tryDouble(beatDelayBox.getText()));
-    }//GEN-LAST:event_beatDelayBoxActionPerformed
+    private void tradeModeSelectorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tradeModeSelectorActionPerformed
+        changeTradeMode((String)tradeModeSelector.getSelectedItem());
+    }//GEN-LAST:event_tradeModeSelectorActionPerformed
 
-    private void beatDelayBoxCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_beatDelayBoxCaretUpdate
-        setSlotDelay(tryDouble(beatDelayBox.getText()));
-    }//GEN-LAST:event_beatDelayBoxCaretUpdate
-
-    private double tryDouble(String number){
+    private double tryDouble(String number) {
         double newNumber;
         try {
             newNumber = Double.parseDouble(number);
             isUserInputError = false;
-        } catch (Exception e){
+        } catch (Exception e) {
             isUserInputError = true;
             newNumber = 0;
         }
         return newNumber;
     }
-    
+
 //    /**
 //     * @param args the command line arguments
 //     */
@@ -355,15 +491,12 @@ extends javax.swing.JFrame
 //            }
 //        });
 //    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField beatDelayBox;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JButton startTradingButton;
+    private javax.swing.JComboBox tradeModeSelector;
     // End of variables declaration//GEN-END:variables
-
-    
-
-    
 
 }
