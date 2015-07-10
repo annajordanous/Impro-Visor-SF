@@ -21,7 +21,9 @@
 
 package imp.gui;
 
+import imp.ImproVisor;
 import imp.com.PlayScoreCommand;
+import imp.data.Advisor;
 import imp.data.NoteSymbol;
 import imp.data.PianoKey;
 
@@ -34,7 +36,7 @@ import polya.Polylist;
 import polya.Tokenizer;
 
 import java.util.Calendar;
-import java.util.Date;
+import javax.swing.JOptionPane;
 /**
  *
  * @author  Emma Carlson, 2009
@@ -2241,9 +2243,19 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRS
         saveChord();
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void saveChord()
+     private void saveChord()
     {
-        System.out.println("Successful Call");
+        String v = notate.voicingEntryTFText();
+        //notate.voicingToList(v)
+        String chordName=this.getPresentChordDisplayText();
+        String userDescription=null;
+        while(userDescription==null || userDescription.equals(""))
+                userDescription=JOptionPane.showInputDialog("Please name this voicing (ie: newM7Voicing1)");
+        userDescription.replaceAll(" ", "-");
+        Advisor adv = ImproVisor.getAdvisor();
+        
+        adv.addVoicing(chordName, userDescription,"designer",notate.voicingToList(v), Polylist.nil);
+        ImproVisor.getCurrentWindow().saveAdvice();
     }
 
 /**
