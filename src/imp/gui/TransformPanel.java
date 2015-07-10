@@ -1516,7 +1516,7 @@ public class TransformPanel extends javax.swing.JPanel {
             
             MelodyPart transformedPart = transform.applySubstitutionsToMelodyPart(melody,
                                                                                   chords,
-                                                                                  this);
+                                                                                  this.enforceDuration());
             
 
             pasteOver(notate.getMelodyPart(stave), transformedPart, start);

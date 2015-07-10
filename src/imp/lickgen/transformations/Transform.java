@@ -28,8 +28,12 @@ import imp.data.Note;
 import imp.data.NoteSymbol;
 import imp.gui.Notate;
 import imp.gui.TransformPanel;
+import java.io.File;
+import java.io.FileNotFoundException;
 import polya.*;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 /**
  * Holds an entire grammar for a transform
  * 
@@ -61,6 +65,20 @@ public Transform copy(){
         newTrans.addSubstitution(s.copy());
     }
     return newTrans;
+}
+
+public Transform(File file){
+    this(fileToString(file));
+}
+
+private static String fileToString(File file){
+    String transformStr = "";
+    try {
+        transformStr = new Scanner(file).useDelimiter("\\Z").next();
+    } catch (FileNotFoundException ex) {
+        Logger.getLogger(TransformPanel.class.getName()).log(Level.SEVERE, null, ex);
+    }
+    return transformStr;
 }
 
 /**
@@ -178,7 +196,7 @@ public void removeSubstitution(Substitution sub)
  * @param chords        ChordPart of the melody
  * @return the transformed melody
  */
-public MelodyPart applySubstitutionsToMelodyPart(MelodyPart melody, ChordPart chords, TransformPanel transformPanel)
+public MelodyPart applySubstitutionsToMelodyPart(MelodyPart melody, ChordPart chords, boolean enforceDuration)
 {
     
     //TIMING
@@ -210,7 +228,7 @@ public MelodyPart applySubstitutionsToMelodyPart(MelodyPart melody, ChordPart ch
             transformed = applySubstitutionType(subs, 
                                                 transMelody, 
                                                 chords,
-                                                transformPanel);
+                                                enforceDuration);
             transMelody = transformed.copy();
         }
         
@@ -235,7 +253,7 @@ public MelodyPart applySubstitutionsToMelodyPart(MelodyPart melody, ChordPart ch
 private MelodyPart applySubstitutionType(ArrayList<Substitution> substitutions, 
                                          MelodyPart transNotes, 
                                          ChordPart chords,
-                                         TransformPanel transformPanel)
+                                         boolean enforceDuration)
 {
     
     MelodyPart subbedMP = new MelodyPart();
@@ -296,7 +314,7 @@ private MelodyPart applySubstitutionType(ArrayList<Substitution> substitutions,
             }
             //SORT THE TRANSFORMATIONS, PUT THEM IN THE SUB'S TRANSFORM
             //sub.categorizeTransformations();
-            substituted = sub.apply(transNotes, chords, startingSlot, transformPanel);
+            substituted = sub.apply(transNotes, chords, startingSlot, enforceDuration);
             if(substituted != null)
             {
                 break;
