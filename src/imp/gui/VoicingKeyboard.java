@@ -2242,19 +2242,39 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRS
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         saveChord();
     }//GEN-LAST:event_jButton2ActionPerformed
-
+    /**
+     * saves current voicing in the Advisor which makes its way to My.voc eventually
+     */
      private void saveChord()
     {
         String v = notate.voicingEntryTFText();
+        String root = notate.getChordRootTFText();
         //notate.voicingToList(v)
         String chordName=this.getPresentChordDisplayText();
+        Polylist chordList=notate.voicingToList(v);
+        Object chordNotes[]=  chordList.array();
+        NoteSymbol cNote=NoteSymbol.makeNoteSymbol("c");
+        NoteSymbol rootNote=NoteSymbol.makeNoteSymbol(root);
+        int distance=rootNote.getSemitonesAbove(cNote);
+        String chordString="(";
+        for(Object o:chordNotes)
+        {
+            NoteSymbol ns=(NoteSymbol)o;
+            ns=ns.transpose(distance);
+            chordString+=ns.toPitchString()+"8 ";
+        }
+        if(chordString.length()>1)
+            chordString=chordString.substring(0,chordString.length()-1);
+        chordString+=")";
         String userDescription=null;
+        
         while(userDescription==null || userDescription.equals(""))
                 userDescription=JOptionPane.showInputDialog("Please name this voicing (ie: newM7Voicing1)");
         userDescription.replaceAll(" ", "-");
         Advisor adv = ImproVisor.getAdvisor();
         
-        adv.addVoicing(chordName, userDescription,"designer",notate.voicingToList(v), Polylist.nil);
+        adv.addVoicing(chordName, userDescription,"designer",notate.voicingToList(chordString), Polylist.nil);
+        //System.out.println(v+" new " +chordString);
         ImproVisor.getCurrentWindow().saveAdvice();
     }
 

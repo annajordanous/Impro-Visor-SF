@@ -146,8 +146,8 @@ public class ControlPanelFrame extends javax.swing.JFrame implements Serializabl
         halfStepAwayMultiplier=3;
         fullStepAwayMultiplier=2;
         //voicing control
-        leftColorPriority=1;//priority of any color note
-        rightColorPriority=3;
+        leftColorPriority=0;//priority of any color note
+        rightColorPriority=0;
         maxPriority=6;//max priority a note in the priority array can have
         priorityMultiplier=.667;//should be between 0 and 1, multiply this by the index in priority array, subtract result from max priority to get note priority
         repeatMultiplier=.3;
