@@ -142,7 +142,7 @@ public boolean setTransformation(Polylist trans)
 public MelodyPart apply(MelodyPart notes, 
                         ChordPart chords, 
                         int startingSlot,
-                        TransformPanel transformPanel)
+                        boolean enforceDuration)
 {
     Evaluate eval = new Evaluate(new Polylist());
 
@@ -243,7 +243,7 @@ public MelodyPart apply(MelodyPart notes,
     // if the before and after duration are different, return null since 
     // transforming this melody will not keep time the same.
     // else return the transformed melody. 
-    if(totalDurBefore != totalDurFinal && transformPanel.enforceDuration())
+    if(totalDurBefore != totalDurFinal && enforceDuration)
     {
         if(debug)
         {

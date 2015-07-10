@@ -152,7 +152,7 @@ public static Substitution makeIdentity(String type)
 public MelodyPart apply(MelodyPart notes, 
                         ChordPart chords, 
                         int[] startingSlot, 
-                        TransformPanel transformPanel)
+                        boolean enforceDuration)
 {
     
 
@@ -209,7 +209,7 @@ public MelodyPart apply(MelodyPart notes,
         {
             System.out.println("\t\t\tTrying trans: " + trans.getDescription());
         }
-        MelodyPart result = trans.apply(notes, chords, newStartingSlot, transformPanel);
+        MelodyPart result = trans.apply(notes, chords, newStartingSlot, enforceDuration);
         if(!(result == null))
         {
             if(debug)
