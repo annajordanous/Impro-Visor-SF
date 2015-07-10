@@ -164,6 +164,7 @@ public void setTableColumnWidths()
         tryAgain = new javax.swing.JLabel();
         cellOkbutton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        jLabel38 = new javax.swing.JLabel();
         resetCheck = new javax.swing.JDialog();
         Resettable = new javax.swing.JLabel();
         youSure = new javax.swing.JLabel();
@@ -173,6 +174,10 @@ public void setTableColumnWidths()
         tryAgain1 = new javax.swing.JLabel();
         cellOkbutton1 = new javax.swing.JButton();
         rangeWrong = new javax.swing.JLabel();
+        resetCheck1 = new javax.swing.JDialog();
+        youSure1 = new javax.swing.JLabel();
+        YesButton1 = new javax.swing.JButton();
+        NoButton1 = new javax.swing.JButton();
         deleteThemeDialog = new javax.swing.JDialog();
         areYouSure = new javax.swing.JLabel();
         yesdeletethemeButton = new javax.swing.JButton();
@@ -255,6 +260,18 @@ public void setTableColumnWidths()
         playThemeButton = new javax.swing.JButton();
         jLabel31 = new javax.swing.JLabel();
         pasteToLeadsheetButton = new javax.swing.JButton();
+        resetSoloButton = new javax.swing.JButton();
+        jLabel39 = new javax.swing.JLabel();
+        jPanel11 = new javax.swing.JPanel();
+        barNumberTextField = new javax.swing.JTextField();
+        jLabel40 = new javax.swing.JLabel();
+        jLabel41 = new javax.swing.JLabel();
+        enterAnInteger = new javax.swing.JDialog();
+        typedWrong1 = new javax.swing.JLabel();
+        tryAgain3 = new javax.swing.JLabel();
+        cellOkbutton3 = new javax.swing.JButton();
+        jLabel42 = new javax.swing.JLabel();
+        jLabel43 = new javax.swing.JLabel();
         soloTableScrollPane = new javax.swing.JScrollPane();
         soloTable = new javax.swing.JTable();
         themeListScrollPane = new javax.swing.JScrollPane();
@@ -396,16 +413,14 @@ public void setTableColumnWidths()
         typedWrong.setText("You have either typed information into a cell incorrectly,");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 4;
-        gridBagConstraints.insets = new java.awt.Insets(80, 0, 0, 0);
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.insets = new java.awt.Insets(67, 0, 0, 0);
         enteredIncorrectly.getContentPane().add(typedWrong, gridBagConstraints);
 
         tryAgain.setText("Please try again.");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.insets = new java.awt.Insets(6, 6, 0, 0);
         enteredIncorrectly.getContentPane().add(tryAgain, gridBagConstraints);
 
@@ -421,20 +436,25 @@ public void setTableColumnWidths()
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.insets = new java.awt.Insets(50, 0, 50, 0);
         enteredIncorrectly.getContentPane().add(cellOkbutton, gridBagConstraints);
 
         jLabel1.setText("not finished entering contents into a cell, or left a cell blank.");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 4;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.ipadx = 15;
         gridBagConstraints.insets = new java.awt.Insets(10, 5, 10, 0);
         enteredIncorrectly.getContentPane().add(jLabel1, gridBagConstraints);
+
+        jLabel38.setText("Theme Weaver");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.insets = new java.awt.Insets(18, 0, 0, 0);
+        enteredIncorrectly.getContentPane().add(jLabel38, gridBagConstraints);
 
         resetCheck.setAlwaysOnTop(true);
         resetCheck.setMinimumSize(new java.awt.Dimension(500, 300));
@@ -529,6 +549,46 @@ public void setTableColumnWidths()
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(12, 0, 0, 0);
         rangeTooSmall.getContentPane().add(rangeWrong, gridBagConstraints);
+
+        resetCheck1.setAlwaysOnTop(true);
+        resetCheck1.setMinimumSize(new java.awt.Dimension(500, 300));
+        resetCheck1.getContentPane().setLayout(new java.awt.GridBagLayout());
+
+        youSure1.setText("Are you sure you want to start over?");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.insets = new java.awt.Insets(0, 7, 21, 7);
+        resetCheck1.getContentPane().add(youSure1, gridBagConstraints);
+
+        YesButton1.setText("Yes, Continue");
+        YesButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                YesButton1ActionPerformed(evt);
+            }
+        });
+        YesButton1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                YesButton1KeyPressed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        resetCheck1.getContentPane().add(YesButton1, gridBagConstraints);
+
+        NoButton1.setText("No, Cancel");
+        NoButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                NoButton1ActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        resetCheck1.getContentPane().add(NoButton1, gridBagConstraints);
 
         deleteThemeDialog.setAlwaysOnTop(true);
         deleteThemeDialog.setMinimumSize(new java.awt.Dimension(900, 500));
@@ -887,7 +947,7 @@ public void setTableColumnWidths()
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(20, 0, 40, 0);
         customizeSolo.getContentPane().add(SoloGeneratorTitle3, gridBagConstraints);
@@ -912,7 +972,7 @@ public void setTableColumnWidths()
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.gridheight = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
         gridBagConstraints.ipadx = 320;
@@ -1269,13 +1329,13 @@ public void setTableColumnWidths()
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
         customizeSolo.getContentPane().add(jPanel4, gridBagConstraints);
 
         jLabel24.setText("*Please select in the order you want the transformations done in*");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 3;
         customizeSolo.getContentPane().add(jLabel24, gridBagConstraints);
 
         transformationsUsed.setMinimumSize(new java.awt.Dimension(300, 100));
@@ -1289,7 +1349,7 @@ public void setTableColumnWidths()
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 6;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 0.6;
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 20, 20);
@@ -1298,7 +1358,7 @@ public void setTableColumnWidths()
         jLabel29.setText("Chosen Transformations (In Order):");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 0);
         customizeSolo.getContentPane().add(jLabel29, gridBagConstraints);
 
@@ -1346,9 +1406,106 @@ public void setTableColumnWidths()
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 20);
         customizeSolo.getContentPane().add(jPanel6, gridBagConstraints);
+
+        resetSoloButton.setText("Reset Solo");
+        resetSoloButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                resetSoloButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.ipadx = 3;
+        gridBagConstraints.ipady = 22;
+        customizeSolo.getContentPane().add(resetSoloButton, gridBagConstraints);
+
+        jLabel39.setText("Optional: Choose Placement of Theme");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 8, 7);
+        customizeSolo.getContentPane().add(jLabel39, gridBagConstraints);
+
+        jPanel11.setLayout(new java.awt.GridBagLayout());
+
+        barNumberTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                barNumberTextFieldActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.ipadx = 50;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        jPanel11.add(barNumberTextField, gridBagConstraints);
+
+        jLabel40.setText("Bar #:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        jPanel11.add(jLabel40, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 3;
+        customizeSolo.getContentPane().add(jPanel11, gridBagConstraints);
+
+        jLabel41.setText("*Leave Blank To Advance Step by Step*");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 2;
+        customizeSolo.getContentPane().add(jLabel41, gridBagConstraints);
+
+        enterAnInteger.setAlwaysOnTop(true);
+        enterAnInteger.setMinimumSize(new java.awt.Dimension(400, 300));
+        enterAnInteger.getContentPane().setLayout(new java.awt.GridBagLayout());
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.insets = new java.awt.Insets(67, 0, 0, 0);
+        enterAnInteger.getContentPane().add(typedWrong1, gridBagConstraints);
+
+        tryAgain3.setText("Please enter an Integer for the bar number.");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.insets = new java.awt.Insets(6, 6, 0, 0);
+        enterAnInteger.getContentPane().add(tryAgain3, gridBagConstraints);
+
+        cellOkbutton3.setText("Ok");
+        cellOkbutton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cellOkbutton3ActionPerformed(evt);
+            }
+        });
+        cellOkbutton3.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                cellOkbutton3KeyPressed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.insets = new java.awt.Insets(50, 0, 50, 0);
+        enterAnInteger.getContentPane().add(cellOkbutton3, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.ipadx = 15;
+        gridBagConstraints.insets = new java.awt.Insets(10, 5, 10, 0);
+        enterAnInteger.getContentPane().add(jLabel42, gridBagConstraints);
+
+        jLabel43.setText("Theme Weaver");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.insets = new java.awt.Insets(18, 0, 0, 0);
+        enterAnInteger.getContentPane().add(jLabel43, gridBagConstraints);
 
         setLocation(new java.awt.Point(10, 10));
         setLocationByPlatform(true);
@@ -2874,14 +3031,14 @@ private void closeWindow()
     }//GEN-LAST:event_customizeSoloformKeyPressed
 
     private void themeList1Clicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_themeList1Clicked
-        String name = (String) themeList1.getSelectedValue();
+        chosenThemeName = (String) themeList1.getSelectedValue();
         
         //set name equal to the one clicked in the scroll box
         for( Map.Entry pair : allThemes.entrySet() )
         {
           //loop through entries in allThemes
 
-          if( name == pair.getValue() )
+          if( chosenThemeName == pair.getValue() )
             { //if the name in the themeList is equal to the name in the entry
               Theme theme = (Theme) pair.getKey();
               //set theme equal to the corresponding theme in that entry
@@ -3106,17 +3263,53 @@ private void closeWindow()
         shiftForwardRadioButton.setSelected(false);
         directionOfShift = "backwards";
     }//GEN-LAST:event_shiftBackwardRadioButtonActionPerformed
-
+    
     private void pasteToLeadsheetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasteToLeadsheetButtonActionPerformed
-        customSolo.setSize(customSolo.getSize() + chosenCustomTheme.getSize());
-        
+        if (!barNumberTextField.getText().equals(""))
+        {
+            specifiedBar = true;
+            try
+            {
+                Integer.parseInt(barNumberTextField.getText());
+            }
+            catch(java.lang.NumberFormatException n)
+            {
+                enterAnInteger.setVisible(true);
+                return;
+            }
+            int barSlot = 480*(Integer.parseInt(barNumberTextField.getText())-1);
+            System.out.println("A"+currentSlotCS);
+            System.out.println("B"+barSlot);
+            if (currentSlotCS < barSlot)
+            {
+                System.out.println("A"+currentSlotCS);
+                System.out.println("B"+barSlot);
+                int oldSize = customSolo.getSize();
+                customSolo.setSize(barSlot);
+                MelodyPart rests = new MelodyPart(customSolo.getSize()- oldSize);
+                customSolo.pasteSlots(rests, oldSize);
+            }
+            if (currentSlotCS < barSlot+chosenCustomTheme.getSize())
+            {
+                customSolo.setSize(customSolo.getSize() + chosenCustomTheme.getSize());
+            }
+            currentSlotCS = barSlot;
+        }
+        if (!specifiedBar)
+        {
+            customSolo.setSize(customSolo.getSize() + chosenCustomTheme.getSize());
+        }
+        System.out.println("a" + customSolo.getSize());
+        System.out.println("b" + currentSlotCS);
+        System.out.println(chosenCustomTheme.toString());
         customSolo.pasteSlots(chosenCustomTheme, currentSlotCS);
         currentSlotCS += chosenCustomTheme.getSize();
         
         notate.setCurrentSelectionStart(0); //start selection at beginning
-       
+        
         notate.pasteMelody(customSolo); //paste solo into leadsheet
         imp.ImproVisor.setPlayEntrySounds(true); //play solo
+        specifiedBar = false;
     }//GEN-LAST:event_pasteToLeadsheetButtonActionPerformed
 
     private void quarterShiftRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quarterShiftRadioButtonActionPerformed
@@ -3126,6 +3319,38 @@ private void closeWindow()
     private void eighthShiftRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eighthShiftRadioButtonActionPerformed
         quarterShiftRadioButton.setSelected(false);
     }//GEN-LAST:event_eighthShiftRadioButtonActionPerformed
+
+    private void resetSoloButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetSoloButtonActionPerformed
+        resetCheck1.setVisible(true);
+    }//GEN-LAST:event_resetSoloButtonActionPerformed
+
+    private void YesButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_YesButton1ActionPerformed
+        customSolo = new MelodyPart(notate.getScoreLength());
+        currentSlotCS = 0;
+        notate.pasteMelody(customSolo);
+        customSolo = new MelodyPart();
+        resetCheck1.setVisible(false);
+    }//GEN-LAST:event_YesButton1ActionPerformed
+
+    private void YesButton1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_YesButton1KeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_YesButton1KeyPressed
+
+    private void NoButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NoButton1ActionPerformed
+        resetCheck1.setVisible(false);
+    }//GEN-LAST:event_NoButton1ActionPerformed
+
+    private void barNumberTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barNumberTextFieldActionPerformed
+       
+    }//GEN-LAST:event_barNumberTextFieldActionPerformed
+
+    private void cellOkbutton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cellOkbutton3ActionPerformed
+        enterAnInteger.setVisible(false);
+    }//GEN-LAST:event_cellOkbutton3ActionPerformed
+
+    private void cellOkbutton3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cellOkbutton3KeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cellOkbutton3KeyPressed
     
     private void setTransformationsTextArea()
     {
@@ -3290,7 +3515,8 @@ private MelodyPart chosenCustomThemeOriginal = new MelodyPart();//this will keep
 private MelodyPart chosenCustomTheme = new MelodyPart();
 private int currentSlotCS = 0; //the current slot, used for custom solo
 private MelodyPart customSolo = new MelodyPart();
-
+private String chosenThemeName = "";
+private boolean specifiedBar = false;
 
 Random random;
 File fileName = ImproVisor.getThemesFile();
@@ -4333,7 +4559,7 @@ public void myGenerateSolo(ArrayList<ThemeUse> themeUses, CommandManager cm)
     //use Theme Use Interval from text field
     int themeInterval = new Integer(themeIntervalTextField.getText());
     
-    int slots = 120;//number of slots in a measure
+    int slots = 120;//number of slots in a beat
     
     int themeIntervalUseIncrement = themeInterval * slots; //amount by which we'll increment over the score
     
@@ -5182,6 +5408,7 @@ private MelodyPart barlineshift2(MelodyPart melody, String direction)
     private javax.swing.JButton CancelButton;
     private java.awt.Label ExpandPreferenceTitle;
     private javax.swing.JButton NoButton;
+    private javax.swing.JButton NoButton1;
     private javax.swing.JButton OkButton;
     private javax.swing.JButton Reset;
     private javax.swing.JLabel Resettable;
@@ -5191,15 +5418,18 @@ private MelodyPart barlineshift2(MelodyPart melody, String direction)
     private java.awt.Label SoloGeneratorTitle3;
     private javax.swing.JLabel TransformationOrder;
     private javax.swing.JButton YesButton;
+    private javax.swing.JButton YesButton1;
     private javax.swing.JLabel areYouSure;
     private javax.swing.JFrame barLineShiftPreference;
     private javax.swing.JButton barLineShiftPreferencesButton;
+    private javax.swing.JTextField barNumberTextField;
     private javax.swing.JToggleButton barlineshiftButton;
     private javax.swing.JButton cancelButton;
     private javax.swing.JMenuItem cascadeMI;
     private javax.swing.JButton cellOkbutton;
     private javax.swing.JButton cellOkbutton1;
     private javax.swing.JButton cellOkbutton2;
+    private javax.swing.JButton cellOkbutton3;
     private javax.swing.JLabel chooseName;
     private javax.swing.JMenuItem closeWindowMI;
     private javax.swing.JButton currentSelectionJButton;
@@ -5209,6 +5439,7 @@ private MelodyPart barlineshift2(MelodyPart melody, String direction)
     private javax.swing.JDialog deleteThemeDialog;
     private javax.swing.JButton deleteThemebutton;
     private javax.swing.JRadioButton eighthShiftRadioButton;
+    private javax.swing.JDialog enterAnInteger;
     private javax.swing.JDialog enteredIncorrectly;
     private javax.swing.JToggleButton expandButton;
     private javax.swing.JRadioButton expandBy2RadioButton;
@@ -5253,7 +5484,13 @@ private MelodyPart barlineshift2(MelodyPart melody, String direction)
     private javax.swing.JLabel jLabel35;
     private javax.swing.JLabel jLabel36;
     private javax.swing.JLabel jLabel37;
+    private javax.swing.JLabel jLabel38;
+    private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel40;
+    private javax.swing.JLabel jLabel41;
+    private javax.swing.JLabel jLabel42;
+    private javax.swing.JLabel jLabel43;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -5261,6 +5498,7 @@ private MelodyPart barlineshift2(MelodyPart melody, String direction)
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -5291,6 +5529,8 @@ private MelodyPart barlineshift2(MelodyPart melody, String direction)
     private javax.swing.JLabel rangeWrong1;
     private javax.swing.JLabel rangeWrong2;
     private javax.swing.JDialog resetCheck;
+    private javax.swing.JDialog resetCheck1;
+    private javax.swing.JButton resetSoloButton;
     private javax.swing.JButton resetTransformationChoicesButton;
     private javax.swing.JToggleButton reverseButton;
     private javax.swing.JMenuBar roadmapMenuBar;
@@ -5332,12 +5572,15 @@ private MelodyPart barlineshift2(MelodyPart melody, String direction)
     private javax.swing.JLabel tryAgain;
     private javax.swing.JLabel tryAgain1;
     private javax.swing.JLabel tryAgain2;
+    private javax.swing.JLabel tryAgain3;
     private javax.swing.JLabel typedWrong;
+    private javax.swing.JLabel typedWrong1;
     private javax.swing.JRadioButton wholeStepRadioButton;
     private javax.swing.JRadioButton wholeStepRadioButton1;
     private javax.swing.JMenu windowMenu;
     private javax.swing.JSeparator windowMenuSeparator;
     private javax.swing.JButton yesdeletethemeButton;
     private javax.swing.JLabel youSure;
+    private javax.swing.JLabel youSure1;
     // End of variables declaration//GEN-END:variables
 }
