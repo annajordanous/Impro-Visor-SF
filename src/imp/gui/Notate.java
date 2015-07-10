@@ -13333,7 +13333,10 @@ public String getLickTitle()
               }
           }
     }//GEN-LAST:event_saveAsAdviceActionPerformed
-
+    public void saveAdvice()
+    {
+        saveAdviceActionPerformed(null);
+    }
     private void saveAdviceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAdviceActionPerformed
 
         if( savedVocab != null )
