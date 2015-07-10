@@ -289,17 +289,21 @@ private MelodyPart applySubstitutionType(ArrayList<Substitution> substitutions,
             }
         }
         
-        if(full.size() < 1)
-            return transNotes;
+        
+//        if(full.size() < 1){
+//            System.out.println("No subs are applicable to this note");
+//            //return transNotes;
+//        }
+            
         
         Collections.shuffle(full);
 
         ArrayList<Substitution> sortedSubs = new ArrayList<Substitution>();
-        do {
+        while(!full.isEmpty()){
             Substitution sub = full.get(0);
             sortedSubs.add(sub);
             full.removeAll(Collections.singleton(sub));
-        } while(!full.isEmpty());
+        }
         
         // go throught each substitution. If it can be applied at the starting 
         // slot, use that substitution, if not move onto the next.
