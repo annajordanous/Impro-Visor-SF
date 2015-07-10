@@ -85,6 +85,7 @@ public class TradingWindow
     private Integer adjustedLength;
     private Integer slotsForProcessing;
     private Integer numberOfTurns;
+    private Integer measures;
     private ChordPart chords;
     private MelodyPart aMelodyPart;
     private MidiSynth midiSynth;
@@ -92,7 +93,7 @@ public class TradingWindow
     private boolean isTrading;
     private boolean isUserInputError;
     private boolean firstPlay;
-    private boolean isUserLeading = true; //TODO, make this not only option
+    private boolean isUserLeading;
     private TradePhase phase;
     private TradeMode tradeMode;
 
@@ -100,10 +101,10 @@ public class TradingWindow
     private int endLimitIndex = -1;
     private boolean isSwing = false;
     private Integer snapResolution = 2;
-    private Integer measures = 4;
 
     public static final int zero = 0;
     public static final int one = 1;
+    public static final int DEFAULT_TRADE_LENGTH = 4;
     
     
     public enum TradePhase {
@@ -126,7 +127,12 @@ public class TradingWindow
         initComponents();
         this.notate = notate;
         tradeScore = new Score();
+        
+        //defaults on open
         tradeMode = TradeMode.REPEAT;
+        firstPlay = true;
+        measures = DEFAULT_TRADE_LENGTH;
+        isUserLeading = true;
     }
 
 
@@ -157,8 +163,9 @@ public class TradingWindow
         long currentPosition = notate.getSlotInPlayback();
         //System.out.println(currentPosition);
         if (firstPlay) {
+            //System.out.println("INITIAL DELAY: " + currentPosition + " SLOTS.");
             //automatically calibrate delay
-            this.slotDelay = currentPosition;
+            slotDelay = currentPosition;
             firstPlay = false;
         }
         
@@ -169,7 +176,7 @@ public class TradingWindow
             if (nextTrig <= currentPosition) {
                 //System.out.println("long: " + nextTrig);
                 triggers.pop();
-                if (nextTrig != zero) {
+                if (nextTrig != 0) {
                     switchTurn();
                 }
             }
@@ -235,6 +242,8 @@ public class TradingWindow
 
     public void computerTurn() {
         
+        long slotsBefore = notate.getSlotInPlayback();
+        
         new PlayScoreCommand(
                 tradeScore,
                 zero,
@@ -247,6 +256,11 @@ public class TradingWindow
                 endLimitIndex
         ).execute();
         
+        long slotsAfter = notate.getSlotInPlayback();
+        
+        //update delay
+        slotDelay = (slotDelay + (slotsAfter - slotsBefore)) / 2;
+        
         phase = TradePhase.COMPUTER_TURN;
     }
 
@@ -254,8 +268,8 @@ public class TradingWindow
      * Starts interactive trading
      */
     public void startTrading() {
+        setIsUserLeading(userFirstButton.isSelected());
         slotsForProcessing = 2; // TODO, make editable
-        firstPlay = true;
         startTradingButton.setText("StopTrading");
         isTrading = true;
         midiSynth = new MidiSynth(notate.getMidiManager());
@@ -264,21 +278,22 @@ public class TradingWindow
         slotsPerTurn = measures * slotsPerMeasure;
         adjustedLength = scoreLength - (scoreLength % slotsPerTurn);
         numberOfTurns = adjustedLength / slotsPerTurn;
+        populateTriggers();
+        //TODO Generate solo if computer goes first
+        //make sure to mute chords
+        notate.playScore();
         
         if (isUserLeading) {
-            phase = TradePhase.USER_TURN;
+            userTurn();
         } else {
-            phase = TradePhase.COMPUTER_TURN;
-            //TODO generate a solo to play, we are now doing nothing.
+            //TODO 
+            computerTurn();
         }
-        
-        populateTriggers();
-        
-        notate.playScore();
-        userTurn();
     }
     
     private void populateTriggers(){
+        //clear triggers
+        triggers.clear();
         //populate trigger stack (scheduler)
         boolean computerTurnNext;
         if (numberOfTurns % 2 == zero) {
@@ -307,7 +322,9 @@ public class TradingWindow
             triggers.push(trigSlot);
             if (computerTurnNext) {
                 computerTurnNext = false;
-                triggers.push(trigSlot - slotsForProcessing);
+                if (trigSlot != zero) {
+                    triggers.push(trigSlot - slotsForProcessing);
+                }
             } else {
                 computerTurnNext = true;
             }
@@ -350,6 +367,16 @@ public class TradingWindow
         }
     }
     
+    private void changeTradeLength(String newLength){
+        measures = Integer.parseInt(newLength);
+        //System.out.println("TRADE LENGTH SET: " + newLength);
+    }
+    
+    private void setIsUserLeading(boolean isUserLeading){
+        this.isUserLeading = isUserLeading;
+        //System.out.println("USER FIRST: " + isUserLeading);
+    }
+    
     private void repeatAndRectify(){
         RectifyPitchesCommand fixPitches = new RectifyPitchesCommand(
                 aMelodyPart,
@@ -370,11 +397,19 @@ public class TradingWindow
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        leadingSelector = new javax.swing.ButtonGroup();
         startTradingButton = new javax.swing.JButton();
         tradeModeSelector = new javax.swing.JComboBox();
         jLabel1 = new javax.swing.JLabel();
+        tradeLenthSelector = new javax.swing.JComboBox();
+        jLabel2 = new javax.swing.JLabel();
+        userFirstButton = new javax.swing.JRadioButton();
+        jRadioButton2 = new javax.swing.JRadioButton();
+        jSeparator1 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setAlwaysOnTop(true);
+        setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 formWindowClosed(evt);
@@ -395,31 +430,68 @@ public class TradingWindow
             }
         });
 
-        jLabel1.setText("Trading Mode:");
+        jLabel1.setText("Mode:");
+
+        tradeLenthSelector.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "4", "8", "16" }));
+        tradeLenthSelector.setSelectedIndex(2);
+        tradeLenthSelector.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tradeLenthSelectorActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("Length:");
+
+        leadingSelector.add(userFirstButton);
+        userFirstButton.setSelected(true);
+        userFirstButton.setText("User First");
+
+        leadingSelector.add(jRadioButton2);
+        jRadioButton2.setText("Impro-Visor First");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(tradeModeSelector, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel1)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(tradeLenthSelector, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(userFirstButton)
+                    .addComponent(jRadioButton2))
+                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(tradeModeSelector, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(startTradingButton, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(startTradingButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 397, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1)
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2)
+                    .addComponent(userFirstButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(startTradingButton)
-                    .addComponent(tradeModeSelector, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tradeModeSelector, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tradeLenthSelector, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jRadioButton2))
+                .addGap(18, 18, 18)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(startTradingButton)
                 .addContainerGap())
         );
 
@@ -445,6 +517,10 @@ public class TradingWindow
     private void tradeModeSelectorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tradeModeSelectorActionPerformed
         changeTradeMode((String)tradeModeSelector.getSelectedItem());
     }//GEN-LAST:event_tradeModeSelectorActionPerformed
+
+    private void tradeLenthSelectorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tradeLenthSelectorActionPerformed
+        changeTradeLength((String) tradeLenthSelector.getSelectedItem());
+    }//GEN-LAST:event_tradeLenthSelectorActionPerformed
 
     private double tryDouble(String number) {
         double newNumber;
@@ -496,8 +572,14 @@ public class TradingWindow
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JRadioButton jRadioButton2;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.ButtonGroup leadingSelector;
     private javax.swing.JButton startTradingButton;
+    private javax.swing.JComboBox tradeLenthSelector;
     private javax.swing.JComboBox tradeModeSelector;
+    private javax.swing.JRadioButton userFirstButton;
     // End of variables declaration//GEN-END:variables
 
 }
