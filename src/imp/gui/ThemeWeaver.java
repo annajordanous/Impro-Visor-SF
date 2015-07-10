@@ -3406,7 +3406,7 @@ private void closeWindow()
         notate.pasteMelody(customSolo);
         
         customSolo = lastEdit;
-        
+        currentSlotCS = customSolo.getSize();
         notate.setCurrentSelectionStart(0); //start selection at beginning
         
         notate.pasteMelody(customSolo); //paste solo into leadsheet
