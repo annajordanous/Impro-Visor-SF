@@ -101,9 +101,13 @@
     <Component class="javax.swing.JComboBox" name="tradeModeSelector">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="2">
+          <StringArray count="6">
             <StringItem index="0" value="Repeat"/>
             <StringItem index="1" value="Repeat and Rectify"/>
+            <StringItem index="2" value="Flatten"/>
+            <StringItem index="3" value="Random Modify"/>
+            <StringItem index="4" value="Flatten, Modify, Rectify"/>
+            <StringItem index="5" value="Charlie Parker"/>
           </StringArray>
         </Property>
       </Properties>

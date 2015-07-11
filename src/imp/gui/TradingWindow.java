@@ -27,12 +27,15 @@ import imp.data.ChordPart;
 import java.util.ArrayList;
 import imp.data.MelodyPart;
 import imp.data.MidiSynth;
+import imp.data.ResponseGenerator;
 import imp.data.Rest;
 import imp.data.Score;
 import imp.gui.Notate;
+import imp.lickgen.transformations.Transform;
 import imp.util.MidiPlayListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import javax.sound.midi.InvalidMidiDataException;
 import java.util.LinkedList;
 import java.util.logging.Level;
@@ -86,6 +89,7 @@ public class TradingWindow
     private Integer slotsForProcessing;
     private Integer numberOfTurns;
     private Integer measures;
+    private int[] metre;
     private ChordPart chords;
     private MelodyPart aMelodyPart;
     private MidiSynth midiSynth;
@@ -95,7 +99,7 @@ public class TradingWindow
     private boolean firstPlay;
     private boolean isUserLeading;
     private TradePhase phase;
-    private TradeMode tradeMode;
+    private String tradeMode;
 
     //magic values
     private int endLimitIndex = -1;
@@ -129,7 +133,7 @@ public class TradingWindow
         tradeScore = new Score();
         
         //defaults on open
-        tradeMode = TradeMode.REPEAT;
+        tradeMode = (String) tradeModeSelector.getSelectedItem();
         firstPlay = true;
         measures = DEFAULT_TRADE_LENGTH;
         isUserLeading = true;
@@ -176,9 +180,7 @@ public class TradingWindow
             if (nextTrig <= currentPosition) {
                 //System.out.println("long: " + nextTrig);
                 triggers.pop();
-                if (nextTrig != 0) {
-                    switchTurn();
-                }
+                switchTurn();
             }
             //else System.out.println(triggers);
         }
@@ -212,8 +214,9 @@ public class TradingWindow
         if (triggers.isEmpty()) {
             nextSection = adjustedLength;
         } else {
-            nextSection = triggers.peek();
+            nextSection = triggers.peek() + slotsForProcessing;
         }
+        //System.out.println("Chords extracted from chord prog from : " + nextSection + " to " + (nextSection + slotsPerTurn - one));
         chords = notate.getScore().getChordProg().extract(nextSection, nextSection + slotsPerTurn - one);
         aMelodyPart = new MelodyPart(slotsPerTurn);
         tradeScore = new Score("trading", notate.getTempo(), zero);
@@ -230,10 +233,11 @@ public class TradingWindow
         
         tradeScore.setBassMuted(true);
         tradeScore.delPart(0);
-        tradeScore.deleteChords();
         
         //snap? aMelodyPart = aMelodyPart.applyResolution(120);
+        //System.out.println(chords);
         applyTradingMode();
+        tradeScore.deleteChords();
         
         Long delayCopy = new Long(slotDelay);
         aMelodyPart = aMelodyPart.extract(delayCopy.intValue(), slotsPerTurn - one, true, true);
@@ -269,12 +273,13 @@ public class TradingWindow
      */
     public void startTrading() {
         setIsUserLeading(userFirstButton.isSelected());
-        slotsForProcessing = 2; // TODO, make editable
+        slotsForProcessing = 240; // TODO, make editable
         startTradingButton.setText("StopTrading");
         isTrading = true;
         midiSynth = new MidiSynth(notate.getMidiManager());
         scoreLength = notate.getScoreLength();
         slotsPerMeasure = notate.getScore().getSlotsPerMeasure();
+        metre = notate.getScore().getMetre();
         slotsPerTurn = measures * slotsPerMeasure;
         adjustedLength = scoreLength - (scoreLength % slotsPerTurn);
         numberOfTurns = adjustedLength / slotsPerTurn;
@@ -284,10 +289,10 @@ public class TradingWindow
         notate.playScore();
         
         if (isUserLeading) {
-            userTurn();
+            phase = TradePhase.COMPUTER_TURN;
         } else {
-            //TODO 
-            computerTurn();
+            //TODO make a nice comment
+            phase = TradePhase.PROCESS_INPUT;
         }
     }
     
@@ -347,25 +352,49 @@ public class TradingWindow
     
 
     private void applyTradingMode() {
-        switch (tradeMode) {
-            case REPEAT_AND_RECTIFY:
-                repeatAndRectify();
-                break;
-            default:
-                break;
+        tradeMode = (String) tradeModeSelector.getSelectedItem();
+        ResponseGenerator generator = new ResponseGenerator(aMelodyPart, chords, metre);
+        if (tradeMode.equals("Flatten")){
+            generator.flattenSolo();
+            aMelodyPart = generator.getResponse();
+        } else if (tradeMode.equals("Repeat and Rectify")) {
+            generator.rectifySolo();
+        } else if (tradeMode.equals("Random Modify")){
+            generator.modifySolo();
+        } else if (tradeMode.equals("Flatten, Modify, Rectify")) {
+            generator.flattenSolo();
+            aMelodyPart = generator.getResponse();
+            generator.modifySolo();
+            generator.rectifySolo();
+        } else if (tradeMode.equals("Charlie Parker")) {
+            String dir = System.getProperty("user.dir");
+            File charles = new File(dir + "/src/imp/gui/CHARLIE_PARKER_EVERY_BEAT_DOUBLE_RES.transform");
+            aMelodyPart = generator.getResponse(aMelodyPart, chords, new Transform(charles));
+            generator.rectifySolo();
+        } else {
+            System.out.println("did nothing");
         }
+        notate.getCurrentMelodyPart().altPasteOver(aMelodyPart, triggers.peek());
+        notate.getCurrentMelodyPart().altPasteOver(new MelodyPart(slotsPerTurn), triggers.peek() + slotsPerTurn);
+//        switch (tradeMode) {
+//            case REPEAT_AND_RECTIFY:
+//                repeatAndRectify();
+//                break;
+//            default:
+//                break;
+//        }
     }
     
-    private void changeTradeMode(String newMode) {
-        if (newMode.equals("Repeat")) {
-            tradeMode = TradeMode.REPEAT;
-        } else if (newMode.equals("Repeat and Rectify")) {
-            tradeMode = TradeMode.REPEAT_AND_RECTIFY;
-        } else {
-            tradeMode = TradeMode.REPEAT;
-            //System.out.println("Not a valid mode");
-        }
-    }
+//    private void changeTradeMode(String newMode) {
+//        if (newMode.equals("Repeat")) {
+//            tradeMode = TradeMode.REPEAT;
+//        } else if (newMode.equals("Repeat and Rectify")) {
+//            tradeMode = TradeMode.REPEAT_AND_RECTIFY;
+//        } else {
+//            tradeMode = TradeMode.REPEAT;
+//            //System.out.println("Not a valid mode");
+//        }
+//    }
     
     private void changeTradeLength(String newLength){
         measures = Integer.parseInt(newLength);
@@ -423,7 +452,7 @@ public class TradingWindow
             }
         });
 
-        tradeModeSelector.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Repeat", "Repeat and Rectify" }));
+        tradeModeSelector.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Repeat", "Repeat and Rectify", "Flatten", "Random Modify", "Flatten, Modify, Rectify", "Charlie Parker" }));
         tradeModeSelector.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tradeModeSelectorActionPerformed(evt);
@@ -515,7 +544,7 @@ public class TradingWindow
     }//GEN-LAST:event_startTradingButtonActionPerformed
 
     private void tradeModeSelectorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tradeModeSelectorActionPerformed
-        changeTradeMode((String)tradeModeSelector.getSelectedItem());
+        //changeTradeMode((String)tradeModeSelector.getSelectedItem());
     }//GEN-LAST:event_tradeModeSelectorActionPerformed
 
     private void tradeLenthSelectorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tradeLenthSelectorActionPerformed
