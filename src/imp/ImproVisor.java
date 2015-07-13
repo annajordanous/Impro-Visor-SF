@@ -678,7 +678,7 @@ public static File getTransformFile()
         Preferences.setPreference(Preferences.DEFAULT_TRANSFORM_FILE, Preferences.DVF_TRANSFORM_VAL);
         filename = Preferences.DVF_TRANSFORM_VAL;
     }
-    return new File(getGrammarDirectory(), filename); 
+    return new File(getTransformDirectory(), filename); 
   }
      
 public static File getRecentFilesFile()
