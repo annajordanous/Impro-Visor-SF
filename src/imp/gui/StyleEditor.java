@@ -4447,7 +4447,7 @@ public void updateAllDrumPatterns(String name, String rules)
         chordAttrPanel.add(voicingLabel, gridBagConstraints);
 
         voicingType.setMaximumRowCount(10);
-        voicingType.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "designer", "any", "closed", "open", "quartal", "shout" }));
+        voicingType.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "custom", "designer", "any", "closed", "open", "quartal", "shout" }));
         voicingType.setMinimumSize(new java.awt.Dimension(150, 22));
         voicingType.setPreferredSize(new java.awt.Dimension(150, 22));
         voicingType.addActionListener(new java.awt.event.ActionListener() {
@@ -4464,7 +4464,7 @@ public void updateAllDrumPatterns(String name, String rules)
         gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
         chordAttrPanel.add(voicingType, gridBagConstraints);
 
-        customSettings.setText("Designer");
+        customSettings.setText("Custom");
         customSettings.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 customSettingsMouseClicked(evt);
