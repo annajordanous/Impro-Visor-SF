@@ -566,6 +566,9 @@ private Polylist getTwoWindowGuardCondition(MelodyPart outline, ChordPart chords
         Note origNote = outline.getCurrentNote(slot);
         Chord currChord = chords.getCurrentChord(slot);
         
+        Polylist duration = Polylist.PolylistFromString("duration>= (duration n"+notes+") "+Note.getDurationString(origNote.getRhythmValue()));
+        andEqString = andEqString.append(duration);
+        
         if(origNote.isRest()){
             Polylist rest = Polylist.PolylistFromString(
                     "rest? n" + notes);
