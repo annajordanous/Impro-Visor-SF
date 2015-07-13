@@ -1879,7 +1879,6 @@ public Critic getCritic()
         improviseButton = new javax.swing.JToggleButton();
         useSubstitutorCheckBox = new javax.swing.JCheckBox();
         generationGapSpinner = new javax.swing.JSpinner();
-        openGeneratorButton = new javax.swing.JButton();
         freezeLayoutButton = new javax.swing.JToggleButton();
         colorationButton = new javax.swing.JToggleButton();
         smartEntryButton = new javax.swing.JToggleButton();
@@ -7222,19 +7221,6 @@ public Critic getCritic()
         });
         standardToolbar.add(generationGapSpinner);
 
-        openGeneratorButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/triage.gif"))); // NOI18N
-        openGeneratorButton.setToolTipText("Open the Lick Generator dialog.");
-        openGeneratorButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        openGeneratorButton.setMaximumSize(new java.awt.Dimension(30, 30));
-        openGeneratorButton.setMinimumSize(new java.awt.Dimension(30, 30));
-        openGeneratorButton.setPreferredSize(new java.awt.Dimension(30, 30));
-        openGeneratorButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                openGeneratorButtonActionPerformed(evt);
-            }
-        });
-        standardToolbar.add(openGeneratorButton);
-
         freezeLayoutButton.setBackground(new java.awt.Color(0, 255, 0));
         freezeLayoutButton.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
         freezeLayoutButton.setText("<html><center>Freeze<br>Layout</center></html>");
@@ -11003,12 +10989,6 @@ void FillProbsButtonActionPerformed(java.awt.event.ActionEvent evt)
   {
     verifyAndFill();
   }
-
-    private void openGeneratorButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_openGeneratorButtonActionPerformed
-
-    {//GEN-HEADEREND:event_openGeneratorButtonActionPerformed
-        openLickGenerator();
-    }//GEN-LAST:event_openGeneratorButtonActionPerformed
 
 public void openLickGenerator()
   {
@@ -25068,7 +25048,6 @@ private ImageIcon pauseButton =
     private javax.swing.JPanel okcancelPanel3;
     private javax.swing.JMenuItem oneAutoMI;
     private javax.swing.JButton openBtn;
-    private javax.swing.JButton openGeneratorButton;
     private javax.swing.JMenuItem openLeadsheetEditorMI;
     private javax.swing.JMenuItem openLeadsheetMI;
     private javax.swing.JMenu openRecentLeadsheetMenu;
