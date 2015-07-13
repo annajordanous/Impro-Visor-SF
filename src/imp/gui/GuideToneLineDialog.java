@@ -25,8 +25,13 @@ import static imp.Constants.A2;
 import static imp.Constants.C1;
 import static imp.Constants.C7;
 import static imp.Constants.E5;
+import imp.ImproVisor;
+import imp.com.PasteCommand;
+import imp.com.PlayScoreCommand;
 import imp.data.Chord;
+import imp.data.ChordPart;
 import imp.data.GuideLineGenerator;
+import imp.data.MelodyInContext;
 import imp.data.MelodyPart;
 import imp.data.Note;
 import imp.data.NoteSymbol;
@@ -35,7 +40,12 @@ import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JRadioButton;
 import imp.gui.Notate.Mode;
+import imp.lickgen.transformations.Transform;
 import imp.util.Preferences;
+import imp.util.TransformFilter;
+import java.io.File;
+import java.util.Arrays;
+import java.util.Comparator;
 import javax.swing.JPanel;
 import polya.Polylist;
 
@@ -48,6 +58,7 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
 
     private final Notate notate;
     private final TransformPanel transformationPanel;
+    private Transform transform;
     
     //the default keys that are initially clicked
     //only used once, in the constructor
@@ -87,7 +98,11 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
         updateTransformButtons();
         
         updateRange();
-
+        
+        String musician = (String)musicianChooser.getSelectedItem();
+        String dir = System.getProperty("user.dir");
+        File file = new File(dir + "/transforms/"+musician+".transform");
+        transform = new Transform(file);
     }
 
     /**
@@ -154,6 +169,8 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
         filler7 = new javax.swing.Box.Filler(new java.awt.Dimension(20, 20), new java.awt.Dimension(20, 20), new java.awt.Dimension(20, 20));
         filler8 = new javax.swing.Box.Filler(new java.awt.Dimension(20, 20), new java.awt.Dimension(20, 20), new java.awt.Dimension(20, 20));
         filler9 = new javax.swing.Box.Filler(new java.awt.Dimension(20, 20), new java.awt.Dimension(20, 20), new java.awt.Dimension(20, 20));
+        jLabel1 = new javax.swing.JLabel();
+        musicianChooser = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(600, 600));
@@ -265,7 +282,7 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 20;
+        gridBagConstraints.gridy = 22;
         getContentPane().add(transformPanel, gridBagConstraints);
 
         scaleDeg2Panel.setLayout(new java.awt.GridBagLayout());
@@ -417,7 +434,7 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 21;
+        gridBagConstraints.gridy = 23;
         getContentPane().add(revertOrReapplyPanel, gridBagConstraints);
 
         numberOfLinesLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -517,13 +534,58 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
         getContentPane().add(filler8, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 22;
+        gridBagConstraints.gridy = 24;
         getContentPane().add(filler9, gridBagConstraints);
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel1.setText("Select Musician:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 20;
+        getContentPane().add(jLabel1, gridBagConstraints);
+
+        populateMusicianList();
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 21;
+        getContentPane().add(musicianChooser, gridBagConstraints);
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    private void populateMusicianList()
+  {
+    File directory = ImproVisor.getTransformDirectory();
+    System.out.println("populating from " + directory);
+    if( directory.isDirectory() )
+      {
+        String fileName[] = directory.list();
+
+        // 6-25-13 Hayden Blauzvern
+        // Fix for Linux, where the file list is not in alphabetic order
+        Arrays.sort(fileName, new Comparator<String>()
+        {
+        public int compare(String s1, String s2)
+          {
+            return s1.toUpperCase().compareTo(s2.toUpperCase());
+          }
+
+        });
+       
+        // Add names of grammar files
+        for (String name : fileName) {
+            if( name.endsWith(TransformFilter.EXTENSION) )
+            {
+                int len = name.length();
+                String stem = name.substring(0, len - TransformFilter.EXTENSION.length());
+                musicianChooser.addItem(stem);
+            }
+        }
+      }
+  }
+    
     private void generateLineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateLineActionPerformed
         //Get which options are selected
         JRadioButton direction = getSelected(directionButtons);
@@ -710,9 +772,11 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
 
     private void transformLineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transformLineActionPerformed
 
-        transformationPanel.applySubstitutions();
+        applySubstitutions();
         
-        updateTransformButtons();
+      //  transformationPanel.applySubstitutions();
+        
+      //  updateTransformButtons();
         
         updatePlayButtons();
         
@@ -720,9 +784,9 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
 
     private void revertLineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_revertLineActionPerformed
         
-        transformationPanel.revertSubs();
+        revertSubs();
         
-        updateTransformButtons();
+        //updateTransformButtons();
         
         updatePlayButtons();
 
@@ -741,10 +805,10 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
     
     private void reapplyTransformActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reapplyTransformActionPerformed
         
-        transformationPanel.revertSubs();
-        transformationPanel.applySubstitutions();
+        revertSubs();
+        applySubstitutions();
         
-        updateTransformButtons();
+        //updateTransformButtons();
         
         updatePlayButtons();
         
@@ -903,11 +967,13 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
     private javax.swing.Box.Filler filler9;
     private javax.swing.JButton generateLine;
     private javax.swing.JRadioButton half;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.ButtonGroup lineTypeButtons;
     private javax.swing.JPanel linesPanel;
     private javax.swing.ButtonGroup maxDurationButtons;
     private javax.swing.JLabel maxDurationLabel;
     private javax.swing.JPanel maxDurationPanel;
+    private javax.swing.JComboBox musicianChooser;
     private javax.swing.JRadioButton noPref;
     private javax.swing.JRadioButton noPreference;
     private javax.swing.ButtonGroup numberOfLinesButtons;
@@ -938,4 +1004,91 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
     private javax.swing.JRadioButton twoLines;
     private javax.swing.JRadioButton whole;
     // End of variables declaration//GEN-END:variables
+
+    private void applySubstitutions() {
+        if(notate.getChordProg().getChords().isEmpty()){
+            return;
+        }
+        notate.stopPlaying();
+        notate.adjustSelection();
+        int start = notate.getCurrentSelectionStart();
+        int stop = notate.getCurrentSelectionEnd();
+        MelodyPart melody = notate.getCurrentMelodyPart().extract(start,
+                                                                  stop,
+                                                                  false);
+        ChordPart chords = notate.getChordProg().extract(start, stop);
+        applySubstitutionsToPart(melody, chords);
+    }
+
+    private void applySubstitutionsToPart(MelodyPart melody, ChordPart chords) {
+        String musician = (String)musicianChooser.getSelectedItem();
+        String dir = System.getProperty("user.dir");
+        File file = new File(dir + "/transforms/"+musician+".transform");
+        transform = new Transform(file);
+        if(transform != null)
+        {
+            Stave stave = notate.getCurrentStave();
+            int start = notate.getCurrentSelectionStart();
+            int stop = notate.getCurrentSelectionEnd();
+            notate.getCurrentMelodyPart().pushOriginalVersion(new MelodyInContext(melody.copy(), stave, start, stop));
+
+            MelodyPart transformedPart = transform.applySubstitutionsToMelodyPart(melody,
+                                                                                  chords,
+                                                                                  true);
+            
+            pasteOver(notate.getMelodyPart(stave), transformedPart, start);
+            
+            //always rectify
+            notate.rectifySelection(stave,start,stop);
+
+            notate.playCurrentSelection(false, 
+                                        0, 
+                                        PlayScoreCommand.USEDRUMS, 
+                                        "putLick " + start + " - " + stop);
+            ImproVisor.setPlayEntrySounds(true);
+            
+            //Current MelodyPart was just transformed - set enabled to true
+            revertLine.setEnabled(true);
+            reapplyTransform.setEnabled(true);
+        }
+    }
+
+    /**
+     * Pastes source melody over dest melody at startingSlot. This calls the 
+     * PasteCommand so that undo and redo can be used in notate. 
+     * @param dest
+     * @param source
+     * @param startingSlot 
+     */
+    public void pasteOver(MelodyPart dest, MelodyPart source, int startingSlot)
+    {
+        PasteCommand paste = new PasteCommand(source,dest,startingSlot,false);
+        notate.cm.execute(paste);
+    }
+
+    private void revertSubs() {
+        MelodyPart currentPart = notate.getCurrentMelodyPart();
+        MelodyInContext originalPart = currentPart.getRecentVersion();
+        
+        //prevent null pointer exception, don't try to revert an original melody
+        if(originalPart==null){
+            return;
+        }
+        //MelodyInContext originalPart = savedMelodies.pop();
+        notate.stopPlaying();
+        Stave stave = originalPart.getStave();
+        int start = originalPart.getStart();
+        int stop = originalPart.getStop();
+        
+        stave.setSelection(start, stop);
+        pasteOver(notate.getMelodyPart(stave), originalPart.getMelody(), start);
+        
+        //if the stack is empty
+        if(currentPart.isOriginal()){
+           revertLine.setEnabled(false);
+           reapplyTransform.setEnabled(false); 
+        }
+    }
+
+    
 }
