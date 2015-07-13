@@ -172,7 +172,7 @@ public class TransformPanel extends javax.swing.JPanel {
             }        
         };
         
-        chooser.setCurrentDirectory(ImproVisor.getGrammarDirectory());
+        chooser.setCurrentDirectory(ImproVisor.getTransformDirectory());
         
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Transform Files",
                                                                      "transform");
