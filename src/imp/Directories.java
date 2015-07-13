@@ -48,6 +48,12 @@ public static String dictionaryDirName = "vocab";
  */
 public static String grammarDirName = "grammars"; // was "grammars";
 
+
+/**
+ * Standard sub-directory for transforms
+ */
+public static String transformDirName = "transforms";
+
 /**
  * Standard sub-directory for soloist files
  */

@@ -637,6 +637,13 @@ public static File getGrammarDirectory()
   return new File(getUserDirectory(), Directories.grammarDirName);
   }
 
+public static File getTransformDirectory()
+  {
+  String userHome = System.getProperty("user.dir");
+  File homeDir = new File(userHome);
+  return new File(homeDir, Directories.transformDirName);
+  }
+
 public static File getDictionaryDirectory()
   {
   return new File(getUserDirectory(), Directories.dictionaryDirName);

@@ -10,6 +10,7 @@ import imp.com.RectifyPitchesCommand;
 import imp.com.ReverseCommand;
 import imp.lickgen.transformations.Transform;
 import imp.lickgen.transformations.TransformLearning;
+import java.io.File;
 import java.util.Random;
 
 /**
@@ -155,19 +156,39 @@ public class ResponseGenerator {
     }
     
     //ALL THE STEPS TOGETHER
-    public MelodyPart getResponse(MelodyPart response, ChordPart responseChords, Transform musician){
-        //STEP 0
-        setResponse(response);
-        setChords(responseChords);
+    public MelodyPart musicianResponse(Transform musician){
+
         //STEP 1
         flattenSolo();
         //STEP 2
-        //modifySolo();
+        modifySolo();
+        rectifySolo(ONLY_CHORD_TONES);
         //STEP 3
         transformSolo(musician);
         //STEP 4
         rectifySolo(ALL_TONES);
         //STEP 5
+        return getResponse();
+    }
+    
+    public MelodyPart response(Transform musician, String tradeMode){
+        if (tradeMode.equals("Flatten")){
+            flattenSolo();
+        } else if (tradeMode.equals("Repeat and Rectify")) {
+            rectifySolo();
+        } else if (tradeMode.equals("Random Modify")){
+            modifySolo();
+            rectifySolo(ALL_TONES);
+        } else if (tradeMode.equals("Flatten, Modify, Rectify")) {
+            flattenSolo();
+            modifySolo();
+            rectifySolo();
+        } else if (tradeMode.equals("Trade with a Musician")) {
+            musicianResponse(musician);
+            rectifySolo();
+        } else {
+            System.out.println("did nothing");
+        }
         return getResponse();
     }
     
