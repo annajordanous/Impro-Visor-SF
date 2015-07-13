@@ -1857,6 +1857,11 @@ public void setAutoFill(boolean fill)
         }
         return result;   
     }
+     
+     public int getSize()
+     {
+         return size;
+     }
     
     /**
      * Quantization: accounting for the human element of user-generated audio

@@ -370,6 +370,9 @@ public Transform createBlockTransform(MelodyPart outline,
     for(int slot = start; slot < stop;)
     {
         int nextSlot = slot + windowResolution;
+        if(nextSlot > stop){
+            nextSlot = stop + 1;
+        }
 
         MelodyPart outlinePart = outline.extract(slot, nextSlot-1,true,true);
         MelodyPart transPart = transformed.extract(slot, nextSlot-1,true,true);
@@ -626,14 +629,14 @@ private Polylist getWindowTwoTargetNotes(MelodyPart outline,
 {
     Polylist targetNotes = Polylist.PolylistFromString("target-notes");
     
-    Note origNote = outline.getCurrentNote(0);
-    Chord origChord = chords.getCurrentChord(0);
     int noteNum = 1;
     
-    for(int slot = 0; slot < windowResolution;){
+    for(int slot = 0; slot < outline.getSize();){
         int nextSlot = outline.getNextIndex(slot);
         if(nextSlot == -1)
             nextSlot = windowResolution;
+        if(windowResolution > outline.getSize())
+            nextSlot = outline.getSize();
         
         MelodyPart outlinePart = outline.extract(slot, nextSlot-1,true,true);
         MelodyPart transPart = transformed.extract(slot, nextSlot-1,true,true);
