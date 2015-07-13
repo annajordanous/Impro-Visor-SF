@@ -74,6 +74,12 @@ public class RectifyPitchesCommand
   boolean directional = false;
 
   boolean direction = true;
+  
+  boolean chordTones = true;
+  
+  boolean colorTones = true;
+  
+  boolean approachTones = true;
 
   /**
    * Creates a new Command that can resolve pitches of a set of Notes.
@@ -89,17 +95,34 @@ public class RectifyPitchesCommand
     this.directional = directional; // whether specific direction is preferred
     this.direction = direction;     // preferred direction  (true = up)
     }
+  
+  public RectifyPitchesCommand(MelodyPart part, int startIndex,
+                                int stopIndex, ChordPart chordProg,
+                                boolean directional, boolean direction,
+                                boolean chord, boolean color, boolean approach){
+      this(part, startIndex, stopIndex, chordProg, directional, direction);
+      this.chordTones = chord;
+      this.colorTones = color;
+      this.approachTones = approach;
+  }
 
 /**
  * Executes the resolutions.
  */
 public void execute()
   {
+      if(!(chordTones||colorTones)){
+          //Invalid input. Include all.
+          chordTones = true;
+          colorTones = true;
+          approachTones = true;
+      }
     //Trace.log(2, "executing RectifyPitchesCommand");
 
-    Note previousNote = null;
-    Note previouslyResolved = null;
-    int previousIndex = 0;
+    //Was used to prevent two of the same note in a row
+    //Note previousNote = null;
+    //Note previouslyResolved = null;
+    //int previousIndex = 0;
 
     // reserve for possible undo:
     originalPart = part.extractSlots(startIndex, stopIndex);
@@ -122,7 +145,8 @@ public void execute()
 
                 if( currentNote.isRest() )
                   {
-                    previouslyResolved = null;
+                      //was used to disallow repeated notes
+                    //previouslyResolved = null;
                   }
                 else
                   {
@@ -141,9 +165,16 @@ public void execute()
 
                         Polylist usableTones = Polylist.nil;
 
-                        usableTones = usableTones.append(form.getSpell(root));
+                        if(chordTones){
+                            usableTones = usableTones.append(form.getSpell(root));
+                        }
+                        
 
-                        usableTones = usableTones.append(form.getColor(root));
+                        //option to only include chord tones
+                        if(colorTones){
+                           usableTones = usableTones.append(form.getColor(root)); 
+                        }
+                        
 
                         // Not so good: usableTones = usableTones.append(form.getFirstScaleTones(root));
 
@@ -155,27 +186,28 @@ public void execute()
                         else
                         {
                             // Rectification specified
-                        Note nextNote = part.getNextNote(i);
-                        if( NoteSymbol.makeNoteSymbol(currentNote).enhMember(usableTones) )
-                          {
-                            // No rectification necessary
-                            resolved = currentNote;
-                          }
-                        else if( nextNote != null && nextNote.adjacentPitch(currentNote) && NoteSymbol.makeNoteSymbol(nextNote).enhMember(usableTones) )
-                        {
-                            // Allow approach tones to stand
-                            //System.out.println("allowing approach: " + currentNote.toLeadsheet() + " to " + nextNote.toLeadsheet() );
+                            Note nextNote = part.getNextNote(i);
+                            if(NoteSymbol.makeNoteSymbol(currentNote).enhMember(usableTones) )
+                              {
+                                // No rectification necessary
+                                resolved = currentNote;
+                              }
+                            else if( approachTones && nextNote != null && nextNote.adjacentPitch(currentNote) && NoteSymbol.makeNoteSymbol(nextNote).enhMember(usableTones) )
+                            {
+                                // Allow approach tones to stand
+                                //System.out.println("allowing approach: " + currentNote.toLeadsheet() + " to " + nextNote.toLeadsheet() );
 
-                            resolved = currentNote;
-                        }
-                        else
-                          {
-                            // Move anything else to a usable tone
-                          resolved =
-                            Note.getClosestMatchDirectional(currentNote.getPitch(), usableTones, direction);
+                                resolved = currentNote;
+                            }
+                            else
+                              {
+                                // Move anything else to a usable tone
+                                  //This should NOT use getClosestMatchDirectional because a direction was not specified.
+                                  resolved = Note.getClosestMatch(currentNote.getPitch(), usableTones);
+                              //resolved = Note.getClosestMatchDirectional(currentNote.getPitch(), usableTones, direction);
 
-                          resolved.setRhythmValue(value);
-                          }
+                              resolved.setRhythmValue(value);
+                              }
                         }
 
                         // If note is a repeat of the previous, try moving it up or down a half step then
@@ -199,10 +231,12 @@ public void execute()
                     
                      part.setNote(i, resolved);
 
-                     previousNote = currentNote;
-                     previouslyResolved = resolved;
+                     
+                     //was used to prevent having two of the same note in a row
+                     //previousNote = currentNote;
+                     //previouslyResolved = resolved;
 
-                     previousIndex = i;
+                     //previousIndex = i;
                   }
 
                slotsRemaining -= value;
