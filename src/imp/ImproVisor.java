@@ -551,6 +551,7 @@ public static void establishUserDirectory(File homeDir)
       copyDir(Directories.vocabDirName,        homeDir);
       copyDir(Directories.leadsheetDirName,    homeDir);
       copyDir(Directories.grammarDirName,      homeDir);
+      copyDir(Directories.transformDirName,    homeDir);
       copyDir(Directories.styleDirName,        homeDir);
       copyDir(Directories.styleExtractDirName, homeDir);
       copyDir(Directories.midiDirName,         homeDir);
@@ -639,9 +640,7 @@ public static File getGrammarDirectory()
 
 public static File getTransformDirectory()
   {
-  String userHome = System.getProperty("user.dir");
-  File homeDir = new File(userHome);
-  return new File(homeDir, Directories.transformDirName);
+  return new File(getUserDirectory(), Directories.transformDirName);
   }
 
 public static File getDictionaryDirectory()
