@@ -281,8 +281,10 @@ public class TradingWindow
     public void startTrading() {
         //make this more general
         String musician = (String)musicianChooser.getSelectedItem();
-        String dir = System.getProperty("user.dir");
-        File file = new File(dir + "/transforms/"+musician+".transform");
+        File directory = ImproVisor.getTransformDirectory();
+        File file = new File(directory, musician+TransformFilter.EXTENSION);
+        //String dir = System.getProperty("user.dir");
+        //File file = new File(dir + "/transforms/"+musician+".transform");
         transform = new Transform(file);
         
         setIsUserLeading(userFirstButton.isSelected());

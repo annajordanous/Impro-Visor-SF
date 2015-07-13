@@ -1022,8 +1022,10 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
 
     private void applySubstitutionsToPart(MelodyPart melody, ChordPart chords) {
         String musician = (String)musicianChooser.getSelectedItem();
-        String dir = System.getProperty("user.dir");
-        File file = new File(dir + "/transforms/"+musician+".transform");
+        File directory = ImproVisor.getTransformDirectory();
+        File file = new File(directory, musician+TransformFilter.EXTENSION);
+        //String dir = System.getProperty("user.dir");
+        //File file = new File(dir + "/transforms/"+musician+".transform");
         transform = new Transform(file);
         if(transform != null)
         {
