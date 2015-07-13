@@ -105,7 +105,6 @@ public class TradingWindow
     private int endLimitIndex = -1;
     private boolean isSwing = false;
     private Integer snapResolution = 2;
-
     public static final int zero = 0;
     public static final int one = 1;
     public static final int DEFAULT_TRADE_LENGTH = 4;

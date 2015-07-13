@@ -70,7 +70,7 @@ public class ResponseGenerator {
     //Constants.WHOLE
     //Constants.HALF
     public void flattenSolo(int resolution){
-        response = flattener.flattenByChord(response, responseChords, resolution, start, stop, false);
+        response = flattener.flattenByResolution(response, responseChords, resolution, start, stop, false);
     }
 
     //STEP 2 - modify the flattened solo (inversion/retrograde/retrograde inversion/no change)
@@ -146,7 +146,7 @@ public class ResponseGenerator {
         //STEP 1
         flattenSolo();
         //STEP 2
-        modifySolo();
+        //modifySolo();
         //STEP 3
         transformSolo(musician);
         //STEP 4
