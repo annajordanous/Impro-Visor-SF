@@ -5,9 +5,11 @@
  */
 package imp.data;
 
+import static imp.Constants.BEAT;
 import imp.com.InvertCommand;
 import imp.com.RectifyPitchesCommand;
 import imp.com.ReverseCommand;
+import static imp.data.AbstractMelodyExtractor.getAbstractMelody;
 import imp.lickgen.transformations.Transform;
 import imp.lickgen.transformations.TransformLearning;
 import java.io.File;
@@ -186,6 +188,16 @@ public class ResponseGenerator {
         } else if (tradeMode.equals("Trade with a Musician")) {
             musicianResponse(musician);
             rectifySolo();
+        } else if (tradeMode.equals("Abstract")) {
+            String abstractMelody = getAbstractMelody(
+                    0,
+                    responseChords.getSize() / BEAT,
+                    false,
+                    false,
+                    response,
+                    responseChords
+            );
+            System.out.print(abstractMelody);
         } else {
             System.out.println("did nothing");
         }
