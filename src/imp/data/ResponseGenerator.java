@@ -24,6 +24,8 @@ public class ResponseGenerator {
     private ChordPart responseChords;
     private final BeatFinder beatFinder;
     private final TransformLearning flattener;
+    private static final boolean ONLY_CHORD_TONES = true;
+    private static final boolean ALL_TONES = false;
     
     public ResponseGenerator(MelodyPart response, ChordPart responseChords, int [] metre){
         this.response = response;
@@ -126,11 +128,25 @@ public class ResponseGenerator {
     //rectify solo to response chords
     //allows chord, color, and approach tones
     //allows repeat pitches
-    public void rectifySolo(){
-        RectifyPitchesCommand cmd = new RectifyPitchesCommand(response, 0, response.size()-1, responseChords, false, false);
+    public void rectifySolo(boolean onlyChordTones){
+        RectifyPitchesCommand cmd;
+        boolean chord, color, approach;
+        chord = true;
+        if(onlyChordTones){
+            color = false;
+            approach = false;
+        }else{
+            color = true;
+            approach = true;
+        }
+        cmd = new RectifyPitchesCommand(response, 0, response.size()-1, responseChords, false, false, chord, color, approach);
         cmd.execute();
     }
     
+    public void rectifySolo(){
+        rectifySolo(false);
+    }
+
     //STEP 5 - retreive the response
     
     //retreive response
@@ -150,7 +166,7 @@ public class ResponseGenerator {
         //STEP 3
         transformSolo(musician);
         //STEP 4
-        rectifySolo();
+        rectifySolo(ALL_TONES);
         //STEP 5
         return getResponse();
     }
