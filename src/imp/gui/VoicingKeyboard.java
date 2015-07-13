@@ -2270,7 +2270,7 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRS
         
         while(userDescription==null || userDescription.equals(""))
                 userDescription=JOptionPane.showInputDialog("Please name this voicing (ie: newM7Voicing1)");
-        userDescription.replaceAll(" ", "-");
+        userDescription=userDescription.replaceAll(" ", "-");
         Advisor adv = ImproVisor.getAdvisor();
         
         adv.addVoicing(chordName, userDescription,"designer",notate.voicingToList(chordString), Polylist.nil);

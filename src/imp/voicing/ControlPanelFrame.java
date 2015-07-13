@@ -184,6 +184,7 @@ public class ControlPanelFrame extends javax.swing.JFrame implements Serializabl
         avs.setRepeatMultiplier(repeatMultiplier);
         avs.setHalfStepReducer(halfStepReducer);
         avs.setFullStepReducer(fullStepReducer);
+        avs.setInvertM9(invertM9);
     }
     /**
      * sets the variables to the values in the settings object
@@ -214,6 +215,7 @@ public class ControlPanelFrame extends javax.swing.JFrame implements Serializabl
         repeatMultiplier=avs.getRepeatMultiplier();
         halfStepReducer=avs.getHalfStepReducer();
         fullStepReducer=avs.getFullStepReducer();
+        invertM9=avs.getInvertM9();
     }
         /*
     private void setupHandParams()
@@ -295,6 +297,7 @@ public class ControlPanelFrame extends javax.swing.JFrame implements Serializabl
         repeatedNoteProbability.setValue((int)(repeatMultiplier*10));
         closeNoteReducer[0].setValue((int)(halfStepReducer*10));
         closeNoteReducer[1].setValue((int)(fullStepReducer*10));
+        invertBox.setState(invertM9);
     }
     /**
      * points sliders we declared and named to auto-created sliders from gui designer.
@@ -384,7 +387,8 @@ public class ControlPanelFrame extends javax.swing.JFrame implements Serializabl
         repeatMultiplier=repeatedNoteProbability.getValue()/10.0;
         halfStepReducer=closeNoteReducer[0].getValue()/10.0;
         fullStepReducer=closeNoteReducer[1].getValue()/10.0;
-        syncToSettings();
+        invertM9=invertBox.getState();
+        
     }
     private JSlider handLimits[];
     private JSlider handSpreads[];
@@ -424,6 +428,7 @@ public class ControlPanelFrame extends javax.swing.JFrame implements Serializabl
     private double repeatMultiplier;
     private double halfStepReducer;
     private double fullStepReducer;
+    private boolean invertM9;
     private AutomaticVoicingSettings avs;
 
     public AutomaticVoicingSettings getVoicingSettings() {
@@ -621,11 +626,6 @@ public class ControlPanelFrame extends javax.swing.JFrame implements Serializabl
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 10), new java.awt.Dimension(0, 10), new java.awt.Dimension(32767, 10));
         jPanel1 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
@@ -680,80 +680,20 @@ public class ControlPanelFrame extends javax.swing.JFrame implements Serializabl
         HalfStepRedSlider = new javax.swing.JSlider();
         jPanel27 = new javax.swing.JPanel();
         WholeStepRedSlider = new javax.swing.JSlider();
+        jPanel28 = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
         closeB = new javax.swing.JButton();
+        jButton8 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
+        jButton7 = new javax.swing.JButton();
+        invertBox = new java.awt.Checkbox();
 
         setBounds(new java.awt.Rectangle(0, 0, 1300, 500));
         getContentPane().setLayout(new java.awt.GridBagLayout());
-
-        jButton1.setText("Apply");
-        jButton1.setMinimumSize(null);
-        jButton1.setPreferredSize(null);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        getContentPane().add(jButton1, gridBagConstraints);
-
-        jButton2.setText("Cancel");
-        jButton2.setMinimumSize(null);
-        jButton2.setPreferredSize(null);
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        getContentPane().add(jButton2, gridBagConstraints);
-
-        jButton3.setText("Reset Defaults");
-        jButton3.setMinimumSize(null);
-        jButton3.setPreferredSize(null);
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        getContentPane().add(jButton3, gridBagConstraints);
-
-        jButton4.setText("Load Preset");
-        jButton4.setMinimumSize(null);
-        jButton4.setPreferredSize(null);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        getContentPane().add(jButton4, gridBagConstraints);
-
-        jButton5.setText("Save Settings");
-        jButton5.setMinimumSize(null);
-        jButton5.setPreferredSize(null);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 5;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        getContentPane().add(jButton5, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -1509,6 +1449,43 @@ public class ControlPanelFrame extends javax.swing.JFrame implements Serializabl
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         getContentPane().add(jPanel20, gridBagConstraints);
 
+        jPanel28.setLayout(new java.awt.GridLayout(15, 1));
+
+        jButton1.setText("Apply");
+        jButton1.setMinimumSize(null);
+        jButton1.setPreferredSize(null);
+        jPanel28.add(jButton1);
+
+        jButton2.setText("Cancel");
+        jButton2.setMinimumSize(null);
+        jButton2.setPreferredSize(null);
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        jPanel28.add(jButton2);
+
+        jButton3.setText("Reset Defaults");
+        jButton3.setMinimumSize(null);
+        jButton3.setPreferredSize(null);
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        jPanel28.add(jButton3);
+
+        jButton4.setText("Load Preset");
+        jButton4.setMinimumSize(null);
+        jButton4.setPreferredSize(null);
+        jPanel28.add(jButton4);
+
+        jButton5.setText("Save Settings");
+        jButton5.setMinimumSize(null);
+        jButton5.setPreferredSize(null);
+        jPanel28.add(jButton5);
+
         closeB.setText("Close");
         closeB.setMinimumSize(null);
         closeB.setPreferredSize(null);
@@ -1517,14 +1494,25 @@ public class ControlPanelFrame extends javax.swing.JFrame implements Serializabl
                 closeBActionPerformed(evt);
             }
         });
+        jPanel28.add(closeB);
+
+        jButton8.setText("Load Style Default");
+        jPanel28.add(jButton8);
+
+        jButton6.setText("Save To Style Default");
+        jPanel28.add(jButton6);
+
+        jButton7.setText("Set Style Default");
+        jButton7.setToolTipText("");
+        jPanel28.add(jButton7);
+
+        invertBox.setLabel("Invert Minor 9ths");
+        invertBox.setName("invertMinorNinth"); // NOI18N
+        jPanel28.add(invertBox);
+
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 6;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        getContentPane().add(closeB, gridBagConstraints);
+        gridBagConstraints.gridy = 1;
+        getContentPane().add(jPanel28, gridBagConstraints);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -1606,11 +1594,15 @@ public class ControlPanelFrame extends javax.swing.JFrame implements Serializabl
     private javax.swing.JSlider WholeStepRedSlider;
     private javax.swing.JButton closeB;
     private javax.swing.Box.Filler filler1;
+    private java.awt.Checkbox invertBox;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
+    private javax.swing.JButton jButton8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
@@ -1631,6 +1623,7 @@ public class ControlPanelFrame extends javax.swing.JFrame implements Serializabl
     private javax.swing.JPanel jPanel25;
     private javax.swing.JPanel jPanel26;
     private javax.swing.JPanel jPanel27;
+    private javax.swing.JPanel jPanel28;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;

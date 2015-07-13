@@ -146,6 +146,13 @@ public class AVPFileCreator
                     line=line.substring(line.indexOf("Full Step Reducer")+"Full Step Reducer".length()+1,line.indexOf(")"));
                     settings.setFullStepReducer(Integer.parseInt(line));
                 }
+                else if(line.contains("Invert9th"))
+                {
+                    if(line.contains("on"))
+                        settings.setInvertM9(true);
+                    if(line.contains("off"))
+                        settings.setInvertM9(false);
+                }
             }
         } catch (Exception ex) {
             Logger.getLogger(AVPFileCreator.class.getName()).log(Level.SEVERE, null, ex);
@@ -187,6 +194,10 @@ public class AVPFileCreator
                     writer.println("(Repeat Multiplier "+(int)(settings.getRepeatMultiplier()*10)+")");
                     writer.println("(Half Step Reducer "+(int)(settings.getHalfStepReducer()*10)+")");
                     writer.println("(Full Step Reducer "+(int)(settings.getFullStepReducer()*10)+")");
+                    if(settings.getInvertM9())
+                        writer.println("(Invert9th on)");
+                    else
+                        writer.println("(Invert9th off)");
                     writer.close();
                 }
                 catch(Exception f)

@@ -218,6 +218,7 @@ public class AutomaticVoicingSettings {
         repeatMultiplier=.3;
         halfStepReducer=0;
         fullStepReducer=.7;
+        invertM9=false;
     }
     
     private int leftHandLowerLimit;
@@ -244,4 +245,16 @@ public class AutomaticVoicingSettings {
     private double repeatMultiplier;
     private double halfStepReducer;
     private double fullStepReducer;
+    private boolean invertM9;
+
+    public boolean isInvertM9() {
+        return invertM9;
+    }
+
+    public void setInvertM9(boolean invertM9) {
+        this.invertM9 = invertM9;
+    }
+    public boolean getInvertM9(){
+        return invertM9;
+    }
 }
