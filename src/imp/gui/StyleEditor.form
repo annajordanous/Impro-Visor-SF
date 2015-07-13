@@ -1441,13 +1441,14 @@
               <Properties>
                 <Property name="maximumRowCount" type="int" value="10"/>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                  <StringArray count="6">
-                    <StringItem index="0" value="designer"/>
-                    <StringItem index="1" value="any"/>
-                    <StringItem index="2" value="closed"/>
-                    <StringItem index="3" value="open"/>
-                    <StringItem index="4" value="quartal"/>
-                    <StringItem index="5" value="shout"/>
+                  <StringArray count="7">
+                    <StringItem index="0" value="custom"/>
+                    <StringItem index="1" value="designer"/>
+                    <StringItem index="2" value="any"/>
+                    <StringItem index="3" value="closed"/>
+                    <StringItem index="4" value="open"/>
+                    <StringItem index="5" value="quartal"/>
+                    <StringItem index="6" value="shout"/>
                   </StringArray>
                 </Property>
                 <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -1468,7 +1469,7 @@
             </Component>
             <Component class="javax.swing.JButton" name="customSettings">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Designer"/>
+                <Property name="text" type="java.lang.String" value="Custom"/>
               </Properties>
               <Events>
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="customSettingsMouseClicked"/>
