@@ -22,6 +22,7 @@
 package imp.lickgen.transformations;
 
 import imp.Constants;
+import imp.com.RectifyPitchesCommand;
 import imp.data.Chord;
 import imp.data.ChordPart;
 import imp.data.MelodyPart;
@@ -206,9 +207,15 @@ public MelodyPart flattenByResolution(MelodyPart melody,
         // we need to add the last prevNote after everything is looped over
         flattenedPart.addNote(prevNote);
     }
+    
     MelodyPart newMelody = melody.copy();
     // We only want to paste over the part we changed
     newMelody.pasteOver(flattenedPart, startingSlot);
+    
+    //move pitches to nearest chord tone
+    RectifyPitchesCommand cmd = new RectifyPitchesCommand(newMelody, startingSlot, endingSlot, chords, false, false, true, false, false);
+    cmd.execute();
+    
     return newMelody;
 }
 /**
@@ -294,12 +301,15 @@ private Note getAverageNote(ArrayList<Note> notes,
     Note average;
     if(totalNotes!=0){
         int averagePitch = totalPitch/totalNotes;
-        if(!chord.isNOCHORD()){
+        //moving to closest chord tone now happens at a higher level up
+        //using a rectify pitches command
+        /*if(!chord.isNOCHORD()){
             average = Note.getClosestMatch(averagePitch, chord.getSpell());
             average.setRhythmValue(totalDuration);
         }else{
             average = new Note(averagePitch, totalDuration);
-        }
+        }*/
+        average = new Note(averagePitch, totalDuration);
     }else{
        average = new Rest(totalDuration);
     }
