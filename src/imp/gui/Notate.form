@@ -7766,14 +7766,6 @@
             </MenuItem>
             <MenuItem class="javax.swing.JSeparator" name="jSeparator7">
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="delAllMI">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Delete All Melodies"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="delAllMIActionPerformed"/>
-              </Events>
-            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="cutMelodyMI">
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
@@ -7809,6 +7801,14 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cutBothMIActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="delAllMI">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Cut Melodies in All Choruses"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="delAllMIActionPerformed"/>
               </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="copyMelodyMI">
@@ -8486,7 +8486,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="guideToneLine">
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="Shift+G"/>
+                  <KeyStroke key="Shift+Ctrl+G"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Guide Tone Line"/>
               </Properties>

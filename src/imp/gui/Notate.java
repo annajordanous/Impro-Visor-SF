@@ -1990,10 +1990,10 @@ public Critic getCritic()
         undoMI = new javax.swing.JMenuItem();
         redoMI = new javax.swing.JMenuItem();
         jSeparator7 = new javax.swing.JSeparator();
-        delAllMI = new javax.swing.JMenuItem();
         cutMelodyMI = new javax.swing.JMenuItem();
         cutChordsMI = new javax.swing.JMenuItem();
         cutBothMI = new javax.swing.JMenuItem();
+        delAllMI = new javax.swing.JMenuItem();
         copyMelodyMI = new javax.swing.JMenuItem();
         copyChordsMI = new javax.swing.JMenuItem();
         copyBothMI = new javax.swing.JMenuItem();
@@ -8371,14 +8371,6 @@ public Critic getCritic()
         editMenu.add(redoMI);
         editMenu.add(jSeparator7);
 
-        delAllMI.setText("Delete All Melodies");
-        delAllMI.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                delAllMIActionPerformed(evt);
-            }
-        });
-        editMenu.add(delAllMI);
-
         cutMelodyMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, 0));
         cutMelodyMI.setText("Cut Melody");
         cutMelodyMI.setToolTipText("Cut the selected melody (saves in clipboard).");
@@ -8409,6 +8401,14 @@ public Critic getCritic()
             }
         });
         editMenu.add(cutBothMI);
+
+        delAllMI.setText("Cut Melodies in All Choruses");
+        delAllMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                delAllMIActionPerformed(evt);
+            }
+        });
+        editMenu.add(delAllMI);
 
         copyMelodyMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, 0));
         copyMelodyMI.setLabel("Copy Melody");
@@ -8976,7 +8976,7 @@ public Critic getCritic()
         });
         utilitiesMenu.add(stepKeyboardMI);
 
-        guideToneLine.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.SHIFT_MASK));
+        guideToneLine.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         guideToneLine.setText("Guide Tone Line");
         guideToneLine.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
