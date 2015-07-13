@@ -461,7 +461,7 @@ public class TradingWindow
         getContentPane().add(startTradingButton, gridBagConstraints);
         startTradingButton.getAccessibleContext().setAccessibleDescription("");
 
-        tradeModeSelector.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Repeat", "Repeat and Rectify", "Flatten", "Random Modify", "Flatten, Modify, Rectify", "Charlie Parker", "Trade with a Musician" }));
+        tradeModeSelector.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Repeat", "Repeat and Rectify", "Flatten", "Random Modify", "Flatten, Modify, Rectify", "Charlie Parker", "Trade with a Musician", "Abstract" }));
         tradeModeSelector.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tradeModeSelectorActionPerformed(evt);
