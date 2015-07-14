@@ -31,7 +31,7 @@ public class VoicingGenerator {
      * @param priorityMultiplier - amount of weight to remove from notes as priority decreases. Default 0 for equal probability.
      * @param repeatMultiplier - the amount to reduce(or increase) the priority of notes already selected for the chord in other octaves. for reduction, make between 0 and 1. Default 1.
      */
-        public VoicingGenerator(int leftColorPriority,int rightColorPriority, int maxPriority, double previousVoicingMultiplier, double halfStepAwayMultiplier, double fullStepAwayMultiplier, double priorityMultiplier, double repeatMultiplier, double halfStepReducer, double fullStepReducer) {
+        public VoicingGenerator(int leftColorPriority,int rightColorPriority, int maxPriority, double previousVoicingMultiplier, double halfStepAwayMultiplier, double fullStepAwayMultiplier, double priorityMultiplier, double repeatMultiplier, double halfStepReducer, double fullStepReducer, boolean invertM9) {
         this.leftColorPriority = leftColorPriority;
         this.rightColorPriority=rightColorPriority;
         this.maxPriority = maxPriority;
@@ -42,6 +42,7 @@ public class VoicingGenerator {
         this.repeatMultiplier = repeatMultiplier;
         this.halfStepReducer = halfStepReducer;
         this.fullStepReducer = fullStepReducer;
+        this.invertM9=invertM9;
     }
     /**
      * generates a voicing based on current parameters and stores it in the chord array accessible by get chord. 
@@ -90,6 +91,13 @@ public class VoicingGenerator {
                     multiplyNotes(noteToAdd,repeatMultiplier);
                     
                 }
+            }
+            System.out.println("calculate called");
+            if(invertM9)
+            {
+                invertM9th(leftHand, leftHand);
+                invertM9th(leftHand, rightHand);
+                invertM9th(rightHand, rightHand);
             }
             
             
@@ -215,7 +223,28 @@ public class VoicingGenerator {
                 allMidiValues[i]=priority;
         }
     }
-     public int[] getColor() {
+    /**
+     * checks 2 lists for a minor 9th between them, and flips the interval to a maj. 7th. the lists may be the same list.
+     * @param list1
+     * @param list2 
+     */
+    private void invertM9th(ArrayList<Integer> list1, ArrayList<Integer> list2)
+    {   System.out.println("invm9");
+        for(int i:list1)
+        {
+            for(int j:list2)
+            {
+                System.out.println("invoked, i:"+ i+", j:"+j);
+                if(j-i==13)
+                {
+                    i++;
+                    j--;
+                    System.out.println("Inverted m9");
+                }
+            }
+        }
+    }
+    public int[] getColor() {
         return color;
     }
 
@@ -425,5 +454,18 @@ public class VoicingGenerator {
     private double repeatMultiplier;
     private double halfStepReducer;
     private double fullStepReducer;
+
+    public boolean isInvertM9() {
+        return invertM9;
+    }
+    
+    public boolean getInvertM9() {
+        return invertM9;
+    }
+
+    public void setInvertM9(boolean invertM9) {
+        this.invertM9 = invertM9;
+    }
+    private boolean invertM9;
 
 }

@@ -388,6 +388,7 @@ public class ControlPanelFrame extends javax.swing.JFrame implements Serializabl
         halfStepReducer=closeNoteReducer[0].getValue()/10.0;
         fullStepReducer=closeNoteReducer[1].getValue()/10.0;
         invertM9=invertBox.getState();
+        syncToSettings();
         
     }
     private JSlider handLimits[];
