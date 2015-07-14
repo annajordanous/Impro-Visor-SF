@@ -382,6 +382,17 @@ public Transform createBlockTransform(MelodyPart outline,
         Note origNote = outlinePart.getCurrentNote(0);
         Chord firstChord = chordPart.getCurrentChord(0);
         StringBuilder subName = new StringBuilder();
+        
+        //make duration of note learned from the start of the sub name
+        if(origNote.getRhythmValue()==Constants.HALF){
+            subName.append(Transform.halfPrefix);
+        }else if(origNote.getRhythmValue()==Constants.QUARTER){
+            subName.append(Transform.quarterPrefix);
+        }else{
+            subName.append(Transform.otherPrefix);
+        }
+        
+        //then add relative pitch of note
         subName.append("first-rel-pitch-");
         
         NoteChordPair pair = new NoteChordPair(origNote, firstChord);

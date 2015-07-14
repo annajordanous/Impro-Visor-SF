@@ -21,6 +21,7 @@
 
 package imp.lickgen.transformations;
 
+import imp.Constants;
 import imp.data.Chord;
 import imp.data.ChordPart;
 import imp.data.MelodyPart;
@@ -46,6 +47,13 @@ private MelodyPart startingNotes;
 public ArrayList<Substitution> substitutions;
 public boolean debug;
 public boolean hasChanged;
+
+public static final String firstRelPitchPrefix = "first-rel-pitch-";
+public static final String halfPrefix = "half-";
+public static final String quarterPrefix = "quarter-";
+public static final String otherPrefix = "other-";
+
+private static final boolean timer = false; // for debugging
 
 /**
  * Create an empty transform
@@ -199,8 +207,10 @@ public void removeSubstitution(Substitution sub)
 public MelodyPart applySubstitutionsToMelodyPart(MelodyPart melody, ChordPart chords, boolean enforceDuration)
 {
     
-    //TIMING
-    long startTime = System.currentTimeMillis();
+    long startTime = -1;
+    if(timer){
+       startTime = System.currentTimeMillis(); 
+    }
     
     startingNotes = melody.copy();
     
@@ -236,10 +246,12 @@ public MelodyPart applySubstitutionsToMelodyPart(MelodyPart melody, ChordPart ch
     
             
     //TIMING
-    long stopTime = System.currentTimeMillis();
-    double timeInSecs = .001*(stopTime-startTime);
-    System.out.println("Time elapsed: "+timeInSecs);
-    
+    if(timer){
+        long stopTime = System.currentTimeMillis();
+        double timeInSecs = .001*(stopTime-startTime);
+        System.out.println("Time elapsed: "+timeInSecs);
+    }
+
     return transMelody;
 }
 
@@ -353,13 +365,25 @@ private MelodyPart applySubstitutionType(ArrayList<Substitution> substitutions,
 private boolean applicable(Substitution sub, MelodyPart notes, ChordPart chords, int startSlot){
     //if it's a sub named after the rel pitch condition, check sub name first
     String subName = sub.getName();
-    
-    String relPrefix = "first-rel-pitch-";
-    if(subName.contains(relPrefix)){
-        String relPitch = subName.substring(relPrefix.length());
+
+    //learned substitution
+    if(subName.contains(firstRelPitchPrefix)){
+        //check rel pitch
+        String relPitch = subName.substring(subName.indexOf(firstRelPitchPrefix)+firstRelPitchPrefix.length());
         NoteChordPair ncp = new NoteChordPair(notes.getCurrentNote(startSlot), chords.getCurrentChord(startSlot));
         if(!ncp.getRelativePitch().equals(relPitch)){
             return false;
+        }
+        //check duration
+        int duration = ncp.getDuration();
+        if(subName.contains(halfPrefix)){
+            if(duration<Constants.HALF){
+                return false;
+            }
+        }else if(subName.contains(quarterPrefix)){
+            if(duration<Constants.QUARTER){
+                return false;
+            }
         }
     }
     return true;
