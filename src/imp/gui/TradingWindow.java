@@ -20,6 +20,7 @@
  */
 package imp.gui;
 
+import static imp.Constants.C4;
 import imp.ImproVisor;
 import imp.com.PlayPartCommand;
 import imp.com.PlayScoreCommand;
@@ -28,6 +29,7 @@ import imp.data.ChordPart;
 import java.util.ArrayList;
 import imp.data.MelodyPart;
 import imp.data.MidiSynth;
+import imp.data.Note;
 import imp.data.ResponseGenerator;
 import imp.data.Rest;
 import imp.data.Score;
@@ -109,6 +111,7 @@ public class TradingWindow
     private TradePhase phase;
     private String tradeMode;
     private Transform transform;
+    private PlayScoreCommand playCommand;
 
     //magic values
     private int endLimitIndex = -1;
@@ -174,12 +177,6 @@ public class TradingWindow
     public void trackPlay(ActionEvent e) {
         long currentPosition = notate.getSlotInPlayback();
         //System.out.println(currentPosition);
-        if (firstPlay) {
-            //System.out.println("INITIAL DELAY: " + currentPosition + " SLOTS.");
-            //automatically calibrate delay
-            slotDelay = currentPosition;
-            firstPlay = false;
-        }
         
         if (triggers.isEmpty() || currentPosition == scoreLength) {
             stopTrading();
@@ -251,13 +248,8 @@ public class TradingWindow
         Long delayCopy = new Long(slotDelay);
         aMelodyPart = aMelodyPart.extract(delayCopy.intValue(), slotsPerTurn - one, true, true);
         tradeScore.addPart(aMelodyPart);
-    }
-
-    public void computerTurn() {
         
-        long slotsBefore = notate.getSlotInPlayback();
-        
-        new PlayScoreCommand(
+        playCommand = new PlayScoreCommand(
                 tradeScore,
                 zero,
                 isSwing,
@@ -267,7 +259,14 @@ public class TradingWindow
                 notate.getTransposition(),
                 false,
                 endLimitIndex
-        ).execute();
+        );
+    }
+
+    public void computerTurn() {
+        
+        long slotsBefore = notate.getSlotInPlayback();
+        
+        playCommand.execute();
         
         long slotsAfter = notate.getSlotInPlayback();
         
@@ -282,7 +281,7 @@ public class TradingWindow
      */
     public void startTrading() {
         //make this more general
-        String musician = (String)musicianChooser.getSelectedItem();
+        String musician = (String) musicianChooser.getSelectedItem();
         File directory = ImproVisor.getTransformDirectory();
         File file = new File(directory, musician+TransformFilter.EXTENSION);
         //String dir = System.getProperty("user.dir");
@@ -301,6 +300,7 @@ public class TradingWindow
         adjustedLength = scoreLength - (scoreLength % slotsPerTurn);
         numberOfTurns = adjustedLength / slotsPerTurn;
         populateTriggers();
+        initDelay();
         //TODO Generate solo if computer goes first
         //make sure to mute chords
         notate.playScore();
@@ -311,6 +311,66 @@ public class TradingWindow
             //TODO make a nice comment
             phase = TradePhase.PROCESS_INPUT;
         }
+    }
+    
+    private void initDelay(){
+        ChordPart testChords = notate.getScore().copy().getChordProg().extract(zero, slotsPerMeasure - one);
+        MelodyPart testMelody = new MelodyPart(slotsPerMeasure);
+        Score testScore = new Score();
+        testScore.addPart(testMelody);
+        testScore.setChordProg(testChords);
+        MelodyPart testSolo = new MelodyPart(slotsPerMeasure / 2);
+        Note newNote = new Note(C4, true, slotsPerMeasure - one); 
+        testSolo.addNote(newNote);
+        Score soloScore = new Score();
+        soloScore.addPart(testSolo);
+        
+        MidiSynth testMidiSynth = new MidiSynth(notate.getMidiManager());
+        
+        testMidiSynth.setMasterVolume(zero);
+        
+        PlayScoreCommand testCommand = new PlayScoreCommand(
+                soloScore,
+                zero,
+                isSwing,
+                midiSynth,
+                notate,
+                zero,
+                notate.getTransposition(),
+                false,
+                endLimitIndex
+        );
+        
+        testCommand.execute();
+        
+        new PlayScoreCommand(
+                testScore,
+                zero,
+                isSwing,
+                testMidiSynth,
+                notate,
+                zero,
+                notate.getTransposition(),
+                false,
+                endLimitIndex
+        ).execute();
+        
+        int oldVolume = midiSynth.getMasterVolume();
+        
+        midiSynth.setMasterVolume(zero);
+        
+        
+        
+        testCommand.execute();
+        long slot1 = testMidiSynth.getSlot();
+        testCommand.execute();
+        long slot2 = testMidiSynth.getSlot();
+        //System.out.println(slot2 - slot1);
+        
+        slotDelay = slot2 - slot1;
+        
+        midiSynth.stop("Trading Delay Initialization Complete");
+        midiSynth.setMasterVolume(oldVolume);
     }
     
     private void populateTriggers(){
@@ -404,16 +464,6 @@ public class TradingWindow
         //System.out.println("USER FIRST: " + isUserLeading);
     }
     
-    private void repeatAndRectify(){
-        RectifyPitchesCommand fixPitches = new RectifyPitchesCommand(
-                aMelodyPart,
-                zero,
-                slotsPerTurn,
-                responseChords,
-                false,
-                true);
-        fixPitches.execute();
-    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -436,6 +486,8 @@ public class TradingWindow
         jSeparator1 = new javax.swing.JSeparator();
         musicianChooser = new javax.swing.JComboBox();
         musicianLabel = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setAlwaysOnTop(true);
@@ -460,7 +512,7 @@ public class TradingWindow
         gridBagConstraints.gridy = 5;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.ipadx = 38;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTHEAST;
         gridBagConstraints.insets = new java.awt.Insets(6, 19, 11, 10);
         getContentPane().add(startTradingButton, gridBagConstraints);
         startTradingButton.getAccessibleContext().setAccessibleDescription("");
@@ -481,7 +533,7 @@ public class TradingWindow
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTHWEST;
         getContentPane().add(jLabel1, gridBagConstraints);
 
         tradeLenthSelector.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "4", "8", "16" }));
@@ -501,7 +553,7 @@ public class TradingWindow
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTHWEST;
         getContentPane().add(jLabel2, gridBagConstraints);
 
         leadingSelector.add(userFirstButton);
@@ -510,7 +562,7 @@ public class TradingWindow
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 5;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
         getContentPane().add(userFirstButton, gridBagConstraints);
 
@@ -519,17 +571,17 @@ public class TradingWindow
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 5;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
         getContentPane().add(jRadioButton2, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
-        gridBagConstraints.gridwidth = 6;
+        gridBagConstraints.gridwidth = 7;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.ipadx = 396;
         gridBagConstraints.ipady = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(18, 10, 0, 10);
+        gridBagConstraints.insets = new java.awt.Insets(18, 12, 0, 14);
         getContentPane().add(jSeparator1, gridBagConstraints);
 
         populateMusicianList();
@@ -537,6 +589,7 @@ public class TradingWindow
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         getContentPane().add(musicianChooser, gridBagConstraints);
 
         musicianLabel.setText("Musician:");
@@ -544,8 +597,27 @@ public class TradingWindow
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTHWEST;
         getContentPane().add(musicianLabel, gridBagConstraints);
+
+        jTextField1.setText("jTextField1");
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.FIRST_LINE_START;
+        getContentPane().add(jTextField1, gridBagConstraints);
+
+        jLabel3.setText("jLabel3");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LAST_LINE_START;
+        getContentPane().add(jLabel3, gridBagConstraints);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -553,7 +625,7 @@ public class TradingWindow
     private void populateMusicianList()
   {
     File directory = ImproVisor.getTransformDirectory();
-    System.out.println("populating from " + directory);
+    //System.out.println("populating from " + directory);
     if( directory.isDirectory() )
       {
         String fileName[] = directory.list();
@@ -611,6 +683,10 @@ public class TradingWindow
         changeTradeLength((String) tradeLenthSelector.getSelectedItem());
     }//GEN-LAST:event_tradeLenthSelectorActionPerformed
 
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
+
     private double tryDouble(String number) {
         double newNumber;
         try {
@@ -662,8 +738,10 @@ public class TradingWindow
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JTextField jTextField1;
     private javax.swing.ButtonGroup leadingSelector;
     private javax.swing.JComboBox musicianChooser;
     private javax.swing.JLabel musicianLabel;
