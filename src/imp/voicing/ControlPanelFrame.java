@@ -5,6 +5,7 @@
  */
 package imp.voicing;
 
+import imp.ImproVisor;
 import imp.voicing.AutomaticVoicingSettings;
 import imp.voicing.AVPFileCreator;
 import imp.data.Note;
@@ -68,7 +69,7 @@ public class ControlPanelFrame extends javax.swing.JFrame implements Serializabl
            public void actionPerformed(ActionEvent e)
            {
                File openFile=null;
-                JFileChooser chooser = new JFileChooser();
+                JFileChooser chooser = new JFileChooser(ImproVisor.getUserDirectory());
                 FileNameExtensionFilter filter = new FileNameExtensionFilter("Auto Voicing Preset Files", "avp");
                 chooser.setFileFilter(filter);
                 int returnVal = chooser.showOpenDialog(null);
@@ -78,6 +79,7 @@ public class ControlPanelFrame extends javax.swing.JFrame implements Serializabl
                 
                 AVPFileCreator.fileToSettings( openFile, avs);
                 setSlidersToVariables();
+                setTitle(openFile.getName());
                 
        
                  
@@ -91,7 +93,7 @@ public class ControlPanelFrame extends javax.swing.JFrame implements Serializabl
            public void actionPerformed(ActionEvent e)
            {
                 File saveFile=null;
-                JFileChooser chooser = new JFileChooser();
+                JFileChooser chooser = new JFileChooser(ImproVisor.getUserDirectory());
                 FileNameExtensionFilter filter = new FileNameExtensionFilter("Auto Voicing Preset Files", "avp");
                 chooser.setFileFilter(filter);
                 int returnVal = chooser.showSaveDialog(null);
