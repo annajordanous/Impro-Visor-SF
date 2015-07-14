@@ -76,6 +76,7 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
     private int [] range;
     private static final int LOW = 0;
     private static final int HIGH = 1;
+    private Object Improvisor;
     
     /**
      * Creates new form GuideToneLineDialog
@@ -100,8 +101,8 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
         updateRange();
         
         String musician = (String)musicianChooser.getSelectedItem();
-        String dir = System.getProperty("user.dir");
-        File file = new File(dir + "/transforms/"+musician+".transform");
+        File dir = ImproVisor.getTransformDirectory();
+        File file = new File(dir, musician+TransformFilter.EXTENSION);
         transform = new Transform(file);
     }
 
@@ -558,7 +559,7 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
     private void populateMusicianList()
   {
     File directory = ImproVisor.getTransformDirectory();
-    System.out.println("populating from " + directory);
+    //System.out.println("populating from " + directory);
     if( directory.isDirectory() )
       {
         String fileName[] = directory.list();
