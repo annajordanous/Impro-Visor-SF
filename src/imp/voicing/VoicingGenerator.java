@@ -230,19 +230,50 @@ public class VoicingGenerator {
      */
     private void invertM9th(ArrayList<Integer> list1, ArrayList<Integer> list2)
     {   System.out.println("invm9");
+        ArrayList<Integer> list3=new ArrayList<Integer>();
+        ArrayList<Integer> list4;
+        for(int i: list1)
+            System.out.print(i+" ");
+        System.out.println("list1orig");
+        for(int j: list2)
+            System.out.print(j+" ");
+        System.out.println("list2orig");
         for(int i:list1)
         {
+            boolean added=false;
+            list4=new ArrayList<Integer>();
             for(int j:list2)
             {
-                System.out.println("invoked, i:"+ i+", j:"+j);
+                //System.out.println("invoked, i:"+ i+", j:"+j);
                 if(j-i==13)
                 {
-                    i++;
-                    j--;
-                    System.out.println("Inverted m9");
+                    if(added)
+                        list3.remove(list3.size()-1);
+                    list3.add(i+1);
+                    added=true;
+                    list4.add(j-1);
+                    System.out.println("Inverted m9 i"+i+" "+j);
+                }
+                else{
+                    list4.add(j);
+                    if(!added)
+                    {
+                        list3.add(i);
+                        added=true;
+                    }
                 }
             }
+            
+            list2=list4;
         }
+        list1=list3;
+        
+        for(int i: list1)
+            System.out.print(i+" ");
+        System.out.println("list1");
+        for(int j: list2)
+            System.out.print(j+" ");
+        System.out.println("list2");
     }
     public int[] getColor() {
         return color;
