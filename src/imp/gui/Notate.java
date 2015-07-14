@@ -12908,6 +12908,11 @@ private MelodyPart makeLick(Polylist rhythm, int start, int stop)
 
 private MelodyPart makeLick(Polylist rhythm)
   {
+      return makeLick(rhythm, chordProg, getCurrentSelectionStart());
+  }
+
+private MelodyPart makeLick(Polylist rhythm, ChordPart chordPart, int start)
+  {
     //verifyAndFill();
 
     if( rhythm == null || rhythm.isEmpty() )
@@ -12923,7 +12928,7 @@ private MelodyPart makeLick(Polylist rhythm)
     // it can only generate things in terms of number of quarter notes.
     // This is why BEAT is getting passed into the generator.
 
-    MelodyPart lick = lickgenFrame.fillMelody(BEAT, rhythm, chordProg, getCurrentSelectionStart());
+    MelodyPart lick = lickgenFrame.fillMelody(BEAT, rhythm, chordPart, start);
 
     int actualSize = lick.size();
     int desiredSize = score.getLength() - getCurrentSelectionStart() + 1;
@@ -12936,6 +12941,8 @@ private MelodyPart makeLick(Polylist rhythm)
 
     return lick;
   }
+
+
 
 /**
  * putLick puts the lick into the MelodyPart at the current selection
@@ -13095,6 +13102,23 @@ public int getSlotInPlayback()
 public MelodyPart generateLick(Polylist rhythm)
   {
     MelodyPart lick = makeLick(rhythm);
+    if( lickgenFrame.useHeadSelected() )
+      {
+        adjustLickToHead(lick);
+      }
+
+    return lick;
+  }
+
+/**
+ * generateLick returns a lick generated from a rhythm
+ *
+ * @param rhythm
+ * @return
+ */
+public MelodyPart generateLick(Polylist rhythm, ChordPart chordPart)
+  {
+    MelodyPart lick = makeLick(rhythm, chordPart, 0);
     if( lickgenFrame.useHeadSelected() )
       {
         adjustLickToHead(lick);
