@@ -97,7 +97,8 @@ public class TradingWindow
     private Integer numberOfTurns;
     private Integer measures;
     private int[] metre;
-    private ChordPart chords;
+    private ChordPart soloChords;
+    private ChordPart responseChords;
     private MelodyPart aMelodyPart;
     private MidiSynth midiSynth;
     private long slotDelay;
@@ -224,10 +225,11 @@ public class TradingWindow
             nextSection = triggers.peek() + slotsForProcessing;
         }
         //System.out.println("Chords extracted from chord prog from : " + nextSection + " to " + (nextSection + slotsPerTurn - one));
-        chords = notate.getScore().getChordProg().extract(nextSection, nextSection + slotsPerTurn - one);
+        soloChords = notate.getScore().getChordProg().extract(nextSection - slotsPerTurn, nextSection - one);
+        responseChords = notate.getScore().getChordProg().extract(nextSection, nextSection + slotsPerTurn - one);
         aMelodyPart = new MelodyPart(slotsPerTurn);
         tradeScore = new Score("trading", notate.getTempo(), zero);
-        tradeScore.setChordProg(chords);
+        tradeScore.setChordProg(responseChords);
         tradeScore.addPart(aMelodyPart);
         notate.initTradingRecorder(aMelodyPart);
         notate.enableRecording();
@@ -368,7 +370,7 @@ public class TradingWindow
 
     private void applyTradingMode() {
         tradeMode = (String) tradeModeSelector.getSelectedItem();
-        ResponseGenerator generator = new ResponseGenerator(aMelodyPart, chords, metre);
+        ResponseGenerator generator = new ResponseGenerator(aMelodyPart, soloChords, responseChords, notate, metre);
         aMelodyPart = generator.response(transform, tradeMode);
         notate.getCurrentMelodyPart().altPasteOver(aMelodyPart, triggers.peek());
         notate.getCurrentMelodyPart().altPasteOver(new MelodyPart(slotsPerTurn), triggers.peek() + slotsPerTurn);
@@ -407,7 +409,7 @@ public class TradingWindow
                 aMelodyPart,
                 zero,
                 slotsPerTurn,
-                chords,
+                responseChords,
                 false,
                 true);
         fixPitches.execute();

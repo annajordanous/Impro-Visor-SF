@@ -10,6 +10,7 @@ import imp.com.InvertCommand;
 import imp.com.RectifyPitchesCommand;
 import imp.com.ReverseCommand;
 import static imp.data.AbstractMelodyExtractor.getAbstractMelody;
+import imp.gui.Notate;
 import imp.lickgen.transformations.Transform;
 import imp.lickgen.transformations.TransformLearning;
 import java.io.File;
@@ -24,16 +25,20 @@ public class ResponseGenerator {
     private MelodyPart response;
     private static final int start = 0;
     private int stop;
+    private ChordPart soloChords;
     private ChordPart responseChords;
+    private Notate notate;
     private final BeatFinder beatFinder;
     private final TransformLearning flattener;
     private static final boolean ONLY_CHORD_TONES = true;
     private static final boolean ALL_TONES = false;
     
-    public ResponseGenerator(MelodyPart response, ChordPart responseChords, int [] metre){
+    public ResponseGenerator(MelodyPart response,ChordPart soloChords, ChordPart responseChords, Notate notate, int [] metre){
         this.response = response;
         this.stop = response.size()-1;
+        this.soloChords = soloChords;
         this.responseChords = responseChords;
+        this.notate = notate;
         this.beatFinder = new BeatFinder(metre);
         this.flattener = new TransformLearning();
     }
@@ -105,7 +110,19 @@ public class ResponseGenerator {
                 break;
         }
     }
-    
+
+    public void abstractify() {
+        String abstractMelody = AbstractMelodyExtractor.getAbstractMelody(
+                0,
+                responseChords.getSize() / BEAT,
+                false,
+                false,
+                response,
+                soloChords
+        );
+        response = notate.getLickgenFrame().fillAndReturnMelodyFromText(abstractMelody, responseChords);
+    }
+
     //invert the solo
     public void invertSolo(){
         InvertCommand cmd = new InvertCommand(response, start, stop, false);
@@ -189,15 +206,7 @@ public class ResponseGenerator {
             musicianResponse(musician);
             rectifySolo();
         } else if (tradeMode.equals("Abstract")) {
-            String abstractMelody = getAbstractMelody(
-                    0,
-                    responseChords.getSize() / BEAT,
-                    false,
-                    false,
-                    response,
-                    responseChords
-            );
-            System.out.print(abstractMelody);
+            abstractify();
         } else {
             System.out.println("did nothing");
         }

@@ -5950,6 +5950,41 @@ public void fillMelodyFromText(String r)
     notate.generateAndPutLick(rhythm);
   }
 
+public MelodyPart fillAndReturnMelodyFromText(String r, ChordPart chordPart)
+  {
+    r = r.trim();
+    if( r.equals("") )
+      {
+        return new MelodyPart(); // no text specified
+      }
+    if( r.charAt(0) != '(' )
+      {
+        r = "(".concat(r);
+      }
+
+    if( r.charAt(r.length() - 1) != ')' )
+      {
+        r = r.concat(")");
+      }
+
+    setRhythmFieldText(r);
+
+    Polylist rhythm = new Polylist();
+    StringReader rhythmReader = new StringReader(r);
+    Tokenizer in = new Tokenizer(rhythmReader);
+    Object ob;
+
+    while( (ob = in.nextSexp()) != Tokenizer.eof )
+      {
+        if( ob instanceof Polylist )
+          {
+            rhythm = (Polylist) ob;
+          }
+      }
+
+    return notate.generateLick(rhythm, chordPart);
+  }
+
     private void genRhythmButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_genRhythmButtonActionPerformed
     {//GEN-HEADEREND:event_genRhythmButtonActionPerformed
         verifyTriageFields();
